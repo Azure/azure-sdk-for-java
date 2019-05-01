@@ -5,7 +5,7 @@ package com.azure.common.implementation.serializer;
 
 import com.azure.common.annotations.HeaderCollection;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.UnexpectedExceptionInformation;
 import com.azure.common.implementation.util.TypeUtil;
@@ -84,6 +84,6 @@ public interface HttpResponseDecodeData {
      * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
      */
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
-        return new UnexpectedExceptionInformation(ServiceRequestException.class);
+        return new UnexpectedExceptionInformation(HttpRequestException.class);
     }
 }

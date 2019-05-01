@@ -23,6 +23,7 @@ import org.junit.Test;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -69,7 +70,7 @@ public class ReceiveTest extends ApiTestBase {
         for (EventData eventDataUsingOffset : startingEventsUsingOffsetReceiver) {
             EventData eventDataUsingDateTime = dateTimeIterator.next();
             Assert.assertTrue(
-                    String.format("START_OF_STREAM offset: %s, EPOCH offset: %s", eventDataUsingOffset.getSystemProperties().getOffset(), eventDataUsingDateTime.getSystemProperties().getOffset()),
+                    String.format(Locale.US, "START_OF_STREAM offset: %s, EPOCH offset: %s", eventDataUsingOffset.getSystemProperties().getOffset(), eventDataUsingDateTime.getSystemProperties().getOffset()),
                     eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 
             if (!dateTimeIterator.hasNext()) {

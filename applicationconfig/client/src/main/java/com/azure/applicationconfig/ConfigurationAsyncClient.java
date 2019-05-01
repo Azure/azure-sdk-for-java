@@ -14,15 +14,13 @@ import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.logging.ServiceLogger;
+import com.azure.common.implementation.util.ImplUtils;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Asynchronous client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
@@ -35,6 +33,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
+    private static final String RANGE_QUERY = "items=%s";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -96,9 +95,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY))
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Adding ConfigurationSetting - %s", setting))
-            .doOnSuccess(response -> logger.asInformational().log("Added ConfigurationSetting - %s", response.value()))
-            .doOnError(error -> logger.asWarning().log("Failed to add ConfigurationSetting - %s", setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Adding ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Added ConfigurationSetting - {}", response.value()))
+            .doOnError(error -> logger.asWarning().log("Failed to add ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -144,9 +143,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null)
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Setting ConfigurationSetting - %s", setting))
-            .doOnSuccess(response -> logger.asInformational().log("Set ConfigurationSetting - %s", response.value()))
-            .doOnError(error -> logger.asWarning().log("Failed to set ConfigurationSetting - %s", setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Setting ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Set ConfigurationSetting - {}", response.value()))
+            .doOnError(error -> logger.asWarning().log("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -186,9 +185,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null)
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Updating ConfigurationSetting - %s", setting))
-            .doOnSuccess(response -> logger.asInformational().log("Updated ConfigurationSetting - %s", response.value()))
-            .doOnError(error -> logger.asWarning().log("Failed to update ConfigurationSetting - %s", setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Updating ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Updated ConfigurationSetting - {}", response.value()))
+            .doOnError(error -> logger.asWarning().log("Failed to update ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -221,9 +220,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         validateSetting(setting);
 
         return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null)
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving ConfigurationSetting - %s", setting))
-            .doOnSuccess(response -> logger.asInformational().log("Retrieved ConfigurationSetting - %s", response.value()))
-            .doOnError(error -> logger.asWarning().log("Failed to get ConfigurationSetting - %s", setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved ConfigurationSetting - {}", response.value()))
+            .doOnError(error -> logger.asWarning().log("Failed to get ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -260,9 +259,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         validateSetting(setting);
 
         return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null)
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Deleting ConfigurationSetting - %s", setting))
-            .doOnSuccess(response -> logger.asInformational().log("Deleted ConfigurationSetting - %s", response.value()))
-            .doOnError(error -> logger.asWarning().log("Failed to delete ConfigurationSetting - %s", setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Deleting ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Deleted ConfigurationSetting - {}", response.value()))
+            .doOnError(error -> logger.asWarning().log("Failed to delete ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -276,11 +275,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
-            String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime())
-                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSettings - %s", options))
-                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSettings - %s", options))
-                .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting - %s", options, error));
+            String fields = ImplUtils.arrayToString(options.fields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(options.keys(), key -> key);
+            String labels = ImplUtils.arrayToString(options.labels(), label -> label);
+
+            result = service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime())
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSettings - {}", options))
+                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSettings - {}", options))
+                .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting - {}", options, error));
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing all ConfigurationSettings"))
@@ -305,11 +307,15 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
-            String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null)
-                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions - %s", selector))
-                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions - %s", selector))
-                .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting revisions - %s", selector, error));
+            String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
+            String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
+            String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
+
+            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range)
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions - {}", selector))
+                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions - {}", selector))
+                .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting revisions - {}", selector, error));
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions"))
@@ -318,15 +324,6 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         }
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
-    }
-
-    private static String getSelectQuery(SettingFields[] set) {
-        if (set == null || set.length == 0) {
-            return null;
-        }
-
-        return Arrays.stream(set).map(item -> item.toString().toLowerCase(Locale.US))
-            .collect(Collectors.joining(","));
     }
 
     /*
@@ -339,9 +336,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     private Flux<ConfigurationSetting> listSettings(String nextPageLink) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink)
-            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving the next listing page - Page: %s", nextPageLink))
-            .doOnSuccess(response -> logger.asInformational().log("Retrieved the next listing page - Page: %s", nextPageLink))
-            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page: %s", nextPageLink, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
@@ -355,6 +352,16 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     }
 
     /*
+     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
+     *
+     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
+     * @return The etag surrounded by quotations. (ex. "etag")
+     */
+    private static String getETagValue(String etag) {
+        return etag == null ? "" : "\"" + etag + "\"";
+    }
+
+    /*
      * Ensure that setting is not null. And, key cannot be null because it is part of the service REST URL.
      */
     private static void validateSetting(ConfigurationSetting setting) {
@@ -363,15 +370,5 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         if (setting.key() == null) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
-    }
-
-    /*
-     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
-     *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
-     * @return The etag surrounded by quotations. (ex. "etag")
-     */
-    private static String getETagValue(String etag) {
-        return etag == null ? "" : "\"" + etag + "\"";
     }
 }
