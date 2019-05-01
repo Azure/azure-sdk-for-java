@@ -43,7 +43,7 @@ interface ConfigurationService {
 
     @PUT("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {409, 412}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {409, 412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                     @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
