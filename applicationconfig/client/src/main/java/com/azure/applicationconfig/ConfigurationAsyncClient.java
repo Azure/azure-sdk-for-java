@@ -96,19 +96,10 @@ public final class ConfigurationAsyncClient extends ServiceClient {
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        // Note: addSetting is a special case where its precondition failed exception is the inverse of all other
-        // requests that route through the client.setKey method, remap it to a more appropriate error.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY))
             .doOnRequest(ignoredValue -> logger.asInformational().log("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.asInformational().log("Added ConfigurationSetting - {}", response.value()))
-            .onErrorMap(error -> {
-                if (!(error instanceof ResourceNotFoundException)) {
-                    return error;
-                }
-
-                ResourceNotFoundException notFoundException = (ResourceNotFoundException) error;
-                return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.response());
-            })
+            .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
             .doOnError(error -> logger.asWarning().log("Failed to add ConfigurationSetting - {}", setting, error));
     }
 
@@ -389,5 +380,22 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         if (setting.key() == null) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
+    }
+
+    /**
+     * Remaps the exception returned from the service if it is a PRECONDITION_FAILED response. This is performed since
+     * add setting returns PRECONDITION_FAILED when the configuration already exists, all other uses of setKey return
+     * this status when the configuration doesn't exist.
+     * @param throwable Error response from the service.
+     * @return Exception remapped to a ResourceModifiedException if the throwable was a ResourceNotFoundException,
+     * otherwise the throwable is returned unmodified.
+     */
+    private static Throwable addSettingExceptionMapper(Throwable throwable) {
+        if (!(throwable instanceof ResourceNotFoundException)) {
+            return throwable;
+        }
+
+        ResourceNotFoundException notFoundException = (ResourceNotFoundException) throwable;
+        return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.response());
     }
 }
