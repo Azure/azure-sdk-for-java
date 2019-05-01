@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
-import com.azure.common.implementation.util.ImplUtils;
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
