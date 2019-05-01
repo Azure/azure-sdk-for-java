@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.servicebus;
 
-import com.azure.common.test.TestMode;
+import com.azure.core.test.TestMode;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
