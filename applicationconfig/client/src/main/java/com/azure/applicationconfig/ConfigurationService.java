@@ -18,6 +18,8 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.ContentType;
@@ -33,6 +35,7 @@ import reactor.core.publisher.Mono;
 interface ConfigurationService {
     @GET("kv/{key}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                      @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
@@ -40,6 +43,8 @@ interface ConfigurationService {
 
     @PUT("kv/{key}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                     @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
@@ -47,18 +52,22 @@ interface ConfigurationService {
 
     @DELETE("kv/{key}")
     @ExpectedResponses({200, 204})
+    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> delete(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
     @PUT("locks/{key}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                           @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
     @DELETE("locks/{key}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<ConfigurationSetting>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);

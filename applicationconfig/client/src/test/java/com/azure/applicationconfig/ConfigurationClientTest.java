@@ -6,6 +6,8 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
@@ -98,7 +100,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting() {
         addExistingSettingRunner((expected) -> {
             client.addSetting(expected);
-            assertRestException(() -> client.addSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.addSetting(expected), ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
         });
     }
 
@@ -118,12 +120,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingIfEtag() {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setSetting(initial.etag("badEtag")), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.setSetting(initial.etag("badEtag")), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
 
             final String etag = client.addSetting(initial).value().etag();
 
             assertConfigurationEquals(update, client.setSetting(update.etag(etag)));
-            assertRestException(() -> client.setSetting(initial), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.setSetting(initial), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
             assertConfigurationEquals(update, client.getSetting(update));
         });
     }
@@ -160,7 +162,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void updateNoExistingSetting() {
         updateNoExistingSettingRunner((expected) ->
-            assertRestException(() -> client.updateSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code())
+            assertRestException(() -> client.updateSetting(expected), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())
         );
     }
 
@@ -197,13 +199,17 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final String updateEtag = client.updateSetting(update).value().etag();
 
             // The setting does not exist in the service yet, so we cannot update it.
-            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)),
+                ResourceNotFoundException.class,
+                HttpResponseStatus.PRECONDITION_FAILED.code());
 
             assertConfigurationEquals(update, client.getSetting(update));
             assertConfigurationEquals(last, client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(updateEtag)));
             assertConfigurationEquals(last, client.getSetting(last));
 
-            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)),
+                ResourceNotFoundException.class,
+                HttpResponseStatus.PRECONDITION_FAILED.code());
         });
     }
 
@@ -235,8 +241,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverRetrievedConfiguration, client.addSetting(neverRetrievedConfiguration));
 
-        assertRestException(() -> client.getSetting("myNonExistentKey"), HttpResponseStatus.NOT_FOUND.code());
-        assertRestException(() -> client.getSetting(nonExistentLabel), HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getSetting("myNonExistentKey"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getSetting(nonExistentLabel), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**
@@ -250,7 +256,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(expected, client.getSetting(expected));
 
             assertConfigurationEquals(expected, client.deleteSetting(expected));
-            assertRestException(() -> client.getSetting(expected), HttpResponseStatus.NOT_FOUND.code());
+            assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
         });
     }
 
@@ -280,9 +286,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.updateSetting(update).value();
 
             assertConfigurationEquals(update, client.getSetting(initial));
-            assertRestException(() -> client.deleteSetting(initiallyAddedConfig), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
             assertConfigurationEquals(update, client.deleteSetting(updatedConfig));
-            assertRestException(() -> client.getSetting(initial), HttpResponseStatus.NOT_FOUND.code());
+            assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
         });
     }
 
