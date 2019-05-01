@@ -122,6 +122,7 @@
     <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
+    <opencensus.version>0.20.0</opencensus.version>
 
     <!-- Test Dependency Versions -->
     <azure-common-test.version>1.0.0-SNAPSHOT</azure-common-test.version>
@@ -273,6 +274,12 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-buffer</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.opencensus</groupId>
+        <artifactId>opencensus-api</artifactId>
+        <version>${opencensus.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -597,7 +604,12 @@
             <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
+            <excludePackageNames>
+              com.microsoft.azure.template:
+              *.impl.*:
+              *.implementation.*:
+              com.azure.tracing.opencensus*
+            </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Batch</title>
@@ -1055,5 +1067,6 @@
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./storage/data-plane</module>
+    <module>./tracing</module>
   </modules>
 </project>
