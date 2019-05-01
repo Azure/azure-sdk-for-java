@@ -22,14 +22,23 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
     private static final String proxySelectorModifiedError = "ProxySelector has been modified.";
     private final ProxyConfiguration proxyConfiguration;
 
-    public static Boolean shouldUseProxy(final String hostName) {
+    public static Boolean shouldUseProxy(final String hostName, final ProxyConfiguration proxyConfiguration) {
+        Objects.requireNonNull(hostName);
+        Objects.requireNonNull(proxyConfiguration);
+
         final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
+
+        if (proxyConfiguration.isProxyAddressConfigured()) {
+            return true;
+        }
+
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {
             return false;
@@ -39,13 +48,28 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         return isProxyAddressLegal(proxies);
     }
 
+    /**
+     * Creates a WebSocket proxy connection handler for the provided {@code amqpConnection}.
+     *
+     * @param amqpConnection The AMQP connection to the service.
+     */
     public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection) {
-        this(amqpConnection, null);
+        super(amqpConnection);
+
+        this.proxyConfiguration = null;
     }
 
+    /**
+     * Creates a WebSocket proxy connection handler for the {@code amqpConnection} and {@code proxyConfiguration}.
+     *
+     * @param amqpConnection AMQP connection to the service.
+     * @param proxyConfiguration Required. Proxy configuration to use.
+     * @throws NullPointerException if {@code proxyConfiguration} is {@code null}.
+     */
     public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, ProxyConfiguration proxyConfiguration) {
         super(amqpConnection);
 
+        Objects.requireNonNull(proxyConfiguration);
         this.proxyConfiguration = proxyConfiguration;
     }
 
