@@ -6,8 +6,8 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.Response;
+import com.azure.core.exception.ServiceRequestException;
+import com.azure.core.http.rest.Response;
 
 import java.util.List;
 

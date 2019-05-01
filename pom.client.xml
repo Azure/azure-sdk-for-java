@@ -115,14 +115,14 @@
     <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
-    <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
-    <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
-    <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
+    <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
+    <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
+    <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
 
     <!-- Test Dependency Versions -->
-    <azure-common-test.version>1.0.0-SNAPSHOT</azure-common-test.version>
+    <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -181,14 +181,14 @@
 
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-common</artifactId>
-        <version>${azure-common.version}</version>
+        <artifactId>azure-core</artifactId>
+        <version>${azure-core.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-common-auth</artifactId>
-        <version>${azure-common-auth.version}</version>
+        <artifactId>azure-core-auth</artifactId>
+        <version>${azure-core-auth.version}</version>
       </dependency>
 
       <!-- Other Microsoft Dependencies -->
@@ -283,8 +283,8 @@
       <!-- Test dependencies -->
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-common-test</artifactId>
-        <version>${azure-common-test.version}</version>
+        <artifactId>azure-core-test</artifactId>
+        <version>${azure-core-test.version}</version>
       </dependency>
 
       <dependency>
@@ -617,16 +617,16 @@
                 <packages>com.microsoft.azure.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Common</title>
-                <packages>com.azure.common:com.azure.common.annotations:com.azure.common.credentials:com.azure.common.exception:com.azure.common.http*</packages>
+                <title>Azure Core</title>
+                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
               </group>
               <group>
-                <title>Azure Common - Management</title>
-                <packages>com.azure.common.mgmt*</packages>
+                <title>Azure Core - Management</title>
+                <packages>com.azure.core.management*</packages>
               </group>
               <group>
-                <title>Azure Common - Authentication</title>
-                <packages>com.azure.common.auth*</packages>
+                <title>Azure Core - Authentication</title>
+                <packages>com.azure.core.auth*</packages>
               </group>
               <group>
                 <title>Azure Storage</title>
@@ -1056,7 +1056,7 @@
   <modules>
     <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
-    <module>./common</module>
+    <module>./core</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./storage/data-plane</module>
