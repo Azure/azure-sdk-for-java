@@ -5,6 +5,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.ServiceClient;
@@ -13,6 +14,7 @@ import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.util.ImplUtils;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
+    private static final String COMMA = ",";
+    private static final String RANGE_QUERY = "items=%d-%d";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -259,7 +263,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
+            result = service.listKeyValues(serviceEndpoint, getQueryString(options.keys()), getQueryString(options.labels()), fields, options.acceptDateTime());
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
@@ -282,7 +286,8 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
+            String range = getRangeHeader(selector.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, getQueryString(selector.keys()), getQueryString(selector.labels()), fields, selector.acceptDateTime(), range);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
@@ -290,13 +295,12 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
-    private static String getSelectQuery(SettingFields[] set) {
-        if (set == null || set.length == 0) {
+    private static String getRangeHeader(Range range) {
+        if (range == null) {
             return null;
         }
 
-        return Arrays.stream(set).map(item -> item.toString().toLowerCase(Locale.US))
-            .collect(Collectors.joining(","));
+        return String.format(RANGE_QUERY, range.start(), range.end());
     }
 
     /*
@@ -321,6 +325,33 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     }
 
     /*
+     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
+     *
+     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
+     * @return The etag surrounded by quotations. (ex. "etag")
+     */
+    private static String getETagValue(String etag) {
+        return etag == null ? "" : "\"" + etag + "\"";
+    }
+
+    private static String getQueryString(String[] values) {
+        if (ImplUtils.isNullOrEmpty(values)) {
+            return null;
+        }
+
+        return String.join(COMMA, values);
+    }
+
+    private static String getSelectQuery(SettingFields[] set) {
+        if (ImplUtils.isNullOrEmpty(set)) {
+            return null;
+        }
+
+        return Arrays.stream(set).map(item -> item.toString().toLowerCase(Locale.US))
+            .collect(Collectors.joining(COMMA));
+    }
+
+    /*
      * Ensure that setting is not null. And, key cannot be null because it is part of the service REST URL.
      */
     private static void validateSetting(ConfigurationSetting setting) {
@@ -329,15 +360,5 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         if (setting.key() == null) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
-    }
-
-    /*
-     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
-     *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
-     * @return The etag surrounded by quotations. (ex. "etag")
-     */
-    private static String getETagValue(String etag) {
-        return etag == null ? "" : "\"" + etag + "\"";
     }
 }
