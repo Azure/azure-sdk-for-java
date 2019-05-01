@@ -380,7 +380,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listWithKeyAndLabel() {
         final String value = "myValue";
         final String key = testResourceNamer.randomName(keyPrefix, 16);
-        final String label = testResourceNamer.randomName("lbl", 16);
+        final String label = testResourceNamer.randomName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
