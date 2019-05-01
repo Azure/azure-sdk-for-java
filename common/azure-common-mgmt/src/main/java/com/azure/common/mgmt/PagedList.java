@@ -3,7 +3,7 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,10 +76,10 @@ public abstract class PagedList<E> implements List<E> {
      *
      * @param nextPageLink the link to get the next page of items.
      * @return the {@link Page} object storing a page of items and a link to the next page.
-     * @throws ServiceRequestException thrown if an error is raised from Azure.
+     * @throws HttpRequestException thrown if an error is raised from Azure.
      * @throws IOException thrown if there's any failure in deserialization.
      */
-    public abstract Page<E> nextPage(String nextPageLink) throws ServiceRequestException, IOException;
+    public abstract Page<E> nextPage(String nextPageLink) throws HttpRequestException, IOException;
 
     /**
      * If there are more pages available.

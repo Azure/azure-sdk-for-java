@@ -5,6 +5,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.ServiceClient;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public final class ConfigurationAsyncClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
     private static final String COMMA = ",";
+    private static final String RANGE_QUERY = "items=%d-%d";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -284,12 +286,21 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, getQueryString(selector.keys()), getQueryString(selector.labels()), fields, selector.acceptDateTime(), null);
+            String range = getRangeHeader(selector.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, getQueryString(selector.keys()), getQueryString(selector.labels()), fields, selector.acceptDateTime(), range);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
+    }
+
+    private static String getRangeHeader(Range range) {
+        if (range == null) {
+            return null;
+        }
+
+        return String.format(RANGE_QUERY, range.start(), range.end());
     }
 
     /*

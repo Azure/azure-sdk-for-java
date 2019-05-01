@@ -6,6 +6,7 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.Response;
 import com.azure.common.test.TestBase;
@@ -414,6 +415,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void listRevisionsWithRange();
+
+    @Test
+    public abstract void listRevisionsInvalidRange();
+
+    @Test
     public abstract void listRevisionsAcceptDateTime();
 
     @Test
@@ -508,14 +515,14 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify the error was a RestException and it has a specific HTTP response code.
+     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
      *
      * @param ex Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable ex, int expectedStatusCode) {
         assertTrue(ex instanceof ServiceRequestException);
-        assertEquals(expectedStatusCode, ((ServiceRequestException) ex).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpRequestException) ex).response().statusCode());
     }
 
     /**

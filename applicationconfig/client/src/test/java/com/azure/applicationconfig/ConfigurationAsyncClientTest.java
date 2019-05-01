@@ -3,6 +3,7 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.http.HttpClient;
@@ -614,6 +615,48 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             return selected;
         });
+    }
+
+    /**
+     * Verifies that the range header for revision selections returns the expected values.
+     */
+    public void listRevisionsWithRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
+
+        StepVerifier.create(client.addSetting(original))
+            .assertNext(response -> assertConfigurationEquals(original, response.value()))
+            .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(updated))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(updated2))
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(1, 2))))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
+     */
+    public void listRevisionsInvalidRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+
+        StepVerifier.create(client.addSetting(original))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))))
+            .verifyErrorSatisfies(exception -> assertRestException(exception, HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code()));
     }
 
     /**
