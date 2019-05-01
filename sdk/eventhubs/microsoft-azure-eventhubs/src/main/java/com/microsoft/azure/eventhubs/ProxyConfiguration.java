@@ -63,7 +63,12 @@ public class ProxyConfiguration {
         this.authType = authType;
     }
 
-    public static ProxyConfiguration useSystemConfiguration() {
+    /**
+     * Creates a proxy configuration that uses the system configured proxy and authentication.
+     *
+     * @return An instance of ProxyConfiguration that will use the system configured proxy and authentication.
+     */
+    public static ProxyConfiguration useSystemProxyConfiguration() {
         return new ProxyConfiguration();
     }
 
@@ -80,7 +85,7 @@ public class ProxyConfiguration {
      *
      * @return true if the proxy url has been set, and false otherwise.
      */
-    boolean isProxyAddressConfigured() {
+    public boolean isProxyAddressConfigured() {
         return proxyAddress != null && !proxyAddress.equals("");
     }
 
