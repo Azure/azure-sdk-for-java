@@ -95,8 +95,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-core-mgmt</artifactId>
-          <version>${azure-core-mgmt.version}</version>
+          <artifactId>azure-core-management</artifactId>
+          <version>${azure-core-management.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -123,7 +123,7 @@
                                 <source>..\..\batch\data-plane\src\main\java</source>
                                 <source>..\..\core\azure-core\src\main\java</source>
                                 <source>..\..\core\azure-core-auth\src\main\java</source>
-                                <source>..\..\core\azure-core-mgmt\src\main\java</source>
+                                <source>..\..\core\azure-core-management\src\main\java</source>
                                 <source>..\..\core\azure-core-test\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
