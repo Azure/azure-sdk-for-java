@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
-    private final String proxySelectorModifiedError = "ProxySelector has been modified.";
+    private static final String proxySelectorModifiedError = "ProxySelector has been modified.";
+    private final ProxyConfiguration proxyConfiguration;
 
     public static Boolean shouldUseProxy(final String hostName) {
         final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
@@ -38,7 +40,13 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     }
 
     public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection) {
+        this(amqpConnection, null);
+    }
+
+    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, ProxyConfiguration proxyConfiguration) {
         super(amqpConnection);
+
+        this.proxyConfiguration = proxyConfiguration;
     }
 
     @Override

@@ -81,7 +81,13 @@ public interface EventHubClient {
     static CompletableFuture<EventHubClient> createFromConnectionString(
             final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
-        return EventHubClientImpl.create(connectionString, retryPolicy, executor);
+        return EventHubClientImpl.create(connectionString, retryPolicy, executor, null);
+    }
+
+    static CompletableFuture<EventHubClient> create(final String connectionString, final RetryPolicy retryPolicy,
+                                                    final ScheduledExecutorService executor,
+                                                    final ProxyConfiguration proxyConfiguration) throws IOException {
+        return EventHubClientImpl.create(connectionString, retryPolicy, executor, proxyConfiguration);
     }
 
     /**
