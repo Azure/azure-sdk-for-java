@@ -35,6 +35,7 @@ public class SettingSelector {
     private String label;
     private SettingFields[] fields;
     private String acceptDatetime;
+    private Range range;
 
     /**
      * Creates a setting selector that will populate responses with all of the
@@ -173,6 +174,25 @@ public class SettingSelector {
      */
     public SettingSelector fields(SettingFields... fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Gets the {@link Range} used to select a specific range of revisions with {@code listSettingRevisions}.
+     * If {@code null}, the service returns all revisions.
+     * @return The {@link Range} used to select a range of revisions.
+     */
+    public Range range() {
+        return range;
+    }
+
+    /**
+     * Sets the {@link Range} used to select a specific range of revisions. If null, the service returns all revisions.
+     * @param range The range of revisions to select.
+     * @return The updated SettingSelector object.
+     */
+    public SettingSelector range(Range range) {
+        this.range = range;
         return this;
     }
 }

@@ -4,6 +4,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.HttpRequestException;
@@ -494,6 +495,38 @@ public class ConfigurationClientTest extends TestBase {
     }
 
     /**
+     * Verifies that the range header for revision selections returns the expected values.
+     */
+    @Test
+    public void listRevisionsWithRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
+
+        assertConfigurationEquals(original, client.addSetting(original));
+        assertConfigurationEquals(updated, client.updateSetting(updated));
+        assertConfigurationEquals(updated2, client.updateSetting(updated2));
+
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(key).range(new Range(1, 2)));
+        assertConfigurationEquals(updated, revisions.get(0));
+        assertConfigurationEquals(original, revisions.get(1));
+    }
+
+    /**
+     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
+     */
+    @Test
+    public void listRevisionsInvalidRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+
+        assertConfigurationEquals(original, client.addSetting(original));
+        assertRestException(() -> client.listSettingRevisions(new SettingSelector().key(key).range(new Range(0, 10))),
+            HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code());
+    }
+
+    /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @Test
@@ -661,7 +694,7 @@ public class ConfigurationClientTest extends TestBase {
      * @param expectedExceptionType Expected exception type returned.
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
-    private static void assertRestException(Runnable exceptionThrower, Class expectedExceptionType, int expectedStatusCode) {
+    private static void assertRestException(Runnable exceptionThrower, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();

@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown for invalid resource modification with status code of 4XX, typically 412 Conflict.
+ * The exception thrown for invalid resource modification with status code of 4XX, typically 409 Conflict.
  *
  * @see HttpRequestException
  */
