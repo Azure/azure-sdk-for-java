@@ -101,7 +101,7 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         return tokenGeneratingFuture;
     }
     
-    private static class FutureCompletingAuthenticationCallback implements AuthenticationCallback
+    private static class FutureCompletingAuthenticationCallback implements AuthenticationCallback<AuthenticationResult>
     {
         private CompletableFuture<SecurityToken> tokenGeneratingFutue;
         private String audience;
