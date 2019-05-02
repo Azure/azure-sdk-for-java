@@ -61,6 +61,7 @@ public final class PipelineOptions {
             }
         }
     }
+
     /**
      * Specifies which HttpClient to use to send the requests.
      */

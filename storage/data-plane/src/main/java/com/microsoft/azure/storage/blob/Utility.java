@@ -267,7 +267,7 @@ final class Utility {
         return s.map(response -> {
             try {
                 Object headers = response.getClass().getMethod("headers").invoke(response);
-                Method etagGetterMethod = headers.getClass().getMethod("getEtag");
+                Method etagGetterMethod = headers.getClass().getMethod("eTag");
                 String etag = (String) etagGetterMethod.invoke(headers);
                 // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
                 if (etag == null) {

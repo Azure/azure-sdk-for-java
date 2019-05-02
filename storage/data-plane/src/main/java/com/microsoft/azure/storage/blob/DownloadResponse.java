@@ -41,7 +41,7 @@ public final class DownloadResponse {
             HTTPGetterInfo info, Function<HTTPGetterInfo, Single<DownloadResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
-        Utility.assertNotNull("info.getEtag", info.getEtag());
+        Utility.assertNotNull("info.eTag", info.eTag());
         this.rawResponse = response;
         this.info = info;
         this.getter = getter;

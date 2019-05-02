@@ -407,9 +407,9 @@ class APISpec extends Specification {
      * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(Object headers) {
-        return headers.class.getMethod("getEtag").invoke(headers) != null &&
+        return headers.class.getMethod("eTag").invoke(headers) != null &&
                 // Quotes should be scrubbed from etag header values
-                !((String)(headers.class.getMethod("getEtag").invoke(headers))).contains("\"") &&
+                !((String)(headers.class.getMethod("eTag").invoke(headers))).contains("\"") &&
                 headers.class.getMethod("lastModified").invoke(headers) != null &&
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&

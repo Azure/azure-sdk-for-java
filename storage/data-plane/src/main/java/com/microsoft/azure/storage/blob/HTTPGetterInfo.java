@@ -54,7 +54,7 @@ final class HTTPGetterInfo {
      * Etag is returned with any operation that modifies the resource and by a call to {@link
      * BlobURL#getProperties(BlobAccessConditions, com.microsoft.rest.v2.Context)}. Defaults to null.
      */
-    public String getEtag() {
+    public String eTag() {
         return eTag;
     }
 
