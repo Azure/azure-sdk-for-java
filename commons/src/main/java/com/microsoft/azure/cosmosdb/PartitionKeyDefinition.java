@@ -24,9 +24,13 @@
 package com.microsoft.azure.cosmosdb;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 
 /**
  * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition specifies which
@@ -76,15 +80,27 @@ public final class PartitionKeyDefinition extends JsonSerializable {
         this.kind = kind;
     }
 
-    PartitionKeyDefinitionVersion getVersion() {
+    public PartitionKeyDefinitionVersion getVersion() {
         if (this.version == null) {
-            version = super.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, PartitionKeyDefinitionVersion.class);
+            Object versionObject = super.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, Object.class);
+            if (versionObject == null) {
+                this.version = null;
+            } else {
+                String versionStr = String.valueOf(versionObject);
+                if (StringUtils.isNumeric(versionStr)) {
+                    this.version = PartitionKeyDefinitionVersion.valueOf(String.format("V%d", Integer.parseInt(versionStr)));
+                } else {
+                    this.version = !Strings.isNullOrEmpty(versionStr)
+                            ? PartitionKeyDefinitionVersion.valueOf(WordUtils.capitalize(versionStr))
+                            : null;
+                }
+            }
         }
 
         return this.version;
     }
 
-    void setVersion(PartitionKeyDefinitionVersion version) {
+    public void setVersion(PartitionKeyDefinitionVersion version) {
         this.version = version;
     }
 

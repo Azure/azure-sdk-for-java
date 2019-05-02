@@ -26,7 +26,7 @@ package com.microsoft.azure.cosmosdb;
 /**
  * Partitioning version.
  */
-enum PartitionKeyDefinitionVersion {
+public enum PartitionKeyDefinitionVersion {
 
     /**
      * Original version of hash partitioning.
