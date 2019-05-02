@@ -115,11 +115,13 @@
     <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
+    <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
     <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
     <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
+    <async-http-client.version>2.5.2</async-http-client.version>
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
@@ -263,6 +265,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j-log4j12.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>io.projectreactor.netty</groupId>
         <artifactId>reactor-netty</artifactId>
         <version>${reactor-netty.version}</version>
@@ -278,6 +286,12 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.asynchttpclient</groupId>
+        <artifactId>async-http-client</artifactId>
+        <version>${async-http-client.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -629,9 +643,13 @@
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Service Bus</title>
+                <packages>com.microsoft.azure.servicebus*</packages>
+              </group>
+              <group>
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
-               </group>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -1059,6 +1077,7 @@
     <module>./core</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
+    <module>./servicebus/data-plane</module>
     <module>./storage/data-plane</module>
   </modules>
 </project>
