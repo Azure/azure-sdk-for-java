@@ -19,19 +19,19 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class MetadataEntityInner {
     /**
-     * The resource Id of the configuration resource.
+     * The resource Id of the metadata entity.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * The type of the configuration resource.
+     * The type of the metadata entity.
      */
     @JsonProperty(value = "type")
     private String type;
 
     /**
-     * The name of the configuration resource.
+     * The name of the metadata entity.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -55,7 +55,7 @@ public class MetadataEntityInner {
     private List<MetadataSupportedValueDetail> supportedValues;
 
     /**
-     * Get the resource Id of the configuration resource.
+     * Get the resource Id of the metadata entity.
      *
      * @return the id value
      */
@@ -64,7 +64,7 @@ public class MetadataEntityInner {
     }
 
     /**
-     * Set the resource Id of the configuration resource.
+     * Set the resource Id of the metadata entity.
      *
      * @param id the id value to set
      * @return the MetadataEntityInner object itself.
@@ -75,7 +75,7 @@ public class MetadataEntityInner {
     }
 
     /**
-     * Get the type of the configuration resource.
+     * Get the type of the metadata entity.
      *
      * @return the type value
      */
@@ -84,7 +84,7 @@ public class MetadataEntityInner {
     }
 
     /**
-     * Set the type of the configuration resource.
+     * Set the type of the metadata entity.
      *
      * @param type the type value to set
      * @return the MetadataEntityInner object itself.
@@ -95,7 +95,7 @@ public class MetadataEntityInner {
     }
 
     /**
-     * Get the name of the configuration resource.
+     * Get the name of the metadata entity.
      *
      * @return the name value
      */
@@ -104,7 +104,7 @@ public class MetadataEntityInner {
     }
 
     /**
-     * Set the name of the configuration resource.
+     * Set the name of the metadata entity.
      *
      * @param name the name value to set
      * @return the MetadataEntityInner object itself.
