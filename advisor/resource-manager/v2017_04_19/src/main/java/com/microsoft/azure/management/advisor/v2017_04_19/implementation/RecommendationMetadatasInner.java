@@ -52,11 +52,11 @@ public class RecommendationMetadatasInner {
      */
     interface RecommendationMetadatasService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.advisor.v2017_04_19.RecommendationMetadatas get" })
-        @GET("providers/Microsoft.Advisor/recommendations/metadata/{name}")
+        @GET("providers/Microsoft.Advisor/metadata/{name}")
         Observable<Response<ResponseBody>> get(@Path("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.advisor.v2017_04_19.RecommendationMetadatas list" })
-        @GET("providers/Microsoft.Advisor/recommendations/metadata")
+        @GET("providers/Microsoft.Advisor/metadata")
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
