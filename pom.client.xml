@@ -1054,11 +1054,11 @@
   </profiles>
 
   <modules>
-<!--    <module>./applicationconfig/client</module>-->
-<!--    <module>./batch/data-plane</module>-->
-<!--    <module>./core</module>-->
-<!--    <module>./eventhubs/data-plane</module>-->
-<!--    <module>./keyvault/data-plane</module>-->
+    <module>./applicationconfig/client</module>
+    <module>./batch/data-plane</module>
+    <module>./core</module>
+    <module>./eventhubs/data-plane</module>
+    <module>./keyvault/data-plane</module>
     <module>./storage/data-plane</module>
   </modules>
 </project>
