@@ -31,6 +31,6 @@ public interface RecommendationMetadatas extends HasInner<RecommendationMetadata
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MetadataEntityListResult> listAsync();
+    Observable<MetadataEntity> listAsync();
 
 }

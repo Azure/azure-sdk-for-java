@@ -13,7 +13,8 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.advisor.v2017_04_19.RecommendationMetadatas;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.advisor.v2017_04_19.MetadataEntityListResult;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.advisor.v2017_04_19.MetadataEntity;
 
 class RecommendationMetadatasImpl extends WrapperImpl<RecommendationMetadatasInner> implements RecommendationMetadatas {
     private final AdvisorManager manager;
@@ -34,13 +35,19 @@ class RecommendationMetadatasImpl extends WrapperImpl<RecommendationMetadatasInn
     ;}
 
     @Override
-    public Observable<MetadataEntityListResult> listAsync() {
+    public Observable<MetadataEntity> listAsync() {
         RecommendationMetadatasInner client = this.inner();
         return client.listAsync()
-        .map(new Func1<MetadataEntityListResultInner, MetadataEntityListResult>() {
+        .flatMapIterable(new Func1<Page<MetadataEntityInner>, Iterable<MetadataEntityInner>>() {
             @Override
-            public MetadataEntityListResult call(MetadataEntityListResultInner inner) {
-                return new MetadataEntityListResultImpl(inner, manager());
+            public Iterable<MetadataEntityInner> call(Page<MetadataEntityInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<MetadataEntityInner, MetadataEntity>() {
+            @Override
+            public MetadataEntity call(MetadataEntityInner inner) {
+                return new MetadataEntityImpl(inner, manager());
             }
         });
     }
