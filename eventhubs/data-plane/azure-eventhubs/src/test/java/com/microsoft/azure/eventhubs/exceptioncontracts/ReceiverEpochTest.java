@@ -50,15 +50,20 @@ public class ReceiverEpochTest extends ApiTestBase {
         int sendEventCount = 5;
 
         PartitionReceiver receiverLowEpoch = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
-        receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
-        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, sendEventCount).get();
-        receiverLowEpoch.receiveSync(20);
 
-        receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
+        try {
+            receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
+            TestBase.pushEventsToPartition(ehClient, PARTITION_ID, sendEventCount).get();
 
-        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
-            // retry to flush all msgs in cache
-            receiverLowEpoch.receiveSync(10);
+            receiverLowEpoch.receiveSync(20);
+            receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
+
+            for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+                // retry to flush all messages in cache
+                receiverLowEpoch.receiveSync(10);
+            }
+        } finally {
+            receiverLowEpoch.closeSync();
         }
     }
 
@@ -73,10 +78,13 @@ public class ReceiverEpochTest extends ApiTestBase {
 
         receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime), epoch);
         receiver.setReceiveTimeout(Duration.ofSeconds(10));
-        ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), epoch - 10);
-
-        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 5).get();
-        Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
+        PartitionReceiver epochReceiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), epoch - 10);
+        try {
+            TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 5).get();
+            Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
+        } finally {
+            epochReceiver.closeSync();
+        }
     }
 
     @Test(expected = ReceiverDisconnectedException.class)
@@ -85,15 +93,20 @@ public class ReceiverEpochTest extends ApiTestBase {
         long epoch = new Random().nextInt(Integer.MAX_VALUE);
 
         PartitionReceiver receiverLowEpoch = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), epoch);
-        receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
-        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, sendEventCount).get();
-        receiverLowEpoch.receiveSync(20);
 
-        receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
+        try {
+            receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
+            TestBase.pushEventsToPartition(ehClient, PARTITION_ID, sendEventCount).get();
+            receiverLowEpoch.receiveSync(20);
 
-        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
-            // retry to flush all msgs in cache
-            receiverLowEpoch.receiveSync(10);
+            receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
+
+            for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+                // retry to flush all messages in cache
+                receiverLowEpoch.receiveSync(10);
+            }
+        } finally {
+            receiverLowEpoch.closeSync();
         }
     }
 
