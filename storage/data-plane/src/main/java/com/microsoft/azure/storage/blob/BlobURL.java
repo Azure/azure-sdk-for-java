@@ -361,7 +361,7 @@ public class BlobURL extends StorageURL {
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
                                             new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
+                                                    new ModifiedAccessConditions().withIfMatch(info.getEtag())), false,
                                             context == null ? Context.NONE : context));
                 });
     }

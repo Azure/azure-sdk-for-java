@@ -50,7 +50,7 @@ public final class CommonRestResponse {
     /**
      * @return An HTTP Etag for the blob at the time of the request.
      */
-    public String eTag() {
+    public String getEtag() {
         if (uploadBlobResponse != null) {
             return uploadBlobResponse.headers().eTag();
         }

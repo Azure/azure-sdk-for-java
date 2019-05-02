@@ -206,7 +206,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 }
             case DR_TEST_SCENARIO_INFO_TEST:
                 // We also test that the info is updated in DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
-                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals("etag")) {
+                if (info.count() != 10 || info.offset() != 20 || !info.getEtag().equals("etag")) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Single.just(response);

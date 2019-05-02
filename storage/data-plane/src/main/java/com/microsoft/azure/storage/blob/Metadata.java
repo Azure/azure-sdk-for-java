@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public final class Metadata extends HashMap<String, String> {
 
+    private static final long serialVersionUID = -6557244540575247796L;
+
     public Metadata() {
         super();
     }

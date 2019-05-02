@@ -21,6 +21,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.StrictMath.toIntExact;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains a collection of methods (and structures associated with those methods) which perform higher-level
@@ -117,7 +118,7 @@ public final class TransferManager {
                                 progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
@@ -445,7 +446,7 @@ public final class TransferManager {
                             optionsReal.progressReceiver(), progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
