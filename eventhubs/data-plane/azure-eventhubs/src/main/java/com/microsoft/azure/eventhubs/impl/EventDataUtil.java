@@ -14,9 +14,6 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.function.Consumer;
 
-/*
- * Internal utility class for EventData
- */
 final class EventDataUtil {
 
     @SuppressWarnings("serial")

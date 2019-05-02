@@ -253,82 +253,82 @@
 
   <!-- No need to implements cloneable. -->
   <Match>
-    <Class name="com.azure.common.http.HttpPipelineNextPolicy"/>
+    <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
   <Match>
-    <Class name="~com\.azure\.common\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
   <Match>
-    <Class name="~com\.azure\.common\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
   -->
   <Match>
-    <Class name="~com\.azure\.common\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    <Class name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.common.implementation.util.TypeUtil"/>
+    <Class name="com.azure.core.implementation.util.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
-    <Class name="com.azure.common.auth.credentials.AzureCliSubscription$UserInfo"/>
+    <Class name="com.azure.core.auth.credentials.AzureCliSubscription$UserInfo"/>
     <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
 
   <!-- These fields are designed to be not read. They are for deserializing. -->
   <Match>
-    <Class name="com.azure.common.auth.credentials.AzureCliToken"/>
+    <Class name="com.azure.core.auth.credentials.AzureCliToken"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- These fields are designed to be not used. They are for deserializing. -->
   <Match>
-    <Class name="~com\.azure\.common\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+    <Class name="~com\.azure\.core\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
     <Bug pattern="UUF_UNUSED_FIELD"/>
   </Match>
 
   <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what
   type to use. -->
   <Match>
-    <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <!-- These fields has checked null and initialized in the constructor. -->
   <Match>
-    <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- The checked field is always not null. -->
   <Match>
-    <Class name="com.azure.common.mgmt.AzureProxy"/>
+    <Class name="com.azure.core.management.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 

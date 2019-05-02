@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -90,14 +91,13 @@ public abstract class ClientSessionTests extends Tests {
     
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
-        if (managementClient == null) {
-            return;
-        }
-        if (ClientSessionTests.entityNameCreatedForAllTests != null) {
-            managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
-        }
+        if (managementClient != null ) {
+            if (ClientSessionTests.entityNameCreatedForAllTests != null) {
+                managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
+            }
 
-        managementClient.close();
+            managementClient.close();
+        }
     }
     
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {

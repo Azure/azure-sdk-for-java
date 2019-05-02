@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.Locale;
 
 public class SendLargeMessageTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
@@ -97,6 +98,6 @@ public class SendLargeMessageTest extends ApiTestBase {
 
         EventData recdMessage = messages.iterator().next();
 
-        Assert.assertEquals(String.format("sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length), recdMessage.getBytes().length, msgSize);
+        Assert.assertEquals(String.format(Locale.US, "sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length), recdMessage.getBytes().length, msgSize);
     }
 }

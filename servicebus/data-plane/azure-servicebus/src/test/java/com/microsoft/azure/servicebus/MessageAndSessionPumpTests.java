@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
@@ -395,18 +396,15 @@ public class MessageAndSessionPumpTests {
             return CompletableFuture.completedFuture(null);
         }
 
-        public CountDownLatch getMessageCountDownLatch()
-        {
+        public CountDownLatch getMessageCountDownLatch() {
             return this.messageCountDownLatch;
         }
 
-        public MaxConcurrencyCounter getMaxConcurrencyCounter()
-        {
+        public MaxConcurrencyCounter getMaxConcurrencyCounter() {
             return this.maxConcurrencyCounter;
         }
 
-        public Set<String> getReceivedSessions()
-        {
+        public Set<String> getReceivedSessions() {
             return this.receivedSeesions;
         }
     }

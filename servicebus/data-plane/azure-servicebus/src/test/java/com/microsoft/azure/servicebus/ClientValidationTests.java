@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -60,13 +61,12 @@ public class ClientValidationTests extends TestBase {
 
     @AfterClass
     public static void deleteEntities() throws ExecutionException, InterruptedException, IOException {
-        if (managementClient == null) {
-            return;
+        if (managementClient != null) {
+            managementClient.deleteQueueAsync(queuePath).get();
+            managementClient.deleteQueueAsync(sessionfulQueuePath).get();
+            managementClient.deleteTopicAsync(topicPath).get();
+            managementClient.close();
         }
-        managementClient.deleteQueueAsync(queuePath).get();
-        managementClient.deleteQueueAsync(sessionfulQueuePath).get();
-        managementClient.deleteTopicAsync(topicPath).get();
-        managementClient.close();
     }
 
     @Test

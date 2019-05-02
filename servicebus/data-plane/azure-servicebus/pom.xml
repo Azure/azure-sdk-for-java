@@ -8,7 +8,7 @@
   <artifactId>azure-servicebus</artifactId>
   <version>2.0.0</version>
 
-  <name>Microsoft Azure Service Bus</name>
+  <name>Microsoft Azure SDK for Service Bus</name>
   <description>Java library for Azure Service Bus</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -31,7 +31,6 @@
   </scm>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
@@ -68,11 +67,6 @@
        <artifactId>adal4j</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
@@ -86,7 +80,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common-test</artifactId>
+      <artifactId>azure-core-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
