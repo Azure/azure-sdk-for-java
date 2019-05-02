@@ -38,7 +38,7 @@ public final class ClientConstants {
     public final static String NO_RETRY = "NoRetry";
     public final static String DEFAULT_RETRY = "Default";
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "2.3.0";
+    public final static String CURRENT_JAVACLIENT_VERSION = "2.3.1";
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
     public static final String CBS_ADDRESS = "$cbs";
