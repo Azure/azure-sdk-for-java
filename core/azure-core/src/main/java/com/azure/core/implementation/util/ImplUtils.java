@@ -6,11 +6,14 @@ package com.azure.core.implementation.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  *  The util class is a helper class for clone operation.
  */
 public final class ImplUtils {
+    private static final String COMMA = ",";
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
@@ -84,5 +87,20 @@ public final class ImplUtils {
      */
     public static boolean isNullOrEmpty(Map map) {
         return map == null || map.isEmpty();
+    }
+
+    /**
+     * Turns an array into a string mapping each element to a string and delimits them using a coma.
+     * @param array Array being formatted to a string.
+     * @param mapper Function that maps each element to a string.
+     * @param <T> Generic representing the type of the array.
+     * @return Array with each element mapped and delimited, otherwise null if the array is empty or null.
+     */
+    public static <T> String arrayToString(T[] array, Function<T, String> mapper) {
+        if (isNullOrEmpty(array)) {
+            return null;
+        }
+
+        return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
     }
 }
