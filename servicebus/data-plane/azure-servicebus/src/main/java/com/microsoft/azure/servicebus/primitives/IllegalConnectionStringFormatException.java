@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -10,25 +9,25 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class IllegalConnectionStringFormatException extends IllegalArgumentException
 {
-	private static final long serialVersionUID = 2514898858133972030L;
+    private static final long serialVersionUID = 2514898858133972030L;
 
-	IllegalConnectionStringFormatException()
-	{
-	}
+    IllegalConnectionStringFormatException()
+    {
+    }
 
-	IllegalConnectionStringFormatException(String detail)
-	{
-		super(detail);
-	}
+    IllegalConnectionStringFormatException(String detail)
+    {
+        super(detail);
+    }
 
-	IllegalConnectionStringFormatException(Throwable cause)
-	{
-		super(cause);
-	}
+    IllegalConnectionStringFormatException(Throwable cause)
+    {
+        super(cause);
+    }
 
-	IllegalConnectionStringFormatException(String detail, Throwable cause)
-	{
-		super(detail, cause);
-	}
+    IllegalConnectionStringFormatException(String detail, Throwable cause)
+    {
+        super(detail, cause);
+    }
 
 }
