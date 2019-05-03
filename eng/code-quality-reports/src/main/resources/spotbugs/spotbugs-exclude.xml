@@ -351,7 +351,7 @@
 
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
-    <Package name="~com\.microsoft\.azure\.storage\.blob(.+)"/>
-    <Bug pattern="NM_VERY_CONFUSING"/>
+    <Package name="com.microsoft.azure.storage.blob"/>
+    <Bug pattern="NM_CONFUSING"/>
   </Match>
 </FindBugsFilter>
