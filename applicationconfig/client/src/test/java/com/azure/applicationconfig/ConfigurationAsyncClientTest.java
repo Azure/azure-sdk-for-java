@@ -50,9 +50,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .addPolicy(new RetryPolicy())
                     .build());
         }
-
-//        keyPrefix = testResourceNamer.randomName("key", 8);
-//        labelPrefix = testResourceNamer.randomName("label", 8);
     }
 
     @Override
