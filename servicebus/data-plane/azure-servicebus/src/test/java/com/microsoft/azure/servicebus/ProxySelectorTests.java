@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
@@ -14,12 +17,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ProxySelectorTests {
-
-
+public class ProxySelectorTests extends TestBase {
     @Test
-    public void proxySelectorConnectFailedInvokeTest() throws Exception
-    {
+    public void proxySelectorConnectFailedInvokeTest() throws Exception {
         // set up proxy selector with a bad address in order to check that the connectFailed() method is invoked
         int noProxyPort = 8888;
         final CompletableFuture<Void> connectFailedTask = new CompletableFuture<>();

@@ -196,6 +196,15 @@ public class ConfigurationSetting {
     }
 
     @Override
+    public String toString() {
+        return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)",
+            this.key,
+            this.label,
+            this.value,
+            this.etag);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
