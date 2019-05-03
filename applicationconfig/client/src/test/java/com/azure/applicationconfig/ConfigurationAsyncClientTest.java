@@ -51,8 +51,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .build());
         }
 
-        keyPrefix = testResourceNamer.randomName("key", 8);
-        labelPrefix = testResourceNamer.randomName("label", 8);
+//        keyPrefix = testResourceNamer.randomName("key", 8);
+//        labelPrefix = testResourceNamer.randomName("label", 8);
     }
 
     @Override
