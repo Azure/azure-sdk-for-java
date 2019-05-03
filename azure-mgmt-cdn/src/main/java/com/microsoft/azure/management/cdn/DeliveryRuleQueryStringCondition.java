@@ -13,23 +13,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the UrlFileExtension condition for the delivery rule.
+ * Defines the QueryString condition for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("UrlFileExtension")
-public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition {
+@JsonTypeName("QueryString")
+public class DeliveryRuleQueryStringCondition extends DeliveryRuleCondition {
     /**
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlFileExtensionMatchConditionParameters parameters;
+    private QueryStringMatchConditionParameters parameters;
 
     /**
      * Get defines the parameters for the condition.
      *
      * @return the parameters value
      */
-    public UrlFileExtensionMatchConditionParameters parameters() {
+    public QueryStringMatchConditionParameters parameters() {
         return this.parameters;
     }
 
@@ -37,9 +37,9 @@ public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition
      * Set defines the parameters for the condition.
      *
      * @param parameters the parameters value to set
-     * @return the DeliveryRuleUrlFileExtensionCondition object itself.
+     * @return the DeliveryRuleQueryStringCondition object itself.
      */
-    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionMatchConditionParameters parameters) {
+    public DeliveryRuleQueryStringCondition withParameters(QueryStringMatchConditionParameters parameters) {
         this.parameters = parameters;
         return this;
     }

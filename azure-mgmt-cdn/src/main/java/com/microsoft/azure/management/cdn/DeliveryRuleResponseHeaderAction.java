@@ -13,33 +13,33 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the UrlFileExtension condition for the delivery rule.
+ * Defines the response header action for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("UrlFileExtension")
-public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition {
+@JsonTypeName("ModifyResponseHeader")
+public class DeliveryRuleResponseHeaderAction extends DeliveryRuleAction {
     /**
-     * Defines the parameters for the condition.
+     * Defines the parameters for the action.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlFileExtensionMatchConditionParameters parameters;
+    private HeaderActionParameters parameters;
 
     /**
-     * Get defines the parameters for the condition.
+     * Get defines the parameters for the action.
      *
      * @return the parameters value
      */
-    public UrlFileExtensionMatchConditionParameters parameters() {
+    public HeaderActionParameters parameters() {
         return this.parameters;
     }
 
     /**
-     * Set defines the parameters for the condition.
+     * Set defines the parameters for the action.
      *
      * @param parameters the parameters value to set
-     * @return the DeliveryRuleUrlFileExtensionCondition object itself.
+     * @return the DeliveryRuleResponseHeaderAction object itself.
      */
-    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionMatchConditionParameters parameters) {
+    public DeliveryRuleResponseHeaderAction withParameters(HeaderActionParameters parameters) {
         this.parameters = parameters;
         return this;
     }
