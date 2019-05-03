@@ -621,9 +621,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                     TRACE_LOGGER.warn(operationTimedout.getMessage());
                     ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, true);
                 }
-            }
-            , timeout.remaining()
-            , TimerType.OneTimeRun);
+            },
+            timeout.remaining(),
+            TimerType.OneTimeRun);
     }
 
     @Override
@@ -680,7 +680,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                     , TimerType.OneTimeRun);
                 this.cancelSASTokenRenewTimer();
 
-                CompletableFuture<Void> authenticationFuture;
+                CompletableFuture<Void> authenticationFuture = null;
                 if (linkSettings.requiresAuthentication) {
                     authenticationFuture = this.sendTokenAndSetRenewTimer(false);
                 } else {
@@ -838,9 +838,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
                     ExceptionUtil.completeExceptionally(linkClose, operationTimedout, CoreMessageSender.this, true);
                 }
-            }
-            , timeout.remaining()
-            , TimerType.OneTimeRun);
+            },
+            timeout.remaining(),
+            TimerType.OneTimeRun);
     }
 
     @Override

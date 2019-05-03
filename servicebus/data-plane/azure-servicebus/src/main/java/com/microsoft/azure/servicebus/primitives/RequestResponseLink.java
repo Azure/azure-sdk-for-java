@@ -97,9 +97,9 @@ class RequestResponseLink extends ClientEntity{
                     TRACE_LOGGER.error("RequestResponseLink open timed out.", operationTimedout);
                     AsyncUtil.completeFutureExceptionally(requestReponseLink.createFuture, operationTimedout);
                 }
-            }
-            , messagingFactory.getOperationTimeout()
-            , TimerType.OneTimeRun);
+            },
+            messagingFactory.getOperationTimeout(),
+            TimerType.OneTimeRun);
 
         requestReponseLink.sendTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
             if (sasTokenEx != null) {
@@ -340,11 +340,9 @@ class RequestResponseLink extends ClientEntity{
                 this.completeAllPendingRequestsWithException(cause);
             } else {
                 try {
-                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-                    {
+                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
                         @Override
-                        public void onEvent()
-                        {
+                        public void onEvent() {
                             RequestResponseLink.this.createInternalLinks();
                         }
                     });
@@ -379,9 +377,9 @@ class RequestResponseLink extends ClientEntity{
                     RequestResponseLink.this.cancelSASTokenRenewTimer();
                     AsyncUtil.completeFutureExceptionally(recreateInternalLinksFuture, operationTimedout);
                 }
-            }
-            , this.underlyingFactory.getOperationTimeout()
-            , TimerType.OneTimeRun);
+            },
+            this.underlyingFactory.getOperationTimeout(),
+            TimerType.OneTimeRun);
 
         return recreateInternalLinksFuture;
     }
@@ -465,11 +463,9 @@ class RequestResponseLink extends ClientEntity{
                     workItem.setLastKnownException(responseException);
                     try {
                         this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(),
-                                new DispatchHandler()
-                                {
+                                new DispatchHandler() {
                                     @Override
-                                    public void onEvent()
-                                    {
+                                    public void onEvent() {
                                         RequestResponseLink.this.amqpSender.sendRequest(requestId, true);
                                     }
                                 });
@@ -507,9 +503,9 @@ class RequestResponseLink extends ClientEntity{
 
                     AsyncUtil.completeFutureExceptionally(closeFuture, operationTimedout);
                 }
-            }
-            , timeout
-            , TimerType.OneTimeRun);
+            },
+            timeout,
+            TimerType.OneTimeRun);
     }
 
     private class InternalReceiver extends ClientEntity implements IAmqpReceiver {
@@ -619,7 +615,7 @@ class RequestResponseLink extends ClientEntity{
                 responseMessage = Util.readMessageFromDelivery(this.receiveLink, delivery);
                 delivery.disposition(Accepted.getInstance());
                 delivery.settle();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 TRACE_LOGGER.warn("Reading message from delivery failed with unexpected exception.", e);
 
                 // release the delivery ??
@@ -764,7 +760,7 @@ class RequestResponseLink extends ClientEntity{
         }
 
         public void sendRequest(String requestId, boolean isRetry) {
-            synchronized(this.pendingSendsSyncLock) {
+            synchronized (this.pendingSendsSyncLock) {
                 if (isRetry) {
                     this.pendingRetrySends.add(requestId);
                 } else {
@@ -790,7 +786,7 @@ class RequestResponseLink extends ClientEntity{
         }
 
         public void removeEnqueuedRequest(String requestId, boolean isRetry) {
-            synchronized(this.pendingSendsSyncLock) {
+            synchronized (this.pendingSendsSyncLock) {
                 // Collections are more likely to be very small. So remove() shouldn't be a problem.
                 if (isRetry) {
                     this.pendingRetrySends.remove(requestId);
@@ -820,7 +816,7 @@ class RequestResponseLink extends ClientEntity{
         }
 
         private void runSendLoop() {
-            synchronized(this.pendingSendsSyncLock) {
+            synchronized (this.pendingSendsSyncLock) {
                 if (this.isSendLoopRunning) {
                     return;
                 } else {
@@ -831,9 +827,9 @@ class RequestResponseLink extends ClientEntity{
             TRACE_LOGGER.debug("Starting requestResponseLink {} internal sender send loop", this.parent.linkPath);
 
             try {
-                while(this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0) {
+                while (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0) {
                     String requestIdToBeSent;
-                    synchronized(pendingSendsSyncLock) {
+                    synchronized (pendingSendsSyncLock) {
                         // First send retries and then fresh ones
                         requestIdToBeSent = this.pendingRetrySends.poll();
                         if (requestIdToBeSent == null) {
