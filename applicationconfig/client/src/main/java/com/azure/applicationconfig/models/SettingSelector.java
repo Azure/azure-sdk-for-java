@@ -8,7 +8,6 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
  *
@@ -195,5 +194,22 @@ public class SettingSelector {
     public SettingSelector range(Range range) {
         this.range = range;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String fields;
+        if (ImplUtils.isNullOrEmpty(this.fields)) {
+            fields = "ALL_FIELDS";
+        } else {
+            fields = ImplUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+        }
+
+        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
+            ImplUtils.arrayToString(this.keys, key -> key),
+            ImplUtils.arrayToString(this.labels, label -> label),
+            this.acceptDatetime,
+            fields,
+            this.range);
     }
 }

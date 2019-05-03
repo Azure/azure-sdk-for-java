@@ -1,23 +1,37 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<name>azure-servicebus-parent</name>
-	<description>Java library for Azure Service Bus</description>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-servicebus-parent</artifactId>
-	<version>2.0.0</version><!-- Need not change for every release-->
-	<packaging>pom</packaging>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>2.0.0</version><!-- Need not change for every release-->
 
-	<url>https://github.com/Azure/azure-service-bus-java</url>
+  <name>Microsoft Azure Service Bus SDK Parent</name>
+  <description>Java library for Azure Service Bus SDK Parent</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-	<properties>
-		<proton-j-version>0.31.0</proton-j-version>
-	  	<junit-version>4.12</junit-version>
-		<slf4j-version>1.7.0</slf4j-version>
-		<client-current-version>2.0.0</client-current-version>
-		<qpid-proton-j-extensions-version>1.0.0</qpid-proton-j-extensions-version>
-	</properties>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.client.xml</relativePath>
+  </parent>
 
-	<modules>
-		<module>azure-servicebus</module>
-	</modules>
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+
+  <modules>
+    <module>azure-servicebus</module>
+  </modules>
 </project>

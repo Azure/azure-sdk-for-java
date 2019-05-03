@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
-public class PartitionedSubscriptionClientTests extends SubscriptionClientTests{	
-	@Override
+public class PartitionedSubscriptionClientTests extends SubscriptionClientTests {
+    @Override
     public String getEntityNamePrefix() {
         return "PartitionedSubscriptionClientTests";
     }
