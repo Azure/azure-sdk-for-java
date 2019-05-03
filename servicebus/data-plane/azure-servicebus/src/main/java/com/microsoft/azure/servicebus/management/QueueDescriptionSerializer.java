@@ -292,7 +292,7 @@ class QueueDescriptionSerializer {
 
     private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
         try {
-            URL url = new URL(forwardTo);
+            new URL(forwardTo);
             return forwardTo;
         } catch (MalformedURLException e) {
             return baseAddress.resolve(forwardTo).toString();
