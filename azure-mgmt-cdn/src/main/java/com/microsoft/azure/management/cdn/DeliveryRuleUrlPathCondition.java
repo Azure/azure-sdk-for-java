@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the UrlPath condition for the delivery rule.
+ * Defines the URL path condition for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("UrlPath")
@@ -22,14 +22,14 @@ public class DeliveryRuleUrlPathCondition extends DeliveryRuleCondition {
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlPathMatchConditionParameters parameters;
+    private UrlPathConditionParameters parameters;
 
     /**
      * Get defines the parameters for the condition.
      *
      * @return the parameters value
      */
-    public UrlPathMatchConditionParameters parameters() {
+    public UrlPathConditionParameters parameters() {
         return this.parameters;
     }
 
@@ -39,7 +39,7 @@ public class DeliveryRuleUrlPathCondition extends DeliveryRuleCondition {
      * @param parameters the parameters value to set
      * @return the DeliveryRuleUrlPathCondition object itself.
      */
-    public DeliveryRuleUrlPathCondition withParameters(UrlPathMatchConditionParameters parameters) {
+    public DeliveryRuleUrlPathCondition withParameters(UrlPathConditionParameters parameters) {
         this.parameters = parameters;
         return this;
     }

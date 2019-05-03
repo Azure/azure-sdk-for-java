@@ -21,11 +21,11 @@ public class CacheExpirationActionParameters {
     private String odatatype;
 
     /**
-     * Caching behavior for the requests. Possible values include:
-     * 'BypassCache', 'Override', 'SetIfMissing'.
+     * Caching behavior for the requests that include query strings. Possible
+     * values include: 'BypassCache', 'Override', 'SetIfMissing'.
      */
     @JsonProperty(value = "cacheBehavior", required = true)
-    private CacheBehavior cacheBehavior;
+    private String cacheBehavior;
 
     /**
      * The level at which the content needs to be cached.
@@ -42,7 +42,7 @@ public class CacheExpirationActionParameters {
 
     /**
      * Creates an instance of CacheExpirationActionParameters class.
-     * @param cacheBehavior caching behavior for the requests. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
+     * @param cacheBehavior caching behavior for the requests that include query strings. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
      */
     public CacheExpirationActionParameters() {
         odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters";
@@ -70,21 +70,21 @@ public class CacheExpirationActionParameters {
     }
 
     /**
-     * Get caching behavior for the requests. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
+     * Get caching behavior for the requests that include query strings. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
      *
      * @return the cacheBehavior value
      */
-    public CacheBehavior cacheBehavior() {
+    public String cacheBehavior() {
         return this.cacheBehavior;
     }
 
     /**
-     * Set caching behavior for the requests. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
+     * Set caching behavior for the requests that include query strings. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
      *
      * @param cacheBehavior the cacheBehavior value to set
      * @return the CacheExpirationActionParameters object itself.
      */
-    public CacheExpirationActionParameters withCacheBehavior(CacheBehavior cacheBehavior) {
+    public CacheExpirationActionParameters withCacheBehavior(String cacheBehavior) {
         this.cacheBehavior = cacheBehavior;
         return this;
     }

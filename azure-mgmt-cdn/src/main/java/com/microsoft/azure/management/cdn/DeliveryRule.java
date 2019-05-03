@@ -16,12 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeliveryRule {
     /**
-     * Name of the rule.
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
-
-    /**
      * The order in which the rules are applied for the endpoint. Possible
      * values {0,1,2,3,………}. A rule with a lesser order will be applied before
      * a rule with a greater order. Rule with order 0 is a special rule. It
@@ -32,13 +26,6 @@ public class DeliveryRule {
     private int order;
 
     /**
-     * A list of conditions that must be matched for the actions to be
-     * executed.
-     */
-    @JsonProperty(value = "conditions")
-    private List<DeliveryRuleCondition> conditions;
-
-    /**
      * A list of actions that are executed when all the conditions of a rule
      * are satisfied.
      */
@@ -46,24 +33,11 @@ public class DeliveryRule {
     private List<DeliveryRuleAction> actions;
 
     /**
-     * Get name of the rule.
-     *
-     * @return the name value
+     * A list of conditions that must be matched for the actions to be
+     * executed.
      */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set name of the rule.
-     *
-     * @param name the name value to set
-     * @return the DeliveryRule object itself.
-     */
-    public DeliveryRule withName(String name) {
-        this.name = name;
-        return this;
-    }
+    @JsonProperty(value = "conditions")
+    private List<DeliveryRuleCondition> conditions;
 
     /**
      * Get the order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
@@ -86,26 +60,6 @@ public class DeliveryRule {
     }
 
     /**
-     * Get a list of conditions that must be matched for the actions to be executed.
-     *
-     * @return the conditions value
-     */
-    public List<DeliveryRuleCondition> conditions() {
-        return this.conditions;
-    }
-
-    /**
-     * Set a list of conditions that must be matched for the actions to be executed.
-     *
-     * @param conditions the conditions value to set
-     * @return the DeliveryRule object itself.
-     */
-    public DeliveryRule withConditions(List<DeliveryRuleCondition> conditions) {
-        this.conditions = conditions;
-        return this;
-    }
-
-    /**
      * Get a list of actions that are executed when all the conditions of a rule are satisfied.
      *
      * @return the actions value
@@ -122,6 +76,26 @@ public class DeliveryRule {
      */
     public DeliveryRule withActions(List<DeliveryRuleAction> actions) {
         this.actions = actions;
+        return this;
+    }
+
+    /**
+     * Get a list of conditions that must be matched for the actions to be executed.
+     *
+     * @return the conditions value
+     */
+    public List<DeliveryRuleCondition> conditions() {
+        return this.conditions;
+    }
+
+    /**
+     * Set a list of conditions that must be matched for the actions to be executed.
+     *
+     * @param conditions the conditions value to set
+     * @return the DeliveryRule object itself.
+     */
+    public DeliveryRule withConditions(List<DeliveryRuleCondition> conditions) {
+        this.conditions = conditions;
         return this;
     }
 
