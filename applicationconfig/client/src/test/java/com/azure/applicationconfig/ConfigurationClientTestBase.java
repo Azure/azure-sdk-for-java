@@ -58,8 +58,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
-        keyPrefix = sdkContext.randomResourceName(KEY_PREFIX, PREFIX_LENGTH);
-        labelPrefix = sdkContext.randomResourceName(LABEL_PREFIX, PREFIX_LENGTH);
+        keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
+        labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
@@ -82,11 +82,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     String getKey() {
-        return sdkContext.randomResourceName(keyPrefix, RESOURCE_LENGTH);
+        return testResourceNamer.randomName(keyPrefix, RESOURCE_LENGTH);
     }
 
     String getLabel() {
-        return sdkContext.randomResourceName(labelPrefix, RESOURCE_LENGTH);
+        return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
     }
 
     @Test
