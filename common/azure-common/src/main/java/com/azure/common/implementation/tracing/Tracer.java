@@ -4,24 +4,9 @@ package com.azure.common.implementation.tracing;
 
 import com.azure.common.http.ContextData;
 
-import java.util.ServiceLoader;
+// actually I don't  understand the idea behind TracerBuilder, so you may just ignore it
+public interface Tracer {
 
-/**
- * This class provides a means for all client libraries to augment the context information they have received from an
- * end user with additional distributed tracing information, that may then be passed on to a backend for analysis.
- */
-public class Tracer {
-    private static ServiceLoader<? extends TraceBuilder> traceBuilders;
-    static {
-        traceBuilders = ServiceLoader.load(TraceBuilder.class);
-    }
-
-    private Tracer() {
-        // no-op
-    }
-
-    // TODO determine what tracing information must be passed in here, and update the TraceBuilder interface accordingly
-    public static void trace(String methodName, ContextData context) {
-        traceBuilders.forEach(traceBuilder -> traceBuilder.trace(methodName, context));
-    }
+    ContextData start(String methodName, com.azure.common.http.ContextData context);
+    void end(int responseCode, Throwable error, ContextData context);
 }
