@@ -765,7 +765,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         // Run it every 1 hour
         Timer.schedule(() -> {
             Instant systemTime = Instant.now();
-            MessageReceiver.this.requestResponseLockTokensToLockTimesMap.entrySet().removeIf(entry -> entry.getValue().isBefore(systemTime));
+            Entry<UUID, Instant>[] copyOfEntries = (Entry<UUID, Instant>[]) MessageReceiver.this.requestResponseLockTokensToLockTimesMap.entrySet().toArray();
+            for (Entry<UUID, Instant> entry : copyOfEntries) {
+                if (entry.getValue().isBefore(systemTime)) {
+                    // lock expired
+                    MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(entry.getKey());
+                }
+            }
         }, Duration.ofSeconds(3600), TimerType.RepeatRun);
     }
 
