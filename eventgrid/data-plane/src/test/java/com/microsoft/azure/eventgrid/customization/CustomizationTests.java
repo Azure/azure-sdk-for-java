@@ -27,8 +27,11 @@ import com.microsoft.azure.eventgrid.models.MapsGeofenceResultEventData;
 import com.microsoft.azure.eventgrid.models.MapsGeofenceExitedEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobCanceledEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobCancelingEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobErrorCategory;
+import com.microsoft.azure.eventgrid.models.MediaJobErrorCode;
 import com.microsoft.azure.eventgrid.models.MediaJobErroredEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobFinishedEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputAsset;
 import com.microsoft.azure.eventgrid.models.MediaJobOutputCanceledEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobOutputCancelingEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobOutputErroredEventData;
@@ -39,6 +42,7 @@ import com.microsoft.azure.eventgrid.models.MediaJobOutputScheduledEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobOutputStateChangeEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobProcessingEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobScheduledEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobState;
 import com.microsoft.azure.eventgrid.models.MediaJobStateChangeEventData;
 import com.microsoft.azure.eventgrid.models.MediaLiveEventConnectionRejectedEventData;
 import com.microsoft.azure.eventgrid.models.MediaLiveEventEncoderConnectedEventData;
@@ -445,6 +449,415 @@ public class CustomizationTests {
         Assert.assertTrue(events[0].data() instanceof MapsGeofenceResultEventData);
         MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData)events[0].data();
         Assert.assertEquals(true, eventData.isEventPublished());
+    }
+
+    // Media Services events
+    @Test
+    public void consumeMediaJobCanceledEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobCanceledEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobCanceledEventData);
+        MediaJobCanceledEventData eventData = (MediaJobCanceledEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.CANCELING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.CANCELED, eventData.state());
+        Assert.assertEquals(1, eventData.outputs().size());
+        Assert.assertTrue(eventData.outputs().get(0) instanceof MediaJobOutputAsset);
+
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.outputs().get(0);
+
+        Assert.assertEquals(MediaJobState.CANCELED, outputAsset.state());
+        Assert.assertNull(outputAsset.error());
+        Assert.assertNotEquals(100, outputAsset.progress());
+        Assert.assertEquals("output-7a8215f9-0f8d-48a6-82ed-1ead772bc221", outputAsset.assetName());
+    }
+
+    @Test
+    public void consumeMediaJobCancelingEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobCancelingEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobCancelingEventData);
+        MediaJobCancelingEventData eventData = (MediaJobCancelingEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.CANCELING, eventData.state());
+    }
+
+    @Test
+    public void consumeMediaJobProcessingEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobProcessingEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobProcessingEventData);
+        MediaJobProcessingEventData eventData = (MediaJobProcessingEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.state());
+    }
+
+    @Test
+    public void consumeMediaJobFinishedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobFinishedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobFinishedEventData);
+        MediaJobFinishedEventData eventData = (MediaJobFinishedEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.FINISHED, eventData.state());
+        Assert.assertEquals(1, eventData.outputs().size());
+        Assert.assertTrue(eventData.outputs().get(0) instanceof MediaJobOutputAsset);
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.outputs().get(0);
+
+        Assert.assertEquals(MediaJobState.FINISHED, outputAsset.state());
+        Assert.assertNull(outputAsset.error());
+        Assert.assertEquals(100, outputAsset.progress());
+        Assert.assertEquals("output-298338bb-f8d1-4d0f-9fde-544e0ac4d983", outputAsset.assetName());
+    }
+
+    @Test
+    public void consumeMediaJobErroredEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobErroredEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobErroredEventData);
+        MediaJobErroredEventData eventData = (MediaJobErroredEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.ERROR, eventData.state());
+        Assert.assertEquals(1, eventData.outputs().size());
+        Assert.assertTrue(eventData.outputs().get(0) instanceof MediaJobOutputAsset);
+
+        Assert.assertEquals(MediaJobState.ERROR, eventData.outputs().get(0).state());
+        Assert.assertNotNull(eventData.outputs().get(0).error());
+        Assert.assertEquals(MediaJobErrorCategory.SERVICE, eventData.outputs().get(0).error().category());
+        Assert.assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.outputs().get(0).error().code());
+    }
+
+    @Test
+    public void consumeMediaJobOutputStateChangeEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputStateChangeEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputStateChangeEventData);
+        MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.output();
+        Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.assetName());
+    }
+
+    @Test
+    public void consumeMediaJobScheduledEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobScheduledEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobScheduledEventData);
+        MediaJobScheduledEventData eventData = (MediaJobScheduledEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.QUEUED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.state());
+    }
+
+    @Test
+    public void consumeMediaJobOutputCanceledEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputCanceledEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputCanceledEventData);
+        MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.CANCELING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.CANCELED, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+    }
+
+    @Test
+    public void consumeMediaJobOutputCancelingEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputCancelingEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputCancelingEventData);
+        MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.CANCELING, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+    }
+
+    @Test
+    public void consumeMediaJobOutputErroredEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputErroredEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputErroredEventData);
+        MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.ERROR, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+        Assert.assertNotNull(eventData.output().error());
+        Assert.assertEquals(MediaJobErrorCategory.SERVICE, eventData.output().error().category());
+        Assert.assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.output().error().code());
+    }
+
+    @Test
+    public void consumeMediaJobOutputFinishedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputFinishedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputFinishedEventData);
+        MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
+        Assert.assertEquals(MediaJobState.FINISHED, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+        Assert.assertEquals(100, eventData.output().progress());
+
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.output();
+        Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.assetName());
+    }
+
+    @Test
+    public void consumeMediaJobOutputProcessingEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputProcessingEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputProcessingEventData);
+        MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+    }
+
+    @Test
+    public void consumeMediaJobOutputScheduledEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputScheduledEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputScheduledEventData);
+        MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.QUEUED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.output().state());
+        Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
+    }
+
+    @Test
+    public void consumeMediaJobOutputProgressEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobOutputProgressEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobOutputProgressEventData);
+        MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData)events[0].data();
+        Assert.assertEquals("TestLabel", eventData.label());
+        Assert.assertTrue(eventData.jobCorrelationData().containsKey("Field1"));
+        Assert.assertEquals("test1", eventData.jobCorrelationData().get("Field1"));
+        Assert.assertTrue(eventData.jobCorrelationData().containsKey("Field2"));
+        Assert.assertEquals("test2", eventData.jobCorrelationData().get("Field2"));
+    }
+
+    @Test
+    public void consumeMediaJobStateChangeEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaJobStateChangeEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaJobStateChangeEventData);
+        MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData)events[0].data();
+        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
+        Assert.assertEquals(MediaJobState.PROCESSING, eventData.state());
+    }
+
+    @Test
+    public void consumeMediaLiveEventEncoderConnectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventEncoderConnectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventEncoderConnectedEventData);
+        MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData)events[0].data();
+        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
+        Assert.assertEquals("Mystream1", eventData.streamId());
+        Assert.assertEquals("<ip address>", eventData.encoderIp());
+        Assert.assertEquals("3557", eventData.encoderPort());
+    }
+
+    @Test
+    public void consumeMediaLiveEventConnectionRejectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventConnectionRejectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventConnectionRejectedEventData);
+        MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData)events[0].data();
+        Assert.assertEquals("Mystream1", eventData.streamId());
+    }
+
+    @Test
+    public void consumeMediaLiveEventEncoderDisconnectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventEncoderDisconnectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventEncoderDisconnectedEventData);
+        MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData)events[0].data();
+        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
+        Assert.assertEquals("Mystream1", eventData.streamId());
+        Assert.assertEquals("<ip address>", eventData.encoderIp());
+        Assert.assertEquals("3557", eventData.encoderPort());
+    }
+
+    @Test
+    public void consumeMediaLiveEventIncomingStreamReceivedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingStreamReceivedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingStreamReceivedEventData);
+        MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData)events[0].data();
+        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
+        Assert.assertEquals("<ip address>", eventData.encoderIp());
+        Assert.assertEquals("3557", eventData.encoderPort());
+
+        Assert.assertEquals("audio", eventData.trackType());
+        Assert.assertEquals("audio_160000", eventData.trackName());
+        Assert.assertEquals("66", eventData.timestamp());
+        Assert.assertEquals("1950", eventData.duration());
+        Assert.assertEquals("1000", eventData.timescale());
+    }
+
+    @Test
+    public void consumeMediaLiveEventIncomingStreamsOutOfSyncEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingStreamsOutOfSyncEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
+        MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData)events[0].data();
+        Assert.assertEquals("10999", eventData.minLastTimestamp());
+        Assert.assertEquals("video", eventData.typeOfStreamWithMinLastTimestamp());
+        Assert.assertEquals("100999", eventData.maxLastTimestamp());
+        Assert.assertEquals("audio", eventData.typeOfStreamWithMaxLastTimestamp());
+        Assert.assertEquals("1000", eventData.timescaleOfMinLastTimestamp());
+        Assert.assertEquals("1000", eventData.timescaleOfMaxLastTimestamp());
+    }
+
+    @Test
+    public void ConsumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingVideoStreamsOutOfSyncEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
+        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData)events[0].data();
+        Assert.assertEquals("10999", eventData.firstTimestamp());
+        Assert.assertEquals("2000", eventData.firstDuration());
+        Assert.assertEquals("100999", eventData.secondTimestamp());
+        Assert.assertEquals("2000", eventData.secondDuration());
+        Assert.assertEquals("1000", eventData.timescale());
+    }
+
+    @Test
+    public void consumeMediaLiveEventIncomingDataChunkDroppedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingDataChunkDroppedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
+        MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData)events[0].data();
+        Assert.assertEquals("8999", eventData.timestamp());
+        Assert.assertEquals("video", eventData.trackType());
+        Assert.assertEquals("video1", eventData.trackName());
+        Assert.assertEquals("1000", eventData.timescale());
+        Assert.assertEquals("FragmentDrop_OverlapTimestamp", eventData.resultCode());
+    }
+
+    @Test
+    public void consumeMediaLiveEventIngestHeartbeatEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventIngestHeartbeatEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventIngestHeartbeatEventData);
+        MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData)events[0].data();
+        Assert.assertEquals("video", eventData.trackType());
+        Assert.assertEquals("video", eventData.trackName());
+        Assert.assertEquals("11999", eventData.lastTimestamp());
+        Assert.assertEquals("1000", eventData.timescale());
+        Assert.assertTrue(eventData.unexpectedBitrate());
+        Assert.assertEquals("Running", eventData.state());
+        Assert.assertFalse(eventData.healthy());
+    }
+
+    @Test
+    public void consumeMediaLiveEventTrackDiscontinuityDetectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MediaLiveEventTrackDiscontinuityDetectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
+        MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData)events[0].data();
+        Assert.assertEquals("video", eventData.trackType());
+        Assert.assertEquals("video", eventData.trackName());
+        Assert.assertEquals("10999", eventData.previousTimestamp());
+        Assert.assertEquals("14999", eventData.newTimestamp());
+        Assert.assertEquals("1000", eventData.timescale());
+        Assert.assertEquals("4000", eventData.discontinuityGap());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events
