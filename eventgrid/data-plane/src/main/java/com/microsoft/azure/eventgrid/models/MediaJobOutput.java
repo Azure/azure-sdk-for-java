@@ -60,7 +60,7 @@ public class MediaJobOutput {
     /**
      * Private constructor for deserialization.
      */
-    private MediaJobOutput() {
+    protected MediaJobOutput() {
     }
 
     /**

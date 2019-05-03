@@ -5,20 +5,50 @@
  */
 package com.microsoft.azure.eventgrid.customization;
 
+import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.customization.models.ContosoItemReceivedEventData;
 import com.microsoft.azure.eventgrid.customization.models.ContosoItemSentEventData;
 import com.microsoft.azure.eventgrid.customization.models.DroneShippingInfo;
 import com.microsoft.azure.eventgrid.customization.models.RocketShippingInfo;
+import com.microsoft.azure.eventgrid.models.AppConfigurationKeyValueDeletedEventData;
+import com.microsoft.azure.eventgrid.models.AppConfigurationKeyValueModifiedEventData;
+import com.microsoft.azure.eventgrid.models.ContainerRegistryChartDeletedEventData;
+import com.microsoft.azure.eventgrid.models.ContainerRegistryChartPushedEventData;
 import com.microsoft.azure.eventgrid.models.ContainerRegistryImageDeletedEventData;
 import com.microsoft.azure.eventgrid.models.ContainerRegistryImagePushedEventData;
-import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.models.EventHubCaptureFileCreatedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceConnectedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceCreatedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceDeletedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceDisconnectedEventData;
-import com.microsoft.azure.eventgrid.models.JobState;
+import com.microsoft.azure.eventgrid.models.IotHubDeviceTelemetryEventData;
+import com.microsoft.azure.eventgrid.models.MapsGeofenceEnteredEventData;
+import com.microsoft.azure.eventgrid.models.MapsGeofenceResultEventData;
+import com.microsoft.azure.eventgrid.models.MapsGeofenceExitedEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobCanceledEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobCancelingEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobErroredEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobFinishedEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputCanceledEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputCancelingEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputErroredEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputFinishedEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputProcessingEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputProgressEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputScheduledEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobOutputStateChangeEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobProcessingEventData;
+import com.microsoft.azure.eventgrid.models.MediaJobScheduledEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobStateChangeEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventConnectionRejectedEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventEncoderConnectedEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventEncoderDisconnectedEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventIncomingDataChunkDroppedEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventIncomingStreamReceivedEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventIncomingStreamsOutOfSyncEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventIngestHeartbeatEventData;
+import com.microsoft.azure.eventgrid.models.MediaLiveEventTrackDiscontinuityDetectedEventData;
 import com.microsoft.azure.eventgrid.models.ResourceActionCancelData;
 import com.microsoft.azure.eventgrid.models.ResourceActionFailureData;
 import com.microsoft.azure.eventgrid.models.ResourceActionSuccessData;
@@ -190,6 +220,33 @@ public class CustomizationTests {
         Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.url());
     }
 
+    // AppConfiguration events
+    @Test
+    public void consumeAppConfigurationKeyValueDeletedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("AppConfigurationKeyValueDeleted.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof AppConfigurationKeyValueDeletedEventData);
+        AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData)events[0].data();
+        Assert.assertEquals("key1", eventData.key());
+    }
+
+    @Test
+    public void consumeAppConfigurationKeyValueModifiedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("AppConfigurationKeyValueModified.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof AppConfigurationKeyValueModifiedEventData);
+        AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData)events[0].data();
+        Assert.assertEquals("key1", eventData.key());
+    }
+
     // ContainerRegistry events
     @Test
     public void consumeContainerRegistryImagePushedEvent() throws IOException {
@@ -215,6 +272,32 @@ public class CustomizationTests {
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryImageDeletedEventData);
         ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData)events[0].data();
         Assert.assertEquals("testactor", eventData.actor().name());
+    }
+
+    @Test
+    public void consumeContainerRegistryChartDeletedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("ContainerRegistryChartDeletedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof ContainerRegistryChartDeletedEventData);
+        ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData)events[0].data();
+        Assert.assertEquals("mediatype1", eventData.target().mediaType());
+    }
+
+    @Test
+    public void consumeContainerRegistryChartPushedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("ContainerRegistryChartPushedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof ContainerRegistryChartPushedEventData);
+        ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData)events[0].data();
+        Assert.assertEquals("mediatype1", eventData.target().mediaType());
     }
 
     // IoTHub Device events
@@ -270,6 +353,19 @@ public class CustomizationTests {
         Assert.assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.deviceConnectionStateEventInfo().sequenceNumber());
     }
 
+    @Test
+    public void consumeIoTHubDeviceTelemetryEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("IoTHubDeviceTelemetryEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof IotHubDeviceTelemetryEventData);
+        IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData)events[0].data();
+        Assert.assertEquals("Active", eventData.properties().get("Status"));
+    }
+
     // EventGrid events
     @Test
     public void ConsumeEventGridSubscriptionValidationEvent() throws IOException {
@@ -311,17 +407,44 @@ public class CustomizationTests {
         Assert.assertEquals("AzureBlockBlob", eventData.fileType());
     }
 
+    // Maps events
     @Test
-    public void consumeMediaServicesJobStateChangedEvent() throws IOException {
-        String jsonData = getTestPayloadFromFile("MediaServicesJobStateChangedEvent.json");
+    public void consumeMapsGeoFenceEnteredEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MapsGeofenceEnteredEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
         EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].data() instanceof MediaJobStateChangeEventData);
-        MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData)events[0].data();
-        Assert.assertEquals(JobState.FINISHED, eventData.state());
+        Assert.assertTrue(events[0].data() instanceof MapsGeofenceEnteredEventData);
+        MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData)events[0].data();
+        Assert.assertEquals(true, eventData.isEventPublished());
+    }
+
+    @Test
+    public void consumeMapsGeoFenceExitedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MapsGeofenceExitedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MapsGeofenceExitedEventData);
+        MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData)events[0].data();
+        Assert.assertEquals(true, eventData.isEventPublished());
+    }
+
+    @Test
+    public void consumeMapsGeoFenceResultEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("MapsGeofenceResultEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof MapsGeofenceResultEventData);
+        MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData)events[0].data();
+        Assert.assertEquals(true, eventData.isEventPublished());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events
