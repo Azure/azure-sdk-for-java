@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("DeliveryRuleAction")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "UrlRedirect", value = UrlRedirectAction.class),
+    @JsonSubTypes.Type(name = "ModifyRequestHeader", value = DeliveryRuleRequestHeaderAction.class),
+    @JsonSubTypes.Type(name = "ModifyResponseHeader", value = DeliveryRuleResponseHeaderAction.class),
     @JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class)
 })
 public class DeliveryRuleAction {

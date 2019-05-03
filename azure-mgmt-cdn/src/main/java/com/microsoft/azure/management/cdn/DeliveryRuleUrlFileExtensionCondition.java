@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the URL file extension condition for the delivery rule.
+ * Defines the UrlFileExtension condition for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("UrlFileExtension")
@@ -22,14 +22,14 @@ public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlFileExtensionConditionParameters parameters;
+    private UrlFileExtensionMatchConditionParameters parameters;
 
     /**
      * Get defines the parameters for the condition.
      *
      * @return the parameters value
      */
-    public UrlFileExtensionConditionParameters parameters() {
+    public UrlFileExtensionMatchConditionParameters parameters() {
         return this.parameters;
     }
 
@@ -39,7 +39,7 @@ public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition
      * @param parameters the parameters value to set
      * @return the DeliveryRuleUrlFileExtensionCondition object itself.
      */
-    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionConditionParameters parameters) {
+    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionMatchConditionParameters parameters) {
         this.parameters = parameters;
         return this;
     }
