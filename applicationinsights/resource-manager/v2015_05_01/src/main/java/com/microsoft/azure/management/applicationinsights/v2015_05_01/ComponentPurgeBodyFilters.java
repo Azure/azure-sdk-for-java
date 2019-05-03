@@ -23,7 +23,7 @@ public class ComponentPurgeBodyFilters {
     /**
      * A query operator to evaluate over the provided column and value(s).
      * Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=,
-     * between, and have the same behaviour as they would in a KQL query.
+     * between, and have the same behavior as they would in a KQL query.
      */
     @JsonProperty(value = "operator")
     private String operator;
@@ -63,7 +63,7 @@ public class ComponentPurgeBodyFilters {
     }
 
     /**
-     * Get a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behaviour as they would in a KQL query.
+     * Get a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a KQL query.
      *
      * @return the operator value
      */
@@ -72,7 +72,7 @@ public class ComponentPurgeBodyFilters {
     }
 
     /**
-     * Set a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behaviour as they would in a KQL query.
+     * Set a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a KQL query.
      *
      * @param operator the operator value to set
      * @return the ComponentPurgeBodyFilters object itself.
