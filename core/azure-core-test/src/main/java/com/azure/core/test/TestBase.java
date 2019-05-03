@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.test.utils.SdkContext;
+import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public abstract class TestBase {
     private final Logger logger = LoggerFactory.getLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
-    protected SdkContext sdkContext;
+    protected TestResourceNamer testResourceNamer;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -37,7 +37,7 @@ public abstract class TestBase {
     }
 
     /**
-     * Sets-up the {@link TestBase#sdkContext} and {@link TestBase#interceptorManager} before each test case is run.
+     * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is run.
      * Then calls its implementing class to perform any other set-up commands.
      */
     @Before
@@ -55,8 +55,7 @@ public abstract class TestBase {
             }
             Assert.fail();
         }
-
-        sdkContext = new SdkContext(testMode, interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
 
         beforeTest();
     }

@@ -198,4 +198,14 @@ public class InterceptorManager implements AutoCloseable {
 
         return new File(filePath);
     }
+
+    /**
+     * Add text replacement rule (regex as key, the replacement text as value) into {@link InterceptorManager#textReplacementRules}
+     *
+     * @param regex the pattern to locate the position of replacement
+     * @param replacement the replacement text
+     */
+    public void addTextReplacementRule(String regex, String replacement) {
+        textReplacementRules.put(regex, replacement);
+    }
 }
