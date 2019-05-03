@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
@@ -556,16 +557,16 @@ public class TestCommons {
         sentProperties.put("UUIDProperty", UUID.randomUUID());
         sentProperties.put("StringProperty", "string");
 
-//		These additional types are not supported in message properties by Azure Service Bus
-//		sentProperties.put("ArrayProperty", new Object[]{1, 2, 3, 4, 5});
-//		List<Integer> list = new ArrayList<>();
-//		list.add(10);
-//		list.add(11);
-//		sentProperties.put("ListProperty", list);
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("key1", 20);
-//		map.put("key2", "thirty");
-//		sentProperties.put("MapProperty", map);
+//        These additional types are not supported in message properties by Azure Service Bus
+//        sentProperties.put("ArrayProperty", new Object[]{1, 2, 3, 4, 5});
+//        List<Integer> list = new ArrayList<>();
+//        list.add(10);
+//        list.add(11);
+//        sentProperties.put("ListProperty", list);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("key1", 20);
+//        map.put("key2", "thirty");
+//        sentProperties.put("MapProperty", map);
 
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");

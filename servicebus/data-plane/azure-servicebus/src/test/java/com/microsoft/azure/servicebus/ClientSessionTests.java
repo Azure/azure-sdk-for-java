@@ -46,7 +46,7 @@ public abstract class ClientSessionTests extends Tests {
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 queueDescription.setRequiresSession(true);
                 managementClient.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     ClientSessionTests.entityNameCreatedForAllTests = entityName;
                     ClientSessionTests.receiveEntityPathForAllTest = entityName;
                 }

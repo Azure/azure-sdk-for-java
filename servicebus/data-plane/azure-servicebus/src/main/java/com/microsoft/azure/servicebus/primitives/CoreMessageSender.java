@@ -1,7 +1,6 @@
-/*
-; * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 import java.io.IOException;
@@ -49,8 +48,6 @@ import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /*
  * Abstracts all amqp related details
@@ -228,18 +225,15 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         this.linkClose = new CompletableFuture<Void>();
         this.sendLinkReopenFuture = null;
         this.isSendLoopRunning = false;
-        this.sendWork = new DispatchHandler()
-        {
+        this.sendWork = new DispatchHandler() {
             @Override
-            public void onEvent()
-            {
+            public void onEvent() {
                 CoreMessageSender.this.processSendWork();
             }
         };
     }
 
-    public String getSendPath()
-    {
+    public String getSendPath() {
         return this.sendPath;
     }
 
@@ -339,7 +333,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 int encodedSize = Util.encodeMessageToCustomArray(messageWrappedByData, bytes, byteArrayOffset, this.maxMessageSize - byteArrayOffset - 1);
                 byteArrayOffset = byteArrayOffset + encodedSize;
             }
-        } catch(PayloadSizeExceededException ex) {
+        } catch (PayloadSizeExceededException ex) {
             TRACE_LOGGER.error("Payload size of batch of messages exceeded limit", ex);
             final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
             sendTask.completeExceptionally(ex);

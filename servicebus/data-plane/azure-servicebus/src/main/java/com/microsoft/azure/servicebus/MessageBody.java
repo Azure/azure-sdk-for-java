@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.Serializable;
@@ -11,9 +14,9 @@ import java.util.List;
  */
 public class MessageBody implements Serializable{
     
-	private static final long serialVersionUID = 7215009530928988502L;
-	
-	private MessageBodyType bodyType;
+    private static final long serialVersionUID = 7215009530928988502L;
+
+    private MessageBodyType bodyType;
     private Object valueData;
     private List<List<Object>> sequenceData;
     private List<byte[]> binaryData;
@@ -27,17 +30,17 @@ public class MessageBody implements Serializable{
      */
     public static MessageBody fromValueData(Object value)
     {
-    	if(value == null)
-    	{
-    		throw new IllegalArgumentException("Value data is null.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.VALUE;
-    	body.valueData = value;
-    	body.sequenceData = null;
-    	body.binaryData = null;
-    	return body;
+        if(value == null)
+        {
+            throw new IllegalArgumentException("Value data is null.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.VALUE;
+        body.valueData = value;
+        body.sequenceData = null;
+        body.binaryData = null;
+        return body;
     }
     
     /**
@@ -48,16 +51,16 @@ public class MessageBody implements Serializable{
      */
     public static MessageBody fromSequenceData(List<List<Object>> sequenceData)
     {
-    	if(sequenceData == null || sequenceData.size() == 0 || sequenceData.size() > 1)
-    	{
-    		throw new IllegalArgumentException("Sequence data is null or has more than one collection in it.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.SEQUENCE;
-    	body.valueData = null;
-    	body.sequenceData = sequenceData;
-    	body.binaryData = null;
+        if(sequenceData == null || sequenceData.size() == 0 || sequenceData.size() > 1)
+        {
+            throw new IllegalArgumentException("Sequence data is null or has more than one collection in it.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.SEQUENCE;
+        body.valueData = null;
+        body.sequenceData = sequenceData;
+        body.binaryData = null;
         return body;
     }
     
@@ -69,16 +72,16 @@ public class MessageBody implements Serializable{
      */
     public static MessageBody fromBinaryData(List<byte[]> binaryData)
     {
-    	if(binaryData == null || binaryData.size() == 0 || binaryData.size() > 1)
-    	{
-    		throw new IllegalArgumentException("Binary data is null or has more than one byte array in it.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.BINARY;
-    	body.valueData = null;
-    	body.sequenceData = null;
-    	body.binaryData = binaryData;
+        if(binaryData == null || binaryData.size() == 0 || binaryData.size() > 1)
+        {
+            throw new IllegalArgumentException("Binary data is null or has more than one byte array in it.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.BINARY;
+        body.valueData = null;
+        body.sequenceData = null;
+        body.binaryData = binaryData;
         return body;
     }
     

@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -18,25 +17,25 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class ReceiverDisconnectedException extends ServiceBusException
 {
-	private static final long serialVersionUID = 3385140843418138213L;
+    private static final long serialVersionUID = 3385140843418138213L;
 
-	ReceiverDisconnectedException()
-	{
-		super(false);
-	}
+    ReceiverDisconnectedException()
+    {
+        super(false);
+    }
 
-	ReceiverDisconnectedException(final String message)
-	{
-		super(false, message);
-	}
+    ReceiverDisconnectedException(final String message)
+    {
+        super(false, message);
+    }
 
-	ReceiverDisconnectedException(final Throwable cause)
-	{
-		super(false, cause);
-	}
+    ReceiverDisconnectedException(final Throwable cause)
+    {
+        super(false, cause);
+    }
 
-	ReceiverDisconnectedException(final String message, final Throwable cause)
-	{
-		super(false, message, cause);
-	}
+    ReceiverDisconnectedException(final String message, final Throwable cause)
+    {
+        super(false, message, cause);
+    }
 }

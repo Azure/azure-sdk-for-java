@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 import java.util.ArrayList;
@@ -147,12 +150,12 @@ class RequestResponseLinkCache
                         TRACE_LOGGER.info("Created requestresponselink to '{}'", requestResponseLinkPath);
                         if(this.isClosed)
                         {
-                        	// Factory is likely closed. Close the link too
-                        	rrlink.closeAsync();
+                            // Factory is likely closed. Close the link too
+                            rrlink.closeAsync();
                         }
                         else
                         {
-                        	this.requestResponseLink = rrlink;
+                            this.requestResponseLink = rrlink;
                             this.completeWaiters(null);
                         }
                     }
@@ -171,20 +174,20 @@ class RequestResponseLinkCache
         
         private void completeWaiters(Throwable exception)
         {
-        	for(CompletableFuture<RequestResponseLink> waiter : this.waiters)
+            for(CompletableFuture<RequestResponseLink> waiter : this.waiters)
             {
-        		if(exception == null)
-        		{
-        			this.referenceCount++;
-        			AsyncUtil.completeFuture(waiter, this.requestResponseLink);
-        		}
-        		else
-        		{
-        			AsyncUtil.completeFutureExceptionally(waiter, exception);
-        		}
+                if(exception == null)
+                {
+                    this.referenceCount++;
+                    AsyncUtil.completeFuture(waiter, this.requestResponseLink);
+                }
+                else
+                {
+                    AsyncUtil.completeFutureExceptionally(waiter, exception);
+                }
             }
-        	
-        	this.waiters.clear();
+
+            this.waiters.clear();
         }
 
         public CompletableFuture<RequestResponseLink> acquireReferenceAsync()
@@ -224,16 +227,16 @@ class RequestResponseLinkCache
             this.isClosed = true;
             if(this.waiters.size() > 0)
             {
-            	this.completeWaiters(new ServiceBusException(false, "MessagingFactory closed."));
+                this.completeWaiters(new ServiceBusException(false, "MessagingFactory closed."));
             }
             
             if(this.requestResponseLink != null)
             {
-            	return this.requestResponseLink.closeAsync();
+                return this.requestResponseLink.closeAsync();
             }
             else
             {
-            	return CompletableFuture.completedFuture(null);
+                return CompletableFuture.completedFuture(null);
             }
         }
     }
