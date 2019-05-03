@@ -861,7 +861,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                                 TRACE_LOGGER.info("Closing send link to '{}'", CoreMessageSender.this.sendPath);
                                 CoreMessageSender.this.underlyingFactory.deregisterForConnectionError(CoreMessageSender.this.sendLink);
                                 CoreMessageSender.this.sendLink.close();
-                                if(waitForCloseCompletion) {
+                                if (waitForCloseCompletion) {
                                     CoreMessageSender.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageSender.this.operationTimeout));
                                 } else {
                                     AsyncUtil.completeFuture(CoreMessageSender.this.linkClose, null);
