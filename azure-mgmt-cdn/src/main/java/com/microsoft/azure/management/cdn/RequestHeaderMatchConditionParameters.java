@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines the parameters for generall match conditions.
+ * Defines the parameters for RequestHeader match conditions.
  */
 public class RequestHeaderMatchConditionParameters {
     /**
