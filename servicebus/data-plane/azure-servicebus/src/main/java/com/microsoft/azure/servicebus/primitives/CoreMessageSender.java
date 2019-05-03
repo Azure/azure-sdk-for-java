@@ -49,6 +49,8 @@ import com.microsoft.azure.servicebus.amqp.IAmqpSender;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /*
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
