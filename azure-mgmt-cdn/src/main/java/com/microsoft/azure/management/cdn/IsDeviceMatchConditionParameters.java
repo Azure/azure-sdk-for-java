@@ -50,7 +50,7 @@ public class IsDeviceMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public IsDeviceMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleIsDeviceConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleIsDeviceConditionParameters";
         operator = "Equal";
     }
 

@@ -53,7 +53,7 @@ public class UrlFileExtensionMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public UrlFileExtensionMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters";
     }
 
     /**

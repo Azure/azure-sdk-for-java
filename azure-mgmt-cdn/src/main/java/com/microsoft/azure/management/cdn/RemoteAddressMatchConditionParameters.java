@@ -54,7 +54,7 @@ public class RemoteAddressMatchConditionParameters {
      * @param matchValues match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match.
      */
     public RemoteAddressMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleRemoteAddressConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRemoteAddressConditionParameters";
     }
 
     /**

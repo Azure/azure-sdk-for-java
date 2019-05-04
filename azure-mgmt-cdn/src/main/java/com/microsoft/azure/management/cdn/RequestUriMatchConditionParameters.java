@@ -53,7 +53,7 @@ public class RequestUriMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public RequestUriMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleRequestUriConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestUriConditionParameters";
     }
 
     /**

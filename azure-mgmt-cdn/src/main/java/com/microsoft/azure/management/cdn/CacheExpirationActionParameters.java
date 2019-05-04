@@ -45,7 +45,7 @@ public class CacheExpirationActionParameters {
      * @param cacheBehavior caching behavior for the requests. Possible values include: 'BypassCache', 'Override', 'SetIfMissing'.
      */
     public CacheExpirationActionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters";
         cacheType = "All";
     }
 

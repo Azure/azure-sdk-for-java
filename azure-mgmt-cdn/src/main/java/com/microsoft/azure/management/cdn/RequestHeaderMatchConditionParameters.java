@@ -60,7 +60,7 @@ public class RequestHeaderMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public RequestHeaderMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleRequestHeaderConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestHeaderConditionParameters";
     }
 
     /**

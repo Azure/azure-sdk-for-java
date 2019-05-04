@@ -53,7 +53,7 @@ public class QueryStringMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public QueryStringMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleQueryStringConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleQueryStringConditionParameters";
     }
 
     /**

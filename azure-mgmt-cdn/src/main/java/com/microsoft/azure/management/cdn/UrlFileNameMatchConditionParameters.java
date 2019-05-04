@@ -53,7 +53,7 @@ public class UrlFileNameMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public UrlFileNameMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFilenameConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFilenameConditionParameters";
     }
 
     /**

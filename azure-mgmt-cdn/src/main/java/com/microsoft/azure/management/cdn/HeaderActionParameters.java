@@ -45,7 +45,7 @@ public class HeaderActionParameters {
      * @param headerName name of the header to modify.
      */
     public HeaderActionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleHeaderActionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleHeaderActionParameters";
     }
 
     /**

@@ -53,7 +53,7 @@ public class UrlPathMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public UrlPathMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleUrlPathMatchConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlPathMatchConditionParameters";
     }
 
     /**

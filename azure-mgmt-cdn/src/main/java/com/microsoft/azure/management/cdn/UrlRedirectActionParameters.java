@@ -71,7 +71,7 @@ public class UrlRedirectActionParameters {
      * @param redirectType the redirect type the rule will use when redirecting traffic. Possible values include: 'Moved', 'Found', 'TemporaryRedirect', 'PermanentRedirect'.
      */
     public UrlRedirectActionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRedirectActionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRedirectActionParameters";
     }
 
     /**

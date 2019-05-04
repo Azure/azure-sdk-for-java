@@ -60,7 +60,7 @@ public class PostArgsMatchConditionParameters {
      * @param matchValues the match value for the condition of the delivery rule.
      */
     public PostArgsMatchConditionParameters() {
-        odatatype = "Microsoft.Azure.Cdn.Models.DeliveryRulePostArgsConditionParameters";
+        odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRulePostArgsConditionParameters";
     }
 
     /**
