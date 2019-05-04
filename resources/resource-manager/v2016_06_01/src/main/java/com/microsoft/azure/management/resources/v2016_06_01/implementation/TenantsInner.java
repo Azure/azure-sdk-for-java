@@ -153,7 +153,7 @@ public class TenantsInner {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<TenantIdDescriptionInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -162,9 +162,9 @@ public class TenantsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<TenantIdDescriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<TenantIdDescriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -250,7 +250,7 @@ public class TenantsInner {
     /**
      * Gets the tenants for your account.
      *
-    ServiceResponse<PageImpl1<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -264,7 +264,7 @@ public class TenantsInner {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<TenantIdDescriptionInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -273,9 +273,9 @@ public class TenantsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<TenantIdDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<TenantIdDescriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class LocationImpl extends WrapperImpl<LocationInner> implements Location {
-    private final Manager manager;
+    private final ResourcesManager manager;
 
-    LocationImpl(LocationInner inner,  Manager manager) {
+    LocationImpl(LocationInner inner,  ResourcesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public ResourcesManager manager() {
         return this.manager;
     }
 
