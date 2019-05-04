@@ -29,7 +29,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>2.4.5-SNAPSHOT</version>
+    <version>2.4.5</version>
   </parent>
 
   <artifactId>azure-cosmosdb-examples</artifactId>
