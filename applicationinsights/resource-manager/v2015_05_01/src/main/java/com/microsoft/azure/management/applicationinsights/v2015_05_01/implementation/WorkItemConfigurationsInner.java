@@ -79,7 +79,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server
@@ -93,7 +93,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -106,7 +106,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkItemConfigurationInner&gt; object
@@ -123,7 +123,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkItemConfigurationInner&gt; object
@@ -170,7 +170,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -185,7 +185,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -199,7 +199,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -217,7 +217,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -264,7 +264,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -278,7 +278,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -291,7 +291,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkItemConfigurationInner object
@@ -308,7 +308,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkItemConfigurationInner object
@@ -331,8 +331,7 @@ public class WorkItemConfigurationsInner {
                 @Override
                 public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkItemConfigurationInner> result = getDefaultDelegate(response);
-                        ServiceResponse<WorkItemConfigurationInner> clientResponse = new ServiceResponse<WorkItemConfigurationInner>(result.body(), result.response());
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = getDefaultDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -349,9 +348,9 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -364,9 +363,9 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -378,9 +377,9 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -396,9 +395,9 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation

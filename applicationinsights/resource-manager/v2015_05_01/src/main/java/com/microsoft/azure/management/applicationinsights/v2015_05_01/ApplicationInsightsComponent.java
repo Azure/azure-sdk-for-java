@@ -118,7 +118,9 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
         interface WithApplicationType {
            /**
             * Specifies applicationType.
-            */
+            * @param applicationType Type of application being monitored. Possible values include: 'web', 'other'
+            * @return the next definition stage
+*/
             WithKind withApplicationType(ApplicationType applicationType);
         }
 
@@ -128,46 +130,56 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
         interface WithKind {
            /**
             * Specifies kind.
-            */
+            * @param kind The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone
+            * @return the next definition stage
+*/
             WithCreate withKind(String kind);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify FlowType.
+         * The stage of the applicationinsightscomponent definition allowing to specify FlowType.
          */
         interface WithFlowType {
             /**
              * Specifies flowType.
+             * @param flowType Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API. Possible values include: 'Bluefield'
+             * @return the next definition stage
              */
             WithCreate withFlowType(FlowType flowType);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify HockeyAppId.
+         * The stage of the applicationinsightscomponent definition allowing to specify HockeyAppId.
          */
         interface WithHockeyAppId {
             /**
              * Specifies hockeyAppId.
+             * @param hockeyAppId The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp
+             * @return the next definition stage
              */
             WithCreate withHockeyAppId(String hockeyAppId);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify RequestSource.
+         * The stage of the applicationinsightscomponent definition allowing to specify RequestSource.
          */
         interface WithRequestSource {
             /**
              * Specifies requestSource.
+             * @param requestSource Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'. Possible values include: 'rest'
+             * @return the next definition stage
              */
             WithCreate withRequestSource(RequestSource requestSource);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify SamplingPercentage.
+         * The stage of the applicationinsightscomponent definition allowing to specify SamplingPercentage.
          */
         interface WithSamplingPercentage {
             /**
              * Specifies samplingPercentage.
+             * @param samplingPercentage Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry
+             * @return the next definition stage
              */
             WithCreate withSamplingPercentage(Double samplingPercentage);
         }
@@ -191,41 +203,49 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
      */
     interface UpdateStages {
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify FlowType.
+         * The stage of the applicationinsightscomponent update allowing to specify FlowType.
          */
         interface WithFlowType {
             /**
              * Specifies flowType.
+             * @param flowType Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API. Possible values include: 'Bluefield'
+             * @return the next update stage
              */
             Update withFlowType(FlowType flowType);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify HockeyAppId.
+         * The stage of the applicationinsightscomponent update allowing to specify HockeyAppId.
          */
         interface WithHockeyAppId {
             /**
              * Specifies hockeyAppId.
+             * @param hockeyAppId The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp
+             * @return the next update stage
              */
             Update withHockeyAppId(String hockeyAppId);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify RequestSource.
+         * The stage of the applicationinsightscomponent update allowing to specify RequestSource.
          */
         interface WithRequestSource {
             /**
              * Specifies requestSource.
+             * @param requestSource Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'. Possible values include: 'rest'
+             * @return the next update stage
              */
             Update withRequestSource(RequestSource requestSource);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify SamplingPercentage.
+         * The stage of the applicationinsightscomponent update allowing to specify SamplingPercentage.
          */
         interface WithSamplingPercentage {
             /**
              * Specifies samplingPercentage.
+             * @param samplingPercentage Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry
+             * @return the next update stage
              */
             Update withSamplingPercentage(Double samplingPercentage);
         }
