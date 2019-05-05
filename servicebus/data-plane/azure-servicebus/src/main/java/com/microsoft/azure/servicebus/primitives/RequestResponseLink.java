@@ -861,18 +861,30 @@ class RequestResponseLink extends ClientEntity{
                             this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getRequest().getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024), exception), false);
                         }
 
-                        try {
-                            int sentMsgSize = this.sendLink.send(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem());
-                            assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
-                            delivery.settle();
-                            this.availableCredit.decrementAndGet();
-                            TRACE_LOGGER.debug("RequestResonseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
-                        } catch(Exception e) {
-                            TRACE_LOGGER.error("RequestResonseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
-                            this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
+                        if (encodedPair != null) {
+                            try {
+                                int sentMsgSize = this.sendLink.send(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem());
+                                assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
+                                delivery.settle();
+                                this.availableCredit.decrementAndGet();
+                                if (TRACE_LOGGER.isDebugEnabled()) {
+                                    TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
+                                }
+                            } catch (Exception e) {
+                                if (TRACE_LOGGER.isErrorEnabled()) {
+                                    TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
+                                }
+                                this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
+                            }
+                        } else {
+                            if (TRACE_LOGGER.isErrorEnabled()) {
+                                TRACE_LOGGER.error("NULL_POINTER exception: encodedPair in RequestResponseLink");
+                            }
                         }
                     } else {
-                        TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
+                        }
                     }
                 }
             } finally {
