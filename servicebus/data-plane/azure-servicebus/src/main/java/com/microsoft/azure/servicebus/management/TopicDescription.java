@@ -31,16 +31,14 @@ public class TopicDescription {
      *             Max length is 260 chars. Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    public TopicDescription(String path)
-    {
+    public TopicDescription(String path) {
         this.setPath(path);
     }
 
     /**
      * @return the path of the topic.
      */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
 
@@ -49,8 +47,7 @@ public class TopicDescription {
      * Max length is 260 chars. Cannot start or end with a slash.
      * Cannot have restricted characters: '@','?','#','*'
      */
-    private void setPath(String path)
-    {
+    private void setPath(String path) {
         EntityNameHelper.checkValidTopicName(path);
         this.path = path;
     }
@@ -106,10 +103,9 @@ public class TopicDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null &&
-                (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0 ||
-                        defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0))
-        {
+        if (defaultMessageTimeToLive != null
+            && (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+                || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MAX_ALLOWED_TTL,
@@ -132,16 +128,16 @@ public class TopicDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null &&
-                autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0)
-        {
+        if (autoDeleteOnIdle != null
+            && autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));
         }
 
         this.autoDeleteOnIdle = autoDeleteOnIdle;
-        if (this.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
+        if (this.autoDeleteOnIdle != null
+            && this.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.autoDeleteOnIdle = ManagementClientConstants.MAX_DURATION;
         }
     }
@@ -159,10 +155,9 @@ public class TopicDescription {
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
-        if (duplicationDetectionHistoryTimeWindow != null &&
-                (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0 ||
-                        duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0))
-        {
+        if (duplicationDetectionHistoryTimeWindow != null
+            && (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0
+                || duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION,
@@ -170,7 +165,8 @@ public class TopicDescription {
         }
 
         this.duplicationDetectionHistoryTimeWindow = duplicationDetectionHistoryTimeWindow;
-        if (this.duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
+        if (this.duplicationDetectionHistoryTimeWindow != null
+            && this.duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.duplicationDetectionHistoryTimeWindow = ManagementClientConstants.MAX_DURATION;
         }
     }
