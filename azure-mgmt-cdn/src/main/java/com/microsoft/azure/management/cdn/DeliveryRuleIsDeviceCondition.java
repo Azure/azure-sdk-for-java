@@ -13,23 +13,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the UrlFileExtension condition for the delivery rule.
+ * Defines the IsDevice condition for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("UrlFileExtension")
-public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition {
+@JsonTypeName("IsDevice")
+public class DeliveryRuleIsDeviceCondition extends DeliveryRuleCondition {
     /**
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlFileExtensionMatchConditionParameters parameters;
+    private IsDeviceMatchConditionParameters parameters;
 
     /**
      * Get defines the parameters for the condition.
      *
      * @return the parameters value
      */
-    public UrlFileExtensionMatchConditionParameters parameters() {
+    public IsDeviceMatchConditionParameters parameters() {
         return this.parameters;
     }
 
@@ -37,9 +37,9 @@ public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition
      * Set defines the parameters for the condition.
      *
      * @param parameters the parameters value to set
-     * @return the DeliveryRuleUrlFileExtensionCondition object itself.
+     * @return the DeliveryRuleIsDeviceCondition object itself.
      */
-    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionMatchConditionParameters parameters) {
+    public DeliveryRuleIsDeviceCondition withParameters(IsDeviceMatchConditionParameters parameters) {
         this.parameters = parameters;
         return this;
     }

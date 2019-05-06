@@ -13,33 +13,33 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines the UrlFileExtension condition for the delivery rule.
+ * Defines the url redirect action for the delivery rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("UrlFileExtension")
-public class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCondition {
+@JsonTypeName("UrlRedirect")
+public class UrlRedirectAction extends DeliveryRuleAction {
     /**
-     * Defines the parameters for the condition.
+     * Defines the parameters for the action.
      */
     @JsonProperty(value = "parameters", required = true)
-    private UrlFileExtensionMatchConditionParameters parameters;
+    private UrlRedirectActionParameters parameters;
 
     /**
-     * Get defines the parameters for the condition.
+     * Get defines the parameters for the action.
      *
      * @return the parameters value
      */
-    public UrlFileExtensionMatchConditionParameters parameters() {
+    public UrlRedirectActionParameters parameters() {
         return this.parameters;
     }
 
     /**
-     * Set defines the parameters for the condition.
+     * Set defines the parameters for the action.
      *
      * @param parameters the parameters value to set
-     * @return the DeliveryRuleUrlFileExtensionCondition object itself.
+     * @return the UrlRedirectAction object itself.
      */
-    public DeliveryRuleUrlFileExtensionCondition withParameters(UrlFileExtensionMatchConditionParameters parameters) {
+    public UrlRedirectAction withParameters(UrlRedirectActionParameters parameters) {
         this.parameters = parameters;
         return this;
     }
