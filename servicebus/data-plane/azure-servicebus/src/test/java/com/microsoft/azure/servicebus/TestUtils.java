@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -77,13 +78,11 @@ public class TestUtils extends TestBase {
         });
     }
 
-    public static String randomizeEntityName(String entityName)
-    {
+    public static String randomizeEntityName(String entityName) {
         return entityName + getRandomString();
     }
 
-    public static String getRandomString()
-    {
+    public static String getRandomString() {
         return UUID.randomUUID().toString();
     }
     
@@ -93,8 +92,7 @@ public class TestUtils extends TestBase {
      * will create one entity at the start, uses it for all test and deletes the entity at the end.
      * @return true if each test should create and delete its own entity. Else return false.
      */
-    public static boolean shouldCreateEntityForEveryTest()
-    {
+    public static boolean shouldCreateEntityForEveryTest() {
         return true;
     }
 }

@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.amqp.transport.*;
@@ -11,17 +10,17 @@ import org.apache.qpid.proton.amqp.transport.*;
  */
 public class AmqpException extends Exception
 {
-	private static final long serialVersionUID = -750417419234273714L;
-	private ErrorCondition errorCondition;
+    private static final long serialVersionUID = -750417419234273714L;
+    private ErrorCondition errorCondition;
 
-	public AmqpException(ErrorCondition errorCondition)
-	{
-		super(errorCondition.getDescription());
-		this.errorCondition = errorCondition;
-	}
+    public AmqpException(ErrorCondition errorCondition)
+    {
+        super(errorCondition.getDescription());
+        this.errorCondition = errorCondition;
+    }
 
-	public ErrorCondition getError()
-	{
-		return this.errorCondition;
-	}
+    public ErrorCondition getError()
+    {
+        return this.errorCondition;
+    }
 }

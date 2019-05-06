@@ -376,8 +376,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName("lbl", 8);
+        final String key = testResourceNamer.randomName(keyPrefix, 16);
+        final String label = testResourceNamer.randomName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
@@ -477,7 +477,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     public void listSettingsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -511,7 +511,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * specific fields.
      */
     public void listRevisions() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -663,7 +663,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     public void listRevisionsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -747,7 +747,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * scenario will return a setting when the etag provided does not match the one of the current setting.
      */
     public void getSettingWhenValueNotUpdated() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();

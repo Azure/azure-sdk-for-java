@@ -353,5 +353,10 @@
   <Match>
     <Package name="com.microsoft.azure.storage.blob"/>
     <Bug pattern="NM_CONFUSING"/>
+  <!--The public field already exists in the public API surface area-->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
+    <Field name="~(MAX_DURATION|NULL_TXN)"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
   </Match>
 </FindBugsFilter>

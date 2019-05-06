@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -22,6 +25,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ProxyConnectionHandler.class);
@@ -126,7 +131,7 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
         return proxyAuthorizationHeader;
     }
 
