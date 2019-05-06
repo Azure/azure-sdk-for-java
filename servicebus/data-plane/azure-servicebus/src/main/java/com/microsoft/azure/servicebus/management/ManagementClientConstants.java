@@ -16,10 +16,6 @@ public class ManagementClientConstants {
     static String ATOM_NS = "http://www.w3.org/2005/Atom";
     static String SB_NS = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
     static String XML_SCHEMA_INSTANCE_NS = "http://www.w3.org/2001/XMLSchema-instance";
-    static String XML_SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
-    static String ATOM_CONTENT_TYPE = "application/atom+xml";
-    static String API_VERSION = "2017-04";
-    static String API_VERSION_QUERY = "api-version=" + API_VERSION;
 
     static String ServiceBusSupplementartyAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
     static String ServiceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
@@ -38,8 +34,6 @@ public class ManagementClientConstants {
     // Limits to values
     static Duration MIN_ALLOWED_TTL = Duration.ofSeconds(1);
     static Duration MAX_ALLOWED_TTL = MAX_DURATION;
-    static Duration MIN_LOCK_DURATION = Duration.ofSeconds(5);
-    static Duration MAX_LOCK_DURATION = Duration.ofMinutes(5);
     static Duration MIN_ALLOWED_AUTODELETE_DURATION = Duration.ofMinutes(5);
     static Duration MAX_DUPLICATE_HISTORY_DURATION = Duration.ofDays(1);
     static Duration MIN_DUPLICATE_HISTORY_DURATION = Duration.ofSeconds(20);
