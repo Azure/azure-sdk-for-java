@@ -3,6 +3,8 @@
 
 package com.azure.keyvault.models;
 
+import com.azure.keyvault.SecretAsyncClient;
+import com.azure.keyvault.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
@@ -16,6 +18,9 @@ import java.util.Map;
 /**
  * SecretAttributes is the resource containing all the properties of the secret except its value.
  * It is managed by the Secret Service.
+ *
+ *  @see SecretClient
+ *  @see SecretAsyncClient
  */
 public class SecretAttributes {
 
@@ -316,7 +321,6 @@ public class SecretAttributes {
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
         unpackId((String) attributes.get("id"));
-
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {

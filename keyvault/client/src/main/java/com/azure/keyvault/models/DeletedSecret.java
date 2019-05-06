@@ -3,6 +3,8 @@
 
 package com.azure.keyvault.models;
 
+import com.azure.keyvault.SecretAsyncClient;
+import com.azure.keyvault.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -11,8 +13,11 @@ import java.time.ZoneOffset;
 /**
  *  Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretAttributes}.
  *  It is managed by Secret Service.
+ *
+ *  @see SecretClient
+ *  @see SecretAsyncClient
  */
-public class DeletedSecret extends SecretAttributes {
+public final class DeletedSecret extends SecretAttributes {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted

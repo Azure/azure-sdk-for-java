@@ -3,6 +3,8 @@
 
 package com.azure.keyvault.models;
 
+import com.azure.keyvault.SecretAsyncClient;
+import com.azure.keyvault.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,9 @@ import java.util.Map;
 /**
  *  Secret is the resource consisting of name, value and its attributes inherited from {@link SecretAttributes}.
  *  It is managed by Secret Service.
+ *
+ *  @see SecretClient
+ *  @see SecretAsyncClient
  */
 public class Secret extends SecretAttributes {
 

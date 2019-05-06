@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -145,6 +146,14 @@ public final class SecretClient extends ServiceClient {
      * Get the secret which represents {@link SecretAttributes secretAttributes} from the key vault. Returns the latest version of the secret,
      * if {@code secretAttributes.version} is not set. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the {@code secrets/get} permission.
+     *
+     * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
+     * the {@link List} containing {@link SecretAttributes secret attributes} as output excluding the include the value of the secret.
+     * This operation can then be used to get full secret with value from {@code secretAttributes}.</p>
+     * <pre>
+     * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse ->
+     *   System.out.println(String.format("Secret is returned with name %s and value %s",secretResponse.value().name(), secretResponse.value().value())));
+     * </pre>
      *
      * @param secretAttributes the {@link SecretAttributes} attributes of the secret being requested.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
@@ -342,6 +351,13 @@ public final class SecretClient extends ServiceClient {
      * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
      * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * secretClient.listDeletedSecrets().stream().forEach(deletedSecret ->
+     *   System.out.println(String.format("Deleted secret's recovery Id %s", deletedSecret.recoveryId())));
+     * </pre>
+     *
+     *
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public List<DeletedSecret> listDeletedSecrets() {
@@ -369,10 +385,9 @@ public final class SecretClient extends ServiceClient {
         return  service.getSecretVersions(vaultEndpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .flatMapMany(this::extractAndFetchSecrets).collectList().block();
     }
-
     /**
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listSecrets()}.
+     * {@link SecretAsyncClient#listSecrets()}.
      *
      * @param nextPageLink The {@link SecretAttributesPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link SecretAttributes} from the next page of results.
@@ -382,16 +397,12 @@ public final class SecretClient extends ServiceClient {
     }
 
     private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listSecretsNext(nextPageLink));
+        return extractAndFetch(page, this::listSecretsNext);
     }
 
     /**
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listDeletedSecrets()}.
+     * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
      * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link SecretAttributes} from the next page of results.
@@ -401,10 +412,15 @@ public final class SecretClient extends ServiceClient {
     }
 
     private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
+        return extractAndFetch(page, this::listDeletedSecretsNext);
+    }
+
+    //TODO: Extract this in azure-common ImplUtils and use from there
+    private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listDeletedSecretsNext(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
     }
 }
