@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public final class EventDataImpl implements EventData {
     private static final long serialVersionUID = -5631628195600014255L;
@@ -50,32 +51,45 @@ public final class EventDataImpl implements EventData {
         }
 
         if (amqpMessage.getProperties() != null) {
-            if (amqpMessage.getMessageId() != null)
+            if (amqpMessage.getMessageId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_MESSAGE_ID, amqpMessage.getMessageId());
-            if (amqpMessage.getUserId() != null)
+            }
+            if (amqpMessage.getUserId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_USER_ID, amqpMessage.getUserId());
-            if (amqpMessage.getAddress() != null)
+            }
+            if (amqpMessage.getAddress() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_TO, amqpMessage.getAddress());
-            if (amqpMessage.getSubject() != null)
+            }
+            if (amqpMessage.getSubject() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_SUBJECT, amqpMessage.getSubject());
-            if (amqpMessage.getReplyTo() != null)
+            }
+            if (amqpMessage.getReplyTo() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_REPLY_TO, amqpMessage.getReplyTo());
-            if (amqpMessage.getCorrelationId() != null)
+            }
+            if (amqpMessage.getCorrelationId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CORRELATION_ID, amqpMessage.getCorrelationId());
-            if (amqpMessage.getContentType() != null)
+            }
+            if (amqpMessage.getContentType() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE, amqpMessage.getContentType());
-            if (amqpMessage.getContentEncoding() != null)
+            }
+            if (amqpMessage.getContentEncoding() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING, amqpMessage.getContentEncoding());
-            if (amqpMessage.getProperties().getAbsoluteExpiryTime() != null)
+            }
+            if (amqpMessage.getProperties().getAbsoluteExpiryTime() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME, amqpMessage.getExpiryTime());
-            if (amqpMessage.getProperties().getCreationTime() != null)
+            }
+            if (amqpMessage.getProperties().getCreationTime() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CREATION_TIME, amqpMessage.getCreationTime());
-            if (amqpMessage.getGroupId() != null)
+            }
+            if (amqpMessage.getGroupId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_GROUP_ID, amqpMessage.getGroupId());
-            if (amqpMessage.getProperties().getGroupSequence() != null)
+            }
+            if (amqpMessage.getProperties().getGroupSequence() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_GROUP_SEQUENCE, amqpMessage.getGroupSequence());
-            if (amqpMessage.getReplyToGroupId() != null)
+            }
+            if (amqpMessage.getReplyToGroupId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID, amqpMessage.getReplyToGroupId());
+            }
         }
 
         this.systemProperties = new SystemProperties(receiveProperties);
@@ -132,8 +146,9 @@ public final class EventDataImpl implements EventData {
 
     public byte[] getBytes() {
 
-        if (this.bodyData == null)
+        if (this.bodyData == null) {
             return null;
+        }
 
         return this.bodyData.getArray();
     }
@@ -150,6 +165,10 @@ public final class EventDataImpl implements EventData {
         return this.systemProperties;
     }
 
+    public void setSystemProperties(EventData.SystemProperties props) {
+        this.systemProperties = props;
+    }
+
     // This is intended to be used while sending EventData - so EventData.SystemProperties will not be copied over to the AmqpMessage
     Message toAmqpMessage() {
         final Message amqpMessage = Proton.message();
@@ -163,7 +182,7 @@ public final class EventDataImpl implements EventData {
             for (Map.Entry<String, Object> systemProperty : this.systemProperties.entrySet()) {
                 final String propertyName = systemProperty.getKey();
                 if (!EventDataUtil.RESERVED_SYSTEM_PROPERTIES.contains(propertyName)) {
-                    if (AmqpConstants.RESERVED_PROPERTY_NAMES.contains(propertyName))
+                    if (AmqpConstants.RESERVED_PROPERTY_NAMES.contains(propertyName)) {
                         switch (propertyName) {
                             case AmqpConstants.AMQP_PROPERTY_MESSAGE_ID:
                                 amqpMessage.setMessageId(systemProperty.getValue());
@@ -207,7 +226,7 @@ public final class EventDataImpl implements EventData {
                             default:
                                 throw new RuntimeException("unreachable");
                         }
-                    else {
+                    } else {
                         final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null)
                                 ? new MessageAnnotations(new HashMap<>())
                                 : amqpMessage.getMessageAnnotations();
@@ -247,8 +266,9 @@ public final class EventDataImpl implements EventData {
         out.defaultWriteObject();
 
         out.writeInt(this.bodyData == null ? BODY_DATA_NULL : this.bodyData.getLength());
-        if (this.bodyData != null)
+        if (this.bodyData != null) {
             out.write(this.bodyData.getArray(), this.bodyData.getArrayOffset(), this.bodyData.getLength());
+        }
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -269,5 +289,23 @@ public final class EventDataImpl implements EventData {
                 this.getSystemProperties().getSequenceNumber(),
                 other.getSystemProperties().getSequenceNumber()
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EventDataImpl eventData = (EventDataImpl) o;
+        return Objects.equals(bodyData, eventData.bodyData)
+            && Objects.equals(amqpBody, eventData.amqpBody);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bodyData, amqpBody);
     }
 }

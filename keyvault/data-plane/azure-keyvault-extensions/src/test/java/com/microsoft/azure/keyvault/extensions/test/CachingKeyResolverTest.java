@@ -29,46 +29,51 @@ import org.mockito.stubbing.Answer;
 
 import java.util.concurrent.Executor;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CachingKeyResolverTest {
 
     @SuppressWarnings("unchecked")
     final ListenableFuture<IKey> ikeyAsync = mock(ListenableFuture.class);
-    final static String keyId = "https://test.vault.azure.net/keys/keyID/version";
-    final static String keyId2 = "https://test.vault.azure.net/keys/keyID2/version";
-    final static String keyId3 = "https://test.vault.azure.net/keys/keyID3/version";
-    final static String newerKeyId3 = "https://test.vault.azure.net/keys/keyID3/version2";
-    final static String unversionnedKeyId3 = "https://test.vault.azure.net/keys/keyID3";
-
+    static final String KEY_ID = "https://test.vault.azure.net/keys/keyID/version";
+    static final String KEY_ID_2 = "https://test.vault.azure.net/keys/keyID2/version";
+    static final String KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3/version";
+    static final String NEWER_KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3/version2";
+    static final String UNVERSIONNED_KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3";
 
     /*
      * Tests the capacity limit of CachingKeyResolver by adding more keys
      * than the cache limit and verifying that least recently used entity is evicted.
      */
     @Test
-    public void KeyVault_CapacityLimitOfCachingKeyResolver()
-    {
+    public void capacityLimitOfCachingKeyResolver() {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(2, mockedKeyResolver);
 
-        when(mockedKeyResolver.resolveKeyAsync(keyId)).thenReturn(ikeyAsync);
-        when(mockedKeyResolver.resolveKeyAsync(keyId2)).thenReturn(ikeyAsync);
-        when(mockedKeyResolver.resolveKeyAsync(keyId3)).thenReturn(ikeyAsync);
+        when(mockedKeyResolver.resolveKeyAsync(KEY_ID)).thenReturn(ikeyAsync);
+        when(mockedKeyResolver.resolveKeyAsync(KEY_ID_2)).thenReturn(ikeyAsync);
+        when(mockedKeyResolver.resolveKeyAsync(KEY_ID_3)).thenReturn(ikeyAsync);
 
-        resolver.resolveKeyAsync(keyId);
-        resolver.resolveKeyAsync(keyId2);
-        resolver.resolveKeyAsync(keyId3);
+        resolver.resolveKeyAsync(KEY_ID);
+        resolver.resolveKeyAsync(KEY_ID_2);
+        resolver.resolveKeyAsync(KEY_ID_3);
 
-        resolver.resolveKeyAsync(keyId2);
-        resolver.resolveKeyAsync(keyId3);
-        resolver.resolveKeyAsync(keyId);
-        resolver.resolveKeyAsync(keyId3);
+        resolver.resolveKeyAsync(KEY_ID_2);
+        resolver.resolveKeyAsync(KEY_ID_3);
+        resolver.resolveKeyAsync(KEY_ID);
+        resolver.resolveKeyAsync(KEY_ID_3);
 
-        verify(mockedKeyResolver, times(1)).resolveKeyAsync(keyId2);
-        verify(mockedKeyResolver, times(1)).resolveKeyAsync(keyId3);
-        verify(mockedKeyResolver, times(2)).resolveKeyAsync(keyId);
+        verify(mockedKeyResolver, times(1)).resolveKeyAsync(KEY_ID_2);
+        verify(mockedKeyResolver, times(1)).resolveKeyAsync(KEY_ID_3);
+        verify(mockedKeyResolver, times(2)).resolveKeyAsync(KEY_ID);
     }
 
     /*
@@ -76,42 +81,40 @@ public class CachingKeyResolverTest {
      * and validate that the failed entity is not added to the cache.
      */
     @Test
-    public void KeyVault_CachingKeyResolverThrows()
-    {
+    public void cachingKeyResolverThrows() {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(10, mockedKeyResolver);
 
         // First throw exception and for the second call return a value
-        when(mockedKeyResolver.resolveKeyAsync(keyId))
+        when(mockedKeyResolver.resolveKeyAsync(KEY_ID))
             .thenThrow(new RuntimeException("test"))
             .thenReturn(ikeyAsync);
 
         try {
-            resolver.resolveKeyAsync(keyId);
+            resolver.resolveKeyAsync(KEY_ID);
             fail("Should have thrown an exception.");
-        }
-        catch (UncheckedExecutionException e) {
+        } catch (UncheckedExecutionException e) {
             assertTrue("RuntimeException is expected.", e.getCause() instanceof RuntimeException);
         }
 
-        resolver.resolveKeyAsync(keyId);
-        resolver.resolveKeyAsync(keyId);
+        resolver.resolveKeyAsync(KEY_ID);
+        resolver.resolveKeyAsync(KEY_ID);
 
-        verify(mockedKeyResolver, times(2)).resolveKeyAsync(keyId);
+        verify(mockedKeyResolver, times(2)).resolveKeyAsync(KEY_ID);
     }
 
     /*
-     * Tests that CachingKeyResolver does not cache unversionned keys,
-     * but does cache the result versionned key
+     * Tests that CachingKeyResolver does not cache un-versioned keys,
+     * but does cache the result versioned key
      */
     @Test
-    public void KeyVault_CachingUnversionnedKey() throws Exception {
+    public void cachingUnversionnedKey() throws Exception {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(2, mockedKeyResolver);
 
         IKey key = mock(IKey.class);
 
-        when(mockedKeyResolver.resolveKeyAsync(unversionnedKeyId3)).thenReturn(ikeyAsync);
+        when(mockedKeyResolver.resolveKeyAsync(UNVERSIONNED_KEY_ID_3)).thenReturn(ikeyAsync);
         when(ikeyAsync.get()).thenReturn(key);
         doAnswer(new Answer() {
             @Override
@@ -120,32 +123,32 @@ public class CachingKeyResolverTest {
                 return null;
             }
         }).when(ikeyAsync).addListener(any(Runnable.class), any(Executor.class));
-        when(key.getKid()).thenReturn(keyId3);
+        when(key.getKid()).thenReturn(KEY_ID_3);
 
         /*
          * First resolve unversionned key
          */
-        ListenableFuture<IKey> result = resolver.resolveKeyAsync(unversionnedKeyId3);
-        assertEquals(result.get().getKid(), keyId3);
-        verify(mockedKeyResolver, times(1)).resolveKeyAsync(unversionnedKeyId3);
-        verify(mockedKeyResolver, times(0)).resolveKeyAsync(keyId3);
+        ListenableFuture<IKey> result = resolver.resolveKeyAsync(UNVERSIONNED_KEY_ID_3);
+        assertEquals(result.get().getKid(), KEY_ID_3);
+        verify(mockedKeyResolver, times(1)).resolveKeyAsync(UNVERSIONNED_KEY_ID_3);
+        verify(mockedKeyResolver, times(0)).resolveKeyAsync(KEY_ID_3);
 
         /*
          * Second resolve unversionned key, but the result should be a newer key
          */
-        when(key.getKid()).thenReturn(newerKeyId3);
-        result = resolver.resolveKeyAsync(unversionnedKeyId3);
-        assertEquals(result.get().getKid(), newerKeyId3);
-        verify(mockedKeyResolver, times(2)).resolveKeyAsync(unversionnedKeyId3);
-        verify(mockedKeyResolver, times(0)).resolveKeyAsync(keyId3);
-        verify(mockedKeyResolver, times(0)).resolveKeyAsync(newerKeyId3);
+        when(key.getKid()).thenReturn(NEWER_KEY_ID_3);
+        result = resolver.resolveKeyAsync(UNVERSIONNED_KEY_ID_3);
+        assertEquals(result.get().getKid(), NEWER_KEY_ID_3);
+        verify(mockedKeyResolver, times(2)).resolveKeyAsync(UNVERSIONNED_KEY_ID_3);
+        verify(mockedKeyResolver, times(0)).resolveKeyAsync(KEY_ID_3);
+        verify(mockedKeyResolver, times(0)).resolveKeyAsync(NEWER_KEY_ID_3);
 
         /*
          * Check that versionned keys were added to the cache, and do not get resolved again
          */
-        resolver.resolveKeyAsync(keyId3);
-        resolver.resolveKeyAsync(newerKeyId3);
-        verify(mockedKeyResolver, times(0)).resolveKeyAsync(keyId3);
-        verify(mockedKeyResolver, times(0)).resolveKeyAsync(newerKeyId3);
+        resolver.resolveKeyAsync(KEY_ID_3);
+        resolver.resolveKeyAsync(NEWER_KEY_ID_3);
+        verify(mockedKeyResolver, times(0)).resolveKeyAsync(KEY_ID_3);
+        verify(mockedKeyResolver, times(0)).resolveKeyAsync(NEWER_KEY_ID_3);
     }
 }

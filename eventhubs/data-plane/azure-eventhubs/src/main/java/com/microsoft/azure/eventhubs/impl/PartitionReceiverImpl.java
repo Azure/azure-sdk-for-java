@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -55,7 +56,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                                   final boolean isEpochReceiver,
                                   final ReceiverOptions receiverOptions,
                                   final ScheduledExecutorService executor) {
-        super("PartitionReceiverImpl".concat(StringUtil.getRandomString()), null, executor);
+        super(StringUtil.getRandomString("PR").concat(StringUtil.SEPARATOR + factory.getClientId()), null, executor);
 
         this.underlyingFactory = factory;
         this.eventHubName = eventHubName;
@@ -104,7 +105,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
     private CompletableFuture<Void> createInternalReceiver() {
         return MessageReceiver.create(this.underlyingFactory,
                 this.getClientId().concat("-InternalReceiver"),
-                String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
+                String.format(Locale.US, "%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
                 this.receiverOptions.getPrefetchCount(), this)
                 .thenAcceptAsync(new Consumer<MessageReceiver>() {
                     public void accept(MessageReceiver r) {
@@ -146,8 +147,9 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
             @Override
             public Iterable<EventData> apply(Collection<Message> amqpMessages) {
                 PassByRef<MessageWrapper> lastMessageRef = null;
-                if (PartitionReceiverImpl.this.receiverOptions != null && PartitionReceiverImpl.this.receiverOptions.getReceiverRuntimeMetricEnabled())
+                if (PartitionReceiverImpl.this.receiverOptions != null && PartitionReceiverImpl.this.receiverOptions.getReceiverRuntimeMetricEnabled()) {
                     lastMessageRef = new PassByRef<>();
+                }
 
                 final Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
 
@@ -181,10 +183,10 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                     return this.receivePump.stop();
                 }
             } else {
-                if (this.receivePump != null && this.receivePump.isRunning())
+                if (this.receivePump != null && this.receivePump.isRunning()) {
                     throw new IllegalArgumentException(
-                            "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
-
+                        "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
+                }
                 this.receivePump = new ReceivePump(
                         this.eventHubName,
                         this.consumerGroupName,
@@ -247,7 +249,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
             } else {
                 logReceivePath = "receiverPath[" + this.internalReceiver.getReceivePath() + "]";
             }
-            TRACE_LOGGER.info(String.format("%s, action[createReceiveLink], %s", logReceivePath, this.eventPosition));
+            TRACE_LOGGER.info(String.format(Locale.US, "%s, action[createReceiveLink], %s", logReceivePath, this.eventPosition));
         }
 
         return Collections.singletonMap(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER, expression));

@@ -8,52 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
  */
-public enum ContentKeyPolicyPlayReadyUnknownOutputPassingOption {
-    /** Represents a ContentKeyPolicyPlayReadyUnknownOutputPassingOption that is unavailable in current API version. */
-    UNKNOWN("Unknown"),
+public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption extends ExpandableStringEnum<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> {
+    /** Static value Unknown for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption UNKNOWN = fromString("Unknown");
 
-    /** Passing the video portion of protected content to an Unknown Output is not allowed. */
-    NOT_ALLOWED("NotAllowed"),
+    /** Static value NotAllowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption NOT_ALLOWED = fromString("NotAllowed");
 
-    /** Passing the video portion of protected content to an Unknown Output is allowed. */
-    ALLOWED("Allowed"),
+    /** Static value Allowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED = fromString("Allowed");
 
-    /** Passing the video portion of protected content to an Unknown Output is allowed but with constrained resolution. */
-    ALLOWED_WITH_VIDEO_CONSTRICTION("AllowedWithVideoConstriction");
+    /** Static value AllowedWithVideoConstriction for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION = fromString("AllowedWithVideoConstriction");
 
-    /** The actual serialized value for a ContentKeyPolicyPlayReadyUnknownOutputPassingOption instance. */
-    private String value;
-
-    ContentKeyPolicyPlayReadyUnknownOutputPassingOption(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContentKeyPolicyPlayReadyUnknownOutputPassingOption from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContentKeyPolicyPlayReadyUnknownOutputPassingOption
+     */
+    @JsonCreator
+    public static ContentKeyPolicyPlayReadyUnknownOutputPassingOption fromString(String name) {
+        return fromString(name, ContentKeyPolicyPlayReadyUnknownOutputPassingOption.class);
     }
 
     /**
-     * Parses a serialized value to a ContentKeyPolicyPlayReadyUnknownOutputPassingOption instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContentKeyPolicyPlayReadyUnknownOutputPassingOption object, or null if unable to parse.
+     * @return known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values
      */
-    @JsonCreator
-    public static ContentKeyPolicyPlayReadyUnknownOutputPassingOption fromString(String value) {
-        ContentKeyPolicyPlayReadyUnknownOutputPassingOption[] items = ContentKeyPolicyPlayReadyUnknownOutputPassingOption.values();
-        for (ContentKeyPolicyPlayReadyUnknownOutputPassingOption item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> values() {
+        return values(ContentKeyPolicyPlayReadyUnknownOutputPassingOption.class);
     }
 }

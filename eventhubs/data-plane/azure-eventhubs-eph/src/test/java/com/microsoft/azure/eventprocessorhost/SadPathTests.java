@@ -24,7 +24,7 @@ public class SadPathTests extends TestBase {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (EventHubException e) {
-          	TestBase.logInfo("Got expected EventHubException");
+            TestBase.logInfo("Got expected EventHubException");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -42,7 +42,7 @@ public class SadPathTests extends TestBase {
         } catch (ExecutionException e) {
             Throwable inner = e.getCause();
             if ((inner != null) && (inner instanceof IllegalEntityException)) {
-            	TestBase.logInfo("Got expected IllegalEntityException");
+                TestBase.logInfo("Got expected IllegalEntityException");
             } else {
                 throw e;
             }
@@ -50,7 +50,7 @@ public class SadPathTests extends TestBase {
             testFinish(settings, NO_CHECKS);
         }
     }
-    
+
     // Turned off -- we cannot detect no such consumer group at register time
     //@Test
     public void noSuchConsumerGroupTest() throws Exception {
@@ -63,7 +63,7 @@ public class SadPathTests extends TestBase {
         } catch (ExecutionException e) {
             Throwable inner = e.getCause();
             if ((inner != null) && (inner instanceof IllegalEntityException)) {
-            	TestBase.logInfo("Got expected IllegalEntityException");
+                TestBase.logInfo("Got expected IllegalEntityException");
             } else {
                 throw e;
             }
@@ -84,7 +84,7 @@ public class SadPathTests extends TestBase {
             fail("No exception occurred");
         } catch (IllegalStateException e) {
             if ((e.getMessage() != null) && (e.getMessage().compareTo("Register has already been called on this EventProcessorHost") == 0)) {
-            	TestBase.logInfo("Got expected exception");
+                TestBase.logInfo("Got expected exception");
             } else {
                 fail("Got IllegalStateException but text is wrong");
             }
@@ -108,7 +108,7 @@ public class SadPathTests extends TestBase {
             fail("No exception occurred");
         } catch (IllegalStateException e) {
             if ((e.getMessage() != null) && (e.getMessage().compareTo("Register cannot be called on an EventProcessorHost after unregister. Please create a new EventProcessorHost instance.") == 0)) {
-            	TestBase.logInfo("Got expected exception");
+                TestBase.logInfo("Got expected exception");
             } else {
                 fail("Got IllegalStateException but text is wrong");
             }
@@ -132,7 +132,7 @@ public class SadPathTests extends TestBase {
         } catch (IllegalArgumentException e) {
             String message = e.getMessage();
             if ((message != null) && message.startsWith("EventHub names must conform to the following rules")) {
-            	TestBase.logInfo("Got expected IllegalArgumentException");
+                TestBase.logInfo("Got expected IllegalArgumentException");
             } else {
                 throw e;
             }

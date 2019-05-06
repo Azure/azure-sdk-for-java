@@ -1,17 +1,6 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
@@ -24,7 +13,7 @@ import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
 
 /**
@@ -202,10 +191,10 @@ public final class ContainerURL extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ContainerCreateResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
+        metadata = metadata == null ? new Metadata() : metadata;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().createWithRestResponseAsync(
                 context, null, metadata, accessType, null));
 
     }
@@ -246,7 +235,7 @@ public final class ContainerURL extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ContainerDeleteResponse> delete(ContainerAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -255,7 +244,7 @@ public final class ContainerURL extends StorageURL {
             throw new UnsupportedOperationException("ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .deleteWithRestResponseAsync(context, null, null, accessConditions.leaseAccessConditions(),
                         accessConditions.modifiedAccessConditions()));
     }
@@ -298,7 +287,7 @@ public final class ContainerURL extends StorageURL {
             Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .getPropertiesWithRestResponseAsync(context, null, null, leaseAccessConditions));
     }
 
@@ -342,8 +331,8 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerSetMetadataResponse> setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions()) ||
                 accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
@@ -353,7 +342,7 @@ public final class ContainerURL extends StorageURL {
                     "If-Modified-Since is the only HTTP access condition supported for this API");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .setMetadataWithRestResponseAsync(context, null, metadata, null,
                         accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
@@ -398,7 +387,7 @@ public final class ContainerURL extends StorageURL {
             Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
                 context, null, null, leaseAccessConditions));
     }
 
@@ -457,7 +446,7 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -485,7 +474,7 @@ public final class ContainerURL extends StorageURL {
             }
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .setAccessPolicyWithRestResponseAsync(context, identifiers, null, accessType, null,
                         accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
@@ -560,7 +549,7 @@ public final class ContainerURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
                 context, null, duration, proposedID, null, modifiedAccessConditions));
     }
 
@@ -614,7 +603,7 @@ public final class ContainerURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
                 context, leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -668,7 +657,7 @@ public final class ContainerURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
                 context, leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -723,7 +712,7 @@ public final class ContainerURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
                 context, null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
@@ -781,7 +770,7 @@ public final class ContainerURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
                 context, leaseID, proposedID, null, null, modifiedAccessConditions));
     }
 
@@ -839,10 +828,10 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
             Context context) {
-        options = options == null ? ListBlobsOptions.DEFAULT : options;
+        options = options == null ? new ListBlobsOptions() : options;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .listBlobFlatSegmentWithRestResponseAsync(context,
                         options.prefix(), marker, options.maxResults(),
                         options.details().toList(), null, null));
@@ -911,13 +900,13 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options, Context context) {
-        options = options == null ? ListBlobsOptions.DEFAULT : options;
+        options = options == null ? new ListBlobsOptions() : options;
         if (options.details().snapshots()) {
             throw new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported.");
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+        return postProcessResponse(this.storageClient.generatedContainers()
                 .listBlobHierarchySegmentWithRestResponseAsync(
                         context, delimiter, options.prefix(), marker, options.maxResults(),
                         options.details().toList(), null, null));
@@ -957,7 +946,7 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainerGetAccountInfoResponse> getAccountInfo(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedContainers().getAccountInfoWithRestResponseAsync(context));
     }
 }

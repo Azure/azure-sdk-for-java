@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
@@ -19,10 +7,13 @@ import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
+import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.security.MessageDigest
+import java.sql.Blob
 
 class PageBlobAPITest extends APISpec {
     PageBlobURL bu
@@ -303,6 +294,237 @@ class PageBlobAPITest extends APISpec {
 
         then:
         notThrown(RuntimeException)
+    }
+
+    def "Upload page from URL min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def destURL = cu.createPageBlobURL(generateBlobName())
+        destURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        destURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
+                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+
+        when:
+        PageBlobUploadPagesFromURLResponse response = bu.uploadPagesFromURL(pageRange, destURL.toURL(), null).blockingGet()
+
+        then:
+        response.statusCode() == 201
+        validateBasicHeaders(response.headers())
+    }
+
+    def "Upload page from URL range"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+
+        def data = getRandomData(PageBlobURL.PAGE_BYTES * 4).array()
+
+        def sourceURL = cu.createPageBlobURL(generateBlobName())
+        sourceURL.create(PageBlobURL.PAGE_BYTES * 4).blockingGet()
+        sourceURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 4 - 1),
+            Flowable.just(ByteBuffer.wrap(data))).blockingGet()
+
+        def destURL = cu.createPageBlobURL(generateBlobName())
+        destURL.create(PageBlobURL.PAGE_BYTES * 2).blockingGet()
+
+        when:
+        destURL.uploadPagesFromURL(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 2 - 1),
+                sourceURL.toURL(), PageBlobURL.PAGE_BYTES * 2).blockingGet()
+
+        then:
+        ByteBuffer body = FlowableUtil.collectBytesInBuffer(destURL.download().blockingGet().body(null)).blockingGet()
+        body.array() == Arrays.copyOfRange(data, PageBlobURL.PAGE_BYTES * 2, PageBlobURL.PAGE_BYTES * 4)
+    }
+
+    @Unroll
+    def "Upload page from URL IA"() {
+        when:
+        bu.uploadPagesFromURL(range, bu.toURL(), sourceOffset).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        sourceOffset                                                     | range
+        (Long)PageBlobURL.PAGE_BYTES                                     | null
+    }
+
+    def "Upload page from URL MD5"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def destURL = cu.createPageBlobURL(generateBlobName())
+        destURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def data = getRandomData(PageBlobURL.PAGE_BYTES).array()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        bu.uploadPages(pageRange, Flowable.just(ByteBuffer.wrap(data))).blockingGet()
+
+        when:
+        destURL.uploadPagesFromURL(pageRange, bu.toURL(), null, MessageDigest.getInstance("MD5").digest(data),
+            null, null, null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Upload page from URL MD5 fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def destURL = cu.createPageBlobURL(generateBlobName())
+        destURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        bu.uploadPages(pageRange, Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+
+        when:
+        destURL.uploadPagesFromURL(pageRange, bu.toURL(), null,
+                MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Upload page from URL context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobUploadPagesFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        def pageRange = new PageRange().withStart(0).withEnd(511)
+        bu.uploadPagesFromURL(pageRange, bu.toURL(), null, null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+    @Unroll
+    def  "Upload page from URL destination AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def sourceURL = cu.createPageBlobURL(generateBlobName())
+        sourceURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        sourceURL.uploadPages(pageRange, Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        def pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
+
+        expect:
+        bu.uploadPagesFromURL(pageRange, sourceURL.toURL(), null, null, pac, null, null).blockingGet().statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null     | null       | null         | null        | null            | null             | null              | null
+        oldDate  | null       | null         | null        | null            | null             | null              | null
+        null     | newDate    | null         | null        | null            | null             | null              | null
+        null     | null       | receivedEtag | null        | null            | null             | null              | null
+        null     | null       | null         | garbageEtag | null            | null             | null              | null
+        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
+        null     | null       | null         | null        | null            | 5                | null              | null
+        null     | null       | null         | null        | null            | null             | 3                 | null
+        null     | null       | null         | null        | null            | null             | null              | 0
+    }
+
+    @Unroll
+    def "Upload page from URL destination AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+
+        def sourceURL = cu.createPageBlobURL(generateBlobName())
+        sourceURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        sourceURL.uploadPages(pageRange, Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        def pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
+
+        when:
+        bu.uploadPagesFromURL(pageRange, sourceURL.toURL(), null, null, pac, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        newDate  | null       | null        | null         | null           | null             | null              | null
+        null     | oldDate    | null        | null         | null           | null             | null              | null
+        null     | null       | garbageEtag | null         | null           | null             | null              | null
+        null     | null       | null        | receivedEtag | null           | null             | null              | null
+        null     | null       | null        | null         | garbageLeaseID | null             | null              | null
+        null     | null       | null        | null         | null           | -1               | null              | null
+        null     | null       | null        | null         | null           | null             | -1                | null
+        null     | null       | null        | null         | null           | null             | null              | 100
+    }
+
+    @Unroll
+    def "Upload page from URL source AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def sourceURL = cu.createPageBlobURL(generateBlobName())
+        sourceURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        sourceURL.uploadPages(pageRange, Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+
+        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
+        def smac = new SourceModifiedAccessConditions()
+            .withSourceIfModifiedSince(sourceIfModifiedSince)
+            .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .withSourceIfMatch(sourceIfMatch)
+            .withSourceIfNoneMatch(sourceIfNoneMatch)
+
+        expect:
+        bu.uploadPagesFromURL(pageRange, sourceURL.toURL(), null, null, null, smac, null).blockingGet().statusCode() == 201
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        null                  | null                    | null          | null
+        oldDate               | null                    | null          | null
+        null                  | newDate                 | null          | null
+        null                  | null                    | receivedEtag  | null
+        null                  | null                    | null          | garbageEtag
+    }
+
+    @Unroll
+    def "Upload page from URL source AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def sourceURL = cu.createPageBlobURL(generateBlobName())
+        sourceURL.create(PageBlobURL.PAGE_BYTES).blockingGet()
+        def pageRange = new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1)
+        sourceURL.uploadPages(pageRange, Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))).blockingGet()
+
+        sourceIfNoneMatch = setupBlobMatchCondition(sourceURL, sourceIfNoneMatch)
+        def smac = new SourceModifiedAccessConditions()
+                .withSourceIfModifiedSince(sourceIfModifiedSince)
+                .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+                .withSourceIfMatch(sourceIfMatch)
+                .withSourceIfNoneMatch(sourceIfNoneMatch)
+
+        when:
+        bu.uploadPagesFromURL(pageRange, sourceURL.toURL(), null, null, null, smac, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        newDate               | null                    | null          | null
+        null                  | oldDate                 | null          | null
+        null                  | null                    | garbageEtag   | null
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Clear page"() {
