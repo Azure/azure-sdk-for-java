@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
+import com.microsoft.azure.management.kusto.v2019_01_21.Reason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,6 +33,13 @@ public class CheckNameResultInner {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /**
+     * Message providing the reason why the given name is invalid. Possible
+     * values include: 'Invalid', 'AlreadyExists'.
+     */
+    @JsonProperty(value = "reason")
+    private Reason reason;
 
     /**
      * Get specifies a Boolean value that indicates if the name is available.
@@ -90,6 +98,26 @@ public class CheckNameResultInner {
      */
     public CheckNameResultInner withMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Get message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'.
+     *
+     * @return the reason value
+     */
+    public Reason reason() {
+        return this.reason;
+    }
+
+    /**
+     * Set message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'.
+     *
+     * @param reason the reason value to set
+     * @return the CheckNameResultInner object itself.
+     */
+    public CheckNameResultInner withReason(Reason reason) {
+        this.reason = reason;
         return this;
     }
 

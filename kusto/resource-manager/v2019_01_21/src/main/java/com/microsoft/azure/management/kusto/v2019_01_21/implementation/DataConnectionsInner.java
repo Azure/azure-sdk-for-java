@@ -311,9 +311,9 @@ public class DataConnectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CheckNameAvailabilityResultInner object if successful.
+     * @return the CheckNameResultInner object if successful.
      */
-    public CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName, String name) {
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName, String name) {
         return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name).toBlocking().single().body();
     }
 
@@ -328,7 +328,7 @@ public class DataConnectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name, final ServiceCallback<CheckNameAvailabilityResultInner> serviceCallback) {
+    public ServiceFuture<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name, final ServiceCallback<CheckNameResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name), serviceCallback);
     }
 
@@ -340,12 +340,12 @@ public class DataConnectionsInner {
      * @param databaseName The name of the database in the Kusto cluster.
      * @param name Data Connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameAvailabilityResultInner object
+     * @return the observable to the CheckNameResultInner object
      */
-    public Observable<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name).map(new Func1<ServiceResponse<CheckNameAvailabilityResultInner>, CheckNameAvailabilityResultInner>() {
+    public Observable<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name).map(new Func1<ServiceResponse<CheckNameResultInner>, CheckNameResultInner>() {
             @Override
-            public CheckNameAvailabilityResultInner call(ServiceResponse<CheckNameAvailabilityResultInner> response) {
+            public CheckNameResultInner call(ServiceResponse<CheckNameResultInner> response) {
                 return response.body();
             }
         });
@@ -359,9 +359,9 @@ public class DataConnectionsInner {
      * @param databaseName The name of the database in the Kusto cluster.
      * @param name Data Connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameAvailabilityResultInner object
+     * @return the observable to the CheckNameResultInner object
      */
-    public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
+    public Observable<ServiceResponse<CheckNameResultInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -383,11 +383,11 @@ public class DataConnectionsInner {
         DataConnectionCheckNameRequest dataConnectionName = new DataConnectionCheckNameRequest();
         dataConnectionName.withName(name);
         return service.checkNameAvailability(resourceGroupName, clusterName, databaseName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), dataConnectionName, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<CheckNameResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<CheckNameAvailabilityResultInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        ServiceResponse<CheckNameResultInner> clientResponse = checkNameAvailabilityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -396,9 +396,9 @@ public class DataConnectionsInner {
             });
     }
 
-    private ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CheckNameAvailabilityResultInner>() { }.getType())
+    private ServiceResponse<CheckNameResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

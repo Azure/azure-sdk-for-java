@@ -32,4 +32,9 @@ public interface CheckNameResult extends HasInner<CheckNameResultInner>, HasMana
      */
     Boolean nameAvailable();
 
+    /**
+     * @return the reason value.
+     */
+    Reason reason();
+
 }

@@ -75,6 +75,6 @@ public interface DataConnections extends SupportsCreating<DataConnection.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name);
+    Observable<CheckNameResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name);
 
 }
