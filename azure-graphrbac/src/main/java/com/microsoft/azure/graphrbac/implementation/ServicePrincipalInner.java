@@ -25,7 +25,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
      * whether or not the service principal account is enabled.
      */
     @JsonProperty(value = "accountEnabled")
-    private String accountEnabled;
+    private Boolean accountEnabled;
 
     /**
      * alternative names.
@@ -159,7 +159,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
      *
      * @return the accountEnabled value
      */
-    public String accountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -169,7 +169,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
      * @param accountEnabled the accountEnabled value to set
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner withAccountEnabled(String accountEnabled) {
+    public ServicePrincipalInner withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
