@@ -22,7 +22,7 @@ public class ServicePrincipalBase {
      * whether or not the service principal account is enabled.
      */
     @JsonProperty(value = "accountEnabled")
-    private String accountEnabled;
+    private Boolean accountEnabled;
 
     /**
      * Specifies whether an AppRoleAssignment to a user or group is required
@@ -62,7 +62,7 @@ public class ServicePrincipalBase {
      *
      * @return the accountEnabled value
      */
-    public String accountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -72,7 +72,7 @@ public class ServicePrincipalBase {
      * @param accountEnabled the accountEnabled value to set
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase withAccountEnabled(String accountEnabled) {
+    public ServicePrincipalBase withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
