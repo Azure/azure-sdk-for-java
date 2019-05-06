@@ -21,13 +21,13 @@ public class ManagementClientConstants {
     static String API_VERSION = "2017-04";
     static String API_VERSION_QUERY = "api-version=" + API_VERSION;
 
-    static String ServiceBusSupplementartyAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
-    static String ServiceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
-    static String HttpErrorSubCodeFormatString = "SubCode=%s";
-    static String ConflictOperationInProgressSubCode =
-        String.format(HttpErrorSubCodeFormatString, ExceptionErrorCodes.ConflictOperationInProgress);
-    static String ForbiddenInvalidOperationSubCode =
-        String.format(HttpErrorSubCodeFormatString, ExceptionErrorCodes.ForbiddenInvalidOperation);
+    static String serviceBusSupplementartyAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
+    static String serviceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
+    static String httpErrorSubCodeFormatString = "SubCode=%s";
+    static String conflictOperationInProgressSubCode =
+        String.format(httpErrorSubCodeFormatString, ExceptionErrorCodes.conflictOperationInProgress);
+    static String forbiddenInvalidOperationSubCode =
+        String.format(httpErrorSubCodeFormatString, ExceptionErrorCodes.forbiddenInvalidOperation);
 
     // Defaults
     static Duration DEFAULT_HISTORY_DEDUP_WINDOW = Duration.ofMinutes(1);
@@ -46,13 +46,13 @@ public class ManagementClientConstants {
     static int MIN_ALLOWED_MAX_DELIVERYCOUNT = 1;
     static int MAX_USERMETADATA_LENGTH = 1024;
 
-    static char[] InvalidEntityPathCharacters = { '@', '?', '#', '*' };
+    static char[] invalidEntityPathCharacters = { '@', '?', '#', '*' };
 
     // Authorization constants
-    static int SupportedClaimsCount = 3;
+    static int supportedClaimsCount = 3;
 
     static class ExceptionErrorCodes {
-        public static String ConflictOperationInProgress = "40901";
-        public static String ForbiddenInvalidOperation = "40301";
+        public static String conflictOperationInProgress = "40901";
+        public static String forbiddenInvalidOperation = "40301";
     }
 }

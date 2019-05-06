@@ -775,7 +775,7 @@ public class ManagementClientAsync {
         if (forwardTo != null && !forwardTo.isEmpty()) {
             try {
                 String securityToken = getSecurityToken(this.clientSettings.getTokenProvider(), forwardTo);
-                additionalHeaders.put(ManagementClientConstants.ServiceBusSupplementartyAuthorizationHeaderName, securityToken);
+                additionalHeaders.put(ManagementClientConstants.serviceBusSupplementartyAuthorizationHeaderName, securityToken);
             } catch (InterruptedException | ExecutionException e) {
                 final CompletableFuture<String> exceptionFuture = new CompletableFuture<>();
                 exceptionFuture.completeExceptionally(e);
@@ -786,7 +786,7 @@ public class ManagementClientAsync {
         if (fwdDeadLetterTo != null && !fwdDeadLetterTo.isEmpty()) {
             try {
                 String securityToken = getSecurityToken(this.clientSettings.getTokenProvider(), fwdDeadLetterTo);
-                additionalHeaders.put(ManagementClientConstants.ServiceBusDlqSupplementaryAuthorizationHeaderName, securityToken);
+                additionalHeaders.put(ManagementClientConstants.serviceBusDlqSupplementaryAuthorizationHeaderName, securityToken);
             } catch (InterruptedException | ExecutionException e) {
                 final CompletableFuture<String> exceptionFuture = new CompletableFuture<>();
                 exceptionFuture.completeExceptionally(e);
@@ -1069,18 +1069,18 @@ public class ManagementClientAsync {
                 break;
 
             case 409: /*Conflict*/
-                if (request.getMethod() == HttpConstants.Methods.DELETE) {
+                if (HttpConstants.Methods.DELETE.equals(request.getMethod())) {
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;
                 }
 
-                if (request.getMethod() == HttpConstants.Methods.PUT && request.getHeaders().contains("IfMatch")) {
+                if (HttpConstants.Methods.PUT.equals(request.getMethod()) && request.getHeaders().contains("IfMatch")) {
                     /*Update request*/
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;
                 }
 
-                if (exceptionMessage.contains(ManagementClientConstants.ConflictOperationInProgressSubCode)) {
+                if (exceptionMessage.contains(ManagementClientConstants.conflictOperationInProgressSubCode)) {
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;
                 }
@@ -1089,7 +1089,7 @@ public class ManagementClientAsync {
                 break;
 
             case 403: /*Forbidden*/
-                if (exceptionMessage.contains(ManagementClientConstants.ForbiddenInvalidOperationSubCode)) {
+                if (exceptionMessage.contains(ManagementClientConstants.forbiddenInvalidOperationSubCode)) {
                     //todo: log
                     throw new UnsupportedOperationException(exceptionMessage);
                 }
