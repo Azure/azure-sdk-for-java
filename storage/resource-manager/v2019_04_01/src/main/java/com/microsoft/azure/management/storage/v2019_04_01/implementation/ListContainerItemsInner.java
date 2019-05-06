@@ -13,17 +13,25 @@ import com.microsoft.azure.management.storage.v2019_04_01.ListContainerItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The list of blob containers.
+ * Response schema. Contains list of blobs returned, and if paging is requested
+ * or required, a URL to next page of containers.
  */
 public class ListContainerItemsInner {
     /**
-     * The list of blob containers.
+     * List of blobs containers returned.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ListContainerItem> value;
 
     /**
-     * Get the list of blob containers.
+     * Request URL that can be used to query next page of containers. Returned
+     * when total number of requested containers exceed maximum page size.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /**
+     * Get list of blobs containers returned.
      *
      * @return the value value
      */
@@ -32,14 +40,12 @@ public class ListContainerItemsInner {
     }
 
     /**
-     * Set the list of blob containers.
+     * Get request URL that can be used to query next page of containers. Returned when total number of requested containers exceed maximum page size.
      *
-     * @param value the value value to set
-     * @return the ListContainerItemsInner object itself.
+     * @return the nextLink value
      */
-    public ListContainerItemsInner withValue(List<ListContainerItem> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
 }

@@ -69,7 +69,7 @@ public class BlobContainersInner {
     interface BlobContainersService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.BlobContainers list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skipToken") String skipToken, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.BlobContainers create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -186,7 +186,101 @@ public class BlobContainersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String skipToken = null;
+        final String maxpagesize = null;
+        final String filter = null;
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), skipToken, maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListContainerItemsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ListContainerItemsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ListContainerItemsInner> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ListContainerItemsInner object if successful.
+     */
+    public ListContainerItemsInner list(String resourceGroupName, String accountName, String skipToken, String maxpagesize, String filter) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ListContainerItemsInner> listAsync(String resourceGroupName, String accountName, String skipToken, String maxpagesize, String filter, final ServiceCallback<ListContainerItemsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter), serviceCallback);
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListContainerItemsInner object
+     */
+    public Observable<ListContainerItemsInner> listAsync(String resourceGroupName, String accountName, String skipToken, String maxpagesize, String filter) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, skipToken, maxpagesize, filter).map(new Func1<ServiceResponse<ListContainerItemsInner>, ListContainerItemsInner>() {
+            @Override
+            public ListContainerItemsInner call(ServiceResponse<ListContainerItemsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param skipToken Optional. Continuation token for the list operation.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListContainerItemsInner object
+     */
+    public Observable<ServiceResponse<ListContainerItemsInner>> listWithServiceResponseAsync(String resourceGroupName, String accountName, String skipToken, String maxpagesize, String filter) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), skipToken, maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListContainerItemsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ListContainerItemsInner>> call(Response<ResponseBody> response) {

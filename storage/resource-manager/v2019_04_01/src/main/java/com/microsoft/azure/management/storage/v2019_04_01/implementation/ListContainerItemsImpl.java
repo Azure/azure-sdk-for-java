@@ -26,6 +26,11 @@ class ListContainerItemsImpl extends WrapperImpl<ListContainerItemsInner> implem
     }
 
     @Override
+    public String nextLink() {
+        return this.inner().nextLink();
+    }
+
+    @Override
     public List<ListContainerItem> value() {
         return this.inner().value();
     }

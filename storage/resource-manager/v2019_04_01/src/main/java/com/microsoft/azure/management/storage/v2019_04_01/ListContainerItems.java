@@ -19,6 +19,11 @@ import java.util.List;
  */
 public interface ListContainerItems extends HasInner<ListContainerItemsInner>, HasManager<StorageManager> {
     /**
+     * @return the nextLink value.
+     */
+    String nextLink();
+
+    /**
      * @return the value value.
      */
     List<ListContainerItem> value();
