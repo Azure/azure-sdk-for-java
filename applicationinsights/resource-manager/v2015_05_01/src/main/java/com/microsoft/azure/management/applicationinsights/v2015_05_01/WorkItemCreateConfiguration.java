@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,16 +28,16 @@ public class WorkItemCreateConfiguration {
     private String connectorDataConfiguration;
 
     /**
-     * Boolean indicating validate only.
+     * True or false string indicating validate only.
      */
     @JsonProperty(value = "ValidateOnly")
-    private Boolean validateOnly;
+    private String validateOnly;
 
     /**
      * Custom work item properties.
      */
     @JsonProperty(value = "WorkItemProperties")
-    private String workItemProperties;
+    private Map<String, String> workItemProperties;
 
     /**
      * Get unique connector id.
@@ -79,21 +80,21 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Get boolean indicating validate only.
+     * Get true or false string indicating validate only.
      *
      * @return the validateOnly value
      */
-    public Boolean validateOnly() {
+    public String validateOnly() {
         return this.validateOnly;
     }
 
     /**
-     * Set boolean indicating validate only.
+     * Set true or false string indicating validate only.
      *
      * @param validateOnly the validateOnly value to set
      * @return the WorkItemCreateConfiguration object itself.
      */
-    public WorkItemCreateConfiguration withValidateOnly(Boolean validateOnly) {
+    public WorkItemCreateConfiguration withValidateOnly(String validateOnly) {
         this.validateOnly = validateOnly;
         return this;
     }
@@ -103,7 +104,7 @@ public class WorkItemCreateConfiguration {
      *
      * @return the workItemProperties value
      */
-    public String workItemProperties() {
+    public Map<String, String> workItemProperties() {
         return this.workItemProperties;
     }
 
@@ -113,7 +114,7 @@ public class WorkItemCreateConfiguration {
      * @param workItemProperties the workItemProperties value to set
      * @return the WorkItemCreateConfiguration object itself.
      */
-    public WorkItemCreateConfiguration withWorkItemProperties(String workItemProperties) {
+    public WorkItemCreateConfiguration withWorkItemProperties(Map<String, String> workItemProperties) {
         this.workItemProperties = workItemProperties;
         return this;
     }
