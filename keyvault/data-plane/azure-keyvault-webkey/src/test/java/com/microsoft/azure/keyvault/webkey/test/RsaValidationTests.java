@@ -21,22 +21,21 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 public class RsaValidationTests {
-    
+
     private static final String TRANSFORMATION = "RSA/ECB/PKCS1Padding";
-    
+
     @Test
     public void rsaPublicKeyValidation() throws Exception {
-        for(String keyStr : keys.values())
-        {
+        for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
             Assert.assertTrue(key.hasPrivateKey());
-            Assert.assertTrue(key.isValid());            
+            Assert.assertTrue(key.isValid());
 
             KeyPair keyPair = key.toRSA();
             validateRsaKey(keyPair, key);
             Assert.assertNull(keyPair.getPrivate());
-            
+
             // Compare equal JSON web keys
             JsonWebKey sameKey = mapper.readValue(keyStr, JsonWebKey.class);
             Assert.assertEquals(key, key);
@@ -47,8 +46,7 @@ public class RsaValidationTests {
 
     @Test
     public void rsaPrivateKeyValidation() throws Exception {
-        for(String keyStr : keys.values())
-        {
+        for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
 
@@ -57,7 +55,7 @@ public class RsaValidationTests {
             encryptDecrypt(keyPairWithPrivate.getPublic(), keyPairWithPrivate.getPrivate());
         }
     }
-    
+
     @Test
     public void rsaHashCode() throws Exception {
 
@@ -69,56 +67,56 @@ public class RsaValidationTests {
         Assert.assertNotEquals(key.hashCode(), new JsonWebKey().withKid(key.kid()).withN(key.n()).hashCode());
         Assert.assertNotEquals(key.hashCode(), new JsonWebKey().withKid(key.kid()).withKty(key.kty()).hashCode());
         Assert.assertNotEquals(key.hashCode(), new JsonWebKey().withKid(key.kid()).withT(key.t()).hashCode());
-        
+
         // Compare hash codes for unequal JWK that would map to the same hash
-        Assert.assertEquals(key.hashCode(), 
+        Assert.assertEquals(key.hashCode(),
                 new JsonWebKey().withN(key.n()).withKty(key.kty()).withKid(key.kid()).hashCode());
     }
-    
+
     private static void encryptDecrypt(PublicKey publicKey, PrivateKey privateKey) throws Exception {
         byte[] plaintext = new byte[10];
         new Random().nextBytes(plaintext);
         byte[] cipherText = encrypt(publicKey, plaintext);
-        if(privateKey != null) {
+        if (privateKey != null) {
             Assert.assertArrayEquals(decrypt(privateKey, cipherText), plaintext);
         }
     }
 
     private static byte[] encrypt(PublicKey key, byte[] plaintext) throws Exception {
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);   
-        cipher.init(Cipher.ENCRYPT_MODE, key);  
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(plaintext);
     }
 
     private static byte[] decrypt(PrivateKey key, byte[] ciphertext) throws Exception {
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);   
-        cipher.init(Cipher.DECRYPT_MODE, key);  
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(ciphertext);
     }
-    
+
     private static void validateRsaKey(KeyPair keyPair, JsonWebKey key) throws Exception {
         JsonWebKey jsonWebKey = JsonWebKey.fromRSA(keyPair);
         boolean includePrivateKey = keyPair.getPrivate() != null;
         KeyPair keyPair2 = jsonWebKey.toRSA(includePrivateKey);
-        
+
         Assert.assertTrue(includePrivateKey == jsonWebKey.hasPrivateKey());
-        
+
         PublicKey publicKey = keyPair2.getPublic();
         PrivateKey privateKey = keyPair2.getPrivate();
-        
-        if(includePrivateKey) {
+
+        if (includePrivateKey) {
             Assert.assertNotNull(privateKey);
-            
+
             // set the missing properties to compare the keys
             jsonWebKey.withKeyOps(new ArrayList<JsonWebKeyOperation>(key.keyOps()));
             jsonWebKey.withKid(new String(key.kid()));
             Assert.assertEquals(jsonWebKey, key);
             Assert.assertEquals(key.hashCode(), jsonWebKey.hashCode());
         }
-        
+
         encryptDecrypt(publicKey, privateKey);
     }
-    
+
     Map<Integer, String> keys = ImmutableMap.<Integer, String>builder()
             .put(512, "{\"kty\":\"RSA\",\"n\":\"uOXIpiH9L0h_byTuP3fcMvKbfS85eTKvxW2skw4oIU2TM3ceFvlDwDK4gKHl4qE4z18bz0qrv9ElstOrT96piQ\",\"e\":\"AQAB\",\"d\":\"And2KMA5uQ1r9MwuvZCODi0D2lcFvz7oBbenyxqmuhTYfdGcuGE9FZg5V6ZcNwBK_eYGZqSwL1Gh2EmzG6AxwQ\",\"dp\":\"CEh8kzQnCRK97NKQeV_wGgWsLYlmgis7Cms85_DIqwE\",\"dq\":\"TAi0G0iE5pvMpiEN2y189hjSRSqE6Unc1lXaE3hcnWE\",\"qi\":\"2HhNqW3QBv1R_iEpu44KVMQs0DdnY5oWp1lH6hgPhXU\",\"p\":\"5BblSoMJmO5Afa-urQFzFpBfACt1175NMUs4tHUYEkE\",\"q\":\"z4Xdf_FU-51wTkW5mFJ6QoDK-GrkMXSdct9hdW26NUk\",\"key_ops\":[\"wrapKey\",\"unwrapKey\",\"encrypt\",\"decrypt\",\"sign\",\"verify\"],\"kid\":\"key_id\"}")
             .put(1024, "{\"kty\":\"RSA\",\"n\":\"zicSNMeAUYwp6V6UQlJ8gW04o6O4ZJBIefsLnV6-to1YkzgDu6vDBWb83DcDgB2x63W-ZVK23F4dcJcULu1VM-jX83Sfg0b_ZrugiiXCnZ4iidLNcY5QOS1dSHjfI1eWH6QdLPSIE3sHk-BILrIXqoyIJH-LFxzMu--4bDlej2M\",\"e\":\"AQAB\",\"d\":\"A4h7F2YT6bhG2TXcJ9OiFQj6LFPLmG2gnSnGssiQHDDWXWLB-mvT-9O4CBr2ETJxFvsw0cVV8CqGXQrTaodGxOuCGNmYoczodvlhUBJyMBxAI2or5eZUF9jRiECvigoxNVWKsqWxypvq_X1pMfQbh9ot7F6KOJAEg6wlLTc-fIE\",\"dp\":\"v2JbDaZfi3OCCLMtNMjOxfNsBOPb1IqerGux4IR17fLIzG6JlcyaR4uasILdjE4VufqnppZ6FIlFCZUiyIP0GQ\",\"dq\":\"m6NTbNOxN2qnont_qttyqg6WvOA6zWK55-ZnX8hShmlv0ySgtw1PfOWso3wpRMHAujTOfUSeI14DgOLHLNkKtQ\",\"qi\":\"HOcBZfyxW1dSnghCvdTuKL3jLSww6k_v0jhYET32gyKe8od7uxP7w0dXZ8al4zQ3xGxrip9y7jJi0pjG-Z4uGw\",\"p\":\"6dlyTUBrwxLyLbr0X3yqmNu3VrHSt2zbW8jueZFWXPELlbuQ6EKrHoR39BM8MSjFN5PfZbsBhcqNBkqhitj6xw\",\"q\":\"4a4DOrnZt4423myMKmhgDINvIdNmLCHG0aE8UWcSPKO6RFhzHX46NJSoOuk9gvccMKEXOpcJC6P8b8ypN-OKhQ\",\"key_ops\":[\"wrapKey\",\"unwrapKey\",\"encrypt\",\"decrypt\",\"sign\",\"verify\"],\"kid\":\"key_id\"}")

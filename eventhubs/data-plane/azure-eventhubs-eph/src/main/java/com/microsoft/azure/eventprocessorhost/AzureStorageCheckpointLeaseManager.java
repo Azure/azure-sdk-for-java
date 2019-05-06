@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.regex.Matcher;
@@ -43,7 +44,7 @@ import java.util.regex.Pattern;
 class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseManager {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(AzureStorageCheckpointLeaseManager.class);
     private static final String METADATA_OWNER_NAME = "OWNINGHOST";
-    
+
     private final String storageConnectionString;
     private final String storageBlobPrefix;
     private final BlobRequestOptions leaseOperationOptions = new BlobRequestOptions();
@@ -325,14 +326,23 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 BlobProperties bp = blob.getProperties();
                 HashMap<String, String> metadata = blob.getMetadata();
                 Path p = Paths.get(lbi.getUri().getPath());
-                infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
+                Path pFileName = p.getFileName();
+                String partitionId = pFileName != null ? pFileName.toString() : "";
+                infos.add(new BaseLease(partitionId, metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
                         (bp.getLeaseState() == LeaseState.LEASED)));
             });
             future = CompletableFuture.completedFuture(infos);
-        } catch (URISyntaxException | StorageException e) {
+        } catch (URISyntaxException | StorageException | NoSuchElementException e) {
+            Throwable effective = e;
+            if (e instanceof NoSuchElementException) {
+                // If there is a StorageException in the forEach, it arrives wrapped in a NoSuchElementException.
+                // Strip the misleading NoSuchElementException to provide a meaningful error for the user.
+                effective = e.getCause();
+            }
+
             TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
-            future = new CompletableFuture<List<BaseLease>>();
-            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
+            future = new CompletableFuture<>();
+            future.completeExceptionally(LoggingUtils.wrapException(effective, EventProcessorHostActionStrings.GETTING_LEASE));
         }
 
         return future;
@@ -394,7 +404,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         return future;
     }
-    
+
     private AzureBlobLease createLeaseIfNotExistsInternal(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException {
         AzureBlobLease returnLease = null;
         try {
@@ -427,6 +437,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Deleting lease"));
         try {
+            // Fetching leases (using getLease) from AzureStorageCheckpointLeaseManager as the ILeaseManager returns an
+            // AzureBlobLease. This unchecked cast won't fail.
             ((AzureBlobLease) lease).getBlob().deleteIfExists();
             future = CompletableFuture.completedFuture(null);
         } catch (StorageException e) {
@@ -443,6 +455,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         CompletableFuture<Boolean> future = null;
 
         try {
+            // Fetching leases (using getLease) from AzureStorageCheckpointLeaseManager as the ILeaseManager returns an
+            // AzureBlobLease. This unchecked cast won't fail.
             future = CompletableFuture.completedFuture(acquireLeaseInternal((AzureBlobLease) lease));
         } catch (IOException | StorageException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure acquiring lease"), e);
@@ -518,6 +532,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 
         boolean result = false;
+
+        // Fetching leases (using getLease) from AzureStorageCheckpointLeaseManager as the ILeaseManager returns an
+        // AzureBlobLease. This unchecked cast won't fail.
         AzureBlobLease azLease = (AzureBlobLease) lease;
         CloudBlockBlob leaseBlob = azLease.getBlob();
 
@@ -539,6 +556,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         CompletableFuture<Void> future = null;
 
+        // Fetching leases (using getLease) from AzureStorageCheckpointLeaseManager as the ILeaseManager returns an
+        // AzureBlobLease. This unchecked cast won't fail.
         AzureBlobLease inLease = (AzureBlobLease) lease;
         CloudBlockBlob leaseBlob = inLease.getBlob();
 
@@ -571,6 +590,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         CompletableFuture<Boolean> future = null;
 
         try {
+            // Fetching leases (using getLease) from AzureStorageCheckpointLeaseManager as the ILeaseManager returns an
+            // AzureBlobLease. This unchecked cast won't fail.
             boolean result = updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions);
             future = CompletableFuture.completedFuture(result);
         } catch (StorageException | IOException e) {

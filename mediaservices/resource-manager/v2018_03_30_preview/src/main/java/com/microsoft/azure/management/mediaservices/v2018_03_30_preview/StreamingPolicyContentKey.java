@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StreamingPolicyContentKey {
     /**
-     * Label can be used to specify Content Key when creating Stremaing
+     * Label can be used to specify Content Key when creating Streaming
      * Locator.
      */
     @JsonProperty(value = "label")
@@ -35,7 +35,7 @@ public class StreamingPolicyContentKey {
     private List<TrackSelection> tracks;
 
     /**
-     * Get label can be used to specify Content Key when creating Stremaing Locator.
+     * Get label can be used to specify Content Key when creating Streaming Locator.
      *
      * @return the label value
      */
@@ -44,7 +44,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Set label can be used to specify Content Key when creating Stremaing Locator.
+     * Set label can be used to specify Content Key when creating Streaming Locator.
      *
      * @param label the label value to set
      * @return the StreamingPolicyContentKey object itself.

@@ -31,9 +31,9 @@ public class FaultTolerantObject<T extends IOObject> {
     // should be invoked from reactor thread
     T unsafeGetIfOpened() {
 
-        if (innerObject != null && innerObject.getState() == IOObject.IOObjectState.OPENED)
+        if (innerObject != null && innerObject.getState() == IOObject.IOObjectState.OPENED) {
             return innerObject;
-
+        }
         return null;
     }
 
@@ -47,7 +47,7 @@ public class FaultTolerantObject<T extends IOObject> {
                 public void onEvent() {
                     if (!creatingNewInnerObject
                             && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED
-                                || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
+                        || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
 
                         try {
@@ -56,16 +56,18 @@ public class FaultTolerantObject<T extends IOObject> {
                                 @Override
                                 public void onComplete(T result) {
                                     innerObject = result;
-                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                    for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onComplete(result);
+                                    }
 
                                     openCallbacks.clear();
                                 }
 
                                 @Override
                                 public void onError(Exception error) {
-                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                    for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onError(error);
+                                    }
 
                                     openCallbacks.clear();
                                 }
@@ -102,18 +104,18 @@ public class FaultTolerantObject<T extends IOObject> {
                             @Override
                             public void onComplete(Void result) {
                                 closingInnerObject = false;
-                                for (OperationResult<Void, Exception> callback : closeCallbacks)
+                                for (OperationResult<Void, Exception> callback : closeCallbacks) {
                                     callback.onComplete(result);
-
+                                }
                                 closeCallbacks.clear();
                             }
 
                             @Override
                             public void onError(Exception error) {
                                 closingInnerObject = false;
-                                for (OperationResult<Void, Exception> callback : closeCallbacks)
+                                for (OperationResult<Void, Exception> callback : closeCallbacks) {
                                     callback.onError(error);
-
+                                }
                                 closeCallbacks.clear();
                             }
                         });

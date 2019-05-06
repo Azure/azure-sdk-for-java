@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -14,9 +15,12 @@
     <version>1.0.0</version>
 
     <properties>
-        <azure-keyvault.version>1.2.0</azure-keyvault.version>
         <azure-batch.version>5.0.1</azure-batch.version>
-        <azure-eventhubs.version>2.0.0</azure-eventhubs.version>
+        <azure-eventhubs.version>2.3.1</azure-eventhubs.version>
+        <azure-eventhubs-eph.version>2.5.1</azure-eventhubs-eph.version>
+        <azure-keyvault.version>1.2.0</azure-keyvault.version>
+        <azure-servicebus.version>2.0.0</azure-servicebus.version>
+        <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     </properties>
 
     <distributionManagement>
@@ -65,22 +69,45 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-eventhubs-eph</artifactId>
-            <version>${azure-eventhubs.version}</version>
+            <version>${azure-eventhubs-eph.version}</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
+        <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+             dependency in eventhubs code. This issue is under investigation.
+              Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
+        <!--dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>${azure-storage-blob.version}</version>
+        </dependency-->
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common</artifactId>
-          <version>${azure-common.version}</version>
+          <artifactId>azure-core</artifactId>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common-auth</artifactId>
-          <version>${azure-common-auth.version}</version>
+          <artifactId>azure-core-auth</artifactId>
+          <version>${azure-core-auth.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-management</artifactId>
+          <version>${azure-core-management.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-test</artifactId>
+          <version>${azure-core-test.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-servicebus</artifactId>
+          <version>${azure-servicebus.version}</version>
         </dependency>
     </dependencies>
 
@@ -98,17 +125,24 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
-                                <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
-                                <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
-                                <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
-                                <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
+                                <source>..\..\applicationconfig\client\src\main\java</source>
                                 <source>..\..\batch\data-plane\src\main\java</source>
+                                <source>..\..\core\azure-core\src\main\java</source>
+                                <source>..\..\core\azure-core-auth\src\main\java</source>
+                                <source>..\..\core\azure-core-management\src\main\java</source>
+                                <source>..\..\core\azure-core-test\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
-                                <source>..\..\common\azure-common\src\main\java</source>
-                                <source>..\..\common\azure-common-auth\src\main\java</source>
+                                <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+                                dependency in eventhubs code. This issue is under investigation. -->
+                                <!--source>..\..\storage\data-plane\src\main\java</source-->
+                                <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
+                                <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
+                                <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
+                                <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
+                                <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
+                                <source>..\..\servicebus\data-plane\azure-servicebus\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -116,6 +150,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
