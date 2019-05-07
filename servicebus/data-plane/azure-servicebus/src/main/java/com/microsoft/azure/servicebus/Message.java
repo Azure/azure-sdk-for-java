@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-final public class Message implements Serializable, IMessage {
+public final class Message implements Serializable, IMessage {
     private static final long serialVersionUID = 7849508139219590863L;
     private static final Charset DEFAULT_CHAR_SET = Charset.forName("UTF-8");
     private static final String DEFAULT_CONTENT_TYPE = null;
