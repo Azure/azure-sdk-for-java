@@ -95,36 +95,36 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider {
     }
     
     private static class MSIToken {
-        private String ACCESS_TOKEN;
-        private String REFRESH_TOKEN;
+        private String accessToken;
+        private String refreshToken;
         // Token validity in number of seconds
-        private int EXPIRES_IN;
+        private int expiresIn;
         // Seconds from 1970-01-01T0:0:0Z UTC when the token will expire
-        private long EXPIRES_ON;
+        private long expiresOn;
         // Seconds from 1970-01-01T0:0:0Z UTC after which the token takes effect
-        private long NOT_BEFORE;
+        private long notBefore;
         // Resource for which token is requested
-        private String RESOURCE;
+        private String resource;
         // Token type
-        private String TOKEN_TYPE;
+        private String tokenType;
         
         public String getAccessToken() {
-            return ACCESS_TOKEN;
+            return accessToken;
         }
         public int getExpiresIn() {
-            return EXPIRES_IN;
+            return expiresIn;
         }
         public long getExpiresOn() {
-            return EXPIRES_ON;
+            return expiresOn;
         }
         public long getNotBefore() {
-            return NOT_BEFORE;
+            return notBefore;
         }
         public String getResource() {
-            return RESOURCE;
+            return resource;
         }
         public String getTokenType() {
-            return TOKEN_TYPE;
+            return tokenType;
         }
     }
 }
