@@ -143,7 +143,7 @@ public class RecommendationMetadatasInner {
     private ServiceResponse<Object> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetadataEntityInner>() { }.getType())
-                .register(404, new TypeToken<ARMErrorResponseInner>() { }.getType())
+                .register(404, new TypeToken<ARMErrorResponseBodyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
