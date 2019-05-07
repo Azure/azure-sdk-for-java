@@ -24,8 +24,7 @@ import com.microsoft.azure.servicebus.primitives.MessagingFactory;
  * @since 1.2.0
  *
  */
-public class ManagedServiceIdentityTokenProvider extends TokenProvider
-{
+public class ManagedServiceIdentityTokenProvider extends TokenProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ManagedServiceIdentityTokenProvider.class);
     
     private static final String STATIC_LOCAL_REST_MSI_ENDPOINT_URL = "http://169.254.169.254/metadata/identity/oauth2/token";
@@ -41,14 +40,11 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         String addAudienceForSB = SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL;
         CompletableFuture<SecurityToken> tokenGeneratingFuture = new CompletableFuture<>();
         MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {
-            try
-            {
+            try {
                 MSIToken msiToken = getMSIToken(addAudienceForSB);
                 SecurityToken generatedToken = new SecurityToken(SecurityTokenType.JWT, audience, msiToken.getAccessToken(), Instant.EPOCH.plus(Duration.ofSeconds(msiToken.getNotBefore())), Instant.now().plus(Duration.ofSeconds(msiToken.getExpiresIn())));
                 tokenGeneratingFuture.complete(generatedToken);
-            }
-            catch(IOException ioe)
-            {
+            } catch (IOException ioe) {
                 TRACE_LOGGER.error("ManagedServiceIdentity token generation failed.", ioe);
                 tokenGeneratingFuture.completeExceptionally(ioe);
             }
@@ -57,31 +53,24 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         return tokenGeneratingFuture;
     }
     
-    private static MSIToken getMSIToken(String audience) throws IOException
-    {
+    private static MSIToken getMSIToken(String audience) throws IOException {
         boolean useStaticHttpUrl;
         String localMsiEndPointURL = System.getenv(MSI_ENDPOINT_ENV_VARIABLE);
         String msiSecret = System.getenv(MSI_SECRET_ENV_VARIABLE);
-        if(localMsiEndPointURL == null || localMsiEndPointURL.isEmpty() || msiSecret == null || msiSecret.isEmpty())
-        {
+        if (localMsiEndPointURL == null || localMsiEndPointURL.isEmpty() || msiSecret == null || msiSecret.isEmpty()) {
             useStaticHttpUrl = true;
-        }
-        else
-        {
+        } else {
             useStaticHttpUrl = false;
         }
         
         HttpURLConnection httpConnection;
-        if(useStaticHttpUrl)
-        {
+        if (useStaticHttpUrl) {
             String localMSIURLForResouce =
                     String.format(MSI_URL_FORMAT, STATIC_LOCAL_REST_MSI_ENDPOINT_URL, audience, APIVERSION);
             URL msiURL = new URL(localMSIURLForResouce);
             httpConnection = (HttpURLConnection) msiURL.openConnection();
             httpConnection.setRequestProperty(METADATA_HEADER_NAME, "true");
-        }
-        else
-        {
+        } else {
             String localMSIURLForResouce = String.format(MSI_URL_FORMAT, localMsiEndPointURL, audience, APIVERSION);
             URL msiURL = new URL(localMSIURLForResouce);
             httpConnection = (HttpURLConnection) msiURL.openConnection();
@@ -92,12 +81,10 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         httpConnection.setDoInput(true);
         httpConnection.connect();
         StringBuilder responseBuilder = new StringBuilder();
-        try(Reader reader = new InputStreamReader(httpConnection.getInputStream(), StandardCharsets.UTF_8))
-        {
+        try (Reader reader = new InputStreamReader(httpConnection.getInputStream(), StandardCharsets.UTF_8)) {
             char[] buffer = new char[1024];
             int numBytesRead = -1;
-            while((numBytesRead = reader.read(buffer)) != -1)
-            {
+            while ((numBytesRead = reader.read(buffer)) != -1) {
                 responseBuilder.append(buffer, 0, numBytesRead);
             }
         }
@@ -107,38 +94,37 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         return msiToken;
     }
     
-    private static class MSIToken
-    {
-        private String access_token;
-        private String refresh_token;
+    private static class MSIToken {
+        private String ACCESS_TOKEN;
+        private String REFRESH_TOKEN;
         // Token validity in number of seconds
-        private int expires_in;
+        private int EXPIRES_IN;
         // Seconds from 1970-01-01T0:0:0Z UTC when the token will expire
-        private long expires_on;
-     // Seconds from 1970-01-01T0:0:0Z UTC after which the token takes effect
-        private long not_before;
+        private long EXPIRES_ON;
+        // Seconds from 1970-01-01T0:0:0Z UTC after which the token takes effect
+        private long NOT_BEFORE;
         // Resource for which token is requested
-        private String resource;
+        private String RESOURCE;
         // Token type
-        private String token_type;
+        private String TOKEN_TYPE;
         
         public String getAccessToken() {
-            return access_token;
+            return ACCESS_TOKEN;
         }
         public int getExpiresIn() {
-            return expires_in;
+            return EXPIRES_IN;
         }
         public long getExpiresOn() {
-            return expires_on;
+            return EXPIRES_ON;
         }
         public long getNotBefore() {
-            return not_before;
+            return NOT_BEFORE;
         }
         public String getResource() {
-            return resource;
+            return RESOURCE;
         }
         public String getTokenType() {
-            return token_type;
+            return TOKEN_TYPE;
         }
     }
 }
