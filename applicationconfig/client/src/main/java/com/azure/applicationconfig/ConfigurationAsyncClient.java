@@ -9,18 +9,24 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.ServiceClient;
 import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.tracing.Tracer;
+import io.opencensus.common.Scope;
+import io.opencensus.trace.Tracing;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -71,7 +77,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * string.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value));
+        return addSetting(new ConfigurationSetting().key(key).value(value), ContextData.NONE);
     }
 
     /**
@@ -87,12 +93,16 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
+        return addSetting(setting, ContextData.NONE);
+    }
+
+    public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, ContextData contextData) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY));
+        return service.setKey(contextData, serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -128,6 +138,10 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * setting exists and is locked, or {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
+        return setSetting(setting, ContextData.NONE);
+    }
+
+    public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, ContextData contextData) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -137,7 +151,8 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null);
+
+        return service.setKey(contextData, serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null);
     }
 
     /**
@@ -152,7 +167,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * is locked. Or, if {@code key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value));
+        return updateSetting(new ConfigurationSetting().key(key).value(value), ContextData.NONE);
     }
 
     /**
@@ -171,12 +186,16 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * {@link ConfigurationSetting#etag() etag} is specified but does not match the current value.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
+        return updateSetting(setting, ContextData.NONE);
+    }
+
+    public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, ContextData contextData) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null);
+        return service.setKey(contextData, serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null);
     }
 
     /**
@@ -190,7 +209,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * empty string.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key));
+        return getSetting(new ConfigurationSetting().key(key), ContextData.NONE);
     }
 
     /**
@@ -205,10 +224,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
+        return getSetting(setting, ContextData.NONE);
+    }
+
+    public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, ContextData contextData) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null);
+        return service.getKeyValue(contextData, serviceEndpoint, setting.key(), setting.label(), null, null, null, null);
     }
 
     /**
@@ -221,7 +244,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @throws ServiceRequestException If {@code key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key));
+        return deleteSetting(new ConfigurationSetting().key(key), ContextData.NONE);
     }
 
     /**
@@ -241,10 +264,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * specified, not the wildcard character, and does not match the current etag value.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
+        return deleteSetting(setting, ContextData.NONE);
+    }
+
+    public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, ContextData contextData) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null);
+        return service.delete(contextData, serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null);
     }
 
     /**
@@ -256,15 +283,19 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * contains all of the current settings in the service.
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
+        return listSettings(options, ContextData.NONE);
+    }
+
+    public Flux<ConfigurationSetting> listSettings(SettingSelector options, ContextData contextData) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
+            result = service.listKeyValues(contextData, serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
         } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null);
+            result = service.listKeyValues(contextData, serviceEndpoint, null, null, null, null);
         }
 
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextData));
     }
 
     /**
@@ -279,15 +310,19 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+        return listSettingRevisions(selector, ContextData.NONE);
+    }
+
+    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, ContextData contextData) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
+            result = service.listKeyValueRevisions(contextData, serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
         } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
+            result = service.listKeyValueRevisions(contextData, serviceEndpoint, null, null, null, null, null);
         }
 
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextData));
     }
 
     /*
@@ -298,17 +333,17 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
-    private Flux<ConfigurationSetting> listSettings(String nextPageLink) {
-        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
+    private Flux<ConfigurationSetting> listSettings(String nextPageLink, ContextData contextData) {
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(contextData, serviceEndpoint, nextPageLink);
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextData));
     }
 
-    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page) {
+    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page, ContextData contextData) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink, contextData));
     }
 
     /*
