@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.authorization.v2018_09_01_preview.implementation;
 
+import com.microsoft.azure.management.authorization.v2018_09_01_preview.PrincipalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -53,7 +54,16 @@ public class RoleAssignmentInner {
     private String principalId;
 
     /**
-     * The Delegation flag for the roleassignment.
+     * The principal type of the assigned principal ID. Possible values
+     * include: 'User', 'Group', 'ServicePrincipal', 'Unknown',
+     * 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI',
+     * 'DirectoryObjectOrGroup', 'Everyone'.
+     */
+    @JsonProperty(value = "properties.principalType")
+    private PrincipalType principalType;
+
+    /**
+     * The Delegation flag for the role assignment.
      */
     @JsonProperty(value = "properties.canDelegate")
     private Boolean canDelegate;
@@ -146,7 +156,27 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the Delegation flag for the roleassignment.
+     * Get the principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'.
+     *
+     * @return the principalType value
+     */
+    public PrincipalType principalType() {
+        return this.principalType;
+    }
+
+    /**
+     * Set the principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'.
+     *
+     * @param principalType the principalType value to set
+     * @return the RoleAssignmentInner object itself.
+     */
+    public RoleAssignmentInner withPrincipalType(PrincipalType principalType) {
+        this.principalType = principalType;
+        return this;
+    }
+
+    /**
+     * Get the Delegation flag for the role assignment.
      *
      * @return the canDelegate value
      */
@@ -155,7 +185,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Set the Delegation flag for the roleassignment.
+     * Set the Delegation flag for the role assignment.
      *
      * @param canDelegate the canDelegate value to set
      * @return the RoleAssignmentInner object itself.

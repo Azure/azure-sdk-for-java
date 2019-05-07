@@ -20,6 +20,7 @@ import com.microsoft.azure.management.authorization.v2015_07_01.Permissions;
 import com.microsoft.azure.management.authorization.v2015_07_01.ProviderOperationsMetadatas;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
+import com.microsoft.azure.management.authorization.v2015_07_01.ElevateAccess;
 import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministrators;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -32,6 +33,7 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
     private ProviderOperationsMetadatas providerOperationsMetadatas;
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
+    private ElevateAccess elevateAccess;
     private ClassicAdministrators classicAdministrators;
     /**
     * Get a Configurable instance that can be used to create AuthorizationManager with optional configuration.
@@ -118,6 +120,16 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
             this.roleDefinitions = new RoleDefinitionsImpl(this);
         }
         return this.roleDefinitions;
+    }
+
+    /**
+     * @return Entry point to manage ElevateAccess.
+     */
+    public ElevateAccess elevateAccess() {
+        if (this.elevateAccess == null) {
+            this.elevateAccess = new ElevateAccessImpl(this);
+        }
+        return this.elevateAccess;
     }
 
     /**
