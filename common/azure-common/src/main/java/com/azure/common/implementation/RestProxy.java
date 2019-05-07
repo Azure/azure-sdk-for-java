@@ -38,6 +38,8 @@ import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
+import reactor.core.publisher.SignalType;
 import reactor.util.context.Context;
 
 import java.io.IOException;
@@ -141,9 +143,8 @@ public class RestProxy implements InvocationHandler {
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
-                String fullyQualifiedMethodName = methodParser.fullyQualifiedMethodName();
-                ContextData contextData = methodParser.contextData(args).addData("caller-method", fullyQualifiedMethodName);
-                Tracer.trace(fullyQualifiedMethodName, contextData);
+                ContextData contextData = methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
+                Tracer.trace(methodParser.fullyQualifiedMethodName(), contextData);
                 //contextData = TracerProxy.start(fullyQualifiedMethodName, contextData);
 
                 final Mono<HttpResponse> asyncResponse = send(request, contextData);
@@ -495,21 +496,7 @@ public class RestProxy implements InvocationHandler {
      */
     public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, ContextData contextData) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
-            .doOnEach(signal -> {
-                if (signal.isOnNext() || signal.isOnError()) {
-                    Context context = signal.getContext();
-                    Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
-                    Optional<String> methodName = context.getOrEmpty("METHOD_NAME");
-
-                    if (tracingContext.isPresent() && methodName.isPresent()) {
-                        HttpDecodedResponse httpDecodedResponse = signal.get();
-                        Throwable throwable = signal.getThrowable();
-
-                        Tracer.trace(methodName.get(), tracingContext.get());
-                        //TracerProxy.end(statusCode, throwable, tracingContext.get());
-                    }
-                }
-            })
+            .doOnEach(RestProxy::endTracingSpan)
             .subscriberContext(Context.of("TRACING_CONTEXT", contextData, "METHOD_NAME", methodParser.fullyQualifiedMethodName()));
 
         final Object result;
@@ -538,6 +525,39 @@ public class RestProxy implements InvocationHandler {
                     .block();
         }
         return result;
+    }
+
+    private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
+        if (signal.isOnComplete() || signal.isOnSubscribe()) {
+            return;
+        }
+
+        Context context = signal.getContext();
+        Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
+        Optional<String> methodName = context.getOrEmpty("METHOD_NAME");
+
+        if (!tracingContext.isPresent() || !methodName.isPresent()) {
+            return;
+        }
+
+        int statusCode;
+        HttpDecodedResponse httpDecodedResponse;
+        Throwable throwable;
+
+        if (signal.isOnNext()) {
+            httpDecodedResponse = signal.get();
+            statusCode = httpDecodedResponse.sourceResponse().statusCode();
+        } else {
+            throwable = signal.getThrowable();
+
+            if (throwable instanceof ServiceRequestException) {
+                ServiceRequestException sre = (ServiceRequestException) throwable;
+                statusCode = sre.response().statusCode();
+            }
+        }
+
+        Tracer.trace(methodName.get(), tracingContext.get());
+        //TracerProxy.end(statusCode, throwable, tracingContext.get());
     }
 
     /**
