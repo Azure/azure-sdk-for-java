@@ -148,8 +148,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
             }
 
             if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
-                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n",
-                        sanitizeURL(request.url()), this.tryCount);
+                String logMessage = String.format("'%s' '%s'==> OUTGOING REQUEST (Try number='%d')%n",
+                        request.httpMethod(), sanitizeURL(request.url()), this.tryCount);
                 this.log(HttpPipelineLogLevel.INFO, logMessage);
             }
 
