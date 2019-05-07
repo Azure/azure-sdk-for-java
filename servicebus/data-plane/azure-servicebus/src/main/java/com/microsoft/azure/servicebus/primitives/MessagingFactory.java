@@ -456,7 +456,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
                             AsyncUtil.completeFutureExceptionally(MessagingFactory.this.connetionCloseFuture, new TimeoutException(errorMessage));
                         }
                     },
-                    this.clientSettings.getOperationTimeout(), TimerType.OneTimeRun);
+                        this.clientSettings.getOperationTimeout(), TimerType.OneTimeRun);
                 } else {
                     this.connetionCloseFuture.complete(null);
                     Timer.unregister(this.getClientId());
@@ -470,9 +470,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
     }
 
     private class RunReactor implements Runnable {
-        final private Reactor rctr;
+        private final Reactor rctr;
 
-        public RunReactor() {
+        RunReactor() {
             this.rctr = MessagingFactory.this.getReactor();
         }
 
@@ -500,11 +500,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
 
                 TRACE_LOGGER.warn("UnHandled exception while processing events in reactor:", handlerException);
 
-                String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ?
-                        cause.getMessage():
-                        !StringUtil.isNullOrEmpty(handlerException.getMessage()) ?
-                            handlerException.getMessage() :
-                            "Reactor encountered unrecoverable error";
+                String message = !StringUtil.isNullOrEmpty(cause.getMessage())
+                        ? cause.getMessage()
+                        : !StringUtil.isNullOrEmpty(handlerException.getMessage())
+                            ? handlerException.getMessage()
+                            : "Reactor encountered unrecoverable error";
                 ServiceBusException sbException = new ServiceBusException(
                         true,
                         String.format(Locale.US, "%s, %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
@@ -622,7 +622,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
             return null;
         } else {
             // It will eventually expire. Renew it
-            int renewInterval = Util.getTokenRenewIntervalInSeconds((int)Duration.between(Instant.now(), currentTokenValidUntil).getSeconds());
+            int renewInterval = Util.getTokenRenewIntervalInSeconds((int) Duration.between(Instant.now(), currentTokenValidUntil).getSeconds());
             return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
         }
     }

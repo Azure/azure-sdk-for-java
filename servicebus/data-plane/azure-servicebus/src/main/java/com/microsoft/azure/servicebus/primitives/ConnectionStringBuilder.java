@@ -445,11 +445,11 @@ public class ConnectionStringBuilder {
                         ? RetryPolicy.getDefault()
                             : (values[valueIndex].equals(ClientConstants.NO_RETRY) ? RetryPolicy.getNoRetry() : null);
 
-                        if (this.retryPolicy == null) {
-                            throw new IllegalConnectionStringFormatException(
-                                String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
-                                    RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
-                        }
+                if (this.retryPolicy == null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
+                            RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
+                }
             } else if (key.equalsIgnoreCase(TRANSPORT_TYPE_CONFIG_NAME)) {
                 try {
                     this.transportType = TransportType.fromString(values[valueIndex]);

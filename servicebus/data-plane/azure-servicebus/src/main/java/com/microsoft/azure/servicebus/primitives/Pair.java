@@ -4,12 +4,12 @@
 package com.microsoft.azure.servicebus.primitives;
 
 // Utility class to encapsulate any pair
-public class Pair<T,V> {
+public class Pair<T, V> {
     private T t;
     private V v;
 
     Pair(T t, V v) {
-        this.t= t;
+        this.t = t;
         this.v = v;
     }
 

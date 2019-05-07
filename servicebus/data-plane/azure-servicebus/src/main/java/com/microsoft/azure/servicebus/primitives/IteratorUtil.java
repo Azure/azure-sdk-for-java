@@ -9,8 +9,7 @@ final class IteratorUtil {
     private IteratorUtil() {
     }
 
-    public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize)
-    {
+    public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize) {
         Iterator<T> iterator = iterable.iterator();
 
         int currentSize = 0;
