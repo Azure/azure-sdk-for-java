@@ -27,14 +27,14 @@ SOFTWARE.
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb-direct</artifactId>
   <name>Azure Cosmos DB Async SDK Direct Internal Implementation</name>
-  <version>2.4.5-SNAPSHOT</version>
+  <version>2.4.5</version>
   <description>Azure Cosmos DB Async SDK Direct Internal Implementation</description>
   <url>https://docs.microsoft.com/en-us/azure/cosmos-db</url>
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <test.groups>unit</test.groups>
-    <cosmosdb-sdk.version>2.4.5-SNAPSHOT</cosmosdb-sdk.version>
+    <cosmosdb-sdk.version>2.4.5</cosmosdb-sdk.version>
     <guava.version>27.0.1-jre</guava.version>
     </properties>
   <profiles>
