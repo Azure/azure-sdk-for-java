@@ -17,7 +17,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 // Wraps over a standard SSL context and disables the SSLv2Hello protocol.
-public class StrictTLSContextSpi extends SSLContextSpi{
+public class StrictTLSContextSpi extends SSLContextSpi {
 
     private static final String SSL_V2_HELLO = "SSLv2Hello";
 
