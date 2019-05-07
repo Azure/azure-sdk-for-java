@@ -109,13 +109,13 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
             return responseFuture.thenComposeAsync((responseMessage) -> {
                 CompletableFuture<Pair<String[], Integer>> returningFuture = new CompletableFuture<Pair<String[], Integer>>();
                 int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-                if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE) {
+                if (statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE) {
                     Map responseBodyMap = RequestResponseUtils.getResponseBody(responseMessage);
                     int responseSkip = (int) responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SKIP);
                     String[] sessionIds = (String[]) responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSIONIDS);
                     TRACE_LOGGER.debug("Received '{}' sessions from entity '{}'. Response skip '{}'", sessionIds.length, this.entityPath, responseSkip);
                     returningFuture.complete(new Pair<>(sessionIds, responseSkip));
-                } else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE
+                } else if (statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE
                             || (statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.SESSION_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage)))) {
                     TRACE_LOGGER.debug("Received no sessions from entity '{}'.", this.entityPath);
                     returningFuture.complete(new Pair<>(new String[0], 0));
@@ -205,7 +205,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
 
                     TRACE_LOGGER.debug("Fetched {} rules from entity '{}'", rules.size(), this.entityPath);
                     returningFuture.complete(rules);
-                } else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE) {
+                } else if (statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE) {
                     returningFuture.complete(rules);
                 } else {
                     // error response

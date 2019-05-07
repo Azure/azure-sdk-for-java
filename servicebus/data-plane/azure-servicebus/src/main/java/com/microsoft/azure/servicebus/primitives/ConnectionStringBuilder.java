@@ -403,7 +403,7 @@ public class ConnectionStringBuilder {
 
                 try {
                     this.endpoint = new URI(values[valueIndex]);
-                } catch(URISyntaxException exception) {
+                } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", ENDPOINT_CONFIG_NAME),
                             exception);
@@ -417,19 +417,19 @@ public class ConnectionStringBuilder {
 
                 try {
                     this.endpoint = new URI(String.format(Locale.US, END_POINT_RAW_FORMAT, values[valueIndex]));
-                } catch(URISyntaxException exception) {
+                } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "%s should be a fully quantified host name address", HOSTNAME_CONFIG_NAME),
                             exception);
                 }
-            } else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME)) {
                 this.sharedAccessKeyName = values[valueIndex];
-            } else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME)) {
                 this.sharedAccessKey = values[valueIndex];
-            } else if(key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
-            } else if(key.equalsIgnoreCase(ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
+            } else if (key.equalsIgnoreCase(ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
             } else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME)) {
@@ -437,7 +437,7 @@ public class ConnectionStringBuilder {
             } else if (key.equalsIgnoreCase(OPERATION_TIMEOUT_CONFIG_NAME)) {
                 try {
                     this.operationTimeout = Duration.parse(values[valueIndex]);
-                } catch(DateTimeParseException exception) {
+                } catch (DateTimeParseException exception) {
                     throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
                 }
             } else if (key.equalsIgnoreCase(RETRY_POLICY_CONFIG_NAME)) {
