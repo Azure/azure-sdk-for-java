@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
-import com.microsoft.azure.servicebus.management.*;
+import com.microsoft.azure.servicebus.management.EntityNameHelper;
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,9 +80,9 @@ public abstract class ClientSessionTests extends Tests {
         }
         if (this.receiveClient != null) {
             if (this.receiveClient instanceof SubscriptionClient) {
-                ((SubscriptionClient)this.receiveClient).close();
+                ((SubscriptionClient) this.receiveClient).close();
             } else {
-                ((QueueClient)this.receiveClient).close();
+                ((QueueClient) this.receiveClient).close();
             }
         }
         
@@ -91,7 +95,7 @@ public abstract class ClientSessionTests extends Tests {
     
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
-        if (managementClient != null ) {
+        if (managementClient != null) {
             if (ClientSessionTests.entityNameCreatedForAllTests != null) {
                 managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
             }
