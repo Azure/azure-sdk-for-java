@@ -1,6 +1,7 @@
 package com.azure.tracing.opencensus;
 
 import com.azure.common.http.ContextData;
+import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 
 import io.opencensus.trace.Span.Options;
@@ -60,5 +61,18 @@ public class OpenCensusTracer implements com.azure.common.implementation.tracing
         }
 
         span.end();
+    }
+
+    @Override
+    public void setAttribute(String key, String value, ContextData context) {
+
+        Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
+        if (spanOptional.isPresent()) {
+            Span span = (Span) spanOptional.get();
+            span.putAttribute(key, AttributeValue.stringAttributeValue(value));
+        }
+        else {
+            // todo: log error!
+        }
     }
 }

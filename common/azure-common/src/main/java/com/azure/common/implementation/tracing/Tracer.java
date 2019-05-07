@@ -9,4 +9,8 @@ public interface Tracer {
 
     ContextData start(String methodName, com.azure.common.http.ContextData context);
     void end(int responseCode, Throwable error, ContextData context);
+    void setAttribute(String key, String value, ContextData context);
+    // void setAttribute(String key, long value, ContextData context);
+    // void setAttribute(String key, double value, ContextData context);
+    // void setAttribute(String key, boolean value, ContextData context);
 }

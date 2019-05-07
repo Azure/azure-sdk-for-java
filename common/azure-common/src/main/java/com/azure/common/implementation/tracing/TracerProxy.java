@@ -28,6 +28,11 @@ public class TracerProxy {
         return local;
     }
 
+    public static void setAttribute(String key, String value, ContextData context) {
+        tracers.forEach(tracer -> tracer.setAttribute(key, value, context));
+    }
+
+
     public static void end(int responseCode, Throwable error, ContextData context) {
         tracers.forEach(tracer -> tracer.end(responseCode, error, context));
     }

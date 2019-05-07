@@ -38,7 +38,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Incoming request has a Context which MIGHT have a current span
+        // Incoming request has a Context which MUST have a current span
         Span parentSpan = null;
 
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
