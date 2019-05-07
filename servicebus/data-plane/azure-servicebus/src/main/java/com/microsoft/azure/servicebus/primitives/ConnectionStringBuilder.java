@@ -75,8 +75,7 @@ public class ConnectionStringBuilder {
     /**
      * Default operation timeout if timeout is not specified in the connection string. 30 seconds.
      */
-    public static final Duration DEFAULT_OPERATION_TIMEOUT = Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS);
-
+    public static final Duration DefaultOperationTimeout = Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS);
     private ConnectionStringBuilder(
             final URI endpointAddress,
             final String entityPath,
@@ -141,7 +140,7 @@ public class ConnectionStringBuilder {
             final String entityPath,
             final String sharedAccessKeyName,
             final String sharedAccessKey) {
-        this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DEFAULT_OPERATION_TIMEOUT, RetryPolicy.getDefault());
+        this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
     /**
@@ -154,7 +153,7 @@ public class ConnectionStringBuilder {
             final String namespaceName,
             final String entityPath,
             final String sharedAccessSingature) {
-        this(namespaceName, entityPath, sharedAccessSingature, ConnectionStringBuilder.DEFAULT_OPERATION_TIMEOUT, RetryPolicy.getDefault());
+        this(namespaceName, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
 
@@ -170,7 +169,7 @@ public class ConnectionStringBuilder {
             final String entityPath,
             final String sharedAccessKeyName,
             final String sharedAccessKey) {
-        this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DEFAULT_OPERATION_TIMEOUT, RetryPolicy.getDefault());
+        this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
     /**
@@ -183,7 +182,7 @@ public class ConnectionStringBuilder {
             final URI endpointAddress,
             final String entityPath,
             final String sharedAccessSingature) {
-        this(endpointAddress, entityPath, sharedAccessSingature, ConnectionStringBuilder.DEFAULT_OPERATION_TIMEOUT, RetryPolicy.getDefault());
+        this(endpointAddress, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
     /**
@@ -252,12 +251,12 @@ public class ConnectionStringBuilder {
     }
 
     /**
-     * Gets the duration after which a pending operation like Send or RECEIVE will time out. If a timeout is not specified, it defaults to {@link #DEFAULT_OPERATION_TIMEOUT}
+     * Gets the duration after which a pending operation like Send or RECEIVE will time out. If a timeout is not specified, it defaults to {@link #DefaultOperationTimeout}
      * This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
      * @return operationTimeout
      */
     public Duration getOperationTimeout() {
-        return (this.operationTimeout == null ? ConnectionStringBuilder.DEFAULT_OPERATION_TIMEOUT : this.operationTimeout);
+        return (this.operationTimeout == null ? ConnectionStringBuilder.DefaultOperationTimeout : this.operationTimeout);
     }
 
     /**
