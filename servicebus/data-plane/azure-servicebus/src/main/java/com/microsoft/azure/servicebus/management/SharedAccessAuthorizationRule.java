@@ -9,8 +9,8 @@ import java.security.SecureRandom;
 import java.util.*;
 
 public class SharedAccessAuthorizationRule extends AuthorizationRule {
-    static int SUPPORTED_SAS_KEY_LENGTH = 44;
-    static String FIXED_CLAIM_TYPE = "SharedAccessKey";
+    static int supportedSasKeyLength = 44;
+    static String fixedClaimType = "SharedAccessKey";
 
     private String keyName;
     private String primaryKey;
@@ -37,7 +37,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public String getClaimType() {
-        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE;
+        return SharedAccessAuthorizationRule.fixedClaimType;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             throw new IllegalArgumentException("Argument cannot be null");
         }
 
-        if (primaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {
-            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH + " characters.");
+        if (primaryKey.length() > SharedAccessAuthorizationRule.supportedSasKeyLength) {
+            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.supportedSasKeyLength + " characters.");
         }
 
         this.primaryKey = primaryKey;
@@ -88,8 +88,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             throw new IllegalArgumentException("Argument cannot be null");
         }
 
-        if (secondaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {
-            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH + " characters.");
+        if (secondaryKey.length() > SharedAccessAuthorizationRule.supportedSasKeyLength) {
+            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.supportedSasKeyLength + " characters.");
         }
 
         this.secondaryKey = secondaryKey;
@@ -135,8 +135,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             return false;
         }
 
-        if ((this.rights != null && other.rights == null) ||
-                this.rights == null && other.rights != null) {
+        if ((this.rights != null && other.rights == null)
+                || this.rights == null && other.rights != null) {
             return false;
         }
 
