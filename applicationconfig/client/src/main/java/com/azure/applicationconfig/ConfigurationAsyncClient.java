@@ -14,19 +14,14 @@ import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.tracing.Tracer;
-import io.opencensus.common.Scope;
-import io.opencensus.trace.Tracing;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.context.Context;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
