@@ -107,7 +107,7 @@ public abstract class ClientSessionTests extends Tests {
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
-            this.receiveClient = (QueueClient)this.sendClient;
+            this.receiveClient = (QueueClient) this.sendClient;
         } else {
             this.sendClient = new TopicClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings());
             this.receiveClient = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, TestUtils.getClientSettings(), receiveMode);
