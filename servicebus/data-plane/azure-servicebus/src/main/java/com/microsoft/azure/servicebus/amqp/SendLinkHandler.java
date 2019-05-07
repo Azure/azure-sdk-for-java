@@ -10,16 +10,14 @@ import org.apache.qpid.proton.engine.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SendLinkHandler extends BaseLinkHandler
-{
+public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     
     private final IAmqpSender msgSender;
     private final Object firstFlow;
     private boolean isFirstFlow;
 
-    public SendLinkHandler(final IAmqpSender sender)
-    {
+    public SendLinkHandler(final IAmqpSender sender) {
         super(sender);
 
         this.msgSender = sender;
@@ -28,36 +26,28 @@ public class SendLinkHandler extends BaseLinkHandler
     }
 
     @Override
-    public void onLinkRemoteOpen(Event event)
-    {
+    public void onLinkRemoteOpen(Event event) {
         Link link = event.getLink();
-        if (link != null && link instanceof Sender)
-        {
+        if (link != null && link instanceof Sender) {
             Sender sender = (Sender) link;
-            if (link.getRemoteTarget() != null)
-            {
+            if (link.getRemoteTarget() != null) {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
 
-                synchronized (this.firstFlow)
-                {
+                synchronized (this.firstFlow) {
                     this.isFirstFlow = false;
                     this.msgSender.onOpenComplete(null);
                 }
-            }
-            else
-            {
+            } else {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteSource:{}, action:{}", sender.getName(), null, null, "waitingForError");
             }
         }
     }
 
     @Override
-    public void onDelivery(Event event)
-    {
+    public void onDelivery(Event event) {
         Delivery delivery = event.getDelivery();
 
-        while (delivery != null)
-        {
+        while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
             TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
@@ -71,14 +61,10 @@ public class SendLinkHandler extends BaseLinkHandler
     }
 
     @Override
-    public void onLinkFlow(Event event)
-    {
-        if (this.isFirstFlow)
-        {
-            synchronized (this.firstFlow)
-            {
-                if (this.isFirstFlow)
-                {
+    public void onLinkFlow(Event event) {
+        if (this.isFirstFlow) {
+            synchronized (this.firstFlow) {
+                if (this.isFirstFlow) {
                     this.msgSender.onOpenComplete(null);
                     this.isFirstFlow = false;
                 }
