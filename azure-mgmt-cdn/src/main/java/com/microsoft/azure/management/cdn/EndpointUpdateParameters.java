@@ -115,6 +115,13 @@ public class EndpointUpdateParameters {
     private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
 
     /**
+     * Defines the Web Application Firewall policy for the endpoint (if
+     * applicable).
+     */
+    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
+    private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
+
+    /**
      * Get endpoint tags.
      *
      * @return the tags value
@@ -351,6 +358,26 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withDeliveryPolicy(EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy) {
         this.deliveryPolicy = deliveryPolicy;
+        return this;
+    }
+
+    /**
+     * Get defines the Web Application Firewall policy for the endpoint (if applicable).
+     *
+     * @return the webApplicationFirewallPolicyLink value
+     */
+    public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.webApplicationFirewallPolicyLink;
+    }
+
+    /**
+     * Set defines the Web Application Firewall policy for the endpoint (if applicable).
+     *
+     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set
+     * @return the EndpointUpdateParameters object itself.
+     */
+    public EndpointUpdateParameters withWebApplicationFirewallPolicyLink(EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
         return this;
     }
 
