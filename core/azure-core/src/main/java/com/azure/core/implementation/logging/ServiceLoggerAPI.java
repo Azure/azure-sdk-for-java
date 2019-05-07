@@ -14,6 +14,7 @@ public interface ServiceLoggerAPI {
     int INFO_LEVEL = 2;
     int WARN_LEVEL = 3;
     int ERROR_LEVEL = 4;
+    int DISABLED_LEVEL = 5;
 
     default ServiceLoggerAPI asTrace() {
         return this;
