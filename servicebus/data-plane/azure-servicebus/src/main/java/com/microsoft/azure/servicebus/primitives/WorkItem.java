@@ -13,11 +13,11 @@ class WorkItem<T> {
     private ScheduledFuture<?> timeoutTask;
     private Exception lastKnownException;
 
-    public WorkItem(final CompletableFuture<T> completableFuture, final Duration timeout) {
+    WorkItem(final CompletableFuture<T> completableFuture, final Duration timeout) {
         this(completableFuture, TimeoutTracker.create(timeout));
     }
 
-    public WorkItem(final CompletableFuture<T> completableFuture, final TimeoutTracker tracker) {
+    WorkItem(final CompletableFuture<T> completableFuture, final TimeoutTracker tracker) {
         this.work = completableFuture;
         this.tracker = tracker;
     }

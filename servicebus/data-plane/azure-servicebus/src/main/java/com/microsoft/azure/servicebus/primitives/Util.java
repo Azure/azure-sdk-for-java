@@ -51,7 +51,7 @@ public class Util {
     }
 
     static int sizeof(Object obj) {
-        if(obj == null) {
+        if (obj == null) {
             return 0;
         }
 
@@ -156,7 +156,7 @@ public class Util {
             // Size and Count each take a max of 4 bytes
             int size = 8;
             int length = Array.getLength(obj);
-            for(int i = 0; i < length; i++) {
+            for (int i = 0; i < length; i++) {
                 size += Util.sizeof(Array.get(obj, i));
             }
 
@@ -175,7 +175,7 @@ public class Util {
     }
 
     public static long convertInstantToDotNetTicks(Instant instant) {
-        return (instant.getEpochSecond() * 10000000) + (instant.getNano() / 100) + EPOCHINDOTNETTICKS ;
+        return (instant.getEpochSecond() * 10000000) + (instant.getNano() / 100) + EPOCHINDOTNETTICKS;
     }
 
     //.Net GUID bytes are ordered in a different way.
@@ -186,7 +186,7 @@ public class Util {
         }
 
         byte[] reOrderedBytes = new byte[GUIDSIZE];
-        for(int i = 0; i < GUIDSIZE; i++) {
+        for (int i = 0; i < GUIDSIZE; i++) {
             int indexInReorderedBytes;
             switch (i) {
                 case 0:
@@ -362,7 +362,7 @@ public class Util {
     public static URI convertNamespaceToEndPointURI(String namespaceName) {
         try {
             return new URI(String.format(Locale.US, ClientConstants.END_POINT_FORMAT, namespaceName));
-        } catch(URISyntaxException exception) {
+        } catch (URISyntaxException exception) {
             throw new IllegalConnectionStringFormatException(
                     String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
                     exception);
@@ -384,7 +384,7 @@ public class Util {
     static int getTokenRenewIntervalInSeconds(int tokenValidityInSeconds) {
         if (tokenValidityInSeconds >= 300) {
             return tokenValidityInSeconds - 30;
-        } else if(tokenValidityInSeconds >= 60) {
+        } else if (tokenValidityInSeconds >= 60) {
             return tokenValidityInSeconds - 10;
         } else {
             return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;

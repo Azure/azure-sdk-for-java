@@ -7,8 +7,7 @@ package com.microsoft.azure.servicebus.primitives;
 import java.time.Duration;
 import java.time.Instant;
 
-public class TimeoutTracker
-{
+public class TimeoutTracker {
     private final Duration originalTimeout;
     private boolean isTimerStarted;
     private Instant startTime;
