@@ -40,7 +40,7 @@ public class ConnectionHandler extends BaseHandler {
         String verifyModePropValue = System.getProperty(ClientConstants.SSL_VERIFY_MODE_PROPERTY_NAME);
         if (ClientConstants.SSL_VERIFY_MODE_ANONYMOUS.equalsIgnoreCase(verifyModePropValue)) {
             VERIFY_MODE = SslDomain.VerifyMode.ANONYMOUS_PEER;
-        } else if(ClientConstants.SSL_VERIFY_MODE_CERTONLY.equalsIgnoreCase(verifyModePropValue)) {
+        } else if (ClientConstants.SSL_VERIFY_MODE_CERTONLY.equalsIgnoreCase(verifyModePropValue)) {
             VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
         } else {
             VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
@@ -204,9 +204,9 @@ public class ConnectionHandler extends BaseHandler {
     public void onConnectionLocalClose(Event event) {
         Connection connection = event.getConnection();
         TRACE_LOGGER.debug("onConnectionLocalClose: hostname:{}", connection.getHostname());
-        if(connection.getRemoteState() == EndpointState.CLOSED) {
+        if (connection.getRemoteState() == EndpointState.CLOSED) {
             // Service closed it first. In some such cases transport is not unbound and causing a leak.
-            if(connection.getTransport() != null) {
+            if (connection.getTransport() != null) {
                 connection.getTransport().unbind();
             }
 
