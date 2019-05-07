@@ -174,6 +174,8 @@ class MessageConverter {
                         case ClientConstants.DEADLETTERSOURCENAME:
                             brokeredMessage.setDeadLetterSource((String) entry.getValue());
                             break;
+                        default:
+                            break;
                     }
                 }
             }
