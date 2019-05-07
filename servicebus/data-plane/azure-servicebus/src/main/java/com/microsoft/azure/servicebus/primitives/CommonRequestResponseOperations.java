@@ -44,7 +44,7 @@ final class CommonRequestResponseOperations {
                         for (Object message : (Iterable) messages) {
                             if (message instanceof Map) {
                                 Message peekedMessage = Message.Factory.create();
-                                Binary messagePayLoad = (Binary)((Map) message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
+                                Binary messagePayLoad = (Binary) ((Map) message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
                                 peekedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());
                                 peekedMessages.add(peekedMessage);
                             }
@@ -53,10 +53,10 @@ final class CommonRequestResponseOperations {
                 }
                 TRACE_LOGGER.debug("Peeked '{}' messages from sequence number '{}' in entity '{}', sessionId '{}'", peekedMessages.size(), fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
                 returningFuture.complete(peekedMessages);
-            } else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE
+            } else if (statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE
                         || (statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.MESSAGE_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage)))) {
                 TRACE_LOGGER.debug("Peek from sequence number '{}' in entity '{}', sessionId '{}' didnot find any messages", fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
-                returningFuture.complete(new ArrayList<Message>());
+                returningFuture.complete(new ArrayList<>());
             } else {
                 // error response
                 Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);

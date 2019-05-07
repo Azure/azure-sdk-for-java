@@ -6,7 +6,9 @@ package com.microsoft.azure.servicebus.management;
 import com.microsoft.azure.servicebus.security.SecurityConstants;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
 
 public class SharedAccessAuthorizationRule extends AuthorizationRule {
     static int supportedSasKeyLength = 44;
