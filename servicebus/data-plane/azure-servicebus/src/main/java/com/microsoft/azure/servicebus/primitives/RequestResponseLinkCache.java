@@ -19,7 +19,7 @@ class RequestResponseLinkCache {
     private final MessagingFactory underlyingFactory;
     private HashMap<String, RequestResponseLinkWrapper> pathToRRLinkMap;
 
-    public RequestResponseLinkCache(MessagingFactory underlyingFactory) {
+    RequestResponseLinkCache(MessagingFactory underlyingFactory) {
         this.underlyingFactory = underlyingFactory;
         this.pathToRRLinkMap = new HashMap<>();
     }
@@ -121,26 +121,26 @@ class RequestResponseLinkCache {
                     transferDestinationSasTokenAudienceURI,
                     additionalProperties,
                     this.entityType).handleAsync((rrlink, ex) -> {
-                synchronized (this.lock) {
-                    if (ex == null) {
-                        TRACE_LOGGER.info("Created requestresponselink to '{}'", requestResponseLinkPath);
-                        if (this.isClosed) {
-                            // Factory is likely closed. Close the link too
-                            rrlink.closeAsync();
-                        } else {
-                            this.requestResponseLink = rrlink;
-                            this.completeWaiters(null);
+                        synchronized (this.lock) {
+                            if (ex == null) {
+                                TRACE_LOGGER.info("Created requestresponselink to '{}'", requestResponseLinkPath);
+                                if (this.isClosed) {
+                                    // Factory is likely closed. Close the link too
+                                    rrlink.closeAsync();
+                                } else {
+                                    this.requestResponseLink = rrlink;
+                                    this.completeWaiters(null);
+                                }
+                            } else {
+                                Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
+                                TRACE_LOGGER.error("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
+                                RequestResponseLinkCache.this.removeWrapperFromCache(this.entityPath);
+                                this.completeWaiters(cause);
+                            }
                         }
-                    } else {
-                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
-                        TRACE_LOGGER.error("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
-                        RequestResponseLinkCache.this.removeWrapperFromCache(this.entityPath);
-                        this.completeWaiters(cause);
-                    }
-                }
-                
-                return null;
-            }, MessagingFactory.INTERNAL_THREAD_POOL);
+
+                        return null;
+                    }, MessagingFactory.INTERNAL_THREAD_POOL);
         }
         
         private void completeWaiters(Throwable exception) {

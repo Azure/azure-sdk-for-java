@@ -56,24 +56,24 @@ public class RequestResponseUtils {
             codeObject = responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_STATUS_CODE);
         }
         if (codeObject != null) {
-            statusCode = (int)codeObject;
+            statusCode = (int) codeObject;
         }
 
         return statusCode;
     }
 
     public static Symbol getResponseErrorCondition(Message responseMessage) {
-        Symbol errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
+        Symbol errorCondition = (Symbol) responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
         if (errorCondition == null) {
-            errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_ERROR_CONDITION);
+            errorCondition = (Symbol) responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_ERROR_CONDITION);
         }
         return errorCondition;
     }
 
     public static String getResponseStatusDescription(Message responseMessage) {
-        String statusDescription = (String)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_DESCRIPTION);
+        String statusDescription = (String) responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_DESCRIPTION);
         if (statusDescription == null) {
-            statusDescription = (String)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_STATUS_DESCRIPTION);
+            statusDescription = (String) responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_STATUS_DESCRIPTION);
         }
         return statusDescription;
     }
@@ -98,7 +98,7 @@ public class RequestResponseUtils {
             HashMap<String, Object> filterMap = new HashMap<>();
             filterMap.put(ClientConstants.REQUEST_RESPONSE_EXPRESSION, ((SqlFilter) ruleDescription.getFilter()).getSqlExpression());
             descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLFILTER, filterMap);
-        } else if(ruleDescription.getFilter() instanceof CorrelationFilter) {
+        } else if (ruleDescription.getFilter() instanceof CorrelationFilter) {
             CorrelationFilter correlationFilter = (CorrelationFilter) ruleDescription.getFilter();
             HashMap<String, Object> filterMap = new HashMap<>();
             filterMap.put(ClientConstants.REQUEST_RESPONSE_CORRELATION_ID, correlationFilter.getCorrelationId());
@@ -118,7 +118,7 @@ public class RequestResponseUtils {
 
         if (ruleDescription.getAction() == null) {
             descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLRULEACTION, null);
-        } else if(ruleDescription.getAction() instanceof SqlRuleAction) {
+        } else if (ruleDescription.getAction() instanceof SqlRuleAction) {
             HashMap<String, Object> sqlActionMap = new HashMap<>();
             sqlActionMap.put(ClientConstants.REQUEST_RESPONSE_EXPRESSION, ((SqlRuleAction) ruleDescription.getAction()).getSqlExpression());
             descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLRULEACTION, sqlActionMap);
@@ -165,7 +165,7 @@ public class RequestResponseUtils {
             if (describedFilter.getDescriptor().equals(ClientConstants.SQL_FILTER_DESCRIPTOR)) {
                 ArrayList<Object> describedSqlFilter = (ArrayList<Object>) describedFilter.getDescribed();
                 if (describedSqlFilter.size() > 0) {
-                    return new SqlFilter((String)describedSqlFilter.get(0));
+                    return new SqlFilter((String) describedSqlFilter.get(0));
                 }
             } else if (describedFilter.getDescriptor().equals(ClientConstants.CORRELATION_FILTER_DESCRIPTOR)) {
                 CorrelationFilter correlationFilter = new CorrelationFilter();

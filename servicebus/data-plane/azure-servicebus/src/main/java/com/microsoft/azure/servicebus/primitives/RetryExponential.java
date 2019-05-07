@@ -34,9 +34,9 @@ public final class RetryExponential extends RetryPolicy {
             return null;
         }
 
-        double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
-        long nextRetryIntervalSeconds = (long) nextRetryInterval ;
-        long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
+        double nextRetryInterval = Math.pow(this.retryFactor, (double) currentRetryCount);
+        long nextRetryIntervalSeconds = (long) nextRetryInterval;
+        long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
         if (remainingTime.getSeconds() < Math.max(nextRetryInterval, ClientConstants.TIMER_TOLERANCE.getSeconds())) {
             return null;
         }

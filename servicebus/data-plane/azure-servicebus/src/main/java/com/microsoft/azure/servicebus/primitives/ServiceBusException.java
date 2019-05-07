@@ -36,8 +36,7 @@ public class ServiceBusException extends Exception {
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         final String baseMessage = super.getMessage();
         return this.errorContext == null || StringUtil.isNullOrEmpty(this.errorContext.toString())
                 ? baseMessage
