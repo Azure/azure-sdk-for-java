@@ -144,8 +144,7 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 ContextData contextData = methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                Tracer.trace(methodParser.fullyQualifiedMethodName(), contextData);
-                //contextData = TracerProxy.start(fullyQualifiedMethodName, contextData);
+                contextData = startTracingSpan(contextData, getSpanMethodName(method));
 
                 final Mono<HttpResponse> asyncResponse = send(request, contextData);
                 //
@@ -157,6 +156,20 @@ public class RestProxy implements InvocationHandler {
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
+    }
+
+    private static String getSpanMethodName(Method method) {
+        // Should we have a class name mapping to a static name, eg ConfigurationService -> AppConfiguration.
+        return String.format("Azure.%s/#s", method.getDeclaringClass().getSimpleName(), method.getName());
+    }
+
+    // What other parameters should we pass to add span attributes? SwaggerMethod?
+    // Should an annotation be added that marks method parameters as trace-able? Same question for headers.
+    private static ContextData startTracingSpan(ContextData contextData, String methodName) {
+        Tracer.trace(methodName, contextData);
+        // return TracerProxy.start(methodName, contextData);
+
+        return contextData;
     }
 
     /**
@@ -497,7 +510,7 @@ public class RestProxy implements InvocationHandler {
     public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, ContextData contextData) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
             .doOnEach(RestProxy::endTracingSpan)
-            .subscriberContext(Context.of("TRACING_CONTEXT", contextData, "METHOD_NAME", methodParser.fullyQualifiedMethodName()));
+            .subscriberContext(Context.of("TRACING_CONTEXT", contextData, "METHOD_NAME", methodParser.fullyQualifiedMethodName())); // TODO (alzimmer): Makes these constants.
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -527,11 +540,15 @@ public class RestProxy implements InvocationHandler {
         return result;
     }
 
+    // This handles each onX for the response mono.
+    // The signal indicates the status and contains the metadata we need to end the tracing span.
     private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
+        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
         if (signal.isOnComplete() || signal.isOnSubscribe()) {
             return;
         }
 
+        // Get the context that was added to the mono, this will contain the information needed to end the span.
         Context context = signal.getContext();
         Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
         Optional<String> methodName = context.getOrEmpty("METHOD_NAME");
@@ -544,12 +561,15 @@ public class RestProxy implements InvocationHandler {
         HttpDecodedResponse httpDecodedResponse;
         Throwable throwable;
 
+        // On next contains the response information.
         if (signal.isOnNext()) {
             httpDecodedResponse = signal.get();
             statusCode = httpDecodedResponse.sourceResponse().statusCode();
         } else {
+            // The last status available is on error, this contains the error thrown by the REST response.
             throwable = signal.getThrowable();
 
+            // Only ServiceRequestExceptions contain a status code, this is the base REST response.
             if (throwable instanceof ServiceRequestException) {
                 ServiceRequestException sre = (ServiceRequestException) throwable;
                 statusCode = sre.response().statusCode();
