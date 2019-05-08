@@ -10,19 +10,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
 /**
- * SecretAttributes is the resource containing all the properties of the secret except its value.
+ * SecretBase is the resource containing all the properties of the secret except its value.
  * It is managed by the Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public class SecretAttributes {
+public class SecretBase {
 
     /**
      * The secret id.
@@ -103,7 +102,7 @@ public class SecretAttributes {
     /**
      * Get the secret name.
      *
-     * @return the name value.
+     * @return the name of the secret.
      */
     public String name() {
         return this.name;
@@ -112,7 +111,7 @@ public class SecretAttributes {
     /**
      * Get the recovery level of the secret.
 
-     * @return the recoveryLevel value.
+     * @return the recoveryLevel of the secret.
      */
     public String recoveryLevel() {
         return recoveryLevel;
@@ -131,37 +130,37 @@ public class SecretAttributes {
      * Set the enabled value.
      *
      * @param enabled the enabled value to set
-     * @return the Attributes object itself.
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes enabled(Boolean enabled) {
+    public SecretBase enabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     /**
-     * Get the notBefore value.
+     * Get the notBefore UTC time.
      *
-     * @return the notBefore value
+     * @return the notBefore UTC time.
      */
     public OffsetDateTime notBefore() {
         return notBefore;
     }
 
     /**
-     * Set the {@link LocalDateTime notBefore} time value. The time gets converted to UTC time.
+     * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore the notBefore time value to set
-     * @return the SecretAttributes object itself.
+     * @param notBefore the notBefore UTC time to set
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes notBefore(LocalDateTime notBefore) {
-        this.notBefore = OffsetDateTime.of(notBefore, ZoneOffset.UTC);
+    public SecretBase notBefore(OffsetDateTime notBefore) {
+        this.notBefore = notBefore;
         return this;
     }
 
     /**
      * Get the Secret Expiry time in UTC.
      *
-     * @return the expires value
+     * @return the expires UTC time.
      */
     public OffsetDateTime expires() {
         if (this.expires == null) {
@@ -171,20 +170,20 @@ public class SecretAttributes {
     }
 
     /**
-     * Set the {@link LocalDateTime expiry} time for the Secret. The time gets converted to UTC time.
+     * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires the expiry time to set for the secret.
-     * @return the SecretAttributes object itself.
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes expires(LocalDateTime expires) {
-        this.expires = OffsetDateTime.of(expires, ZoneOffset.UTC);
+    public SecretBase expires(OffsetDateTime expires) {
+        this.expires = expires;
         return this;
     }
 
     /**
      * Get the the UTC time at which secret was created.
      *
-     * @return the created time value.
+     * @return the created UTC time.
      */
     public OffsetDateTime created() {
         return created;
@@ -193,76 +192,76 @@ public class SecretAttributes {
     /**
      * Get the UTC time at which secret was last updated.
      *
-     * @return the updated time value.
+     * @return the last updated UTC time.
      */
     public OffsetDateTime updated() {
         return updated;
     }
 
     /**
-     * Get the secret identifier value.
+     * Get the secret identifier.
      *
-     * @return the secret identifier value.
+     * @return the secret identifier.
      */
     public String id() {
         return this.id;
     }
 
     /**
-     * Set the secret identifier value.
+     * Set the secret identifier.
      *
-     * @param id the secret identifier value to set
-     * @return the SecretAttributes object itself.
+     * @param id the secret identifier to set
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes id(String id) {
+    public SecretBase id(String id) {
         unpackId(id);
         return this;
     }
 
     /**
-     * Get the contentType value.
+     * Get the content type.
      *
-     * @return the contentType value
+     * @return the content type.
      */
     public String contentType() {
         return this.contentType;
     }
 
     /**
-     * Set the contentType value.
+     * Set the contentType.
      *
-     * @param contentType the contentType value to set
-     * @return the SecretAttributes object itself.
+     * @param contentType the contentType to set
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes contentType(String contentType) {
+    public SecretBase contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
 
     /**
-     * Get the tags value.
+     * Get the tags associated with the secret.
      *
-     * @return the tags value
+     * @return the value of the tags.
      */
     public Map<String, String> tags() {
         return this.tags;
     }
 
     /**
-     * Set the tags value.
+     * Set the tags to be associated with the secret.
      *
-     * @param tags the tags value to set
-     * @return the SecretAttributes object itself.
+     * @param tags the tags to set
+     * @return the SecretBase object itself.
      */
-    public SecretAttributes tags(Map<String, String> tags) {
+    public SecretBase tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
 
     /**
-     * Get the keyId value.
+     * Get the keyId identifier.
      *
-     * @return the keyId value
+     * @return the keyId identifier.
      */
     public String keyId() {
         return this.keyId;
@@ -277,11 +276,10 @@ public class SecretAttributes {
         return this.managed;
     }
 
-
     /**
-     * Get the version value.
+     * Get the version of the secret.
      *
-     * @return the version value
+     * @return the version of the secret.
      */
     public String version() {
         return this.version;

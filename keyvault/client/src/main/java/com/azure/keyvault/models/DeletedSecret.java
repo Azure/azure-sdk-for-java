@@ -11,13 +11,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- *  Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretAttributes}.
+ *  Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretBase}.
  *  It is managed by Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public final class DeletedSecret extends SecretAttributes {
+public final class DeletedSecret extends SecretBase {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -37,18 +37,18 @@ public final class DeletedSecret extends SecretAttributes {
     private OffsetDateTime deletedDate;
 
     /**
-     * Get the recoveryId value.
+     * Get the recoveryId identifier.
      *
-     * @return the recoveryId value
+     * @return the recoveryId identifier.
      */
     public String recoveryId() {
         return this.recoveryId;
     }
 
     /**
-     * Set the recoveryId value.
+     * Set the recoveryId identifier.
      *
-     * @param recoveryId the recoveryId value to set
+     * @param recoveryId the recoveryId identifier to set
      * @return the DeletedSecret object itself.
      */
     public DeletedSecret recoveryId(String recoveryId) {
@@ -57,18 +57,18 @@ public final class DeletedSecret extends SecretAttributes {
     }
 
     /**
-     * Get the scheduledPurgeDate value.
+     * Get the scheduled purge UTC time.
      *
-     * @return the scheduledPurgeDate value
+     * @return the scheduledPurgeDate UTC time.
      */
     public OffsetDateTime scheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
     /**
-     * Get the deletedDate value.
+     * Get the deleted UTC time.
      *
-     * @return the deletedDate value
+     * @return the deletedDate UTC time.
      */
     public OffsetDateTime deletedDate() {
         return this.deletedDate;

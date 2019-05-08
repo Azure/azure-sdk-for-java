@@ -3,7 +3,7 @@
 
 package com.azure.keyvault;
 
-import com.azure.keyvault.models.SecretAttributes;
+import com.azure.keyvault.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -16,18 +16,18 @@ import java.time.ZoneOffset;
 class SecretRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads secretAttributes.notBefore, secretAttributes.expires and secretAttributes.enabled fields
-     * from {@code secretAttributes}
-     * @param secretAttributes the {@link SecretAttributes} object with populated attributes
+     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and secretBase.enabled fields
+     * from {@code secretBase}
+     * @param secretBase the {@link SecretBase} object with populated attributes
      */
-    SecretRequestAttributes(SecretAttributes secretAttributes) {
-        if (secretAttributes.notBefore() != null) {
-            this.notBefore = secretAttributes.notBefore().toEpochSecond();
+    SecretRequestAttributes(SecretBase secretBase) {
+        if (secretBase.notBefore() != null) {
+            this.notBefore = secretBase.notBefore().toEpochSecond();
         }
-        if (secretAttributes.expires() != null) {
-            this.expires = secretAttributes.expires().toEpochSecond();
+        if (secretBase.expires() != null) {
+            this.expires = secretBase.expires().toEpochSecond();
         }
-        this.enabled = secretAttributes.enabled();
+        this.enabled = secretBase.enabled();
     }
 
     /**

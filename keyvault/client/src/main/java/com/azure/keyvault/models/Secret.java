@@ -6,21 +6,20 @@ package com.azure.keyvault.models;
 import com.azure.keyvault.SecretAsyncClient;
 import com.azure.keyvault.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- *  Secret is the resource consisting of name, value and its attributes inherited from {@link SecretAttributes}.
+ *  Secret is the resource consisting of name, value and its attributes inherited from {@link SecretBase}.
  *  It is managed by Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public class Secret extends SecretAttributes {
+public class Secret extends SecretBase {
 
     /**
-     * The secret value.
+     * The value of the secret.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -44,7 +43,7 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Get the secret value.
+     * Get the value of the secret.
      *
      * @return the secret value
      */
@@ -53,7 +52,7 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the enabled value.
+     * Set enabled value.
      *
      * @param enabled the enabled value to set
      * @return the Secret object itself.
@@ -65,31 +64,31 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the {@link LocalDateTime notBefore} time value. The time value gets converted to UTC time.
+     * Set the {@link OffsetDateTime notBefore} UTC time.
      *
      * @param notBefore the not before time value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret notBefore(LocalDateTime notBefore) {
+    public Secret notBefore(OffsetDateTime notBefore) {
         super.notBefore(notBefore);
         return this;
     }
 
     /**
-     * Set the {@link LocalDateTime expires} time value. The time value gets converted to UTC time.
+     * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires the expiry time value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret expires(LocalDateTime expires) {
+    public Secret expires(OffsetDateTime expires) {
         super.expires(expires);
         return this;
     }
 
     /**
-     * Set the secret identifier value.
+     * Set the secret identifier.
      *
      * @param id the secret identifier value to set
      * @return the Secret object itself.
@@ -101,7 +100,7 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the contentType value. It represents the type of the secret's value.
+     * Set the content type of the secret.
      *
      * @param contentType the content type value to set
      * @return the Secret object itself.
@@ -113,7 +112,7 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the tags value.
+     * Set the tags.
      *
      * @param tags the tags value to set
      * @return the Secret object itself.

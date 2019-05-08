@@ -4,16 +4,16 @@
 package com.azure.keyvault.implementation;
 
 import com.azure.common.http.rest.Page;
-import com.azure.keyvault.models.SecretAttributes;
+import com.azure.keyvault.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * A page of Azure App Configuration {@link SecretAttributes} resources and a link to get the next page of
+ * A page of Azure App Configuration {@link SecretBase} resources and a link to get the next page of
  * resources, if any.
  */
-public final class SecretAttributesPage implements Page<SecretAttributes> {
+public final class SecretBasePage implements Page<SecretBase> {
 
     /**
      * The link to the next page.
@@ -25,7 +25,7 @@ public final class SecretAttributesPage implements Page<SecretAttributes> {
      * The list of items.
      */
     @JsonProperty("value")
-    private List<SecretAttributes> items;
+    private List<SecretBase> items;
 
     /**
      * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
@@ -38,12 +38,12 @@ public final class SecretAttributesPage implements Page<SecretAttributes> {
     }
 
     /**
-     * Gets the list of {@link SecretAttributes SecretAttributes} on this page.
+     * Gets the list of {@link SecretBase SecretBase} on this page.
      *
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<SecretAttributes> items() {
+    public List<SecretBase> items() {
         return items;
     }
 }

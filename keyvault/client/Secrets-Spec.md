@@ -118,9 +118,9 @@ Secret retKeySecret = secretClient.setSecretAsync(keySecret).block().body();
 ServiceFuture<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, final  ServiceCallback<SecretBundle> serviceCallback);
 Observable<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value);
 Observable<ServiceResponse<SecretBundle>> setSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String value);
-ServiceFuture<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes, final ServiceCallback<SecretBundle> serviceCallback);
-Observable<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes);
-Observable<ServiceResponse<SecretBundle>> setSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes);
+ServiceFuture<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretBase, final ServiceCallback<SecretBundle> serviceCallback);
+Observable<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretBase);
+Observable<ServiceResponse<SecretBundle>> setSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretBase);
 ~~~
 #### Usage:
 ~~~ java 
@@ -173,10 +173,10 @@ SecretInfo updatedInfo = secretClient.updateSecretAsync(secret).block().body();
 ~~~ java
 Observable<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion);
 Observable<ServiceResponse<SecretBundle>> updateSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String secretVersion);
-SecretBundle updateSecret(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags);
-ServiceFuture<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags, final ServiceCallback<SecretBundle> serviceCallback);
-Observable<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags);
-Observable<ServiceResponse<SecretBundle>> updateSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags);
+SecretBundle updateSecret(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretBase, Map<String, String> tags);
+ServiceFuture<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretBase, Map<String, String> tags, final ServiceCallback<SecretBundle> serviceCallback);
+Observable<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretBase, Map<String, String> tags);
+Observable<ServiceResponse<SecretBundle>> updateSecretWithServiceResponseAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretBase, Map<String, String> tags);
 ~~~
 #### Usage:
 ~~~ java
