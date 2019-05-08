@@ -84,8 +84,7 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client
-     *     .addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
+     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add to the configuration service.
@@ -141,8 +140,7 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
+     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * <p>Update the value of the setting to "updated_db_connection".</p>
@@ -174,7 +172,7 @@ public final class ConfigurationClient {
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.updateSetting("prodDCConnection", "db_connection");
+     * ConfigurationSetting result = client.updateSetting("prodDCConnection", "updated_db_connection");
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the configuration setting to update.
@@ -200,8 +198,7 @@ public final class ConfigurationClient {
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client
-     *     .updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
+     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"));
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add or update in the service.
@@ -247,8 +244,7 @@ public final class ConfigurationClient {
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client
-     *     .getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
+     * ConfigurationSetting result = client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
@@ -296,8 +292,7 @@ public final class ConfigurationClient {
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client
-     *     .deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
+     * ConfigurationSetting result = client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The ConfigurationSetting to delete.

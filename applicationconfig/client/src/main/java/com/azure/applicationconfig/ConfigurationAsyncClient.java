@@ -105,8 +105,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * client
-     *     .addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     * client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -176,8 +175,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -186,8 +184,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Update the value of the setting to "updated_db_connection".</p>
      *
      * <pre>
-     * client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
+     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -253,8 +250,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
      * <pre>
-     * client
-     *     .updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     * client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -311,8 +307,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * client
-     *     .getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     * client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -369,8 +364,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * client
-     *     .deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
+     * client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
      *     .subscribe(response -&gt; {
      *         ConfigurationSetting result = response.value();
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
@@ -401,8 +395,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
      * <pre>
-     * client
-     *     .listSettings(new SettingSelector().key("prodDBConnection"))
+     * client.listSettings(new SettingSelector().key("prodDBConnection"))
      *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
      *
      * @param options Optional. Options to filter configuration setting results from the service.
@@ -434,8 +427,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
      * <pre>
-     * client
-     *     .listSettingRevisions(new SettingSelector().key("prodDBConnection"))
+     * client.listSettingRevisions(new SettingSelector().key("prodDBConnection"))
      *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
