@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.logging;
 
-import com.azure.core.implementation.configuration.ConfigurationRetriever;
-import com.azure.core.implementation.configuration.Configurations;
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.configuration.Configurations;
 import com.azure.core.implementation.util.ImplUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class ServiceLogger implements ServiceLoggerAPI {
     public ServiceLogger(String className) {
         logger = LoggerFactory.getLogger(className);
 
-        String azureLoggingLevel = ConfigurationRetriever.getConfiguration(Configurations.AZURE_LOG_LEVEL);
+        String azureLoggingLevel = ConfigurationManager.getConfiguration(Configurations.AZURE_LOG_LEVEL);
         if (!ImplUtils.isNullOrEmpty(azureLoggingLevel)) {
             minimumLoggingLevel = Integer.parseInt(azureLoggingLevel);
         } else {
