@@ -4,6 +4,8 @@ package com.azure.applicationconfig.models;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
 
+import java.util.Locale;
+
 /**
  * Fields in {@link ConfigurationSetting} that can be returned from GET queries.
  *
@@ -42,5 +44,14 @@ public enum SettingFields {
     /**
      * Populates the {@link ConfigurationSetting#tags()} from the service.
      */
-    TAGS,
+    TAGS;
+
+    /**
+     * Converts the SettingFields to a string that is usable for HTTP requests and logging.
+     * @param field SettingFields to map.
+     * @return SettingFields as a lowercase string in the US locale.
+     */
+    public static String toStringMapper(SettingFields field) {
+        return field.toString().toLowerCase(Locale.US);
+    }
 }

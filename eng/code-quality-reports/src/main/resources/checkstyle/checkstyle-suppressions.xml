@@ -9,13 +9,13 @@
   <suppress checks="RedundantModifier" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
   <suppress checks="RedundantModifier" files="keyvault[/\\]data-plane[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
 
-  <!-- AutoRest generates with unused imports. Remove this suppresion when:
+  <!-- AutoRest generates with unused imports. Remove this suppression when:
   https://github.com/Azure/autorest.java/issues/330 is fixed. -->
   <suppress checks="UnusedImports" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
 
-  <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
-  <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
-  <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
+  <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>

@@ -312,7 +312,7 @@ class PartitionScanner extends Closable {
 
         return allSteals;
     }
-    
+
     private static class AcquisitionHolder {
         private CompleteLease acquiredLease;
 
