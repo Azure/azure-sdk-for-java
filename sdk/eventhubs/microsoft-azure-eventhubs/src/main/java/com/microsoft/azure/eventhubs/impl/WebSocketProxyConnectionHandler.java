@@ -4,6 +4,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -77,7 +78,9 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         super.addTransportLayers(event, transport);
 
-        final ProxyImpl proxy = new ProxyImpl();
+        final ProxyImpl proxy = proxyConfiguration != null
+            ? new ProxyImpl(getProtonConfiguration(proxyConfiguration))
+            : new ProxyImpl();
 
         // host name used to create proxy connect request
         // after creating the socket to proxy
@@ -182,5 +185,30 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         // it swallows the IOException and translates it to proton-io errorCode
         // we reconstruct the IOException in this case - but, callstack is lost
         return new IOException(errorCondition.getDescription());
+    }
+
+    private static com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration(ProxyConfiguration configuration) {
+        final ProxyAuthenticationType type = getProtonAuthenticationType(configuration.authentication());
+        final String username = configuration.hasUserDefinedCredentials()
+            ? configuration.credentials().getUserName()
+            : null;
+        final String password = configuration.hasUserDefinedCredentials()
+            ? new String(configuration.credentials().getPassword())
+            : null;
+
+        return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(type, configuration.proxyAddress(), username, password);
+    }
+
+    private static ProxyAuthenticationType getProtonAuthenticationType(ProxyConfiguration.ProxyAuthenticationType type) {
+        switch (type) {
+            case DIGEST:
+                return ProxyAuthenticationType.DIGEST;
+            case BASIC:
+                return ProxyAuthenticationType.BASIC;
+            case NONE:
+                return ProxyAuthenticationType.NONE;
+            default:
+                throw new IllegalArgumentException("This authentication type is unknown:" + type.name());
+        }
     }
 }
