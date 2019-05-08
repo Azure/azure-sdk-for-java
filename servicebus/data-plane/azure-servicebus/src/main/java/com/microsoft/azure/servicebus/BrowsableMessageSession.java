@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -22,11 +22,11 @@ final class BrowsableMessageSession extends MessageSession {
 
     BrowsableMessageSession(String sessionId, MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
         super(messagingFactory, entityPath, entityType, sessionId, ReceiveMode.PEEKLOCK);
-//		try {
-//			this.initializeAsync().get();
-//		} catch (InterruptedException | ExecutionException e) {
-//			
-//		}
+//        try {
+//            this.initializeAsync().get();
+//        } catch (InterruptedException | ExecutionException e) {
+//
+//        }
     }
 
     @Override

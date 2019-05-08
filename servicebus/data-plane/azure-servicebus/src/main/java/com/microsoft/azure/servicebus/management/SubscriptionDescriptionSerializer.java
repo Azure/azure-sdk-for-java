@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
@@ -265,7 +268,7 @@ class SubscriptionDescriptionSerializer {
 
     private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
         try {
-            URI url = new URI(forwardTo);
+            new URI(forwardTo);
             return forwardTo;
         } catch (URISyntaxException e) {
             return baseAddress.resolve(forwardTo).toString();
