@@ -18,7 +18,7 @@ public class DeliveryRule {
     /**
      * Name of the rule.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /**
