@@ -8,18 +8,19 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
-import com.microsoft.azure.management.kusto.v2019_01_21.Reason;
+import com.microsoft.azure.management.kusto.v2019_01_21.NameAvailable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The result returned from a check name availability request.
  */
-public class CheckNameResultInner {
+public class CheckNameAvailabilityResultInner {
     /**
-     * Specifies a Boolean value that indicates if the name is available.
+     * Specifies whether or not the name is available. Possible values include:
+     * 'Available', 'NotAvailable'.
      */
     @JsonProperty(value = "nameAvailable")
-    private Boolean nameAvailable;
+    private NameAvailable nameAvailable;
 
     /**
      * The name that was checked.
@@ -35,28 +36,21 @@ public class CheckNameResultInner {
     private String message;
 
     /**
-     * Message providing the reason why the given name is invalid. Possible
-     * values include: 'Invalid', 'AlreadyExists'.
-     */
-    @JsonProperty(value = "reason")
-    private Reason reason;
-
-    /**
-     * Get specifies a Boolean value that indicates if the name is available.
+     * Get specifies whether or not the name is available. Possible values include: 'Available', 'NotAvailable'.
      *
      * @return the nameAvailable value
      */
-    public Boolean nameAvailable() {
+    public NameAvailable nameAvailable() {
         return this.nameAvailable;
     }
 
     /**
-     * Set specifies a Boolean value that indicates if the name is available.
+     * Set specifies whether or not the name is available. Possible values include: 'Available', 'NotAvailable'.
      *
      * @param nameAvailable the nameAvailable value to set
-     * @return the CheckNameResultInner object itself.
+     * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameResultInner withNameAvailable(Boolean nameAvailable) {
+    public CheckNameAvailabilityResultInner withNameAvailable(NameAvailable nameAvailable) {
         this.nameAvailable = nameAvailable;
         return this;
     }
@@ -74,9 +68,9 @@ public class CheckNameResultInner {
      * Set the name that was checked.
      *
      * @param name the name value to set
-     * @return the CheckNameResultInner object itself.
+     * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameResultInner withName(String name) {
+    public CheckNameAvailabilityResultInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -94,30 +88,10 @@ public class CheckNameResultInner {
      * Set message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
      *
      * @param message the message value to set
-     * @return the CheckNameResultInner object itself.
+     * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameResultInner withMessage(String message) {
+    public CheckNameAvailabilityResultInner withMessage(String message) {
         this.message = message;
-        return this;
-    }
-
-    /**
-     * Get message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'.
-     *
-     * @return the reason value
-     */
-    public Reason reason() {
-        return this.reason;
-    }
-
-    /**
-     * Set message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'.
-     *
-     * @param reason the reason value to set
-     * @return the CheckNameResultInner object itself.
-     */
-    public CheckNameResultInner withReason(Reason reason) {
-        this.reason = reason;
         return this;
     }
 

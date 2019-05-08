@@ -11,6 +11,7 @@ package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.kusto.v2019_01_21.DataConnectionCheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.DataConnectionValidation;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -66,6 +67,10 @@ public class DataConnectionsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.DataConnections dataConnectionValidationMethod" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnectionValidation")
         Observable<Response<ResponseBody>> dataConnectionValidationMethod(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body DataConnectionValidation parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.DataConnections checkNameAvailability" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkNameAvailability")
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DataConnectionCheckNameRequest dataConnectionName, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.DataConnections get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
@@ -292,6 +297,108 @@ public class DataConnectionsInner {
     private ServiceResponse<DataConnectionValidationListResultInner> dataConnectionValidationMethodDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DataConnectionValidationListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DataConnectionValidationListResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param name Data Connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckNameResultInner object if successful.
+     */
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName, String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param name Data Connection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name, final ServiceCallback<CheckNameResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name), serviceCallback);
+    }
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param name Data Connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameResultInner object
+     */
+    public Observable<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, name).map(new Func1<ServiceResponse<CheckNameResultInner>, CheckNameResultInner>() {
+            @Override
+            public CheckNameResultInner call(ServiceResponse<CheckNameResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param name Data Connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameResultInner object
+     */
+    public Observable<ServiceResponse<CheckNameResultInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        DataConnectionCheckNameRequest dataConnectionName = new DataConnectionCheckNameRequest();
+        dataConnectionName.withName(name);
+        return service.checkNameAvailability(resourceGroupName, clusterName, databaseName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), dataConnectionName, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckNameResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckNameResultInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckNameResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

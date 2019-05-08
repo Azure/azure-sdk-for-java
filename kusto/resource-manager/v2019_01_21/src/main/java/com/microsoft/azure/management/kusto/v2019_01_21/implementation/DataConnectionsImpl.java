@@ -17,6 +17,7 @@ import rx.functions.Func1;
 import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.DataConnection;
 import com.microsoft.azure.management.kusto.v2019_01_21.DataConnectionValidationListResult;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.DataConnectionValidation;
 
 class DataConnectionsImpl extends WrapperImpl<DataConnectionsInner> implements DataConnections {
@@ -88,6 +89,18 @@ class DataConnectionsImpl extends WrapperImpl<DataConnectionsInner> implements D
             @Override
             public DataConnectionValidationListResult call(DataConnectionValidationListResultInner inner) {
                 return new DataConnectionValidationListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<CheckNameResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name) {
+        DataConnectionsInner client = this.inner();
+        return client.checkNameAvailabilityAsync(resourceGroupName, clusterName, databaseName, name)
+        .map(new Func1<CheckNameResultInner, CheckNameResult>() {
+            @Override
+            public CheckNameResult call(CheckNameResultInner inner) {
+                return new CheckNameResultImpl(inner, manager());
             }
         });
     }

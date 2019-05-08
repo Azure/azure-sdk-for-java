@@ -11,12 +11,12 @@ package com.microsoft.azure.management.kusto.v2019_01_21;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.kusto.v2019_01_21.implementation.KustoManager;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.CheckNameResultInner;
+import com.microsoft.azure.management.kusto.v2019_01_21.implementation.CheckNameAvailabilityResultInner;
 
 /**
- * Type representing CheckNameResult.
+ * Type representing CheckNameAvailabilityResult.
  */
-public interface CheckNameResult extends HasInner<CheckNameResultInner>, HasManager<KustoManager> {
+public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityResultInner>, HasManager<KustoManager> {
     /**
      * @return the message value.
      */
@@ -30,11 +30,6 @@ public interface CheckNameResult extends HasInner<CheckNameResultInner>, HasMana
     /**
      * @return the nameAvailable value.
      */
-    Boolean nameAvailable();
-
-    /**
-     * @return the reason value.
-     */
-    Reason reason();
+    NameAvailable nameAvailable();
 
 }

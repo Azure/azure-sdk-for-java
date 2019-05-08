@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
-import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameAvailabilityResult;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.kusto.v2019_01_21.Reason;
+import com.microsoft.azure.management.kusto.v2019_01_21.NameAvailable;
 
-class CheckNameResultImpl extends WrapperImpl<CheckNameResultInner> implements CheckNameResult {
+class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvailabilityResultInner> implements CheckNameAvailabilityResult {
     private final KustoManager manager;
-    CheckNameResultImpl(CheckNameResultInner inner, KustoManager manager) {
+    CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner inner, KustoManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -35,13 +35,8 @@ class CheckNameResultImpl extends WrapperImpl<CheckNameResultInner> implements C
     }
 
     @Override
-    public Boolean nameAvailable() {
+    public NameAvailable nameAvailable() {
         return this.inner().nameAvailable();
-    }
-
-    @Override
-    public Reason reason() {
-        return this.inner().reason();
     }
 
 }
