@@ -95,11 +95,13 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         final ErrorCondition errorCondition = transport.getCondition();
         final String hostName = event.getReactor().getConnectionAddress(connection);
         final ProxySelector proxySelector = ProxySelector.getDefault();
+        final boolean isProxyConfigured = proxySelector != null
+            || (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured());
 
         if (errorCondition == null
                 || !(errorCondition.getCondition().equals(ConnectionError.FRAMING_ERROR)
                         || errorCondition.getCondition().equals(AmqpErrorCode.PROTON_IO_ERROR))
-                || proxySelector == null
+                || !isProxyConfigured
                 || StringUtil.isNullOrEmpty(hostName)) {
             return;
         }
@@ -117,10 +119,16 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         }
 
         final IOException ioException = reconstructIOException(errorCondition);
-        proxySelector.connectFailed(
-                createURIFromHostNamePort(this.getAmqpConnection().getHostName(), this.getProtocolPort()),
-                new InetSocketAddress(hostNameParts[0], port),
-                ioException);
+        final URI url = createURIFromHostNamePort(this.getAmqpConnection().getHostName(), this.getProtocolPort());
+        final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
+
+        if (TRACE_LOGGER.isErrorEnabled()) {
+            TRACE_LOGGER.error(String.format("Failed to connect to url: '%s', proxy host: '%s'", url.toString(), address.getHostString()), ioException);
+        }
+
+        if (proxySelector != null) {
+            proxySelector.connectFailed(url, address, ioException);
+        }
     }
 
     @Override
@@ -136,6 +144,10 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     }
 
     private InetSocketAddress getProxyAddress() {
+        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
+            return (InetSocketAddress) proxyConfiguration.proxyAddress().address();
+        }
+
         final URI serviceUri = createURIFromHostNamePort(
                 this.getAmqpConnection().getHostName(),
                 this.getProtocolPort());
