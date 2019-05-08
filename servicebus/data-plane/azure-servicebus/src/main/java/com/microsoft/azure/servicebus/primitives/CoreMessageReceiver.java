@@ -1594,8 +1594,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
     }
 
     private static class DeliveryStateDispatchHandler extends DispatchHandler {
-        Delivery delivery;
-        DeliveryState deliveryState;
+        final Delivery delivery;
+        final DeliveryState deliveryState;
 
         DeliveryStateDispatchHandler(Delivery delivery, DeliveryState deliveryState) {
             this.delivery = delivery;
