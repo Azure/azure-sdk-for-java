@@ -50,17 +50,6 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     }
 
     /**
-     * Creates a WebSocket proxy connection handler for the provided {@code amqpConnection}.
-     *
-     * @param amqpConnection The AMQP connection to the service.
-     */
-    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection) {
-        super(amqpConnection);
-
-        this.proxyConfiguration = null;
-    }
-
-    /**
      * Creates a WebSocket proxy connection handler for the {@code amqpConnection} and {@code proxyConfiguration}.
      *
      * @param amqpConnection AMQP connection to the service.
