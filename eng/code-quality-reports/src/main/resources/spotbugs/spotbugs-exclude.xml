@@ -360,8 +360,4 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
-  <Match>
-    <Class name="com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag"/>
-    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
-  </Match>
 </FindBugsFilter>
