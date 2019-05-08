@@ -3,7 +3,7 @@
 
 package com.azure.core.configuration;
 
-public enum Configurations {
+public enum EnvironmentConfigurations {
 
     /**
      * URI of the proxy for HTTP connections.
@@ -26,10 +26,28 @@ public enum Configurations {
      */
     NO_PROXY,
 
+    MSI_CREDENTIALS,
+
     /**
      * Automatically generated secret for MSI.
      */
     MSI_SECRET,
+
+    AZURE_SUBSCRIPTION_ID,
+
+    AZURE_USERNAME,
+
+    AZURE_PASSWORD,
+
+    AZURE_CLIENT_ID,
+
+    AZURE_CLIENT_SECRET,
+
+    AZURE_TENANT_ID,
+
+    AZURE_RESOURCE_GROUP,
+
+    AZURE_CLOUD,
 
     /**
      * User agent to use for HTTP requests.
@@ -53,5 +71,7 @@ public enum Configurations {
      *
      * Tracing is enabled by default.
      */
-    AZURE_NO_TRACING
+    AZURE_TRACING_DISABLED,
+
+    AZURE_TELEMETRY_DISABLED
 }

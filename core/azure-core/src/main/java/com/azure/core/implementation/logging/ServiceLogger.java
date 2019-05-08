@@ -4,7 +4,7 @@
 package com.azure.core.implementation.logging;
 
 import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.configuration.Configurations;
+import com.azure.core.configuration.EnvironmentConfigurations;
 import com.azure.core.implementation.util.ImplUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ServiceLogger implements ServiceLoggerAPI {
     private static final NoopServiceLogger NOOP_LOGGER = new NoopServiceLogger();
-    private final int minimumLoggingLevel;
 
     private final Logger logger;
 
@@ -34,13 +33,6 @@ public class ServiceLogger implements ServiceLoggerAPI {
      */
     public ServiceLogger(String className) {
         logger = LoggerFactory.getLogger(className);
-
-        String azureLoggingLevel = ConfigurationManager.getConfiguration(Configurations.AZURE_LOG_LEVEL);
-        if (!ImplUtils.isNullOrEmpty(azureLoggingLevel)) {
-            minimumLoggingLevel = Integer.parseInt(azureLoggingLevel);
-        } else {
-            minimumLoggingLevel = DISABLED_LEVEL;
-        }
     }
 
     /**
@@ -151,7 +143,7 @@ public class ServiceLogger implements ServiceLoggerAPI {
      * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
      */
     private boolean canLogAtLevel(int level) {
-        if (level < minimumLoggingLevel) {
+        if (level < minimumLoggingLevel()) {
             return false;
         }
 
@@ -168,6 +160,14 @@ public class ServiceLogger implements ServiceLoggerAPI {
                 return logger != null && logger.isErrorEnabled();
             default:
                 return false;
+        }
+    }
+
+    private int minimumLoggingLevel() {
+        try {
+            return Integer.parseInt(ConfigurationManager.getConfiguration(EnvironmentConfigurations.AZURE_LOG_LEVEL));
+        } catch (NumberFormatException ex) {
+            return DEFAULT_LOG_LEVEL;
         }
     }
 }
