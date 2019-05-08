@@ -20,12 +20,12 @@ public interface CollectionDatabasisDatabaseAccountUsage extends HasInner<UsageI
     /**
      * @return the currentValue value.
      */
-    Integer currentValue();
+    Long currentValue();
 
     /**
      * @return the limit value.
      */
-    Integer limit();
+    Long limit();
 
     /**
      * @return the name value.

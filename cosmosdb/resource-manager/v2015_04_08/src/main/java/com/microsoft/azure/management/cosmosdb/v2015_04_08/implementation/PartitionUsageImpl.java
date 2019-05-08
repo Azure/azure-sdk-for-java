@@ -26,12 +26,12 @@ class PartitionUsageImpl extends WrapperImpl<PartitionUsageInner> implements Par
     }
 
     @Override
-    public Integer currentValue() {
+    public Long currentValue() {
         return this.inner().currentValue();
     }
 
     @Override
-    public Integer limit() {
+    public Long limit() {
         return this.inner().limit();
     }
 

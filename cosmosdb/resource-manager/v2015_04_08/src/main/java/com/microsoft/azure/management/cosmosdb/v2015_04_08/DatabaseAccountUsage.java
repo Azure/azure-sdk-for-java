@@ -20,12 +20,12 @@ public interface DatabaseAccountUsage extends HasInner<UsageInner>, HasManager<D
     /**
      * @return the currentValue value.
      */
-    Integer currentValue();
+    Long currentValue();
 
     /**
      * @return the limit value.
      */
-    Integer limit();
+    Long limit();
 
     /**
      * @return the name value.

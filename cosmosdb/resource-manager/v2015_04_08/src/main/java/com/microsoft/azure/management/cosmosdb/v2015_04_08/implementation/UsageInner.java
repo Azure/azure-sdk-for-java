@@ -40,13 +40,13 @@ public class UsageInner {
      * Maximum value for this metric.
      */
     @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer limit;
+    private Long limit;
 
     /**
      * Current value for this metric.
      */
     @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer currentValue;
+    private Long currentValue;
 
     /**
      * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'.
@@ -91,7 +91,7 @@ public class UsageInner {
      *
      * @return the limit value
      */
-    public Integer limit() {
+    public Long limit() {
         return this.limit;
     }
 
@@ -100,7 +100,7 @@ public class UsageInner {
      *
      * @return the currentValue value
      */
-    public Integer currentValue() {
+    public Long currentValue() {
         return this.currentValue;
     }
 

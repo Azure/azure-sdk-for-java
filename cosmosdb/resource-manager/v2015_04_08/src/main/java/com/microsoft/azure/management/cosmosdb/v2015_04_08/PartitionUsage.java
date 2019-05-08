@@ -20,12 +20,12 @@ public interface PartitionUsage extends HasInner<PartitionUsageInner>, HasManage
     /**
      * @return the currentValue value.
      */
-    Integer currentValue();
+    Long currentValue();
 
     /**
      * @return the limit value.
      */
-    Integer limit();
+    Long limit();
 
     /**
      * @return the name value.
