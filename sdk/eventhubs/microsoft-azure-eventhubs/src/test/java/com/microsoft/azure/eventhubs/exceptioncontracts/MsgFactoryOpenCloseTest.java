@@ -127,7 +127,8 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
             final CompletableFuture<MessagingFactory> openFuture = MessagingFactory.createFromConnectionString(
                     connStr.toString(), null,
                     executor,
-                    networkOutageSimulator);
+                    networkOutageSimulator,
+                null);
             try {
                 openFuture.get();
                 Assert.fail();
