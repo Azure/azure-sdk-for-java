@@ -200,7 +200,7 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "FormRecognizerClient", "v1.0-preview");
+        return String.format("%s (%s, %s)", super.userAgent(), "FormRecognizerClient", "1.0-preview");
     }
 
     private void initializeService() {
