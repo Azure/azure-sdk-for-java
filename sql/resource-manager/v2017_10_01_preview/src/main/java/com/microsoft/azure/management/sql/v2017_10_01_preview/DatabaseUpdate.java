@@ -106,7 +106,8 @@ public class DatabaseUpdate {
      * 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline',
      * 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying',
      * 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused',
-     * 'Resuming', 'Scaling'.
+     * 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers',
+     * 'OnlineChangingDwPerformanceTiers'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
@@ -414,7 +415,7 @@ public class DatabaseUpdate {
     }
 
     /**
-     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'.
+     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers', 'OnlineChangingDwPerformanceTiers'.
      *
      * @return the status value
      */
