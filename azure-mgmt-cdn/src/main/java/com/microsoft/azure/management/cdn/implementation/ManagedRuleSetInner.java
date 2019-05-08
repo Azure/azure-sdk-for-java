@@ -30,7 +30,7 @@ public class ManagedRuleSetInner {
 
     /**
      * Verizon only : If the rule set supports anomaly detection mode, this
-     * descibes the threshold for blocking requests.
+     * describes the threshold for blocking requests.
      */
     @JsonProperty(value = "anomalyScore")
     private Integer anomalyScore;
@@ -82,7 +82,7 @@ public class ManagedRuleSetInner {
     }
 
     /**
-     * Get verizon only : If the rule set supports anomaly detection mode, this descibes the threshold for blocking requests.
+     * Get verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.
      *
      * @return the anomalyScore value
      */
@@ -91,7 +91,7 @@ public class ManagedRuleSetInner {
     }
 
     /**
-     * Set verizon only : If the rule set supports anomaly detection mode, this descibes the threshold for blocking requests.
+     * Set verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.
      *
      * @param anomalyScore the anomalyScore value to set
      * @return the ManagedRuleSetInner object itself.
