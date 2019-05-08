@@ -1,113 +1,139 @@
 package com.microsoft.azure.eventhubs;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.util.Arrays;
 import java.util.Objects;
 
-public class ProxyConfiguration {
-    private final String proxyAddress;
-    private final ProxyConfiguration.ProxyAuthType authType;
+public class ProxyConfiguration implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyConfiguration.class);
+
+    private final java.net.Proxy proxyAddress;
+    private final ProxyAuthenticationType authentication;
     private final PasswordAuthentication credentials;
 
     /**
-     * Creates a proxy configuration that uses the system configured proxy and authentication.
+     * Gets the system defaults for proxy configuration and authentication.
      */
-    private ProxyConfiguration() {
-        this.authType = ProxyAuthType.USE_DEFAULT_AUTHENTICATOR;
-        this.proxyAddress = null;
-        this.credentials = null;
-    }
+    public static final ProxyConfiguration SYSTEM_DEFAULTS = new ProxyConfiguration();
 
     /**
-     * Creates a proxy configuration that uses the {@code proxyAddress} and uses system configured authenticator to
-     * provide a username or password if one is needed.
-     *
-     * @throws NullPointerException if {@code proxyAddress} is {@code null}.
+     * Creates a proxy configuration that uses the system-wide proxy configuration and authenticator.
      */
-    public ProxyConfiguration(String proxyAddress) {
-        this(proxyAddress, null, null, ProxyAuthType.USE_DEFAULT_AUTHENTICATOR);
-
-        Objects.requireNonNull(proxyAddress);
+    private ProxyConfiguration() {
+        this.authentication = null;
+        this.credentials = null;
+        this.proxyAddress = null;
     }
 
     /**
      * Creates a proxy configuration that uses the {@code proxyAddress} and authenticates with provided
-     * {@code username}, {@code password} and {@code authType}.
+     * {@code username}, {@code password} and {@code authentication}.
      *
-     * @param proxyAddress URL of the proxy. If {@code null} is passed in, then the system configured proxy url is used.
-     * @param username Username used to authenticate with proxy. Optional if {@code authType} is
-     * {@link ProxyAuthType#NONE} or {@link ProxyAuthType#USE_DEFAULT_AUTHENTICATOR}.
-     * @param password Password used to authenticate with proxy. Optional if {@code authType} is
-     * {@link ProxyAuthType#NONE} or {@link ProxyAuthType#USE_DEFAULT_AUTHENTICATOR}.
-     * @param authType Authentication method to use with proxy.
+     * @param authentication Authentication method to preemptively use with proxy.
+     * @param proxyAddress Proxy to use. If {@code null} is passed in, then the system configured {@link java.net.Proxy}
+     * is used.
+     * @param username Optional. Username used to authenticate with proxy. If not specified, the system-wide
+     * {@link java.net.Authenticator} is used to fetch credentials.
+     * @param password Optional. Password used to authenticate with proxy.
      *
-     * @throws NullPointerException if {@code authType} is {@code null}.
-     * @throws IllegalArgumentException if {@code authType} is {@link ProxyAuthType#BASIC} or
-     * {@link ProxyAuthType#DIGEST} and {@code username} or {@code password} are {@code null}.
+     * @throws NullPointerException if {@code authentication} is {@code null}.
+     * @throws IllegalArgumentException if {@code authentication} is {@link ProxyAuthenticationType#BASIC} or
+     * {@link ProxyAuthenticationType#DIGEST} and {@code username} or {@code password} are {@code null}.
      */
-    public ProxyConfiguration(String proxyAddress, String username, String password, ProxyAuthType authType) {
-        Objects.requireNonNull(authType);
-
-        // If the user is authenticating with BASIC or DIGEST, they do not want to use the system-configured
-        // authenticator, so we require these values.
-        if (authType == ProxyAuthType.BASIC || authType == ProxyAuthType.DIGEST) {
-            Objects.requireNonNull(username);
-            Objects.requireNonNull(password);
-
-            this.credentials = new PasswordAuthentication(username, password.toCharArray());
-        } else {
-            this.credentials = null;
-        }
+    public ProxyConfiguration(ProxyAuthenticationType authentication, java.net.Proxy proxyAddress, String username, String password) {
+        Objects.requireNonNull(authentication);
 
         this.proxyAddress = proxyAddress;
-        this.authType = authType;
+        this.authentication = authentication;
+
+        if (username != null && password != null) {
+            this.credentials = new PasswordAuthentication(username, password.toCharArray());
+        } else {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("username or password is null. Using system-wide authentication.");
+            }
+
+            this.credentials = null;
+        }
     }
 
     /**
-     * Creates a proxy configuration that uses the system configured proxy and authentication.
+     * Gets the proxy address.
      *
-     * @return An instance of ProxyConfiguration that will use the system configured proxy and authentication.
+     * @return The proxy address. Returns {@code null} if user creates proxy credentials with
+     * {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
      */
-    public static ProxyConfiguration useSystemProxyConfiguration() {
-        return new ProxyConfiguration();
-    }
-
-    String proxyAddress() {
+    public java.net.Proxy proxyAddress() {
         return proxyAddress;
     }
 
-    PasswordAuthentication credentials() {
+    /**
+     * Gets credentials to authenticate against proxy with.
+     *
+     * @return The credentials to authenticate against proxy with. Returns {@code null} if no credentials were set. This
+     * occurs when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
+     */
+    public PasswordAuthentication credentials() {
         return credentials;
     }
 
     /**
-     * Gets whether the proxy address has been configured.
+     * Gets the proxy authentication type to use.
+     *
+     * @return The proxy authentication type to use. returns {@code null} if no authentication type was set. This occurs
+     * when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
+     */
+    public ProxyAuthenticationType authentication() {
+        return authentication;
+    }
+
+    /**
+     * Gets whether the user has defined credentials.
+     *
+     * @return true if the user has defined the credentials to use, false otherwise.
+     */
+    public boolean hasUserDefinedCredentials() {
+        return credentials != null;
+    }
+
+    /**
+     * Gets whether the proxy address has been configured. Used to determine whether to use system-defined or
+     * user-defined proxy.
      *
      * @return true if the proxy url has been set, and false otherwise.
      */
     public boolean isProxyAddressConfigured() {
-        return proxyAddress != null && !proxyAddress.equals("");
+        return proxyAddress != null && proxyAddress.address() != null;
+    }
+
+    @Override
+    public void close() {
+        // It is up to us to clear the password field when we are done using it.
+        if (credentials != null) {
+            Arrays.fill(credentials.getPassword(), '\0');
+        }
     }
 
     /**
      * Supported methods of proxy authentication.
      */
-    public enum ProxyAuthType {
+    public enum ProxyAuthenticationType {
         /**
          * Proxy requires no authentication. Service calls will fail if proxy demands authentication.
          */
         NONE,
         /**
-         * Authenticates against proxy with provided {@code username} and {@code password}.
+         * Authenticates against proxy with basic authentication scheme.
          */
         BASIC,
         /**
          * Authenticates against proxy with digest access authentication.
          */
         DIGEST,
-        /**
-         * Authenticates against proxy with {@link Authenticator}.
-         */
-        USE_DEFAULT_AUTHENTICATOR,
     }
 }
