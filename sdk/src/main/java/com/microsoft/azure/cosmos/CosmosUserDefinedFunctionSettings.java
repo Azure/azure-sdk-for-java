@@ -20,30 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+public class CosmosUserDefinedFunctionSettings extends UserDefinedFunction {
 
     /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
+     * Constructor
      */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    public CosmosUserDefinedFunctionSettings(){
+        super();
     }
 
+    CosmosUserDefinedFunctionSettings(ResourceResponse<UserDefinedFunction> response) {
+        super(response.getResource().toJson());
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param jsonString the json string that represents the cosmos user defined function settings.
+     */
+    public CosmosUserDefinedFunctionSettings(String jsonString) {
+        super(jsonString);
+    }
+
+    static List<CosmosUserDefinedFunctionSettings> getFromV2Results(List<UserDefinedFunction> results) {
+        return results.stream().map(udf -> new CosmosUserDefinedFunctionSettings(udf.toJson())).collect(Collectors.toList());
+    }
 }

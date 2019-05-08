@@ -20,30 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.StoredProcedure;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+public class CosmosStoredProcedureSettings extends StoredProcedure {
 
     /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
+     * Constructor
      */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    public CosmosStoredProcedureSettings() {
+        super();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param jsonString the json string that represents the stored procedure.
+     */
+    public CosmosStoredProcedureSettings(String jsonString) {
+        super(jsonString);
+    }
+
+    CosmosStoredProcedureSettings(ResourceResponse<StoredProcedure> response) {
+        super(response.getResource().toJson());
+    }
+
+
+    static List<CosmosStoredProcedureSettings> getFromV2Results(List<StoredProcedure> results) {
+        return results.stream().map(sproc -> new CosmosStoredProcedureSettings(sproc.toJson())).collect(Collectors.toList());
+    }
 }

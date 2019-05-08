@@ -20,30 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+public class CosmosContainerResponse extends CosmosResponse<CosmosContainerSettings> {
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+    private CosmosContainer container;
 
-    /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
-     */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    CosmosContainerResponse(ResourceResponse<DocumentCollection> response, CosmosDatabase database) {
+        super(response);
+        if(response.getResource() == null){
+            super.setResourceSettings(null);
+        }else{
+            super.setResourceSettings(new CosmosContainerSettings(response));
+            container = new CosmosContainer(getResourceSettings().getId(), database);
+        }
     }
 
+    /**
+     * Gets the container settings
+     * @return the cosmos container settings
+     */
+    public CosmosContainerSettings getCosmosContainerSettings() {
+        return getResourceSettings();
+    }
+
+    /**
+     * Gets the Container object
+     * @return the Cosmos container object
+     */
+    public CosmosContainer getContainer() {
+        return container;
+    }
 }

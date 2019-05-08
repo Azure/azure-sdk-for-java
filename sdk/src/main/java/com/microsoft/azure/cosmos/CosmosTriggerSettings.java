@@ -20,30 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.Trigger;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+public class CosmosTriggerSettings extends Trigger {
 
     /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
+     * Constructor
      */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    public CosmosTriggerSettings(){
+        super();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param jsonString the json string that represents the trigger settings.
+     */
+    public CosmosTriggerSettings(String jsonString){
+        super(jsonString);
+    }
+
+    CosmosTriggerSettings(ResourceResponse<Trigger> response) {
+        super(response.getResource().toJson());
+    }
+
+    static List<CosmosTriggerSettings> getFromV2Results(List<Trigger> results) {
+        return results.stream().map(trigger -> new CosmosTriggerSettings(trigger.toJson())).collect(Collectors.toList());
+    }
 }

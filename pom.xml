@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb-parent</artifactId>
-  <version>2.4.5-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Azure Cosmos DB SQL API</name>
   <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
@@ -56,13 +56,17 @@
     <rxjava.version>1.3.8</rxjava.version>
     <rxjava-extras.version>0.8.0.17</rxjava-extras.version>
     <rxjava-string.version>1.1.1</rxjava-string.version>
+    <reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>
     <mockito.version>1.10.19</mockito.version>
     <guava.version>27.0.1-jre</guava.version>
+    <rxjava2interop.verison>0.13.3</rxjava2interop.verison>
+    <rxjava2.version>2.2.4</rxjava2.version>
     <commons-validator-version>1.6</commons-validator-version>
+    <reactor-bom.version>Bismuth-RELEASE</reactor-bom.version>
     <test.groups>unit</test.groups>
-    <cosmosdb-sdk-direct-impl.version>2.4.5-SNAPSHOT</cosmosdb-sdk-direct-impl.version>
+    <cosmosdb-sdk-direct-impl.version>3.0.0-SNAPSHOT</cosmosdb-sdk-direct-impl.version>
     <javadoc.opts/>
   </properties>
   <profiles>
@@ -91,7 +95,7 @@
     <!-- integration tests, requires Cosmos DB endpoint -->
     <id>fast</id>
     <properties>
-      <test.groups>simple</test.groups>
+      <test.groups>simple,cosmosv3</test.groups>
     </properties>
     <build>
       <plugins>
@@ -333,6 +337,13 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmosdb-commons-test-utils</artifactId>
         <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>${reactor-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -20,30 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.Resource;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+public class CosmosFeedResponse<T extends Resource> {
+    private  List<T> results;
 
-    /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
-     */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    //Temporary code. Used for testing conversion(one old resource type to new in feed)
+    CosmosFeedResponse(FeedResponse<T> feedResponse, Class<T> klass) {
+        results = feedResponse.getResults().stream().map(resource -> {
+            T item = null;
+            try {
+                item = klass.getConstructor(Resource.class).newInstance(resource);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new IllegalStateException(e);
+            }
+            return item;
+        }).collect(Collectors.toList());
     }
 
+
+    List<T> getResults() {
+        return results;
+    }
 }

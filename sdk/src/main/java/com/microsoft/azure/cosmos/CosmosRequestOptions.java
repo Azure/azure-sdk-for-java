@@ -20,30 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.AccessCondition;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 
 /**
- * Partitioning version.
+ * Encapsulates options that can be specified for a request
  */
-public enum PartitionKeyDefinitionVersion {
+public  class CosmosRequestOptions {
+    protected RequestOptions requestOptions = new RequestOptions();
+    private AccessCondition accessCondition;
 
     /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
-
-    /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
+     * Gets the conditions associated with the request.
      *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
+     * @return the access condition.
      */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
     }
 
+    /**
+     * Sets the conditions associated with the request.
+     *
+     * @param accessCondition the access condition.
+     */
+    public void setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+    }
+
+    protected RequestOptions toRequestOptions(){
+        requestOptions.setAccessCondition(accessCondition);
+        return requestOptions;
+    }
 }

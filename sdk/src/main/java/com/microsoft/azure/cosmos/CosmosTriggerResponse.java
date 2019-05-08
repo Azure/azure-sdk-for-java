@@ -20,30 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.Trigger;
 
-/**
- * Partitioning version.
- */
-public enum PartitionKeyDefinitionVersion {
+public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerSettings> {
 
-    /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
+    private CosmosTriggerSettings cosmosTriggerSettings;
+    private CosmosTrigger cosmosTrigger;
 
-    /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
-     */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    CosmosTriggerResponse(ResourceResponse<Trigger> response, CosmosContainer container) {
+        super(response);
+        if(response.getResource() != null) {
+            cosmosTriggerSettings = new CosmosTriggerSettings(response);
+            cosmosTrigger = new CosmosTrigger(cosmosTriggerSettings.getId(), container);
+        }
     }
 
+    /**
+     * Gets the cosmos trigger settings or null
+     * @return
+     */
+    public CosmosTriggerSettings getCosmosTriggerSettings() {
+        return cosmosTriggerSettings;
+    }
+
+    /**
+     * Gets the cosmos trigger object or null
+     * @return
+     */
+    public CosmosTrigger getCosmosTrigger() {
+        return cosmosTrigger;
+    }
 }

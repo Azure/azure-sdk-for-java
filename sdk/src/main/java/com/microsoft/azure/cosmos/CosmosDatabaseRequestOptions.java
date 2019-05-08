@@ -20,30 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.microsoft.azure.cosmos;
 
-package com.microsoft.azure.cosmosdb;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 
 /**
- * Partitioning version.
+ * Encapsulates options that can be specified for a request issued to cosmos database.
  */
-public enum PartitionKeyDefinitionVersion {
+public class CosmosDatabaseRequestOptions extends CosmosRequestOptions{
+    private Integer offerThroughput;
 
     /**
-     * Original version of hash partitioning.
-     */
-    V1(1),
-
-    /**
-     * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
+     * Gets the throughput in the form of Request Units per second when creating a cosmos database.
      *
-     * This version should be used for any practical purpose, but it is available in newer SDKs only.
+     * @return the throughput value.
      */
-    V2(2);
-
-    int val;
-
-    private PartitionKeyDefinitionVersion(int val) {
-        this.val = val;
+    public Integer getOfferThroughput() {
+        return offerThroughput;
     }
 
+    /**
+     * Sets the throughput in the form of Request Units per second when creating a cosmos database.
+     *
+     * @param offerThroughput the throughput value.
+     */
+    public void setOfferThroughput(Integer offerThroughput) {
+        this.offerThroughput = offerThroughput;
+    }
+
+    @Override
+    protected RequestOptions toRequestOptions() {
+        super.toRequestOptions();
+        requestOptions.setOfferThroughput(offerThroughput);
+        return requestOptions;
+    }
 }
