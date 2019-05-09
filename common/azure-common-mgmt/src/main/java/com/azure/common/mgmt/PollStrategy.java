@@ -162,13 +162,13 @@ abstract class PollStrategy {
         })).flatMap(response -> updateFromAsync(response)));
     }
 
-    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
+    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType, ContextData contextData) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
             operationStatus = new OperationStatus<>(this, httpRequest);
         } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType, contextData);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (ServiceRequestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
@@ -177,9 +177,9 @@ abstract class PollStrategy {
         return Mono.just(operationStatus);
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, ContextData contextData) {
         return sendPollRequestWithDelay()
-                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
+                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType, contextData))
                 .repeat()
                 .takeUntil(operationStatus -> isDone());
     }

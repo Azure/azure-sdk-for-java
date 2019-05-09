@@ -31,7 +31,7 @@ import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecode
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.common.implementation.tracing.Tracer;
+import com.azure.common.implementation.tracing.TracerProxy;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import io.netty.buffer.ByteBuf;
@@ -39,7 +39,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
-import reactor.core.publisher.SignalType;
 import reactor.util.context.Context;
 
 import java.io.IOException;
@@ -67,6 +66,8 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
+    private static final String SPAN_NAME_TEMPLATE = "Azure.%s/%s";
+
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -126,25 +127,20 @@ public class RestProxy implements InvocationHandler {
             final HttpRequest request;
             if (method.isAnnotationPresent(ResumeOperation.class)) {
                 OperationDescription opDesc = (OperationDescription) args[0];
-                Method resumeMethod = null;
-                Method[] methods = method.getDeclaringClass().getMethods();
-                for (Method origMethod : methods) {
-                    if (origMethod.getName().equals(opDesc.methodName())) {
-                        resumeMethod = origMethod;
-                        break;
-                    }
-                }
+                Method resumeMethod = determineResumeMethod(method, opDesc.methodName());
 
                 methodParser = methodParser(resumeMethod);
                 request = createHttpRequest(opDesc, methodParser, args);
                 final Type returnType = methodParser.returnType();
-                return handleResumeOperation(request, opDesc, methodParser, returnType);
+
+                // Track 2 clients don't use ResumeOperation yet, but they need to be thought about while implementing tracing.
+                return handleResumeOperation(request, opDesc, methodParser, returnType, startTracingSpan(resumeMethod, ContextData.NONE));
 
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 ContextData contextData = methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                contextData = startTracingSpan(contextData, getSpanMethodName(method));
+                contextData = startTracingSpan(method, contextData);
 
                 final Mono<HttpResponse> asyncResponse = send(request, contextData);
                 //
@@ -158,18 +154,25 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
-    private static String getSpanMethodName(Method method) {
-        // Should we have a class name mapping to a static name, eg ConfigurationService -> AppConfiguration.
-        return String.format("Azure.%s/#s", method.getDeclaringClass().getSimpleName(), method.getName());
+    private Method determineResumeMethod(Method method, String resumeMethodName) {
+        for (Method potentialResumeMethod : method.getDeclaringClass().getMethods()) {
+            if (potentialResumeMethod.getName().equals(resumeMethodName)) {
+                return potentialResumeMethod;
+            }
+        }
+
+        return null;
     }
 
-    // What other parameters should we pass to add span attributes? SwaggerMethod?
-    // Should an annotation be added that marks method parameters as trace-able? Same question for headers.
-    private static ContextData startTracingSpan(ContextData contextData, String methodName) {
-        Tracer.trace(methodName, contextData);
-        // return TracerProxy.start(methodName, contextData);
-
-        return contextData;
+    /**
+     * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
+     * additional context information.
+     * @param method Service method being called.
+     * @param contextData Context information about the current service call.
+     * @return The updated context containing the span context.
+     */
+    private ContextData startTracingSpan(Method method, ContextData contextData) {
+        return TracerProxy.start(String.format(SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), contextData);
     }
 
     /**
@@ -425,24 +428,24 @@ public class RestProxy implements InvocationHandler {
         // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
         // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
         // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
-        List<Constructor<?>> ctors = Arrays.stream(cls.getDeclaredConstructors())
-                                             .filter(ctor -> {
-                                                 int paramCount = ctor.getParameterCount();
-                                                 return paramCount >= 3 && paramCount <= 5;
-                                             })
-                                             .sorted(Comparator.comparingInt(Constructor::getParameterCount))
-                                             .collect(Collectors.toList());
+        List<Constructor<?>> constructors = Arrays.stream(cls.getDeclaredConstructors())
+            .filter(constructor -> {
+                int paramCount = constructor.getParameterCount();
+                return paramCount >= 3 && paramCount <= 5;
+            })
+            .sorted(Comparator.comparingInt(Constructor::getParameterCount))
+            .collect(Collectors.toList());
 
-        if (ctors.isEmpty()) {
+        if (constructors.isEmpty()) {
             throw new RuntimeException("Cannot find suitable constructor for class " + cls);
         }
 
         // try to create an instance using our list of potential candidates
-        for (Constructor constructor : ctors) {
+        for (Constructor constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
 
             try {
-                final int paramCount = ctor.getParameterCount();
+                final int paramCount = constructor.getParameterCount();
 
                 switch (paramCount) {
                     case 3:
@@ -494,7 +497,7 @@ public class RestProxy implements InvocationHandler {
         return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, contextData);
     }
 
-    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType)
+    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, ContextData contextData)
         throws Exception {
         throw new Exception("The resume operation is not available in the base RestProxy class.");
     }
@@ -510,7 +513,7 @@ public class RestProxy implements InvocationHandler {
     public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, ContextData contextData) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
             .doOnEach(RestProxy::endTracingSpan)
-            .subscriberContext(Context.of("TRACING_CONTEXT", contextData, "METHOD_NAME", methodParser.fullyQualifiedMethodName())); // TODO (alzimmer): Makes these constants.
+            .subscriberContext(Context.of("TRACING_CONTEXT", contextData));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -551,15 +554,14 @@ public class RestProxy implements InvocationHandler {
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         Context context = signal.getContext();
         Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
-        Optional<String> methodName = context.getOrEmpty("METHOD_NAME");
 
-        if (!tracingContext.isPresent() || !methodName.isPresent()) {
+        if (!tracingContext.isPresent()) {
             return;
         }
 
-        int statusCode;
+        int statusCode = 0;
         HttpDecodedResponse httpDecodedResponse;
-        Throwable throwable;
+        Throwable throwable = null;
 
         // On next contains the response information.
         if (signal.isOnNext()) {
@@ -576,8 +578,7 @@ public class RestProxy implements InvocationHandler {
             }
         }
 
-        Tracer.trace(methodName.get(), tracingContext.get());
-        //TracerProxy.end(statusCode, throwable, tracingContext.get());
+        TracerProxy.end(statusCode, throwable, tracingContext.get());
     }
 
     /**

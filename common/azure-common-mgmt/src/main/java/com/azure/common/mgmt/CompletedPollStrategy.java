@@ -3,6 +3,7 @@
 
 package com.azure.common.mgmt;
 
+import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.implementation.RestProxy;
@@ -73,8 +74,8 @@ public class CompletedPollStrategy extends PollStrategy {
         return true;
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-        return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType)
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, ContextData contextData) {
+        return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType, contextData)
                 .flatMapMany(cos -> Flux.just(cos));
     }
 
