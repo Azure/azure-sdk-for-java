@@ -51,6 +51,23 @@ public interface EventHubClient {
     }
 
     /**
+     * Synchronous version of {@link #create(String, ScheduledExecutorService)}.
+     *
+     * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+     * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
+     * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If Service Bus service encountered problems during connection creation.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
+     */
+    static EventHubClient createSync(final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
+                                     final ProxyConfiguration configuration)
+        throws EventHubException, IOException {
+        return ExceptionUtil.syncWithIOException(() -> create(connectionString, retryPolicy, executor, configuration).get());
+    }
+
+
+    /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
