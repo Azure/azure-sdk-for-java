@@ -39,7 +39,7 @@ public class SsisVariable {
     private String dataType;
 
     /**
-     * Whether varaible is sensitive.
+     * Whether variable is sensitive.
      */
     @JsonProperty(value = "sensitive")
     private Boolean sensitive;
@@ -137,7 +137,7 @@ public class SsisVariable {
     }
 
     /**
-     * Get whether varaible is sensitive.
+     * Get whether variable is sensitive.
      *
      * @return the sensitive value
      */
@@ -146,7 +146,7 @@ public class SsisVariable {
     }
 
     /**
-     * Set whether varaible is sensitive.
+     * Set whether variable is sensitive.
      *
      * @param sensitive the sensitive value to set
      * @return the SsisVariable object itself.

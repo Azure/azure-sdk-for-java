@@ -39,7 +39,7 @@ public class SsisParameter {
     private String dataType;
 
     /**
-     * Whether parameter is reuqired.
+     * Whether parameter is required.
      */
     @JsonProperty(value = "required")
     private Boolean required;
@@ -167,7 +167,7 @@ public class SsisParameter {
     }
 
     /**
-     * Get whether parameter is reuqired.
+     * Get whether parameter is required.
      *
      * @return the required value
      */
@@ -176,7 +176,7 @@ public class SsisParameter {
     }
 
     /**
-     * Set whether parameter is reuqired.
+     * Set whether parameter is required.
      *
      * @param required the required value to set
      * @return the SsisParameter object itself.
