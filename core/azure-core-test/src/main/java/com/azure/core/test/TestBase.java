@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
+import com.azure.core.implementation.configuration.ConfigurationManager;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
@@ -90,7 +91,7 @@ public abstract class TestBase {
 
     private static TestMode getTestMode() {
         final ServiceLogger logger = new ServiceLogger(TestBase.class);
-        final String azureTestMode = System.getenv(AZURE_TEST_MODE);
+        final String azureTestMode = ConfigurationManager.getConfiguration(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {

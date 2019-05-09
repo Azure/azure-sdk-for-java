@@ -164,9 +164,9 @@ public class ServiceLogger implements ServiceLoggerAPI {
 
     private int minimumLoggingLevel() {
         try {
-            return Integer.parseInt(ConfigurationManager.getConfiguration(EnvironmentConfigurations.AZURE_LOG_LEVEL));
+            return Integer.parseInt(ConfigurationManager.getEnvironmentConfiguration(EnvironmentConfigurations.AZURE_LOG_LEVEL));
         } catch (NumberFormatException ex) {
-            return DEFAULT_LOG_LEVEL;
+            return DISABLED_LEVEL;
         }
     }
 }

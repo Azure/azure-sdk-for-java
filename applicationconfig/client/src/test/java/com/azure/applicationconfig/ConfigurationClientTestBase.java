@@ -8,7 +8,9 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.configuration.ConfigurationManager;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -42,6 +44,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
+    private static String connectionString;
 
     private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTestBase.class);
 
@@ -62,9 +65,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : System.getenv("AZCONFIG_CONNECTION_STRING");
+        if (ImplUtils.isNullOrEmpty(connectionString)) {
+            connectionString = interceptorManager.isPlaybackMode()
+                ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+                : ConfigurationManager.getConfiguration("AZCONFIG_CONNECTION_STRING");
+        }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
