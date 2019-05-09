@@ -1,11 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
 
