@@ -13,7 +13,6 @@ import java.util.Locale;
  * Manages the retrieving configuration values.
  */
 public final class ConfigurationManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManager.class);
     private static ConfigurationGetter[] getters;
 
     static {
@@ -21,7 +20,6 @@ public final class ConfigurationManager {
         // Clients handle opt-out by having defaults set in the client and allowing those defaults to be overridden.
         getters = new ConfigurationGetter[] {
             new RuntimeConfigurationGetter(),
-            new ConfigurationStoreConfigurationGetter(),
             new EnvironmentConfigurationGetter()};
     }
 
@@ -36,21 +34,11 @@ public final class ConfigurationManager {
     }
 
     /**
-     * Retrieves the configuration from the environment variables.
-     * @param configuration Environment variable to retrieve.
-     * @return If found the environment variable configuration, otherwise null;
-     */
-    public static String getEnvironmentConfiguration(EnvironmentConfigurations configuration) {
-        return System.getenv(getConfigurationName(configuration));
-    }
-
-    /**
      * Retrieves the configuration using the {@link ConfigurationGetter configuration getters}.
      *
      * The default search order used is the following.
      * <ol>
      *     <li>{@link RuntimeConfigurationGetter}</li>
-     *     <li>{@link ConfigurationStoreConfigurationGetter}</li>
      *     <li>{@link EnvironmentConfigurationGetter}</li>
      * </ol>
      *
@@ -68,7 +56,6 @@ public final class ConfigurationManager {
      * The default search order used is the following.
      * <ol>
      *     <li>{@link RuntimeConfigurationGetter}</li>
-     *     <li>{@link ConfigurationStoreConfigurationGetter}</li>
      *     <li>{@link EnvironmentConfigurationGetter}</li>
      * </ol>
      *
@@ -80,10 +67,6 @@ public final class ConfigurationManager {
         for (ConfigurationGetter getter : getters) {
             String configurationValue = getter.getConfiguration(configurationName);
             if (!ImplUtils.isNullOrEmpty(configurationValue)) {
-                if (getter.isLogWorthy()) {
-                    LOGGER.info(getter.logMessage(configurationName));
-                }
-
                 return configurationValue;
             }
         }

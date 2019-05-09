@@ -75,7 +75,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     private static String getUserAgentOrDefault() {
-        String userAgent = ConfigurationManager.getEnvironmentConfiguration(EnvironmentConfigurations.AZURE_USER_AGENT);
+        String userAgent = ConfigurationManager.getConfiguration(EnvironmentConfigurations.AZURE_USER_AGENT);
         return ImplUtils.isNullOrEmpty(userAgent) ? DEFAULT_USER_AGENT_HEADER : userAgent;
     }
 }

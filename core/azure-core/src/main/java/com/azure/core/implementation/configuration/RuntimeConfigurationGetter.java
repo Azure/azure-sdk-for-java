@@ -3,29 +3,29 @@
 
 package com.azure.core.implementation.configuration;
 
+import com.azure.core.implementation.util.ImplUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Retrieves configurations from the application runtime.
  */
-public final class RuntimeConfigurationGetter extends ConfigurationGetter {
-    private static final String LOG_MESSAGE = "Found configuration %s in the runtime variables.";
+public final class RuntimeConfigurationGetter implements ConfigurationGetter {
+    private static final String LOG_MESSAGE = "Found configuration {} in the runtime variables.";
+    private final Logger logger = LoggerFactory.getLogger(RuntimeConfigurationGetter.class);
 
     @Override
     public String getConfiguration(String configurationName) {
-        // Should these exceptions get caught?
         try {
-            return System.getProperty(configurationName);
+            String runtimeConfiguration = System.getProperty(configurationName);
+
+            if (!ImplUtils.isNullOrEmpty(runtimeConfiguration)) {
+                logger.info(LOG_MESSAGE, configurationName);
+            }
+
+            return runtimeConfiguration;
         } catch (SecurityException | NullPointerException | IllegalArgumentException ex) {
             return null;
         }
-    }
-
-    @Override
-    boolean isLogWorthy() {
-        return true;
-    }
-
-    @Override
-    String logMessage(String configurationName) {
-        return String.format(LOG_MESSAGE, configurationName);
     }
 }
