@@ -30,15 +30,10 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     private static final String PROXY_SELECTOR_HAS_BEEN_MODIFIED = "ProxySelector has been modified.";
     private final ProxyConfiguration proxyConfiguration;
 
-    public static Boolean shouldUseProxy(final String hostName, final ProxyConfiguration proxyConfiguration) {
+    public static Boolean shouldUseProxy(final String hostName) {
         Objects.requireNonNull(hostName);
-        Objects.requireNonNull(proxyConfiguration);
 
         final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
-
-        if (proxyConfiguration.isProxyAddressConfigured()) {
-            return true;
-        }
 
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {

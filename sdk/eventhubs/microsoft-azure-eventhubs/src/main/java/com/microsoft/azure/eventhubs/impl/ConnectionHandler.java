@@ -41,7 +41,8 @@ public class ConnectionHandler extends BaseHandler {
                                     ProxyConfiguration proxyConfiguration) {
         switch (transportType) {
             case AMQP_WEB_SOCKETS:
-                if (proxyConfiguration != null || WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName(), proxyConfiguration)) {
+                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
+                    || WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
                     return new WebSocketProxyConnectionHandler(amqpConnection, proxyConfiguration);
                 } else {
                     return new WebSocketConnectionHandler(amqpConnection);
