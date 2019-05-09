@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.configuration;
+package com.azure.core.implementation.configuration;
 
 // TODO (alzimmer): How is it being determined which global configuration store is connected to by default?
 
