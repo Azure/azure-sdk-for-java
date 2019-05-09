@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
-    private static final String proxySelectorModifiedError = "ProxySelector has been modified.";
+    private static final String PROXY_SELECTOR_HAS_BEEN_MODIFIED = "ProxySelector has been modified.";
     private final ProxyConfiguration proxyConfiguration;
 
     public static Boolean shouldUseProxy(final String hostName, final ProxyConfiguration proxyConfiguration) {
@@ -152,12 +152,12 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
                 this.getProtocolPort());
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {
-            throw new IllegalStateException(proxySelectorModifiedError);
+            throw new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED);
         }
 
         final List<Proxy> proxies = proxySelector.select(serviceUri);
         if (!isProxyAddressLegal(proxies)) {
-            throw new IllegalStateException(proxySelectorModifiedError);
+            throw new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED);
         }
 
         final Proxy proxy = proxies.get(0);
