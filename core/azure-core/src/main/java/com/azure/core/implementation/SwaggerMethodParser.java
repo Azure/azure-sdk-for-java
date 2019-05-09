@@ -19,7 +19,7 @@ import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.ContextData;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -583,7 +583,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedExceptionInformation(HttpRequestException.class);
+            defaultException = new UnexpectedExceptionInformation(HttpResponseException.class);
         }
 
         return exceptionHashMap;
