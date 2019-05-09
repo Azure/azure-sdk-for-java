@@ -133,6 +133,19 @@ public class AdvisorManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RecommendationMetadatasInner object to access its operations.
+     */
+    private RecommendationMetadatasInner recommendationMetadatas;
+
+    /**
+     * Gets the RecommendationMetadatasInner object to access its operations.
+     * @return the RecommendationMetadatasInner object.
+     */
+    public RecommendationMetadatasInner recommendationMetadatas() {
+        return this.recommendationMetadatas;
+    }
+
+    /**
      * The ConfigurationsInner object to access its operations.
      */
     private ConfigurationsInner configurations;
@@ -219,6 +232,7 @@ public class AdvisorManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.recommendationMetadatas = new RecommendationMetadatasInner(restClient().retrofit(), this);
         this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.recommendations = new RecommendationsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);

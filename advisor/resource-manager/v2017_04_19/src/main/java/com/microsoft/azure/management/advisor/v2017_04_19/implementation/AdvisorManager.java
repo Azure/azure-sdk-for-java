@@ -16,6 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.advisor.v2017_04_19.RecommendationMetadatas;
 import com.microsoft.azure.management.advisor.v2017_04_19.Configurations;
 import com.microsoft.azure.management.advisor.v2017_04_19.Recommendations;
 import com.microsoft.azure.management.advisor.v2017_04_19.Operations;
@@ -27,6 +28,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Advisor resource management.
  */
 public final class AdvisorManager extends ManagerCore<AdvisorManager, AdvisorManagementClientImpl> {
+    private RecommendationMetadatas recommendationMetadatas;
     private Configurations configurations;
     private Recommendations recommendations;
     private Operations operations;
@@ -76,6 +78,16 @@ public final class AdvisorManager extends ManagerCore<AdvisorManager, AdvisorMan
         * @return the interface exposing Advisor management API entry points that work across subscriptions
         */
         AdvisorManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * @return Entry point to manage RecommendationMetadatas.
+     */
+    public RecommendationMetadatas recommendationMetadatas() {
+        if (this.recommendationMetadatas == null) {
+            this.recommendationMetadatas = new RecommendationMetadatasImpl(this);
+        }
+        return this.recommendationMetadatas;
     }
 
     /**
