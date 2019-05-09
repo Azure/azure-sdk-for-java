@@ -6,6 +6,7 @@ package com.azure.common.mgmt;
 import com.azure.common.AzureEnvironment;
 import com.azure.common.credentials.AsyncServiceClientCredentials;
 import com.azure.common.credentials.ServiceClientCredentials;
+import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.HttpRequest;
@@ -256,7 +257,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType, ContextData contextData) {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
@@ -279,7 +280,7 @@ public final class AzureProxy extends RestProxy {
         } else {
             final Mono<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                     .flatMap((Function<PollStrategy, Mono<HttpResponse>>) pollStrategy -> pollStrategy.pollUntilDone());
-            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse, methodParser), methodParser, returnType);
+            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse, methodParser), methodParser, returnType, contextData);
         }
     }
 

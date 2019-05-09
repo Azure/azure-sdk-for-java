@@ -31,12 +31,16 @@ import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecode
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.common.implementation.tracing.Tracer;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
+import reactor.core.publisher.SignalType;
+import reactor.util.context.Context;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -50,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -138,16 +143,33 @@ public class RestProxy implements InvocationHandler {
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
-                final Mono<HttpResponse> asyncResponse = send(request, methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName()));
+                ContextData contextData = methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
+                contextData = startTracingSpan(contextData, getSpanMethodName(method));
+
+                final Mono<HttpResponse> asyncResponse = send(request, contextData);
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
-                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType());
+                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(), contextData);
             }
 
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
+    }
+
+    private static String getSpanMethodName(Method method) {
+        // Should we have a class name mapping to a static name, eg ConfigurationService -> AppConfiguration.
+        return String.format("Azure.%s/#s", method.getDeclaringClass().getSimpleName(), method.getName());
+    }
+
+    // What other parameters should we pass to add span attributes? SwaggerMethod?
+    // Should an annotation be added that marks method parameters as trace-able? Same question for headers.
+    private static ContextData startTracingSpan(ContextData contextData, String methodName) {
+        Tracer.trace(methodName, contextData);
+        // return TracerProxy.start(methodName, contextData);
+
+        return contextData;
     }
 
     /**
@@ -158,7 +180,6 @@ public class RestProxy implements InvocationHandler {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    @SuppressWarnings("unchecked")
     private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
         UrlBuilder urlBuilder;
 
@@ -207,7 +228,6 @@ public class RestProxy implements InvocationHandler {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    @SuppressWarnings("unchecked")
     private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final HttpRequest request = configRequest(new HttpRequest(methodParser.httpMethod(), operationDescription.url()), methodParser, args);
 
@@ -219,6 +239,7 @@ public class RestProxy implements InvocationHandler {
         return request;
     }
 
+    @SuppressWarnings("unchecked")
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
@@ -380,6 +401,7 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
+    @SuppressWarnings("unchecked")
     private Response<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         final HttpResponse httpResponse = response.sourceResponse();
         final HttpRequest httpRequest = httpResponse.request();
@@ -416,8 +438,8 @@ public class RestProxy implements InvocationHandler {
         }
 
         // try to create an instance using our list of potential candidates
-        for (int i = 0; i < ctors.size(); i++) {
-            final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) ctors.get(i);
+        for (Constructor constructor : ctors) {
+            final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
 
             try {
                 final int paramCount = ctor.getParameterCount();
@@ -468,8 +490,8 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
-        return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType);
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType, ContextData contextData) {
+        return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, contextData);
     }
 
     protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType)
@@ -485,8 +507,11 @@ public class RestProxy implements InvocationHandler {
      * @param returnType the type of value that will be returned
      * @return the deserialized result
      */
-    public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType) {
-        final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser);
+    public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, ContextData contextData) {
+        final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
+            .doOnEach(RestProxy::endTracingSpan)
+            .subscriberContext(Context.of("TRACING_CONTEXT", contextData, "METHOD_NAME", methodParser.fullyQualifiedMethodName())); // TODO (alzimmer): Makes these constants.
+
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);
@@ -513,6 +538,46 @@ public class RestProxy implements InvocationHandler {
                     .block();
         }
         return result;
+    }
+
+    // This handles each onX for the response mono.
+    // The signal indicates the status and contains the metadata we need to end the tracing span.
+    private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
+        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
+        if (signal.isOnComplete() || signal.isOnSubscribe()) {
+            return;
+        }
+
+        // Get the context that was added to the mono, this will contain the information needed to end the span.
+        Context context = signal.getContext();
+        Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
+        Optional<String> methodName = context.getOrEmpty("METHOD_NAME");
+
+        if (!tracingContext.isPresent() || !methodName.isPresent()) {
+            return;
+        }
+
+        int statusCode;
+        HttpDecodedResponse httpDecodedResponse;
+        Throwable throwable;
+
+        // On next contains the response information.
+        if (signal.isOnNext()) {
+            httpDecodedResponse = signal.get();
+            statusCode = httpDecodedResponse.sourceResponse().statusCode();
+        } else {
+            // The last status available is on error, this contains the error thrown by the REST response.
+            throwable = signal.getThrowable();
+
+            // Only ServiceRequestExceptions contain a status code, this is the base REST response.
+            if (throwable instanceof ServiceRequestException) {
+                ServiceRequestException sre = (ServiceRequestException) throwable;
+                statusCode = sre.response().statusCode();
+            }
+        }
+
+        Tracer.trace(methodName.get(), tracingContext.get());
+        //TracerProxy.end(statusCode, throwable, tracingContext.get());
     }
 
     /**
@@ -567,7 +632,6 @@ public class RestProxy implements InvocationHandler {
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
-    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface) {
         return create(swaggerInterface, createDefaultPipeline(), createDefaultSerializer());
     }
@@ -582,7 +646,6 @@ public class RestProxy implements InvocationHandler {
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
-    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
         return create(swaggerInterface, httpPipeline, createDefaultSerializer());
     }
@@ -596,7 +659,6 @@ public class RestProxy implements InvocationHandler {
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
-    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, ServiceClient serviceClient) {
         return create(swaggerInterface, serviceClient.httpPipeline(), serviceClient.serializerAdapter());
     }
