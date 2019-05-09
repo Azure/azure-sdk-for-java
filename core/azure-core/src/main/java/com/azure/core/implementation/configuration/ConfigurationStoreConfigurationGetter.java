@@ -17,6 +17,11 @@ public final class ConfigurationStoreConfigurationGetter extends ConfigurationGe
     }
 
     @Override
+    boolean isLogWorthy() {
+        return false;
+    }
+
+    @Override
     String logMessage(String configurationName) {
         return String.format(LOG_MESSAGE, configurationName);
     }

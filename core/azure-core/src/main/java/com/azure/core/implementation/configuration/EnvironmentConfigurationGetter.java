@@ -19,6 +19,11 @@ public final class EnvironmentConfigurationGetter extends ConfigurationGetter {
     }
 
     @Override
+    boolean isLogWorthy() {
+        return true;
+    }
+
+    @Override
     String logMessage(String configurationName) {
         return String.format(LOG_MESSAGE, configurationName);
     }

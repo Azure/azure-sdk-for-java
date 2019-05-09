@@ -8,10 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Manages the retrieving configuration values.
@@ -64,7 +62,10 @@ public final class ConfigurationManager {
         for (ConfigurationGetter getter : getters) {
             String configurationValue = getter.getConfiguration(configurationName);
             if (!ImplUtils.isNullOrEmpty(configurationValue)) {
-                logger.info(getter.logMessage(configurationName));
+                if (getter.isLogWorthy()) {
+                    logger.info(getter.logMessage(configurationName));
+                }
+
                 return configurationValue;
             }
         }
