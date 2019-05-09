@@ -59,7 +59,6 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, ProxyConfiguration proxyConfiguration) {
         super(amqpConnection);
 
-        Objects.requireNonNull(proxyConfiguration);
         this.proxyConfiguration = proxyConfiguration;
     }
 
