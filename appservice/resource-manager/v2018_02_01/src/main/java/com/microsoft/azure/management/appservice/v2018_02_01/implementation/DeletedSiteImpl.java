@@ -9,19 +9,34 @@
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
+import rx.Observable;
 
-class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSite {
+class DeletedSiteImpl extends IndexableRefreshableWrapperImpl<DeletedSite, DeletedSiteInner> implements DeletedSite {
     private final CertificateRegistrationManager manager;
-    DeletedSiteImpl(DeletedSiteInner inner, CertificateRegistrationManager manager) {
-        super(inner);
+    private String location;
+    private String deletedSiteId;
+
+    DeletedSiteImpl(DeletedSiteInner inner,  CertificateRegistrationManager manager) {
+        super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
+        this.location = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
+        this.deletedSiteId = IdParsingUtils.getValueFromIdByName(inner.id(), "deletedSites");
     }
 
     @Override
     public CertificateRegistrationManager manager() {
         return this.manager;
     }
+
+    @Override
+    protected Observable<DeletedSiteInner> getInnerAsync() {
+        DeletedWebAppsInner client = this.manager().inner().deletedWebApps();
+        return client.getDeletedWebAppByLocationAsync(this.location, this.deletedSiteId);
+    }
+
+
 
     @Override
     public Integer deletedSiteId() {
