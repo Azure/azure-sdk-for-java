@@ -49,7 +49,7 @@ public class JobPropertiesExecutionInfo {
     private List<BatchAIError> errors;
 
     /**
-     * Get the startTime value.
+     * Get 'Running' corresponds to the running state. If the job has been restarted or retried, this is the most recent time at which the job started running. This property is present only for job that are in the running or completed state.
      *
      * @return the startTime value
      */
@@ -58,7 +58,7 @@ public class JobPropertiesExecutionInfo {
     }
 
     /**
-     * Set the startTime value.
+     * Set 'Running' corresponds to the running state. If the job has been restarted or retried, this is the most recent time at which the job started running. This property is present only for job that are in the running or completed state.
      *
      * @param startTime the startTime value to set
      * @return the JobPropertiesExecutionInfo object itself.
@@ -69,7 +69,7 @@ public class JobPropertiesExecutionInfo {
     }
 
     /**
-     * Get the endTime value.
+     * Get this property is only returned if the job is in completed state.
      *
      * @return the endTime value
      */
@@ -78,7 +78,7 @@ public class JobPropertiesExecutionInfo {
     }
 
     /**
-     * Set the endTime value.
+     * Set this property is only returned if the job is in completed state.
      *
      * @param endTime the endTime value to set
      * @return the JobPropertiesExecutionInfo object itself.
@@ -89,7 +89,7 @@ public class JobPropertiesExecutionInfo {
     }
 
     /**
-     * Get the exitCode value.
+     * Get this property is only returned if the job is in completed state.
      *
      * @return the exitCode value
      */
@@ -98,7 +98,7 @@ public class JobPropertiesExecutionInfo {
     }
 
     /**
-     * Set the exitCode value.
+     * Set this property is only returned if the job is in completed state.
      *
      * @param exitCode the exitCode value to set
      * @return the JobPropertiesExecutionInfo object itself.

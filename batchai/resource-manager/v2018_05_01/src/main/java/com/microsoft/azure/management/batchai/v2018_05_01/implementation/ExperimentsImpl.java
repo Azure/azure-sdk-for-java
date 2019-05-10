@@ -42,41 +42,22 @@ class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experimen
         return new ExperimentImpl(name, this.manager());
     }
 
-    private Observable<Page<ExperimentInner>> listByWorkspaceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ExperimentsInner client = this.inner();
-        return client.listByWorkspaceNextAsync(nextLink)
-        .flatMap(new Func1<Page<ExperimentInner>, Observable<Page<ExperimentInner>>>() {
-            @Override
-            public Observable<Page<ExperimentInner>> call(Page<ExperimentInner> page) {
-                return Observable.just(page).concatWith(listByWorkspaceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Experiment> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName) {
         ExperimentsInner client = this.inner();
         return client.listByWorkspaceAsync(resourceGroupName, workspaceName)
-        .flatMap(new Func1<Page<ExperimentInner>, Observable<Page<ExperimentInner>>>() {
-            @Override
-            public Observable<Page<ExperimentInner>> call(Page<ExperimentInner> page) {
-                return listByWorkspaceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ExperimentInner>, Iterable<ExperimentInner>>() {
             @Override
             public Iterable<ExperimentInner> call(Page<ExperimentInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExperimentInner, Experiment>() {
             @Override
             public Experiment call(ExperimentInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -31,7 +31,7 @@ public class AppInsightsReference {
      * Specifies a KeyVault Secret containing Azure Application Insights
      * instrumentation key.
      * Specifies KeyVault Store and Secret which contains Azure Application
-     * Insights instrumentation key. One of instumentationKey or
+     * Insights instrumentation key. One of instrumentationKey or
      * instrumentationKeySecretReference must be specified.
      */
     @JsonProperty(value = "instrumentationKeySecretReference")
@@ -78,7 +78,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Get the instrumentationKeySecretReference value.
+     * Get specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instrumentationKey or instrumentationKeySecretReference must be specified.
      *
      * @return the instrumentationKeySecretReference value
      */
@@ -87,7 +87,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Set the instrumentationKeySecretReference value.
+     * Set specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instrumentationKey or instrumentationKeySecretReference must be specified.
      *
      * @param instrumentationKeySecretReference the instrumentationKeySecretReference value to set
      * @return the AppInsightsReference object itself.

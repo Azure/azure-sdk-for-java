@@ -108,7 +108,7 @@ public class PyTorchSettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get the default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -117,7 +117,7 @@ public class PyTorchSettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set the default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the PyTorchSettings object itself.
@@ -128,7 +128,7 @@ public class PyTorchSettings {
     }
 
     /**
-     * Get the communicationBackend value.
+     * Get valid values are 'TCP', 'Gloo' or 'MPI'. Not required for non-distributed jobs.
      *
      * @return the communicationBackend value
      */
@@ -137,7 +137,7 @@ public class PyTorchSettings {
     }
 
     /**
-     * Set the communicationBackend value.
+     * Set valid values are 'TCP', 'Gloo' or 'MPI'. Not required for non-distributed jobs.
      *
      * @param communicationBackend the communicationBackend value to set
      * @return the PyTorchSettings object itself.

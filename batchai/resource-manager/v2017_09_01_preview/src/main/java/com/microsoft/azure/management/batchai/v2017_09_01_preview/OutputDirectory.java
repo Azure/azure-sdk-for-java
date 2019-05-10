@@ -56,7 +56,7 @@ public class OutputDirectory {
     private Boolean createNew;
 
     /**
-     * Get the id value.
+     * Get it will be available for the job as an environment variable under AZ_BATCHAI_OUTPUT_id.
      *
      * @return the id value
      */
@@ -65,7 +65,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the id value.
+     * Set it will be available for the job as an environment variable under AZ_BATCHAI_OUTPUT_id.
      *
      * @param id the id value to set
      * @return the OutputDirectory object itself.
@@ -76,7 +76,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Get the pathPrefix value.
+     * Get nOTE: This is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs.
      *
      * @return the pathPrefix value
      */
@@ -85,7 +85,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the pathPrefix value.
+     * Set nOTE: This is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs.
      *
      * @param pathPrefix the pathPrefix value to set
      * @return the OutputDirectory object itself.
@@ -96,7 +96,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Get the pathSuffix value.
+     * Get the suffix path where the output directory will be created.
      *
      * @return the pathSuffix value
      */
@@ -105,7 +105,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the pathSuffix value.
+     * Set the suffix path where the output directory will be created.
      *
      * @param pathSuffix the pathSuffix value to set
      * @return the OutputDirectory object itself.
@@ -116,7 +116,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Get the type value.
+     * Get default value is Custom. The possible values are Model, Logs, Summary, and Custom. Users can use multiple enums for a single directory. Eg. outPutType='Model,Logs, Summary'. Possible values include: 'model', 'logs', 'summary', 'custom'.
      *
      * @return the type value
      */
@@ -125,7 +125,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the type value.
+     * Set default value is Custom. The possible values are Model, Logs, Summary, and Custom. Users can use multiple enums for a single directory. Eg. outPutType='Model,Logs, Summary'. Possible values include: 'model', 'logs', 'summary', 'custom'.
      *
      * @param type the type value to set
      * @return the OutputDirectory object itself.
@@ -136,7 +136,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Get the createNew value.
+     * Get default is true. If false, then the directory is not created and can be any directory path that the user specifies.
      *
      * @return the createNew value
      */
@@ -145,7 +145,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the createNew value.
+     * Set default is true. If false, then the directory is not created and can be any directory path that the user specifies.
      *
      * @param createNew the createNew value to set
      * @return the OutputDirectory object itself.

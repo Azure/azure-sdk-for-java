@@ -22,7 +22,7 @@ public class ResourceId {
     private String id;
 
     /**
-     * Get the id value.
+     * Get the ID of the resource.
      *
      * @return the id value
      */
@@ -31,7 +31,7 @@ public class ResourceId {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the resource.
      *
      * @param id the id value to set
      * @return the ResourceId object itself.

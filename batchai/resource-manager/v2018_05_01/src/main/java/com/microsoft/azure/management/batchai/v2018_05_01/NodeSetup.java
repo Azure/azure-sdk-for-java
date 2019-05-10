@@ -11,38 +11,37 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Use this to prepare the VM. NOTE: The volumes specified in mountVolumes are
- * mounted first and then the setupTask is run. Therefore the setup task can
- * use local mountPaths in its execution.
+ * Node setup settings.
  */
 public class NodeSetup {
     /**
-     * Specifies a setup task which can be used to customize the compute nodes
-     * of the cluster. The NodeSetup task runs everytime a VM is rebooted. For
-     * that reason the task code needs to be idempotent. Generally it is used
-     * to either download static data that is required for all jobs that run on
-     * the cluster VMs or to download/install software.
+     * Setup task.
+     * Setup task to run on cluster nodes when nodes got created or rebooted.
+     * The setup task code needs to be idempotent. Generally the setup task is
+     * used to download static data that is required for all jobs that run on
+     * the cluster VMs and/or to download/install software.
      */
     @JsonProperty(value = "setupTask")
     private SetupTask setupTask;
 
     /**
-     * Information on shared volumes to be used by jobs.
-     * Specified mount volumes will be available to all jobs executing on the
-     * cluster. The volumes will be mounted at location specified by
+     * Mount volumes.
+     * Mount volumes to be available to setup task and all jobs executing on
+     * the cluster. The volumes will be mounted at location specified by
      * $AZ_BATCHAI_MOUNT_ROOT environment variable.
      */
     @JsonProperty(value = "mountVolumes")
     private MountVolumes mountVolumes;
 
     /**
-     * Specifies settings for performance counters collecting and uploading.
+     * Performance counters settings.
+     * Settings for performance counters collecting and uploading.
      */
     @JsonProperty(value = "performanceCountersSettings")
     private PerformanceCountersSettings performanceCountersSettings;
 
     /**
-     * Get the setupTask value.
+     * Get setup task to run on cluster nodes when nodes got created or rebooted. The setup task code needs to be idempotent. Generally the setup task is used to download static data that is required for all jobs that run on the cluster VMs and/or to download/install software.
      *
      * @return the setupTask value
      */
@@ -51,7 +50,7 @@ public class NodeSetup {
     }
 
     /**
-     * Set the setupTask value.
+     * Set setup task to run on cluster nodes when nodes got created or rebooted. The setup task code needs to be idempotent. Generally the setup task is used to download static data that is required for all jobs that run on the cluster VMs and/or to download/install software.
      *
      * @param setupTask the setupTask value to set
      * @return the NodeSetup object itself.
@@ -62,7 +61,7 @@ public class NodeSetup {
     }
 
     /**
-     * Get the mountVolumes value.
+     * Get mount volumes to be available to setup task and all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -71,7 +70,7 @@ public class NodeSetup {
     }
 
     /**
-     * Set the mountVolumes value.
+     * Set mount volumes to be available to setup task and all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the NodeSetup object itself.
@@ -82,7 +81,7 @@ public class NodeSetup {
     }
 
     /**
-     * Get the performanceCountersSettings value.
+     * Get settings for performance counters collecting and uploading.
      *
      * @return the performanceCountersSettings value
      */
@@ -91,7 +90,7 @@ public class NodeSetup {
     }
 
     /**
-     * Set the performanceCountersSettings value.
+     * Set settings for performance counters collecting and uploading.
      *
      * @param performanceCountersSettings the performanceCountersSettings value to set
      * @return the NodeSetup object itself.

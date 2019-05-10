@@ -56,7 +56,7 @@ public class FileServerCreateParameters {
     private ResourceId subnet;
 
     /**
-     * Get the location value.
+     * Get the region in which to create the File Server.
      *
      * @return the location value
      */
@@ -65,7 +65,7 @@ public class FileServerCreateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set the region in which to create the File Server.
      *
      * @param location the location value to set
      * @return the FileServerCreateParameters object itself.
@@ -76,7 +76,7 @@ public class FileServerCreateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get the user specified tags associated with the File Server.
      *
      * @return the tags value
      */
@@ -85,7 +85,7 @@ public class FileServerCreateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set the user specified tags associated with the File Server.
      *
      * @param tags the tags value to set
      * @return the FileServerCreateParameters object itself.
@@ -96,7 +96,7 @@ public class FileServerCreateParameters {
     }
 
     /**
-     * Get the vmSize value.
+     * Get for information about available VM sizes for fileservers from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux).
      *
      * @return the vmSize value
      */
@@ -105,7 +105,7 @@ public class FileServerCreateParameters {
     }
 
     /**
-     * Set the vmSize value.
+     * Set for information about available VM sizes for fileservers from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux).
      *
      * @param vmSize the vmSize value to set
      * @return the FileServerCreateParameters object itself.

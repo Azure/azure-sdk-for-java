@@ -22,7 +22,7 @@ public class ExperimentsListByWorkspaceOptions {
     private Integer maxResults;
 
     /**
-     * Get the maxResults value.
+     * Get the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @return the maxResults value
      */
@@ -31,7 +31,7 @@ public class ExperimentsListByWorkspaceOptions {
     }
 
     /**
-     * Set the maxResults value.
+     * Set the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @param maxResults the maxResults value to set
      * @return the ExperimentsListByWorkspaceOptions object itself.

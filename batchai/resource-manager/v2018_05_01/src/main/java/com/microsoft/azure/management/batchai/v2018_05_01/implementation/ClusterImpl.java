@@ -11,8 +11,7 @@ package com.microsoft.azure.management.batchai.v2018_05_01.implementation;
 import com.microsoft.azure.management.batchai.v2018_05_01.Cluster;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.batchai.v2018_05_01.ClusterUpdateParameters;
-import java.util.Map;
+import com.microsoft.azure.management.batchai.v2018_05_01.ScaleSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ClusterCreateParameters;
 import com.microsoft.azure.management.batchai.v2018_05_01.AllocationState;
 import org.joda.time.DateTime;
@@ -21,7 +20,6 @@ import com.microsoft.azure.management.batchai.v2018_05_01.BatchAIError;
 import com.microsoft.azure.management.batchai.v2018_05_01.NodeSetup;
 import com.microsoft.azure.management.batchai.v2018_05_01.NodeStateCounts;
 import com.microsoft.azure.management.batchai.v2018_05_01.ProvisioningState;
-import com.microsoft.azure.management.batchai.v2018_05_01.ScaleSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ResourceId;
 import com.microsoft.azure.management.batchai.v2018_05_01.UserAccountSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.VirtualMachineConfiguration;
@@ -33,8 +31,8 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     private String resourceGroupName;
     private String workspaceName;
     private String clusterName;
+    private ScaleSettings uscaleSettings;
     private ClusterCreateParameters createParameter;
-    private ClusterUpdateParameters updateParameter;
 
     ClusterImpl(String name, BatchAIManager manager) {
         super(name, new ClusterInner());
@@ -42,8 +40,8 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
         // Set resource name
         this.clusterName = name;
         //
+        this.uscaleSettings = new ScaleSettings();
         this.createParameter = new ClusterCreateParameters();
-        this.updateParameter = new ClusterUpdateParameters();
     }
 
     ClusterImpl(ClusterInner inner, BatchAIManager manager) {
@@ -51,13 +49,13 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
         this.manager = manager;
         // Set resource name
         this.clusterName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
         this.clusterName = IdParsingUtils.getValueFromIdByName(inner.id(), "clusters");
         //
+        this.uscaleSettings = new ScaleSettings();
         this.createParameter = new ClusterCreateParameters();
-        this.updateParameter = new ClusterUpdateParameters();
     }
 
     @Override
@@ -82,7 +80,7 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     @Override
     public Observable<Cluster> updateResourceAsync() {
         ClustersInner client = this.manager().inner().clusters();
-        return client.updateAsync(this.resourceGroupName, this.workspaceName, this.clusterName, this.updateParameter)
+        return client.updateAsync(this.resourceGroupName, this.workspaceName, this.clusterName, this.uscaleSettings)
             .map(new Func1<ClusterInner, ClusterInner>() {
                @Override
                public ClusterInner call(ClusterInner resource) {
@@ -105,8 +103,8 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     }
 
     private void resetCreateUpdateParameters() {
+        this.uscaleSettings = new ScaleSettings();
         this.createParameter = new ClusterCreateParameters();
-        this.updateParameter = new ClusterUpdateParameters();
     }
 
     @Override
@@ -137,11 +135,6 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public String location() {
-        return this.inner().location();
     }
 
     @Override
@@ -180,11 +173,6 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     }
 
     @Override
-    public Map<String, String> tags() {
-        return this.inner().getTags();
-    }
-
-    @Override
     public String type() {
         return this.inner().type();
     }
@@ -213,12 +201,6 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     public ClusterImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
-        return this;
-    }
-
-    @Override
-    public ClusterImpl withLocation(String location) {
-        this.createParameter.withLocation(location);
         return this;
     }
 
@@ -263,17 +245,7 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
         if (isInCreateMode()) {
             this.createParameter.withScaleSettings(scaleSettings);
         } else {
-            this.updateParameter.withScaleSettings(scaleSettings);
-        }
-        return this;
-    }
-
-    @Override
-    public ClusterImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.createParameter.withTags(tags);
-        } else {
-            this.updateParameter.withTags(tags);
+            this.uscaleSettings = scaleSettings;
         }
         return this;
     }

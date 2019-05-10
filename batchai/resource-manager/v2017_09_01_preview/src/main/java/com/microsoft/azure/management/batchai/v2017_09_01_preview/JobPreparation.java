@@ -24,7 +24,7 @@ public class JobPreparation {
     private String commandLine;
 
     /**
-     * Get the commandLine value.
+     * Get if containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
      *
      * @return the commandLine value
      */
@@ -33,7 +33,7 @@ public class JobPreparation {
     }
 
     /**
-     * Set the commandLine value.
+     * Set if containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
      *
      * @param commandLine the commandLine value to set
      * @return the JobPreparation object itself.
