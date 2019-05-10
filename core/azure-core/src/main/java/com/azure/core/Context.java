@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core;
+
+import com.azure.core.http.HttpPipeline;
 
 import java.util.Optional;
 

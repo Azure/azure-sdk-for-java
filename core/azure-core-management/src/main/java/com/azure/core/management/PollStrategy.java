@@ -4,7 +4,7 @@
 package com.azure.core.management;
 
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
+import com.azure.core.Context;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.RestProxy;
@@ -158,7 +158,7 @@ abstract class PollStrategy {
     Mono<HttpResponse> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             final HttpRequest pollRequest = createPollRequest();
-            return restProxy.send(pollRequest, new ContextData("caller-method", fullyQualifiedMethodName()));
+            return restProxy.send(pollRequest, new Context("caller-method", fullyQualifiedMethodName()));
         })).flatMap(response -> updateFromAsync(response)));
     }
 
