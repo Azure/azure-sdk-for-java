@@ -19,11 +19,15 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class WebSocketProxyConnectionHandlerTest {
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
+    private static final String USERNAME = "test-user";
+    private static final String PASSWORD = "test-password";
+
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
 
@@ -67,7 +71,7 @@ public class WebSocketProxyConnectionHandlerTest {
      * Verifies that if we use the system proxy configuration, then it will use the system configured proxy.
      */
     @Test
-    public void withSystemProxyConfigurationSelected() {
+    public void systemProxyConfigurationSelected() {
         // Arrange
         final String host = "foo.eventhubs.azure.com";
         final AmqpConnection connection = mock(AmqpConnection.class);
@@ -84,5 +88,56 @@ public class WebSocketProxyConnectionHandlerTest {
 
         verify(proxySelector, times(2))
             .select(argThat(u -> u.getHost().equals(host)));
+    }
+
+    /**
+     * Verifies that if we use the proxy configuration.
+     */
+    @Test
+    public void proxyConfigurationSelected() {
+        // Arrange
+        final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
+        final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
+        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyConfiguration.ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final String host = "foo.eventhubs.azure.com";
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        when(connection.getHostName()).thenReturn(host);
+        when(proxySelector.select(argThat(u -> u.getHost().equals(host)))).thenReturn(Collections.singletonList(PROXY));
+
+        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, configuration);
+
+        // Act and Assert
+        Assert.assertEquals(address.getHostName(), handler.getRemoteHostName());
+        Assert.assertEquals(address.getPort(), handler.getRemotePort());
+
+        verifyZeroInteractions(proxySelector);
+    }
+
+    @Test
+    public void shouldUseProxyNoLegalProxyAddress() {
+        // Arrange
+        final String host = "foo.eventhubs.azure.com";
+
+        when(proxySelector.select(argThat(u -> u.getHost().equals(host))))
+            .thenReturn(Collections.emptyList());
+
+        // Act and Assert
+        Assert.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldUseProxyHostNull() {
+        WebSocketProxyConnectionHandler.shouldUseProxy(null);
+    }
+
+    @Test
+    public void shouldUseProxyNullProxySelector() {
+        // Arrange
+        final String host = "foo.eventhubs.azure.com";
+        ProxySelector.setDefault(null);
+
+        // Act and Assert
+        Assert.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
     }
 }
