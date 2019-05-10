@@ -9,13 +9,14 @@ import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.configuration.ConfigurationManager;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
@@ -46,7 +47,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final int RESOURCE_LENGTH = 16;
     private static String connectionString;
 
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTestBase.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTestBase.class);
 
     String keyPrefix;
     String labelPrefix;
@@ -77,7 +78,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         try {
             client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.asError().log("Could not create an configuration client credentials.", e);
+            logger.error("Could not create an configuration client credentials.", e);
             fail();
             client = null;
         }

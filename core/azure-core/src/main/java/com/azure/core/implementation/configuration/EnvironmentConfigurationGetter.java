@@ -15,18 +15,18 @@ import java.util.Map;
  */
 public final class EnvironmentConfigurationGetter implements ConfigurationGetter {
     private static final String LOG_MESSAGE = "Found configuration {} in the environment variables.";
-    private static final Map<String, String> environmentCache = new HashMap<>();
+    private static final Map<String, String> ENVIRONMENT_CACHE = new HashMap<>();
     private final Logger logger = LoggerFactory.getLogger(EnvironmentConfigurationGetter.class);
 
     @Override
     public String getConfiguration(String configurationName) {
-        if (environmentCache.containsKey(configurationName)) {
-            return environmentCache.get(configurationName);
+        if (ENVIRONMENT_CACHE.containsKey(configurationName)) {
+            return ENVIRONMENT_CACHE.get(configurationName);
         }
 
         try {
             String environmentConfiguration = System.getenv(configurationName);
-            environmentCache.put(configurationName, environmentConfiguration);
+            ENVIRONMENT_CACHE.put(configurationName, environmentConfiguration);
 
             if (!ImplUtils.isNullOrEmpty(environmentConfiguration)) {
                 logger.info(LOG_MESSAGE, configurationName);

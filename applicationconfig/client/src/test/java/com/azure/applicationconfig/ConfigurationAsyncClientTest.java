@@ -12,8 +12,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.logging.ServiceLogger;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClientTest.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClient.class);
 
     private ConfigurationAsyncClient client;
 
@@ -53,15 +54,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInformational().log("Cleaning up created key values.");
+        logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().keys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
-                    logger.asInformational().log("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
                     return client.deleteSetting(configurationSetting);
                 })
                 .blockLast();
 
-        logger.asInformational().log("Finished cleaning up values.");
+        logger.info("Finished cleaning up values.");
     }
 
     /**
@@ -762,7 +763,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteAllSettings() {
         client.listSettings(new SettingSelector().keys("*"))
                 .flatMap(configurationSetting -> {
-                    logger.asInformational().log("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
                     return client.deleteSetting(configurationSetting);
                 }).blockLast();
     }

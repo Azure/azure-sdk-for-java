@@ -3,13 +3,14 @@
 package com.azure.core.test;
 
 import com.azure.core.implementation.configuration.ConfigurationManager;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -22,7 +23,7 @@ public abstract class TestBase {
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static TestMode testMode;
 
-    private final ServiceLogger logger = new ServiceLogger(TestBase.class);
+    private final Logger logger = LoggerFactory.getLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
@@ -43,12 +44,16 @@ public abstract class TestBase {
     @Before
     public void setupTest() {
         final String testName = testName();
-        logger.asInformational().log("Test Mode: {}, Name: {}", testMode, testName);
+        if (logger.isErrorEnabled()) {
+            logger.error("Test Mode: {}, Name: {}", testMode, testName);
+        }
 
         try {
             interceptorManager = new InterceptorManager(testName, testMode);
         } catch (IOException e) {
-            logger.asError().log("Could not create interceptor for {}", testName, e);
+            if (logger.isErrorEnabled()) {
+                logger.error("Could not create interceptor for {}", testName, e);
+            }
             Assert.fail();
         }
         testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
@@ -90,20 +95,24 @@ public abstract class TestBase {
     }
 
     private static TestMode getTestMode() {
-        final ServiceLogger logger = new ServiceLogger(TestBase.class);
+        final Logger logger = LoggerFactory.getLogger(TestBase.class);
         final String azureTestMode = ConfigurationManager.getConfiguration(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
             } catch (IllegalArgumentException e) {
-                logger.asWarning().log("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                if (logger.isErrorEnabled()) {
+                    logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                }
 
                 return TestMode.PLAYBACK;
             }
         }
 
-        logger.asInformational().log("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
+        if (logger.isInfoEnabled()) {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
+        }
 
         return TestMode.PLAYBACK;
     }

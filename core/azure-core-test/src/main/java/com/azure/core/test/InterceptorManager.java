@@ -4,13 +4,14 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,7 @@ import java.util.Objects;
 public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
 
-    private final ServiceLogger logger = new ServiceLogger(InterceptorManager.class);
+    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
     private final String testName;
     private final TestMode testMode;
@@ -150,14 +151,14 @@ public class InterceptorManager implements AutoCloseable {
                 try {
                     writeDataToFile();
                 } catch (IOException e) {
-                    logger.asError().log("Unable to write data to playback file.", e);
+                    logger.error("Unable to write data to playback file.", e);
                 }
                 break;
             case PLAYBACK:
                 // Do nothing
                 break;
             default:
-                logger.asError().log("==> Unknown AZURE_TEST_MODE: {}", testMode);
+                logger.error("==> Unknown AZURE_TEST_MODE: {}", testMode);
                 break;
         }
     }
@@ -173,8 +174,8 @@ public class InterceptorManager implements AutoCloseable {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         File recordFile = getRecordFile(testName);
 
-        if (recordFile.createNewFile()) {
-            logger.asTrace().log("Created record file: {}", recordFile.getPath());
+        if (recordFile.createNewFile() && logger.isTraceEnabled()) {
+            logger.trace("Created record file: {}", recordFile.getPath());
         }
 
         mapper.writeValue(recordFile, recordedData);
@@ -184,14 +185,17 @@ public class InterceptorManager implements AutoCloseable {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
 
-        if (!folderFile.exists()) {
+        if (!folderFile.exists() && logger.isTraceEnabled()) {
             if (folderFile.mkdir()) {
-                logger.asTrace().log("Created directory: {}", folderFile.getPath());
+                logger.trace("Created directory: {}", folderFile.getPath());
             }
         }
 
         String filePath = folderFile.getPath() + "/" + testName + ".json";
-        logger.asInformational().log("==> Playback file path: " + filePath);
+        if (logger.isInfoEnabled()) {
+            logger.info("==> Playback file path: " + filePath);
+        }
+
 
         return new File(filePath);
     }

@@ -4,8 +4,6 @@
 package com.azure.core.implementation.configuration;
 
 import com.azure.core.implementation.util.ImplUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
