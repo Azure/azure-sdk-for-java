@@ -348,12 +348,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the context, or null if no context was provided
      */
     public ContextData contextData(Object[] swaggerMethodArguments) {
-        Object firstArg = swaggerMethodArguments != null && swaggerMethodArguments.length > 0 ? swaggerMethodArguments[0] : null;
-        if (firstArg instanceof ContextData) {
-            return (ContextData) firstArg;
-        } else {
-            return ContextData.NONE;
-        }
+        ContextData context = ImplUtils.findFirstOfType(swaggerMethodArguments, ContextData.class);
+
+        return (context != null) ? context : ContextData.NONE;
     }
 
     /**
