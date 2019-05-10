@@ -24,7 +24,7 @@ public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
         HttpPipeline pipeline = new HttpPipeline();
-        assertEquals(0, pipeline.pipelinePolicies().length);
+        assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }
@@ -35,10 +35,10 @@ public class HttpPipelineTests {
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy());
 
-        assertEquals(3, pipeline.pipelinePolicies().length);
-        assertEquals(PortPolicy.class, pipeline.pipelinePolicies()[0].getClass());
-        assertEquals(ProtocolPolicy.class, pipeline.pipelinePolicies()[1].getClass());
-        assertEquals(RetryPolicy.class, pipeline.pipelinePolicies()[2].getClass());
+        assertEquals(3, pipeline.getPolicyCount());
+        assertEquals(PortPolicy.class, pipeline.getPolicy(0).getClass());
+        assertEquals(ProtocolPolicy.class, pipeline.getPolicy(1).getClass());
+        assertEquals(RetryPolicy.class, pipeline.getPolicy(2).getClass());
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }

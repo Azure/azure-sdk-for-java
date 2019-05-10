@@ -48,12 +48,20 @@ public final class HttpPipeline {
     }
 
     /**
-     * Get the policies in the pipeline.
-     *
-     * @return policies in the pipeline
+     * Get the policy at the passed index in the pipeline.
+     * @param index index of the the policy to retrieve.
+     * @return the policy stored at that index.
      */
-    public HttpPipelinePolicy[] pipelinePolicies() {
-        return Arrays.copyOf(this.pipelinePolicies, this.pipelinePolicies.length);
+    public HttpPipelinePolicy getPolicy(int index) {
+        return this.pipelinePolicies[index];
+    }
+
+    /**
+     * Get the count of policies in the pipeline.
+     * @return count of policies.
+     */
+    public int getPolicyCount() {
+        return this.pipelinePolicies.length;
     }
 
     /**
