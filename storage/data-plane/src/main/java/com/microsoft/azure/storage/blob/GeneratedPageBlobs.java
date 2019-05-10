@@ -42,10 +42,10 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
+
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -160,8 +160,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> createAsync(Context context, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, Map<String, String> metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(createAsync(context, contentLength, blobContentLength, timeout, metadata, blobSequenceNumber, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -180,8 +180,8 @@ public final class GeneratedPageBlobs {
      * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobCreateResponse> createWithRestResponseAsync(Context context, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, Map<String, String> metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -261,12 +261,12 @@ public final class GeneratedPageBlobs {
      * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable createAsync(Context context, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, Map<String, String> metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return createWithRestResponseAsync(context, contentLength, blobContentLength, timeout, metadata, blobSequenceNumber, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -304,8 +304,8 @@ public final class GeneratedPageBlobs {
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> uploadPagesAsync(Context context, @NonNull Flowable<ByteBuffer> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(uploadPagesAsync(context, body, contentLength, transactionalContentMD5, timeout, range, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -324,8 +324,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobUploadPagesResponse> uploadPagesWithRestResponseAsync(Context context, @NonNull Flowable<ByteBuffer> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -396,12 +396,12 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable uploadPagesAsync(Context context, @NonNull Flowable<ByteBuffer> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return uploadPagesWithRestResponseAsync(context, body, contentLength, transactionalContentMD5, timeout, range, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -435,8 +435,8 @@ public final class GeneratedPageBlobs {
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> clearPagesAsync(Context context, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(clearPagesAsync(context, contentLength, timeout, range, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -453,8 +453,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobClearPagesResponse> clearPagesWithRestResponseAsync(Context context, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -519,12 +519,12 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable clearPagesAsync(Context context, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return clearPagesWithRestResponseAsync(context, contentLength, timeout, range, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -566,8 +566,8 @@ public final class GeneratedPageBlobs {
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> uploadPagesFromURLAsync(Context context, @NonNull URL sourceUrl, @NonNull String sourceRange, @NonNull long contentLength, @NonNull String range, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(uploadPagesFromURLAsync(context, sourceUrl, sourceRange, contentLength, range, sourceContentMD5, timeout, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions), serviceCallback);
@@ -588,8 +588,8 @@ public final class GeneratedPageBlobs {
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobUploadPagesFromURLResponse> uploadPagesFromURLWithRestResponseAsync(Context context, @NonNull URL sourceUrl, @NonNull String sourceRange, @NonNull long contentLength, @NonNull String range, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -694,12 +694,12 @@ public final class GeneratedPageBlobs {
      * @param sequenceNumberAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable uploadPagesFromURLAsync(Context context, @NonNull URL sourceUrl, @NonNull String sourceRange, @NonNull long contentLength, @NonNull String range, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions) {
         return uploadPagesFromURLWithRestResponseAsync(context, sourceUrl, sourceRange, contentLength, range, sourceContentMD5, timeout, requestId, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -712,10 +712,10 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
+     * @return the PageList object if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
      */
     public PageList getPageRanges(Context context, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPageRangesAsync(context, snapshot, timeout, range, requestId, leaseAccessConditions, modifiedAccessConditions).blockingGet();
@@ -732,8 +732,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<PageList> getPageRangesAsync(Context context, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<PageList> serviceCallback) {
         return ServiceFuture.fromBody(getPageRangesAsync(context, snapshot, timeout, range, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -749,8 +749,8 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobGetPageRangesResponse> getPageRangesWithRestResponseAsync(Context context, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -800,12 +800,12 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Maybe<PageList> getPageRangesAsync(Context context, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPageRangesWithRestResponseAsync(context, snapshot, timeout, range, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .flatMapMaybe((PageBlobGetPageRangesResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
+                   .flatMapMaybe((PageBlobGetPageRangesResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }
 
     /**
@@ -819,10 +819,10 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
+     * @return the PageList object if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
      */
     public PageList getPageRangesDiff(Context context, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPageRangesDiffAsync(context, snapshot, timeout, prevsnapshot, range, requestId, leaseAccessConditions, modifiedAccessConditions).blockingGet();
@@ -840,8 +840,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<PageList> getPageRangesDiffAsync(Context context, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<PageList> serviceCallback) {
         return ServiceFuture.fromBody(getPageRangesDiffAsync(context, snapshot, timeout, prevsnapshot, range, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -858,8 +858,8 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiffWithRestResponseAsync(Context context, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -910,12 +910,12 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Maybe<PageList> getPageRangesDiffAsync(Context context, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPageRangesDiffWithRestResponseAsync(context, snapshot, timeout, prevsnapshot, range, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .flatMapMaybe((PageBlobGetPageRangesDiffResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
+                   .flatMapMaybe((PageBlobGetPageRangesDiffResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }
 
     /**
@@ -945,8 +945,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> resizeAsync(Context context, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(resizeAsync(context, blobContentLength, timeout, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -961,8 +961,8 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobResizeResponse> resizeWithRestResponseAsync(Context context, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -1011,12 +1011,12 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable resizeAsync(Context context, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return resizeWithRestResponseAsync(context, blobContentLength, timeout, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -1048,8 +1048,8 @@ public final class GeneratedPageBlobs {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> updateSequenceNumberAsync(Context context, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(updateSequenceNumberAsync(context, sequenceNumberAction, timeout, blobSequenceNumber, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
@@ -1065,8 +1065,8 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumberWithRestResponseAsync(Context context, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -1119,12 +1119,12 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable updateSequenceNumberAsync(Context context, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return updateSequenceNumberWithRestResponseAsync(context, sequenceNumberAction, timeout, blobSequenceNumber, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 
     /**
@@ -1152,8 +1152,8 @@ public final class GeneratedPageBlobs {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public ServiceFuture<Void> copyIncrementalAsync(Context context, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromBody(copyIncrementalAsync(context, copySource, timeout, requestId, modifiedAccessConditions), serviceCallback);
@@ -1167,8 +1167,8 @@ public final class GeneratedPageBlobs {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncrementalWithRestResponseAsync(Context context, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
@@ -1215,11 +1215,11 @@ public final class GeneratedPageBlobs {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Completable copyIncrementalAsync(Context context, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         return copyIncrementalWithRestResponseAsync(context, copySource, timeout, requestId, modifiedAccessConditions)
-            .toCompletable();
+                   .toCompletable();
     }
 }
