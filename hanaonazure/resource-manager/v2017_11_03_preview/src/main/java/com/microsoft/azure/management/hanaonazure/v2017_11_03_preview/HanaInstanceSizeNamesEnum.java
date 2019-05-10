@@ -70,6 +70,21 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
     /** Static value S960m for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S960M = fromString("S960m");
 
+    /** Static value S224o for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224O = fromString("S224o");
+
+    /** Static value S224m for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224M = fromString("S224m");
+
+    /** Static value S224om for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224OM = fromString("S224om");
+
+    /** Static value S224oxm for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224OXM = fromString("S224oxm");
+
+    /** Static value S224oxxm for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224OXXM = fromString("S224oxxm");
+
     /**
      * Creates or finds a HanaInstanceSizeNamesEnum from its string representation.
      * @param name a name to look for
