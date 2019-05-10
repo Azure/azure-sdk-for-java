@@ -15,6 +15,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -103,7 +104,7 @@ public class WebSocketProxyConnectionHandlerTest {
         final AmqpConnection connection = mock(AmqpConnection.class);
 
         when(connection.getHostName()).thenReturn(host);
-        when(proxySelector.select(argThat(u -> u.getHost().equals(host)))).thenReturn(Collections.singletonList(PROXY));
+        when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, configuration);
 
