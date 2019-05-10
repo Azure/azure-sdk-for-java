@@ -67,16 +67,25 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      *
      * @param name the name
      * @param value the value
-     * @return this HttpHeaders
+     * @return The updated HttpHeaders object
      */
     public HttpHeaders set(String name, String value) {
-        final String headerKey = name.toLowerCase(Locale.ROOT);
+        final String headerKey = formatKey(name);
         if (value == null) {
             headers.remove(headerKey);
         } else {
             headers.put(headerKey, new HttpHeader(name, value));
         }
         return this;
+    }
+
+    /**
+     * Get the header for the provided header name. Null will be returned if the header name isn't found.
+     * @param name the name of the header to find.
+     * @return the header if found, null otherwise.
+     */
+    public HttpHeader get(String name) {
+        return headers.get(formatKey(name));
     }
 
     /**
@@ -87,7 +96,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return The String value of the header, or null if the header isn't found
      */
     public String value(String name) {
-        final HttpHeader header = getHeader(name);
+        final HttpHeader header = get(name);
         return header == null ? null : header.value();
     }
 
@@ -99,13 +108,12 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return the values of the header, or null if the header isn't found
      */
     public String[] values(String name) {
-        final HttpHeader header = getHeader(name);
+        final HttpHeader header = get(name);
         return header == null ? null : header.values();
     }
 
-    private HttpHeader getHeader(String headerName) {
-        final String headerKey = headerName.toLowerCase(Locale.ROOT);
-        return headers.get(headerKey);
+    private String formatKey(final String key) {
+        return key.toLowerCase(Locale.ROOT);
     }
 
     /**
