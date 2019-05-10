@@ -20,7 +20,8 @@ import java.util.Stack;
  *  IV. Only one conditional check inside of the if conditional expression
  */
 public class GoodLoggingCheck extends AbstractCheck {
-    private static String loggerName;
+    private static String loggerRequiredName;
+    private static String loggerActualName;
     private static String loggerClass;
     private static String packagePath;
 
@@ -28,7 +29,10 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String LOGGER_NAME_ERR = "Incorrect name for Logger: use \"%s\" instead of \"%s\" as Logger instance name";
     private static final String LOGGER_LEVEL_ERR = "Please guard \"%s\" method call with \"%s\" method";
     private static final String STATIC_LOGGER_ERR = "Logger should not be static: remove static modifier";
-    private static final String GUARD_BLOCK_ERR = "Please make sure the guard block, if statement, has only one guard check conditional expression";
+    private static final String LOGGER_FACTORY_GETLOGGER_ERROR = "Should create a non-static final Logger variable and name it logger, instead of use the LoggerFactory.getLogger() directly";
+
+    private static final String LOGGER_FACTORY_GETLOGGER = "LoggerFactory.getLogger";
+    private static final String LOGGER = "Logger";
 
     // Logger level static final string variables
     private static final String ERROR = "error";
@@ -71,10 +75,10 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     /**
      * Setter to specifies valid identifiers
-     * @param loggerName the variable name of logger used
+     * @param loggerRequiredName the variable name of logger used
      */
-    public void setLoggerName(String loggerName) {
-        this.loggerName = loggerName;
+    public void setLoggerName(String loggerRequiredName) {
+        this.loggerRequiredName = loggerRequiredName;
     }
 
     /**
@@ -138,32 +142,69 @@ public class GoodLoggingCheck extends AbstractCheck {
                 this.hasLoggerImported |= importClassPath.equals(this.slf4lLogger.getName());
                 break;
             case TokenTypes.METHOD_CALL:
-                if (this.hasLoggerImported) {
-                    DetailAST dotAST = ast.findFirstToken(TokenTypes.DOT);
-                    if (dotAST == null) {
+                if (!this.hasLoggerImported) {
+                    break;
+                }
+                // null pointer check
+                DetailAST dotAST = ast.findFirstToken(TokenTypes.DOT);
+                if (dotAST == null) {
+                    break;
+                }
+
+                String methodName = dotAST.getLastChild().getText();
+
+                // skip if not logger methods related method call
+                if (!loggerMethodMap.containsKey(methodName)) {
+                    break;
+                }
+                // check if the method name is one of isEnabled method, such as isDebugEnabled()
+                if (loggerMethodMap.containsValue(methodName)){
+                    enabledStack.push(ast.getParent().getParent());
+                    enabledMap.put(methodName, enabledMap.getOrDefault(methodName, 0) + 1);
+                    break;
+                }
+
+                StringBuilder methodCallerBuilder = new StringBuilder();
+                StringBuilder reverseBuilder = new StringBuilder();
+
+                DetailAST methodCaller = dotAST.getFirstChild();
+                while (methodCaller != null && methodCaller.getType() == TokenTypes.METHOD_CALL) {
+                    DetailAST localDotAST = methodCaller.findFirstToken(TokenTypes.DOT);
+                    if (localDotAST == null) {
                         break;
                     }
-                    String logger = dotAST.getFirstChild().getText();
-                    String methodName = dotAST.getLastChild().getText();
-                    // case 1: logger.debug()
+                    reverseBuilder
+                        .append('.')
+                        .append(localDotAST.getLastChild().getText())
+                        .reverse();
+                    methodCallerBuilder.append(reverseBuilder);
+                    reverseBuilder.setLength(0);
+                    methodCaller = localDotAST.getFirstChild();
+                }
+                if (methodCaller != null) {
+                    reverseBuilder.append(methodCaller.getText()).reverse();
+                    methodCallerBuilder.append(reverseBuilder);
+                    reverseBuilder.setLength(0);
+
+                    if (methodCallerBuilder.length() == 0) {
+                        break;
+                    }
+                    methodCallerBuilder.reverse();
+                    String varName = methodCallerBuilder.toString();
+
+                    if (LOGGER_FACTORY_GETLOGGER.equals(varName)) {
+                        log(dotAST.getLineNo(), LOGGER_FACTORY_GETLOGGER_ERROR);
+                    }
+                    // skip if not declared logger variable name or LoggerFactory.getLogger()
+                    if (!varName.equals(this.loggerActualName) && !varName.equals(LOGGER_FACTORY_GETLOGGER)) {
+                        break;
+                    }
+
                     if (loggerMethodMap.containsKey(methodName)) {
-                        if (!logger.equals(this.loggerName)) {
-                            log(dotAST.getLineNo(), String.format(LOGGER_NAME_ERR, this.loggerName, logger));
+                        if (!varName.equals(this.loggerRequiredName)) {
+                            log(dotAST.getLineNo(), String.format(LOGGER_NAME_ERR, this.loggerRequiredName, varName));
                         }
                         logGuardBlockErrorIfFound(dotAST);
-                        break;
-                    }
-                    // case 2: logger.isDebugEnabled()
-                    if (loggerMethodMap.containsValue(methodName)){
-                        if (!logger.equals(this.loggerName)) {
-                            log(dotAST.getLineNo(), String.format(LOGGER_NAME_ERR, this.loggerName, logger));
-                        }
-                        if (!this.isGrandparentLiteralIf(ast)) {
-                            log(ast.getLineNo(), GUARD_BLOCK_ERR);
-                            break;
-                        }
-                        enabledStack.push(ast.getParent().getParent());
-                        enabledMap.put(methodName, enabledMap.getOrDefault(methodName, 0) + 1);
                     }
                 }
                 break;
@@ -179,7 +220,7 @@ public class GoodLoggingCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST ast) {
         // only check for track 2, otherwise, skip check
-        if(!this.isPathCorrect) {
+        if (!this.isPathCorrect) {
             return;
         }
 
@@ -212,8 +253,8 @@ public class GoodLoggingCheck extends AbstractCheck {
      */
     private void logLoggerInstanceNamingErrorIfFound(DetailAST varDefAST) {
         DetailAST identAST = varDefAST.findFirstToken(TokenTypes.IDENT);
-        if (identAST != null && !identAST.getText().equals(this.loggerName)) {
-            log(varDefAST.getLineNo(), String.format(LOGGER_NAME_ERR, this.loggerName, identAST.getText()));
+        if (identAST != null && !identAST.getText().equals(this.loggerRequiredName)) {
+            log(varDefAST.getLineNo(), String.format(LOGGER_NAME_ERR, this.loggerRequiredName, identAST.getText()));
         }
     }
 
@@ -235,23 +276,21 @@ public class GoodLoggingCheck extends AbstractCheck {
      */
     private boolean isLoggerType(DetailAST varDefAST) {
         DetailAST typeAST = varDefAST.findFirstToken(TokenTypes.TYPE);
-        if (typeAST == null) {
+        DetailAST varNameAST = varDefAST.findFirstToken(TokenTypes.IDENT);
+        if (typeAST == null || varNameAST == null) {
             return false;
         }
-        DetailAST identAST = typeAST.findFirstToken(TokenTypes.IDENT);
-        return identAST != null && identAST.getText().equals(this.slf4lLogger.getSimpleName());
-    }
 
-    /**
-     * only accept single check expression inside of if statement check
-     * @param methodCallAST method call AST node in the if conditional check
-     * @return true if only one check expression inside of if statement check
-     */
-    private boolean isGrandparentLiteralIf(DetailAST methodCallAST) {
-        return methodCallAST != null
-            && methodCallAST.getParent() != null
-            && methodCallAST.getParent().getParent() != null
-            && methodCallAST.getParent().getParent().getType() == TokenTypes.LITERAL_IF;
+        DetailAST typeNameAST = typeAST.findFirstToken(TokenTypes.IDENT);
+
+        if (typeNameAST != null) {
+            String typeName = typeNameAST.getText();
+            if (typeName != null && typeName.equals(LOGGER)) {
+                this.loggerActualName = varNameAST.getText();
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
