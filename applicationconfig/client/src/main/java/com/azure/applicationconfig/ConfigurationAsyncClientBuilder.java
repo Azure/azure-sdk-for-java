@@ -128,9 +128,11 @@ public final class ConfigurationAsyncClientBuilder {
 
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
+        HttpPipelinePolicy[] pipelinePolicies = policies.toArray(new HttpPipelinePolicy[0]);
+
         HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+            ? new HttpPipeline(pipelinePolicies)
+            : new HttpPipeline(httpClient, pipelinePolicies);
 
         return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
     }

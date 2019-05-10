@@ -49,7 +49,7 @@ public class HttpPipelineTests {
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy());
 
-        HttpPipelineCallContext context = pipeline.newContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
+        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
