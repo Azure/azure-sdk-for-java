@@ -9,13 +9,33 @@
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import rx.Observable;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DeletedWebAppsInner;
-import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
 
 /**
  * Type representing DeletedWebApps.
  */
-public interface DeletedWebApps extends HasInner<DeletedWebAppsInner> {
+public interface DeletedWebApps {
+    /**
+     * Get deleted app for a subscription at location.
+     * Get deleted app for a subscription at location.
+     *
+     * @param location the String value
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<DeletedSite> getDeletedWebAppByLocationAsync(String location, String deletedSiteId);
+
+    /**
+     * Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location.
+     *
+     * @param location the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<DeletedSite> listByLocationAsync(final String location);
+
     /**
      * Get all deleted apps for a subscription.
      * Get all deleted apps for a subscription.

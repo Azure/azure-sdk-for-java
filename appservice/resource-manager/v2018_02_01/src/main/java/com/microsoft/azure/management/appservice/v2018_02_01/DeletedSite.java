@@ -9,14 +9,16 @@
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DeletedSiteInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DeletedSiteInner;
 
 /**
  * Type representing DeletedSite.
  */
-public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<CertificateRegistrationManager> {
+public interface DeletedSite extends HasInner<DeletedSiteInner>, Indexable, Refreshable<DeletedSite>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the deletedSiteId value.
      */
