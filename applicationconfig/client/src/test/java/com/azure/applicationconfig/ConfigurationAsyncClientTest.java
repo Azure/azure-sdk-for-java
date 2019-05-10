@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClient.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
     private ConfigurationAsyncClient client;
 

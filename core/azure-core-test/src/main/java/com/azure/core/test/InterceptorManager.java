@@ -185,8 +185,8 @@ public class InterceptorManager implements AutoCloseable {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
 
-        if (!folderFile.exists() && logger.isTraceEnabled()) {
-            if (folderFile.mkdir()) {
+        if (!folderFile.exists()) {
+            if (folderFile.mkdir() && logger.isTraceEnabled()) {
                 logger.trace("Created directory: {}", folderFile.getPath());
             }
         }
@@ -195,7 +195,6 @@ public class InterceptorManager implements AutoCloseable {
         if (logger.isInfoEnabled()) {
             logger.info("==> Playback file path: " + filePath);
         }
-
 
         return new File(filePath);
     }

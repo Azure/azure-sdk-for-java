@@ -44,8 +44,8 @@ public abstract class TestBase {
     @Before
     public void setupTest() {
         final String testName = testName();
-        if (logger.isErrorEnabled()) {
-            logger.error("Test Mode: {}, Name: {}", testMode, testName);
+        if (logger.isInfoEnabled()) {
+            logger.info("Test Mode: {}, Name: {}", testMode, testName);
         }
 
         try {
@@ -113,7 +113,6 @@ public abstract class TestBase {
         if (logger.isInfoEnabled()) {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         }
-
         return TestMode.PLAYBACK;
     }
 }
