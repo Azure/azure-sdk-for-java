@@ -28,10 +28,10 @@ public class WorkItemCreateConfiguration {
     private String connectorDataConfiguration;
 
     /**
-     * True or false string indicating validate only.
+     * Boolean indicating validate only.
      */
     @JsonProperty(value = "ValidateOnly")
-    private String validateOnly;
+    private Boolean validateOnly;
 
     /**
      * Custom work item properties.
@@ -80,21 +80,21 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Get true or false string indicating validate only.
+     * Get boolean indicating validate only.
      *
      * @return the validateOnly value
      */
-    public String validateOnly() {
+    public Boolean validateOnly() {
         return this.validateOnly;
     }
 
     /**
-     * Set true or false string indicating validate only.
+     * Set boolean indicating validate only.
      *
      * @param validateOnly the validateOnly value to set
      * @return the WorkItemCreateConfiguration object itself.
      */
-    public WorkItemCreateConfiguration withValidateOnly(String validateOnly) {
+    public WorkItemCreateConfiguration withValidateOnly(Boolean validateOnly) {
         this.validateOnly = validateOnly;
         return this;
     }
