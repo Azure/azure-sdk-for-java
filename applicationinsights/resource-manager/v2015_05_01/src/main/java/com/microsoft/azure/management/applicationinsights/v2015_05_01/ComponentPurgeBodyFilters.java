@@ -34,6 +34,13 @@ public class ComponentPurgeBodyFilters {
     private Object value;
 
     /**
+     * When filtering over custom dimensions, this key will be used as the name
+     * of the custom dimension.
+     */
+    @JsonProperty(value = "key")
+    private String key;
+
+    /**
      * Get the column of the table over which the given query should run.
      *
      * @return the column value
@@ -90,6 +97,26 @@ public class ComponentPurgeBodyFilters {
      */
     public ComponentPurgeBodyFilters withValue(Object value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get when filtering over custom dimensions, this key will be used as the name of the custom dimension.
+     *
+     * @return the key value
+     */
+    public String key() {
+        return this.key;
+    }
+
+    /**
+     * Set when filtering over custom dimensions, this key will be used as the name of the custom dimension.
+     *
+     * @param key the key value to set
+     * @return the ComponentPurgeBodyFilters object itself.
+     */
+    public ComponentPurgeBodyFilters withKey(String key) {
+        this.key = key;
         return this;
     }
 

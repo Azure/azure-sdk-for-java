@@ -19,7 +19,7 @@ public interface WebTestLocations extends HasInner<WebTestLocationsInner> {
     /**
      * Gets a list of web test locations available to this Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
