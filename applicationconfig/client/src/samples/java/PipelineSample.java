@@ -5,12 +5,12 @@ import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.http.HttpMethod;
-import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +25,14 @@ import java.util.stream.Stream;
  * Sample demonstrates how to add a custom policy into the HTTP pipeline.
  */
 class PipelineSample {
+    /**
+     * Runs the sample algorithm and demonstrates how to add a custom policy to the HTTP pipeline.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
+     * HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
+     */
     public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
@@ -43,7 +51,7 @@ class PipelineSample {
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().key("hello").value("world")),
                 client.setSetting(new ConfigurationSetting().key("newSetting").value("newValue")))
-                .then(client.listSettings(new SettingSelector().key("*")).collectList())
+                .then(client.listSettings(new SettingSelector().keys("*")).collectList())
                 .block();
 
         // Cleaning up after ourselves by deleting the values.

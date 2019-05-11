@@ -32,7 +32,7 @@ public final class LoggingUtils {
             }
 
             if ((unwrapped.getCause() != null) && (unwrapped.getCause() instanceof Exception)) {
-                unwrapped = (Exception) unwrapped.getCause();
+                unwrapped = unwrapped.getCause();
             } else {
                 break;
             }

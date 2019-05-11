@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -130,7 +131,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                             if (TRACE_LOGGER.isDebugEnabled()) {
                                                 TRACE_LOGGER.debug(String.format(Locale.US,
                                                         "clientId[%s], path[%s], linkName[%s] - token renewed",
-                                                        getClientId(), sendPath, sendLink.getName()));
+                                                        getClientId(), sendPath, getSendLinkName()));
                                             }
                                         }
 
@@ -139,7 +140,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                             if (TRACE_LOGGER.isInfoEnabled()) {
                                                 TRACE_LOGGER.info(String.format(Locale.US,
                                                         "clientId[%s], path[%s], linkName[%s] - tokenRenewalFailure[%s]",
-                                                        getClientId(), sendPath, sendLink.getName(), error.getMessage()));
+                                                        getClientId(), sendPath, getSendLinkName(), error.getMessage()));
                                             }
                                         }
                                     });
@@ -147,7 +148,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             if (TRACE_LOGGER.isWarnEnabled()) {
                                 TRACE_LOGGER.warn(String.format(Locale.US,
                                         "clientId[%s], path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]",
-                                        getClientId(), sendPath, sendLink.getName(), exception.getMessage()));
+                                        getClientId(), sendPath, getSendLinkName(), exception.getMessage()));
                             }
                         }
                     }
@@ -213,8 +214,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             sendWaiterData.setLastKnownException(lastKnownError);
         }
 
-        if (timeoutTask != null)
+        if (timeoutTask != null) {
             timeoutTask.cancel(false);
+        }
 
         final CompletableFuture<?> timeoutTimerTask = this.timer.schedule(
                 new SendTimeout(deliveryTag, sendWaiterData),
@@ -224,12 +226,12 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         if (timeoutTimerTask.isCompletedExceptionally()) {
             timeoutTimerTask.handleAsync(
                 (unUsed, exception) -> {
-                    if (exception != null && !(exception instanceof CancellationException))
+                    if (exception != null && !(exception instanceof CancellationException)) {
                         onSendFuture.completeExceptionally(
-                                new OperationCancelledException(String.format(Locale.US,
-                                        "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
-                                        this.sendPath), exception));
-
+                            new OperationCancelledException(String.format(Locale.US,
+                                "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
+                                this.sendPath), exception));
+                    }
                     return null;
                 }, this.executor);
 
@@ -262,6 +264,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             final CompletableFuture<Void> onSend,
             final TimeoutTracker tracker) {
         return this.sendCore(bytes, arrayOffset, messageFormat, onSend, tracker, null, null);
+    }
+
+    private String getSendLinkName() {
+        return this.sendLink == null ? "null" : this.sendLink.getName();
     }
 
     public CompletableFuture<Void> send(final Iterable<Message> messages) {
@@ -357,8 +363,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             this.cancelOpenTimer();
 
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("onOpenComplete - clientId[%s], sendPath[%s], linkName[%s]",
-                        this.getClientId(), this.sendPath, this.sendLink.getName()));
+                TRACE_LOGGER.info(String.format(Locale.US, "onOpenComplete - clientId[%s], sendPath[%s], linkName[%s]",
+                        this.getClientId(), this.sendPath, this.getSendLinkName()));
             }
 
             if (!this.linkFirstOpen.isDone()) {
@@ -412,8 +418,19 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         this.cancelOpen(schedulerException);
                     }
-                } else if (completionException instanceof EventHubException
-                        && !((EventHubException) completionException).getIsTransient()) {
+                } else if (completionException instanceof EventHubException) {
+                    // If the error is not a transient exception, we want to cancel this open. Otherwise, we don't want
+                    // log the transient exceptions and let it fall through.
+                    if (!((EventHubException) completionException).getIsTransient()) {
+                        this.cancelOpen(completionException);
+                    }
+                } else {
+                    // We don't want this exception to fall into the abyss and we are out of retries, so log a message,
+                    // and cancel this operation.
+                    if (TRACE_LOGGER.isErrorEnabled()) {
+                        TRACE_LOGGER.error("Could not open link.", completionException);
+                    }
+
                     this.cancelOpen(completionException);
                 }
             } else {
@@ -447,8 +464,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     @Override
     public void onError(final Exception completionException) {
         if (this.getIsClosingOrClosed()) {
-            if (this.closeTimer != null && !this.closeTimer.isDone())
+            if (this.closeTimer != null && !this.closeTimer.isDone()) {
                 this.closeTimer.cancel(false);
+            }
 
             synchronized (this.pendingSendLock) {
                 for (Map.Entry<String, ReplayableWorkItem<Void>> pendingSend : this.pendingSendsData.entrySet()) {
@@ -494,7 +512,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                 @Override
                                 public void onEvent() {
                                     if (!MessageSender.this.getIsClosingOrClosed()
-                                            && (sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)) {
+                                            && (sendLink == null || sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)) {
                                         recreateSendLink();
                                     }
                                 }
@@ -524,12 +542,13 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         final DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
-        if (TRACE_LOGGER.isTraceEnabled())
+        if (TRACE_LOGGER.isTraceEnabled()) {
             TRACE_LOGGER.trace(
-                    String.format(
-                            Locale.US,
-                            "clientId[%s], path[%s], linkName[%s], deliveryTag[%s]",
-                            this.getClientId(), this.sendPath, this.sendLink.getName(), deliveryTag));
+                String.format(
+                    Locale.US,
+                    "clientId[%s], path[%s], linkName[%s], deliveryTag[%s]",
+                    this.getClientId(), this.sendPath, this.getSendLinkName(), deliveryTag));
+        }
 
         final ReplayableWorkItem<Void> pendingSendWorkItem = this.pendingSendsData.remove(deliveryTag);
 
@@ -594,23 +613,31 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 this.cleanupFailedSend(pendingSendWorkItem, new EventHubException(false, outcome.toString()));
             }
         } else {
-            if (TRACE_LOGGER.isDebugEnabled())
+            if (TRACE_LOGGER.isDebugEnabled()) {
                 TRACE_LOGGER.debug(
-                        String.format(Locale.US, "clientId[%s]. path[%s], linkName[%s], delivery[%s] - mismatch (or send timed out)",
-                                this.getClientId(), this.sendPath, this.sendLink.getName(), deliveryTag));
+                    String.format(Locale.US, "clientId[%s]. path[%s], linkName[%s], delivery[%s] - mismatch (or send timed out)",
+                        this.getClientId(), this.sendPath, this.getSendLinkName(), deliveryTag));
+            }
         }
     }
 
     private void cleanupFailedSend(final ReplayableWorkItem<Void> failedSend, final Exception exception) {
-        if (failedSend.getTimeoutTask() != null)
+        if (failedSend.getTimeoutTask() != null) {
             failedSend.getTimeoutTask().cancel(false);
-
+        }
         ExceptionUtil.completeExceptionally(failedSend.getWork(), exception, this);
     }
 
     private void createSendLink() {
         synchronized (this.errorConditionLock) {
             if (this.creatingLink) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
+                            String.format(Locale.US,
+                                    "clientId[%s], path[%s], operationTimeout[%s], creating a send link is already in progress",
+                                    this.getClientId(), this.sendPath, this.operationTimeout));
+                }
+
                 return;
             }
 
@@ -647,7 +674,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                 sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
-                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
+                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this, MessageSender.this.getClientId());
                 BaseHandler.setHandler(sender, handler);
 
                 if (MessageSender.this.sendLink != null) {
@@ -666,10 +693,11 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         final BiConsumer<ErrorCondition, Exception> onSessionOpenError = new BiConsumer<ErrorCondition, Exception>() {
             @Override
             public void accept(ErrorCondition t, Exception u) {
-                if (t != null)
-                    MessageSender.this.onError((t != null && t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
-                else if (u != null)
+                if (t != null) {
+                    MessageSender.this.onError(t.getCondition() != null ? ExceptionUtil.toException(t) : null);
+                } else if (u != null) {
                     MessageSender.this.onError(u);
+                }
             }
         };
 
@@ -681,9 +709,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
-                            if (MessageSender.this.getIsClosingOrClosed())
+                            if (MessageSender.this.getIsClosingOrClosed()) {
                                 return;
-
+                            }
                             underlyingFactory.getSession(
                                     sendPath,
                                     onSessionOpen,
@@ -719,10 +747,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         if (!MessageSender.this.linkFirstOpen.isDone()) {
                             final Exception lastReportedError;
-                            final Sender link;
                             synchronized (MessageSender.this.errorConditionLock) {
                                 lastReportedError = MessageSender.this.lastKnownLinkError;
-                                link = MessageSender.this.sendLink;
                             }
 
                             final Exception operationTimedout = new TimeoutException(
@@ -781,14 +807,14 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             this.lastKnownLinkError = null;
         }
 
-        if (creditIssued <= 0)
+        if (creditIssued <= 0) {
             return;
-
+        }
         if (TRACE_LOGGER.isDebugEnabled()) {
             int numberOfSendsWaitingforCredit = this.pendingSends.size();
             TRACE_LOGGER.debug(String.format(Locale.US,
                     "clientId[%s], path[%s], linkName[%s], remoteLinkCredit[%s], pendingSendsWaitingForCredit[%s], pendingSendsWaitingDelivery[%s]",
-                    this.getClientId(), this.sendPath, this.sendLink.getName(), creditIssued, numberOfSendsWaitingforCredit, this.pendingSendsData.size() - numberOfSendsWaitingforCredit));
+                    this.getClientId(), this.sendPath, this.getSendLinkName(), creditIssued, numberOfSendsWaitingforCredit, this.pendingSendsData.size() - numberOfSendsWaitingforCredit));
         }
 
         this.sendWork.onEvent();
@@ -801,9 +827,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
     // actual send on the SenderLink should happen only in this method & should run on Reactor Thread
     private void processSendWork() {
-        if (this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED) {
-            if (!this.getIsClosingOrClosed())
+        if (this.sendLink == null || this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED) {
+            if (!this.getIsClosingOrClosed()) {
                 this.recreateSendLink();
+            }
 
             return;
         }
@@ -855,7 +882,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     if (TRACE_LOGGER.isDebugEnabled()) {
                         TRACE_LOGGER.debug(
                                 String.format(Locale.US, "clientId[%s], path[%s], linkName[%s], deliveryTag[%s], sentMessageSize[%s], payloadActualSize[%s] - sendlink advance failed",
-                                        this.getClientId(), this.sendPath, this.sendLink.getName(), deliveryTag, sentMsgSize, sendData.getEncodedMessageSize()));
+                                        this.getClientId(), this.sendPath, this.getSendLinkName(), deliveryTag, sentMsgSize, sendData.getEncodedMessageSize()));
                     }
 
                     if (delivery != null) {
@@ -873,7 +900,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     if (TRACE_LOGGER.isDebugEnabled()) {
                         TRACE_LOGGER.debug(
                                 String.format(Locale.US, "clientId[%s], path[%s], linkName[%s], deliveryTag[%s] - sendData not found for this delivery.",
-                                        this.getClientId(), this.sendPath, this.sendLink.getName(), deliveryTag));
+                                        this.getClientId(), this.sendPath, this.getSendLinkName(), deliveryTag));
                     }
                 }
 
@@ -1001,7 +1028,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag> {
+    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
+
+        private static final long serialVersionUID = -7057500582037295635L;
+
         @Override
         public int compare(WeightedDeliveryTag deliveryTag0, WeightedDeliveryTag deliveryTag1) {
             return deliveryTag1.getPriority() - deliveryTag0.getPriority();

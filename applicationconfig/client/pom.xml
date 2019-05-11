@@ -34,11 +34,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common</artifactId>
+      <artifactId>azure-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common-auth</artifactId>
+      <artifactId>azure-core-auth</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -47,7 +47,7 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common-test</artifactId>
+      <artifactId>azure-core-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -66,4 +66,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Now that all checkstyle issues have been resolved, override the
+             default behavior to make checkstyle fail on error and violation. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

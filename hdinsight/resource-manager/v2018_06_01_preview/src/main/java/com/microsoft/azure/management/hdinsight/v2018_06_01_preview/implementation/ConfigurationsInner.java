@@ -55,6 +55,10 @@ public class ConfigurationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ConfigurationsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Configurations list" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Configurations update" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations/{configurationName}")
         Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("configurationName") String configurationName, @Query("api-version") String apiVersion, @Body Map<String, String> parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -70,7 +74,93 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Gets all configuration information for an HDI cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ClusterConfigurationsInner object if successful.
+     */
+    public ClusterConfigurationsInner list(String resourceGroupName, String clusterName) {
+        return listWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets all configuration information for an HDI cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ClusterConfigurationsInner> listAsync(String resourceGroupName, String clusterName, final ServiceCallback<ClusterConfigurationsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Gets all configuration information for an HDI cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterConfigurationsInner object
+     */
+    public Observable<ClusterConfigurationsInner> listAsync(String resourceGroupName, String clusterName) {
+        return listWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<ClusterConfigurationsInner>, ClusterConfigurationsInner>() {
+            @Override
+            public ClusterConfigurationsInner call(ServiceResponse<ClusterConfigurationsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets all configuration information for an HDI cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterConfigurationsInner object
+     */
+    public Observable<ServiceResponse<ClusterConfigurationsInner>> listWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterConfigurationsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ClusterConfigurationsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ClusterConfigurationsInner> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ClusterConfigurationsInner> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ClusterConfigurationsInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ClusterConfigurationsInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -85,7 +175,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -100,7 +190,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -119,7 +209,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -153,7 +243,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -168,7 +258,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -183,7 +273,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -202,7 +292,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * Configures the configuration on the specified cluster.
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -255,7 +345,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * The configuration object for the specified cluster.
+     * The configuration object for the specified cluster. This API is not recommended and might be removed in the future. Please consider using List configurations API instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -270,7 +360,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * The configuration object for the specified cluster.
+     * The configuration object for the specified cluster. This API is not recommended and might be removed in the future. Please consider using List configurations API instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -284,7 +374,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * The configuration object for the specified cluster.
+     * The configuration object for the specified cluster. This API is not recommended and might be removed in the future. Please consider using List configurations API instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -302,7 +392,7 @@ public class ConfigurationsInner {
     }
 
     /**
-     * The configuration object for the specified cluster.
+     * The configuration object for the specified cluster. This API is not recommended and might be removed in the future. Please consider using List configurations API instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.

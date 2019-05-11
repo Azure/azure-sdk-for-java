@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for StreamingLocatorContentKeyType.
  */
-public enum StreamingLocatorContentKeyType {
-    /** Common Encryption using CENC. */
-    COMMON_ENCRYPTION_CENC("CommonEncryptionCenc"),
+public final class StreamingLocatorContentKeyType extends ExpandableStringEnum<StreamingLocatorContentKeyType> {
+    /** Static value CommonEncryptionCenc for StreamingLocatorContentKeyType. */
+    public static final StreamingLocatorContentKeyType COMMON_ENCRYPTION_CENC = fromString("CommonEncryptionCenc");
 
-    /** Common Encryption using CBCS. */
-    COMMON_ENCRYPTION_CBCS("CommonEncryptionCbcs"),
+    /** Static value CommonEncryptionCbcs for StreamingLocatorContentKeyType. */
+    public static final StreamingLocatorContentKeyType COMMON_ENCRYPTION_CBCS = fromString("CommonEncryptionCbcs");
 
-    /** Envelope Encryption. */
-    ENVELOPE_ENCRYPTION("EnvelopeEncryption");
+    /** Static value EnvelopeEncryption for StreamingLocatorContentKeyType. */
+    public static final StreamingLocatorContentKeyType ENVELOPE_ENCRYPTION = fromString("EnvelopeEncryption");
 
-    /** The actual serialized value for a StreamingLocatorContentKeyType instance. */
-    private String value;
-
-    StreamingLocatorContentKeyType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StreamingLocatorContentKeyType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding StreamingLocatorContentKeyType
+     */
+    @JsonCreator
+    public static StreamingLocatorContentKeyType fromString(String name) {
+        return fromString(name, StreamingLocatorContentKeyType.class);
     }
 
     /**
-     * Parses a serialized value to a StreamingLocatorContentKeyType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StreamingLocatorContentKeyType object, or null if unable to parse.
+     * @return known StreamingLocatorContentKeyType values
      */
-    @JsonCreator
-    public static StreamingLocatorContentKeyType fromString(String value) {
-        StreamingLocatorContentKeyType[] items = StreamingLocatorContentKeyType.values();
-        for (StreamingLocatorContentKeyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StreamingLocatorContentKeyType> values() {
+        return values(StreamingLocatorContentKeyType.class);
     }
 }
