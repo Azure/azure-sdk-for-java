@@ -3,17 +3,19 @@
 
 package com.azure.keyvault;
 
-import com.azure.common.credentials.AsyncServiceClientCredentials;
-import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpMethod;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.HttpRequest;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RetryPolicy;
-import com.azure.common.http.policy.UserAgentPolicy;
-import com.azure.common.http.policy.AsyncCredentialsPolicy;
-import com.azure.common.http.policy.HttpLoggingPolicy;
+
+
+import com.azure.core.credentials.AsyncServiceClientCredentials;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AsyncCredentialsPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;

@@ -3,13 +3,13 @@
 
 package com.azure.keyvault;
 
-import com.azure.common.ServiceClient;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.rest.PagedResponse;
-import com.azure.common.http.rest.Response;
-import com.azure.common.http.rest.SimpleResponse;
-import com.azure.common.http.rest.VoidResponse;
-import com.azure.common.implementation.RestProxy;
+import com.azure.core.ServiceClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.RestProxy;
 import com.azure.keyvault.implementation.SecretBasePage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
@@ -137,7 +137,7 @@ public final class SecretClient extends ServiceClient {
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
      */
     public Response<Secret> getSecret(String name, String version) {
         String secretVersion = "";
@@ -162,7 +162,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code secretBase.name} and {@code secretBase.version} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code secretBase.name} and {@code secretBase.version} doesn't exist in the key vault.
      */
     public Response<Secret> getSecret(SecretBase secretBase) {
         Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
@@ -183,7 +183,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<Secret> getSecret(String name) {
         return getSecret(name, "");
@@ -208,7 +208,7 @@ public final class SecretClient extends ServiceClient {
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the updated {@link SecretBase}.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
      */
     public Response<SecretBase> updateSecret(SecretBase secret) {
         Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
@@ -234,7 +234,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the secret to be deleted.
      * @return A {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<DeletedSecret> deleteSecret(String name) {
         return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
@@ -255,7 +255,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the deleted secret.
      * @return A {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Response<DeletedSecret> getDeletedSecret(String name) {
         return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
@@ -275,7 +275,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @return A {@link VoidResponse}.
-     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public VoidResponse purgeDeletedSecret(String name) {
         return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
@@ -296,7 +296,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the deleted secret to be recovered.
      * @return A {@link Response} whose {@link Response#value()} contains the recovered {@link Secret}.
-     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Response<Secret> recoverDeletedSecret(String name) {
         return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
@@ -315,7 +315,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @return A {@link Response} whose {@link Response#value()} contains the backed up secret blob.
-     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<byte[]> backupSecret(String name) {
         return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
@@ -338,7 +338,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Response} whose {@link Response#value()} contains the restored {@link Secret}.
-     * @throws com.azure.common.exception.ServiceRequestException when the {@code backup} is corrupted.
+     * @throws com.azure.core.exception.ServiceRequestException when the {@code backup} is corrupted.
      */
     public Response<Secret> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
@@ -432,7 +432,7 @@ public final class SecretClient extends ServiceClient {
         return extractAndFetch(page, this::listDeletedSecretsNext);
     }
 
-    //TODO: Extract this in azure-common ImplUtils and use from there
+    //TODO: Extract this in azure-core ImplUtils and use from there
     private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {

@@ -3,16 +3,16 @@
 
 package com.azure.keyvault;
 
-import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.credentials.TokenCredentials;
-import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RetryPolicy;
-import com.azure.common.http.policy.UserAgentPolicy;
-import com.azure.common.http.policy.CredentialsPolicy;
-import com.azure.common.http.policy.HttpLoggingPolicy;
+import com.azure.core.credentials.ServiceClientCredentials;
+import com.azure.core.credentials.TokenCredentials;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.CredentialsPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

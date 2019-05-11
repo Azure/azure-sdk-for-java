@@ -3,7 +3,7 @@
 
 package com.azure.keyvault.implementation;
 
-import com.azure.common.http.rest.Page;
+import com.azure.core.http.rest.Page;
 import com.azure.keyvault.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
