@@ -37,7 +37,7 @@ public class PolicySettings {
 
     /**
      * If the action type is block, this field defines the default customer
-     * overridable response status code.
+     * overridable http response status code.
      */
     @JsonProperty(value = "defaultCustomBlockResponseStatusCode")
     private Integer defaultCustomBlockResponseStatusCode;
@@ -110,7 +110,7 @@ public class PolicySettings {
     }
 
     /**
-     * Get if the action type is block, this field defines the default customer overridable response status code.
+     * Get if the action type is block, this field defines the default customer overridable http response status code.
      *
      * @return the defaultCustomBlockResponseStatusCode value
      */
@@ -119,7 +119,7 @@ public class PolicySettings {
     }
 
     /**
-     * Set if the action type is block, this field defines the default customer overridable response status code.
+     * Set if the action type is block, this field defines the default customer overridable http response status code.
      *
      * @param defaultCustomBlockResponseStatusCode the defaultCustomBlockResponseStatusCode value to set
      * @return the PolicySettings object itself.
