@@ -12,11 +12,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-keyvault</artifactId>
+  <artifactId>azure-keyvault-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <name>azure-keyvault</name>
-   <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
     <site>
@@ -31,34 +31,7 @@
     <tag>HEAD</tag>
   </scm>
 
-  <dependencies>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-common</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-common-auth</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
+  <modules>
+    <module>./secrets</module>
+  </modules>
 </project>

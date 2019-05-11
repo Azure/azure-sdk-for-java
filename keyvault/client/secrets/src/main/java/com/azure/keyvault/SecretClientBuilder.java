@@ -25,10 +25,10 @@ import java.util.Objects;
  * calling {@link SecretClientBuilder#build() build} constructs an instance of the client.
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretClient}
- * are {@link String vaultEndpoint} and {@link ServiceClientCredentials credentials}. </p>
+ * are {@link String endpoint} and {@link ServiceClientCredentials credentials}. </p>
  * <pre>
  * SecretClient.builder()
- *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .endpoint("https://myvault.vault.azure.net/")
  *   .credentials(keyVaultCredentials)
  *   .build();
  * </pre>
@@ -37,7 +37,7 @@ import java.util.Objects;
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  * <pre>
  * SecretClient.builder()
- *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .endpoint("https://myvault.vault.azure.net/")
  *   .credentials(keyVaultCredentials)
  *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
  *   .addPolicy(customPolicyOne)
@@ -46,12 +46,12 @@ import java.util.Objects;
  *   .build();
  * </pre>
  *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String vaultEndpoint}
+ * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretClient client}</p>
  * <pre>
  * SecretClient.builder()
  *   .pipeline(new HttpPipeline(customPoliciesList))
- *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .endpoint("https://myvault.vault.azure.net/")
  *   .build()
  * </pre>
  *
@@ -61,7 +61,7 @@ public final class SecretClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private ServiceClientCredentials credentials;
     private HttpPipeline pipeline;
-    private URL vaultEndpoint;
+    private URL endpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private RetryPolicy retryPolicy;
@@ -79,23 +79,23 @@ public final class SecretClientBuilder {
      * Every time {@code build()} is called, a new instance of {@link SecretClient} is created.
      *
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link SecretClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
+     * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credentials(ServiceClientCredentials) key vault credentials and
-     * {@link SecretClientBuilder#vaultEndpoint(String)} key vault endpoint are required to build the {@link SecretClient client}.}</p>
+     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretClient client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credentials(ServiceClientCredentials)} or
-     * {@link SecretClientBuilder#vaultEndpoint(String)} have not been set.
+     * {@link SecretClientBuilder#endpoint(String)} have not been set.
      */
     public SecretClient build() {
 
-        if (vaultEndpoint == null) {
+        if (endpoint == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         if (pipeline != null) {
-            return new SecretClient(vaultEndpoint, pipeline);
+            return new SecretClient(endpoint, pipeline);
         }
 
         if (credentials == null) {
@@ -114,19 +114,19 @@ public final class SecretClientBuilder {
             ? new HttpPipeline(policies)
             : new HttpPipeline(httpClient, policies);
 
-        return new SecretClient(vaultEndpoint, pipeline);
+        return new SecretClient(endpoint, pipeline);
     }
 
     /**
      * Sets the vault endpoint url to send HTTP requests to.
      *
-     * @param vaultEndPoint The vault endpoint url is used as destination on Azure to send requests to.
-     * @return The updated Builder object.
-     * @throws IllegalStateException if {@code vaultEndpoint} is null or it cannot be parsed into a valid URL.
+     * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
+     * @return the updated Builder object.
+     * @throws IllegalStateException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretClientBuilder vaultEndpoint(String vaultEndPoint) {
+    public SecretClientBuilder endpoint(String endpoint) {
         try {
-            this.vaultEndpoint = new URL(vaultEndPoint);
+            this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
         }
@@ -137,7 +137,7 @@ public final class SecretClientBuilder {
      * Sets the credentials to use when authenticating HTTP requests.
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
-     * @return The updated Builder object.
+     * @return the updated Builder object.
      * @throws NullPointerException if {@code credentials} is {@code null}.
      */
     public SecretClientBuilder credentials(ServiceClientCredentials credentials) {
@@ -152,7 +152,7 @@ public final class SecretClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated Builder object.
+     * @return the updated Builder object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public SecretClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -166,7 +166,7 @@ public final class SecretClientBuilder {
      * {@link SecretClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return The updated Builder object.
+     * @return the updated Builder object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -179,7 +179,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated Builder object.
+     * @return the updated Builder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretClientBuilder httpClient(HttpClient client) {
@@ -192,10 +192,10 @@ public final class SecretClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretClientBuilder#vaultEndpoint(String) vaultEndpoint} to build {@link SecretClient}.
+     * {@link SecretClientBuilder#endpoint(String) endpoint} to build {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated {@link SecretClientBuilder} object.
+     * @return the updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
@@ -206,7 +206,7 @@ public final class SecretClientBuilder {
     private TokenCredentials getTokenCredentials() {
         String token = "";
         try {
-            token = credentials.authorizationHeaderValue(vaultEndpoint.toString());
+            token = credentials.authorizationHeaderValue(endpoint.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -129,7 +129,7 @@ public class SecretBase {
     /**
      * Set the enabled value.
      *
-     * @param enabled the enabled value to set
+     * @param enabled The enabled value to set
      * @return the SecretBase object itself.
      */
     public SecretBase enabled(Boolean enabled) {
@@ -149,7 +149,7 @@ public class SecretBase {
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore the notBefore UTC time to set
+     * @param notBefore The notBefore UTC time to set
      * @return the SecretBase object itself.
      */
     public SecretBase notBefore(OffsetDateTime notBefore) {
@@ -172,7 +172,7 @@ public class SecretBase {
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires the expiry time to set for the secret.
+     * @param expires The expiry time to set for the secret.
      * @return the SecretBase object itself.
      */
     public SecretBase expires(OffsetDateTime expires) {
@@ -210,7 +210,7 @@ public class SecretBase {
     /**
      * Set the secret identifier.
      *
-     * @param id the secret identifier to set
+     * @param id The secret identifier to set
      * @return the SecretBase object itself.
      */
     public SecretBase id(String id) {
@@ -230,7 +230,7 @@ public class SecretBase {
     /**
      * Set the contentType.
      *
-     * @param contentType the contentType to set
+     * @param contentType The contentType to set
      * @return the SecretBase object itself.
      */
     public SecretBase contentType(String contentType) {
@@ -250,7 +250,7 @@ public class SecretBase {
     /**
      * Set the tags to be associated with the secret.
      *
-     * @param tags the tags to set
+     * @param tags The tags to set
      * @return the SecretBase object itself.
      */
     public SecretBase tags(Map<String, String> tags) {
@@ -304,7 +304,7 @@ public class SecretBase {
      * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
      * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
      * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes the key value mapping of the Secret attributes
+     * @param attributes The key value mapping of the Secret attributes
      */
     @JsonProperty("attributes")
     private void unpackAttributes(Map<String, Object> attributes) {

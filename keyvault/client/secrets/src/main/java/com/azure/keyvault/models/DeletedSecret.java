@@ -48,7 +48,7 @@ public final class DeletedSecret extends SecretBase {
     /**
      * Set the recoveryId identifier.
      *
-     * @param recoveryId the recoveryId identifier to set
+     * @param recoveryId The recoveryId identifier to set
      * @return the DeletedSecret object itself.
      */
     public DeletedSecret recoveryId(String recoveryId) {

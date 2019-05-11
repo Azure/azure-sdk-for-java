@@ -35,7 +35,7 @@ public class Secret extends SecretBase {
      * Creates a Secret with {@code name} and {@code value}.
      *
      * @param name The name of the secret.
-     * @param value The value of the secret.
+     * @param value the value of the secret.
      */
     public Secret(String name, String value) {
         this.name = name;
@@ -54,7 +54,7 @@ public class Secret extends SecretBase {
     /**
      * Set enabled value.
      *
-     * @param enabled the enabled value to set
+     * @param enabled The enabled value to set
      * @return the Secret object itself.
      */
     @Override
@@ -66,7 +66,7 @@ public class Secret extends SecretBase {
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore the not before time value to set
+     * @param notBefore The not before time value to set
      * @return the Secret object itself.
      */
     @Override
@@ -78,7 +78,7 @@ public class Secret extends SecretBase {
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires the expiry time value to set
+     * @param expires The expiry time value to set
      * @return the Secret object itself.
      */
     @Override
@@ -90,7 +90,7 @@ public class Secret extends SecretBase {
     /**
      * Set the secret identifier.
      *
-     * @param id the secret identifier value to set
+     * @param id The secret identifier value to set
      * @return the Secret object itself.
      */
     @Override
@@ -102,7 +102,7 @@ public class Secret extends SecretBase {
     /**
      * Set the content type of the secret.
      *
-     * @param contentType the content type value to set
+     * @param contentType The content type value to set
      * @return the Secret object itself.
      */
     @Override
@@ -114,7 +114,7 @@ public class Secret extends SecretBase {
     /**
      * Set the tags.
      *
-     * @param tags the tags value to set
+     * @param tags The tags value to set
      * @return the Secret object itself.
      */
     @Override
