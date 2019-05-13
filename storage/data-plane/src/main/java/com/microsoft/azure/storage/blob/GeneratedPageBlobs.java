@@ -42,7 +42,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
-
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
