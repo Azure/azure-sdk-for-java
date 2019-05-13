@@ -3,16 +3,13 @@
 
 package com.azure.core;
 
-import com.azure.core.http.HttpPipeline;
-
 import java.util.Optional;
 
 /**
- * {@code Context} offers a means of passing arbitrary data (key-value pairs) to {@link HttpPipeline}'s
- * policy objects. Most applications do not need to pass arbitrary data to the pipeline and can pass
- * {@code Context.NONE} or {@code null}. Each context object is immutable.
- * The {@code addData(Object, Object)} method creates a new {@code Context} object that refers
- * to its parent, forming a linked list.
+ * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+ * Most applications do not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or
+ * {@code null}. Each context object is immutable. The {@code addData(Object, Object)} method creates a new
+ * {@code Context} object that refers to its parent, forming a linked list.
  */
 public class Context {
     // All fields must be immutable.

@@ -345,15 +345,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the {@link Context} passed into the proxy method.
      *
      * @param swaggerMethodArguments the arguments passed to the proxy method
-     * @return the context, or null if no context was provided
+     * @return the context, or {@link Context#NONE} if no context was provided
      */
-    public Context contextData(Object[] swaggerMethodArguments) {
-        Object firstArg = swaggerMethodArguments != null && swaggerMethodArguments.length > 0 ? swaggerMethodArguments[0] : null;
-        if (firstArg instanceof Context) {
-            return (Context) firstArg;
-        } else {
-            return Context.NONE;
-        }
+    public Context context(Object[] swaggerMethodArguments) {
+        Context context = ImplUtils.findFirstOfType(swaggerMethodArguments, Context.class);
+
+        return (context != null) ? context : Context.NONE;
     }
 
     /**
