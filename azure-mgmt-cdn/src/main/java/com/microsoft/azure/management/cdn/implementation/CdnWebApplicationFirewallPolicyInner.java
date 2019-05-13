@@ -14,6 +14,7 @@ import com.microsoft.azure.management.cdn.CustomRuleList;
 import com.microsoft.azure.management.cdn.ManagedRuleSetList;
 import java.util.List;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
+import com.microsoft.azure.management.cdn.ProvisioningState;
 import com.microsoft.azure.management.cdn.PolicyResourceState;
 import com.microsoft.azure.management.cdn.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,10 +58,11 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
     private List<CdnEndpoint> cdnEndpointLinks;
 
     /**
-     * Provisioning state of the WebApplicationFirewallPolicy.
+     * Provisioning state of the WebApplicationFirewallPolicy. Possible values
+     * include: 'Creating', 'Succeeded', 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Resource status of the policy.
@@ -174,11 +176,11 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get provisioning state of the WebApplicationFirewallPolicy.
+     * Get provisioning state of the WebApplicationFirewallPolicy. Possible values include: 'Creating', 'Succeeded', 'Failed'.
      *
      * @return the provisioningState value
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

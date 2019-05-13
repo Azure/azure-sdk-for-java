@@ -209,10 +209,8 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByEndpoint(resourceGroupName, profileName, endpointName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.listByEndpoint(resourceGroupName, profileName, endpointName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(Response<ResponseBody> response) {
@@ -309,10 +307,8 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.get(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
@@ -413,15 +409,13 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (hostName == null) {
             throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
+        final String apiVersion = "2019-06-15";
         CustomDomainParameters customDomainProperties = new CustomDomainParameters();
         customDomainProperties.withHostName(hostName);
-        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), customDomainProperties, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), customDomainProperties, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CustomDomainInner>() { }.getType());
     }
 
@@ -505,15 +499,13 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (hostName == null) {
             throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
+        final String apiVersion = "2019-06-15";
         CustomDomainParameters customDomainProperties = new CustomDomainParameters();
         customDomainProperties.withHostName(hostName);
-        return service.beginCreate(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), customDomainProperties, this.client.userAgent())
+        return service.beginCreate(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), customDomainProperties, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
@@ -612,10 +604,8 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<CustomDomainInner>() { }.getType());
     }
 
@@ -695,10 +685,8 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.beginDelete(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
@@ -797,10 +785,8 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.disableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.disableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
@@ -898,11 +884,9 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-06-15";
         final CustomDomainHttpsParameters customDomainHttpsParameters = null;
-        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
@@ -996,11 +980,9 @@ public class CustomDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(customDomainHttpsParameters);
-        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {

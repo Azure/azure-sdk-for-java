@@ -190,10 +190,8 @@ public class OriginsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByEndpoint(resourceGroupName, profileName, endpointName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.listByEndpoint(resourceGroupName, profileName, endpointName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OriginInner>>> call(Response<ResponseBody> response) {
@@ -290,10 +288,8 @@ public class OriginsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.get(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OriginInner>>>() {
                 @Override
                 public Observable<ServiceResponse<OriginInner>> call(Response<ResponseBody> response) {
@@ -397,11 +393,9 @@ public class OriginsInner {
         if (originUpdateProperties == null) {
             throw new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(originUpdateProperties);
-        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), originUpdateProperties, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15";
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), originUpdateProperties, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<OriginInner>() { }.getType());
     }
 
@@ -488,11 +482,9 @@ public class OriginsInner {
         if (originUpdateProperties == null) {
             throw new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(originUpdateProperties);
-        return service.beginUpdate(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), originUpdateProperties, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.beginUpdate(resourceGroupName, profileName, endpointName, originName, this.client.subscriptionId(), originUpdateProperties, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OriginInner>>>() {
                 @Override
                 public Observable<ServiceResponse<OriginInner>> call(Response<ResponseBody> response) {

@@ -71,18 +71,6 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Version of the API to be used with the client request. Current version is 2017-04-02. */
-    private String apiVersion;
-
-    /**
-     * Gets Version of the API to be used with the client request. Current version is 2017-04-02.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** Azure Subscription ID. */
     private String subscriptionId1;
 
@@ -103,29 +91,6 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      */
     public CdnManagementClientImpl withSubscriptionId1(String subscriptionId1) {
         this.subscriptionId1 = subscriptionId1;
-        return this;
-    }
-
-    /** Version of the API to be used with the client request. Current version is 2017-04-02. */
-    private String apiVersion1;
-
-    /**
-     * Gets Version of the API to be used with the client request. Current version is 2017-04-02.
-     *
-     * @return the apiVersion1 value.
-     */
-    public String apiVersion1() {
-        return this.apiVersion1;
-    }
-
-    /**
-     * Sets Version of the API to be used with the client request. Current version is 2017-04-02.
-     *
-     * @param apiVersion1 the apiVersion1 value.
-     * @return the service client itself
-     */
-    public CdnManagementClientImpl withApiVersion1(String apiVersion1) {
-        this.apiVersion1 = apiVersion1;
         return this;
     }
 
@@ -346,7 +311,6 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2019-06-15";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -370,7 +334,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "2019-06-15");
+        return String.format("%s (%s)", super.userAgent(), "CdnManagementClient");
     }
 
     private void initializeService() {
@@ -445,15 +409,13 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * @return the observable to the CheckNameAvailabilityOutputInner object
      */
     public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
+        final String apiVersion = "2019-06-15";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
-        return service.checkNameAvailability(this.apiVersion(), this.acceptLanguage(), checkNameAvailabilityInput, this.userAgent())
+        return service.checkNameAvailability(apiVersion, this.acceptLanguage(), checkNameAvailabilityInput, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityOutputInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> call(Response<ResponseBody> response) {
@@ -526,15 +488,13 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
+        final String apiVersion = "2019-06-15";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
-        return service.checkNameAvailabilityWithSubscription(this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), checkNameAvailabilityInput, this.userAgent())
+        return service.checkNameAvailabilityWithSubscription(this.subscriptionId(), apiVersion, this.acceptLanguage(), checkNameAvailabilityInput, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityOutputInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> call(Response<ResponseBody> response) {
@@ -607,15 +567,13 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
         if (probeURL == null) {
             throw new IllegalArgumentException("Parameter probeURL is required and cannot be null.");
         }
+        final String apiVersion = "2019-06-15";
         ValidateProbeInput validateProbeInput = new ValidateProbeInput();
         validateProbeInput.withProbeURL(probeURL);
-        return service.validateProbe(this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), validateProbeInput, this.userAgent())
+        return service.validateProbe(this.subscriptionId(), apiVersion, this.acceptLanguage(), validateProbeInput, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ValidateProbeOutputInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ValidateProbeOutputInner>> call(Response<ResponseBody> response) {

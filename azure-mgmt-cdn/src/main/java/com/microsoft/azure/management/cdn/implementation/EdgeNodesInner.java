@@ -145,10 +145,8 @@ public class EdgeNodesInner {
      * @return the PagedList&lt;EdgeNodeInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<EdgeNodeInner>>> listSinglePageAsync() {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EdgeNodeInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EdgeNodeInner>>> call(Response<ResponseBody> response) {
@@ -162,7 +160,7 @@ public class EdgeNodesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<EdgeNodeInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<EdgeNodeInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<EdgeNodeInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EdgeNodeInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)

@@ -213,10 +213,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
@@ -328,10 +326,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
@@ -414,10 +410,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getByResourceGroup(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.getByResourceGroup(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
@@ -507,11 +501,9 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (profile == null) {
             throw new IllegalArgumentException("Parameter profile is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(profile);
-        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, profileName, this.client.subscriptionId(), profile, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15";
+        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, profileName, this.client.subscriptionId(), profile, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ProfileInner>() { }.getType());
     }
 
@@ -584,11 +576,9 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (profile == null) {
             throw new IllegalArgumentException("Parameter profile is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(profile);
-        return service.beginCreate(resourceGroupName, profileName, this.client.subscriptionId(), profile, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.beginCreate(resourceGroupName, profileName, this.client.subscriptionId(), profile, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
@@ -673,13 +663,11 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-06-15";
         final Map<String, String> tags = null;
         ProfileUpdateParameters profileUpdateParameters = new ProfileUpdateParameters();
         profileUpdateParameters.withTags(null);
-        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ProfileInner>() { }.getType());
     }
     /**
@@ -748,13 +736,11 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(tags);
+        final String apiVersion = "2019-06-15";
         ProfileUpdateParameters profileUpdateParameters = new ProfileUpdateParameters();
         profileUpdateParameters.withTags(tags);
-        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ProfileInner>() { }.getType());
     }
 
@@ -820,13 +806,11 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-06-15";
         final Map<String, String> tags = null;
         ProfileUpdateParameters profileUpdateParameters = new ProfileUpdateParameters();
         profileUpdateParameters.withTags(null);
-        return service.beginUpdate(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent())
+        return service.beginUpdate(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
@@ -906,13 +890,11 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(tags);
+        final String apiVersion = "2019-06-15";
         ProfileUpdateParameters profileUpdateParameters = new ProfileUpdateParameters();
         profileUpdateParameters.withTags(tags);
-        return service.beginUpdate(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent())
+        return service.beginUpdate(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), profileUpdateParameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
@@ -995,10 +977,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -1063,10 +1043,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.beginDelete(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1150,10 +1128,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.generateSsoUri(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.generateSsoUri(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SsoUriInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SsoUriInner>> call(Response<ResponseBody> response) {
@@ -1236,10 +1212,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listSupportedOptimizationTypes(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.listSupportedOptimizationTypes(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SupportedOptimizationTypesListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SupportedOptimizationTypesListResultInner>> call(Response<ResponseBody> response) {
@@ -1359,10 +1333,8 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listResourceUsage(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15";
+        return service.listResourceUsage(resourceGroupName, profileName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {

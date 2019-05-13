@@ -15,6 +15,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.cdn.CdnWebApplicationFirewallPolicyPatchParameters;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -24,12 +25,14 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -80,13 +83,17 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/{policyName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("policyName") String policyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body CdnWebApplicationFirewallPolicyInner cdnWebApplicationFirewallPolicy, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Policies update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/{policyName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("policyName") String policyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Policies beginUpdate" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/{policyName}")
+        Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("policyName") String policyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Policies delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/{policyName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("policyName") String policyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Policies beginDelete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/{policyName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("policyName") String policyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Policies listByResourceGroupNext" })
         @GET
@@ -185,10 +192,8 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15-preview";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CdnWebApplicationFirewallPolicyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CdnWebApplicationFirewallPolicyInner>>> call(Response<ResponseBody> response) {
@@ -271,10 +276,8 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getByResourceGroup(resourceGroupName, policyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15-preview";
+        return service.getByResourceGroup(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> call(Response<ResponseBody> response) {
@@ -361,14 +364,12 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (cdnWebApplicationFirewallPolicy == null) {
             throw new IllegalArgumentException("Parameter cdnWebApplicationFirewallPolicy is required and cannot be null.");
         }
         Validator.validate(cdnWebApplicationFirewallPolicy);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, policyName, this.client.subscriptionId(), this.client.apiVersion(), cdnWebApplicationFirewallPolicy, this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15-preview";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, cdnWebApplicationFirewallPolicy, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType());
     }
 
@@ -438,14 +439,12 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (cdnWebApplicationFirewallPolicy == null) {
             throw new IllegalArgumentException("Parameter cdnWebApplicationFirewallPolicy is required and cannot be null.");
         }
         Validator.validate(cdnWebApplicationFirewallPolicy);
-        return service.beginCreateOrUpdate(resourceGroupName, policyName, this.client.subscriptionId(), this.client.apiVersion(), cdnWebApplicationFirewallPolicy, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-06-15-preview";
+        return service.beginCreateOrUpdate(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, cdnWebApplicationFirewallPolicy, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> call(Response<ResponseBody> response) {
@@ -463,6 +462,321 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         return this.client.restClient().responseBuilderFactory().<CdnWebApplicationFirewallPolicyInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType())
                 .register(201, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType())
+                .register(202, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CdnWebApplicationFirewallPolicyInner object if successful.
+     */
+    public CdnWebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName) {
+        return updateWithServiceResponseAsync(resourceGroupName, policyName).toBlocking().last().body();
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CdnWebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName, final ServiceCallback<CdnWebApplicationFirewallPolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, policyName), serviceCallback);
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<CdnWebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName) {
+        return updateWithServiceResponseAsync(resourceGroupName, policyName).map(new Func1<ServiceResponse<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>() {
+            @Override
+            public CdnWebApplicationFirewallPolicyInner call(ServiceResponse<CdnWebApplicationFirewallPolicyInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> updateWithServiceResponseAsync(String resourceGroupName, String policyName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (policyName == null) {
+            throw new IllegalArgumentException("Parameter policyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-06-15-preview";
+        final Map<String, String> tags = null;
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters = new CdnWebApplicationFirewallPolicyPatchParameters();
+        cdnWebApplicationFirewallPolicyPatchParameters.withTags(null);
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), cdnWebApplicationFirewallPolicyPatchParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType());
+    }
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CdnWebApplicationFirewallPolicyInner object if successful.
+     */
+    public CdnWebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, policyName, tags).toBlocking().last().body();
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CdnWebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName, Map<String, String> tags, final ServiceCallback<CdnWebApplicationFirewallPolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, policyName, tags), serviceCallback);
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<CdnWebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, policyName, tags).map(new Func1<ServiceResponse<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>() {
+            @Override
+            public CdnWebApplicationFirewallPolicyInner call(ServiceResponse<CdnWebApplicationFirewallPolicyInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> updateWithServiceResponseAsync(String resourceGroupName, String policyName, Map<String, String> tags) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (policyName == null) {
+            throw new IllegalArgumentException("Parameter policyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-06-15-preview";
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters = new CdnWebApplicationFirewallPolicyPatchParameters();
+        cdnWebApplicationFirewallPolicyPatchParameters.withTags(tags);
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), cdnWebApplicationFirewallPolicyPatchParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType());
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CdnWebApplicationFirewallPolicyInner object if successful.
+     */
+    public CdnWebApplicationFirewallPolicyInner beginUpdate(String resourceGroupName, String policyName) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, policyName).toBlocking().single().body();
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CdnWebApplicationFirewallPolicyInner> beginUpdateAsync(String resourceGroupName, String policyName, final ServiceCallback<CdnWebApplicationFirewallPolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, policyName), serviceCallback);
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CdnWebApplicationFirewallPolicyInner object
+     */
+    public Observable<CdnWebApplicationFirewallPolicyInner> beginUpdateAsync(String resourceGroupName, String policyName) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, policyName).map(new Func1<ServiceResponse<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>() {
+            @Override
+            public CdnWebApplicationFirewallPolicyInner call(ServiceResponse<CdnWebApplicationFirewallPolicyInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CdnWebApplicationFirewallPolicyInner object
+     */
+    public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String policyName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (policyName == null) {
+            throw new IllegalArgumentException("Parameter policyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-06-15-preview";
+        final Map<String, String> tags = null;
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters = new CdnWebApplicationFirewallPolicyPatchParameters();
+        cdnWebApplicationFirewallPolicyPatchParameters.withTags(null);
+        return service.beginUpdate(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), cdnWebApplicationFirewallPolicyPatchParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CdnWebApplicationFirewallPolicyInner> clientResponse = beginUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CdnWebApplicationFirewallPolicyInner object if successful.
+     */
+    public CdnWebApplicationFirewallPolicyInner beginUpdate(String resourceGroupName, String policyName, Map<String, String> tags) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, policyName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CdnWebApplicationFirewallPolicyInner> beginUpdateAsync(String resourceGroupName, String policyName, Map<String, String> tags, final ServiceCallback<CdnWebApplicationFirewallPolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, policyName, tags), serviceCallback);
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CdnWebApplicationFirewallPolicyInner object
+     */
+    public Observable<CdnWebApplicationFirewallPolicyInner> beginUpdateAsync(String resourceGroupName, String policyName, Map<String, String> tags) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, policyName, tags).map(new Func1<ServiceResponse<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>() {
+            @Override
+            public CdnWebApplicationFirewallPolicyInner call(ServiceResponse<CdnWebApplicationFirewallPolicyInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name uner the specified subcription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
+     * @param tags CdnWebApplicationFirewallPolicy tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CdnWebApplicationFirewallPolicyInner object
+     */
+    public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String policyName, Map<String, String> tags) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (policyName == null) {
+            throw new IllegalArgumentException("Parameter policyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-06-15-preview";
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters = new CdnWebApplicationFirewallPolicyPatchParameters();
+        cdnWebApplicationFirewallPolicyPatchParameters.withTags(tags);
+        return service.beginUpdate(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), cdnWebApplicationFirewallPolicyPatchParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CdnWebApplicationFirewallPolicyInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CdnWebApplicationFirewallPolicyInner> clientResponse = beginUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CdnWebApplicationFirewallPolicyInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CdnWebApplicationFirewallPolicyInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType())
                 .register(202, new TypeToken<CdnWebApplicationFirewallPolicyInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
@@ -529,98 +843,9 @@ public class PoliciesInner implements InnerSupportsGet<CdnWebApplicationFirewall
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, policyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-06-15-preview";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, policyName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * Deletes Policy.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void beginDelete(String resourceGroupName, String policyName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, policyName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes Policy.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String policyName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, policyName), serviceCallback);
-    }
-
-    /**
-     * Deletes Policy.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginDeleteAsync(String resourceGroupName, String policyName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, policyName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes Policy.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String policyName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (policyName == null) {
-            throw new IllegalArgumentException("Parameter policyName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, policyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
     /**
