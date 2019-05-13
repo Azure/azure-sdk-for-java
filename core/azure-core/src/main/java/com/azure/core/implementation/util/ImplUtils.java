@@ -104,11 +104,11 @@ public final class ImplUtils {
     }
 
     /**
-     * Returns the first instance of the given class from the list of arguments.
-     * @param args List of arguments to search.
+     * Returns the first instance of the given class from an array of Objects.
+     * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
      * @param <T> Generic type
-     * @return The first argument of the type, otherwise null.
+     * @return The first object of the desired type, otherwise null.
      */
     public static <T> T findFirstOfType(Object[] args, Class<T> clazz) {
         if (isNullOrEmpty(args)) {
