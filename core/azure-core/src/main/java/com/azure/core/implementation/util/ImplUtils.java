@@ -53,7 +53,6 @@ public final class ImplUtils {
      * @param <T> Generic representing the type of the source array.
      * @return A copy of the array or null if source was null.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T[] clone(T[] source) {
         if (source == null) {
             return null;
@@ -111,5 +110,26 @@ public final class ImplUtils {
         }
 
         return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
+    }
+
+    /**
+     * Returns the first instance of the given class from an array of Objects.
+     * @param args Array of objects to search through to find the first instance of the given `clazz` type.
+     * @param clazz The type trying to be found.
+     * @param <T> Generic type
+     * @return The first object of the desired type, otherwise null.
+     */
+    public static <T> T findFirstOfType(Object[] args, Class<T> clazz) {
+        if (isNullOrEmpty(args)) {
+            return null;
+        }
+
+        for (Object arg : args) {
+            if (clazz.isInstance(arg)) {
+                return clazz.cast(arg);
+            }
+        }
+
+        return null;
     }
 }
