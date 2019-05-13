@@ -31,6 +31,9 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /** Static value Failed for ProvisioningState. */
     public static final ProvisioningState FAILED = fromString("Failed");
 
+    /** Static value Moving for ProvisioningState. */
+    public static final ProvisioningState MOVING = fromString("Moving");
+
     /**
      * Creates or finds a ProvisioningState from its string representation.
      * @param name a name to look for

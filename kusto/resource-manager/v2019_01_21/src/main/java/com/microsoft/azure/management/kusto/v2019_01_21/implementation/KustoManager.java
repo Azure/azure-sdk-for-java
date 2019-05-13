@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.kusto.v2019_01_21.Clusters;
 import com.microsoft.azure.management.kusto.v2019_01_21.Databases;
+import com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfigurations;
 import com.microsoft.azure.management.kusto.v2019_01_21.DataConnections;
 import com.microsoft.azure.management.kusto.v2019_01_21.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -29,6 +30,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class KustoManager extends ManagerCore<KustoManager, KustoManagementClientImpl> {
     private Clusters clusters;
     private Databases databases;
+    private AttachedDatabaseConfigurations attachedDatabaseConfigurations;
     private DataConnections dataConnections;
     private Operations operations;
     /**
@@ -96,6 +98,16 @@ public final class KustoManager extends ManagerCore<KustoManager, KustoManagemen
             this.databases = new DatabasesImpl(this);
         }
         return this.databases;
+    }
+
+    /**
+     * @return Entry point to manage AttachedDatabaseConfigurations.
+     */
+    public AttachedDatabaseConfigurations attachedDatabaseConfigurations() {
+        if (this.attachedDatabaseConfigurations == null) {
+            this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsImpl(this);
+        }
+        return this.attachedDatabaseConfigurations;
     }
 
     /**

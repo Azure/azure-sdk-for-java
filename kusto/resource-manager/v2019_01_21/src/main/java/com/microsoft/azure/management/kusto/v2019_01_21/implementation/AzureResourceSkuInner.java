@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
+import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
 import com.microsoft.azure.management.kusto.v2019_01_21.AzureCapacity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,7 +26,7 @@ public class AzureResourceSkuInner {
      * The SKU details.
      */
     @JsonProperty(value = "sku")
-    private AzureSkuInner sku;
+    private AzureSku sku;
 
     /**
      * The SKU capacity.
@@ -58,7 +59,7 @@ public class AzureResourceSkuInner {
      *
      * @return the sku value
      */
-    public AzureSkuInner sku() {
+    public AzureSku sku() {
         return this.sku;
     }
 
@@ -68,7 +69,7 @@ public class AzureResourceSkuInner {
      * @param sku the sku value to set
      * @return the AzureResourceSkuInner object itself.
      */
-    public AzureResourceSkuInner withSku(AzureSkuInner sku) {
+    public AzureResourceSkuInner withSku(AzureSku sku) {
         this.sku = sku;
         return this;
     }

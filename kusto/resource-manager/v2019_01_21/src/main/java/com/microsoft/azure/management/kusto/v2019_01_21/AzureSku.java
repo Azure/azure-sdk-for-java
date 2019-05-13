@@ -8,28 +8,100 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.KustoManager;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.AzureSkuInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing AzureSku.
+ * Azure SKU definition.
  */
-public interface AzureSku extends HasInner<AzureSkuInner>, HasManager<KustoManager> {
+public class AzureSku {
     /**
-     * @return the capacity value.
+     * SKU name. Possible values include: 'Standard_DS13_v2+1TB_PS',
+     * 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS',
+     * 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2',
+     * 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2',
+     * 'Standard_L4s'.
      */
-    Integer capacity();
+    @JsonProperty(value = "name", required = true)
+    private AzureSkuName name;
 
     /**
-     * @return the name value.
+     * SKU capacity.
      */
-    AzureSkuName name();
+    @JsonProperty(value = "capacity")
+    private Integer capacity;
 
     /**
-     * @return the tier value.
+     * SKU tier.
      */
-    String tier();
+    @JsonProperty(value = "tier", required = true)
+    private String tier;
+
+    /**
+     * Creates an instance of AzureSku class.
+     * @param name sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
+     */
+    public AzureSku() {
+        tier = "Standard";
+    }
+
+    /**
+     * Get sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
+     *
+     * @return the name value
+     */
+    public AzureSkuName name() {
+        return this.name;
+    }
+
+    /**
+     * Set sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
+     *
+     * @param name the name value to set
+     * @return the AzureSku object itself.
+     */
+    public AzureSku withName(AzureSkuName name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get sKU capacity.
+     *
+     * @return the capacity value
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set sKU capacity.
+     *
+     * @param capacity the capacity value to set
+     * @return the AzureSku object itself.
+     */
+    public AzureSku withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get sKU tier.
+     *
+     * @return the tier value
+     */
+    public String tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set sKU tier.
+     *
+     * @param tier the tier value to set
+     * @return the AzureSku object itself.
+     */
+    public AzureSku withTier(String tier) {
+        this.tier = tier;
+        return this;
+    }
 
 }

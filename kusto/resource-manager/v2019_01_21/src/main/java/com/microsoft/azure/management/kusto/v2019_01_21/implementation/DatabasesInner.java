@@ -11,9 +11,7 @@ package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.kusto.v2019_01_21.DatabaseCheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.DatabasePrincipalListRequest;
-import com.microsoft.azure.management.kusto.v2019_01_21.DatabaseUpdate;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -61,10 +59,6 @@ public class DatabasesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DatabasesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Databases checkNameAvailability" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DatabaseCheckNameRequest databaseName, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Databases listByCluster" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases")
         Observable<Response<ResponseBody>> listByCluster(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -83,11 +77,11 @@ public class DatabasesInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Databases update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Body DatabaseUpdate parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Body DatabaseInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Databases beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Body DatabaseUpdate parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Body DatabaseInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Databases delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}", method = "DELETE", hasBody = true)
@@ -109,101 +103,6 @@ public class DatabasesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/removePrincipals")
         Observable<Response<ResponseBody>> removePrincipals(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DatabasePrincipalListRequest databasePrincipalsToRemove, @Header("User-Agent") String userAgent);
 
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param name Database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CheckNameResultInner object if successful.
-     */
-    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, name).toBlocking().single().body();
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param name Database name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String name, final ServiceCallback<CheckNameResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, name), serviceCallback);
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param name Database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameResultInner object
-     */
-    public Observable<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, clusterName, name).map(new Func1<ServiceResponse<CheckNameResultInner>, CheckNameResultInner>() {
-            @Override
-            public CheckNameResultInner call(ServiceResponse<CheckNameResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param name Database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameResultInner object
-     */
-    public Observable<ServiceResponse<CheckNameResultInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String clusterName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (clusterName == null) {
-            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        DatabaseCheckNameRequest databaseName = new DatabaseCheckNameRequest();
-        databaseName.withName(name);
-        return service.checkNameAvailability(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), databaseName, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CheckNameResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CheckNameResultInner> clientResponse = checkNameAvailabilityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<CheckNameResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
     /**
@@ -589,7 +488,7 @@ public class DatabasesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DatabaseInner object if successful.
      */
-    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters).toBlocking().last().body();
     }
 
@@ -604,7 +503,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+    public ServiceFuture<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters), serviceCallback);
     }
 
@@ -618,7 +517,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public Observable<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
@@ -637,7 +536,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<DatabaseInner>> updateWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public Observable<ServiceResponse<DatabaseInner>> updateWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -673,7 +572,7 @@ public class DatabasesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DatabaseInner object if successful.
      */
-    public DatabaseInner beginUpdate(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public DatabaseInner beginUpdate(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters).toBlocking().single().body();
     }
 
@@ -688,7 +587,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DatabaseInner> beginUpdateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+    public ServiceFuture<DatabaseInner> beginUpdateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters), serviceCallback);
     }
 
@@ -702,7 +601,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
-    public Observable<DatabaseInner> beginUpdateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public Observable<DatabaseInner> beginUpdateAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, clusterName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
@@ -721,7 +620,7 @@ public class DatabasesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
-    public Observable<ServiceResponse<DatabaseInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public Observable<ServiceResponse<DatabaseInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

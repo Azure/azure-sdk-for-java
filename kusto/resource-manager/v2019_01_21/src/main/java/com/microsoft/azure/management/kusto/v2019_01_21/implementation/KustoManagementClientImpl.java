@@ -159,6 +159,19 @@ public class KustoManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AttachedDatabaseConfigurationsInner object to access its operations.
+     */
+    private AttachedDatabaseConfigurationsInner attachedDatabaseConfigurations;
+
+    /**
+     * Gets the AttachedDatabaseConfigurationsInner object to access its operations.
+     * @return the AttachedDatabaseConfigurationsInner object.
+     */
+    public AttachedDatabaseConfigurationsInner attachedDatabaseConfigurations() {
+        return this.attachedDatabaseConfigurations;
+    }
+
+    /**
      * The DataConnectionsInner object to access its operations.
      */
     private DataConnectionsInner dataConnections;
@@ -221,6 +234,7 @@ public class KustoManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.clusters = new ClustersInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);
+        this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsInner(restClient().retrofit(), this);
         this.dataConnections = new DataConnectionsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

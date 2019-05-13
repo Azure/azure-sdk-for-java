@@ -23,9 +23,12 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import java.util.List;
+import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
+import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseRequest;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.AzureResourceSku;
-import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
+import com.microsoft.azure.management.kusto.v2019_01_21.SkuDescription;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, KustoManager>  implements Clusters {
     protected ClustersImpl(KustoManager manager) {
@@ -142,6 +145,54 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
+    public Observable<FollowerDatabaseResult> listFollowerDatabasesAsync(String resourceGroupName, String clusterName) {
+        ClustersInner client = this.inner();
+        return client.listFollowerDatabasesAsync(resourceGroupName, clusterName)
+        .flatMap(new Func1<List<FollowerDatabaseResultInner>, Observable<FollowerDatabaseResultInner>>() {
+            @Override
+            public Observable<FollowerDatabaseResultInner> call(List<FollowerDatabaseResultInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<FollowerDatabaseResultInner, FollowerDatabaseResult>() {
+            @Override
+            public FollowerDatabaseResult call(FollowerDatabaseResultInner inner) {
+                return new FollowerDatabaseResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<FollowerDatabaseResult> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove) {
+        ClustersInner client = this.inner();
+        return client.detachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabasesToRemove)
+        .flatMap(new Func1<List<FollowerDatabaseResultInner>, Observable<FollowerDatabaseResultInner>>() {
+            @Override
+            public Observable<FollowerDatabaseResultInner> call(List<FollowerDatabaseResultInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<FollowerDatabaseResultInner, FollowerDatabaseResult>() {
+            @Override
+            public FollowerDatabaseResult call(FollowerDatabaseResultInner inner) {
+                return new FollowerDatabaseResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<CheckNameResult> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        ClustersInner client = this.inner();
+        return client.checkNameAvailability1Async(resourceGroupName, clusterName, resourceName)
+        .map(new Func1<CheckNameResultInner, CheckNameResult>() {
+            @Override
+            public CheckNameResult call(CheckNameResultInner inner) {
+                return new CheckNameResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     protected ClusterImpl wrapModel(ClusterInner inner) {
         return  new ClusterImpl(inner.name(), inner, manager());
     }
@@ -186,19 +237,19 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
-    public Observable<AzureSku> listSkusAsync() {
+    public Observable<SkuDescription> listSkusAsync() {
         ClustersInner client = this.inner();
         return client.listSkusAsync()
-        .flatMap(new Func1<List<AzureSkuInner>, Observable<AzureSkuInner>>() {
+        .flatMap(new Func1<List<SkuDescriptionInner>, Observable<SkuDescriptionInner>>() {
             @Override
-            public Observable<AzureSkuInner> call(List<AzureSkuInner> innerList) {
+            public Observable<SkuDescriptionInner> call(List<SkuDescriptionInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<AzureSkuInner, AzureSku>() {
+        .map(new Func1<SkuDescriptionInner, SkuDescription>() {
             @Override
-            public AzureSku call(AzureSkuInner inner) {
-                return new AzureSkuImpl(inner, manager());
+            public SkuDescription call(SkuDescriptionInner inner) {
+                return new SkuDescriptionImpl(inner, manager());
             }
         });
     }

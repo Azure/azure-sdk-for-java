@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.kusto.v2019_01_21;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.DatabaseInner;
+import com.microsoft.azure.management.kusto.v2019_01_21.implementation.AttachedDatabaseConfigurationInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
@@ -19,9 +19,9 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.kusto.v2019_01_21.implementation.KustoManager;
 
 /**
- * Type representing Database.
+ * Type representing AttachedDatabaseConfiguration.
  */
-public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshable<Database>, Updatable<Database.Update>, HasManager<KustoManager> {
+public interface AttachedDatabaseConfiguration extends HasInner<AttachedDatabaseConfigurationInner>, Indexable, Refreshable<AttachedDatabaseConfiguration>, Updatable<AttachedDatabaseConfiguration.Update>, HasManager<KustoManager> {
     /**
      * @return the id value.
      */
@@ -43,23 +43,23 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
     String type();
 
     /**
-     * The entirety of the Database definition.
+     * The entirety of the AttachedDatabaseConfiguration definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCluster, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of Database definition stages.
+     * Grouping of AttachedDatabaseConfiguration definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a Database definition.
+         * The first stage of a AttachedDatabaseConfiguration definition.
          */
         interface Blank extends WithCluster {
         }
 
         /**
-         * The stage of the database definition allowing to specify Cluster.
+         * The stage of the attacheddatabaseconfiguration definition allowing to specify Cluster.
          */
         interface WithCluster {
            /**
@@ -72,7 +72,7 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
-         * The stage of the database definition allowing to specify Location.
+         * The stage of the attacheddatabaseconfiguration definition allowing to specify Location.
          */
         interface WithLocation {
             /**
@@ -88,21 +88,21 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Database>, DefinitionStages.WithLocation {
+        interface WithCreate extends Creatable<AttachedDatabaseConfiguration>, DefinitionStages.WithLocation {
         }
     }
     /**
-     * The template for a Database update operation, containing all the settings that can be modified.
+     * The template for a AttachedDatabaseConfiguration update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Database>, UpdateStages.WithLocation {
+    interface Update extends Appliable<AttachedDatabaseConfiguration>, UpdateStages.WithLocation {
     }
 
     /**
-     * Grouping of Database update stages.
+     * Grouping of AttachedDatabaseConfiguration update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the database update allowing to specify Location.
+         * The stage of the attacheddatabaseconfiguration update allowing to specify Location.
          */
         interface WithLocation {
             /**

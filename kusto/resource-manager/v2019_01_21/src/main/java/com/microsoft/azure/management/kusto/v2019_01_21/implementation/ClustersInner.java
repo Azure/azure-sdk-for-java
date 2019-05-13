@@ -14,8 +14,10 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.ClusterCheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.ClusterUpdate;
+import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseRequest;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -109,6 +111,14 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/start")
         Observable<Response<ResponseBody>> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters listFollowerDatabases" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases")
+        Observable<Response<ResponseBody>> listFollowerDatabases(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters detachFollowerDatabases" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases")
+        Observable<Response<ResponseBody>> detachFollowerDatabases(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body FollowerDatabaseRequest followerDatabasesToRemove, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -124,6 +134,10 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/checkNameAvailability")
         Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ClusterCheckNameRequest clusterName, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters checkNameAvailability1" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability")
+        Observable<Response<ResponseBody>> checkNameAvailability1(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body CheckNameRequest resourceName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters listSkusByResource" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus")
@@ -1025,6 +1039,196 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     }
 
     /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;FollowerDatabaseResultInner&gt; object if successful.
+     */
+    public List<FollowerDatabaseResultInner> listFollowerDatabases(String resourceGroupName, String clusterName) {
+        return listFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<FollowerDatabaseResultInner>> listFollowerDatabasesAsync(String resourceGroupName, String clusterName, final ServiceCallback<List<FollowerDatabaseResultInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FollowerDatabaseResultInner&gt; object
+     */
+    public Observable<List<FollowerDatabaseResultInner>> listFollowerDatabasesAsync(String resourceGroupName, String clusterName) {
+        return listFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<List<FollowerDatabaseResultInner>>, List<FollowerDatabaseResultInner>>() {
+            @Override
+            public List<FollowerDatabaseResultInner> call(ServiceResponse<List<FollowerDatabaseResultInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FollowerDatabaseResultInner&gt; object
+     */
+    public Observable<ServiceResponse<List<FollowerDatabaseResultInner>>> listFollowerDatabasesWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listFollowerDatabases(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FollowerDatabaseResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<FollowerDatabaseResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FollowerDatabaseResultInner>> result = listFollowerDatabasesDelegate(response);
+                        List<FollowerDatabaseResultInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<FollowerDatabaseResultInner>> clientResponse = new ServiceResponse<List<FollowerDatabaseResultInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<FollowerDatabaseResultInner>> listFollowerDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FollowerDatabaseResultInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<FollowerDatabaseResultInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param followerDatabasesToRemove List of follower databases to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;FollowerDatabaseResultInner&gt; object if successful.
+     */
+    public List<FollowerDatabaseResultInner> detachFollowerDatabases(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove) {
+        return detachFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName, followerDatabasesToRemove).toBlocking().single().body();
+    }
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param followerDatabasesToRemove List of follower databases to remove.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<FollowerDatabaseResultInner>> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove, final ServiceCallback<List<FollowerDatabaseResultInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(detachFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName, followerDatabasesToRemove), serviceCallback);
+    }
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param followerDatabasesToRemove List of follower databases to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FollowerDatabaseResultInner&gt; object
+     */
+    public Observable<List<FollowerDatabaseResultInner>> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove) {
+        return detachFollowerDatabasesWithServiceResponseAsync(resourceGroupName, clusterName, followerDatabasesToRemove).map(new Func1<ServiceResponse<List<FollowerDatabaseResultInner>>, List<FollowerDatabaseResultInner>>() {
+            @Override
+            public List<FollowerDatabaseResultInner> call(ServiceResponse<List<FollowerDatabaseResultInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param followerDatabasesToRemove List of follower databases to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FollowerDatabaseResultInner&gt; object
+     */
+    public Observable<ServiceResponse<List<FollowerDatabaseResultInner>>> detachFollowerDatabasesWithServiceResponseAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (followerDatabasesToRemove == null) {
+            throw new IllegalArgumentException("Parameter followerDatabasesToRemove is required and cannot be null.");
+        }
+        Validator.validate(followerDatabasesToRemove);
+        return service.detachFollowerDatabases(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), followerDatabasesToRemove, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FollowerDatabaseResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<FollowerDatabaseResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FollowerDatabaseResultInner>> result = detachFollowerDatabasesDelegate(response);
+                        List<FollowerDatabaseResultInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<FollowerDatabaseResultInner>> clientResponse = new ServiceResponse<List<FollowerDatabaseResultInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<FollowerDatabaseResultInner>> detachFollowerDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FollowerDatabaseResultInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<FollowerDatabaseResultInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists all Kusto clusters within a resource group.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
@@ -1195,9 +1399,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;AzureSkuInner&gt; object if successful.
+     * @return the List&lt;SkuDescriptionInner&gt; object if successful.
      */
-    public List<AzureSkuInner> listSkus() {
+    public List<SkuDescriptionInner> listSkus() {
         return listSkusWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -1208,7 +1412,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AzureSkuInner>> listSkusAsync(final ServiceCallback<List<AzureSkuInner>> serviceCallback) {
+    public ServiceFuture<List<SkuDescriptionInner>> listSkusAsync(final ServiceCallback<List<SkuDescriptionInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -1216,12 +1420,12 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * Lists eligible SKUs for Kusto resource provider.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;AzureSkuInner&gt; object
+     * @return the observable to the List&lt;SkuDescriptionInner&gt; object
      */
-    public Observable<List<AzureSkuInner>> listSkusAsync() {
-        return listSkusWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AzureSkuInner>>, List<AzureSkuInner>>() {
+    public Observable<List<SkuDescriptionInner>> listSkusAsync() {
+        return listSkusWithServiceResponseAsync().map(new Func1<ServiceResponse<List<SkuDescriptionInner>>, List<SkuDescriptionInner>>() {
             @Override
-            public List<AzureSkuInner> call(ServiceResponse<List<AzureSkuInner>> response) {
+            public List<SkuDescriptionInner> call(ServiceResponse<List<SkuDescriptionInner>> response) {
                 return response.body();
             }
         });
@@ -1231,9 +1435,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * Lists eligible SKUs for Kusto resource provider.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;AzureSkuInner&gt; object
+     * @return the observable to the List&lt;SkuDescriptionInner&gt; object
      */
-    public Observable<ServiceResponse<List<AzureSkuInner>>> listSkusWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<SkuDescriptionInner>>> listSkusWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1241,16 +1445,16 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listSkus(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AzureSkuInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SkuDescriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<AzureSkuInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SkuDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AzureSkuInner>> result = listSkusDelegate(response);
-                        List<AzureSkuInner> items = null;
+                        ServiceResponse<PageImpl<SkuDescriptionInner>> result = listSkusDelegate(response);
+                        List<SkuDescriptionInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<AzureSkuInner>> clientResponse = new ServiceResponse<List<AzureSkuInner>>(items, result.response());
+                        ServiceResponse<List<SkuDescriptionInner>> clientResponse = new ServiceResponse<List<SkuDescriptionInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1259,9 +1463,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<PageImpl<AzureSkuInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AzureSkuInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AzureSkuInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SkuDescriptionInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SkuDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1348,6 +1552,100 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     }
 
     private ServiceResponse<CheckNameResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks that the database name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckNameResultInner object if successful.
+     */
+    public CheckNameResultInner checkNameAvailability1(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        return checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName).toBlocking().single().body();
+    }
+
+    /**
+     * Checks that the database name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckNameResultInner> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName, final ServiceCallback<CheckNameResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName), serviceCallback);
+    }
+
+    /**
+     * Checks that the database name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameResultInner object
+     */
+    public Observable<CheckNameResultInner> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        return checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName).map(new Func1<ServiceResponse<CheckNameResultInner>, CheckNameResultInner>() {
+            @Override
+            public CheckNameResultInner call(ServiceResponse<CheckNameResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks that the database name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameResultInner object
+     */
+    public Observable<ServiceResponse<CheckNameResultInner>> checkNameAvailability1WithServiceResponseAsync(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        Validator.validate(resourceName);
+        return service.checkNameAvailability1(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), resourceName, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckNameResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckNameResultInner> clientResponse = checkNameAvailability1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckNameResultInner> checkNameAvailability1Delegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
                 .registerError(CloudException.class)

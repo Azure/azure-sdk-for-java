@@ -15,15 +15,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Class representing a Kusto database.
+ * Class representing an attached database configuration.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Database")
+@JsonTypeName("AttachedDatabaseConfiguration")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ReadWrite", value = ReadWriteDatabase.class),
-    @JsonSubTypes.Type(name = "ReadOnlyAttached", value = ReadOnlyAttachedDatabase.class)
+    @JsonSubTypes.Type(name = "All", value = AllAttachedDatabaseConfiguration.class),
+    @JsonSubTypes.Type(name = "Specific", value = SpecificAttachedDatabaseConfiguration.class)
 })
-public class DatabaseInner extends ProxyResource {
+public class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Resource location.
      */
@@ -43,9 +43,9 @@ public class DatabaseInner extends ProxyResource {
      * Set resource location.
      *
      * @param location the location value to set
-     * @return the DatabaseInner object itself.
+     * @return the AttachedDatabaseConfigurationInner object itself.
      */
-    public DatabaseInner withLocation(String location) {
+    public AttachedDatabaseConfigurationInner withLocation(String location) {
         this.location = location;
         return this;
     }

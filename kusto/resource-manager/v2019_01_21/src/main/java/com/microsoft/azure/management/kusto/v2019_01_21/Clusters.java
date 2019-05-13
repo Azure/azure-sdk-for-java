@@ -45,6 +45,38 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
     Completable startAsync(String resourceGroupName, String clusterName);
 
     /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FollowerDatabaseResult> listFollowerDatabasesAsync(String resourceGroupName, String clusterName);
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param followerDatabasesToRemove List of follower databases to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FollowerDatabaseResult> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove);
+
+    /**
+     * Checks that the database name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CheckNameResult> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName);
+
+    /**
      * Checks that the cluster name is valid and is not already in use.
      *
      * @param location Azure location.
@@ -70,6 +102,6 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AzureSku> listSkusAsync();
+    Observable<SkuDescription> listSkusAsync();
 
 }

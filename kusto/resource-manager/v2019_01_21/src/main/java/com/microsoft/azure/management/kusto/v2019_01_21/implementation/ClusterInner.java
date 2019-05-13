@@ -8,10 +8,12 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
+import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
 import com.microsoft.azure.management.kusto.v2019_01_21.State;
 import com.microsoft.azure.management.kusto.v2019_01_21.ProvisioningState;
 import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.TrustedExternalTenant;
+import com.microsoft.azure.management.kusto.v2019_01_21.IntelligentAutoscale;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -25,7 +27,7 @@ public class ClusterInner extends Resource {
      * The SKU of the cluster.
      */
     @JsonProperty(value = "sku", required = true)
-    private AzureSkuInner sku;
+    private AzureSku sku;
 
     /**
      * The state of the resource. Possible values include: 'Creating',
@@ -37,7 +39,7 @@ public class ClusterInner extends Resource {
 
     /**
      * The provisioned state of the resource. Possible values include:
-     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -61,11 +63,17 @@ public class ClusterInner extends Resource {
     private List<TrustedExternalTenant> trustedExternalTenants;
 
     /**
+     * Intelligent auto scale definition.
+     */
+    @JsonProperty(value = "properties.intelligentAutoscale")
+    private IntelligentAutoscale intelligentAutoscale;
+
+    /**
      * Get the SKU of the cluster.
      *
      * @return the sku value
      */
-    public AzureSkuInner sku() {
+    public AzureSku sku() {
         return this.sku;
     }
 
@@ -75,7 +83,7 @@ public class ClusterInner extends Resource {
      * @param sku the sku value to set
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withSku(AzureSkuInner sku) {
+    public ClusterInner withSku(AzureSku sku) {
         this.sku = sku;
         return this;
     }
@@ -90,7 +98,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      *
      * @return the provisioningState value
      */
@@ -133,6 +141,26 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withTrustedExternalTenants(List<TrustedExternalTenant> trustedExternalTenants) {
         this.trustedExternalTenants = trustedExternalTenants;
+        return this;
+    }
+
+    /**
+     * Get intelligent auto scale definition.
+     *
+     * @return the intelligentAutoscale value
+     */
+    public IntelligentAutoscale intelligentAutoscale() {
+        return this.intelligentAutoscale;
+    }
+
+    /**
+     * Set intelligent auto scale definition.
+     *
+     * @param intelligentAutoscale the intelligentAutoscale value to set
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withIntelligentAutoscale(IntelligentAutoscale intelligentAutoscale) {
+        this.intelligentAutoscale = intelligentAutoscale;
         return this;
     }
 

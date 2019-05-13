@@ -18,7 +18,6 @@ import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.DatabasePrincipal;
 import com.microsoft.azure.management.kusto.v2019_01_21.DatabasePrincipalListResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.Database;
-import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
 
 class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     private final KustoManager manager;
@@ -121,18 +120,6 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     public Completable deleteAsync(String resourceGroupName, String clusterName, String databaseName) {
         DatabasesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, clusterName, databaseName).toCompletable();
-    }
-
-    @Override
-    public Observable<CheckNameResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String name) {
-        DatabasesInner client = this.inner();
-        return client.checkNameAvailabilityAsync(resourceGroupName, clusterName, name)
-        .map(new Func1<CheckNameResultInner, CheckNameResult>() {
-            @Override
-            public CheckNameResult call(CheckNameResultInner inner) {
-                return new CheckNameResultImpl(inner, manager());
-            }
-        });
     }
 
 }

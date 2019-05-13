@@ -18,7 +18,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.kusto.v2019_01_21.implementation.KustoManager;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.AzureSkuInner;
 import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.implementation.ClusterInner;
 
@@ -30,6 +29,11 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
      * @return the dataIngestionUri value.
      */
     String dataIngestionUri();
+
+    /**
+     * @return the intelligentAutoscale value.
+     */
+    IntelligentAutoscale intelligentAutoscale();
 
     /**
      * @return the provisioningState value.
@@ -87,7 +91,19 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
             * @param sku The SKU of the cluster
             * @return the next definition stage
 */
-            WithCreate withSku(AzureSkuInner sku);
+            WithCreate withSku(AzureSku sku);
+        }
+
+        /**
+         * The stage of the cluster definition allowing to specify IntelligentAutoscale.
+         */
+        interface WithIntelligentAutoscale {
+            /**
+             * Specifies intelligentAutoscale.
+             * @param intelligentAutoscale Intelligent auto scale definition
+             * @return the next definition stage
+             */
+            WithCreate withIntelligentAutoscale(IntelligentAutoscale intelligentAutoscale);
         }
 
         /**
@@ -107,19 +123,31 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithTrustedExternalTenants {
+        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIntelligentAutoscale, DefinitionStages.WithTrustedExternalTenants {
         }
     }
     /**
      * The template for a Cluster update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Cluster>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku, UpdateStages.WithTrustedExternalTenants {
+    interface Update extends Appliable<Cluster>, Resource.UpdateWithTags<Update>, UpdateStages.WithIntelligentAutoscale, UpdateStages.WithSku, UpdateStages.WithTrustedExternalTenants {
     }
 
     /**
      * Grouping of Cluster update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the cluster update allowing to specify IntelligentAutoscale.
+         */
+        interface WithIntelligentAutoscale {
+            /**
+             * Specifies intelligentAutoscale.
+             * @param intelligentAutoscale Intelligent auto scale definition
+             * @return the next update stage
+             */
+            Update withIntelligentAutoscale(IntelligentAutoscale intelligentAutoscale);
+        }
+
         /**
          * The stage of the cluster update allowing to specify Sku.
          */
@@ -129,7 +157,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
              * @param sku The SKU of the cluster
              * @return the next update stage
              */
-            Update withSku(AzureSkuInner sku);
+            Update withSku(AzureSku sku);
         }
 
         /**

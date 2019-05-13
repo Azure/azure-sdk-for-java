@@ -83,15 +83,4 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
      */
     Completable deleteAsync(String resourceGroupName, String clusterName, String databaseName);
 
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param name Database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<CheckNameResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String name);
-
 }
