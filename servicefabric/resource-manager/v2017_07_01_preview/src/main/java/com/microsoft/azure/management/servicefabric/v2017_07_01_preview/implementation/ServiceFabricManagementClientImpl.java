@@ -137,58 +137,6 @@ public class ServiceFabricManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ApplicationTypesInner object to access its operations.
-     */
-    private ApplicationTypesInner applicationTypes;
-
-    /**
-     * Gets the ApplicationTypesInner object to access its operations.
-     * @return the ApplicationTypesInner object.
-     */
-    public ApplicationTypesInner applicationTypes() {
-        return this.applicationTypes;
-    }
-
-    /**
-     * The VersionsInner object to access its operations.
-     */
-    private VersionsInner versions;
-
-    /**
-     * Gets the VersionsInner object to access its operations.
-     * @return the VersionsInner object.
-     */
-    public VersionsInner versions() {
-        return this.versions;
-    }
-
-    /**
-     * The ApplicationsInner object to access its operations.
-     */
-    private ApplicationsInner applications;
-
-    /**
-     * Gets the ApplicationsInner object to access its operations.
-     * @return the ApplicationsInner object.
-     */
-    public ApplicationsInner applications() {
-        return this.applications;
-    }
-
-    /**
-     * The ServicesInner object to access its operations.
-     */
-    private ServicesInner services;
-
-    /**
-     * Gets the ServicesInner object to access its operations.
-     * @return the ServicesInner object.
-     */
-    public ServicesInner services() {
-        return this.services;
-    }
-
-    /**
      * Initializes an instance of ServiceFabricManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -225,10 +173,6 @@ public class ServiceFabricManagementClientImpl extends AzureServiceClient {
         this.clusters = new ClustersInner(restClient().retrofit(), this);
         this.clusterVersions = new ClusterVersionsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
-        this.applicationTypes = new ApplicationTypesInner(restClient().retrofit(), this);
-        this.versions = new VersionsInner(restClient().retrofit(), this);
-        this.applications = new ApplicationsInner(restClient().retrofit(), this);
-        this.services = new ServicesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

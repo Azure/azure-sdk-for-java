@@ -19,10 +19,6 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.Clusters;
 import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.ClusterVersions;
 import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.Operations;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.ApplicationTypes;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.Versions;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.Applications;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.Services;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -33,10 +29,6 @@ public final class ServiceFabricManager extends ManagerCore<ServiceFabricManager
     private Clusters clusters;
     private ClusterVersions clusterVersions;
     private Operations operations;
-    private ApplicationTypes applicationTypes;
-    private Versions versions;
-    private Applications applications;
-    private Services services;
     /**
     * Get a Configurable instance that can be used to create ServiceFabricManager with optional configuration.
     *
@@ -109,46 +101,6 @@ public final class ServiceFabricManager extends ManagerCore<ServiceFabricManager
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
-    }
-
-    /**
-     * @return Entry point to manage ApplicationTypes.
-     */
-    public ApplicationTypes applicationTypes() {
-        if (this.applicationTypes == null) {
-            this.applicationTypes = new ApplicationTypesImpl(this);
-        }
-        return this.applicationTypes;
-    }
-
-    /**
-     * @return Entry point to manage Versions.
-     */
-    public Versions versions() {
-        if (this.versions == null) {
-            this.versions = new VersionsImpl(this);
-        }
-        return this.versions;
-    }
-
-    /**
-     * @return Entry point to manage Applications.
-     */
-    public Applications applications() {
-        if (this.applications == null) {
-            this.applications = new ApplicationsImpl(this);
-        }
-        return this.applications;
-    }
-
-    /**
-     * @return Entry point to manage Services.
-     */
-    public Services services() {
-        if (this.services == null) {
-            this.services = new ServicesImpl(this);
-        }
-        return this.services;
     }
 
     /**

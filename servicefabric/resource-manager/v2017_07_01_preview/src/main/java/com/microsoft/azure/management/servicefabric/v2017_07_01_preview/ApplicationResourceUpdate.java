@@ -14,10 +14,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * The application resource.
+ * The application resource for patch operations.
  */
 @JsonFlatten
-public class ApplicationResource extends ProxyResource {
+public class ApplicationResourceUpdate extends ProxyResource {
     /**
      * The typeVersion property.
      */
@@ -69,19 +69,6 @@ public class ApplicationResource extends ProxyResource {
     private List<ApplicationMetricDescription> metrics;
 
     /**
-     * The current deployment or provisioning state, which only appears in the
-     * response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /**
-     * The typeName property.
-     */
-    @JsonProperty(value = "properties.typeName")
-    private String typeName;
-
-    /**
      * Resource location.
      */
     @JsonProperty(value = "location", required = true)
@@ -100,9 +87,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the typeVersion value.
      *
      * @param typeVersion the typeVersion value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withTypeVersion(String typeVersion) {
+    public ApplicationResourceUpdate withTypeVersion(String typeVersion) {
         this.typeVersion = typeVersion;
         return this;
     }
@@ -120,9 +107,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the parameters value.
      *
      * @param parameters the parameters value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withParameters(List<ApplicationParameter> parameters) {
+    public ApplicationResourceUpdate withParameters(List<ApplicationParameter> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -140,9 +127,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the upgradePolicy value.
      *
      * @param upgradePolicy the upgradePolicy value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withUpgradePolicy(ApplicationUpgradePolicy upgradePolicy) {
+    public ApplicationResourceUpdate withUpgradePolicy(ApplicationUpgradePolicy upgradePolicy) {
         this.upgradePolicy = upgradePolicy;
         return this;
     }
@@ -160,9 +147,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes property.
      *
      * @param minimumNodes the minimumNodes value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withMinimumNodes(Long minimumNodes) {
+    public ApplicationResourceUpdate withMinimumNodes(Long minimumNodes) {
         this.minimumNodes = minimumNodes;
         return this;
     }
@@ -180,9 +167,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the maximum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
      *
      * @param maximumNodes the maximumNodes value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withMaximumNodes(Long maximumNodes) {
+    public ApplicationResourceUpdate withMaximumNodes(Long maximumNodes) {
         this.maximumNodes = maximumNodes;
         return this;
     }
@@ -200,9 +187,9 @@ public class ApplicationResource extends ProxyResource {
      * Set the version of the application type.
      *
      * @param removeApplicationCapacity the removeApplicationCapacity value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withRemoveApplicationCapacity(Boolean removeApplicationCapacity) {
+    public ApplicationResourceUpdate withRemoveApplicationCapacity(Boolean removeApplicationCapacity) {
         this.removeApplicationCapacity = removeApplicationCapacity;
         return this;
     }
@@ -220,39 +207,10 @@ public class ApplicationResource extends ProxyResource {
      * Set the metrics value.
      *
      * @param metrics the metrics value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withMetrics(List<ApplicationMetricDescription> metrics) {
+    public ApplicationResourceUpdate withMetrics(List<ApplicationMetricDescription> metrics) {
         this.metrics = metrics;
-        return this;
-    }
-
-    /**
-     * Get the current deployment or provisioning state, which only appears in the response.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the typeName value.
-     *
-     * @return the typeName value
-     */
-    public String typeName() {
-        return this.typeName;
-    }
-
-    /**
-     * Set the typeName value.
-     *
-     * @param typeName the typeName value to set
-     * @return the ApplicationResource object itself.
-     */
-    public ApplicationResource withTypeName(String typeName) {
-        this.typeName = typeName;
         return this;
     }
 
@@ -269,9 +227,9 @@ public class ApplicationResource extends ProxyResource {
      * Set resource location.
      *
      * @param location the location value to set
-     * @return the ApplicationResource object itself.
+     * @return the ApplicationResourceUpdate object itself.
      */
-    public ApplicationResource withLocation(String location) {
+    public ApplicationResourceUpdate withLocation(String location) {
         this.location = location;
         return this;
     }

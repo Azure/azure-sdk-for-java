@@ -8,152 +8,97 @@
 
 package com.microsoft.azure.management.servicefabric.v2017_07_01_preview;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.VersionResourceInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceFabricManager;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * Type representing VersionResource.
+ * A version resource for the specified application type name.
  */
-public interface VersionResource extends HasInner<VersionResourceInner>, Indexable, Refreshable<VersionResource>, Updatable<VersionResource.Update>, HasManager<ServiceFabricManager> {
+@JsonFlatten
+public class VersionResource extends ProxyResource {
     /**
-     * @return the appPackageUrl value.
+     * The current deployment or provisioning state, which only appears in the
+     * response.
      */
-    String appPackageUrl();
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
 
     /**
-     * @return the defaultParameterList value.
+     * The URL to the application package.
      */
-    List<ApplicationParameter> defaultParameterList();
+    @JsonProperty(value = "properties.appPackageUrl", required = true)
+    private String appPackageUrl;
 
     /**
-     * @return the id value.
+     * The defaultParameterList property.
      */
-    String id();
+    @JsonProperty(value = "properties.defaultParameterList", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationParameter> defaultParameterList;
 
     /**
-     * @return the location value.
+     * Resource location.
      */
-    String location();
+    @JsonProperty(value = "location", required = true)
+    private String location;
 
     /**
-     * @return the name value.
+     * Get the current deployment or provisioning state, which only appears in the response.
+     *
+     * @return the provisioningState value
      */
-    String name();
-
-    /**
-     * @return the provisioningState value.
-     */
-    String provisioningState();
-
-    /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * The entirety of the VersionResource definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithApplicationType, DefinitionStages.WithApiVersion, DefinitionStages.WithAppPackageUrl, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Grouping of VersionResource definition stages.
+     * Get the URL to the application package.
+     *
+     * @return the appPackageUrl value
      */
-    interface DefinitionStages {
-        /**
-         * The first stage of a VersionResource definition.
-         */
-        interface Blank extends WithApplicationType {
-        }
-
-        /**
-         * The stage of the versionresource definition allowing to specify ApplicationType.
-         */
-        interface WithApplicationType {
-           /**
-            * Specifies subscriptionId, resourceGroupName, clusterName, applicationTypeName.
-            * @param subscriptionId The customer subscription identifier
-            * @param resourceGroupName The name of the resource group
-            * @param clusterName The name of the cluster resource
-            * @param applicationTypeName The name of the application type name resource
-            * @return the next definition stage
-            */
-            WithApiVersion withExistingApplicationType(String subscriptionId, String resourceGroupName, String clusterName, String applicationTypeName);
-        }
-
-        /**
-         * The stage of the versionresource definition allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-           /**
-            * Specifies apiVersion.
-            * @param apiVersion The version of the API
-            * @return the next definition stage
-            */
-            WithAppPackageUrl withApiVersion(String apiVersion);
-        }
-
-        /**
-         * The stage of the versionresource definition allowing to specify AppPackageUrl.
-         */
-        interface WithAppPackageUrl {
-           /**
-            * Specifies appPackageUrl.
-            * @param appPackageUrl The URL to the application package
-            * @return the next definition stage
-            */
-            WithLocation withAppPackageUrl(String appPackageUrl);
-        }
-
-        /**
-         * The stage of the versionresource definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            * @param location Resource location
-            * @return the next definition stage
-            */
-            WithCreate withLocation(String location);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<VersionResource> {
-        }
-    }
-    /**
-     * The template for a VersionResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<VersionResource>, UpdateStages.WithApiVersion {
+    public String appPackageUrl() {
+        return this.appPackageUrl;
     }
 
     /**
-     * Grouping of VersionResource update stages.
+     * Set the URL to the application package.
+     *
+     * @param appPackageUrl the appPackageUrl value to set
+     * @return the VersionResource object itself.
      */
-    interface UpdateStages {
-        /**
-         * The stage of the versionresource update allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-            /**
-             * Specifies apiVersion.
-             * @param apiVersion The version of the API
-             * @return the next update stage
-             */
-            Update withApiVersion(String apiVersion);
-        }
-
+    public VersionResource withAppPackageUrl(String appPackageUrl) {
+        this.appPackageUrl = appPackageUrl;
+        return this;
     }
+
+    /**
+     * Get the defaultParameterList value.
+     *
+     * @return the defaultParameterList value
+     */
+    public List<ApplicationParameter> defaultParameterList() {
+        return this.defaultParameterList;
+    }
+
+    /**
+     * Get resource location.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set resource location.
+     *
+     * @param location the location value to set
+     * @return the VersionResource object itself.
+     */
+    public VersionResource withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
 }

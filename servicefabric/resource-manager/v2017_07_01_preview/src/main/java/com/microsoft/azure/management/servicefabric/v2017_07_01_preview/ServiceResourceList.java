@@ -8,20 +8,37 @@
 
 package com.microsoft.azure.management.servicefabric.v2017_07_01_preview;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceFabricManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceResourceListInner;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceResourceInner;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing ServiceResourceList.
+ * The list of service resources.
  */
-public interface ServiceResourceList extends HasInner<ServiceResourceListInner>, HasManager<ServiceFabricManager> {
+public class ServiceResourceList {
     /**
-     * @return the value value.
+     * The value property.
      */
-    List<ServiceResourceInner> value();
+    @JsonProperty(value = "value")
+    private List<ServiceResource> value;
+
+    /**
+     * Get the value value.
+     *
+     * @return the value value
+     */
+    public List<ServiceResource> value() {
+        return this.value;
+    }
+
+    /**
+     * Set the value value.
+     *
+     * @param value the value value to set
+     * @return the ServiceResourceList object itself.
+     */
+    public ServiceResourceList withValue(List<ServiceResource> value) {
+        this.value = value;
+        return this;
+    }
 
 }

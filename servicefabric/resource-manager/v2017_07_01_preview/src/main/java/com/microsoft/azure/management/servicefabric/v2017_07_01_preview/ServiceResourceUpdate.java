@@ -14,10 +14,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * The service resource.
+ * The service resource for patch operations.
  */
 @JsonFlatten
-public class ServiceResource extends ProxyResource {
+public class ServiceResourceUpdate extends ProxyResource {
     /**
      * The placement constraints as a string. Placement constraints are boolean
      * expressions on node properties and allow for restricting a service to
@@ -53,25 +53,6 @@ public class ServiceResource extends ProxyResource {
     private String defaultMoveCost;
 
     /**
-     * The current deployment or provisioning state, which only appears in the
-     * response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /**
-     * The name of the service type.
-     */
-    @JsonProperty(value = "properties.serviceTypeName")
-    private String serviceTypeName;
-
-    /**
-     * The partitionDescription property.
-     */
-    @JsonProperty(value = "properties.partitionDescription")
-    private PartitionSchemeDescription partitionDescription;
-
-    /**
      * Resource location.
      */
     @JsonProperty(value = "location", required = true)
@@ -90,9 +71,9 @@ public class ServiceResource extends ProxyResource {
      * Set the placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
      *
      * @param placementConstraints the placementConstraints value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withPlacementConstraints(String placementConstraints) {
+    public ServiceResourceUpdate withPlacementConstraints(String placementConstraints) {
         this.placementConstraints = placementConstraints;
         return this;
     }
@@ -110,9 +91,9 @@ public class ServiceResource extends ProxyResource {
      * Set the correlationScheme value.
      *
      * @param correlationScheme the correlationScheme value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
+    public ServiceResourceUpdate withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         this.correlationScheme = correlationScheme;
         return this;
     }
@@ -130,9 +111,9 @@ public class ServiceResource extends ProxyResource {
      * Set the serviceLoadMetrics value.
      *
      * @param serviceLoadMetrics the serviceLoadMetrics value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+    public ServiceResourceUpdate withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         this.serviceLoadMetrics = serviceLoadMetrics;
         return this;
     }
@@ -150,9 +131,9 @@ public class ServiceResource extends ProxyResource {
      * Set the servicePlacementPolicies value.
      *
      * @param servicePlacementPolicies the servicePlacementPolicies value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public ServiceResourceUpdate withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         this.servicePlacementPolicies = servicePlacementPolicies;
         return this;
     }
@@ -170,59 +151,10 @@ public class ServiceResource extends ProxyResource {
      * Set possible values include: 'Zero', 'Low', 'Medium', 'High'.
      *
      * @param defaultMoveCost the defaultMoveCost value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withDefaultMoveCost(String defaultMoveCost) {
+    public ServiceResourceUpdate withDefaultMoveCost(String defaultMoveCost) {
         this.defaultMoveCost = defaultMoveCost;
-        return this;
-    }
-
-    /**
-     * Get the current deployment or provisioning state, which only appears in the response.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the name of the service type.
-     *
-     * @return the serviceTypeName value
-     */
-    public String serviceTypeName() {
-        return this.serviceTypeName;
-    }
-
-    /**
-     * Set the name of the service type.
-     *
-     * @param serviceTypeName the serviceTypeName value to set
-     * @return the ServiceResource object itself.
-     */
-    public ServiceResource withServiceTypeName(String serviceTypeName) {
-        this.serviceTypeName = serviceTypeName;
-        return this;
-    }
-
-    /**
-     * Get the partitionDescription value.
-     *
-     * @return the partitionDescription value
-     */
-    public PartitionSchemeDescription partitionDescription() {
-        return this.partitionDescription;
-    }
-
-    /**
-     * Set the partitionDescription value.
-     *
-     * @param partitionDescription the partitionDescription value to set
-     * @return the ServiceResource object itself.
-     */
-    public ServiceResource withPartitionDescription(PartitionSchemeDescription partitionDescription) {
-        this.partitionDescription = partitionDescription;
         return this;
     }
 
@@ -239,9 +171,9 @@ public class ServiceResource extends ProxyResource {
      * Set resource location.
      *
      * @param location the location value to set
-     * @return the ServiceResource object itself.
+     * @return the ServiceResourceUpdate object itself.
      */
-    public ServiceResource withLocation(String location) {
+    public ServiceResourceUpdate withLocation(String location) {
         this.location = location;
         return this;
     }
