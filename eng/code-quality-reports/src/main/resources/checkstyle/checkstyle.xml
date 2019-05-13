@@ -275,7 +275,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
           <property name="packagePath" value="com.azure"/>
           <property name="loggerName" value="logger"/>
-          <property name="loggerClass" value="org.slf4j.Logger"/>
+          <property name="loggerClass" value="org.slf4j.LoggerFactory"/>
         </module>
 
     </module>
