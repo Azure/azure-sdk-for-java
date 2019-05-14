@@ -11,11 +11,7 @@ import java.util.ServiceLoader;
  */
 public final class TracerProxy {
 
-    private static ServiceLoader<? extends Tracer> tracers;
-
-    static {
-        tracers = ServiceLoader.load(Tracer.class);
-    }
+    private static ServiceLoader<? extends Tracer> tracers = ServiceLoader.load(Tracer.class);
 
     private TracerProxy() {
         // no-op
@@ -39,4 +35,3 @@ public final class TracerProxy {
         tracers.forEach(tracer -> tracer.end(responseCode, error, context));
     }
 }
-

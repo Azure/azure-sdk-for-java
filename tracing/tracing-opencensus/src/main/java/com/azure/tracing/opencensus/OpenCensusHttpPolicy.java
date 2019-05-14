@@ -31,21 +31,18 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
     private static final Tracer tracer = Tracing.getTracer();
 
     // standard attributes with http call information
-    public static final String HTTP_USER_AGENT = "http.user_agent";
-    public static final String HTTP_METHOD = "http.method";
-    public static final String HTTP_URL = "http.url";
-    public static final String HTTP_STATUS_CODE = "http.status_code";
+    private static final String HTTP_USER_AGENT = "http.user_agent";
+    private static final String HTTP_METHOD = "http.method";
+    private static final String HTTP_URL = "http.url";
+    private static final String HTTP_STATUS_CODE = "http.status_code";
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http request
     private final TextFormat traceContextFormat = Tracing.getPropagationComponent().getTraceContextFormat();
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Incoming request has a Context which MUST have a current span
-        Span parentSpan = null;
-
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
+        Span parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
 
         HttpRequest request = context.httpRequest();
         // Build new child span representing this outgoing request.
@@ -73,7 +70,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         // run the next policy and handle success and error
         return next.process()
             .doOnEach(OpenCensusHttpPolicy::handleResponse)
-            .subscriberContext(Context.of("TRACING_SPAN", span));
+            .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
     private void addSpanRequestAttributes(Span span, HttpRequest request) {

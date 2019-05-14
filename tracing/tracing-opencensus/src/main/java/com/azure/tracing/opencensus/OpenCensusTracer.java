@@ -1,6 +1,7 @@
 package com.azure.tracing.opencensus;
 
 import com.azure.core.http.ContextData;
+import com.azure.core.implementation.logging.ServiceLogger;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Options;
@@ -11,9 +12,10 @@ import io.opencensus.trace.Tracing;
 import java.util.Optional;
 
 public class OpenCensusTracer implements com.azure.core.implementation.tracing.Tracer {
-
     // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer tracer = Tracing.getTracer();
+
+    private final ServiceLogger logger = new ServiceLogger(OpenCensusTracer.class);
 
     public ContextData start(String methodName, ContextData context) {
         /*
@@ -22,11 +24,8 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
          *
          * TODO Need to determine the key that users will use to insert the tracing information into the Context, or if a utility method will do this for end users.
          */
-
-        Span parentSpan = null;
-
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
+        Span parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
 
         SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(
             methodName, // this is a coarse name like "Azure.KeyVault/getSecret"
@@ -39,23 +38,18 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
     }
 
     public void end(int responseCode, Throwable throwable, ContextData context) {
-        // TODO Optional<Integer>?
-
-        Span span = null;
-
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {
-            span = (Span) spanOptional.get();
-        }
-        else {
-            // todo: log error!
-        }
+           Span span = (Span) spanOptional.get();
 
-        if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-            span.setStatus(HttpTraceUtil.parseResponseStatus(responseCode, throwable));
-        }
+            if (span.getOptions().contains(Options.RECORD_EVENTS)) {
+                span.setStatus(HttpTraceUtil.parseResponseStatus(responseCode, throwable));
+            }
 
-        span.end();
+            span.end();
+        } else {
+            logger.asWarning().log("Failed to find span to end it.");
+        }
     }
 
     @Override
@@ -65,9 +59,8 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
         if (spanOptional.isPresent()) {
             Span span = (Span) spanOptional.get();
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
-        }
-        else {
-            // todo: log error!
+        } else {
+            logger.asWarning().log("Failed to find span to add attribute.");
         }
     }
 }
