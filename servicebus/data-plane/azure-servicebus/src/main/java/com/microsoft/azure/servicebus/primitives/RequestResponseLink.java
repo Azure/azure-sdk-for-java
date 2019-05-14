@@ -867,24 +867,16 @@ class RequestResponseLink extends ClientEntity{
                                 assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
                                 delivery.settle();
                                 this.availableCredit.decrementAndGet();
-                                if (TRACE_LOGGER.isDebugEnabled()) {
-                                    TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
-                                }
+                                TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
                             } catch (Exception e) {
-                                if (TRACE_LOGGER.isErrorEnabled()) {
-                                    TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
-                                }
+                                TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
                                 this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
                             }
                         } else {
-                            if (TRACE_LOGGER.isErrorEnabled()) {
-                                TRACE_LOGGER.error("NULL_POINTER exception: encodedPair in RequestResponseLink");
-                            }
+                            TRACE_LOGGER.error("NULL_POINTER exception: encodedPair in RequestResponseLink");
                         }
                     } else {
-                        if (TRACE_LOGGER.isWarnEnabled()) {
-                            TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
-                        }
+                        TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
                     }
                 }
             } finally {
