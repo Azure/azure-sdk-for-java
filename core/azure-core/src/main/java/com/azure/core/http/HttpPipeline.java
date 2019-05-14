@@ -52,7 +52,7 @@ public final class HttpPipeline {
      * @param index index of the the policy to retrieve.
      * @return the policy stored at that index.
      */
-    public HttpPipelinePolicy getPolicy(int index) {
+    public HttpPipelinePolicy getPolicy(final int index) {
         return this.pipelinePolicies[index];
     }
 
