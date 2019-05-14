@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+<<<<<<< HEAD:core/azure-core-management/src/main/java/com/azure/core/management/AzureProxy.java
 package com.azure.core.management;
 
 import com.azure.core.AzureEnvironment;
@@ -28,6 +29,36 @@ import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.management.annotations.AzureHost;
 import com.azure.core.management.policy.AsyncCredentialsPolicy;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
+=======
+package com.azure.common.mgmt;
+
+import com.azure.common.AzureEnvironment;
+import com.azure.common.credentials.AsyncServiceClientCredentials;
+import com.azure.common.credentials.ServiceClientCredentials;
+import com.azure.common.http.ContextData;
+import com.azure.common.http.HttpMethod;
+import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.HttpRequest;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.http.policy.CookiePolicy;
+import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RetryPolicy;
+import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.implementation.OperationDescription;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerInterfaceParser;
+import com.azure.common.implementation.SwaggerMethodParser;
+import com.azure.common.implementation.exception.InvalidReturnTypeException;
+import com.azure.common.implementation.serializer.HttpResponseDecoder;
+import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
+import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.serializer.SerializerEncoding;
+import com.azure.common.implementation.util.TypeUtil;
+import com.azure.common.mgmt.annotations.AzureHost;
+import com.azure.common.mgmt.policy.AsyncCredentialsPolicy;
+import com.azure.common.mgmt.serializer.AzureJacksonAdapter;
+>>>>>>> azcore_tracing:common/azure-common-mgmt/src/main/java/com/azure/common/mgmt/AzureProxy.java
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -192,14 +223,14 @@ public final class AzureProxy extends RestProxy {
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, HttpPipelinePolicy credentialsPolicy) {
         // Order in which policies applied will be the order in which they appear in the array
         //
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(getDefaultUserAgentString(swaggerInterface)));
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+        return new HttpPipeline(policies);
     }
 
     /**
@@ -210,7 +241,6 @@ public final class AzureProxy extends RestProxy {
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
-    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, AzureServiceClient azureServiceClient) {
         return AzureProxy.create(swaggerInterface, azureServiceClient.azureEnvironment(), azureServiceClient.httpPipeline(), azureServiceClient.serializerAdapter());
     }
@@ -224,7 +254,6 @@ public final class AzureProxy extends RestProxy {
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
-    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         return AzureProxy.create(swaggerInterface, null, httpPipeline, serializer);
     }
@@ -256,7 +285,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType, ContextData contextData) {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
@@ -270,8 +299,8 @@ public final class AzureProxy extends RestProxy {
                             .flatMapMany(pollStrategy -> {
                                 Mono<OperationStatus<Object>> first = handleBodyReturnType(httpResponse, methodParser, operationStatusResultType)
                                         .map(operationResult -> new OperationStatus<Object>(operationResult, pollStrategy.status()))
-                                        .switchIfEmpty(Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(new OperationStatus<Object>((Object) null, pollStrategy.status()))));
-                                Flux<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
+                                        .switchIfEmpty(Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(new OperationStatus<>((Object) null, pollStrategy.status()))));
+                                Flux<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType, contextData);
                                 return first.concatWith(rest);
                             });
                 });
@@ -279,7 +308,7 @@ public final class AzureProxy extends RestProxy {
         } else {
             final Mono<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                     .flatMap((Function<PollStrategy, Mono<HttpResponse>>) pollStrategy -> pollStrategy.pollUntilDone());
-            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse, methodParser), methodParser, returnType);
+            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse, methodParser), methodParser, returnType, contextData);
         }
     }
 
@@ -287,7 +316,8 @@ public final class AzureProxy extends RestProxy {
     protected Object handleResumeOperation(final HttpRequest httpRequest,
                                            OperationDescription operationDescription,
                                            final SwaggerMethodParser methodParser,
-                                           Type returnType) {
+                                           Type returnType,
+                                           ContextData contextData) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
             throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
@@ -296,7 +326,7 @@ public final class AzureProxy extends RestProxy {
         PollStrategy.PollStrategyData pollStrategyData =
                 (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
         PollStrategy pollStrategy = pollStrategyData.initializeStrategy(this, methodParser);
-        return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType);
+        return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType, contextData);
     }
 
     private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse, final SwaggerMethodParser methodParser) {

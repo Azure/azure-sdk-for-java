@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotations.Host;
+import com.azure.core.annotations.ServiceName;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 public class SwaggerInterfaceParser {
     private final SerializerAdapter serializer;
     private final String host;
+    private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
     /**
@@ -50,6 +52,9 @@ public class SwaggerInterfaceParser {
                 throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
             }
         }
+
+        ServiceName serviceNameAnnotation = swaggerInterface.getAnnotation(ServiceName.class);
+        serviceName = (serviceNameAnnotation != null) ? serviceNameAnnotation.value() : "";
     }
 
     /**
@@ -75,5 +80,9 @@ public class SwaggerInterfaceParser {
      */
     String host() {
         return host;
+    }
+
+    String serviceName() {
+        return serviceName;
     }
 }
