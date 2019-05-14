@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SignalRFeature {
     /**
-     * Name of the feature. Required.
+     * Kind of feature. Required.
      */
     @JsonProperty(value = "flag", required = true)
     private String flag;
@@ -44,7 +44,7 @@ public class SignalRFeature {
     }
 
     /**
-     * Get name of the feature. Required.
+     * Get kind of feature. Required.
      *
      * @return the flag value
      */
@@ -53,7 +53,7 @@ public class SignalRFeature {
     }
 
     /**
-     * Set name of the feature. Required.
+     * Set kind of feature. Required.
      *
      * @param flag the flag value to set
      * @return the SignalRFeature object itself.
