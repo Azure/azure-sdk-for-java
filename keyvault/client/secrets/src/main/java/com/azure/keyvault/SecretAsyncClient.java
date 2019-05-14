@@ -21,6 +21,10 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 import java.util.function.Function;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ServerException;
 
 
 /**
@@ -89,6 +93,8 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
+     * @throws ResourceModifiedException if {@code secret} is malformed.
+     * @throws HttpRequestException if {@link Secret#name()}  name} or {@link Secret#value() value} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Mono<Response<Secret>> setSecret(Secret secret) {
@@ -116,6 +122,8 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
+     * @throws ResourceModifiedException if invalid {@code name} or {@code value} are specified.
+     * @throws HttpRequestException if {@code name} or {@code value} are empty strings.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Mono<Response<Secret>> setSecret(String name, String value) {
@@ -139,8 +147,9 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code name}  name} or {@code version} are empty strings.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
      */
     public Mono<Response<Secret>> getSecret(String name, String version) {
         String secretVersion = "";
@@ -165,8 +174,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the secret being requested.
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code secretBase.name} and {@code secretBase.version} doesn't exist in the key vault.
      */
     public Mono<Response<Secret>> getSecret(SecretBase secretBase) {
         Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
@@ -187,8 +197,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the secret.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Mono<Response<Secret>> getSecret(String name) {
         return getSecret(name, "");
@@ -215,8 +226,9 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
      */
     public Mono<Response<SecretBase>> updateSecret(SecretBase secret) {
         Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
@@ -242,8 +254,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the secret to be deleted.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Mono<Response<DeletedSecret>> deleteSecret(String name) {
         return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
@@ -263,8 +276,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the deleted secret.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
         return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
@@ -284,8 +298,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the secret.
-     * @return A {@link Mono} containing a {@link com.azure.core.http.rest.VoidResponse}.
-     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
+     * @return A {@link Mono} containing a {@link VoidResponse}.
      */
     public Mono<VoidResponse> purgeDeletedSecret(String name) {
         return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
@@ -305,8 +320,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Mono<Response<Secret>> recoverDeletedSecret(String name) {
         return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
@@ -325,8 +341,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the secret.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
-     * @throws com.azure.core.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Mono<Response<byte[]>> backupSecret(String name) {
         return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
@@ -347,8 +364,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param backup The backup blob associated with the secret.
+     * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
-     * @throws com.azure.core.exception.ServiceRequestException when the {@code backup} is corrupted.
      */
     public Mono<Response<Secret>> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
@@ -407,7 +424,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * </pre>
      *
      * @param name The name of the secret.
-     * @throws IllegalArgumentException thrown if name parameter is empty.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Flux} containing {@link SecretBase secret} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
     public Flux<SecretBase> listSecretVersions(String name) {

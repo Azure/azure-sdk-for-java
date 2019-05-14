@@ -17,8 +17,7 @@ import com.azure.core.annotations.DELETE;
 import com.azure.core.annotations.PATCH;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.POST;
-import com.azure.core.exception.HttpRequestException;
-import com.azure.core.exception.ServiceRequestException;
+import com.azure.core.exception.*;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -40,6 +39,7 @@ interface SecretService {
 
     @PUT("secrets/{secret-name}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<Secret>> setSecret(@HostParam("url") String url,
                                      @PathParam("secret-name") String secretName,
@@ -50,6 +50,8 @@ interface SecretService {
 
     @GET("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<Secret>> getSecret(@HostParam("url") String url,
                                          @PathParam("secret-name") String secretName,
@@ -61,6 +63,7 @@ interface SecretService {
 
     @PATCH("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {500}, value = ServerException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<SecretBase>> updateSecret(@HostParam("url") String url,
                                             @PathParam("secret-name") String secretName,
@@ -73,6 +76,7 @@ interface SecretService {
 
     @DELETE("secrets/{secret-name}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<DeletedSecret>> deleteSecret(@HostParam("url") String url,
                                                    @PathParam("secret-name") String secretName,
@@ -83,6 +87,7 @@ interface SecretService {
 
     @GET("deletedsecrets/{secret-name}")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<DeletedSecret>> getDeletedSecret(@HostParam("url") String url,
                                                        @PathParam("secret-name") String secretName,
@@ -92,6 +97,7 @@ interface SecretService {
 
     @DELETE("deletedsecrets/{secret-name}")
     @ExpectedResponses({204})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<VoidResponse> purgeDeletedSecret(@HostParam("url") String url,
                                           @PathParam("secret-name") String secretName,
@@ -102,6 +108,7 @@ interface SecretService {
 
     @POST("deletedsecrets/{secret-name}/recover")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<Secret>> recoverDeletedSecret(@HostParam("url") String url,
                                                     @PathParam("secret-name") String secretName,
@@ -112,6 +119,7 @@ interface SecretService {
 
     @POST("secrets/{secret-name}/backup")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<SecretBackup>> backupSecret(@HostParam("url") String url,
                                                   @PathParam("secret-name") String secretName,
@@ -123,6 +131,7 @@ interface SecretService {
 
     @POST("secrets/restore")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpRequestException.class)
     Mono<Response<Secret>> restoreSecret(@HostParam("url") String url,
                                              @QueryParam("api-version") String apiVersion,
