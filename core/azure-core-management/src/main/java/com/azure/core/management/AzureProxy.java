@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-<<<<<<< HEAD:core/azure-core-management/src/main/java/com/azure/core/management/AzureProxy.java
 package com.azure.core.management;
 
 import com.azure.core.AzureEnvironment;
 import com.azure.core.credentials.AsyncServiceClientCredentials;
 import com.azure.core.credentials.ServiceClientCredentials;
+import com.azure.core.http.ContextData;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -29,36 +29,6 @@ import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.management.annotations.AzureHost;
 import com.azure.core.management.policy.AsyncCredentialsPolicy;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-=======
-package com.azure.common.mgmt;
-
-import com.azure.common.AzureEnvironment;
-import com.azure.common.credentials.AsyncServiceClientCredentials;
-import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.http.ContextData;
-import com.azure.common.http.HttpMethod;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.HttpRequest;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.http.policy.CookiePolicy;
-import com.azure.common.http.policy.CredentialsPolicy;
-import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RetryPolicy;
-import com.azure.common.http.policy.UserAgentPolicy;
-import com.azure.common.implementation.OperationDescription;
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerInterfaceParser;
-import com.azure.common.implementation.SwaggerMethodParser;
-import com.azure.common.implementation.exception.InvalidReturnTypeException;
-import com.azure.common.implementation.serializer.HttpResponseDecoder;
-import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
-import com.azure.common.implementation.serializer.SerializerAdapter;
-import com.azure.common.implementation.serializer.SerializerEncoding;
-import com.azure.common.implementation.util.TypeUtil;
-import com.azure.common.mgmt.annotations.AzureHost;
-import com.azure.common.mgmt.policy.AsyncCredentialsPolicy;
-import com.azure.common.mgmt.serializer.AzureJacksonAdapter;
->>>>>>> azcore_tracing:common/azure-common-mgmt/src/main/java/com/azure/common/mgmt/AzureProxy.java
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

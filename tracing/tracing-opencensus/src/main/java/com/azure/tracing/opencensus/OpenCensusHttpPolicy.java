@@ -16,6 +16,8 @@ import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 import io.opencensus.trace.propagation.TextFormat;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
+import reactor.util.context.Context;
 
 import java.util.Optional;
 
@@ -43,9 +45,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         Span parentSpan = null;
 
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        if (spanOptional.isPresent()) {
-            parentSpan = (Span) spanOptional.get();
-        }
+        parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
 
         HttpRequest request = context.httpRequest();
         // Build new child span representing this outgoing request.
@@ -72,21 +72,11 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
         // run the next policy and handle success and error
         return next.process()
-            .map(httpResponse -> {
-                if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-                    // Successful response, add x-ms-request-id header attribute to span before logging.
-                    String serverRequestId = httpResponse.headers().value("x-ms-request-id");
-                    if (serverRequestId != null) {
-                        span.putAttribute("x-ms-request-id", AttributeValue.stringAttributeValue(serverRequestId));
-                    }
-                }
-                spanEnd(span, httpResponse, null);
-                return httpResponse;
-            })
-            .doOnError(throwable -> spanEnd(span, null, throwable));
+            .doOnEach(OpenCensusHttpPolicy::handleResponse)
+            .subscriberContext(Context.of("TRACING_SPAN", span));
     }
 
-    final void addSpanRequestAttributes(Span span, HttpRequest request) {
+    private void addSpanRequestAttributes(Span span, HttpRequest request) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.headers().value("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.httpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.url().toString());
@@ -98,8 +88,39 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         }
     }
 
+    private static void handleResponse(Signal<HttpResponse> signal) {
+        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
+        if (signal.isOnComplete() || signal.isOnSubscribe()) {
+            return;
+        }
+
+        // Get the context that was added to the mono, this will contain the information needed to end the span.
+        Context context = signal.getContext();
+        Optional<Span> tracingSpan = context.getOrEmpty("TRACING_SPAN");
+
+        if (!tracingSpan.isPresent()) {
+            return;
+        }
+
+        Span span = tracingSpan.get();
+        if (signal.isOnNext()) {
+            HttpResponse httpResponse = signal.get();
+            if (span.getOptions().contains(Options.RECORD_EVENTS)) {
+                // Successful response, add x-ms-request-id header attribute to span before logging.
+                String serverRequestId = httpResponse.headers().value("x-ms-request-id");
+                if (serverRequestId != null) {
+                    span.putAttribute("x-ms-request-id", AttributeValue.stringAttributeValue(serverRequestId));
+                }
+            }
+
+            spanEnd(span, httpResponse, null);
+        } else {
+            spanEnd(span, null, signal.getThrowable());
+        }
+    }
+
     // Sets status on the span and ends it
-    void spanEnd(Span span, HttpResponse response, Throwable error) {
+    private static void spanEnd(Span span, HttpResponse response, Throwable error) {
         if (span.getOptions().contains(Options.RECORD_EVENTS)) {
             // If sampled in, add status code and set overall status
             int statusCode = response == null ? 0 : response.statusCode();
@@ -111,7 +132,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         span.end();
     }
 
-    final String getSpanName(HttpRequest request) {
+    private String getSpanName(HttpRequest request) {
         // you can probably optimize it away and remove all checks for null and preceding '/' if path is guaranteed to be valid and not empty
         String path = request.url().getPath();
         if (path == null) {

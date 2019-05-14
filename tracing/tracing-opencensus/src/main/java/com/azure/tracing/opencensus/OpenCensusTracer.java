@@ -26,19 +26,14 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
         Span parentSpan = null;
 
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        if (spanOptional.isPresent()) {
-            parentSpan = (Span) spanOptional.get();
-        }
-        else {
-            // If no parentSpan, then span MIGHT exist via byte-code instrumentation, TLS, etc
-            parentSpan = tracer.getCurrentSpan();
-        }
+        parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
 
         SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(
             methodName, // this is a coarse name like "Azure.KeyVault/getSecret"
             parentSpan); // link to the parent span
 
         Span span = spanBuilder.startSpan();
+
 
         return context.addData(Constants.OPENCENSUS_SPAN_KEY, span);
     }
