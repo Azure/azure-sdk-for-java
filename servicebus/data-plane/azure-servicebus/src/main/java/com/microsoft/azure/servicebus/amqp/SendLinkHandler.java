@@ -38,9 +38,7 @@ public class SendLinkHandler extends BaseLinkHandler {
                     this.msgSender.onOpenComplete(null);
                 }
             } else {
-                if (TRACE_LOGGER.isDebugEnabled()) {
-                    TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteSource:{}, action:{}", sender.getName(), null, null, "waitingForError");
-                }
+                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteSource:{}, action:{}", sender.getName(), null, null, "waitingForError");
             }
         }
     }
@@ -51,10 +49,8 @@ public class SendLinkHandler extends BaseLinkHandler {
 
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
-            if (TRACE_LOGGER.isDebugEnabled()) {
-                TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
-                    sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
-            }
+            TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
+                sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
             msgSender.onSendComplete(delivery);
             delivery.settle();
 
@@ -71,8 +67,6 @@ public class SendLinkHandler extends BaseLinkHandler {
         Sender sender = event.getSender();
         this.msgSender.onFlow(sender.getRemoteCredit());
 
-        if (TRACE_LOGGER.isDebugEnabled()) {
-            TRACE_LOGGER.debug("onLinkFlow: linkName:{}, unsettled:{}, credit:{}", sender.getName(), sender.getUnsettled(), sender.getCredit());
-        }
+        TRACE_LOGGER.debug("onLinkFlow: linkName:{}, unsettled:{}, credit:{}", sender.getName(), sender.getUnsettled(), sender.getCredit());
     }
 }
