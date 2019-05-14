@@ -7,71 +7,38 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
  * Check Style Rule: Good Logging Practice
  *  I. Non-static Logger instance
  *  II. Logger variable name should be 'logger'
- *  III. Guard with conditional block check whenever logger's logging method called.
  */
 public class GoodLoggingCheck extends AbstractCheck {
-    private static String loggerRequiredName;
-    private static String loggerActualName;
-    private static String loggerClass;
-    private static String packagePath;
+    private static final String PACKAGE_PATH = "com.azure";
+    private static final String IMPLEMENTATION_PATH = "com.azure.core.implementation";
+    private static final String LOGGER_CLASS = "com.azure.core.implementation.logging.ServiceLogger";
+    private static final String SERVICE_LOGGER = "ServiceLogger";
+    private static final String SLF4J = "org.slf4j";
+    private static final String LOG4J = "org.apache.logging.log4j";
 
-    private static final String FAILED_TO_LOAD_MESSAGE = "\"%s\" class failed to load, GoodLoggingCheck will be ignored.";
-    private static final String LOGGER_NAME_ERR = "Incorrect name for Logger: use \"%s\" instead of \"%s\" as Logger's instance name";
-    private static final String LOGGER_LEVEL_ERR = "Please guard \"%s\" method call with \"%s\" method";
-    private static final String STATIC_LOGGER_ERR = "Logger should not be static: remove static modifier";
-    private static final String LOGGER_FACTORY_GETLOGGER_ERROR = "Should create a non-static final Logger variable and name it logger, instead of use the LoggerFactory.getLogger() directly";
-
-    private static final String LOGGER_FACTORY_GETLOGGER = "LoggerFactory.getLogger";
-    private static final String LOGGER = "Logger";
-
-    // Logger level static final string variables
-    private static final String ERROR = "error";
-    private static final String WARN = "warn";
-    private static final String INFO = "info";
-    private static final String DEBUG = "debug";
-    private static final String TRACE = "trace";
-
-    private static final String IS_ERROR_ENABLED = "isErrorEnabled";
-    private static final String IS_WARN_ENABLED = "isWarnEnabled";
-    private static final String IS_INFO_ENABLED = "isInfoEnabled";
-    private static final String IS_DEBUG_ENABLED = "isDebugEnabled";
-    private static final String IS_TRACE_ENABLED = "isTraceEnabled";
-
-    private Stack<Pair<DetailAST, String>> enabledStack = new Stack<>();
-    private Map<String, Integer> logMethodCountMap = new HashMap<>();
+    private static final String LOGGER_NAME_ERR = "ServiceLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
+    private static final String STATIC_LOGGER_ERR = "Reference to ServiceLogger should not be static: remove static modifier.";
+    private static final String ONLY_LOGGER_CLASS_ERR = "Use \"%s\" as a logging mechanism instead of \"%s\".";
 
     private static boolean isPathCorrect; // track 2
+    private static boolean isImplPackage;
+    private static boolean hasSlf4jImported;
+    private static boolean hasLog4jimported;
     private static boolean hasLoggerImported;
-    private Class<?> slf4lLogger;
-
-    private static final Map<String, String> loggerMethodMap = new HashMap<String, String>(){
-        {
-            put(TRACE, IS_TRACE_ENABLED);
-            put(DEBUG, IS_DEBUG_ENABLED);
-            put(INFO, IS_INFO_ENABLED);
-            put(WARN, IS_WARN_ENABLED);
-            put(ERROR, IS_ERROR_ENABLED);
-        }
-    };
-
-    @Override
-    public void init() {
-        try {
-            this.slf4lLogger = Class.forName(loggerClass);
-        } catch (ClassNotFoundException ex) {
-            log(0, String.format(FAILED_TO_LOAD_MESSAGE, loggerClass));
-        }
-    }
+    private static String loggerRequiredName;
 
     /**
      * Setter to specifies valid identifiers
@@ -79,22 +46,6 @@ public class GoodLoggingCheck extends AbstractCheck {
      */
     public void setLoggerName(String loggerRequiredName) {
         this.loggerRequiredName = loggerRequiredName;
-    }
-
-    /**
-     * Setter to specifies valid identifiers
-     * @param loggerClass the logger class path
-     */
-    public void setLoggerClass(String loggerClass) {
-        this.loggerClass = loggerClass;
-    }
-
-    /**
-     * Setter to specifies valid identifiers
-     * @param packagePath package path
-     */
-    public void setPackagePath(String packagePath) {
-        this.packagePath = packagePath;
     }
 
     @Override
@@ -112,9 +63,8 @@ public class GoodLoggingCheck extends AbstractCheck {
         return new int[] {
             TokenTypes.PACKAGE_DEF,
             TokenTypes.IMPORT,
-            TokenTypes.METHOD_CALL,
-            TokenTypes.VARIABLE_DEF,
-            TokenTypes.LITERAL_IF
+            TokenTypes.LITERAL_CLASS,
+            TokenTypes.VARIABLE_DEF
         };
     }
 
@@ -122,66 +72,50 @@ public class GoodLoggingCheck extends AbstractCheck {
     public void beginTree(DetailAST rootAST) {
         this.hasLoggerImported = false;
         this.isPathCorrect = false;
-        logMethodCountMap.clear();
-        enabledStack.clear();
+        this.isImplPackage = false;
     }
 
     @Override
     public void visitToken(DetailAST ast) {
-        if(ast.getType() != TokenTypes.PACKAGE_DEF && !this.isPathCorrect) {
-            return;
+
+        if (ast.getType() == TokenTypes.PACKAGE_DEF) {
+            String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
+            this.isPathCorrect = packageName.startsWith(PACKAGE_PATH);
+            this.isImplPackage = packageName.startsWith(IMPLEMENTATION_PATH);
+
+        } else {
+            if (this.isPathCorrect) {
+                if (this.isImplPackage) {
+                    return;
+                }
+            } else {
+                return;
+            }
         }
 
         switch (ast.getType()) {
-            case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
-                this.isPathCorrect |= packageName.startsWith(packagePath);
-                break;
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
-                this.hasLoggerImported |= importClassPath.equals(this.slf4lLogger.getName());
+                if (importClassPath != null) {
+                    this.hasLoggerImported |= importClassPath.equals(LOGGER_CLASS);
+                    this.hasSlf4jImported |= importClassPath.startsWith(SLF4J);
+                    this.hasLog4jimported |= importClassPath.startsWith(LOG4J);
+                }
                 break;
-            case TokenTypes.METHOD_CALL:
-                if (!this.hasLoggerImported) {
+            case TokenTypes.LITERAL_CLASS:
+                if (ast.getNextSibling() == null) {
                     break;
                 }
-                // null pointer check
-                DetailAST dotAST = ast.findFirstToken(TokenTypes.DOT);
-                if (dotAST == null) {
-                    break;
-                }
-
-                String methodName = dotAST.getLastChild().getText();
-                // check if the method name is one of isEnabled method, such as isDebugEnabled()
-                if (loggerMethodMap.containsValue(methodName)){ // ex.,isDebugEnabled
-                    DetailAST firstIfAstNode = findFirstConditionalIf(ast);
-                    if (firstIfAstNode != null && methodName != null) {
-                        enabledStack.push(new Pair<>(firstIfAstNode, methodName));
-                        logMethodCountMap.put(methodName, logMethodCountMap.getOrDefault(methodName, 0) + 1);
-                        break;
+                String className = ast.getNextSibling().getText();
+                // No check for ServiceLogger class
+                if (!SERVICE_LOGGER.equals(className)) {
+                    if (this.hasSlf4jImported) {
+                        log(ast, String.format(ONLY_LOGGER_CLASS_ERR, LOGGER_CLASS, SLF4J));
+                    } else if (this.hasLog4jimported) {
+                        log(ast, String.format(ONLY_LOGGER_CLASS_ERR, LOGGER_CLASS, LOG4J));
+                    } else {
+                        // do nothing
                     }
-                }
-                // skip if the method call is not on
-                if (!loggerMethodMap.containsKey(methodName)) {
-                    break;
-                }
-                DetailAST methodCaller = dotAST.getFirstChild();
-                String varName = getMethodCallFullStackTrace(methodCaller);
-
-                // skip if not declared logger variable name or LoggerFactory.getLogger(), ex., abc.error()
-                if (!varName.equals(this.loggerActualName) && !varName.equals(LOGGER_FACTORY_GETLOGGER)) {
-                    break;
-                }
-                // log the error if the method caller is LoggerFactory.getLogger()
-                if (LOGGER_FACTORY_GETLOGGER.equals(varName)) {
-                    log(dotAST, LOGGER_FACTORY_GETLOGGER_ERROR);
-                }
-                // check if the method name is logger method, such as error(), log the error
-                if (loggerMethodMap.containsKey(methodName)) {
-                    if (!varName.equals(this.loggerRequiredName)) {
-                        log(dotAST, String.format(LOGGER_NAME_ERR, this.loggerRequiredName, varName));
-                    }
-                    logGuardBlockErrorIfFound(dotAST);
                 }
                 break;
             case TokenTypes.VARIABLE_DEF:
@@ -191,59 +125,6 @@ public class GoodLoggingCheck extends AbstractCheck {
                 }
                 break;
         }
-    }
-
-    @Override
-    public void leaveToken(DetailAST ast) {
-        // only check for track 2, otherwise, skip check
-        if (!this.isPathCorrect) {
-            return;
-        }
-        switch (ast.getType()) {
-            case TokenTypes.LITERAL_IF:
-                while(!enabledStack.isEmpty() && enabledStack.peek().getKey() == ast) {
-                    Pair<DetailAST, String> astNodeAndMethodNamePair = enabledStack.pop();
-                    // all nodes in the stack should already check the logger method existence
-                    String methodText = astNodeAndMethodNamePair.getValue();
-                    if (logMethodCountMap.containsKey(methodText)) {
-                        Integer ct = logMethodCountMap.get(methodText);
-                        if (ct <= 1) {
-                            logMethodCountMap.remove(methodText);
-                        } else {
-                            logMethodCountMap.put(methodText, ct - 1);
-                        }
-                    }
-                }
-                break;
-        }
-    }
-
-    /**
-     * Find the first LITERAL_IF AST ancestor node by given METHOD_CALL AST node
-     * @param methodCallAST METHOD_CALL AST node
-     * @return the first LITERAL_IF AST node
-     */
-    private DetailAST findFirstConditionalIf(DetailAST methodCallAST) {
-        if (methodCallAST == null || methodCallAST.getType() == TokenTypes.LITERAL_IF) {
-            return methodCallAST;
-        }
-        return findFirstConditionalIf(methodCallAST.getParent());
-    }
-
-    /**
-     * Get the full method caller and callee string
-     * @param methodCaller METHOD_CALL AST node
-     * @return the full method call track string
-     */
-    private String getMethodCallFullStackTrace(DetailAST methodCaller) {
-        if (methodCaller == null) {
-            return "";
-        }
-        if (methodCaller.getType() == TokenTypes.IDENT) {
-            return methodCaller.getText();
-        }
-        DetailAST localDotAST =  methodCaller.findFirstToken(TokenTypes.DOT);
-        return String.join(".", getMethodCallFullStackTrace(localDotAST.getFirstChild()), localDotAST.getLastChild().getText());
     }
 
     /**
@@ -285,28 +166,10 @@ public class GoodLoggingCheck extends AbstractCheck {
         DetailAST typeNameAST = typeAST.findFirstToken(TokenTypes.IDENT);
         if (typeNameAST != null) {
             String typeName = typeNameAST.getText();
-            if (typeName != null && typeName.equals(LOGGER)) {
-                this.loggerActualName = varNameAST.getText();
+            if (typeName != null && typeName.equals(SERVICE_LOGGER)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * log the guard block error if found
-     * @param dotAST the logger DOT AST node
-     */
-    private void logGuardBlockErrorIfFound(DetailAST dotAST) {
-        if (dotAST == null) {
-            return;
-        }
-        String methodName = dotAST.getLastChild().getText();
-        if (loggerMethodMap.containsKey(methodName)) {
-            String enabledName = loggerMethodMap.get(methodName);
-            if (!logMethodCountMap.containsKey(enabledName)) {
-                log(dotAST, String.format(LOGGER_LEVEL_ERR, methodName, enabledName));
-            }
-        }
     }
 }
