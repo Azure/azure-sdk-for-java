@@ -273,9 +273,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         3) Always guard with conditional block whenever a log function called.
         -->
         <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
-          <property name="packagePath" value="com.azure"/>
           <property name="loggerName" value="logger"/>
-          <property name="loggerClass" value="org.slf4j.LoggerFactory"/>
         </module>
 
     </module>
