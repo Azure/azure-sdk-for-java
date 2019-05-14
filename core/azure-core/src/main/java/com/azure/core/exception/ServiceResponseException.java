@@ -3,8 +3,6 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpResponse;
-
 /**
  * A runtime exception indicating service response failure caused by one of the following scenarios:
  * 1. The request was sent, but the client failed to understand the response. (Not in the right format)

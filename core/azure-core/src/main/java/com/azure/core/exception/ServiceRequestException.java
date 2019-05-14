@@ -3,8 +3,6 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpRequest;
-
 /**
  * The exception occurred while attempting to connect a socket to a azure service address and port.
  * Typically, the connection was refused remotely (e.g., no process is listening on the azure service address/port).
@@ -21,7 +19,7 @@ public class ServiceRequestException extends AzureException {
     public ServiceRequestException(final String message) {
         super(message);
     }
-    
+
     /**
      * Initializes a new instance of the ServiceRequestException class.
      *
