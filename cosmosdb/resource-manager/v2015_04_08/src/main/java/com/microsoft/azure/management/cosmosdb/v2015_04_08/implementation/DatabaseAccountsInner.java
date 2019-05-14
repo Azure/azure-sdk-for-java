@@ -31,6 +31,8 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.RegionForOnlineOfflin
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputResource;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -205,6 +207,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getSqlDatabaseThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> getSqlDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateSqlDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateSqlDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateSqlDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateSqlDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listSqlContainers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers")
         Observable<Response<ResponseBody>> listSqlContainers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -228,6 +242,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteSqlContainer" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getSqlContainerThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/settings/throughput")
+        Observable<Response<ResponseBody>> getSqlContainerThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateSqlContainerThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateSqlContainerThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateSqlContainerThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateSqlContainerThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDBDatabases" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases")
@@ -253,6 +279,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoDBDatabaseThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> getMongoDBDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateMongoDBDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateMongoDBDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateMongoDBDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateMongoDBDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDBCollections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections")
         Observable<Response<ResponseBody>> listMongoDBCollections(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -276,6 +314,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongoDBCollection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoDBCollectionThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}/settings/throughput")
+        Observable<Response<ResponseBody>> getMongoDBCollectionThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateMongoDBCollectionThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateMongoDBCollectionThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateMongoDBCollectionThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateMongoDBCollectionThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listTables" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables")
@@ -301,6 +351,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getTableThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableName}/settings/throughput")
+        Observable<Response<ResponseBody>> getTableThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateTableThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateTableThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateTableThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateTableThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listCassandraKeyspaces" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces")
         Observable<Response<ResponseBody>> listCassandraKeyspaces(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -324,6 +386,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteCassandraKeyspace" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceName") String keyspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getCassandraKeyspaceThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/settings/throughput")
+        Observable<Response<ResponseBody>> getCassandraKeyspaceThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceName") String keyspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateCassandraKeyspaceThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateCassandraKeyspaceThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceName") String keyspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateCassandraKeyspaceThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateCassandraKeyspaceThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceName") String keyspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listCassandraTables" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/tables")
@@ -373,6 +447,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinDatabaseThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> getGremlinDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateGremlinDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateGremlinDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateGremlinDatabaseThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateGremlinDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listGremlinGraphs" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/graphs")
         Observable<Response<ResponseBody>> listGremlinGraphs(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -396,6 +482,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteGremlinGraph" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/graphs/{graphName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("graphName") String graphName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinGraphThroughput" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/graphs/{graphName}/settings/throughput")
+        Observable<Response<ResponseBody>> getGremlinGraphThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("graphName") String graphName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts updateGremlinGraphThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/graphs/{graphName}/settings/throughput")
+        Observable<Response<ResponseBody>> updateGremlinGraphThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("graphName") String graphName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateGremlinGraphThroughput" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseName}/graphs/{graphName}/settings/throughput")
+        Observable<Response<ResponseBody>> beginUpdateGremlinGraphThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("graphName") String graphName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
 
     }
 
@@ -2722,7 +2820,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2737,7 +2835,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2751,7 +2849,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2769,7 +2867,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -3164,6 +3262,289 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the SQL database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return getSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the SQL database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Gets the SQL database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return getSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the SQL database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getSqlDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSqlDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getSqlDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getSqlDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateSqlDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateSqlDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateSqlDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateSqlDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateSqlDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateSqlDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateSqlDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3749,6 +4130,310 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
+     * Gets the SQL container throughput under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return getSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the SQL container throughput under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Gets the SQL container throughput under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return getSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the SQL container throughput under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getSqlContainerThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSqlContainerThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getSqlContainerThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getSqlContainerThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        return updateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        return updateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateSqlContainerThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateSqlContainerThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        return beginUpdateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        return beginUpdateSqlContainerThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateSqlContainerThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateSqlContainerThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateSqlContainerThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateSqlContainerThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -4282,6 +4967,289 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the MongoDB database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the MongoDB database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Gets the MongoDB database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the MongoDB database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getMongoDBDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getMongoDBDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getMongoDBDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getMongoDBDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateMongoDBDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateMongoDBDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateMongoDBDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateMongoDBDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateMongoDBDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateMongoDBDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateMongoDBDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4867,6 +5835,310 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
+     * Gets the MongoDB collection throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the MongoDB collection throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    }
+
+    /**
+     * Gets the MongoDB collection throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the MongoDB collection throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getMongoDBCollectionThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getMongoDBCollectionThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getMongoDBCollectionThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getMongoDBCollectionThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        return updateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        return updateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateMongoDBCollectionThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateMongoDBCollectionThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        return beginUpdateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        return beginUpdateMongoDBCollectionThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateMongoDBCollectionThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateMongoDBCollectionThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateMongoDBCollectionThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateMongoDBCollectionThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -5405,6 +6677,289 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
+     * Gets the Table throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getTableThroughput(String resourceGroupName, String accountName, String tableName) {
+        return getTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Table throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getTableThroughputAsync(String resourceGroupName, String accountName, String tableName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName), serviceCallback);
+    }
+
+    /**
+     * Gets the Table throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getTableThroughputAsync(String resourceGroupName, String accountName, String tableName) {
+        return getTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Table throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getTableThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getTableThroughput(this.client.subscriptionId(), resourceGroupName, accountName, tableName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getTableThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getTableThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        return updateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        return updateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateTableThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateTableThroughput(this.client.subscriptionId(), resourceGroupName, accountName, tableName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        return beginUpdateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        return beginUpdateTableThroughputWithServiceResponseAsync(resourceGroupName, accountName, tableName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateTableThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateTableThroughput(this.client.subscriptionId(), resourceGroupName, accountName, tableName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateTableThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateTableThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -5938,6 +7493,289 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName) {
+        return getCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName), serviceCallback);
+    }
+
+    /**
+     * Gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName) {
+        return getCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getCassandraKeyspaceThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceName == null) {
+            throw new IllegalArgumentException("Parameter keyspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getCassandraKeyspaceThroughput(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getCassandraKeyspaceThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getCassandraKeyspaceThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        return updateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        return updateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateCassandraKeyspaceThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceName == null) {
+            throw new IllegalArgumentException("Parameter keyspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateCassandraKeyspaceThroughput(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        return beginUpdateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        return beginUpdateCassandraKeyspaceThroughputWithServiceResponseAsync(resourceGroupName, accountName, keyspaceName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateCassandraKeyspaceThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceName == null) {
+            throw new IllegalArgumentException("Parameter keyspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateCassandraKeyspaceThroughput(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateCassandraKeyspaceThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateCassandraKeyspaceThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -7061,6 +8899,289 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
+     * Gets the Gremlin database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return getGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Gremlin database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Gets the Gremlin database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return getGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Gremlin database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getGremlinDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getGremlinDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getGremlinDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getGremlinDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return updateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateGremlinDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateGremlinDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        return beginUpdateGremlinDatabaseThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateGremlinDatabaseThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateGremlinDatabaseThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateGremlinDatabaseThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateGremlinDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -7636,6 +9757,310 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner getGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        return getGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName), serviceCallback);
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        return getGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> getGremlinGraphThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (graphName == null) {
+            throw new IllegalArgumentException("Parameter graphName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getGremlinGraphThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, graphName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = getGremlinGraphThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> getGremlinGraphThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner updateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        return updateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource).toBlocking().last().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputInner> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        return updateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputInner>> updateGremlinGraphThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (graphName == null) {
+            throw new IllegalArgumentException("Parameter graphName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        Observable<Response<ResponseBody>> observable = service.updateGremlinGraphThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, graphName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ThroughputInner>() { }.getType());
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputInner object if successful.
+     */
+    public ThroughputInner beginUpdateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        return beginUpdateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource).toBlocking().single().body();
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputInner> beginUpdateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource, final ServiceCallback<ThroughputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource), serviceCallback);
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ThroughputInner> beginUpdateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        return beginUpdateGremlinGraphThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, graphName, resource).map(new Func1<ServiceResponse<ThroughputInner>, ThroughputInner>() {
+            @Override
+            public ThroughputInner call(ServiceResponse<ThroughputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputInner object
+     */
+    public Observable<ServiceResponse<ThroughputInner>> beginUpdateGremlinGraphThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (graphName == null) {
+            throw new IllegalArgumentException("Parameter graphName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
+        Validator.validate(resource);
+        ThroughputUpdateParameters updateThroughputParameters = new ThroughputUpdateParameters();
+        updateThroughputParameters.withResource(resource);
+        return service.beginUpdateGremlinGraphThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, graphName, this.client.apiVersion(), this.client.acceptLanguage(), updateThroughputParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputInner> clientResponse = beginUpdateGremlinGraphThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputInner> beginUpdateGremlinGraphThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

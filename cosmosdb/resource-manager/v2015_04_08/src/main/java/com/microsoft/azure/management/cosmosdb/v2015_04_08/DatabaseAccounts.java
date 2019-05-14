@@ -207,7 +207,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     Observable<SqlDatabase> listSqlDatabasesAsync(String resourceGroupName, String accountName);
 
     /**
-     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -315,6 +315,196 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the observable for the request
      */
     Completable deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Gets the SQL database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Update an Azure Cosmos DB SQL database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource);
+
+    /**
+     * Gets the SQL container throughput under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
+
+    /**
+     * Update an Azure Cosmos DB SQL container throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource);
+
+    /**
+     * Gets the MongoDB database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Update an Azure Cosmos DB MongoDB database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource);
+
+    /**
+     * Gets the MongoDB collection throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+
+    /**
+     * Update an Azure Cosmos DB MongoDB collection throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource);
+
+    /**
+     * Gets the Table throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getTableThroughputAsync(String resourceGroupName, String accountName, String tableName);
+
+    /**
+     * Update an Azure Cosmos DB Table throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource);
+
+    /**
+     * Gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Update an Azure Cosmos DB Cassandra Keyspace throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource);
+
+    /**
+     * Gets the Gremlin database throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Update an Azure Cosmos DB Gremlin database throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource);
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName);
+
+    /**
+     * Update an Azure Cosmos DB Gremlin graph throughput.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param resource The standard JSON format of a resource throughput
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Throughput> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource);
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
