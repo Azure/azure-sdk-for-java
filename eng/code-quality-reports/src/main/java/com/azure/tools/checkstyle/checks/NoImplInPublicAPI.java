@@ -12,10 +12,11 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
     private static final String IMPLEMENTATION_PATH = "com.azure.core.implementation";
-    private static final String PARAM_TYPE_ERROR = "\"%s\" class is in the implementation package, and it should not used as parameter type in public or protected API.";
-    private static final String RETURN_TYPE_ERROR = "\"%s\" class is in the implementation package, and it should not be a return type.";
+    private static final String PARAM_TYPE_ERROR = "\"%s\" class is in a implementation package, and it should not used as parameter type in public API.";
+    private static final String RETURN_TYPE_ERROR = "\"%s\" class is in a implementation package, and it should not be a return type.";
 
     private static boolean isTrackTwo;
+    private static boolean isImplePackage;
     private static boolean hasImplementationPath;
     private Set<String> implementationClassSet = new HashSet<>();
 
@@ -47,14 +48,21 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
-        if (ast.getType() != TokenTypes.PACKAGE_DEF && !this.isTrackTwo) {
-            return;
+        if (ast.getType() == TokenTypes.PACKAGE_DEF) {
+            String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
+            this.isTrackTwo = packageName.startsWith(COM_AZURE);
+            this.isImplePackage = packageName.startsWith(IMPLEMENTATION_PATH);
+        } else {
+            if (this.isTrackTwo) {
+                if (this.isImplePackage) {
+                    return;
+                }
+            } else {
+                return;
+            }
         }
+
         switch (ast.getType()) {
-            case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
-                this.isTrackTwo = packageName.startsWith(COM_AZURE);
-                break;
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 if (importClassPath.startsWith(IMPLEMENTATION_PATH)) {
