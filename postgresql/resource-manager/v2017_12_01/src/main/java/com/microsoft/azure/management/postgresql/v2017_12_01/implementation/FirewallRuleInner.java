@@ -30,7 +30,7 @@ public class FirewallRuleInner extends ProxyResource {
     private String endIpAddress;
 
     /**
-     * Get the startIpAddress value.
+     * Get the start IP address of the server firewall rule. Must be IPv4 format.
      *
      * @return the startIpAddress value
      */
@@ -39,7 +39,7 @@ public class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the startIpAddress value.
+     * Set the start IP address of the server firewall rule. Must be IPv4 format.
      *
      * @param startIpAddress the startIpAddress value to set
      * @return the FirewallRuleInner object itself.
@@ -50,7 +50,7 @@ public class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the endIpAddress value.
+     * Get the end IP address of the server firewall rule. Must be IPv4 format.
      *
      * @return the endIpAddress value
      */
@@ -59,7 +59,7 @@ public class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the endIpAddress value.
+     * Set the end IP address of the server firewall rule. Must be IPv4 format.
      *
      * @param endIpAddress the endIpAddress value to set
      * @return the FirewallRuleInner object itself.

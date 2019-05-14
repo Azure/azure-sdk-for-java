@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, PostgreSQLManager>  implements Servers {
-    protected ServersImpl(PostgreSQLManager manager) {
+class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, DBforPostgreSQLManager>  implements Servers {
+    protected ServersImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().servers(), manager);
     }
 
@@ -123,6 +123,12 @@ class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerI
     @Override
     public ServerImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Completable restartAsync(String resourceGroupName, String serverName) {
+        ServersInner client = this.inner();
+        return client.restartAsync(resourceGroupName, serverName).toCompletable();
     }
 
     @Override

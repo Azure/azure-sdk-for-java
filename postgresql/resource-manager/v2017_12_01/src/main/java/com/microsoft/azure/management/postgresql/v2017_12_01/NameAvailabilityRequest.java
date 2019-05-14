@@ -27,7 +27,7 @@ public class NameAvailabilityRequest {
     private String type;
 
     /**
-     * Get the name value.
+     * Get resource name to verify.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class NameAvailabilityRequest {
     }
 
     /**
-     * Set the name value.
+     * Set resource name to verify.
      *
      * @param name the name value to set
      * @return the NameAvailabilityRequest object itself.
@@ -47,7 +47,7 @@ public class NameAvailabilityRequest {
     }
 
     /**
-     * Get the type value.
+     * Get resource type used for verification.
      *
      * @return the type value
      */
@@ -56,7 +56,7 @@ public class NameAvailabilityRequest {
     }
 
     /**
-     * Set the type value.
+     * Set resource type used for verification.
      *
      * @param type the type value to set
      * @return the NameAvailabilityRequest object itself.

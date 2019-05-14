@@ -14,12 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.postgresql.v2017_12_01.VirtualNetworkRuleState;
 
 class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, VirtualNetworkRuleInner, VirtualNetworkRuleImpl> implements VirtualNetworkRule, VirtualNetworkRule.Definition, VirtualNetworkRule.Update {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String virtualNetworkRuleName;
 
-    VirtualNetworkRuleImpl(String name, PostgreSQLManager manager) {
+    VirtualNetworkRuleImpl(String name, DBforPostgreSQLManager manager) {
         super(name, new VirtualNetworkRuleInner());
         this.manager = manager;
         // Set resource name
@@ -27,12 +27,12 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
         //
     }
 
-    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, PostgreSQLManager manager) {
+    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, DBforPostgreSQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.virtualNetworkRuleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.virtualNetworkRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkRules");
@@ -40,7 +40,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
