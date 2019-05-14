@@ -184,8 +184,6 @@ public final class AppendBlobURL extends BlobURL {
             AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions() :
                 appendBlobAccessConditions;
-        appendBlobAccessConditions = appendBlobAccessConditions == null
-                ? new AppendBlobAccessConditions() : appendBlobAccessConditions;
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
