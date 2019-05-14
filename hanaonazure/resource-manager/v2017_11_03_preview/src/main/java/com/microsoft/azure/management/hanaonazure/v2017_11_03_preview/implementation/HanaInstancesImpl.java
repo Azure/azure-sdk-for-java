@@ -85,6 +85,11 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
     }
 
     @Override
+    public HanaInstanceImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
     public Completable restartAsync(String resourceGroupName, String hanaInstanceName) {
         HanaInstancesInner client = this.inner();
         return client.restartAsync(resourceGroupName, hanaInstanceName).toCompletable();
@@ -103,7 +108,7 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
 
     @Override
     protected HanaInstanceImpl wrapModel(String name) {
-        return null; // Model is not creatable
+        return new HanaInstanceImpl(name, new HanaInstanceInner(), this.manager());
     }
 
 }

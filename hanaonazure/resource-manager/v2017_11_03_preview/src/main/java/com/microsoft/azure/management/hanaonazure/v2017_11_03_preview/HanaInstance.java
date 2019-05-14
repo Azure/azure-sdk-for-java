@@ -15,9 +15,9 @@ import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
+import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation.HanaOnAzureManager;
-import java.util.Map;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation.HanaInstanceInner;
 
 /**
@@ -50,9 +50,19 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
     OSProfile osProfile();
 
     /**
+     * @return the partnerNodeId value.
+     */
+    String partnerNodeId();
+
+    /**
      * @return the powerState value.
      */
     HanaInstancePowerStateEnum powerState();
+
+    /**
+     * @return the provisioningState value.
+     */
+    HanaProvisioningStatesEnum provisioningState();
 
     /**
      * @return the proximityPlacementGroup value.
@@ -65,26 +75,44 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
     StorageProfile storageProfile();
 
     /**
+     * The entirety of the HanaInstance definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * Grouping of HanaInstance definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of a HanaInstance definition.
+         */
+        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage of the HanaInstance definition allowing to specify the resource group.
+         */
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends Creatable<HanaInstance>, Resource.DefinitionWithTags<WithCreate> {
+        }
+    }
+    /**
      * The template for a HanaInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithTags {
+    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update> {
     }
 
     /**
      * Grouping of HanaInstance update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the hanainstance update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             * @param tags Tags field of the HANA instance
-             * @return the next update stage
-             */
-            Update withTags(Map<String, String> tags);
-        }
-
     }
 }

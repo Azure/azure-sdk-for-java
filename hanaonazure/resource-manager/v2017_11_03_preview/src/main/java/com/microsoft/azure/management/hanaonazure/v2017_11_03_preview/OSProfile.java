@@ -33,6 +33,12 @@ public class OSProfile {
     private String version;
 
     /**
+     * Specifies the SSH public key used to access the operating system.
+     */
+    @JsonProperty(value = "sshPublicKey", access = JsonProperty.Access.WRITE_ONLY)
+    private String sshPublicKey;
+
+    /**
      * Get specifies the host OS name of the HANA instance.
      *
      * @return the computerName value
@@ -57,6 +63,15 @@ public class OSProfile {
      */
     public String version() {
         return this.version;
+    }
+
+    /**
+     * Get specifies the SSH public key used to access the operating system.
+     *
+     * @return the sshPublicKey value
+     */
+    public String sshPublicKey() {
+        return this.sshPublicKey;
     }
 
 }
