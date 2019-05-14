@@ -95,11 +95,6 @@ public final class SharedKeyCredentials implements ICredentials {
         );
     }
 
-    private void appendCanonicalizedElement(final StringBuilder builder, final String element) {
-        builder.append("\n");
-        builder.append(element);
-    }
-
     private String getAdditionalXmsHeaders(final HttpHeaders headers) {
         // Add only headers that begin with 'x-ms-'
         final ArrayList<String> xmsHeaderNameArray = new ArrayList<>();
@@ -221,7 +216,7 @@ public final class SharedKeyCredentials implements ICredentials {
         }
     }
 
-    private final class SharedKeyCredentialsPolicy implements RequestPolicy {
+    private static final class SharedKeyCredentialsPolicy implements RequestPolicy {
 
         private final SharedKeyCredentials factory;
 
