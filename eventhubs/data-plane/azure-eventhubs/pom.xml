@@ -30,4 +30,12 @@
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>adal4j</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+  </dependencies>
+
 </project>

@@ -7,9 +7,12 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
+import com.microsoft.azure.eventhubs.TransportType;
+
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -54,7 +57,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private final Object reactorLock;
     private final Object cbsChannelCreateLock;
     private final Object mgmtChannelCreateLock;
-    private final SharedAccessSignatureTokenProvider tokenProvider;
+    private final ITokenProvider tokenProvider;
     private final ReactorFactory reactorFactory;
 
     private Reactor reactor;
@@ -67,39 +70,63 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private CompletableFuture<MessagingFactory> open;
     private CompletableFuture<?> openTimer;
     private CompletableFuture<?> closeTimer;
-    private String reactorCreationTime;
+    private String reactorCreationTime;			// used when looking at Java dumps, do not remove
 
-    MessagingFactory(final ConnectionStringBuilder builder,
+    MessagingFactory(final String hostname,
+			 		 final Duration operationTimeout,
+			 		 final TransportType transportType,
+			 		 final ITokenProvider tokenProvider,
                      final RetryPolicy retryPolicy,
                      final ScheduledExecutorService executor,
                      final ReactorFactory reactorFactory) {
         super(StringUtil.getRandomString("MF"), null, executor);
 
-        this.hostName = builder.getEndpoint().getHost();
+		if (StringUtil.isNullOrWhiteSpace(hostname)) {
+			throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
+		}
+		if (operationTimeout == null) {
+			throw new IllegalArgumentException("Operation timeout cannot be null");
+		}
+		if (transportType == null) {
+			throw new IllegalArgumentException("Transport type cannot be null");
+		}
+		if (tokenProvider == null) {
+			throw new IllegalArgumentException("Token provider cannot be null");
+		}
+		if (retryPolicy == null) {
+			throw new IllegalArgumentException("Retry policy cannot be null");
+		}
+		if (executor == null) {
+			throw new IllegalArgumentException("Executor cannot be null");
+		}
+		if (reactorFactory == null) {
+			throw new IllegalArgumentException("Reactor factory cannot be null");
+		}
+        
+        this.hostName = hostname;
         this.reactorFactory = reactorFactory;
-        this.operationTimeout = builder.getOperationTimeout();
+        this.operationTimeout = operationTimeout;
         this.retryPolicy = retryPolicy;
+        this.connectionHandler = ConnectionHandler.create(transportType, this, this.getClientId());
+        this.tokenProvider = tokenProvider;
+        
         this.registeredLinks = new LinkedList<>();
         this.reactorLock = new Object();
-        this.connectionHandler = ConnectionHandler.create(builder.getTransportType(), this, this.getClientId());
         this.cbsChannelCreateLock = new Object();
         this.mgmtChannelCreateLock = new Object();
-        this.tokenProvider = builder.getSharedAccessSignature() == null
-                ? new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey())
-                : new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignature());
 
         this.closeTask = new CompletableFuture<>();
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final ScheduledExecutorService executor) throws IOException {
-        return createFromConnectionString(connectionString, RetryPolicy.getDefault(), executor);
+        return createFromConnectionString(connectionString, null, executor);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
             final String connectionString,
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor) throws IOException {
-        return createFromConnectionString(connectionString, retryPolicy, executor, new ReactorFactory());
+        return createFromConnectionString(connectionString, retryPolicy, executor, null);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
@@ -107,12 +134,89 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor,
             final ReactorFactory reactorFactory) throws IOException {
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-        final MessagingFactory messagingFactory = new MessagingFactory(builder,
-                (retryPolicy != null) ? retryPolicy : RetryPolicy.getDefault(),
-                executor,
-                reactorFactory);
+	    final ConnectionStringBuilder csb = new ConnectionStringBuilder(connectionString);
+		final ITokenProvider tokenProvider = ((csb.getSharedAccessSignature() == null) ?
+				 new SharedAccessSignatureTokenProvider(csb.getSasKeyName(), csb.getSasKey()) :
+				 new SharedAccessSignatureTokenProvider(csb.getSharedAccessSignature()));
+	    final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(csb.getEndpoint().getHost(), tokenProvider, executor).
+	    		setOperationTimeout(csb.getOperationTimeout()).
+	    		setTransportType(csb.getTransportType()).
+	    		setRetryPolicy(retryPolicy).
+	    		setReactorFactory(reactorFactory);
+	    return builder.build();
+    }
 
+    public static class MessagingFactoryBuilder {
+    	// These parameters must always be specified by the caller
+    	private final String hostname;
+    	private final ITokenProvider tokenProvider;
+    	private final ScheduledExecutorService executor;
+    	
+    	// Optional parameters with defaults
+    	private Duration operationTimeout = DefaultOperationTimeout;
+    	private TransportType transportType = TransportType.AMQP;
+    	private RetryPolicy retryPolicy = RetryPolicy.getDefault();
+    	private ReactorFactory reactorFactory = new ReactorFactory();
+    	
+    	public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
+    		if (StringUtil.isNullOrWhiteSpace(hostname)) {
+    			throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
+    		}
+    		this.hostname = hostname;
+    		
+    		if (tokenProvider == null) {
+    			throw new IllegalArgumentException("Token provider cannot be null");
+    		}
+    		this.tokenProvider = tokenProvider;
+    		
+    		if (executor == null) {
+    			throw new IllegalArgumentException("Executor cannot be null");
+    		}
+    		this.executor = executor;
+    	}
+    	
+    	public MessagingFactoryBuilder setOperationTimeout(Duration operationTimeout) {
+    		if (operationTimeout != null) {
+        		this.operationTimeout = operationTimeout;
+    		}
+    		return this;
+    	}
+    	
+    	public MessagingFactoryBuilder setTransportType(TransportType transportType) {
+    		if (transportType != null) {
+        		this.transportType = transportType;
+    		}
+    		return this;
+    	}
+    	
+    	public MessagingFactoryBuilder setRetryPolicy(RetryPolicy retryPolicy) {
+    		if (retryPolicy != null) {
+        		this.retryPolicy = retryPolicy;
+    		}
+    		return this;
+    	}
+    	
+    	public MessagingFactoryBuilder setReactorFactory(ReactorFactory reactorFactory) {
+    		if (reactorFactory != null) {
+        		this.reactorFactory = reactorFactory;
+    		}
+    		return this;
+    	}
+    	
+    	public CompletableFuture<MessagingFactory> build() throws IOException {
+    		final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
+    				this.operationTimeout,
+    				this.transportType,
+    				this.tokenProvider,
+    				this.retryPolicy,
+    				this.executor,
+    				this.reactorFactory);
+    		return MessagingFactory.factoryStartup(messagingFactory);
+    	}
+    }
+
+    private static CompletableFuture<MessagingFactory> factoryStartup(MessagingFactory messagingFactory) throws IOException
+    {
         messagingFactory.createConnection();
 
         final Timer timer = new Timer(messagingFactory);
@@ -130,18 +234,18 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
         messagingFactory.openTimer.handleAsync(
-            (unUsed, exception) -> {
-                if (exception != null && !(exception instanceof CancellationException)) {
-                    messagingFactory.open.completeExceptionally(exception);
-                    messagingFactory.getReactor().stop();
-                }
+                (unUsed, exception) -> {
+                    if (exception != null && !(exception instanceof CancellationException)) {
+                        messagingFactory.open.completeExceptionally(exception);
+                        messagingFactory.getReactor().stop();
+                    }
 
-                return null;
-            }, messagingFactory.executor);
+                    return null;
+                }, messagingFactory.executor);
 
         return messagingFactory.open;
     }
-
+    
     @Override
     public String getHostName() {
         return this.hostName;
@@ -159,7 +263,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
     }
 
-    public SharedAccessSignatureTokenProvider getTokenProvider() {
+    public ITokenProvider getTokenProvider() {
         return this.tokenProvider;
     }
 
@@ -184,7 +288,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public CBSChannel getCBSChannel() {
         synchronized (this.cbsChannelCreateLock) {
             if (this.cbsChannel == null) {
-                this.cbsChannel = new CBSChannel(this, this, this.getClientId());
+                this.cbsChannel = new CBSChannel(this, this, this.getClientId(), this.executor);
             }
         }
 

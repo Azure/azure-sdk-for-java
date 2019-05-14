@@ -3,12 +3,19 @@
 
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
+import com.microsoft.aad.adal4j.AuthenticationCallback;
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
 import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -63,6 +70,141 @@ public interface EventHubClient {
     static CompletableFuture<EventHubClient> create(final String connectionString, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
         return EventHubClient.create(connectionString, null, executor);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName  EventHub name
+     * @param tokenProvider The {@link ITokenProvider} implementation to be used to authenticate
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> create(
+            final URI endpointAddress,
+            final String eventHubName,
+            final ITokenProvider tokenProvider,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+    	EventHubClientOptions effectiveOptions = (options != null) ? options : new EventHubClientOptions();
+    	return EventHubClientImpl.create(endpointAddress, eventHubName, tokenProvider, executor, effectiveOptions);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName 	EventHub name
+     * @param authenticationContext The Azure Active Directory {@link AuthenticationContext}
+     * @param clientCredential 		The Azure Active Directory {@link ClientCredential}
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> create(
+            final URI endpointAddress,
+            final String eventHubName,
+            final AuthenticationContext authenticationContext,
+            final ClientCredential clientCredential,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+        if (authenticationContext == null) {
+            throw new IllegalArgumentException("authenticationContext cannot be null");
+        }
+        if (clientCredential == null) {
+            throw new IllegalArgumentException("clientCredential cannot be null");
+        }
+
+        ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(
+        		authenticationContext,
+                new AzureActiveDirectoryTokenProvider.ITokenAcquirer() {
+                	@Override
+                    public Future<AuthenticationResult> acquireToken(
+                    	final AuthenticationContext authenticationContext,
+                        final AuthenticationCallback authenticationCallback) {
+                        	return authenticationContext.acquireToken(
+                        			AzureActiveDirectoryTokenProvider.EVENTHUBS_REGISTERED_AUDIENCE,
+                                    clientCredential,
+                                    authenticationCallback);
+                	}
+        		});
+        return create(endpointAddress, eventHubName, tokenProvider, executor, options);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName EventHub name
+     * @param authenticationContext The Azure Active Directory {@link AuthenticationContext}
+     * @param credential The Azure Active Directory {@link AsymmetricKeyCredential}
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> create(
+            final URI endpointAddress,
+            final String eventHubName,
+            final AuthenticationContext authenticationContext,
+            final AsymmetricKeyCredential credential,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+        if (authenticationContext == null) {
+            throw new IllegalArgumentException("authenticationContext cannot be null");
+        }
+        if (credential == null) {
+            throw new IllegalArgumentException("credential cannot be null");
+        }
+
+        ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(
+        		authenticationContext,
+                new AzureActiveDirectoryTokenProvider.ITokenAcquirer() {
+                    @Override
+                    public Future<AuthenticationResult> acquireToken(
+                        final AuthenticationContext authenticationContext,
+                        final AuthenticationCallback authenticationCallback) {
+                            return authenticationContext.acquireToken(
+                                    AzureActiveDirectoryTokenProvider.EVENTHUBS_REGISTERED_AUDIENCE,
+                                    credential,
+                                    authenticationCallback);
+                    }
+                });
+        return create(endpointAddress, eventHubName, tokenProvider, executor, options);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName EventHub name
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> createWithManagedServiceIdentity(
+            final URI endpointAddress,
+            final String eventHubName,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+        return create(endpointAddress, eventHubName, new ManagedServiceIdentityTokenProvider(), executor, options);
     }
 
     /**

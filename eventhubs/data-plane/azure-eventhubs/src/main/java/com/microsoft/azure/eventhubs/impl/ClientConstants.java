@@ -45,6 +45,7 @@ public final class ClientConstants {
     public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     public static final String PUT_TOKEN_TYPE = "type";
     public static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
+    public static final String JWT_TOKEN_TYPE = "jwt";
     public static final String PUT_TOKEN_AUDIENCE = "name";
     public static final String PUT_TOKEN_EXPIRY = "expiration";
     public static final String PUT_TOKEN_STATUS_CODE = "status-code";

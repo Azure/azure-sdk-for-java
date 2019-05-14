@@ -5,6 +5,10 @@ package com.microsoft.azure.eventhubs.impl;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import com.microsoft.azure.eventhubs.ITokenProvider;
+import com.microsoft.azure.eventhubs.SecurityToken;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
@@ -12,11 +16,14 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class SharedAccessSignatureTokenProvider {
+public class SharedAccessSignatureTokenProvider implements ITokenProvider {
     final String keyName;
     final String sharedAccessKey;
     final String sharedAccessSignature;
@@ -29,7 +36,7 @@ public class SharedAccessSignatureTokenProvider {
         this.sharedAccessSignature = null;
     }
 
-    public SharedAccessSignatureTokenProvider(final String sharedAccessSignature) {
+    SharedAccessSignatureTokenProvider(final String sharedAccessSignature) {
         this.keyName = null;
         this.sharedAccessKey = null;
         this.sharedAccessSignature = sharedAccessSignature;
@@ -77,9 +84,23 @@ public class SharedAccessSignatureTokenProvider {
                 URLEncoder.encode(keyName, utf8Encoding));
     }
 
-    public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-        return this.sharedAccessSignature == null
-                ? generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive)
-                : this.sharedAccessSignature;
+    public CompletableFuture<SecurityToken> getToken(final String resource, final Duration tokenTimeToLive) {
+        final CompletableFuture<SecurityToken> result = new CompletableFuture<>();
+        final String token;
+
+        if (this.sharedAccessSignature == null) {
+            try {
+            	// Generation is nonblocking so there is no need to run it async.
+                token = generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, ClientConstants.TOKEN_VALIDITY);
+            } catch (NoSuchAlgorithmException|IOException|InvalidKeyException e) {
+                result.completeExceptionally(e);
+                return result;
+            }
+            result.complete(new SecurityToken(ClientConstants.SAS_TOKEN_TYPE, token, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY))));
+        } else {
+            result.complete(new SecurityToken(ClientConstants.SAS_TOKEN_TYPE, this.sharedAccessSignature, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY))));
+        }
+
+        return result;
     }
 }

@@ -35,8 +35,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.BufferOverflowException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -120,7 +118,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 new Runnable() {
                     @Override
                     public void run() {
-                        try {
                             underlyingFactory.getCBSChannel().sendToken(
                                     underlyingFactory.getReactorDispatcher(),
                                     underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
@@ -143,15 +140,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                                         getClientId(), sendPath, getSendLinkName(), error.getMessage()));
                                             }
                                         }
+                                    },
+                                    (exception) -> {
+                                        if (TRACE_LOGGER.isWarnEnabled()) {
+                                            TRACE_LOGGER.warn(String.format(Locale.US,
+                                                    "clientId[%s], path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]",
+                                                    getClientId(), sendPath, getSendLinkName(), exception.getMessage()));
+                                        }
                                     });
-                        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-                            if (TRACE_LOGGER.isWarnEnabled()) {
-                                TRACE_LOGGER.warn(String.format(Locale.US,
-                                        "clientId[%s], path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]",
-                                        getClientId(), sendPath, getSendLinkName(), exception.getMessage()));
-                            }
                         }
-                    }
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
                 this.underlyingFactory);
@@ -701,41 +698,40 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             }
         };
 
-        try {
-            this.underlyingFactory.getCBSChannel().sendToken(
-                    this.underlyingFactory.getReactorDispatcher(),
-                    this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
-                    tokenAudience,
-                    new OperationResult<Void, Exception>() {
-                        @Override
-                        public void onComplete(Void result) {
-                            if (MessageSender.this.getIsClosingOrClosed()) {
-                                return;
+        this.underlyingFactory.getCBSChannel().sendToken(
+                this.underlyingFactory.getReactorDispatcher(),
+                this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
+                tokenAudience,
+                new OperationResult<Void, Exception>() {
+                    @Override
+                    public void onComplete(Void result) {
+                        if (MessageSender.this.getIsClosingOrClosed()) {
+                            return;
+                        }
+                        underlyingFactory.getSession(
+                                sendPath,
+                                onSessionOpen,
+                                onSessionOpenError);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        final Exception completionException;
+                        if (error != null && error instanceof AmqpException) {
+                            completionException = ExceptionUtil.toException(((AmqpException) error).getError());
+                            if (completionException != error && completionException.getCause() == null) {
+                                completionException.initCause(error);
                             }
-                            underlyingFactory.getSession(
-                                    sendPath,
-                                    onSessionOpen,
-                                    onSessionOpenError);
+                        } else {
+                            completionException = error;
                         }
 
-                        @Override
-                        public void onError(Exception error) {
-                            final Exception completionException;
-                            if (error != null && error instanceof AmqpException) {
-                                completionException = ExceptionUtil.toException(((AmqpException) error).getError());
-                                if (completionException != error && completionException.getCause() == null) {
-                                    completionException.initCause(error);
-                                }
-                            } else {
-                                completionException = error;
-                            }
-
-                            MessageSender.this.onError(completionException);
-                        }
-                    });
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-            MessageSender.this.onError(exception);
-        }
+                        MessageSender.this.onError(completionException);
+                    }
+                },
+                (exception) -> {
+                    MessageSender.this.onError(exception);
+                });
     }
 
     private void scheduleLinkOpenTimeout(TimeoutTracker timeout) {
