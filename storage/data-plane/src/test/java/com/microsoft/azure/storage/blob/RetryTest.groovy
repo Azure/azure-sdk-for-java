@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob
@@ -6,7 +6,6 @@ package com.microsoft.azure.storage.blob
 import com.microsoft.azure.storage.APISpec
 import com.microsoft.rest.v2.http.*
 import io.reactivex.Flowable
-import org.junit.Assume
 import spock.lang.Unroll
 
 // Tests for package-private functionality.

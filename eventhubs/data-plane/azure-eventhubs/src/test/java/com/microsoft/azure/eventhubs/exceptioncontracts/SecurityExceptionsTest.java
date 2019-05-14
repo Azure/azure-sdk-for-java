@@ -3,19 +3,29 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.UUID;
 
 public class SecurityExceptionsTest extends ApiTestBase {
-    final static String PARTITION_ID = "0";
-    EventHubClient ehClient;
+    private static final String PARTITION_ID = "0";
+    private EventHubClient ehClient;
 
     @Test(expected = AuthorizationFailedException.class)
     public void testEventHubClientUnAuthorizedAccessKeyName() throws Throwable {
@@ -43,25 +53,32 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.sendSync(EventData.create("Test Message".getBytes()));
     }
 
-    @Test(expected = EventHubException.class)
+    @Test()
     public void testEventHubClientInvalidAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
                 .setEventHubName(correctConnectionString.getEventHubName())
-                .setSharedAccessSignature("--------------invalidtoken-------------");
+                .setSharedAccessSignature("--------------invalidtoken-------------")
+                .setOperationTimeout(Duration.ofSeconds(15));
 
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        ehClient = EventHubClient.createSync(connectionString.toString(), RetryPolicy.getNoRetry(), TestContext.EXECUTOR_SERVICE);
+
+        try {
+            ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        } catch (TimeoutException e) {
+            Assert.assertEquals(EventHubException.class, e.getCause().getClass());
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testEventHubClientNullAccessToken() throws Throwable {
+    public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
                 .setEventHubName(correctConnectionString.getEventHubName())
-                .setSharedAccessSignature(null);
+                .setSharedAccessSignature(null)
+                .setOperationTimeout(Duration.ofSeconds(10));
 
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         ehClient.sendSync(EventData.create(("Test Message".getBytes())));
@@ -73,7 +90,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
         final String wrongToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
                 "wrongkey",
                 correctConnectionString.getSasKey(),
-                String.format("amqps://%s/%s", correctConnectionString.getEndpoint().getHost(), correctConnectionString.getEventHubName()),
+                String.format(Locale.US, "amqps://%s/%s", correctConnectionString.getEndpoint().getHost(), correctConnectionString.getEventHubName()),
                 Duration.ofSeconds(10));
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
@@ -128,7 +145,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
     }
 
     @Test(expected = IllegalEntityException.class)
-    public void testSendToNonExistantEventHub() throws Throwable {
+    public void testSendToNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
@@ -141,7 +158,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
     }
 
     @Test(expected = IllegalEntityException.class)
-    public void testReceiveFromNonExistantEventHub() throws Throwable {
+    public void testReceiveFromNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
@@ -155,6 +172,8 @@ public class SecurityExceptionsTest extends ApiTestBase {
 
     @After
     public void cleanup() throws EventHubException {
-        ehClient.closeSync();
+        if (ehClient != null) {
+            ehClient.closeSync();
+        }
     }
 }

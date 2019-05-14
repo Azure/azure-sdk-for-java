@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.*;
@@ -92,11 +93,6 @@ public final class SharedKeyCredentials implements ICredentials {
                 getAdditionalXmsHeaders(httpHeaders),
                 getCanonicalizedResource(request.url())
         );
-    }
-
-    private void appendCanonicalizedElement(final StringBuilder builder, final String element) {
-        builder.append("\n");
-        builder.append(element);
     }
 
     private String getAdditionalXmsHeaders(final HttpHeaders headers) {
@@ -220,7 +216,7 @@ public final class SharedKeyCredentials implements ICredentials {
         }
     }
 
-    private final class SharedKeyCredentialsPolicy implements RequestPolicy {
+    private static final class SharedKeyCredentialsPolicy implements RequestPolicy {
 
         private final SharedKeyCredentials factory;
 

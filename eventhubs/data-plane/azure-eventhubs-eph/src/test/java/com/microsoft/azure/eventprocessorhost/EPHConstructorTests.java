@@ -14,15 +14,15 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setEHPath("thisisdifferentfromtheconnectionstring", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
             if ((e.getMessage() != null) && (e.getMessage().compareTo("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string") == 0)) {
-            	TestBase.logInfo("Got expected exception");
+                TestBase.logInfo("Got expected exception");
             } else {
                 throw e;
             }
@@ -37,15 +37,15 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setEHPath("", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE_AND_REPLACE);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
             if ((e.getMessage() != null) && (e.getMessage().compareTo("Provide EventHub entity path in either eventHubPath argument or in eventHubConnectionString") == 0)) {
-            	TestBase.logInfo("Got expected exception");
+                TestBase.logInfo("Got expected exception");
             } else {
                 throw e;
             }
@@ -62,12 +62,12 @@ public class EPHConstructorTests extends TestBase {
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
 
         settings.inoutEPHConstructorArgs.setHostName(null);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -79,14 +79,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setHostName("");
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -98,14 +98,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setConsumerGroupName(null);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -117,14 +117,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setConsumerGroupName("");
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -136,14 +136,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setEHConnection(null);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -155,14 +155,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setEHConnection("");
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -174,7 +174,7 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.removePathFromEHConnection();
 
         try {
@@ -190,7 +190,7 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setEHPath("", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
 
         try {
@@ -206,14 +206,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setCheckpointManager(null);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -225,14 +225,14 @@ public class EPHConstructorTests extends TestBase {
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
-        
+
         settings.inoutEPHConstructorArgs.setLeaseManager(null);
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -243,13 +243,13 @@ public class EPHConstructorTests extends TestBase {
         PerTestSettings settings = new PerTestSettings("NullStorageConnectionString");
         settings.inHasSenders = false;
         settings.inEventHubDoesNotExist = true;
-        
+
         settings.inoutEPHConstructorArgs.setStorageConnection(null);
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }
@@ -262,12 +262,12 @@ public class EPHConstructorTests extends TestBase {
         settings.inEventHubDoesNotExist = true;
 
         settings.inoutEPHConstructorArgs.setStorageConnection("");
-        
+
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
         } catch (IllegalArgumentException e) {
-        	TestBase.logInfo("Got expected exception");
+            TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
         }

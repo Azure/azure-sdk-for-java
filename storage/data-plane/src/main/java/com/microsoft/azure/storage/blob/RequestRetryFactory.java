@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.*;
@@ -35,7 +36,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
      *         {@link RequestRetryOptions}
      */
     public RequestRetryFactory(RequestRetryOptions requestRetryOptions) {
-        this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;
+        this.requestRetryOptions = requestRetryOptions == null ? new RequestRetryOptions() : requestRetryOptions;
     }
 
     @Override
@@ -43,7 +44,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         return new RequestRetryPolicy(next, this.requestRetryOptions);
     }
 
-    private final class RequestRetryPolicy implements RequestPolicy {
+    private static final class RequestRetryPolicy implements RequestPolicy {
 
         private final RequestPolicy nextPolicy;
 
@@ -96,7 +97,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             logf("\n=====> Try=%d\n", attempt);
 
             // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
-            final boolean tryingPrimary = !considerSecondary || (attempt % 2 == 1);
+            final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
             // Select the correct host and delay.
             long delayMs;

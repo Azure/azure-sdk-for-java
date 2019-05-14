@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -46,7 +47,7 @@ public final class AnonymousCredentials implements ICredentials {
      * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-manage-access-to-resources>Manage Access to Storage Resources</a>
      * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/set-container-acl>Set Container Permissions</a>
      */
-    private final class AnonymousCredentialsPolicy implements RequestPolicy {
+    private static final class AnonymousCredentialsPolicy implements RequestPolicy {
         final RequestPolicy nextPolicy;
 
         AnonymousCredentialsPolicy(RequestPolicy nextPolicy) {

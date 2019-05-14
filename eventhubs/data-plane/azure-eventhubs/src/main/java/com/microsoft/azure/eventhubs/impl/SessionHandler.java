@@ -28,6 +28,7 @@ public class SessionHandler extends BaseHandler {
     private final Consumer<Session> onRemoteSessionOpen;
     private final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError;
     private final Duration openTimeout;
+    private final String connectionId;
 
     private boolean sessionCreated = false;
     private boolean sessionOpenErrorDispatched = false;
@@ -35,18 +36,20 @@ public class SessionHandler extends BaseHandler {
     public SessionHandler(final String entityName,
                           final Consumer<Session> onRemoteSessionOpen,
                           final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError,
-                          final Duration openTimeout) {
+                          final Duration openTimeout,
+                          final String connectionId) {
         this.entityName = entityName;
         this.onRemoteSessionOpenError = onRemoteSessionOpenError;
         this.onRemoteSessionOpen = onRemoteSessionOpen;
         this.openTimeout = openTimeout;
+        this.connectionId = connectionId;
     }
 
     @Override
     public void onSessionLocalOpen(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalOpen entityName[%s], condition[%s]", this.entityName,
-                    e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], condition[%s]",
+                    this.connectionId, this.entityName, e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
 
         if (this.onRemoteSessionOpenError != null) {
@@ -66,8 +69,7 @@ public class SessionHandler extends BaseHandler {
                     null,
                     new EventHubException(
                         false,
-                        String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.")
-                    )
+                        String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.", this.entityName))
                 );
                 e.getSession().close();
                 return;
@@ -77,11 +79,11 @@ public class SessionHandler extends BaseHandler {
             final Session session = e.getSession();
 
             try {
-                reactorDispatcher.invoke((int) this.openTimeout.toMillis(), new SessionTimeoutHandler(session, entityName));
+                reactorDispatcher.invoke((int) this.openTimeout.toMillis(), new SessionTimeoutHandler(entityName, connectionId));
             } catch (IOException ioException) {
                 if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(String.format(Locale.US, "onSessionLocalOpen entityName[%s], reactorDispatcherError[%s]",
-                            this.entityName, ioException.getMessage()));
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], reactorDispatcherError[%s]",
+                            this.connectionId, this.entityName, ioException.getMessage()));
                 }
 
                 session.close();
@@ -89,8 +91,8 @@ public class SessionHandler extends BaseHandler {
                         null,
                         new EventHubException(
                                 false,
-                                String.format("onSessionLocalOpen entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
-                                        this.entityName, ioException.getMessage()), ioException));
+                                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
+                                        this.connectionId, this.entityName, ioException.getMessage()), ioException));
             }
         }
     }
@@ -98,8 +100,8 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteOpen entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
-                    this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteOpen connectionId[%s], entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+                    this.connectionId, this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
         }
 
         final Session session = e.getSession();
@@ -116,16 +118,16 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionLocalClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalClose entityName[%s], condition[%s]", this.entityName,
-                    e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalClose connectionId[%s], entityName[%s], condition[%s]", this.entityName,
+                    this.connectionId, e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
     }
 
     @Override
     public void onSessionRemoteClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose entityName[%s], condition[%s]", this.entityName,
-                    e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s], condition[%s]", this.entityName,
+                    this.connectionId, e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
         }
 
         final Session session = e.getSession();
@@ -133,10 +135,8 @@ public class SessionHandler extends BaseHandler {
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose closing a local session for entityName[%s], condition[%s], description[%s]",
-                        this.entityName,
-                        condition != null ? condition.getCondition() : "n/a",
-                        condition != null ? condition.getDescription() : "n/a"));
+                TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose closing a local session for connectionId[%s], entityName[%s], condition[%s], description[%s]",
+                        this.connectionId, this.entityName, condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
             }
 
             session.setCondition(session.getRemoteCondition());
@@ -155,19 +155,19 @@ public class SessionHandler extends BaseHandler {
             final Session session = e.getSession();
             ErrorCondition condition = session != null ? session.getCondition() : null;
 
-            TRACE_LOGGER.info(String.format(Locale.US, "onSessionFinal entityName[%s], condition[%s], description[%s]",
-                    this.entityName,
-                    condition != null ? condition.getCondition() : "n/a",
-                    condition != null ? condition.getDescription() : "n/a"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionFinal connectionId[%s], entityName[%s], condition[%s], description[%s]",
+                    this.connectionId, this.entityName, condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
     }
 
     private class SessionTimeoutHandler extends DispatchHandler {
 
         private final String entityName;
+        private final String connectionId;
 
-        SessionTimeoutHandler(final Session session, final String entityName) {
+        SessionTimeoutHandler(final String entityName, final String connectionId) {
             this.entityName = entityName;
+            this.connectionId = connectionId;
         }
 
         @Override
@@ -181,8 +181,8 @@ public class SessionHandler extends BaseHandler {
 
             if (!sessionCreated && !sessionOpenErrorDispatched) {
                 if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(String.format(Locale.US, "SessionTimeoutHandler.onEvent - entityName[%s], session open timed out.",
-                            this.entityName));
+                    TRACE_LOGGER.warn(String.format(Locale.US, "SessionTimeoutHandler.onEvent - connectionId[%s], entityName[%s], session open timed out.",
+                            this.connectionId, this.entityName));
                 }
             }
         }
