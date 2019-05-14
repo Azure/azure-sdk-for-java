@@ -31,9 +31,8 @@ public class SendLinkHandler extends BaseLinkHandler {
         if (link != null && link instanceof Sender) {
             Sender sender = (Sender) link;
             if (link.getRemoteTarget() != null) {
-                if (TRACE_LOGGER.isDebugEnabled()) {
-                    TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
-                }
+                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
+                
                 if (this.isFirstFlow.compareAndSet(true, false)) {
                     this.msgSender.onOpenComplete(null);
                 }
