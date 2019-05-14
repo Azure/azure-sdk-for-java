@@ -11,6 +11,7 @@ package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 import com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfiguration;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import java.util.List;
 
 class AttachedDatabaseConfigurationImpl extends CreatableUpdatableImpl<AttachedDatabaseConfiguration, AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationImpl> implements AttachedDatabaseConfiguration, AttachedDatabaseConfiguration.Definition, AttachedDatabaseConfiguration.Update {
     private final KustoManager manager;
@@ -70,6 +71,21 @@ class AttachedDatabaseConfigurationImpl extends CreatableUpdatableImpl<AttachedD
 
 
     @Override
+    public List<String> attachedDatabaseNames() {
+        return this.inner().attachedDatabaseNames();
+    }
+
+    @Override
+    public String clusterResourceId() {
+        return this.inner().clusterResourceId();
+    }
+
+    @Override
+    public String databaseName() {
+        return this.inner().databaseName();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -93,6 +109,18 @@ class AttachedDatabaseConfigurationImpl extends CreatableUpdatableImpl<AttachedD
     public AttachedDatabaseConfigurationImpl withExistingCluster(String resourceGroupName, String clusterName) {
         this.resourceGroupName = resourceGroupName;
         this.clusterName = clusterName;
+        return this;
+    }
+
+    @Override
+    public AttachedDatabaseConfigurationImpl withClusterResourceId(String clusterResourceId) {
+        this.inner().withClusterResourceId(clusterResourceId);
+        return this;
+    }
+
+    @Override
+    public AttachedDatabaseConfigurationImpl withDatabaseName(String databaseName) {
+        this.inner().withDatabaseName(databaseName);
         return this;
     }
 

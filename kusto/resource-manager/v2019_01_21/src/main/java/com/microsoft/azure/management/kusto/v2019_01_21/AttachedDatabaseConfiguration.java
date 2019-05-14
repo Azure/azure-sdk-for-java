@@ -17,11 +17,27 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.kusto.v2019_01_21.implementation.KustoManager;
+import java.util.List;
 
 /**
  * Type representing AttachedDatabaseConfiguration.
  */
 public interface AttachedDatabaseConfiguration extends HasInner<AttachedDatabaseConfigurationInner>, Indexable, Refreshable<AttachedDatabaseConfiguration>, Updatable<AttachedDatabaseConfiguration.Update>, HasManager<KustoManager> {
+    /**
+     * @return the attachedDatabaseNames value.
+     */
+    List<String> attachedDatabaseNames();
+
+    /**
+     * @return the clusterResourceId value.
+     */
+    String clusterResourceId();
+
+    /**
+     * @return the databaseName value.
+     */
+    String databaseName();
+
     /**
      * @return the id value.
      */
@@ -45,7 +61,7 @@ public interface AttachedDatabaseConfiguration extends HasInner<AttachedDatabase
     /**
      * The entirety of the AttachedDatabaseConfiguration definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCluster, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCluster, DefinitionStages.WithClusterResourceId, DefinitionStages.WithDatabaseName, DefinitionStages.WithCreate {
     }
 
     /**
@@ -68,7 +84,31 @@ public interface AttachedDatabaseConfiguration extends HasInner<AttachedDatabase
             * @param clusterName The name of the Kusto cluster
             * @return the next definition stage
             */
-            WithCreate withExistingCluster(String resourceGroupName, String clusterName);
+            WithClusterResourceId withExistingCluster(String resourceGroupName, String clusterName);
+        }
+
+        /**
+         * The stage of the attacheddatabaseconfiguration definition allowing to specify ClusterResourceId.
+         */
+        interface WithClusterResourceId {
+           /**
+            * Specifies clusterResourceId.
+            * @param clusterResourceId The resource id of the cluster where the databases you would like to attach reside
+            * @return the next definition stage
+            */
+            WithDatabaseName withClusterResourceId(String clusterResourceId);
+        }
+
+        /**
+         * The stage of the attacheddatabaseconfiguration definition allowing to specify DatabaseName.
+         */
+        interface WithDatabaseName {
+           /**
+            * Specifies databaseName.
+            * @param databaseName The name of the database which you would like to attach, use * if you want to follow all current and future databases
+            * @return the next definition stage
+            */
+            WithCreate withDatabaseName(String databaseName);
         }
 
         /**

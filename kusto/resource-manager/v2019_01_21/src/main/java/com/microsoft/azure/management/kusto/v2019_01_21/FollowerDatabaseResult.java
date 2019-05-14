@@ -28,9 +28,4 @@ public interface FollowerDatabaseResult extends HasInner<FollowerDatabaseResultI
      */
     String databaseName();
 
-    /**
-     * @return the kind value.
-     */
-    Kind kind();
-
 }

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseResult;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
-import com.microsoft.azure.management.kusto.v2019_01_21.Kind;
 
 class FollowerDatabaseResultImpl extends WrapperImpl<FollowerDatabaseResultInner> implements FollowerDatabaseResult {
     private final KustoManager manager;
@@ -33,11 +32,6 @@ class FollowerDatabaseResultImpl extends WrapperImpl<FollowerDatabaseResultInner
     @Override
     public String databaseName() {
         return this.inner().databaseName();
-    }
-
-    @Override
-    public Kind kind() {
-        return this.inner().kind();
     }
 
 }

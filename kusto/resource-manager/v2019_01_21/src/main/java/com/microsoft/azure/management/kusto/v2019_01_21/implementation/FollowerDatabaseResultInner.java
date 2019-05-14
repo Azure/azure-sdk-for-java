@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
-import com.microsoft.azure.management.kusto.v2019_01_21.Kind;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,13 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FollowerDatabaseResultInner {
     /**
-     * Kind of the attached database. Possible values include: 'All',
-     * 'Specific'.
-     */
-    @JsonProperty(value = "kind")
-    private Kind kind;
-
-    /**
      * List of resource ids of clusters that are following the database owned
      * by this cluster.
      */
@@ -31,31 +23,11 @@ public class FollowerDatabaseResultInner {
     private List<String> clusterResourceId;
 
     /**
-     * The database name owned by this cluster that was followed. Empty in case
+     * The database name owned by this cluster that was followed. * in case
      * following all databases.
      */
     @JsonProperty(value = "databaseName")
     private String databaseName;
-
-    /**
-     * Get kind of the attached database. Possible values include: 'All', 'Specific'.
-     *
-     * @return the kind value
-     */
-    public Kind kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set kind of the attached database. Possible values include: 'All', 'Specific'.
-     *
-     * @param kind the kind value to set
-     * @return the FollowerDatabaseResultInner object itself.
-     */
-    public FollowerDatabaseResultInner withKind(Kind kind) {
-        this.kind = kind;
-        return this;
-    }
 
     /**
      * Get list of resource ids of clusters that are following the database owned by this cluster.
@@ -78,7 +50,7 @@ public class FollowerDatabaseResultInner {
     }
 
     /**
-     * Get the database name owned by this cluster that was followed. Empty in case following all databases.
+     * Get the database name owned by this cluster that was followed. * in case following all databases.
      *
      * @return the databaseName value
      */
@@ -87,7 +59,7 @@ public class FollowerDatabaseResultInner {
     }
 
     /**
-     * Set the database name owned by this cluster that was followed. Empty in case following all databases.
+     * Set the database name owned by this cluster that was followed. * in case following all databases.
      *
      * @param databaseName the databaseName value to set
      * @return the FollowerDatabaseResultInner object itself.

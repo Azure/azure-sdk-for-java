@@ -8,27 +8,42 @@
 
 package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
  * Class representing an attached database configuration.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AttachedDatabaseConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "All", value = AllAttachedDatabaseConfiguration.class),
-    @JsonSubTypes.Type(name = "Specific", value = SpecificAttachedDatabaseConfiguration.class)
-})
+@JsonFlatten
 public class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Resource location.
      */
     @JsonProperty(value = "location")
     private String location;
+
+    /**
+     * The name of the database which you would like to attach, use * if you
+     * want to follow all current and future databases.
+     */
+    @JsonProperty(value = "properties.databaseName", required = true)
+    private String databaseName;
+
+    /**
+     * The resource id of the cluster where the databases you would like to
+     * attach reside.
+     */
+    @JsonProperty(value = "properties.clusterResourceId", required = true)
+    private String clusterResourceId;
+
+    /**
+     * The list of databases from the clusterResourceId which are currently
+     * attached to the cluster.
+     */
+    @JsonProperty(value = "properties.AttachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> attachedDatabaseNames;
 
     /**
      * Get resource location.
@@ -48,6 +63,55 @@ public class AttachedDatabaseConfigurationInner extends ProxyResource {
     public AttachedDatabaseConfigurationInner withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Get the name of the database which you would like to attach, use * if you want to follow all current and future databases.
+     *
+     * @return the databaseName value
+     */
+    public String databaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the name of the database which you would like to attach, use * if you want to follow all current and future databases.
+     *
+     * @param databaseName the databaseName value to set
+     * @return the AttachedDatabaseConfigurationInner object itself.
+     */
+    public AttachedDatabaseConfigurationInner withDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+        return this;
+    }
+
+    /**
+     * Get the resource id of the cluster where the databases you would like to attach reside.
+     *
+     * @return the clusterResourceId value
+     */
+    public String clusterResourceId() {
+        return this.clusterResourceId;
+    }
+
+    /**
+     * Set the resource id of the cluster where the databases you would like to attach reside.
+     *
+     * @param clusterResourceId the clusterResourceId value to set
+     * @return the AttachedDatabaseConfigurationInner object itself.
+     */
+    public AttachedDatabaseConfigurationInner withClusterResourceId(String clusterResourceId) {
+        this.clusterResourceId = clusterResourceId;
+        return this;
+    }
+
+    /**
+     * Get the list of databases from the clusterResourceId which are currently attached to the cluster.
+     *
+     * @return the attachedDatabaseNames value
+     */
+    public List<String> attachedDatabaseNames() {
+        return this.attachedDatabaseNames;
     }
 
 }

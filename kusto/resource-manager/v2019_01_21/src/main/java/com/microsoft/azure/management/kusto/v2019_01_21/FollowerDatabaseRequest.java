@@ -15,13 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FollowerDatabaseRequest {
     /**
-     * Kind of the attached database. Possible values include: 'All',
-     * 'Specific'.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private Kind kind;
-
-    /**
      * Resource id of the cluster that follows a database owned by this
      * cluster.
      */
@@ -29,31 +22,11 @@ public class FollowerDatabaseRequest {
     private String clusterResourceId;
 
     /**
-     * The database name owned by this cluster that was followed. Empty in case
+     * The database name owned by this cluster that was followed. * in case
      * following all databases.
      */
-    @JsonProperty(value = "databaseName")
+    @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
-
-    /**
-     * Get kind of the attached database. Possible values include: 'All', 'Specific'.
-     *
-     * @return the kind value
-     */
-    public Kind kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set kind of the attached database. Possible values include: 'All', 'Specific'.
-     *
-     * @param kind the kind value to set
-     * @return the FollowerDatabaseRequest object itself.
-     */
-    public FollowerDatabaseRequest withKind(Kind kind) {
-        this.kind = kind;
-        return this;
-    }
 
     /**
      * Get resource id of the cluster that follows a database owned by this cluster.
@@ -76,7 +49,7 @@ public class FollowerDatabaseRequest {
     }
 
     /**
-     * Get the database name owned by this cluster that was followed. Empty in case following all databases.
+     * Get the database name owned by this cluster that was followed. * in case following all databases.
      *
      * @return the databaseName value
      */
@@ -85,7 +58,7 @@ public class FollowerDatabaseRequest {
     }
 
     /**
-     * Set the database name owned by this cluster that was followed. Empty in case following all databases.
+     * Set the database name owned by this cluster that was followed. * in case following all databases.
      *
      * @param databaseName the databaseName value to set
      * @return the FollowerDatabaseRequest object itself.
