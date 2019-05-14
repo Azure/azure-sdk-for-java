@@ -32,6 +32,7 @@ import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
@@ -120,7 +121,7 @@ public class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser;
             final HttpRequest request;
             if (method.isAnnotationPresent(ResumeOperation.class)) {
-                OperationDescription opDesc = (OperationDescription) args[0];
+                OperationDescription opDesc = ImplUtils.findFirstOfType(args, OperationDescription.class);
                 Method resumeMethod = null;
                 Method[] methods = method.getDeclaringClass().getMethods();
                 for (Method origMethod : methods) {
