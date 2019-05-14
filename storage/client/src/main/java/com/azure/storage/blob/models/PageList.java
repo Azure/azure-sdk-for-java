@@ -30,7 +30,7 @@ public final class PageList {
     private List<ClearRange> clearRange = new ArrayList<>();
 
     /**
-     * Get the pageRange value.
+     * Get the pageRange property: The pageRange property.
      *
      * @return the pageRange value.
      */
@@ -39,7 +39,7 @@ public final class PageList {
     }
 
     /**
-     * Set the pageRange value.
+     * Set the pageRange property: The pageRange property.
      *
      * @param pageRange the pageRange value to set.
      * @return the PageList object itself.
@@ -50,7 +50,7 @@ public final class PageList {
     }
 
     /**
-     * Get the clearRange value.
+     * Get the clearRange property: The clearRange property.
      *
      * @return the clearRange value.
      */
@@ -59,7 +59,7 @@ public final class PageList {
     }
 
     /**
-     * Set the clearRange value.
+     * Set the clearRange property: The clearRange property.
      *
      * @param clearRange the clearRange value to set.
      * @return the PageList object itself.

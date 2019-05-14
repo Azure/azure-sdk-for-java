@@ -51,7 +51,7 @@ public final class BlockList {
     private UncommittedBlocksWrapper uncommittedBlocks;
 
     /**
-     * Get the committedBlocks value.
+     * Get the committedBlocks property: The committedBlocks property.
      *
      * @return the committedBlocks value.
      */
@@ -63,7 +63,7 @@ public final class BlockList {
     }
 
     /**
-     * Set the committedBlocks value.
+     * Set the committedBlocks property: The committedBlocks property.
      *
      * @param committedBlocks the committedBlocks value to set.
      * @return the BlockList object itself.
@@ -74,7 +74,7 @@ public final class BlockList {
     }
 
     /**
-     * Get the uncommittedBlocks value.
+     * Get the uncommittedBlocks property: The uncommittedBlocks property.
      *
      * @return the uncommittedBlocks value.
      */
@@ -86,7 +86,7 @@ public final class BlockList {
     }
 
     /**
-     * Set the uncommittedBlocks value.
+     * Set the uncommittedBlocks property: The uncommittedBlocks property.
      *
      * @param uncommittedBlocks the uncommittedBlocks value to set.
      * @return the BlockList object itself.

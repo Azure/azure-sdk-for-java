@@ -28,7 +28,7 @@ public final class ClearRange {
     private long end;
 
     /**
-     * Get the start value.
+     * Get the start property: The start property.
      *
      * @return the start value.
      */
@@ -37,7 +37,7 @@ public final class ClearRange {
     }
 
     /**
-     * Set the start value.
+     * Set the start property: The start property.
      *
      * @param start the start value to set.
      * @return the ClearRange object itself.
@@ -48,7 +48,7 @@ public final class ClearRange {
     }
 
     /**
-     * Get the end value.
+     * Get the end property: The end property.
      *
      * @return the end value.
      */
@@ -57,7 +57,7 @@ public final class ClearRange {
     }
 
     /**
-     * Set the end value.
+     * Set the end property: The end property.
      *
      * @param end the end value to set.
      * @return the ClearRange object itself.

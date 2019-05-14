@@ -34,7 +34,8 @@ public final class StaticWebsite {
     private String errorDocument404Path;
 
     /**
-     * Get the enabled value.
+     * Get the enabled property: Indicates whether this account is hosting a
+     * static website.
      *
      * @return the enabled value.
      */
@@ -43,7 +44,8 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the enabled value.
+     * Set the enabled property: Indicates whether this account is hosting a
+     * static website.
      *
      * @param enabled the enabled value to set.
      * @return the StaticWebsite object itself.
@@ -54,7 +56,8 @@ public final class StaticWebsite {
     }
 
     /**
-     * Get the indexDocument value.
+     * Get the indexDocument property: The default name of the index page under
+     * each directory.
      *
      * @return the indexDocument value.
      */
@@ -63,7 +66,8 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the indexDocument value.
+     * Set the indexDocument property: The default name of the index page under
+     * each directory.
      *
      * @param indexDocument the indexDocument value to set.
      * @return the StaticWebsite object itself.
@@ -74,7 +78,8 @@ public final class StaticWebsite {
     }
 
     /**
-     * Get the errorDocument404Path value.
+     * Get the errorDocument404Path property: The absolute path of the custom
+     * 404 page.
      *
      * @return the errorDocument404Path value.
      */
@@ -83,7 +88,8 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the errorDocument404Path value.
+     * Set the errorDocument404Path property: The absolute path of the custom
+     * 404 page.
      *
      * @param errorDocument404Path the errorDocument404Path value to set.
      * @return the StaticWebsite object itself.

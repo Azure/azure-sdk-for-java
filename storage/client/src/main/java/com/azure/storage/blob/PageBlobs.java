@@ -17,12 +17,12 @@ import com.azure.storage.blob.models.PageBlobsGetPageRangesResponse;
 import com.azure.storage.blob.models.PageBlobsResizeResponse;
 import com.azure.storage.blob.models.PageBlobsUpdateSequenceNumberResponse;
 import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
-import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.SequenceNumberAccessConditions;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
 import java.net.URL;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -32,19 +32,6 @@ import reactor.util.annotation.NonNull;
  * PageBlobs.
  */
 public interface PageBlobs {
-    /**
-     * The Create operation creates a new page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void create(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength);
-
     /**
      * The Create operation creates a new page blob.
      *
@@ -64,38 +51,6 @@ public interface PageBlobs {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> createAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength);
-
-    /**
-     * The Create operation creates a new page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void create(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Create operation creates a new page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
@@ -106,39 +61,7 @@ public interface PageBlobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PageBlobsCreateResponse> createWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Create operation creates a new page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> createAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Upload Pages operation writes a range of pages to a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void uploadPages(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength);
+    Mono<PageBlobsCreateResponse> createWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, Map<String, String> metadata, Long blobSequenceNumber, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob.
@@ -151,38 +74,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength);
-
-    /**
-     * The Upload Pages operation writes a range of pages to a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> uploadPagesAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength);
-
-    /**
-     * The Upload Pages operation writes a range of pages to a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param sequenceNumberAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void uploadPages(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob.
@@ -204,37 +95,6 @@ public interface PageBlobs {
     Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
-     * The Upload Pages operation writes a range of pages to a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param sequenceNumberAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> uploadPagesAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, byte[] transactionalContentMD5, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Clear Pages operation clears a set of pages from a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearPages(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength);
-
-    /**
      * The Clear Pages operation clears a set of pages from a page blob.
      *
      * @param containerName The container name.
@@ -244,35 +104,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength);
-
-    /**
-     * The Clear Pages operation clears a set of pages from a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> clearPagesAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength);
-
-    /**
-     * The Clear Pages operation clears a set of pages from a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param sequenceNumberAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearPages(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
      * The Clear Pages operation clears a set of pages from a page blob.
@@ -292,35 +123,6 @@ public interface PageBlobs {
     Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
-     * The Clear Pages operation clears a set of pages from a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param sequenceNumberAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> clearPagesAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, SequenceNumberAccessConditions sequenceNumberAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
-     */
-    PageList getPageRanges(@NonNull String containerName, @NonNull String blob);
-
-    /**
      * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
      *
      * @param containerName The container name.
@@ -329,34 +131,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsGetPageRangesResponse> getPageRangesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob);
-
-    /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<PageList> getPageRangesAsync(@NonNull String containerName, @NonNull String blob);
-
-    /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
-     */
-    PageList getPageRanges(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
      * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
@@ -375,34 +149,6 @@ public interface PageBlobs {
     Mono<PageBlobsGetPageRangesResponse> getPageRangesWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<PageList> getPageRangesAsync(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
-     */
-    PageList getPageRangesDiff(@NonNull String containerName, @NonNull String blob);
-
-    /**
      * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
      *
      * @param containerName The container name.
@@ -411,35 +157,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithRestResponseAsync(@NonNull String containerName, @NonNull String blob);
-
-    /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<PageList> getPageRangesDiffAsync(@NonNull String containerName, @NonNull String blob);
-
-    /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param prevsnapshot Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response will contain only pages that were changed between target blob and previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two. Note that incremental snapshots are currently supported only for blobs created on or after January 1, 2016.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the PageList object if successful.
-     */
-    PageList getPageRangesDiff(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
      * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
@@ -459,35 +176,6 @@ public interface PageBlobs {
     Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
 
     /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param prevsnapshot Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response will contain only pages that were changed between target blob and previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two. Note that incremental snapshots are currently supported only for blobs created on or after January 1, 2016.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<PageList> getPageRangesDiffAsync(@NonNull String containerName, @NonNull String blob, String snapshot, Integer timeout, String prevsnapshot, String range, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Resize the Blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resize(@NonNull String containerName, @NonNull String blob, @NonNull long blobContentLength);
-
-    /**
      * Resize the Blob.
      *
      * @param containerName The container name.
@@ -504,33 +192,6 @@ public interface PageBlobs {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> resizeAsync(@NonNull String containerName, @NonNull String blob, @NonNull long blobContentLength);
-
-    /**
-     * Resize the Blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resize(@NonNull String containerName, @NonNull String blob, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Resize the Blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
@@ -539,33 +200,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsResizeResponse> resizeWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Resize the Blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> resizeAsync(@NonNull String containerName, @NonNull String blob, @NonNull long blobContentLength, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Update the sequence number of the blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateSequenceNumber(@NonNull String containerName, @NonNull String blob, @NonNull SequenceNumberActionType sequenceNumberAction);
 
     /**
      * Update the sequence number of the blob.
@@ -584,34 +218,6 @@ public interface PageBlobs {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> updateSequenceNumberAsync(@NonNull String containerName, @NonNull String blob, @NonNull SequenceNumberActionType sequenceNumberAction);
-
-    /**
-     * Update the sequence number of the blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateSequenceNumber(@NonNull String containerName, @NonNull String blob, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Update the sequence number of the blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -621,34 +227,6 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * Update the sequence number of the blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> updateSequenceNumberAsync(@NonNull String containerName, @NonNull String blob, @NonNull SequenceNumberActionType sequenceNumberAction, Integer timeout, Long blobSequenceNumber, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void copyIncremental(@NonNull String containerName, @NonNull String blob, @NonNull URL copySource);
 
     /**
      * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
@@ -667,32 +245,6 @@ public interface PageBlobs {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> copyIncrementalAsync(@NonNull String containerName, @NonNull String blob, @NonNull URL copySource);
-
-    /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void copyIncremental(@NonNull String containerName, @NonNull String blob, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
@@ -700,18 +252,4 @@ public interface PageBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions);
-
-    /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    Mono<Void> copyIncrementalAsync(@NonNull String containerName, @NonNull String blob, @NonNull URL copySource, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions);
 }

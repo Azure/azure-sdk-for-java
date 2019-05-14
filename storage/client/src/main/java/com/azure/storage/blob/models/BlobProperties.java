@@ -201,7 +201,7 @@ public final class BlobProperties {
     private DateTimeRfc1123 accessTierChangeTime;
 
     /**
-     * Get the creationTime value.
+     * Get the creationTime property: The creationTime property.
      *
      * @return the creationTime value.
      */
@@ -213,7 +213,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the creationTime value.
+     * Set the creationTime property: The creationTime property.
      *
      * @param creationTime the creationTime value to set.
      * @return the BlobProperties object itself.
@@ -228,7 +228,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the lastModified property: The lastModified property.
      *
      * @return the lastModified value.
      */
@@ -240,7 +240,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the lastModified property: The lastModified property.
      *
      * @param lastModified the lastModified value to set.
      * @return the BlobProperties object itself.
@@ -255,7 +255,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get the etag property: The etag property.
      *
      * @return the etag value.
      */
@@ -264,7 +264,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the etag value.
+     * Set the etag property: The etag property.
      *
      * @param etag the etag value to set.
      * @return the BlobProperties object itself.
@@ -275,7 +275,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentLength value.
+     * Get the contentLength property: Size in bytes.
      *
      * @return the contentLength value.
      */
@@ -284,7 +284,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentLength value.
+     * Set the contentLength property: Size in bytes.
      *
      * @param contentLength the contentLength value to set.
      * @return the BlobProperties object itself.
@@ -295,7 +295,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentType value.
+     * Get the contentType property: The contentType property.
      *
      * @return the contentType value.
      */
@@ -304,7 +304,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentType value.
+     * Set the contentType property: The contentType property.
      *
      * @param contentType the contentType value to set.
      * @return the BlobProperties object itself.
@@ -315,7 +315,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentEncoding value.
+     * Get the contentEncoding property: The contentEncoding property.
      *
      * @return the contentEncoding value.
      */
@@ -324,7 +324,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentEncoding value.
+     * Set the contentEncoding property: The contentEncoding property.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobProperties object itself.
@@ -335,7 +335,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentLanguage value.
+     * Get the contentLanguage property: The contentLanguage property.
      *
      * @return the contentLanguage value.
      */
@@ -344,7 +344,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentLanguage value.
+     * Set the contentLanguage property: The contentLanguage property.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobProperties object itself.
@@ -355,7 +355,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentMD5 value.
+     * Get the contentMD5 property: The contentMD5 property.
      *
      * @return the contentMD5 value.
      */
@@ -364,7 +364,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentMD5 value.
+     * Set the contentMD5 property: The contentMD5 property.
      *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobProperties object itself.
@@ -375,7 +375,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the contentDisposition value.
+     * Get the contentDisposition property: The contentDisposition property.
      *
      * @return the contentDisposition value.
      */
@@ -384,7 +384,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the contentDisposition value.
+     * Set the contentDisposition property: The contentDisposition property.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobProperties object itself.
@@ -395,7 +395,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the cacheControl value.
+     * Get the cacheControl property: The cacheControl property.
      *
      * @return the cacheControl value.
      */
@@ -404,7 +404,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the cacheControl value.
+     * Set the cacheControl property: The cacheControl property.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the BlobProperties object itself.
@@ -415,7 +415,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the blobSequenceNumber value.
+     * Get the blobSequenceNumber property: The blobSequenceNumber property.
      *
      * @return the blobSequenceNumber value.
      */
@@ -424,7 +424,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the blobSequenceNumber value.
+     * Set the blobSequenceNumber property: The blobSequenceNumber property.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobProperties object itself.
@@ -435,7 +435,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the blobType value.
+     * Get the blobType property: Possible values include: 'BlockBlob',
+     * 'PageBlob', 'AppendBlob'.
      *
      * @return the blobType value.
      */
@@ -444,7 +445,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the blobType value.
+     * Set the blobType property: Possible values include: 'BlockBlob',
+     * 'PageBlob', 'AppendBlob'.
      *
      * @param blobType the blobType value to set.
      * @return the BlobProperties object itself.
@@ -455,7 +457,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the leaseStatus value.
+     * Get the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @return the leaseStatus value.
      */
@@ -464,7 +467,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the leaseStatus value.
+     * Set the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobProperties object itself.
@@ -475,7 +479,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the leaseState value.
+     * Get the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @return the leaseState value.
      */
@@ -484,7 +489,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the leaseState value.
+     * Set the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @param leaseState the leaseState value to set.
      * @return the BlobProperties object itself.
@@ -495,7 +501,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the leaseDuration value.
+     * Get the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @return the leaseDuration value.
      */
@@ -504,7 +511,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the leaseDuration value.
+     * Set the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobProperties object itself.
@@ -515,7 +523,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copyId value.
+     * Get the copyId property: The copyId property.
      *
      * @return the copyId value.
      */
@@ -524,7 +532,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copyId value.
+     * Set the copyId property: The copyId property.
      *
      * @param copyId the copyId value to set.
      * @return the BlobProperties object itself.
@@ -535,7 +543,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copyStatus value.
+     * Get the copyStatus property: Possible values include: 'pending',
+     * 'success', 'aborted', 'failed'.
      *
      * @return the copyStatus value.
      */
@@ -544,7 +553,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copyStatus value.
+     * Set the copyStatus property: Possible values include: 'pending',
+     * 'success', 'aborted', 'failed'.
      *
      * @param copyStatus the copyStatus value to set.
      * @return the BlobProperties object itself.
@@ -555,7 +565,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copySource value.
+     * Get the copySource property: The copySource property.
      *
      * @return the copySource value.
      */
@@ -564,7 +574,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copySource value.
+     * Set the copySource property: The copySource property.
      *
      * @param copySource the copySource value to set.
      * @return the BlobProperties object itself.
@@ -575,7 +585,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copyProgress value.
+     * Get the copyProgress property: The copyProgress property.
      *
      * @return the copyProgress value.
      */
@@ -584,7 +594,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copyProgress value.
+     * Set the copyProgress property: The copyProgress property.
      *
      * @param copyProgress the copyProgress value to set.
      * @return the BlobProperties object itself.
@@ -595,7 +605,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copyCompletionTime value.
+     * Get the copyCompletionTime property: The copyCompletionTime property.
      *
      * @return the copyCompletionTime value.
      */
@@ -607,7 +617,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copyCompletionTime value.
+     * Set the copyCompletionTime property: The copyCompletionTime property.
      *
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobProperties object itself.
@@ -622,7 +632,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the copyStatusDescription value.
+     * Get the copyStatusDescription property: The copyStatusDescription
+     * property.
      *
      * @return the copyStatusDescription value.
      */
@@ -631,7 +642,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the copyStatusDescription value.
+     * Set the copyStatusDescription property: The copyStatusDescription
+     * property.
      *
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobProperties object itself.
@@ -642,7 +654,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the serverEncrypted value.
+     * Get the serverEncrypted property: The serverEncrypted property.
      *
      * @return the serverEncrypted value.
      */
@@ -651,7 +663,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the serverEncrypted value.
+     * Set the serverEncrypted property: The serverEncrypted property.
      *
      * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobProperties object itself.
@@ -662,7 +674,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the incrementalCopy value.
+     * Get the incrementalCopy property: The incrementalCopy property.
      *
      * @return the incrementalCopy value.
      */
@@ -671,7 +683,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the incrementalCopy value.
+     * Set the incrementalCopy property: The incrementalCopy property.
      *
      * @param incrementalCopy the incrementalCopy value to set.
      * @return the BlobProperties object itself.
@@ -682,7 +694,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the destinationSnapshot value.
+     * Get the destinationSnapshot property: The destinationSnapshot property.
      *
      * @return the destinationSnapshot value.
      */
@@ -691,7 +703,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the destinationSnapshot value.
+     * Set the destinationSnapshot property: The destinationSnapshot property.
      *
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobProperties object itself.
@@ -702,7 +714,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the deletedTime value.
+     * Get the deletedTime property: The deletedTime property.
      *
      * @return the deletedTime value.
      */
@@ -714,7 +726,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the deletedTime value.
+     * Set the deletedTime property: The deletedTime property.
      *
      * @param deletedTime the deletedTime value to set.
      * @return the BlobProperties object itself.
@@ -729,7 +741,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the remainingRetentionDays value.
+     * Get the remainingRetentionDays property: The remainingRetentionDays
+     * property.
      *
      * @return the remainingRetentionDays value.
      */
@@ -738,7 +751,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the remainingRetentionDays value.
+     * Set the remainingRetentionDays property: The remainingRetentionDays
+     * property.
      *
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobProperties object itself.
@@ -749,7 +763,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the accessTier value.
+     * Get the accessTier property: Possible values include: 'P4', 'P6', 'P10',
+     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
      *
      * @return the accessTier value.
      */
@@ -758,7 +773,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the accessTier value.
+     * Set the accessTier property: Possible values include: 'P4', 'P6', 'P10',
+     * 'P20', 'P30', 'P40', 'P50', 'Hot', 'Cool', 'Archive'.
      *
      * @param accessTier the accessTier value to set.
      * @return the BlobProperties object itself.
@@ -769,7 +785,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the accessTierInferred value.
+     * Get the accessTierInferred property: The accessTierInferred property.
      *
      * @return the accessTierInferred value.
      */
@@ -778,7 +794,7 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the accessTierInferred value.
+     * Set the accessTierInferred property: The accessTierInferred property.
      *
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobProperties object itself.
@@ -789,7 +805,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the archiveStatus value.
+     * Get the archiveStatus property: Possible values include:
+     * 'rehydrate-pending-to-hot', 'rehydrate-pending-to-cool'.
      *
      * @return the archiveStatus value.
      */
@@ -798,7 +815,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the archiveStatus value.
+     * Set the archiveStatus property: Possible values include:
+     * 'rehydrate-pending-to-hot', 'rehydrate-pending-to-cool'.
      *
      * @param archiveStatus the archiveStatus value to set.
      * @return the BlobProperties object itself.
@@ -809,7 +827,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the accessTierChangeTime value.
+     * Get the accessTierChangeTime property: The accessTierChangeTime
+     * property.
      *
      * @return the accessTierChangeTime value.
      */
@@ -821,7 +840,8 @@ public final class BlobProperties {
     }
 
     /**
-     * Set the accessTierChangeTime value.
+     * Set the accessTierChangeTime property: The accessTierChangeTime
+     * property.
      *
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobProperties object itself.

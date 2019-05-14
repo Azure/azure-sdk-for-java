@@ -36,7 +36,7 @@ public final class BlockLookupList {
     private List<String> latest = new ArrayList<>();
 
     /**
-     * Get the committed value.
+     * Get the committed property: The committed property.
      *
      * @return the committed value.
      */
@@ -45,7 +45,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the committed value.
+     * Set the committed property: The committed property.
      *
      * @param committed the committed value to set.
      * @return the BlockLookupList object itself.
@@ -56,7 +56,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Get the uncommitted value.
+     * Get the uncommitted property: The uncommitted property.
      *
      * @return the uncommitted value.
      */
@@ -65,7 +65,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the uncommitted value.
+     * Set the uncommitted property: The uncommitted property.
      *
      * @param uncommitted the uncommitted value to set.
      * @return the BlockLookupList object itself.
@@ -76,7 +76,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Get the latest value.
+     * Get the latest property: The latest property.
      *
      * @return the latest value.
      */
@@ -85,7 +85,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the latest value.
+     * Set the latest property: The latest property.
      *
      * @param latest the latest value to set.
      * @return the BlockLookupList object itself.

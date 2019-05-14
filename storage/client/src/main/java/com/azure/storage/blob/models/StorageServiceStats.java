@@ -22,7 +22,7 @@ public final class StorageServiceStats {
     private GeoReplication geoReplication;
 
     /**
-     * Get the geoReplication value.
+     * Get the geoReplication property: The geoReplication property.
      *
      * @return the geoReplication value.
      */
@@ -31,7 +31,7 @@ public final class StorageServiceStats {
     }
 
     /**
-     * Set the geoReplication value.
+     * Set the geoReplication property: The geoReplication property.
      *
      * @param geoReplication the geoReplication value to set.
      * @return the StorageServiceStats object itself.

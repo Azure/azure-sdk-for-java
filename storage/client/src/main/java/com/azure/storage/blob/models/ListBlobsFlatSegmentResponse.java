@@ -64,7 +64,7 @@ public final class ListBlobsFlatSegmentResponse {
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint value.
+     * Get the serviceEndpoint property: The serviceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -73,7 +73,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the serviceEndpoint value.
+     * Set the serviceEndpoint property: The serviceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -84,7 +84,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the containerName value.
+     * Get the containerName property: The containerName property.
      *
      * @return the containerName value.
      */
@@ -93,7 +93,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the containerName value.
+     * Set the containerName property: The containerName property.
      *
      * @param containerName the containerName value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -104,7 +104,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the prefix value.
+     * Get the prefix property: The prefix property.
      *
      * @return the prefix value.
      */
@@ -113,7 +113,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the prefix value.
+     * Set the prefix property: The prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -124,7 +124,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the marker value.
+     * Get the marker property: The marker property.
      *
      * @return the marker value.
      */
@@ -133,7 +133,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the marker value.
+     * Set the marker property: The marker property.
      *
      * @param marker the marker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -144,7 +144,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the maxResults value.
+     * Get the maxResults property: The maxResults property.
      *
      * @return the maxResults value.
      */
@@ -153,7 +153,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the maxResults value.
+     * Set the maxResults property: The maxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -164,7 +164,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the delimiter value.
+     * Get the delimiter property: The delimiter property.
      *
      * @return the delimiter value.
      */
@@ -173,7 +173,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the delimiter value.
+     * Set the delimiter property: The delimiter property.
      *
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -184,7 +184,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the segment value.
+     * Get the segment property: The segment property.
      *
      * @return the segment value.
      */
@@ -193,7 +193,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the segment value.
+     * Set the segment property: The segment property.
      *
      * @param segment the segment value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
@@ -204,7 +204,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Get the nextMarker value.
+     * Get the nextMarker property: The nextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -213,7 +213,7 @@ public final class ListBlobsFlatSegmentResponse {
     }
 
     /**
-     * Set the nextMarker value.
+     * Set the nextMarker property: The nextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.

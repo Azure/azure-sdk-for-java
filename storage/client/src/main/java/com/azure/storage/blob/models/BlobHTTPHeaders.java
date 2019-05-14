@@ -58,7 +58,9 @@ public final class BlobHTTPHeaders {
     private String blobContentDisposition;
 
     /**
-     * Get the blobCacheControl value.
+     * Get the blobCacheControl property: Optional. Sets the blob's cache
+     * control. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @return the blobCacheControl value.
      */
@@ -67,7 +69,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobCacheControl value.
+     * Set the blobCacheControl property: Optional. Sets the blob's cache
+     * control. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @param blobCacheControl the blobCacheControl value to set.
      * @return the BlobHTTPHeaders object itself.
@@ -78,7 +82,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Get the blobContentType value.
+     * Get the blobContentType property: Optional. Sets the blob's content
+     * type. If specified, this property is stored with the blob and returned
+     * with a read request.
      *
      * @return the blobContentType value.
      */
@@ -87,7 +93,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobContentType value.
+     * Set the blobContentType property: Optional. Sets the blob's content
+     * type. If specified, this property is stored with the blob and returned
+     * with a read request.
      *
      * @param blobContentType the blobContentType value to set.
      * @return the BlobHTTPHeaders object itself.
@@ -98,7 +106,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Get the blobContentMD5 value.
+     * Get the blobContentMD5 property: Optional. An MD5 hash of the blob
+     * content. Note that this hash is not validated, as the hashes for the
+     * individual blocks were validated when each was uploaded.
      *
      * @return the blobContentMD5 value.
      */
@@ -107,7 +117,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobContentMD5 value.
+     * Set the blobContentMD5 property: Optional. An MD5 hash of the blob
+     * content. Note that this hash is not validated, as the hashes for the
+     * individual blocks were validated when each was uploaded.
      *
      * @param blobContentMD5 the blobContentMD5 value to set.
      * @return the BlobHTTPHeaders object itself.
@@ -118,7 +130,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Get the blobContentEncoding value.
+     * Get the blobContentEncoding property: Optional. Sets the blob's content
+     * encoding. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @return the blobContentEncoding value.
      */
@@ -127,7 +141,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobContentEncoding value.
+     * Set the blobContentEncoding property: Optional. Sets the blob's content
+     * encoding. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @param blobContentEncoding the blobContentEncoding value to set.
      * @return the BlobHTTPHeaders object itself.
@@ -138,7 +154,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Get the blobContentLanguage value.
+     * Get the blobContentLanguage property: Optional. Set the blob's content
+     * language. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @return the blobContentLanguage value.
      */
@@ -147,7 +165,9 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobContentLanguage value.
+     * Set the blobContentLanguage property: Optional. Set the blob's content
+     * language. If specified, this property is stored with the blob and
+     * returned with a read request.
      *
      * @param blobContentLanguage the blobContentLanguage value to set.
      * @return the BlobHTTPHeaders object itself.
@@ -158,7 +178,8 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Get the blobContentDisposition value.
+     * Get the blobContentDisposition property: Optional. Sets the blob's
+     * Content-Disposition header.
      *
      * @return the blobContentDisposition value.
      */
@@ -167,7 +188,8 @@ public final class BlobHTTPHeaders {
     }
 
     /**
-     * Set the blobContentDisposition value.
+     * Set the blobContentDisposition property: Optional. Sets the blob's
+     * Content-Disposition header.
      *
      * @param blobContentDisposition the blobContentDisposition value to set.
      * @return the BlobHTTPHeaders object itself.

@@ -22,7 +22,7 @@ public final class BlobPrefix {
     private String name;
 
     /**
-     * Get the name value.
+     * Get the name property: The name property.
      *
      * @return the name value.
      */
@@ -31,7 +31,7 @@ public final class BlobPrefix {
     }
 
     /**
-     * Set the name value.
+     * Set the name property: The name property.
      *
      * @param name the name value to set.
      * @return the BlobPrefix object itself.

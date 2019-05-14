@@ -28,7 +28,7 @@ public class BlobPocTests {
 
     @Test
     public void testCreateBlob() {
-        AzureBlobStorage client = new AzureBlobStorageImpl(new HttpPipeline(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))),
+        AzureBlobStorage client = new AzureBlobStorageImpl(new HttpPipeline(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888)))/*,
             new HttpPipelinePolicy() {
                 @Override
                 public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -45,7 +45,7 @@ public class BlobPocTests {
                     }
                     return next.process();
                 }
-        })).withUrl("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net");
+        }*/)).withUrl("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/mycontainer/random" + System.getenv("AZURE_STORAGE_SAS_TOKEN"));
 
         Random random = new Random();
 
@@ -53,7 +53,7 @@ public class BlobPocTests {
         random.nextBytes(randomBytes);
         ByteBuf bb = Unpooled.wrappedBuffer(randomBytes);
         String base64 = Base64.encodeBase64String("0001".getBytes(StandardCharsets.UTF_8));
-        client.blockBlobs().stageBlock("mycontainer", "random", base64, 4096, Flux.just(bb));
-        client.blockBlobs().commitBlockList("mycontainer", "random", new BlockLookupList().withLatest(Arrays.asList(base64)));
+        client.blockBlobs().stageBlockWithRestResponseAsync(null, null, base64, 4096, Flux.just(bb)).block();
+        client.blockBlobs().commitBlockListWithRestResponseAsync(null, null, new BlockLookupList().withLatest(Arrays.asList(base64))).block();
     }
 }

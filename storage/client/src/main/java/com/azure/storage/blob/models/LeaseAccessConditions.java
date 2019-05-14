@@ -23,7 +23,8 @@ public final class LeaseAccessConditions {
     private String leaseId;
 
     /**
-     * Get the leaseId value.
+     * Get the leaseId property: If specified, the operation only succeeds if
+     * the resource's lease is active and matches this ID.
      *
      * @return the leaseId value.
      */
@@ -32,7 +33,8 @@ public final class LeaseAccessConditions {
     }
 
     /**
-     * Set the leaseId value.
+     * Set the leaseId property: If specified, the operation only succeeds if
+     * the resource's lease is active and matches this ID.
      *
      * @param leaseId the leaseId value to set.
      * @return the LeaseAccessConditions object itself.

@@ -47,7 +47,7 @@ public final class BlobItem {
     private Map<String, String> metadata;
 
     /**
-     * Get the name value.
+     * Get the name property: The name property.
      *
      * @return the name value.
      */
@@ -56,7 +56,7 @@ public final class BlobItem {
     }
 
     /**
-     * Set the name value.
+     * Set the name property: The name property.
      *
      * @param name the name value to set.
      * @return the BlobItem object itself.
@@ -67,7 +67,7 @@ public final class BlobItem {
     }
 
     /**
-     * Get the deleted value.
+     * Get the deleted property: The deleted property.
      *
      * @return the deleted value.
      */
@@ -76,7 +76,7 @@ public final class BlobItem {
     }
 
     /**
-     * Set the deleted value.
+     * Set the deleted property: The deleted property.
      *
      * @param deleted the deleted value to set.
      * @return the BlobItem object itself.
@@ -87,7 +87,7 @@ public final class BlobItem {
     }
 
     /**
-     * Get the snapshot value.
+     * Get the snapshot property: The snapshot property.
      *
      * @return the snapshot value.
      */
@@ -96,7 +96,7 @@ public final class BlobItem {
     }
 
     /**
-     * Set the snapshot value.
+     * Set the snapshot property: The snapshot property.
      *
      * @param snapshot the snapshot value to set.
      * @return the BlobItem object itself.
@@ -107,7 +107,7 @@ public final class BlobItem {
     }
 
     /**
-     * Get the properties value.
+     * Get the properties property: The properties property.
      *
      * @return the properties value.
      */
@@ -116,7 +116,7 @@ public final class BlobItem {
     }
 
     /**
-     * Set the properties value.
+     * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
      * @return the BlobItem object itself.
@@ -127,7 +127,7 @@ public final class BlobItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata property: The metadata property.
      *
      * @return the metadata value.
      */
@@ -136,7 +136,7 @@ public final class BlobItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.

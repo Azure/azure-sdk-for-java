@@ -22,7 +22,7 @@ public final class StorageError {
     private String message;
 
     /**
-     * Get the message value.
+     * Get the message property: The message property.
      *
      * @return the message value.
      */
@@ -31,7 +31,7 @@ public final class StorageError {
     }
 
     /**
-     * Set the message value.
+     * Set the message property: The message property.
      *
      * @param message the message value to set.
      * @return the StorageError object itself.

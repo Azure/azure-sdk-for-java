@@ -27,7 +27,6 @@ import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
 import com.azure.storage.blob.models.BlockBlobsStageBlockFromURLResponse;
 import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
 import com.azure.storage.blob.models.BlockBlobsUploadResponse;
-import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -36,6 +35,8 @@ import com.azure.storage.blob.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -74,7 +75,7 @@ public final class BlockBlobsImpl implements BlockBlobs {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") String metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -89,7 +90,7 @@ public final class BlockBlobsImpl implements BlockBlobs {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") String metadata, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @GET("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -105,38 +106,11 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @param body Initial data.
      * @param contentLength The length of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void upload(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        uploadAsync(containerName, blob, body, contentLength).block();
-    }
-
-    /**
-     * The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
         final Integer timeout = null;
-        final String metadata = null;
+        final Map<String, String> metadata = null;
         final String requestId = null;
         final String blobType = "BlockBlob";
         final String blobContentType = null;
@@ -163,42 +137,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @param blob The blob name.
      * @param body Initial data.
      * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> uploadAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        return uploadWithRestResponseAsync(containerName, blob, body, contentLength)
-            .flatMap((BlockBlobsUploadResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void upload(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        uploadAsync(containerName, blob, body, contentLength, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -208,22 +146,7 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
-        Validator.validate(blobHTTPHeaders);
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
+    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, Map<String, String> metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         final String blobType = "BlockBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
@@ -276,43 +199,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
     }
 
     /**
-     * The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> uploadAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return uploadWithRestResponseAsync(containerName, blob, body, contentLength, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((BlockBlobsUploadResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param body Initial data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void stageBlock(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body) {
-        stageBlockAsync(containerName, blob, blockId, contentLength, body).block();
-    }
-
-    /**
      * The Stage Block operation creates a new block to be committed as part of a blob.
      *
      * @param containerName The container name.
@@ -324,21 +210,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blockId == null) {
-            throw new IllegalArgumentException("Parameter blockId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
         final byte[] transactionalContentMD5 = new byte[0];
         final Integer timeout = null;
         final String requestId = null;
@@ -346,42 +217,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
         final String leaseId = null;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         return service.stageBlock(containerName, blob, this.client.url(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param body Initial data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> stageBlockAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body) {
-        return stageBlockWithRestResponseAsync(containerName, blob, blockId, contentLength, body)
-            .flatMap((BlockBlobsStageBlockResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param body Initial data.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void stageBlock(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body, byte[] transactionalContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        stageBlockAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5, timeout, requestId, leaseAccessConditions).block();
     }
 
     /**
@@ -400,22 +235,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body, byte[] transactionalContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blockId == null) {
-            throw new IllegalArgumentException("Parameter blockId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
         final String comp = "block";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -423,42 +242,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         return service.stageBlock(containerName, blob, this.client.url(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param body Initial data.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> stageBlockAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull Flux<ByteBuf> body, byte[] transactionalContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return stageBlockWithRestResponseAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5, timeout, requestId, leaseAccessConditions)
-            .flatMap((BlockBlobsStageBlockResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void stageBlockFromURL(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl) {
-        stageBlockFromURLAsync(containerName, blob, blockId, contentLength, sourceUrl).block();
     }
 
     /**
@@ -473,22 +256,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blockId == null) {
-            throw new IllegalArgumentException("Parameter blockId is required and cannot be null.");
-        }
-        if (sourceUrl == null) {
-            throw new IllegalArgumentException("Parameter sourceUrl is required and cannot be null.");
-        }
-        Validator.validate(sourceUrl);
         final String sourceRange = null;
         final byte[] sourceContentMD5 = new byte[0];
         final Integer timeout = null;
@@ -497,43 +264,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
         final String leaseId = null;
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         return service.stageBlockFromURL(containerName, blob, this.client.url(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> stageBlockFromURLAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl) {
-        return stageBlockFromURLWithRestResponseAsync(containerName, blob, blockId, contentLength, sourceUrl)
-            .flatMap((BlockBlobsStageBlockFromURLResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void stageBlockFromURL(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl, String sourceRange, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        stageBlockFromURLAsync(containerName, blob, blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5, timeout, requestId, leaseAccessConditions).block();
     }
 
     /**
@@ -553,23 +283,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl, String sourceRange, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blockId == null) {
-            throw new IllegalArgumentException("Parameter blockId is required and cannot be null.");
-        }
-        if (sourceUrl == null) {
-            throw new IllegalArgumentException("Parameter sourceUrl is required and cannot be null.");
-        }
-        Validator.validate(sourceUrl);
-        Validator.validate(leaseAccessConditions);
         final String comp = "block";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -577,41 +290,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
         }
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         return service.stageBlockFromURL(containerName, blob, this.client.url(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block.
-     * @param contentLength The length of the request.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> stageBlockFromURLAsync(@NonNull String containerName, @NonNull String blob, @NonNull String blockId, @NonNull long contentLength, @NonNull URL sourceUrl, String sourceRange, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return stageBlockFromURLWithRestResponseAsync(containerName, blob, blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5, timeout, requestId, leaseAccessConditions)
-            .flatMap((BlockBlobsStageBlockFromURLResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob. In order to be written as part of a blob, a block must have been successfully written to the server in a prior Put Block operation. You can call Put Block List to update a blob by uploading only those blocks that have changed, then committing the new and existing blocks together. You can do this by specifying whether to commit a block from the committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the block, whichever list it may belong to.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blocks the BlockLookupList value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void commitBlockList(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks) {
-        commitBlockListAsync(containerName, blob, blocks).block();
     }
 
     /**
@@ -624,21 +302,8 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blocks == null) {
-            throw new IllegalArgumentException("Parameter blocks is required and cannot be null.");
-        }
-        Validator.validate(blocks);
         final Integer timeout = null;
-        final String metadata = null;
+        final Map<String, String> metadata = null;
         final String requestId = null;
         final String comp = "blocklist";
         final String blobCacheControl = null;
@@ -664,40 +329,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blocks the BlockLookupList value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> commitBlockListAsync(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks) {
-        return commitBlockListWithRestResponseAsync(containerName, blob, blocks)
-            .flatMap((BlockBlobsCommitBlockListResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob. In order to be written as part of a blob, a block must have been successfully written to the server in a prior Put Block operation. You can call Put Block List to update a blob by uploading only those blocks that have changed, then committing the new and existing blocks together. You can do this by specifying whether to commit a block from the committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the block, whichever list it may belong to.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blocks the BlockLookupList value.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void commitBlockList(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        commitBlockListAsync(containerName, blob, blocks, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob. In order to be written as part of a blob, a block must have been successfully written to the server in a prior Put Block operation. You can call Put Block List to update a blob by uploading only those blocks that have changed, then committing the new and existing blocks together. You can do this by specifying whether to commit a block from the committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the block, whichever list it may belong to.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blocks the BlockLookupList value.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -707,23 +338,7 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (blocks == null) {
-            throw new IllegalArgumentException("Parameter blocks is required and cannot be null.");
-        }
-        Validator.validate(blocks);
-        Validator.validate(blobHTTPHeaders);
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks, Integer timeout, Map<String, String> metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         final String comp = "blocklist";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
@@ -776,39 +391,6 @@ public final class BlockBlobsImpl implements BlockBlobs {
     }
 
     /**
-     * The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob. In order to be written as part of a blob, a block must have been successfully written to the server in a prior Put Block operation. You can call Put Block List to update a blob by uploading only those blocks that have changed, then committing the new and existing blocks together. You can do this by specifying whether to commit a block from the committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the block, whichever list it may belong to.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blocks the BlockLookupList value.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> commitBlockListAsync(@NonNull String containerName, @NonNull String blob, @NonNull BlockLookupList blocks, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return commitBlockListWithRestResponseAsync(containerName, blob, blocks, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((BlockBlobsCommitBlockListResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     *
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the BlockList object if successful.
-     */
-    public BlockList getBlockList(@NonNull BlockListType listType) {
-        return getBlockListAsync(listType).block();
-    }
-
-    /**
      * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
      *
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
@@ -816,47 +398,12 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsGetBlockListResponse> getBlockListWithRestResponseAsync(@NonNull BlockListType listType) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (listType == null) {
-            throw new IllegalArgumentException("Parameter listType is required and cannot be null.");
-        }
         final String snapshot = null;
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "blocklist";
         final String leaseId = null;
         return service.getBlockList(this.client.url(), snapshot, listType, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     *
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<BlockList> getBlockListAsync(@NonNull BlockListType listType) {
-        return getBlockListWithRestResponseAsync(listType)
-            .flatMap((BlockBlobsGetBlockListResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     *
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the BlockList object if successful.
-     */
-    public BlockList getBlockList(@NonNull BlockListType listType, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return getBlockListAsync(listType, snapshot, timeout, requestId, leaseAccessConditions).block();
     }
 
     /**
@@ -871,34 +418,11 @@ public final class BlockBlobsImpl implements BlockBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<BlockBlobsGetBlockListResponse> getBlockListWithRestResponseAsync(@NonNull BlockListType listType, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (listType == null) {
-            throw new IllegalArgumentException("Parameter listType is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
         final String comp = "blocklist";
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
         return service.getBlockList(this.client.url(), snapshot, listType, timeout, this.client.version(), requestId, comp, leaseId);
-    }
-
-    /**
-     * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     *
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<BlockList> getBlockListAsync(@NonNull BlockListType listType, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return getBlockListWithRestResponseAsync(listType, snapshot, timeout, requestId, leaseAccessConditions)
-            .flatMap((BlockBlobsGetBlockListResponse res) -> Mono.just(res.value()));
     }
 }

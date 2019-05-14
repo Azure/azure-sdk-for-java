@@ -65,7 +65,7 @@ public final class ListContainersSegmentResponse {
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint value.
+     * Get the serviceEndpoint property: The serviceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -74,7 +74,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the serviceEndpoint value.
+     * Set the serviceEndpoint property: The serviceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListContainersSegmentResponse object itself.
@@ -85,7 +85,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Get the prefix value.
+     * Get the prefix property: The prefix property.
      *
      * @return the prefix value.
      */
@@ -94,7 +94,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the prefix value.
+     * Set the prefix property: The prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListContainersSegmentResponse object itself.
@@ -105,7 +105,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Get the marker value.
+     * Get the marker property: The marker property.
      *
      * @return the marker value.
      */
@@ -114,7 +114,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the marker value.
+     * Set the marker property: The marker property.
      *
      * @param marker the marker value to set.
      * @return the ListContainersSegmentResponse object itself.
@@ -125,7 +125,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Get the maxResults value.
+     * Get the maxResults property: The maxResults property.
      *
      * @return the maxResults value.
      */
@@ -134,7 +134,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the maxResults value.
+     * Set the maxResults property: The maxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListContainersSegmentResponse object itself.
@@ -145,7 +145,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Get the containerItems value.
+     * Get the containerItems property: The containerItems property.
      *
      * @return the containerItems value.
      */
@@ -157,7 +157,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the containerItems value.
+     * Set the containerItems property: The containerItems property.
      *
      * @param containerItems the containerItems value to set.
      * @return the ListContainersSegmentResponse object itself.
@@ -168,7 +168,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Get the nextMarker value.
+     * Get the nextMarker property: The nextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -177,7 +177,7 @@ public final class ListContainersSegmentResponse {
     }
 
     /**
-     * Set the nextMarker value.
+     * Set the nextMarker property: The nextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListContainersSegmentResponse object itself.

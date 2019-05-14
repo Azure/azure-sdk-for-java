@@ -46,7 +46,7 @@ public final class Logging {
     private RetentionPolicy retentionPolicy;
 
     /**
-     * Get the version value.
+     * Get the version property: The version of Storage Analytics to configure.
      *
      * @return the version value.
      */
@@ -55,7 +55,7 @@ public final class Logging {
     }
 
     /**
-     * Set the version value.
+     * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
      * @return the Logging object itself.
@@ -66,7 +66,8 @@ public final class Logging {
     }
 
     /**
-     * Get the delete value.
+     * Get the delete property: Indicates whether all delete requests should be
+     * logged.
      *
      * @return the delete value.
      */
@@ -75,7 +76,8 @@ public final class Logging {
     }
 
     /**
-     * Set the delete value.
+     * Set the delete property: Indicates whether all delete requests should be
+     * logged.
      *
      * @param delete the delete value to set.
      * @return the Logging object itself.
@@ -86,7 +88,8 @@ public final class Logging {
     }
 
     /**
-     * Get the read value.
+     * Get the read property: Indicates whether all read requests should be
+     * logged.
      *
      * @return the read value.
      */
@@ -95,7 +98,8 @@ public final class Logging {
     }
 
     /**
-     * Set the read value.
+     * Set the read property: Indicates whether all read requests should be
+     * logged.
      *
      * @param read the read value to set.
      * @return the Logging object itself.
@@ -106,7 +110,8 @@ public final class Logging {
     }
 
     /**
-     * Get the write value.
+     * Get the write property: Indicates whether all write requests should be
+     * logged.
      *
      * @return the write value.
      */
@@ -115,7 +120,8 @@ public final class Logging {
     }
 
     /**
-     * Set the write value.
+     * Set the write property: Indicates whether all write requests should be
+     * logged.
      *
      * @param write the write value to set.
      * @return the Logging object itself.
@@ -126,7 +132,7 @@ public final class Logging {
     }
 
     /**
-     * Get the retentionPolicy value.
+     * Get the retentionPolicy property: The retentionPolicy property.
      *
      * @return the retentionPolicy value.
      */
@@ -135,7 +141,7 @@ public final class Logging {
     }
 
     /**
-     * Set the retentionPolicy value.
+     * Set the retentionPolicy property: The retentionPolicy property.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Logging object itself.

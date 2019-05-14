@@ -38,7 +38,9 @@ public final class SequenceNumberAccessConditions {
     private Long ifSequenceNumberEqualTo;
 
     /**
-     * Get the ifSequenceNumberLessThanOrEqualTo value.
+     * Get the ifSequenceNumberLessThanOrEqualTo property: Specify this header
+     * value to operate only on a blob if it has a sequence number less than or
+     * equal to the specified.
      *
      * @return the ifSequenceNumberLessThanOrEqualTo value.
      */
@@ -47,7 +49,9 @@ public final class SequenceNumberAccessConditions {
     }
 
     /**
-     * Set the ifSequenceNumberLessThanOrEqualTo value.
+     * Set the ifSequenceNumberLessThanOrEqualTo property: Specify this header
+     * value to operate only on a blob if it has a sequence number less than or
+     * equal to the specified.
      *
      * @param ifSequenceNumberLessThanOrEqualTo the
      * ifSequenceNumberLessThanOrEqualTo value to set.
@@ -59,7 +63,9 @@ public final class SequenceNumberAccessConditions {
     }
 
     /**
-     * Get the ifSequenceNumberLessThan value.
+     * Get the ifSequenceNumberLessThan property: Specify this header value to
+     * operate only on a blob if it has a sequence number less than the
+     * specified.
      *
      * @return the ifSequenceNumberLessThan value.
      */
@@ -68,7 +74,9 @@ public final class SequenceNumberAccessConditions {
     }
 
     /**
-     * Set the ifSequenceNumberLessThan value.
+     * Set the ifSequenceNumberLessThan property: Specify this header value to
+     * operate only on a blob if it has a sequence number less than the
+     * specified.
      *
      * @param ifSequenceNumberLessThan the ifSequenceNumberLessThan value to
      * set.
@@ -80,7 +88,8 @@ public final class SequenceNumberAccessConditions {
     }
 
     /**
-     * Get the ifSequenceNumberEqualTo value.
+     * Get the ifSequenceNumberEqualTo property: Specify this header value to
+     * operate only on a blob if it has the specified sequence number.
      *
      * @return the ifSequenceNumberEqualTo value.
      */
@@ -89,7 +98,8 @@ public final class SequenceNumberAccessConditions {
     }
 
     /**
-     * Set the ifSequenceNumberEqualTo value.
+     * Set the ifSequenceNumberEqualTo property: Specify this header value to
+     * operate only on a blob if it has the specified sequence number.
      *
      * @param ifSequenceNumberEqualTo the ifSequenceNumberEqualTo value to set.
      * @return the SequenceNumberAccessConditions object itself.

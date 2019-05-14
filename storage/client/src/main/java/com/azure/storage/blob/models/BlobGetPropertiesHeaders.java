@@ -294,7 +294,10 @@ public final class BlobGetPropertiesHeaders {
     private String errorCode;
 
     /**
-     * Get the lastModified value.
+     * Get the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the blob, including an
+     * update of the blob's metadata or properties, changes the last-modified
+     * time of the blob.
      *
      * @return the lastModified value.
      */
@@ -306,7 +309,10 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the blob, including an
+     * update of the blob's metadata or properties, changes the last-modified
+     * time of the blob.
      *
      * @param lastModified the lastModified value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -321,7 +327,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the creationTime value.
+     * Get the creationTime property: Returns the date and time the blob was
+     * created.
      *
      * @return the creationTime value.
      */
@@ -333,7 +340,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the creationTime value.
+     * Set the creationTime property: Returns the date and time the blob was
+     * created.
      *
      * @param creationTime the creationTime value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -348,7 +356,7 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata property: The metadata property.
      *
      * @return the metadata value.
      */
@@ -357,7 +365,7 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -368,7 +376,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the blobType value.
+     * Get the blobType property: The blob's type. Possible values include:
+     * 'BlockBlob', 'PageBlob', 'AppendBlob'.
      *
      * @return the blobType value.
      */
@@ -377,7 +386,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the blobType value.
+     * Set the blobType property: The blob's type. Possible values include:
+     * 'BlockBlob', 'PageBlob', 'AppendBlob'.
      *
      * @param blobType the blobType value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -388,7 +398,13 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copyCompletionTime value.
+     * Get the copyCompletionTime property: Conclusion time of the last
+     * attempted Copy Blob operation where this blob was the destination blob.
+     * This value can specify the time of a completed, aborted, or failed copy
+     * attempt. This header does not appear if a copy is pending, if this blob
+     * has never been the destination in a Copy Blob operation, or if this blob
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @return the copyCompletionTime value.
      */
@@ -400,7 +416,13 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copyCompletionTime value.
+     * Set the copyCompletionTime property: Conclusion time of the last
+     * attempted Copy Blob operation where this blob was the destination blob.
+     * This value can specify the time of a completed, aborted, or failed copy
+     * attempt. This header does not appear if a copy is pending, if this blob
+     * has never been the destination in a Copy Blob operation, or if this blob
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -415,7 +437,12 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copyStatusDescription value.
+     * Get the copyStatusDescription property: Only appears when
+     * x-ms-copy-status is failed or pending. Describes the cause of the last
+     * fatal or non-fatal copy operation failure. This header does not appear
+     * if this blob has never been the destination in a Copy Blob operation, or
+     * if this blob has been modified after a concluded Copy Blob operation
+     * using Set Blob Properties, Put Blob, or Put Block List.
      *
      * @return the copyStatusDescription value.
      */
@@ -424,7 +451,12 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copyStatusDescription value.
+     * Set the copyStatusDescription property: Only appears when
+     * x-ms-copy-status is failed or pending. Describes the cause of the last
+     * fatal or non-fatal copy operation failure. This header does not appear
+     * if this blob has never been the destination in a Copy Blob operation, or
+     * if this blob has been modified after a concluded Copy Blob operation
+     * using Set Blob Properties, Put Blob, or Put Block List.
      *
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -435,7 +467,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copyId value.
+     * Get the copyId property: String identifier for this copy operation. Use
+     * with Get Blob Properties to check the status of this copy operation, or
+     * pass to Abort Copy Blob to abort a pending copy.
      *
      * @return the copyId value.
      */
@@ -444,7 +478,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copyId value.
+     * Set the copyId property: String identifier for this copy operation. Use
+     * with Get Blob Properties to check the status of this copy operation, or
+     * pass to Abort Copy Blob to abort a pending copy.
      *
      * @param copyId the copyId value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -455,7 +491,13 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copyProgress value.
+     * Get the copyProgress property: Contains the number of bytes copied and
+     * the total bytes in the source in the last attempted Copy Blob operation
+     * where this blob was the destination blob. Can show between 0 and
+     * Content-Length bytes copied. This header does not appear if this blob
+     * has never been the destination in a Copy Blob operation, or if this blob
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @return the copyProgress value.
      */
@@ -464,7 +506,13 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copyProgress value.
+     * Set the copyProgress property: Contains the number of bytes copied and
+     * the total bytes in the source in the last attempted Copy Blob operation
+     * where this blob was the destination blob. Can show between 0 and
+     * Content-Length bytes copied. This header does not appear if this blob
+     * has never been the destination in a Copy Blob operation, or if this blob
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @param copyProgress the copyProgress value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -475,7 +523,12 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copySource value.
+     * Get the copySource property: URL up to 2 KB in length that specifies the
+     * source blob or file used in the last attempted Copy Blob operation where
+     * this blob was the destination blob. This header does not appear if this
+     * blob has never been the destination in a Copy Blob operation, or if this
+     * blob has been modified after a concluded Copy Blob operation using Set
+     * Blob Properties, Put Blob, or Put Block List.
      *
      * @return the copySource value.
      */
@@ -484,7 +537,12 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copySource value.
+     * Set the copySource property: URL up to 2 KB in length that specifies the
+     * source blob or file used in the last attempted Copy Blob operation where
+     * this blob was the destination blob. This header does not appear if this
+     * blob has never been the destination in a Copy Blob operation, or if this
+     * blob has been modified after a concluded Copy Blob operation using Set
+     * Blob Properties, Put Blob, or Put Block List.
      *
      * @param copySource the copySource value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -495,7 +553,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the copyStatus value.
+     * Get the copyStatus property: State of the copy operation identified by
+     * x-ms-copy-id. Possible values include: 'pending', 'success', 'aborted',
+     * 'failed'.
      *
      * @return the copyStatus value.
      */
@@ -504,7 +564,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the copyStatus value.
+     * Set the copyStatus property: State of the copy operation identified by
+     * x-ms-copy-id. Possible values include: 'pending', 'success', 'aborted',
+     * 'failed'.
      *
      * @param copyStatus the copyStatus value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -515,7 +577,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the isIncrementalCopy value.
+     * Get the isIncrementalCopy property: Included if the blob is incremental
+     * copy blob.
      *
      * @return the isIncrementalCopy value.
      */
@@ -524,7 +587,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the isIncrementalCopy value.
+     * Set the isIncrementalCopy property: Included if the blob is incremental
+     * copy blob.
      *
      * @param isIncrementalCopy the isIncrementalCopy value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -535,7 +599,10 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the destinationSnapshot value.
+     * Get the destinationSnapshot property: Included if the blob is
+     * incremental copy blob or incremental copy snapshot, if x-ms-copy-status
+     * is success. Snapshot time of the last successful incremental copy
+     * snapshot for this blob.
      *
      * @return the destinationSnapshot value.
      */
@@ -544,7 +611,10 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the destinationSnapshot value.
+     * Set the destinationSnapshot property: Included if the blob is
+     * incremental copy blob or incremental copy snapshot, if x-ms-copy-status
+     * is success. Snapshot time of the last successful incremental copy
+     * snapshot for this blob.
      *
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -555,7 +625,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the leaseDuration value.
+     * Get the leaseDuration property: When a blob is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
      *
      * @return the leaseDuration value.
      */
@@ -564,7 +636,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the leaseDuration value.
+     * Set the leaseDuration property: When a blob is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -575,7 +649,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the leaseState value.
+     * Get the leaseState property: Lease state of the blob. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
      *
      * @return the leaseState value.
      */
@@ -584,7 +659,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the leaseState value.
+     * Set the leaseState property: Lease state of the blob. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
      *
      * @param leaseState the leaseState value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -595,7 +671,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the leaseStatus value.
+     * Get the leaseStatus property: The current lease status of the blob.
+     * Possible values include: 'locked', 'unlocked'.
      *
      * @return the leaseStatus value.
      */
@@ -604,7 +681,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the leaseStatus value.
+     * Set the leaseStatus property: The current lease status of the blob.
+     * Possible values include: 'locked', 'unlocked'.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -615,7 +693,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentLength value.
+     * Get the contentLength property: The number of bytes present in the
+     * response body.
      *
      * @return the contentLength value.
      */
@@ -624,7 +703,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentLength value.
+     * Set the contentLength property: The number of bytes present in the
+     * response body.
      *
      * @param contentLength the contentLength value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -635,7 +715,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentType value.
+     * Get the contentType property: The content type specified for the blob.
+     * The default content type is 'application/octet-stream'.
      *
      * @return the contentType value.
      */
@@ -644,7 +725,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentType value.
+     * Set the contentType property: The content type specified for the blob.
+     * The default content type is 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -655,7 +737,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the eTag value.
+     * Get the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @return the eTag value.
      */
@@ -664,7 +748,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the eTag value.
+     * Set the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @param eTag the eTag value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -675,7 +761,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentMD5 value.
+     * Get the contentMD5 property: If the blob has an MD5 hash and this
+     * operation is to read the full blob, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @return the contentMD5 value.
      */
@@ -684,7 +772,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentMD5 value.
+     * Set the contentMD5 property: If the blob has an MD5 hash and this
+     * operation is to read the full blob, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -695,7 +785,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentEncoding value.
+     * Get the contentEncoding property: This header returns the value that was
+     * specified for the Content-Encoding request header.
      *
      * @return the contentEncoding value.
      */
@@ -704,7 +795,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentEncoding value.
+     * Set the contentEncoding property: This header returns the value that was
+     * specified for the Content-Encoding request header.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -715,7 +807,14 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentDisposition value.
+     * Get the contentDisposition property: This header returns the value that
+     * was specified for the 'x-ms-blob-content-disposition' header. The
+     * Content-Disposition response header field conveys additional information
+     * about how to process the response payload, and also can be used to
+     * attach additional metadata. For example, if set to attachment, it
+     * indicates that the user-agent should not display the response, but
+     * instead show a Save As dialog with a filename other than the blob name
+     * specified.
      *
      * @return the contentDisposition value.
      */
@@ -724,7 +823,14 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentDisposition value.
+     * Set the contentDisposition property: This header returns the value that
+     * was specified for the 'x-ms-blob-content-disposition' header. The
+     * Content-Disposition response header field conveys additional information
+     * about how to process the response payload, and also can be used to
+     * attach additional metadata. For example, if set to attachment, it
+     * indicates that the user-agent should not display the response, but
+     * instead show a Save As dialog with a filename other than the blob name
+     * specified.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -735,7 +841,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the contentLanguage value.
+     * Get the contentLanguage property: This header returns the value that was
+     * specified for the Content-Language request header.
      *
      * @return the contentLanguage value.
      */
@@ -744,7 +851,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the contentLanguage value.
+     * Set the contentLanguage property: This header returns the value that was
+     * specified for the Content-Language request header.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -755,7 +863,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the cacheControl value.
+     * Get the cacheControl property: This header is returned if it was
+     * previously specified for the blob.
      *
      * @return the cacheControl value.
      */
@@ -764,7 +873,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the cacheControl value.
+     * Set the cacheControl property: This header is returned if it was
+     * previously specified for the blob.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -775,7 +885,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the blobSequenceNumber value.
+     * Get the blobSequenceNumber property: The current sequence number for a
+     * page blob. This header is not returned for block blobs or append blobs.
      *
      * @return the blobSequenceNumber value.
      */
@@ -784,7 +895,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the blobSequenceNumber value.
+     * Set the blobSequenceNumber property: The current sequence number for a
+     * page blob. This header is not returned for block blobs or append blobs.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -795,7 +907,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the requestId value.
+     * Get the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @return the requestId value.
      */
@@ -804,7 +917,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the requestId value.
+     * Set the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -815,7 +929,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the version value.
+     * Get the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @return the version value.
      */
@@ -824,7 +940,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the version value.
+     * Set the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @param version the version value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -835,7 +953,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty value.
+     * Get the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @return the dateProperty value.
      */
@@ -847,7 +966,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the dateProperty value.
+     * Set the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @param dateProperty the dateProperty value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -862,7 +982,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the acceptRanges value.
+     * Get the acceptRanges property: Indicates that the service supports
+     * requests for partial blob content.
      *
      * @return the acceptRanges value.
      */
@@ -871,7 +992,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the acceptRanges value.
+     * Set the acceptRanges property: Indicates that the service supports
+     * requests for partial blob content.
      *
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -882,7 +1004,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the blobCommittedBlockCount value.
+     * Get the blobCommittedBlockCount property: The number of committed blocks
+     * present in the blob. This header is returned only for append blobs.
      *
      * @return the blobCommittedBlockCount value.
      */
@@ -891,7 +1014,8 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the blobCommittedBlockCount value.
+     * Set the blobCommittedBlockCount property: The number of committed blocks
+     * present in the blob. This header is returned only for append blobs.
      *
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -902,7 +1026,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the isServerEncrypted value.
+     * Get the isServerEncrypted property: The value of this header is set to
+     * true if the blob data and application metadata are completely encrypted
+     * using the specified algorithm. Otherwise, the value is set to false
+     * (when the blob is unencrypted, or if only parts of the blob/application
+     * metadata are encrypted).
      *
      * @return the isServerEncrypted value.
      */
@@ -911,7 +1039,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the isServerEncrypted value.
+     * Set the isServerEncrypted property: The value of this header is set to
+     * true if the blob data and application metadata are completely encrypted
+     * using the specified algorithm. Otherwise, the value is set to false
+     * (when the blob is unencrypted, or if only parts of the blob/application
+     * metadata are encrypted).
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -922,7 +1054,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the accessTier value.
+     * Get the accessTier property: The tier of page blob on a premium storage
+     * account or tier of block blob on blob storage LRS accounts. For a list
+     * of allowed premium page blob tiers, see
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage#features.
+     * For blob storage LRS accounts, valid values are Hot/Cool/Archive.
      *
      * @return the accessTier value.
      */
@@ -931,7 +1067,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the accessTier value.
+     * Set the accessTier property: The tier of page blob on a premium storage
+     * account or tier of block blob on blob storage LRS accounts. For a list
+     * of allowed premium page blob tiers, see
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage#features.
+     * For blob storage LRS accounts, valid values are Hot/Cool/Archive.
      *
      * @param accessTier the accessTier value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -942,7 +1082,10 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the accessTierInferred value.
+     * Get the accessTierInferred property: For page blobs on a premium storage
+     * account only. If the access tier is not explicitly set on the blob, the
+     * tier is inferred based on its content length and this header will be
+     * returned with true value.
      *
      * @return the accessTierInferred value.
      */
@@ -951,7 +1094,10 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the accessTierInferred value.
+     * Set the accessTierInferred property: For page blobs on a premium storage
+     * account only. If the access tier is not explicitly set on the blob, the
+     * tier is inferred based on its content length and this header will be
+     * returned with true value.
      *
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -962,7 +1108,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the archiveStatus value.
+     * Get the archiveStatus property: For blob storage LRS accounts, valid
+     * values are rehydrate-pending-to-hot/rehydrate-pending-to-cool. If the
+     * blob is being rehydrated and is not complete then this header is
+     * returned indicating that rehydrate is pending and also tells the
+     * destination tier.
      *
      * @return the archiveStatus value.
      */
@@ -971,7 +1121,11 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the archiveStatus value.
+     * Set the archiveStatus property: For blob storage LRS accounts, valid
+     * values are rehydrate-pending-to-hot/rehydrate-pending-to-cool. If the
+     * blob is being rehydrated and is not complete then this header is
+     * returned indicating that rehydrate is pending and also tells the
+     * destination tier.
      *
      * @param archiveStatus the archiveStatus value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -982,7 +1136,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the accessTierChangeTime value.
+     * Get the accessTierChangeTime property: The time the tier was changed on
+     * the object. This is only returned if the tier on the block blob was ever
+     * set.
      *
      * @return the accessTierChangeTime value.
      */
@@ -994,7 +1150,9 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the accessTierChangeTime value.
+     * Set the accessTierChangeTime property: The time the tier was changed on
+     * the object. This is only returned if the tier on the block blob was ever
+     * set.
      *
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobGetPropertiesHeaders object itself.
@@ -1009,7 +1167,7 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the errorCode value.
+     * Get the errorCode property: The errorCode property.
      *
      * @return the errorCode value.
      */
@@ -1018,7 +1176,7 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Set the errorCode value.
+     * Set the errorCode property: The errorCode property.
      *
      * @param errorCode the errorCode value to set.
      * @return the BlobGetPropertiesHeaders object itself.

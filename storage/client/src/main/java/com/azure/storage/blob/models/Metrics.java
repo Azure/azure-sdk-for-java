@@ -42,7 +42,7 @@ public final class Metrics {
     private RetentionPolicy retentionPolicy;
 
     /**
-     * Get the version value.
+     * Get the version property: The version of Storage Analytics to configure.
      *
      * @return the version value.
      */
@@ -51,7 +51,7 @@ public final class Metrics {
     }
 
     /**
-     * Set the version value.
+     * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
      * @return the Metrics object itself.
@@ -62,7 +62,8 @@ public final class Metrics {
     }
 
     /**
-     * Get the enabled value.
+     * Get the enabled property: Indicates whether metrics are enabled for the
+     * Blob service.
      *
      * @return the enabled value.
      */
@@ -71,7 +72,8 @@ public final class Metrics {
     }
 
     /**
-     * Set the enabled value.
+     * Set the enabled property: Indicates whether metrics are enabled for the
+     * Blob service.
      *
      * @param enabled the enabled value to set.
      * @return the Metrics object itself.
@@ -82,7 +84,8 @@ public final class Metrics {
     }
 
     /**
-     * Get the includeAPIs value.
+     * Get the includeAPIs property: Indicates whether metrics should generate
+     * summary statistics for called API operations.
      *
      * @return the includeAPIs value.
      */
@@ -91,7 +94,8 @@ public final class Metrics {
     }
 
     /**
-     * Set the includeAPIs value.
+     * Set the includeAPIs property: Indicates whether metrics should generate
+     * summary statistics for called API operations.
      *
      * @param includeAPIs the includeAPIs value to set.
      * @return the Metrics object itself.
@@ -102,7 +106,7 @@ public final class Metrics {
     }
 
     /**
-     * Get the retentionPolicy value.
+     * Get the retentionPolicy property: The retentionPolicy property.
      *
      * @return the retentionPolicy value.
      */
@@ -111,7 +115,7 @@ public final class Metrics {
     }
 
     /**
-     * Set the retentionPolicy value.
+     * Set the retentionPolicy property: The retentionPolicy property.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Metrics object itself.

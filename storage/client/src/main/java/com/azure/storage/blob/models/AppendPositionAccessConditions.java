@@ -37,7 +37,12 @@ public final class AppendPositionAccessConditions {
     private Long appendPosition;
 
     /**
-     * Get the maxSize value.
+     * Get the maxSize property: Optional conditional header. The max length in
+     * bytes permitted for the append blob. If the Append Block operation would
+     * cause the blob to exceed that limit or if the blob size is already
+     * greater than the value specified in this header, the request will fail
+     * with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
+     * Precondition Failed).
      *
      * @return the maxSize value.
      */
@@ -46,7 +51,12 @@ public final class AppendPositionAccessConditions {
     }
 
     /**
-     * Set the maxSize value.
+     * Set the maxSize property: Optional conditional header. The max length in
+     * bytes permitted for the append blob. If the Append Block operation would
+     * cause the blob to exceed that limit or if the blob size is already
+     * greater than the value specified in this header, the request will fail
+     * with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
+     * Precondition Failed).
      *
      * @param maxSize the maxSize value to set.
      * @return the AppendPositionAccessConditions object itself.
@@ -57,7 +67,12 @@ public final class AppendPositionAccessConditions {
     }
 
     /**
-     * Get the appendPosition value.
+     * Get the appendPosition property: Optional conditional header, used only
+     * for the Append Block operation. A number indicating the byte offset to
+     * compare. Append Block will succeed only if the append position is equal
+     * to this number. If it is not, the request will fail with the
+     * AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
+     * Failed).
      *
      * @return the appendPosition value.
      */
@@ -66,7 +81,12 @@ public final class AppendPositionAccessConditions {
     }
 
     /**
-     * Set the appendPosition value.
+     * Set the appendPosition property: Optional conditional header, used only
+     * for the Append Block operation. A number indicating the byte offset to
+     * compare. Append Block will succeed only if the append position is equal
+     * to this number. If it is not, the request will fail with the
+     * AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
+     * Failed).
      *
      * @param appendPosition the appendPosition value to set.
      * @return the AppendPositionAccessConditions object itself.

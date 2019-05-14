@@ -37,7 +37,8 @@ public final class ServiceListContainersSegmentHeaders {
     private String errorCode;
 
     /**
-     * Get the requestId value.
+     * Get the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @return the requestId value.
      */
@@ -46,7 +47,8 @@ public final class ServiceListContainersSegmentHeaders {
     }
 
     /**
-     * Set the requestId value.
+     * Set the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
@@ -57,7 +59,9 @@ public final class ServiceListContainersSegmentHeaders {
     }
 
     /**
-     * Get the version value.
+     * Get the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @return the version value.
      */
@@ -66,7 +70,9 @@ public final class ServiceListContainersSegmentHeaders {
     }
 
     /**
-     * Set the version value.
+     * Set the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @param version the version value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
@@ -77,7 +83,7 @@ public final class ServiceListContainersSegmentHeaders {
     }
 
     /**
-     * Get the errorCode value.
+     * Get the errorCode property: The errorCode property.
      *
      * @return the errorCode value.
      */
@@ -86,7 +92,7 @@ public final class ServiceListContainersSegmentHeaders {
     }
 
     /**
-     * Set the errorCode value.
+     * Set the errorCode property: The errorCode property.
      *
      * @param errorCode the errorCode value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.

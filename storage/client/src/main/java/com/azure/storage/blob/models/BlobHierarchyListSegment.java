@@ -30,7 +30,7 @@ public final class BlobHierarchyListSegment {
     private List<BlobItem> blobItems = new ArrayList<>();
 
     /**
-     * Get the blobPrefixes value.
+     * Get the blobPrefixes property: The blobPrefixes property.
      *
      * @return the blobPrefixes value.
      */
@@ -39,7 +39,7 @@ public final class BlobHierarchyListSegment {
     }
 
     /**
-     * Set the blobPrefixes value.
+     * Set the blobPrefixes property: The blobPrefixes property.
      *
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
@@ -50,7 +50,7 @@ public final class BlobHierarchyListSegment {
     }
 
     /**
-     * Get the blobItems value.
+     * Get the blobItems property: The blobItems property.
      *
      * @return the blobItems value.
      */
@@ -59,7 +59,7 @@ public final class BlobHierarchyListSegment {
     }
 
     /**
-     * Set the blobItems value.
+     * Set the blobItems property: The blobItems property.
      *
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.

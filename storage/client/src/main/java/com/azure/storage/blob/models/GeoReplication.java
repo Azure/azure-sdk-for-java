@@ -34,7 +34,8 @@ public final class GeoReplication {
     private DateTimeRfc1123 lastSyncTime;
 
     /**
-     * Get the status value.
+     * Get the status property: The status of the secondary location. Possible
+     * values include: 'live', 'bootstrap', 'unavailable'.
      *
      * @return the status value.
      */
@@ -43,7 +44,8 @@ public final class GeoReplication {
     }
 
     /**
-     * Set the status value.
+     * Set the status property: The status of the secondary location. Possible
+     * values include: 'live', 'bootstrap', 'unavailable'.
      *
      * @param status the status value to set.
      * @return the GeoReplication object itself.
@@ -54,7 +56,10 @@ public final class GeoReplication {
     }
 
     /**
-     * Get the lastSyncTime value.
+     * Get the lastSyncTime property: A GMT date/time value, to the second. All
+     * primary writes preceding this value are guaranteed to be available for
+     * read operations at the secondary. Primary writes after this point in
+     * time may or may not be available for reads.
      *
      * @return the lastSyncTime value.
      */
@@ -66,7 +71,10 @@ public final class GeoReplication {
     }
 
     /**
-     * Set the lastSyncTime value.
+     * Set the lastSyncTime property: A GMT date/time value, to the second. All
+     * primary writes preceding this value are guaranteed to be available for
+     * read operations at the secondary. Primary writes after this point in
+     * time may or may not be available for reads.
      *
      * @param lastSyncTime the lastSyncTime value to set.
      * @return the GeoReplication object itself.

@@ -84,7 +84,9 @@ public final class PageBlobUploadPagesHeaders {
     private String errorCode;
 
     /**
-     * Get the eTag value.
+     * Get the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @return the eTag value.
      */
@@ -93,7 +95,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the eTag value.
+     * Set the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @param eTag the eTag value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -104,7 +108,10 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the blob, including an
+     * update of the blob's metadata or properties, changes the last-modified
+     * time of the blob.
      *
      * @return the lastModified value.
      */
@@ -116,7 +123,10 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the blob, including an
+     * update of the blob's metadata or properties, changes the last-modified
+     * time of the blob.
      *
      * @param lastModified the lastModified value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -131,7 +141,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the contentMD5 value.
+     * Get the contentMD5 property: If the blob has an MD5 hash and this
+     * operation is to read the full blob, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @return the contentMD5 value.
      */
@@ -140,7 +152,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the contentMD5 value.
+     * Set the contentMD5 property: If the blob has an MD5 hash and this
+     * operation is to read the full blob, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -151,7 +165,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the blobSequenceNumber value.
+     * Get the blobSequenceNumber property: The current sequence number for the
+     * page blob.
      *
      * @return the blobSequenceNumber value.
      */
@@ -160,7 +175,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the blobSequenceNumber value.
+     * Set the blobSequenceNumber property: The current sequence number for the
+     * page blob.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -171,7 +187,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the requestId value.
+     * Get the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @return the requestId value.
      */
@@ -180,7 +197,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the requestId value.
+     * Set the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -191,7 +209,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the version value.
+     * Get the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @return the version value.
      */
@@ -200,7 +220,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the version value.
+     * Set the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @param version the version value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -211,7 +233,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the dateProperty value.
+     * Get the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @return the dateProperty value.
      */
@@ -223,7 +246,8 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the dateProperty value.
+     * Set the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -238,7 +262,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the isServerEncrypted value.
+     * Get the isServerEncrypted property: The value of this header is set to
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
      *
      * @return the isServerEncrypted value.
      */
@@ -247,7 +273,9 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the isServerEncrypted value.
+     * Set the isServerEncrypted property: The value of this header is set to
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
@@ -258,7 +286,7 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Get the errorCode value.
+     * Get the errorCode property: The errorCode property.
      *
      * @return the errorCode value.
      */
@@ -267,7 +295,7 @@ public final class PageBlobUploadPagesHeaders {
     }
 
     /**
-     * Set the errorCode value.
+     * Set the errorCode property: The errorCode property.
      *
      * @param errorCode the errorCode value to set.
      * @return the PageBlobUploadPagesHeaders object itself.

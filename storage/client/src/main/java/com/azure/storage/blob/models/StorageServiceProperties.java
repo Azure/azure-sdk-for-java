@@ -73,7 +73,7 @@ public final class StorageServiceProperties {
     private StaticWebsite staticWebsite;
 
     /**
-     * Get the logging value.
+     * Get the logging property: The logging property.
      *
      * @return the logging value.
      */
@@ -82,7 +82,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the logging value.
+     * Set the logging property: The logging property.
      *
      * @param logging the logging value to set.
      * @return the StorageServiceProperties object itself.
@@ -93,7 +93,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the hourMetrics value.
+     * Get the hourMetrics property: The hourMetrics property.
      *
      * @return the hourMetrics value.
      */
@@ -102,7 +102,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the hourMetrics value.
+     * Set the hourMetrics property: The hourMetrics property.
      *
      * @param hourMetrics the hourMetrics value to set.
      * @return the StorageServiceProperties object itself.
@@ -113,7 +113,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the minuteMetrics value.
+     * Get the minuteMetrics property: The minuteMetrics property.
      *
      * @return the minuteMetrics value.
      */
@@ -122,7 +122,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the minuteMetrics value.
+     * Set the minuteMetrics property: The minuteMetrics property.
      *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the StorageServiceProperties object itself.
@@ -133,7 +133,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the cors value.
+     * Get the cors property: The set of CORS rules.
      *
      * @return the cors value.
      */
@@ -145,7 +145,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the cors value.
+     * Set the cors property: The set of CORS rules.
      *
      * @param cors the cors value to set.
      * @return the StorageServiceProperties object itself.
@@ -156,7 +156,10 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the defaultServiceVersion value.
+     * Get the defaultServiceVersion property: The default version to use for
+     * requests to the Blob service if an incoming request's version is not
+     * specified. Possible values include version 2008-10-27 and all more
+     * recent versions.
      *
      * @return the defaultServiceVersion value.
      */
@@ -165,7 +168,10 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the defaultServiceVersion value.
+     * Set the defaultServiceVersion property: The default version to use for
+     * requests to the Blob service if an incoming request's version is not
+     * specified. Possible values include version 2008-10-27 and all more
+     * recent versions.
      *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the StorageServiceProperties object itself.
@@ -176,7 +182,8 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the deleteRetentionPolicy value.
+     * Get the deleteRetentionPolicy property: The deleteRetentionPolicy
+     * property.
      *
      * @return the deleteRetentionPolicy value.
      */
@@ -185,7 +192,8 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the deleteRetentionPolicy value.
+     * Set the deleteRetentionPolicy property: The deleteRetentionPolicy
+     * property.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the StorageServiceProperties object itself.
@@ -196,7 +204,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Get the staticWebsite value.
+     * Get the staticWebsite property: The staticWebsite property.
      *
      * @return the staticWebsite value.
      */
@@ -205,7 +213,7 @@ public final class StorageServiceProperties {
     }
 
     /**
-     * Set the staticWebsite value.
+     * Set the staticWebsite property: The staticWebsite property.
      *
      * @param staticWebsite the staticWebsite value to set.
      * @return the StorageServiceProperties object itself.

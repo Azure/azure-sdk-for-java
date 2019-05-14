@@ -67,7 +67,7 @@ public final class ContainerProperties {
     private Boolean hasLegalHold;
 
     /**
-     * Get the lastModified value.
+     * Get the lastModified property: The lastModified property.
      *
      * @return the lastModified value.
      */
@@ -79,7 +79,7 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the lastModified property: The lastModified property.
      *
      * @param lastModified the lastModified value to set.
      * @return the ContainerProperties object itself.
@@ -94,7 +94,7 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get the etag property: The etag property.
      *
      * @return the etag value.
      */
@@ -103,7 +103,7 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the etag value.
+     * Set the etag property: The etag property.
      *
      * @param etag the etag value to set.
      * @return the ContainerProperties object itself.
@@ -114,7 +114,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the leaseStatus value.
+     * Get the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @return the leaseStatus value.
      */
@@ -123,7 +124,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the leaseStatus value.
+     * Set the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the ContainerProperties object itself.
@@ -134,7 +136,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the leaseState value.
+     * Get the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @return the leaseState value.
      */
@@ -143,7 +146,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the leaseState value.
+     * Set the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @param leaseState the leaseState value to set.
      * @return the ContainerProperties object itself.
@@ -154,7 +158,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the leaseDuration value.
+     * Get the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @return the leaseDuration value.
      */
@@ -163,7 +168,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the leaseDuration value.
+     * Set the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the ContainerProperties object itself.
@@ -174,7 +180,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the publicAccess value.
+     * Get the publicAccess property: Possible values include: 'container',
+     * 'blob'.
      *
      * @return the publicAccess value.
      */
@@ -183,7 +190,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the publicAccess value.
+     * Set the publicAccess property: Possible values include: 'container',
+     * 'blob'.
      *
      * @param publicAccess the publicAccess value to set.
      * @return the ContainerProperties object itself.
@@ -194,7 +202,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the hasImmutabilityPolicy value.
+     * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy
+     * property.
      *
      * @return the hasImmutabilityPolicy value.
      */
@@ -203,7 +212,8 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the hasImmutabilityPolicy value.
+     * Set the hasImmutabilityPolicy property: The hasImmutabilityPolicy
+     * property.
      *
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the ContainerProperties object itself.
@@ -214,7 +224,7 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the hasLegalHold value.
+     * Get the hasLegalHold property: The hasLegalHold property.
      *
      * @return the hasLegalHold value.
      */
@@ -223,7 +233,7 @@ public final class ContainerProperties {
     }
 
     /**
-     * Set the hasLegalHold value.
+     * Set the hasLegalHold property: The hasLegalHold property.
      *
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the ContainerProperties object itself.

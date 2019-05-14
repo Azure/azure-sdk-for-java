@@ -24,7 +24,7 @@ public final class BlobFlatListSegment {
     private List<BlobItem> blobItems = new ArrayList<>();
 
     /**
-     * Get the blobItems value.
+     * Get the blobItems property: The blobItems property.
      *
      * @return the blobItems value.
      */
@@ -33,7 +33,7 @@ public final class BlobFlatListSegment {
     }
 
     /**
-     * Set the blobItems value.
+     * Set the blobItems property: The blobItems property.
      *
      * @param blobItems the blobItems value to set.
      * @return the BlobFlatListSegment object itself.

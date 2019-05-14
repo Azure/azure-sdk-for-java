@@ -35,7 +35,7 @@ public final class ContainerItem {
     private Map<String, String> metadata;
 
     /**
-     * Get the name value.
+     * Get the name property: The name property.
      *
      * @return the name value.
      */
@@ -44,7 +44,7 @@ public final class ContainerItem {
     }
 
     /**
-     * Set the name value.
+     * Set the name property: The name property.
      *
      * @param name the name value to set.
      * @return the ContainerItem object itself.
@@ -55,7 +55,7 @@ public final class ContainerItem {
     }
 
     /**
-     * Get the properties value.
+     * Get the properties property: The properties property.
      *
      * @return the properties value.
      */
@@ -64,7 +64,7 @@ public final class ContainerItem {
     }
 
     /**
-     * Set the properties value.
+     * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
      * @return the ContainerItem object itself.
@@ -75,7 +75,7 @@ public final class ContainerItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata property: The metadata property.
      *
      * @return the metadata value.
      */
@@ -84,7 +84,7 @@ public final class ContainerItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
      * @return the ContainerItem object itself.

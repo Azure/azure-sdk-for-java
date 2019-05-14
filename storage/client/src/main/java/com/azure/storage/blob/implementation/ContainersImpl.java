@@ -37,8 +37,6 @@ import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ListBlobsFlatSegmentResponse;
-import com.azure.storage.blob.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -46,7 +44,9 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageErrorException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
 
@@ -84,7 +84,7 @@ public final class ContainersImpl implements Containers {
         @PUT("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") String metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype);
+        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype);
 
         @GET("{containerName}")
         @ExpectedResponses({200})
@@ -99,7 +99,7 @@ public final class ContainersImpl implements Containers {
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ContainersSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") String metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince);
+        Mono<ContainersSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince);
 
         @GET("{containerName}")
         @ExpectedResponses({200})
@@ -157,29 +157,11 @@ public final class ContainersImpl implements Containers {
      *
      * @param containerName The container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void create(@NonNull String containerName) {
-        createAsync(containerName).block();
-    }
-
-    /**
-     * creates a new container under the specified account. If the container with the same name already exists, the operation fails.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersCreateResponse> createWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final Integer timeout = null;
-        final String metadata = null;
+        final Map<String, String> metadata = null;
         final PublicAccessType access = null;
         final String requestId = null;
         final String restype = "container";
@@ -190,34 +172,6 @@ public final class ContainersImpl implements Containers {
      * creates a new container under the specified account. If the container with the same name already exists, the operation fails.
      *
      * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> createAsync(@NonNull String containerName) {
-        return createWithRestResponseAsync(containerName)
-            .flatMap((ContainersCreateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * creates a new container under the specified account. If the container with the same name already exists, the operation fails.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void create(@NonNull String containerName, Integer timeout, String metadata, PublicAccessType access, String requestId) {
-        createAsync(containerName, timeout, metadata, access, requestId).block();
-    }
-
-    /**
-     * creates a new container under the specified account. If the container with the same name already exists, the operation fails.
-     *
-     * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
@@ -225,41 +179,9 @@ public final class ContainersImpl implements Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ContainersCreateResponse> createWithRestResponseAsync(@NonNull String containerName, Integer timeout, String metadata, PublicAccessType access, String requestId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
+    public Mono<ContainersCreateResponse> createWithRestResponseAsync(@NonNull String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId) {
         final String restype = "container";
         return service.create(containerName, this.client.url(), timeout, metadata, access, this.client.version(), requestId, restype);
-    }
-
-    /**
-     * creates a new container under the specified account. If the container with the same name already exists, the operation fails.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> createAsync(@NonNull String containerName, Integer timeout, String metadata, PublicAccessType access, String requestId) {
-        return createWithRestResponseAsync(containerName, timeout, metadata, access, requestId)
-            .flatMap((ContainersCreateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
-     *
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void getProperties() {
-        getPropertiesAsync().block();
     }
 
     /**
@@ -268,38 +190,11 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersGetPropertiesResponse> getPropertiesWithRestResponseAsync() {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
         final String leaseId = null;
         return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, leaseId);
-    }
-
-    /**
-     * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
-     *
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> getPropertiesAsync() {
-        return getPropertiesWithRestResponseAsync()
-            .flatMap((ContainersGetPropertiesResponse res) -> Mono.empty());
-    }
-
-    /**
-     * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void getProperties(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        getPropertiesAsync(timeout, requestId, leaseAccessConditions).block();
     }
 
     /**
@@ -312,10 +207,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -325,38 +216,11 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> getPropertiesAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return getPropertiesWithRestResponseAsync(timeout, requestId, leaseAccessConditions)
-            .flatMap((ContainersGetPropertiesResponse res) -> Mono.empty());
-    }
-
-    /**
-     * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
-     *
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void delete() {
-        deleteAsync().block();
-    }
-
-    /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersDeleteResponse> deleteWithRestResponseAsync() {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
@@ -371,31 +235,6 @@ public final class ContainersImpl implements Containers {
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> deleteAsync() {
-        return deleteWithRestResponseAsync()
-            .flatMap((ContainersDeleteResponse res) -> Mono.empty());
-    }
-
-    /**
-     * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void delete(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        deleteAsync(timeout, requestId, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
-     *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
@@ -404,11 +243,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersDeleteResponse> deleteWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -428,33 +262,6 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> deleteAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return deleteWithRestResponseAsync(timeout, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((ContainersDeleteResponse res) -> Mono.empty());
-    }
-
-    /**
-     * operation sets one or more user-defined name-value pairs for the specified container.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void setMetadata(@NonNull String containerName) {
-        setMetadataAsync(containerName).block();
-    }
-
-    /**
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param containerName The container name.
@@ -462,14 +269,8 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersSetMetadataResponse> setMetadataWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final Integer timeout = null;
-        final String metadata = null;
+        final Map<String, String> metadata = null;
         final String requestId = null;
         final String restype = "container";
         final String comp = "metadata";
@@ -483,35 +284,6 @@ public final class ContainersImpl implements Containers {
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> setMetadataAsync(@NonNull String containerName) {
-        return setMetadataWithRestResponseAsync(containerName)
-            .flatMap((ContainersSetMetadataResponse res) -> Mono.empty());
-    }
-
-    /**
-     * operation sets one or more user-defined name-value pairs for the specified container.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void setMetadata(@NonNull String containerName, Integer timeout, String metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        setMetadataAsync(containerName, timeout, metadata, requestId, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * operation sets one or more user-defined name-value pairs for the specified container.
-     *
-     * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -520,15 +292,7 @@ public final class ContainersImpl implements Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ContainersSetMetadataResponse> setMetadataWithRestResponseAsync(@NonNull String containerName, Integer timeout, String metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
+    public Mono<ContainersSetMetadataResponse> setMetadataWithRestResponseAsync(@NonNull String containerName, Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         final String restype = "container";
         final String comp = "metadata";
         String leaseId = null;
@@ -544,36 +308,6 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * operation sets one or more user-defined name-value pairs for the specified container.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> setMetadataAsync(@NonNull String containerName, Integer timeout, String metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return setMetadataWithRestResponseAsync(containerName, timeout, metadata, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((ContainersSetMetadataResponse res) -> Mono.empty());
-    }
-
-    /**
-     * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List&lt;SignedIdentifier&gt; object if successful.
-     */
-    public List<SignedIdentifier> getAccessPolicy(@NonNull String containerName) {
-        return getAccessPolicyAsync(containerName).block();
-    }
-
-    /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
      *
      * @param containerName The container name.
@@ -581,46 +315,12 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
         final String comp = "acl";
         final String leaseId = null;
         return service.getAccessPolicy(containerName, this.client.url(), timeout, this.client.version(), requestId, restype, comp, leaseId);
-    }
-
-    /**
-     * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(@NonNull String containerName) {
-        return getAccessPolicyWithRestResponseAsync(containerName)
-            .flatMap((ContainersGetAccessPolicyResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List&lt;SignedIdentifier&gt; object if successful.
-     */
-    public List<SignedIdentifier> getAccessPolicy(@NonNull String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return getAccessPolicyAsync(containerName, timeout, requestId, leaseAccessConditions).block();
     }
 
     /**
@@ -634,13 +334,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(@NonNull String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
         final String restype = "container";
         final String comp = "acl";
         String leaseId = null;
@@ -651,39 +344,11 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(@NonNull String containerName, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
-        return getAccessPolicyWithRestResponseAsync(containerName, timeout, requestId, leaseAccessConditions)
-            .flatMap((ContainersGetAccessPolicyResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-     *
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void setAccessPolicy() {
-        setAccessPolicyAsync().block();
-    }
-
-    /**
      * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
      *
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync() {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
         final List<SignedIdentifier> containerAcl = null;
         final Integer timeout = null;
         final PublicAccessType access = null;
@@ -702,33 +367,6 @@ public final class ContainersImpl implements Containers {
     /**
      * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
      *
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> setAccessPolicyAsync() {
-        return setAccessPolicyWithRestResponseAsync()
-            .flatMap((ContainersSetAccessPolicyResponse res) -> Mono.empty());
-    }
-
-    /**
-     * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-     *
-     * @param containerAcl the acls for the container.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void setAccessPolicy(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        setAccessPolicyAsync(containerAcl, timeout, access, requestId, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-     *
      * @param containerAcl the acls for the container.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
@@ -739,12 +377,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        Validator.validate(containerAcl);
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
         final String restype = "container";
         final String comp = "acl";
         String leaseId = null;
@@ -766,35 +398,6 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-     *
-     * @param containerAcl the acls for the container.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> setAccessPolicyAsync(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return setAccessPolicyWithRestResponseAsync(containerAcl, timeout, access, requestId, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((ContainersSetAccessPolicyResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void acquireLease(@NonNull String containerName) {
-        acquireLeaseAsync(containerName).block();
-    }
-
-    /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
@@ -802,12 +405,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final Integer timeout = null;
         final Integer duration = null;
         final String proposedLeaseId = null;
@@ -826,35 +423,6 @@ public final class ContainersImpl implements Containers {
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> acquireLeaseAsync(@NonNull String containerName) {
-        return acquireLeaseWithRestResponseAsync(containerName)
-            .flatMap((ContainersAcquireLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void acquireLease(@NonNull String containerName, Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        acquireLeaseAsync(containerName, timeout, duration, proposedLeaseId, requestId, modifiedAccessConditions).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
@@ -864,13 +432,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(@NonNull String containerName, Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "acquire";
@@ -891,50 +452,11 @@ public final class ContainersImpl implements Containers {
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> acquireLeaseAsync(@NonNull String containerName, Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        return acquireLeaseWithRestResponseAsync(containerName, timeout, duration, proposedLeaseId, requestId, modifiedAccessConditions)
-            .flatMap((ContainersAcquireLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void releaseLease(@NonNull String containerName, @NonNull String leaseId) {
-        releaseLeaseAsync(containerName, leaseId).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "lease";
@@ -945,35 +467,6 @@ public final class ContainersImpl implements Containers {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.releaseLease(containerName, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> releaseLeaseAsync(@NonNull String containerName, @NonNull String leaseId) {
-        return releaseLeaseWithRestResponseAsync(containerName, leaseId)
-            .flatMap((ContainersReleaseLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void releaseLease(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        releaseLeaseAsync(containerName, leaseId, timeout, requestId, modifiedAccessConditions).block();
     }
 
     /**
@@ -988,16 +481,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
-        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "release";
@@ -1019,48 +502,10 @@ public final class ContainersImpl implements Containers {
      *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> releaseLeaseAsync(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        return releaseLeaseWithRestResponseAsync(containerName, leaseId, timeout, requestId, modifiedAccessConditions)
-            .flatMap((ContainersReleaseLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void renewLease(@NonNull String containerName, @NonNull String leaseId) {
-        renewLeaseAsync(containerName, leaseId).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersRenewLeaseResponse> renewLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "lease";
@@ -1078,35 +523,6 @@ public final class ContainersImpl implements Containers {
      *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> renewLeaseAsync(@NonNull String containerName, @NonNull String leaseId) {
-        return renewLeaseWithRestResponseAsync(containerName, leaseId)
-            .flatMap((ContainersRenewLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void renewLease(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        renewLeaseAsync(containerName, leaseId, timeout, requestId, modifiedAccessConditions).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
@@ -1114,16 +530,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersRenewLeaseResponse> renewLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
-        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "renew";
@@ -1144,44 +550,10 @@ public final class ContainersImpl implements Containers {
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> renewLeaseAsync(@NonNull String containerName, @NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        return renewLeaseWithRestResponseAsync(containerName, leaseId, timeout, requestId, modifiedAccessConditions)
-            .flatMap((ContainersRenewLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void breakLease(@NonNull String containerName) {
-        breakLeaseAsync(containerName).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersBreakLeaseResponse> breakLeaseWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final Integer timeout = null;
         final Integer breakPeriod = null;
         final String requestId = null;
@@ -1199,34 +571,6 @@ public final class ContainersImpl implements Containers {
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> breakLeaseAsync(@NonNull String containerName) {
-        return breakLeaseWithRestResponseAsync(containerName)
-            .flatMap((ContainersBreakLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void breakLease(@NonNull String containerName, Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        breakLeaseAsync(containerName, timeout, breakPeriod, requestId, modifiedAccessConditions).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -1235,13 +579,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersBreakLeaseResponse> breakLeaseWithRestResponseAsync(@NonNull String containerName, Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "break";
@@ -1262,54 +599,12 @@ public final class ContainersImpl implements Containers {
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
      *
      * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> breakLeaseAsync(@NonNull String containerName, Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        return breakLeaseWithRestResponseAsync(containerName, timeout, breakPeriod, requestId, modifiedAccessConditions)
-            .flatMap((ContainersBreakLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void changeLease(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId) {
-        changeLeaseAsync(containerName, leaseId, proposedLeaseId).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersChangeLeaseResponse> changeLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
-        if (proposedLeaseId == null) {
-            throw new IllegalArgumentException("Parameter proposedLeaseId is required and cannot be null.");
-        }
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "lease";
@@ -1328,37 +623,6 @@ public final class ContainersImpl implements Containers {
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> changeLeaseAsync(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId) {
-        return changeLeaseWithRestResponseAsync(containerName, leaseId, proposedLeaseId)
-            .flatMap((ContainersChangeLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void changeLease(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        changeLeaseAsync(containerName, leaseId, proposedLeaseId, timeout, requestId, modifiedAccessConditions).block();
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param modifiedAccessConditions Additional parameters for the operation.
@@ -1366,19 +630,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersChangeLeaseResponse> changeLeaseWithRestResponseAsync(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (leaseId == null) {
-            throw new IllegalArgumentException("Parameter leaseId is required and cannot be null.");
-        }
-        if (proposedLeaseId == null) {
-            throw new IllegalArgumentException("Parameter proposedLeaseId is required and cannot be null.");
-        }
-        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "change";
@@ -1396,36 +647,6 @@ public final class ContainersImpl implements Containers {
     }
 
     /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
-     *
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> changeLeaseAsync(@NonNull String containerName, @NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
-        return changeLeaseWithRestResponseAsync(containerName, leaseId, proposedLeaseId, timeout, requestId, modifiedAccessConditions)
-            .flatMap((ContainersChangeLeaseResponse res) -> Mono.empty());
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsFlatSegmentResponse object if successful.
-     */
-    public ListBlobsFlatSegmentResponse listBlobFlatSegment(@NonNull String containerName) {
-        return listBlobFlatSegmentAsync(containerName).block();
-    }
-
-    /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
      *
      * @param containerName The container name.
@@ -1433,12 +654,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
@@ -1449,37 +664,6 @@ public final class ContainersImpl implements Containers {
         final String comp = "list";
         String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(@NonNull String containerName) {
-        return listBlobFlatSegmentWithRestResponseAsync(containerName)
-            .flatMap((ContainersListBlobFlatSegmentResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsFlatSegmentResponse object if successful.
-     */
-    public ListBlobsFlatSegmentResponse listBlobFlatSegment(@NonNull String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobFlatSegmentAsync(containerName, prefix, marker, maxresults, include, timeout, requestId).block();
     }
 
     /**
@@ -1496,49 +680,10 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(@NonNull String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        Validator.validate(include);
         final String restype = "container";
         final String comp = "list";
         String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(@NonNull String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobFlatSegmentWithRestResponseAsync(containerName, prefix, marker, maxresults, include, timeout, requestId)
-            .flatMap((ContainersListBlobFlatSegmentResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsHierarchySegmentResponse object if successful.
-     */
-    public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(@NonNull String containerName, @NonNull String delimiter) {
-        return listBlobHierarchySegmentAsync(containerName, delimiter).block();
     }
 
     /**
@@ -1550,15 +695,6 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(@NonNull String containerName, @NonNull String delimiter) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (delimiter == null) {
-            throw new IllegalArgumentException("Parameter delimiter is required and cannot be null.");
-        }
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
@@ -1569,39 +705,6 @@ public final class ContainersImpl implements Containers {
         final String comp = "list";
         String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(@NonNull String containerName, @NonNull String delimiter) {
-        return listBlobHierarchySegmentWithRestResponseAsync(containerName, delimiter)
-            .flatMap((ContainersListBlobHierarchySegmentResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsHierarchySegmentResponse object if successful.
-     */
-    public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(@NonNull String containerName, @NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobHierarchySegmentAsync(containerName, delimiter, prefix, marker, maxresults, include, timeout, requestId).block();
     }
 
     /**
@@ -1619,51 +722,10 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(@NonNull String containerName, @NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (delimiter == null) {
-            throw new IllegalArgumentException("Parameter delimiter is required and cannot be null.");
-        }
-        Validator.validate(include);
         final String restype = "container";
         final String comp = "list";
         String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(@NonNull String containerName, @NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobHierarchySegmentWithRestResponseAsync(containerName, delimiter, prefix, marker, maxresults, include, timeout, requestId)
-            .flatMap((ContainersListBlobHierarchySegmentResponse res) -> Mono.just(res.value()));
-    }
-
-    /**
-     * Returns the sku name and account kind.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void getAccountInfo(@NonNull String containerName) {
-        getAccountInfoAsync(containerName).block();
     }
 
     /**
@@ -1674,26 +736,8 @@ public final class ContainersImpl implements Containers {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<ContainersGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(@NonNull String containerName) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
         final String restype = "account";
         final String comp = "properties";
         return service.getAccountInfo(containerName, this.client.url(), this.client.version(), restype, comp);
-    }
-
-    /**
-     * Returns the sku name and account kind.
-     *
-     * @param containerName The container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> getAccountInfoAsync(@NonNull String containerName) {
-        return getAccountInfoWithRestResponseAsync(containerName)
-            .flatMap((ContainersGetAccountInfoResponse res) -> Mono.empty());
     }
 }

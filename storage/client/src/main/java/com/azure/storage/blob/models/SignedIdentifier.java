@@ -28,7 +28,7 @@ public final class SignedIdentifier {
     private AccessPolicy accessPolicy;
 
     /**
-     * Get the id value.
+     * Get the id property: a unique id.
      *
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class SignedIdentifier {
     }
 
     /**
-     * Set the id value.
+     * Set the id property: a unique id.
      *
      * @param id the id value to set.
      * @return the SignedIdentifier object itself.
@@ -48,7 +48,7 @@ public final class SignedIdentifier {
     }
 
     /**
-     * Get the accessPolicy value.
+     * Get the accessPolicy property: The accessPolicy property.
      *
      * @return the accessPolicy value.
      */
@@ -57,7 +57,7 @@ public final class SignedIdentifier {
     }
 
     /**
-     * Set the accessPolicy value.
+     * Set the accessPolicy property: The accessPolicy property.
      *
      * @param accessPolicy the accessPolicy value to set.
      * @return the SignedIdentifier object itself.

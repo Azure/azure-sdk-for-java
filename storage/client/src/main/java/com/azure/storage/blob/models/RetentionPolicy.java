@@ -30,7 +30,8 @@ public final class RetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled value.
+     * Get the enabled property: Indicates whether a retention policy is
+     * enabled for the storage service.
      *
      * @return the enabled value.
      */
@@ -39,7 +40,8 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Set the enabled value.
+     * Set the enabled property: Indicates whether a retention policy is
+     * enabled for the storage service.
      *
      * @param enabled the enabled value to set.
      * @return the RetentionPolicy object itself.
@@ -50,7 +52,9 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Get the days value.
+     * Get the days property: Indicates the number of days that metrics or
+     * logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted.
      *
      * @return the days value.
      */
@@ -59,7 +63,9 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Set the days value.
+     * Set the days property: Indicates the number of days that metrics or
+     * logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted.
      *
      * @param days the days value to set.
      * @return the RetentionPolicy object itself.

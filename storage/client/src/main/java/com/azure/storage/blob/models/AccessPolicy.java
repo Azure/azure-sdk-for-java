@@ -35,7 +35,7 @@ public final class AccessPolicy {
     private String permission;
 
     /**
-     * Get the start value.
+     * Get the start property: the date-time the policy is active.
      *
      * @return the start value.
      */
@@ -44,7 +44,7 @@ public final class AccessPolicy {
     }
 
     /**
-     * Set the start value.
+     * Set the start property: the date-time the policy is active.
      *
      * @param start the start value to set.
      * @return the AccessPolicy object itself.
@@ -55,7 +55,7 @@ public final class AccessPolicy {
     }
 
     /**
-     * Get the expiry value.
+     * Get the expiry property: the date-time the policy expires.
      *
      * @return the expiry value.
      */
@@ -64,7 +64,7 @@ public final class AccessPolicy {
     }
 
     /**
-     * Set the expiry value.
+     * Set the expiry property: the date-time the policy expires.
      *
      * @param expiry the expiry value to set.
      * @return the AccessPolicy object itself.
@@ -75,7 +75,7 @@ public final class AccessPolicy {
     }
 
     /**
-     * Get the permission value.
+     * Get the permission property: the permissions for the acl policy.
      *
      * @return the permission value.
      */
@@ -84,7 +84,7 @@ public final class AccessPolicy {
     }
 
     /**
-     * Set the permission value.
+     * Set the permission property: the permissions for the acl policy.
      *
      * @param permission the permission value to set.
      * @return the AccessPolicy object itself.

@@ -29,6 +29,8 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -67,7 +69,7 @@ public final class AppendBlobsImpl implements AppendBlobs {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<AppendBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") String metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<AppendBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -82,34 +84,11 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void create(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength) {
-        createAsync(containerName, blob, contentLength).block();
-    }
-
-    /**
-     * The Create Append Blob operation creates a new append blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
         final Integer timeout = null;
-        final String metadata = null;
+        final Map<String, String> metadata = null;
         final String requestId = null;
         final String blobType = "AppendBlob";
         final String blobContentType = null;
@@ -135,40 +114,6 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> createAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength) {
-        return createWithRestResponseAsync(containerName, blob, contentLength)
-            .flatMap((AppendBlobsCreateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Create Append Blob operation creates a new append blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void create(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        createAsync(containerName, blob, contentLength, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * The Create Append Blob operation creates a new append blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -178,19 +123,7 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        Validator.validate(blobHTTPHeaders);
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(modifiedAccessConditions);
+    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, Map<String, String> metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         final String blobType = "AppendBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
@@ -243,41 +176,6 @@ public final class AppendBlobsImpl implements AppendBlobs {
     }
 
     /**
-     * The Create Append Blob operation creates a new append blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobHTTPHeaders Additional parameters for the operation.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> createAsync(@NonNull String containerName, @NonNull String blob, @NonNull long contentLength, Integer timeout, String metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return createWithRestResponseAsync(containerName, blob, contentLength, timeout, metadata, requestId, blobHTTPHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .flatMap((AppendBlobsCreateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void appendBlock(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        appendBlockAsync(containerName, blob, body, contentLength).block();
-    }
-
-    /**
      * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
      *
      * @param containerName The container name.
@@ -288,18 +186,6 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
         final Integer timeout = null;
         final byte[] transactionalContentMD5 = new byte[0];
         final String requestId = null;
@@ -324,42 +210,6 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @param blob The blob name.
      * @param body Initial data.
      * @param contentLength The length of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> appendBlockAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength) {
-        return appendBlockWithRestResponseAsync(containerName, blob, body, contentLength)
-            .flatMap((AppendBlobsAppendBlockResponse res) -> Mono.empty());
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param appendPositionAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    public void appendBlock(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        appendBlockAsync(containerName, blob, body, contentLength, timeout, transactionalContentMD5, requestId, leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions).block();
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -370,21 +220,6 @@ public final class AppendBlobsImpl implements AppendBlobs {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        if (this.client.url() == null) {
-            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (blob == null) {
-            throw new IllegalArgumentException("Parameter blob is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
-        Validator.validate(leaseAccessConditions);
-        Validator.validate(appendPositionAccessConditions);
-        Validator.validate(modifiedAccessConditions);
         final String comp = "appendblock";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -418,26 +253,5 @@ public final class AppendBlobsImpl implements AppendBlobs {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.appendBlock(containerName, blob, this.client.url(), body, timeout, contentLength, transactionalContentMD5Converted, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch);
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param body Initial data.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param leaseAccessConditions Additional parameters for the operation.
-     * @param appendPositionAccessConditions Additional parameters for the operation.
-     * @param modifiedAccessConditions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    public Mono<Void> appendBlockAsync(@NonNull String containerName, @NonNull String blob, @NonNull Flux<ByteBuf> body, @NonNull long contentLength, Integer timeout, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        return appendBlockWithRestResponseAsync(containerName, blob, body, contentLength, timeout, transactionalContentMD5, requestId, leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions)
-            .flatMap((AppendBlobsAppendBlockResponse res) -> Mono.empty());
     }
 }

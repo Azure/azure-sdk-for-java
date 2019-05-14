@@ -29,7 +29,7 @@ public final class Block {
     private int size;
 
     /**
-     * Get the name value.
+     * Get the name property: The base64 encoded block ID.
      *
      * @return the name value.
      */
@@ -38,7 +38,7 @@ public final class Block {
     }
 
     /**
-     * Set the name value.
+     * Set the name property: The base64 encoded block ID.
      *
      * @param name the name value to set.
      * @return the Block object itself.
@@ -49,7 +49,7 @@ public final class Block {
     }
 
     /**
-     * Get the size value.
+     * Get the size property: The block size in bytes.
      *
      * @return the size value.
      */
@@ -58,7 +58,7 @@ public final class Block {
     }
 
     /**
-     * Set the size value.
+     * Set the size property: The block size in bytes.
      *
      * @param size the size value to set.
      * @return the Block object itself.
