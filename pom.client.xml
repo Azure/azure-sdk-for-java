@@ -119,6 +119,7 @@
     <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
     <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
     <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
+    <reactor-core.version>3.2.3.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
@@ -268,6 +269,12 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>${slf4j-log4j12.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>${reactor-core.version}</version>
       </dependency>
 
       <dependency>
