@@ -62,7 +62,7 @@
 
   <!-- All auto generated files need to exclude from checkstyle -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
-  <suppress checks="UnusedImports" files=".*GeneratedContainers.java"/>
+  <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
   <!-- No default case needed for the switch-->
 </suppressions>

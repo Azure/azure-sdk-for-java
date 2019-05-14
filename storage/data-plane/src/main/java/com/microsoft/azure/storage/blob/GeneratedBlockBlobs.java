@@ -41,6 +41,7 @@ import io.reactivex.annotations.NonNull;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
