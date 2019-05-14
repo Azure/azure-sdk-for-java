@@ -12,8 +12,9 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
     private static final String IMPLEMENTATION_PATH = "com.azure.core.implementation";
-    private static final String PARAM_TYPE_ERROR = "\"%s\" class is in a implementation package, and it should not used as parameter type in public API.";
-    private static final String RETURN_TYPE_ERROR = "\"%s\" class is in a implementation package, and it should not be a return type.";
+    private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
+    private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
+
 
     private static boolean isTrackTwo;
     private static boolean isImplePackage;
