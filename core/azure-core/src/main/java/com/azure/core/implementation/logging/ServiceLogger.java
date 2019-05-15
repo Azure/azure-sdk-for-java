@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.logging;
 
-import com.azure.core.implementation.configuration.ConfigurationManager;
+import com.azure.core.implementation.configuration.AzureConfigurationRetriever;
 import com.azure.core.implementation.configuration.EnvironmentConfigurations;
 import com.azure.core.implementation.util.ImplUtils;
 import org.slf4j.Logger;
@@ -164,7 +164,7 @@ public class ServiceLogger implements ServiceLoggerAPI {
     }
 
     private int minimumLoggingLevel() {
-        String azureLogLevel = ConfigurationManager.getConfiguration(EnvironmentConfigurations.AZURE_LOG_LEVEL);
+        String azureLogLevel = AzureConfigurationRetriever.retrieve(EnvironmentConfigurations.AZURE_LOG_LEVEL);
         if (ImplUtils.isNullOrEmpty(azureLogLevel)) {
             return DISABLED_LEVEL;
         }

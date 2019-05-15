@@ -8,7 +8,7 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.configuration.ConfigurationManager;
+import com.azure.core.implementation.configuration.AzureConfigurationRetriever;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
@@ -69,7 +69,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.getConfiguration("AZCONFIG_CONNECTION_STRING");
+                : AzureConfigurationRetriever.retrieve("AZCONFIG_CONNECTION_STRING");
         }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");

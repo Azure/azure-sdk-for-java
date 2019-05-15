@@ -13,23 +13,23 @@ import java.util.Map;
 /**
  * Retrieves configuration from the environment variables.
  */
-public final class EnvironmentConfigurationGetter implements ConfigurationGetter {
+public final class EnvironmentConfigurationValueRetriever implements ConfigurationValueRetriever {
     private static final String LOG_MESSAGE = "Found configuration {} in the environment variables.";
     private static final Map<String, String> ENVIRONMENT_CACHE = new HashMap<>();
-    private final Logger logger = LoggerFactory.getLogger(EnvironmentConfigurationGetter.class);
+    private final Logger logger = LoggerFactory.getLogger(EnvironmentConfigurationValueRetriever.class);
 
     @Override
-    public String getConfiguration(String configurationName) {
-        if (ENVIRONMENT_CACHE.containsKey(configurationName)) {
-            return ENVIRONMENT_CACHE.get(configurationName);
+    public String retrieve(String name) {
+        if (ENVIRONMENT_CACHE.containsKey(name)) {
+            return ENVIRONMENT_CACHE.get(name);
         }
 
         try {
-            String environmentConfiguration = System.getenv(configurationName);
-            ENVIRONMENT_CACHE.put(configurationName, environmentConfiguration);
+            String environmentConfiguration = System.getenv(name);
+            ENVIRONMENT_CACHE.put(name, environmentConfiguration);
 
             if (!ImplUtils.isNullOrEmpty(environmentConfiguration)) {
-                logger.info(LOG_MESSAGE, configurationName);
+                logger.info(LOG_MESSAGE, name);
             }
 
             return environmentConfiguration;

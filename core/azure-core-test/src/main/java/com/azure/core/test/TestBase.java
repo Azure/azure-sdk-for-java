@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.implementation.configuration.ConfigurationManager;
+import com.azure.core.implementation.configuration.AzureConfigurationRetriever;
 import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;
@@ -96,7 +96,7 @@ public abstract class TestBase {
 
     private static TestMode getTestMode() {
         final Logger logger = LoggerFactory.getLogger(TestBase.class);
-        final String azureTestMode = ConfigurationManager.getConfiguration(AZURE_TEST_MODE);
+        final String azureTestMode = AzureConfigurationRetriever.retrieve(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {

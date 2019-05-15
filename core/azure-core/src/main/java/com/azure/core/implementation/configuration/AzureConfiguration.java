@@ -7,41 +7,44 @@ import com.azure.core.implementation.logging.ServiceLoggerAPI;
 
 import java.util.function.Function;
 
-public final class AzureConfiguration<T> {
-    public static AzureConfiguration<Integer> azureLoggingLevel = new AzureConfiguration<>(EnvironmentConfigurations.AZURE_LOG_LEVEL, Integer::parseInt, ServiceLoggerAPI.DISABLED_LEVEL);
-    public static AzureConfiguration<Boolean> azureLoggingEnabled = new AzureConfiguration<>(EnvironmentConfigurations.AZURE_TELEMETRY_DISABLED, Boolean::parseBoolean, false);
-    public static AzureConfiguration<Boolean> azureTracingEnabled = new AzureConfiguration<>(EnvironmentConfigurations.AZURE_TRACING_DISABLED, Boolean::parseBoolean, true);
+public final class AzureConfiguration {
+    public static final AzureConfiguration AZURE_LOG_LEVEL = new AzureConfiguration(EnvironmentConfigurations.AZURE_LOG_LEVEL, Integer::parseInt, ServiceLoggerAPI.DISABLED_LEVEL);
+    public static final AzureConfiguration AZURE_LOGGING_ENABLED = new AzureConfiguration(EnvironmentConfigurations.AZURE_LOGGING_ENABLED, Boolean::parseBoolean, false);
+    public static final AzureConfiguration AZURE_TRACING_ENABLED = new AzureConfiguration(EnvironmentConfigurations.AZURE_TRACING_ENABLED, Boolean::parseBoolean, true);
 
     @SuppressWarnings("unchecked")
-    private final Function<String, T> defaultConverter = (value) -> (T) value;
+    private static final Function<String, Object> DEFAULT_CONVERTER = (value) -> (String) value;
 
-    private EnvironmentConfigurations environmentConfigurations;
-    private Function<String, T> converter;
-    private T globalDefaultValue;
+    private String configuration;
+    private Function<String, Object> converter;
+    private Object defaultValue;
 
     public AzureConfiguration(EnvironmentConfigurations environmentConfigurations) {
-        this.environmentConfigurations = environmentConfigurations;
-        this.converter = defaultConverter;
-        this.globalDefaultValue = null;
+        this.configuration = environmentConfigurations.toString();
+        this.converter = DEFAULT_CONVERTER;
+        this.defaultValue = null;
     }
 
-    public AzureConfiguration(EnvironmentConfigurations environmentConfigurations, Function<String, T> converter, T defaultValue) {
-        this.environmentConfigurations = environmentConfigurations;
+    public AzureConfiguration(String configuration, Function<String, Object> converter, Object defaultValue) {
+        this.configuration = configuration;
         this.converter = converter;
-        this.globalDefaultValue = defaultValue;
+        this.defaultValue = defaultValue;
     }
 
-    public T getConfiguration() {
-        T configuration = getConfigurationFromManager();
-        return (configuration == null) ? globalDefaultValue : configuration;
-    }
-
-    public T getConfiguration(T defaultValue) {
-        T configuration = getConfiguration();
+    public Object getConfiguration() {
+        Object configuration = findConfiguration();
         return (configuration == null) ? defaultValue : configuration;
     }
 
-    private T getConfigurationFromManager() {
-        return converter.apply(ConfigurationManager.getConfiguration(environmentConfigurations));
+    public Object getConfiguration(Object defaultValue) {
+        if (defaultValue != null) {
+            return defaultValue;
+        }
+
+        return getConfiguration();
+    }
+
+    private Object findConfiguration() {
+        return converter.apply(AzureConfigurationRetriever.retrieve(configuration));
     }
 }

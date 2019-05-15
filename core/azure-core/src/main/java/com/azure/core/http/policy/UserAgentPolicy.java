@@ -6,7 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.configuration.ConfigurationManager;
+import com.azure.core.implementation.configuration.AzureConfigurationRetriever;
 import com.azure.core.implementation.configuration.EnvironmentConfigurations;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
@@ -75,7 +75,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     private static String getUserAgentOrDefault() {
-        String userAgent = ConfigurationManager.getConfiguration(EnvironmentConfigurations.AZURE_USER_AGENT);
+        String userAgent = AzureConfigurationRetriever.retrieve(EnvironmentConfigurations.AZURE_USER_AGENT);
         return ImplUtils.isNullOrEmpty(userAgent) ? DEFAULT_USER_AGENT_HEADER : userAgent;
     }
 }

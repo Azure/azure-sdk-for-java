@@ -6,75 +6,48 @@ package com.azure.core.implementation.configuration;
 /**
  * Represents the well-known, commonly expected, environment variables.
  */
-public enum EnvironmentConfigurations {
+public final class EnvironmentConfigurations {
 
     /**
      * URI of the proxy for HTTP connections.
      *
      * No proxy is configured by default.
      */
-    HTTP_PROXY,
+    public static final String HTTP_PROXY = "HTTP_PROXY";
 
     /**
      * URI of the proxy for HTTPS connections.
      *
      * No proxy is configured by default..
      */
-    HTTPS_PROXY,
+    public static final String HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
      * List of hosts or CIDR to not proxy.
      *
      * Not proxy is empty by default.
      */
-    NO_PROXY,
-
-    MSI_CREDENTIALS,
-
-    /**
-     * Automatically generated secret for MSI.
-     */
-    MSI_SECRET,
-
-    AZURE_SUBSCRIPTION_ID,
-
-    AZURE_USERNAME,
-
-    AZURE_PASSWORD,
-
-    AZURE_CLIENT_ID,
-
-    AZURE_CLIENT_SECRET,
-
-    AZURE_TENANT_ID,
-
-    AZURE_RESOURCE_GROUP,
-
-    AZURE_CLOUD,
+    public static final String NO_PROXY = "NO_PROXY";
 
     /**
      * User agent to use for HTTP requests.
      */
-    AZURE_USER_AGENT,
+    public static final String AZURE_USER_AGENT = "AZURE_USER_AGENT";
 
     /**
      * Minimum logging level to log.
      *
      * Logging is disabled by default.
      */
-    AZURE_LOG_LEVEL,
+    public static final String AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
     /**
-     * Log location (e.g. console).
+     * Whether logging happens.
      */
-    AZURE_LOG_LOCATION,
+    public static final String AZURE_LOGGING_ENABLED = "AZURE_LOGGING_ENABLED";
 
     /**
-     * If set, disables distributed tracing.
-     *
-     * Tracing is enabled by default.
+     * Whether tracing happens.
      */
-    AZURE_TRACING_DISABLED,
-
-    AZURE_TELEMETRY_DISABLED
+    public static final String AZURE_TRACING_ENABLED = "AZURE_TRACING_ENABLED";
 }
