@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Schema of the Data property of an EventGridEvent for a
- * Microsoft.Media.JobStateChange event.
+ * Microsoft.Media.JobOutputStateChange event.
  */
-public class MediaJobStateChangeEventData {
+public class MediaJobOutputStateChangeEventData {
     /**
      * The previous state of the Job. Possible values include: 'Canceled',
      * 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
@@ -24,17 +24,16 @@ public class MediaJobStateChangeEventData {
     private MediaJobState previousState;
 
     /**
-     * The new state of the Job. Possible values include: 'Canceled',
-     * 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
+     * Gets the output.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private MediaJobState state;
+    @JsonProperty(value = "output")
+    private MediaJobOutput output;
 
     /**
      * Gets the Job correlation data.
      */
-    @JsonProperty(value = "correlationData")
-    private Map<String, String> correlationData;
+    @JsonProperty(value = "jobCorrelationData")
+    private Map<String, String> jobCorrelationData;
 
     /**
      * Get the previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
@@ -46,31 +45,42 @@ public class MediaJobStateChangeEventData {
     }
 
     /**
-     * Get the new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
+     * Get gets the output.
      *
-     * @return the state value
+     * @return the output value
      */
-    public MediaJobState state() {
-        return this.state;
+    public MediaJobOutput output() {
+        return this.output;
+    }
+
+    /**
+     * Set gets the output.
+     *
+     * @param output the output value to set
+     * @return the MediaJobOutputStateChangeEventData object itself.
+     */
+    public MediaJobOutputStateChangeEventData withOutput(MediaJobOutput output) {
+        this.output = output;
+        return this;
     }
 
     /**
      * Get gets the Job correlation data.
      *
-     * @return the correlationData value
+     * @return the jobCorrelationData value
      */
-    public Map<String, String> correlationData() {
-        return this.correlationData;
+    public Map<String, String> jobCorrelationData() {
+        return this.jobCorrelationData;
     }
 
     /**
      * Set gets the Job correlation data.
      *
-     * @param correlationData the correlationData value to set
-     * @return the MediaJobStateChangeEventData object itself.
+     * @param jobCorrelationData the jobCorrelationData value to set
+     * @return the MediaJobOutputStateChangeEventData object itself.
      */
-    public MediaJobStateChangeEventData withCorrelationData(Map<String, String> correlationData) {
-        this.correlationData = correlationData;
+    public MediaJobOutputStateChangeEventData withJobCorrelationData(Map<String, String> jobCorrelationData) {
+        this.jobCorrelationData = jobCorrelationData;
         return this;
     }
 
