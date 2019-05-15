@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -89,7 +90,7 @@ public final class HttpPipeline {
      * @param data additional metadata to pass along in the request
      * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
      */
-    public Mono<HttpResponse> send(HttpRequest request, ContextData data) {
+    public Mono<HttpResponse> send(HttpRequest request, Context data) {
         return this.send(new HttpPipelineCallContext(request, data));
     }
 
