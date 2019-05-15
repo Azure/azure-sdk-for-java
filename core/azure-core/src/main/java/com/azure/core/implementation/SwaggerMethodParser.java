@@ -20,7 +20,7 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
+import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -342,15 +342,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link ContextData} passed into the proxy method.
+     * Get the {@link Context} passed into the proxy method.
      *
      * @param swaggerMethodArguments the arguments passed to the proxy method
-     * @return the context, or null if no context was provided
+     * @return the context, or {@link Context#NONE} if no context was provided
      */
-    public ContextData contextData(Object[] swaggerMethodArguments) {
-        ContextData context = ImplUtils.findFirstOfType(swaggerMethodArguments, ContextData.class);
+    public Context context(Object[] swaggerMethodArguments) {
+        Context context = ImplUtils.findFirstOfType(swaggerMethodArguments, Context.class);
 
-        return (context != null) ? context : ContextData.NONE;
+        return (context != null) ? context : Context.NONE;
     }
 
     /**
