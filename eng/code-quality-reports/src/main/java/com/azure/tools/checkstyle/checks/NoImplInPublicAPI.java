@@ -11,14 +11,12 @@ import java.util.Set;
 public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
-    private static final String IMPLEMENTATION_PATH = "com.azure.core.implementation";
+    private static final String COM_AZURE_CORE_IMPLEMENTATION = "com.azure.core.implementation";
     private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
     private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
 
-
     private static boolean isTrackTwo;
-    private static boolean isImplePackage;
-    private static boolean hasImplementationPath;
+    private static boolean isImplPackage;
     private Set<String> implementationClassSet = new HashSet<>();
 
     @Override
@@ -42,9 +40,9 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        this.implementationClassSet.clear();
+        this.isImplPackage = false;
         this.isTrackTwo = false;
-        this.hasImplementationPath = false;
+        this.implementationClassSet.clear();
     }
 
     @Override
@@ -52,10 +50,11 @@ public class NoImplInPublicAPI extends AbstractCheck {
         if (ast.getType() == TokenTypes.PACKAGE_DEF) {
             String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
             this.isTrackTwo = packageName.startsWith(COM_AZURE);
-            this.isImplePackage = packageName.startsWith(IMPLEMENTATION_PATH);
+            this.isImplPackage = packageName.startsWith(COM_AZURE_CORE_IMPLEMENTATION);
+            return;
         } else {
             if (this.isTrackTwo) {
-                if (this.isImplePackage) {
+                if (this.isImplPackage) {
                     return;
                 }
             } else {
@@ -66,17 +65,16 @@ public class NoImplInPublicAPI extends AbstractCheck {
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
-                if (importClassPath.startsWith(IMPLEMENTATION_PATH)) {
-                    this.hasImplementationPath = true;
-                    String remainingPath = importClassPath.substring(IMPLEMENTATION_PATH.length());
-                    if (remainingPath.length() > 1) {
+                if (importClassPath.startsWith(COM_AZURE_CORE_IMPLEMENTATION)) {
+                    String remainingPath = importClassPath.substring(COM_AZURE_CORE_IMPLEMENTATION.length());
+                    if (remainingPath != null && remainingPath.length() > 1) {
                         String className = remainingPath.substring(remainingPath.lastIndexOf(".") + 1);
                         implementationClassSet.add(className);
                     }
                 }
                 break;
             case TokenTypes.METHOD_DEF:
-                if (!this.hasImplementationPath) {
+                if (implementationClassSet.isEmpty()) {
                     return;
                 }
                 DetailAST modifiersAST = ast.findFirstToken(TokenTypes.MODIFIERS);
