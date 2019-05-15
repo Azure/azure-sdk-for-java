@@ -110,9 +110,9 @@ public interface FormRecognizerClient {
 
     /**
      * Train Model.
-     * The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
-      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
-      Other content is ignored when training a model.
+     * Create and train a custom model. The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
+      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
+      Other type of content is ignored.
      *
      * @param source Get or set source path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -124,9 +124,9 @@ public interface FormRecognizerClient {
 
     /**
      * Train Model.
-     * The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
-      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
-      Other content is ignored when training a model.
+     * Create and train a custom model. The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
+      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
+      Other type of content is ignored.
      *
      * @param source Get or set source path.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -137,9 +137,9 @@ public interface FormRecognizerClient {
 
     /**
      * Train Model.
-     * The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
-      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
-      Other content is ignored when training a model.
+     * Create and train a custom model. The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
+      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
+      Other type of content is ignored.
      *
      * @param source Get or set source path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -149,9 +149,9 @@ public interface FormRecognizerClient {
 
     /**
      * Train Model.
-     * The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
-      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
-      Other content is ignored when training a model.
+     * Create and train a custom model. The train request must include a source parameter that is either an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration
+      setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
+      Other type of content is ignored.
      *
      * @param source Get or set source path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -161,8 +161,8 @@ public interface FormRecognizerClient {
 
     /**
      * Get Keys.
-     * Use the API to retrieve the keys that were
-      extracted by the specified model.
+     * Retrieve the keys that were
+      extracted during the training of the specified model.
      *
      * @param id Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -174,8 +174,8 @@ public interface FormRecognizerClient {
 
     /**
      * Get Keys.
-     * Use the API to retrieve the keys that were
-      extracted by the specified model.
+     * Retrieve the keys that were
+      extracted during the training of the specified model.
      *
      * @param id Model identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -186,8 +186,8 @@ public interface FormRecognizerClient {
 
     /**
      * Get Keys.
-     * Use the API to retrieve the keys that were
-      extracted by the specified model.
+     * Retrieve the keys that were
+      extracted during the training of the specified model.
      *
      * @param id Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -197,8 +197,8 @@ public interface FormRecognizerClient {
 
     /**
      * Get Keys.
-     * Use the API to retrieve the keys that were
-      extracted by the specified model.
+     * Retrieve the keys that were
+      extracted during the training of the specified model.
      *
      * @param id Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -208,7 +208,7 @@ public interface FormRecognizerClient {
 
     /**
      * Get Models.
-     * Get information about all trained models.
+     * Get information about all trained custom models.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -219,7 +219,7 @@ public interface FormRecognizerClient {
 
     /**
      * Get Models.
-     * Get information about all trained models.
+     * Get information about all trained custom models.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -229,7 +229,7 @@ public interface FormRecognizerClient {
 
     /**
      * Get Models.
-     * Get information about all trained models.
+     * Get information about all trained custom models.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
@@ -238,7 +238,7 @@ public interface FormRecognizerClient {
 
     /**
      * Get Models.
-     * Get information about all trained models.
+     * Get information about all trained custom models.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
@@ -332,7 +332,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -345,7 +345,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -357,7 +357,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -368,7 +368,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -378,7 +378,7 @@ public interface FormRecognizerClient {
     Observable<ServiceResponse<AnalyzeResult>> analyzeWithCustomModelWithServiceResponseAsync(UUID id, byte[] formStream);
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -392,7 +392,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -405,7 +405,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
@@ -417,7 +417,7 @@ public interface FormRecognizerClient {
 
     /**
      * Analyze Form.
-     * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
+     * Extract key-value pairs from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
      *
      * @param id Model Identifier to analyze the document with.
      * @param formStream A pdf document or image (jpg,png) file to analyze.
