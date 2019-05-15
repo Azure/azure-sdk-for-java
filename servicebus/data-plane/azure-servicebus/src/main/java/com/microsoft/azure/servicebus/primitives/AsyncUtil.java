@@ -6,7 +6,6 @@ package com.microsoft.azure.servicebus.primitives;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.RejectedExecutionException;
 
 // To complete futures using a different thread. Otherwise every future is completed on the single reactor thread
 // which badly affects perf and a client can potentially kill the thread or lock the thread.
@@ -39,11 +38,7 @@ class AsyncUtil {
     }
 
     public static void run(Runnable runnable) {
-        try {
-            MessagingFactory.INTERNAL_THREAD_POOL.submit(runnable);
-        } catch (RejectedExecutionException | NullPointerException e) {
-            e.printStackTrace();
-        }
+        MessagingFactory.INTERNAL_THREAD_POOL.submit(runnable);
     }
 
     private static class CompleteCallable<T> implements Callable<Boolean> {
