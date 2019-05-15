@@ -353,8 +353,7 @@ public final class SASQueryParameters {
             this.keyExpiry = key.signedExpiry();
             this.keyService = key.signedService();
             this.keyVersion = key.signedVersion();
-        }
-        else {
+        } else {
             this.keyOid = null;
             this.keyTid = null;
             this.keyStart = null;
@@ -537,28 +536,28 @@ public final class SASQueryParameters {
          themselves, we cheat except for the signature value.
          */
         String[] params = {
-                Constants.UrlConstants.SAS_SERVICE_VERSION,
-                Constants.UrlConstants.SAS_SERVICES,
-                Constants.UrlConstants.SAS_RESOURCES_TYPES,
-                Constants.UrlConstants.SAS_PROTOCOL,
-                Constants.UrlConstants.SAS_START_TIME,
-                Constants.UrlConstants.SAS_EXPIRY_TIME,
-                Constants.UrlConstants.SAS_IP_RANGE,
-                Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
-                Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
-                Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
-                Constants.UrlConstants.SAS_SIGNED_KEY_START,
-                Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-                Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
-                Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
-                Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-                Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
-                Constants.UrlConstants.SAS_SIGNATURE,
-                Constants.UrlConstants.SAS_CACHE_CONTROL,
-                Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
-                Constants.UrlConstants.SAS_CONTENT_ENCODING,
-                Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
-                Constants.UrlConstants.SAS_CONTENT_TYPE
+            Constants.UrlConstants.SAS_SERVICE_VERSION,
+            Constants.UrlConstants.SAS_SERVICES,
+            Constants.UrlConstants.SAS_RESOURCES_TYPES,
+            Constants.UrlConstants.SAS_PROTOCOL,
+            Constants.UrlConstants.SAS_START_TIME,
+            Constants.UrlConstants.SAS_EXPIRY_TIME,
+            Constants.UrlConstants.SAS_IP_RANGE,
+            Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
+            Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
+            Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
+            Constants.UrlConstants.SAS_SIGNED_KEY_START,
+            Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
+            Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
+            Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
+            Constants.UrlConstants.SAS_SIGNED_RESOURCE,
+            Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
+            Constants.UrlConstants.SAS_SIGNATURE,
+            Constants.UrlConstants.SAS_CACHE_CONTROL,
+            Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
+            Constants.UrlConstants.SAS_CONTENT_ENCODING,
+            Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
+            Constants.UrlConstants.SAS_CONTENT_TYPE
         };
         StringBuilder sb = new StringBuilder();
         for (String param : params) {
