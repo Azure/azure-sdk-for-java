@@ -59,4 +59,6 @@
   <!-- Public API already released without final modifier -->
   <suppress checks="FinalClass" files="BatchClient.java"/>
   <suppress checks="FinalClass" files="DetailLevel.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="src[/\\]test[/\\]java[/\\].*.java"/>
 </suppressions>
