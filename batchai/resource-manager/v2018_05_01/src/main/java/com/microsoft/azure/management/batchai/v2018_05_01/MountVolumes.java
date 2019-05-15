@@ -16,37 +16,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MountVolumes {
     /**
-     * Azure File Share setup configuration.
-     * References to Azure File Shares that are to be mounted to the cluster
+     * Azure File Shares.
+     * A collection of Azure File Shares that are to be mounted to the cluster
      * nodes.
      */
     @JsonProperty(value = "azureFileShares")
     private List<AzureFileShareReference> azureFileShares;
 
     /**
-     * Azure Blob FileSystem setup configuration.
-     * References to Azure Blob FUSE that are to be mounted to the cluster
-     * nodes.
+     * Azure Blob file systems.
+     * A collection of Azure Blob Containers that are to be mounted to the
+     * cluster nodes.
      */
     @JsonProperty(value = "azureBlobFileSystems")
     private List<AzureBlobFileSystemReference> azureBlobFileSystems;
 
     /**
-     * References to a list of file servers that are mounted to the cluster
-     * node.
+     * File Servers.
+     * A collection of Batch AI File Servers that are to be mounted to the
+     * cluster nodes.
      */
     @JsonProperty(value = "fileServers")
     private List<FileServerReference> fileServers;
 
     /**
-     * References to a list of file servers that are mounted to the cluster
-     * node.
+     * Unmanaged file systems.
+     * A collection of unmanaged file systems that are to be mounted to the
+     * cluster nodes.
      */
     @JsonProperty(value = "unmanagedFileSystems")
     private List<UnmanagedFileSystemReference> unmanagedFileSystems;
 
     /**
-     * Get the azureFileShares value.
+     * Get a collection of Azure File Shares that are to be mounted to the cluster nodes.
      *
      * @return the azureFileShares value
      */
@@ -55,7 +57,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the azureFileShares value.
+     * Set a collection of Azure File Shares that are to be mounted to the cluster nodes.
      *
      * @param azureFileShares the azureFileShares value to set
      * @return the MountVolumes object itself.
@@ -66,7 +68,7 @@ public class MountVolumes {
     }
 
     /**
-     * Get the azureBlobFileSystems value.
+     * Get a collection of Azure Blob Containers that are to be mounted to the cluster nodes.
      *
      * @return the azureBlobFileSystems value
      */
@@ -75,7 +77,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the azureBlobFileSystems value.
+     * Set a collection of Azure Blob Containers that are to be mounted to the cluster nodes.
      *
      * @param azureBlobFileSystems the azureBlobFileSystems value to set
      * @return the MountVolumes object itself.
@@ -86,7 +88,7 @@ public class MountVolumes {
     }
 
     /**
-     * Get the fileServers value.
+     * Get a collection of Batch AI File Servers that are to be mounted to the cluster nodes.
      *
      * @return the fileServers value
      */
@@ -95,7 +97,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the fileServers value.
+     * Set a collection of Batch AI File Servers that are to be mounted to the cluster nodes.
      *
      * @param fileServers the fileServers value to set
      * @return the MountVolumes object itself.
@@ -106,7 +108,7 @@ public class MountVolumes {
     }
 
     /**
-     * Get the unmanagedFileSystems value.
+     * Get a collection of unmanaged file systems that are to be mounted to the cluster nodes.
      *
      * @return the unmanagedFileSystems value
      */
@@ -115,7 +117,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the unmanagedFileSystems value.
+     * Set a collection of unmanaged file systems that are to be mounted to the cluster nodes.
      *
      * @param unmanagedFileSystems the unmanagedFileSystems value to set
      * @return the MountVolumes object itself.

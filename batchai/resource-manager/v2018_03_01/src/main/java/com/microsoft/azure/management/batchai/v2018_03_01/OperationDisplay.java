@@ -60,7 +60,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get for example: read, write, delete, or listKeys/action.
      *
      * @return the operation value
      */
@@ -69,7 +69,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the operation value.
+     * Set for example: read, write, delete, or listKeys/action.
      *
      * @param operation the operation value to set
      * @return the OperationDisplay object itself.

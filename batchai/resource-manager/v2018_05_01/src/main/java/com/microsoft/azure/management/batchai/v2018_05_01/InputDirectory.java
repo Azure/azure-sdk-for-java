@@ -15,22 +15,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class InputDirectory {
     /**
-     * The id for the input directory.
-     * The path of the input directory will be available as a value of an
-     * environment variable with AZ_BATCHAI_INPUT_&lt;id&gt; name, where
-     * &lt;id&gt; is the value of id attribute.
+     * ID.
+     * The ID for the input directory. The job can use
+     * AZ_BATCHAI_INPUT_&lt;id&gt; environment variable to find the directory
+     * path, where &lt;id&gt; is the value of id attribute.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
+     * Path.
      * The path to the input directory.
      */
     @JsonProperty(value = "path", required = true)
     private String path;
 
     /**
-     * Get the id value.
+     * Get the ID for the input directory. The job can use AZ_BATCHAI_INPUT_&lt;id&gt; environment variable to find the directory path, where &lt;id&gt; is the value of id attribute.
      *
      * @return the id value
      */
@@ -39,7 +40,7 @@ public class InputDirectory {
     }
 
     /**
-     * Set the id value.
+     * Set the ID for the input directory. The job can use AZ_BATCHAI_INPUT_&lt;id&gt; environment variable to find the directory path, where &lt;id&gt; is the value of id attribute.
      *
      * @param id the id value to set
      * @return the InputDirectory object itself.
@@ -50,7 +51,7 @@ public class InputDirectory {
     }
 
     /**
-     * Get the path value.
+     * Get the path to the input directory.
      *
      * @return the path value
      */
@@ -59,7 +60,7 @@ public class InputDirectory {
     }
 
     /**
-     * Set the path value.
+     * Set the path to the input directory.
      *
      * @param path the path value to set
      * @return the InputDirectory object itself.

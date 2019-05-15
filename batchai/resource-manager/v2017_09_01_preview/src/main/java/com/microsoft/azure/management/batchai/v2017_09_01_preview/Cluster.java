@@ -10,12 +10,12 @@ package com.microsoft.azure.management.batchai.v2017_09_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2017_09_01_preview.implementation.BatchAIManager;
 import org.joda.time.DateTime;
@@ -129,7 +129,9 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithUserAccountSettings {
            /**
             * Specifies userAccountSettings.
-            */
+            * @param userAccountSettings the userAccountSettings parameter value
+            * @return the next definition stage
+*/
             WithVmSize withUserAccountSettings(UserAccountSettings userAccountSettings);
         }
 
@@ -139,56 +141,68 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithVmSize {
            /**
             * Specifies vmSize.
-            */
+            * @param vmSize All virtual machines in a cluster are the same size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes for Virtual Machines (Windows). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series)
+            * @return the next definition stage
+*/
             WithCreate withVmSize(String vmSize);
         }
 
         /**
-         * The stage of the cluster update allowing to specify NodeSetup.
+         * The stage of the cluster definition allowing to specify NodeSetup.
          */
         interface WithNodeSetup {
             /**
              * Specifies nodeSetup.
+             * @param nodeSetup the nodeSetup parameter value
+             * @return the next definition stage
              */
             WithCreate withNodeSetup(NodeSetup nodeSetup);
         }
 
         /**
-         * The stage of the cluster update allowing to specify ScaleSettings.
+         * The stage of the cluster definition allowing to specify ScaleSettings.
          */
         interface WithScaleSettings {
             /**
              * Specifies scaleSettings.
+             * @param scaleSettings the scaleSettings parameter value
+             * @return the next definition stage
              */
             WithCreate withScaleSettings(ScaleSettings scaleSettings);
         }
 
         /**
-         * The stage of the cluster update allowing to specify Subnet.
+         * The stage of the cluster definition allowing to specify Subnet.
          */
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet the subnet parameter value
+             * @return the next definition stage
              */
             WithCreate withSubnet(ResourceId subnet);
         }
 
         /**
-         * The stage of the cluster update allowing to specify VirtualMachineConfiguration.
+         * The stage of the cluster definition allowing to specify VirtualMachineConfiguration.
          */
         interface WithVirtualMachineConfiguration {
             /**
              * Specifies virtualMachineConfiguration.
+             * @param virtualMachineConfiguration the virtualMachineConfiguration parameter value
+             * @return the next definition stage
              */
             WithCreate withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration);
         }
 
         /**
-         * The stage of the cluster update allowing to specify VmPriority.
+         * The stage of the cluster definition allowing to specify VmPriority.
          */
         interface WithVmPriority {
             /**
              * Specifies vmPriority.
+             * @param vmPriority Default is dedicated. Possible values include: 'dedicated', 'lowpriority'
+             * @return the next definition stage
              */
             WithCreate withVmPriority(VmPriority vmPriority);
         }
@@ -212,11 +226,13 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
      */
     interface UpdateStages {
         /**
-         * The stage of the cluster {0} allowing to specify ScaleSettings.
+         * The stage of the cluster update allowing to specify ScaleSettings.
          */
         interface WithScaleSettings {
             /**
              * Specifies scaleSettings.
+             * @param scaleSettings the scaleSettings parameter value
+             * @return the next update stage
              */
             Update withScaleSettings(ScaleSettings scaleSettings);
         }

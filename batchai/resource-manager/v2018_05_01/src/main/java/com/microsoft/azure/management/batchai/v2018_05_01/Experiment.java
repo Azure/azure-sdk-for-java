@@ -75,6 +75,9 @@ public interface Experiment extends HasInner<ExperimentInner>, Indexable, Refres
         interface WithWorkspace {
            /**
             * Specifies resourceGroupName, workspaceName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long
+            * @return the next definition stage
             */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }

@@ -59,7 +59,7 @@ public class CNTKsettings {
     private Integer processCount;
 
     /**
-     * Get the languageType value.
+     * Get valid values are 'BrainScript' or 'Python'.
      *
      * @return the languageType value
      */
@@ -68,7 +68,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the languageType value.
+     * Set valid values are 'BrainScript' or 'Python'.
      *
      * @param languageType the languageType value to set
      * @return the CNTKsettings object itself.
@@ -79,7 +79,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the configFilePath value.
+     * Get this property can be specified only if the languageType is 'BrainScript'.
      *
      * @return the configFilePath value
      */
@@ -88,7 +88,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the configFilePath value.
+     * Set this property can be specified only if the languageType is 'BrainScript'.
      *
      * @param configFilePath the configFilePath value to set
      * @return the CNTKsettings object itself.
@@ -99,7 +99,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get this property can be specified only if the languageType is 'Python'.
      *
      * @return the pythonScriptFilePath value
      */
@@ -108,7 +108,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set this property can be specified only if the languageType is 'Python'.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the CNTKsettings object itself.
@@ -119,7 +119,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get this property can be specified only if the languageType is 'Python'.
      *
      * @return the pythonInterpreterPath value
      */
@@ -128,7 +128,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set this property can be specified only if the languageType is 'Python'.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the CNTKsettings object itself.
@@ -159,7 +159,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get the default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -168,7 +168,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set the default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the CNTKsettings object itself.

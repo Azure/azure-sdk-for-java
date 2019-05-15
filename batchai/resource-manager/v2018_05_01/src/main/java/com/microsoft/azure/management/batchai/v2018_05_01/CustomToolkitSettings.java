@@ -11,17 +11,18 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for a custom tool kit job.
+ * Custom tool kit job settings.
  */
 public class CustomToolkitSettings {
     /**
-     * The command line to execute the custom toolkit Job.
+     * Command line.
+     * The command line to execute on the master node.
      */
     @JsonProperty(value = "commandLine")
     private String commandLine;
 
     /**
-     * Get the commandLine value.
+     * Get the command line to execute on the master node.
      *
      * @return the commandLine value
      */
@@ -30,7 +31,7 @@ public class CustomToolkitSettings {
     }
 
     /**
-     * Set the commandLine value.
+     * Set the command line to execute on the master node.
      *
      * @param commandLine the commandLine value to set
      * @return the CustomToolkitSettings object itself.

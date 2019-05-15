@@ -11,34 +11,34 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies Azure Application Insights information for performance counters
- * reporting.
+ * Azure Application Insights information for performance counters reporting.
  */
 public class AppInsightsReference {
     /**
-     * Specifies the Azure Application Insights component resource id.
+     * Component ID.
+     * Azure Application Insights component resource ID.
      */
     @JsonProperty(value = "component", required = true)
     private ResourceId component;
 
     /**
+     * Instrumentation Key.
      * Value of the Azure Application Insights instrumentation key.
      */
     @JsonProperty(value = "instrumentationKey")
     private String instrumentationKey;
 
     /**
-     * Specifies a KeyVault Secret containing Azure Application Insights
-     * instrumentation key.
-     * Specifies KeyVault Store and Secret which contains Azure Application
-     * Insights instrumentation key. One of instumentationKey or
+     * Instrumentation key KeyVault Secret reference.
+     * KeyVault Store and Secret which contains Azure Application Insights
+     * instrumentation key. One of instrumentationKey or
      * instrumentationKeySecretReference must be specified.
      */
     @JsonProperty(value = "instrumentationKeySecretReference")
     private KeyVaultSecretReference instrumentationKeySecretReference;
 
     /**
-     * Get the component value.
+     * Get azure Application Insights component resource ID.
      *
      * @return the component value
      */
@@ -47,7 +47,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Set the component value.
+     * Set azure Application Insights component resource ID.
      *
      * @param component the component value to set
      * @return the AppInsightsReference object itself.
@@ -58,7 +58,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Get the instrumentationKey value.
+     * Get value of the Azure Application Insights instrumentation key.
      *
      * @return the instrumentationKey value
      */
@@ -67,7 +67,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Set the instrumentationKey value.
+     * Set value of the Azure Application Insights instrumentation key.
      *
      * @param instrumentationKey the instrumentationKey value to set
      * @return the AppInsightsReference object itself.
@@ -78,7 +78,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Get the instrumentationKeySecretReference value.
+     * Get keyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instrumentationKey or instrumentationKeySecretReference must be specified.
      *
      * @return the instrumentationKeySecretReference value
      */
@@ -87,7 +87,7 @@ public class AppInsightsReference {
     }
 
     /**
-     * Set the instrumentationKeySecretReference value.
+     * Set keyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instrumentationKey or instrumentationKeySecretReference must be specified.
      *
      * @param instrumentationKeySecretReference the instrumentationKeySecretReference value to set
      * @return the AppInsightsReference object itself.

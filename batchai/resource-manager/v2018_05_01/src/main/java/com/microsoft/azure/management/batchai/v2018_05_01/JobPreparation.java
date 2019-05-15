@@ -11,20 +11,20 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for job preparation.
+ * Job preparation settings.
  */
 public class JobPreparation {
     /**
-     * The command line to execute.
-     * If containerSettings is specified on the job, this commandLine will be
-     * executed in the same container as job. Otherwise it will be executed on
-     * the node.
+     * Command line.
+     * The command line to execute. If containerSettings is specified on the
+     * job, this commandLine will be executed in the same container as job.
+     * Otherwise it will be executed on the node.
      */
     @JsonProperty(value = "commandLine", required = true)
     private String commandLine;
 
     /**
-     * Get the commandLine value.
+     * Get the command line to execute. If containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
      *
      * @return the commandLine value
      */
@@ -33,7 +33,7 @@ public class JobPreparation {
     }
 
     /**
-     * Set the commandLine value.
+     * Set the command line to execute. If containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
      *
      * @param commandLine the commandLine value to set
      * @return the JobPreparation object itself.

@@ -42,7 +42,7 @@ public class UsageInner {
     private UsageName name;
 
     /**
-     * Get the unit value.
+     * Get an enum describing the unit of usage measurement. Possible values include: 'Count'.
      *
      * @return the unit value
      */
@@ -51,7 +51,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the currentValue value.
+     * Get the current usage of the resource.
      *
      * @return the currentValue value
      */
@@ -60,7 +60,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the limit value.
+     * Get the maximum permitted usage of the resource.
      *
      * @return the limit value
      */
@@ -69,7 +69,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the type of usage.
      *
      * @return the name value
      */

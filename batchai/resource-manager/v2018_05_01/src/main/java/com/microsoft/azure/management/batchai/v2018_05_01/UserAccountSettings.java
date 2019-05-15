@@ -16,27 +16,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UserAccountSettings {
     /**
-     * Specifies the name of the administrator account.
+     * User name.
+     * Name of the administrator user account which can be used to SSH to
+     * nodes.
      */
     @JsonProperty(value = "adminUserName", required = true)
     private String adminUserName;
 
     /**
-     * SSH public keys used to authenticate with linux based VMs. This does not
-     * get returned in a GET response body.
+     * SSH public key.
+     * SSH public key of the administrator user account.
      */
     @JsonProperty(value = "adminUserSshPublicKey")
     private String adminUserSshPublicKey;
 
     /**
-     * Admin user Password (linux only). This does not get returned in a GET
-     * response body.
+     * Password.
+     * Password of the administrator user account.
      */
     @JsonProperty(value = "adminUserPassword")
     private String adminUserPassword;
 
     /**
-     * Get the adminUserName value.
+     * Get name of the administrator user account which can be used to SSH to nodes.
      *
      * @return the adminUserName value
      */
@@ -45,7 +47,7 @@ public class UserAccountSettings {
     }
 
     /**
-     * Set the adminUserName value.
+     * Set name of the administrator user account which can be used to SSH to nodes.
      *
      * @param adminUserName the adminUserName value to set
      * @return the UserAccountSettings object itself.
@@ -56,7 +58,7 @@ public class UserAccountSettings {
     }
 
     /**
-     * Get the adminUserSshPublicKey value.
+     * Get sSH public key of the administrator user account.
      *
      * @return the adminUserSshPublicKey value
      */
@@ -65,7 +67,7 @@ public class UserAccountSettings {
     }
 
     /**
-     * Set the adminUserSshPublicKey value.
+     * Set sSH public key of the administrator user account.
      *
      * @param adminUserSshPublicKey the adminUserSshPublicKey value to set
      * @return the UserAccountSettings object itself.
@@ -76,7 +78,7 @@ public class UserAccountSettings {
     }
 
     /**
-     * Get the adminUserPassword value.
+     * Get password of the administrator user account.
      *
      * @return the adminUserPassword value
      */
@@ -85,7 +87,7 @@ public class UserAccountSettings {
     }
 
     /**
-     * Set the adminUserPassword value.
+     * Set password of the administrator user account.
      *
      * @param adminUserPassword the adminUserPassword value to set
      * @return the UserAccountSettings object itself.

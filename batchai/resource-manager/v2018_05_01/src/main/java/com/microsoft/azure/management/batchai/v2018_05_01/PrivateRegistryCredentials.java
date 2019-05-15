@@ -15,29 +15,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PrivateRegistryCredentials {
     /**
-     * User name to login.
+     * User name.
+     * User name to login to the repository.
      */
     @JsonProperty(value = "username", required = true)
     private String username;
 
     /**
-     * Password to login.
-     * One of password or passwordSecretReference must be specified.
+     * Password.
+     * User password to login to the docker repository. One of password or
+     * passwordSecretReference must be specified.
      */
     @JsonProperty(value = "password")
     private String password;
 
     /**
-     * Specifies the location of the password, which is a Key Vault Secret.
-     * Users can store their secrets in Azure KeyVault and pass it to the Batch
-     * AI Service to integrate with KeyVault. One of password or
-     * passwordSecretReference must be specified.
+     * Password secret reference.
+     * KeyVault Secret storing the password. Users can store their secrets in
+     * Azure KeyVault and pass it to the Batch AI service to integrate with
+     * KeyVault. One of password or passwordSecretReference must be specified.
      */
     @JsonProperty(value = "passwordSecretReference")
     private KeyVaultSecretReference passwordSecretReference;
 
     /**
-     * Get the username value.
+     * Get user name to login to the repository.
      *
      * @return the username value
      */
@@ -46,7 +48,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Set the username value.
+     * Set user name to login to the repository.
      *
      * @param username the username value to set
      * @return the PrivateRegistryCredentials object itself.
@@ -57,7 +59,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Get the password value.
+     * Get user password to login to the docker repository. One of password or passwordSecretReference must be specified.
      *
      * @return the password value
      */
@@ -66,7 +68,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Set the password value.
+     * Set user password to login to the docker repository. One of password or passwordSecretReference must be specified.
      *
      * @param password the password value to set
      * @return the PrivateRegistryCredentials object itself.
@@ -77,7 +79,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Get the passwordSecretReference value.
+     * Get keyVault Secret storing the password. Users can store their secrets in Azure KeyVault and pass it to the Batch AI service to integrate with KeyVault. One of password or passwordSecretReference must be specified.
      *
      * @return the passwordSecretReference value
      */
@@ -86,7 +88,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Set the passwordSecretReference value.
+     * Set keyVault Secret storing the password. Users can store their secrets in Azure KeyVault and pass it to the Batch AI service to integrate with KeyVault. One of password or passwordSecretReference must be specified.
      *
      * @param passwordSecretReference the passwordSecretReference value to set
      * @return the PrivateRegistryCredentials object itself.
