@@ -3,7 +3,11 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockFromUrlResponse;
+import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockResponse;
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
@@ -182,8 +186,8 @@ public final class AppendBlobURL extends BlobURL {
      */
     public Single<AppendBlobAppendBlockResponse> appendBlock(Flowable<ByteBuffer> data, long length,
             AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions() :
-                appendBlobAccessConditions;
+        appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
+                : appendBlobAccessConditions;
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
