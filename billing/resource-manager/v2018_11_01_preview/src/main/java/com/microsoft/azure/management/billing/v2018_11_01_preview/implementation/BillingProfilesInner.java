@@ -10,6 +10,8 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileCreationParameters;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesCreateHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesUpdateHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
@@ -24,6 +26,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -59,6 +62,14 @@ public class BillingProfilesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles listByBillingAccountName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles")
         Observable<Response<ResponseBody>> listByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles create" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles")
+        Observable<Response<ResponseBody>> create(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body BillingProfileCreationParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles beginCreate" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles")
+        Observable<Response<ResponseBody>> beginCreate(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body BillingProfileCreationParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}")
@@ -222,6 +233,158 @@ public class BillingProfilesInner {
                 .register(200, new TypeToken<BillingProfileListResultInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingProfileInner object if successful.
+     */
+    public BillingProfileInner create(String billingAccountName, BillingProfileCreationParameters parameters) {
+        return createWithServiceResponseAsync(billingAccountName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingProfileInner> createAsync(String billingAccountName, BillingProfileCreationParameters parameters, final ServiceCallback<BillingProfileInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<BillingProfileInner> createAsync(String billingAccountName, BillingProfileCreationParameters parameters) {
+        return createWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>, BillingProfileInner>() {
+            @Override
+            public BillingProfileInner call(ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>> createWithServiceResponseAsync(String billingAccountName, BillingProfileCreationParameters parameters) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.create(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<BillingProfileInner>() { }.getType(), BillingProfilesCreateHeaders.class);
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingProfileInner object if successful.
+     */
+    public BillingProfileInner beginCreate(String billingAccountName, BillingProfileCreationParameters parameters) {
+        return beginCreateWithServiceResponseAsync(billingAccountName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingProfileInner> beginCreateAsync(String billingAccountName, BillingProfileCreationParameters parameters, final ServiceCallback<BillingProfileInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileInner object
+     */
+    public Observable<BillingProfileInner> beginCreateAsync(String billingAccountName, BillingProfileCreationParameters parameters) {
+        return beginCreateWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>, BillingProfileInner>() {
+            @Override
+            public BillingProfileInner call(ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileInner object
+     */
+    public Observable<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>> beginCreateWithServiceResponseAsync(String billingAccountName, BillingProfileCreationParameters parameters) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreate(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders> clientResponse = beginCreateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<BillingProfileInner, BillingProfilesCreateHeaders> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingProfileInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingProfileInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .buildWithHeaders(response, BillingProfilesCreateHeaders.class);
     }
 
     /**

@@ -15,6 +15,7 @@ import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileCreationParameters;
 
 class BillingProfilesImpl extends WrapperImpl<BillingProfilesInner> implements BillingProfiles {
     private final BillingManager manager;
@@ -54,6 +55,18 @@ class BillingProfilesImpl extends WrapperImpl<BillingProfilesInner> implements B
                 return wrapModel(inner);
             }
        });
+    }
+
+    @Override
+    public Observable<BillingProfile> createAsync(String billingAccountName, BillingProfileCreationParameters parameters) {
+        BillingProfilesInner client = this.inner();
+        return client.createAsync(billingAccountName, parameters)
+        .map(new Func1<BillingProfileInner, BillingProfile>() {
+            @Override
+            public BillingProfile call(BillingProfileInner inner) {
+                return new BillingProfileImpl(inner, manager());
+            }
+        });
     }
 
 }
