@@ -113,7 +113,6 @@ public final class URLParser {
             if (keyValues == null) {
                 // map does not contain this key
                 keyValues = new String[]{value};
-                retVals.put(key, keyValues);
             } else {
                 // map contains this key already so append
                 final String[] newValues = new String[keyValues.length + 1];
@@ -122,7 +121,9 @@ public final class URLParser {
                 }
 
                 newValues[newValues.length - 1] = value;
+                keyValues = newValues;
             }
+            retVals.put(key, keyValues);
         }
 
         return retVals;

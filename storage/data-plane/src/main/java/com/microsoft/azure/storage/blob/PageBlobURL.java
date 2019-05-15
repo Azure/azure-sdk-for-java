@@ -324,7 +324,9 @@ public final class PageBlobURL extends BlobURL {
 
         String rangeString = pageRangeToString(range);
 
-        sourceOffset = sourceOffset ==  null ? 0 : sourceOffset;
+        if (sourceOffset == null) {
+            sourceOffset = 0L;
+        }
 
         String sourceRangeString = pageRangeToString(new PageRange().withStart(sourceOffset).withEnd(sourceOffset + (range.end() - range.start())));
 
