@@ -522,7 +522,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default serializer
      */
     public static SerializerAdapter createDefaultSerializer() {
-        return new JacksonAdapter();
+        return JacksonAdapter.createDefaultSerializerAdapter();
     }
 
     /**
@@ -599,7 +599,7 @@ public class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, ServiceClient serviceClient) {
-        return create(swaggerInterface, serviceClient.httpPipeline(), serviceClient.serializerAdapter());
+        return create(swaggerInterface, serviceClient.httpPipeline(), createDefaultSerializer());
     }
 
     /**
