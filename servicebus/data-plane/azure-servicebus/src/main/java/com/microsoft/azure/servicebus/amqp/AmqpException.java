@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.servicebus.amqp;
 
-
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 /**

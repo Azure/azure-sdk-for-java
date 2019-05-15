@@ -80,7 +80,7 @@ public final class ExceptionUtil {
             ((ServiceBusException) exception).setContext(errorContext);
         }
 
-        if(completeAsynchronously) {
+        if (completeAsynchronously) {
             AsyncUtil.completeFutureExceptionally(future, exception);
         } else {
             future.completeExceptionally(exception);
