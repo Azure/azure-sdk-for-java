@@ -60,5 +60,12 @@
   <suppress checks="FinalClass" files="BatchClient.java"/>
   <suppress checks="FinalClass" files="DetailLevel.java"/>
 
+  <!-- All auto generated files need to exclude from checkstyle -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
+  <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
+
+  <!-- No default case needed for the switch-->
+
+  <!-- Add NoImplInPublicAPI suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="src[/\\]test[/\\]java[/\\].*.java"/>
 </suppressions>
