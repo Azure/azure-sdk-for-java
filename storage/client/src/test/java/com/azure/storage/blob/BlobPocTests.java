@@ -52,11 +52,11 @@ public class BlobPocTests {
         random.nextBytes(randomBytes);
         ByteBuf bb = Unpooled.wrappedBuffer(randomBytes);
         String base64 = Base64.encodeBase64String("0001".getBytes(StandardCharsets.UTF_8));
-        client.blockBlobs().stageBlockWithRestResponseAsync(null, null, base64, 4096, Flux.just(bb)).block();
-        client.blockBlobs().commitBlockListWithRestResponseAsync(null, null, new BlockLookupList().withLatest(Arrays.asList(base64))).block();
+        client.blockBlobs().stageBlockWithRestResponseAsync(null, null, base64, 4096, Flux.just(bb), null).block();
+        client.blockBlobs().commitBlockListWithRestResponseAsync(null, null, new BlockLookupList().withLatest(Arrays.asList(base64)), null).block();
 
-        client.blobs().setMetadataWithRestResponseAsync(null, null, null, Collections.singletonMap("foo", "bar"), null, null, null, null, null, null).block();
-        BlobsGetPropertiesResponse res = client.blobs().getPropertiesWithRestResponseAsync(null, null).block();
+        client.blobs().setMetadataWithRestResponseAsync(null, null, null, Collections.singletonMap("foo", "bar"), null, null, null, null, null, null, null).block();
+        BlobsGetPropertiesResponse res = client.blobs().getPropertiesWithRestResponseAsync(null, null, null).block();
         System.out.println(res.deserializedHeaders().metadata().size());
     }
 }

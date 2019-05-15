@@ -16,6 +16,7 @@ import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendBlobsAppendBlockFromUrlResponse;
 import com.azure.storage.blob.models.AppendBlobsAppendBlockResponse;
 import com.azure.storage.blob.models.AppendBlobsCreateResponse;
@@ -67,17 +68,17 @@ public final class AppendBlobsImpl {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<AppendBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @QueryParam("x-ms-encryption-key") String encryptionKey, @QueryParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<AppendBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @QueryParam("x-ms-encryption-key") String encryptionKey, @QueryParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<AppendBlobsAppendBlockResponse> appendBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @QueryParam("x-ms-encryption-key") String encryptionKey, @QueryParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<AppendBlobsAppendBlockResponse> appendBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @QueryParam("x-ms-encryption-key") String encryptionKey, @QueryParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201, 304})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch);
+        Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-condition-maxsize") Long maxSize, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, Context context);
     }
 
     /**
@@ -86,10 +87,11 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength) {
+    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String encryptionKey = null;
@@ -108,7 +110,7 @@ public final class AppendBlobsImpl {
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.create(containerName, blob, this.client.url(), timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch);
+        return service.create(containerName, blob, this.client.url(), timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -126,10 +128,11 @@ public final class AppendBlobsImpl {
      * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, Map<String, String> metadata, String encryptionKey, String encryptionKeySha256, EncryptionAlgorithmType encryptionAlgorithm, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, Map<String, String> metadata, String encryptionKey, String encryptionKeySha256, EncryptionAlgorithmType encryptionAlgorithm, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String blobType = "AppendBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
@@ -178,7 +181,7 @@ public final class AppendBlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.create(containerName, blob, this.client.url(), timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch);
+        return service.create(containerName, blob, this.client.url(), timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -188,10 +191,11 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param body Initial data.
      * @param contentLength The length of the request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(String containerName, String blob, Flux<ByteBuf> body, long contentLength) {
+    public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(String containerName, String blob, Flux<ByteBuf> body, long contentLength, Context context) {
         final Integer timeout = null;
         final String encryptionKey = null;
         final String encryptionKeySha256 = null;
@@ -206,7 +210,7 @@ public final class AppendBlobsImpl {
         String transactionalContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.appendBlock(containerName, blob, this.client.url(), body, timeout, contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch);
+        return service.appendBlock(containerName, blob, this.client.url(), body, timeout, contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -225,10 +229,11 @@ public final class AppendBlobsImpl {
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param appendPositionAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(String containerName, String blob, Flux<ByteBuf> body, long contentLength, Integer timeout, byte[] transactionalContentMD5, String encryptionKey, String encryptionKeySha256, EncryptionAlgorithmType encryptionAlgorithm, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<AppendBlobsAppendBlockResponse> appendBlockWithRestResponseAsync(String containerName, String blob, Flux<ByteBuf> body, long contentLength, Integer timeout, byte[] transactionalContentMD5, String encryptionKey, String encryptionKeySha256, EncryptionAlgorithmType encryptionAlgorithm, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "appendblock";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -261,7 +266,7 @@ public final class AppendBlobsImpl {
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.appendBlock(containerName, blob, this.client.url(), body, timeout, contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch);
+        return service.appendBlock(containerName, blob, this.client.url(), body, timeout, contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -271,10 +276,11 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
      * @param contentLength The length of the request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithRestResponseAsync(String containerName, String blob, URL sourceUrl, long contentLength) {
+    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithRestResponseAsync(String containerName, String blob, URL sourceUrl, long contentLength, Context context) {
         final String sourceRange = null;
         final Integer timeout = null;
         final String requestId = null;
@@ -291,7 +297,7 @@ public final class AppendBlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.appendBlockFromUrl(containerName, blob, this.client.url(), sourceUrl, sourceRange, sourceContentMD5Converted, timeout, contentLength, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch);
+        return service.appendBlockFromUrl(containerName, blob, this.client.url(), sourceUrl, sourceRange, sourceContentMD5Converted, timeout, contentLength, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -309,10 +315,11 @@ public final class AppendBlobsImpl {
      * @param appendPositionAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithRestResponseAsync(String containerName, String blob, URL sourceUrl, long contentLength, String sourceRange, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions) {
+    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithRestResponseAsync(String containerName, String blob, URL sourceUrl, long contentLength, String sourceRange, byte[] sourceContentMD5, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, AppendPositionAccessConditions appendPositionAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         final String comp = "appendblock";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -363,6 +370,6 @@ public final class AppendBlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrl(containerName, blob, this.client.url(), sourceUrl, sourceRange, sourceContentMD5Converted, timeout, contentLength, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch);
+        return service.appendBlockFromUrl(containerName, blob, this.client.url(), sourceUrl, sourceRange, sourceContentMD5Converted, timeout, contentLength, this.client.version(), requestId, comp, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 }

@@ -15,6 +15,7 @@ import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersIncludeType;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
@@ -61,47 +62,48 @@ public final class ServicesImpl {
         @PUT("")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Mono<ServicesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp);
+        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @POST("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") KeyInfo keyInfo, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") KeyInfo keyInfo, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
     /**
      * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param storageServiceProperties The StorageService properties.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp);
+        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
@@ -110,26 +112,29 @@ public final class ServicesImpl {
      * @param storageServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp);
+        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
      * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync() {
+    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp);
+        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
@@ -137,26 +142,29 @@ public final class ServicesImpl {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId) {
+    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp);
+        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync() {
+    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp);
+        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
@@ -164,21 +172,24 @@ public final class ServicesImpl {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId) {
+    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp);
+        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
      * The List Containers Segment operation returns a list of the containers under the specified account.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync() {
+    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(Context context) {
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
@@ -186,7 +197,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp);
+        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
     }
 
     /**
@@ -198,27 +209,29 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the container's metadata be returned as part of the response body. Possible values include: 'metadata'.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
+    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp);
+        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
     }
 
     /**
      * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo) {
+    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp);
+        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
@@ -227,23 +240,26 @@ public final class ServicesImpl {
      * @param keyInfo the KeyInfo value.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
+    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp);
+        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
     /**
      * Returns the sku name and account kind.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithRestResponseAsync() {
+    public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp);
+        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp, context);
     }
 }
