@@ -6,6 +6,8 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
@@ -23,8 +25,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-//import java.util.stream.IntStream;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
@@ -112,7 +112,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting() {
         addExistingSettingRunner((expected) ->
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code())));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
     }
 
     /**
@@ -135,7 +135,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             final String etag = client.addSetting(initial).block().value().etag();
 
@@ -144,7 +144,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.getSetting(update))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -191,7 +191,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void updateNoExistingSetting() {
         updateNoExistingSettingRunner((expected) ->
             StepVerifier.create(client.updateSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code())));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
     }
 
     /**
@@ -244,7 +244,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // The setting does not exist in the service yet, so we cannot update it.
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.getSetting(update))
                 .assertNext(response -> assertConfigurationEquals(update, response))
@@ -259,7 +259,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
         });
     }
 
@@ -286,11 +286,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         StepVerifier.create(client.getSetting("myNonExistentKey"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
 
 
         StepVerifier.create(client.getSetting(nonExistentLabel))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -309,7 +309,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.getSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -351,14 +351,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.deleteSetting(updatedConfig))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
 
             StepVerifier.create(client.getSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -376,8 +376,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName("lbl", 8);
+        final String key = testResourceNamer.randomName(keyPrefix, 16);
+        final String label = testResourceNamer.randomName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
@@ -477,7 +477,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     public void listSettingsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -511,7 +511,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * specific fields.
      */
     public void listRevisions() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -663,7 +663,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     public void listRevisionsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
@@ -747,7 +747,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * scenario will return a setting when the etag provided does not match the one of the current setting.
      */
     public void getSettingWhenValueNotUpdated() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();

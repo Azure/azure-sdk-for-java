@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.security;
 
 import java.time.Duration;
@@ -101,7 +104,7 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         return tokenGeneratingFuture;
     }
     
-    private static class FutureCompletingAuthenticationCallback implements AuthenticationCallback
+    private static class FutureCompletingAuthenticationCallback implements AuthenticationCallback<AuthenticationResult>
     {
         private CompletableFuture<SecurityToken> tokenGeneratingFutue;
         private String audience;

@@ -40,4 +40,9 @@ public class Range {
     public int end() {
         return end;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d-%d", this.start, this.end);
+    }
 }

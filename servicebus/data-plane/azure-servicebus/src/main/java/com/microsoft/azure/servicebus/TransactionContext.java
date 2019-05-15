@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
@@ -5,6 +8,8 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Represents an active servicebus transaction.
@@ -33,7 +38,7 @@ public class TransactionContext {
 
     @Override
     public String toString() {
-        return new String(txnId.array(), txnId.position(), txnId.limit());
+        return new String(txnId.array(), txnId.position(), txnId.limit(), UTF_8);
     }
 
     /**
