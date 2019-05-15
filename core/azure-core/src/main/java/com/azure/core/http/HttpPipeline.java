@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.Context;
+import com.azure.core.util.Context;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 

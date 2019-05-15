@@ -20,7 +20,7 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.Context;
+import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
