@@ -630,13 +630,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                                     // Retry after retry interval
                                     TRACE_LOGGER.debug("Pending updateState operation for delivery '{}' will be retried after '{}'", deliveryTagAsString, retryInterval);
                                     try {
-                                        this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(),
-                                                new DispatchHandler() {
-                                                    @Override
-                                                    public void onEvent() {
-                                                        delivery.disposition(matchingUpdateStateWorkItem.getDeliveryState());
-                                                    }
-                                                });
+                                        this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(), new DeliveryStateDispatchHandler(delivery, matchingUpdateStateWorkItem.getDeliveryState()));
                                     } catch (IOException ioException) {
                                         this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem,
                                                 new ServiceBusException(false, "Operation failed while scheduling a retry on Reactor, see cause for more details.", ioException));
@@ -975,12 +969,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             
             CoreMessageReceiver.this.ensureLinkIsOpen().thenRun(() -> {
                 try {
-                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
-                        @Override
-                        public void onEvent() {
-                            delivery.disposition(state);
-                        }
-                    });
+                    this.underlyingFactory.scheduleOnReactorThread(new DeliveryStateDispatchHandler(delivery, state));
                 } catch (IOException ioException) {
                     completeMessageFuture.completeExceptionally(generateDispatacherSchedulingFailedException("completeMessage", ioException));
                 }
@@ -1332,5 +1321,20 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         return this.createRequestResponseLinkAsync().thenComposeAsync((v) ->
                 CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, sessionId, this.receiveLink.getName()),
             MessagingFactory.INTERNAL_THREAD_POOL);
+    }
+
+    private static class DeliveryStateDispatchHandler extends DispatchHandler {
+        final Delivery delivery;
+        final DeliveryState deliveryState;
+
+        DeliveryStateDispatchHandler(Delivery delivery, DeliveryState deliveryState) {
+            this.delivery = delivery;
+            this.deliveryState = deliveryState;
+        }
+
+        @Override
+        public void onEvent() {
+            delivery.disposition(deliveryState);
+        }
     }
 }

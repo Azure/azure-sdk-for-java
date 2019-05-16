@@ -354,17 +354,39 @@
     <Package name="com.microsoft.azure.storage.blob"/>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
-  
-  <!--The public field already exists in the public API surface area-->
+
+  <!-- The public field already exists in the public API surface area -->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
     <Field name="~(MAX_DURATION|NULL_TXN)"/>
     <Bug pattern="MS_SHOULD_BE_FINAL"/>
   </Match>
 
-  <!--  The two values can still change in the future. Change it will be a breaking code change.-->
+  <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
     <Bug pattern="DB_DUPLICATE_BRANCHES"/>
   </Match>
+
+  <!-- The return value is ignored for purpose -->
+  <Match>
+    <Class name="class com.microsoft.azure.servicebus.primitives.AsyncUtil"/>
+    <Method name="~(completeFuture|completeFutureExceptionally)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- The casting is correct, it is beyond the SpotBugs's ability to determine the correctness -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseUtils"/>
+    <Method name="encodeRuleDescriptionToMap"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.Utils"/>
+    <Method name="getDataFromMessageBody"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
 </FindBugsFilter>
