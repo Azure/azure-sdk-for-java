@@ -38,7 +38,7 @@ class TrustedIdProviderImpl extends CreatableUpdatableImpl<TrustedIdProvider, Tr
         this.manager = manager;
         // Set resource name
         this.trustedIdProviderName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "accounts");
         this.trustedIdProviderName = IdParsingUtils.getValueFromIdByName(inner.id(), "trustedIdProviders");
