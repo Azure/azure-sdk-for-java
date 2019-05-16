@@ -632,6 +632,8 @@ public final class SASQueryParameters {
                 case Constants.UrlConstants.SAS_CONTENT_TYPE:
                     tryAppendQueryParameter(sb, param, this.contentType);
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid URL constant.");
             }
         }
         return sb.toString();

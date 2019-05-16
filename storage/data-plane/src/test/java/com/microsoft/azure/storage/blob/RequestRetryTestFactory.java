@@ -339,8 +339,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         default:
                             throw new IllegalArgumentException("Retries continued on non retryable error.");
                     }
+                default:
+                    throw new IllegalArgumentException("Invalid retry test scenario.");
             }
-            return Single.error(new IllegalArgumentException("Invalid scenario"));
         }
 
         /*

@@ -147,6 +147,8 @@ public final class RequestRetryOptions {
             case FIXED:
                 delay = this.retryDelayInMs;
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid retry policy type.");
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);
