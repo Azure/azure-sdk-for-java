@@ -4,7 +4,9 @@ package com.azure.core.http.policy.spi;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
-// TODO
+/**
+ * Implementing classes automatically provide policies.
+ */
 public interface PolicyProvider {
 
     /**

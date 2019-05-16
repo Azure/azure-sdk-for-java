@@ -1,7 +1,7 @@
 package com.azure.tracing.opencensus;
 
-import com.azure.core.http.ContextData;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.Context;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Options;
@@ -11,13 +11,17 @@ import io.opencensus.trace.Tracing;
 
 import java.util.Optional;
 
+/**
+ * OpenCensus span
+ */
 public class OpenCensusTracer implements com.azure.core.implementation.tracing.Tracer {
     // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer tracer = Tracing.getTracer();
 
     private final ServiceLogger logger = new ServiceLogger(OpenCensusTracer.class);
 
-    public ContextData start(String methodName, ContextData context) {
+    @Override
+    public Context start(String methodName, Context context) {
         /*
          * TODO inspect ContextData for existing OpenCensus-specific tracing information. If present, augment. If not
          * present, create new tracing information.
@@ -37,7 +41,8 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
         return context.addData(Constants.OPENCENSUS_SPAN_KEY, span);
     }
 
-    public void end(int responseCode, Throwable throwable, ContextData context) {
+    @Override
+    public void end(int responseCode, Throwable throwable, Context context) {
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {
            Span span = (Span) spanOptional.get();
@@ -53,7 +58,7 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
     }
 
     @Override
-    public void setAttribute(String key, String value, ContextData context) {
+    public void setAttribute(String key, String value, Context context) {
 
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {

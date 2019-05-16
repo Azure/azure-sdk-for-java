@@ -2,5 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.core.http.policy.spi;
 
+/**
+ * Implementing classes are automatically added as policies after the retry policy.
+ */
 public interface AfterRetryPolicyProvider extends PolicyProvider {
 }

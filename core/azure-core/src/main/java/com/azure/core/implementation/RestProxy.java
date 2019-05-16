@@ -7,7 +7,6 @@ import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
 import com.azure.core.credentials.ServiceClientCredentials;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -35,12 +34,12 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
-import reactor.util.context.Context;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -117,7 +116,7 @@ public class RestProxy implements InvocationHandler {
      * @param contextData the context
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
-    public Mono<HttpResponse> send(HttpRequest request, ContextData contextData) {
+    public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
         return httpPipeline.send(httpPipeline.newContext(request, contextData));
     }
 
@@ -135,19 +134,19 @@ public class RestProxy implements InvocationHandler {
                 final Type returnType = methodParser.returnType();
 
                 // Track 2 clients don't use ResumeOperation yet, but they need to be thought about while implementing tracing.
-                return handleResumeOperation(request, opDesc, methodParser, returnType, startTracingSpan(resumeMethod, ContextData.NONE));
+                return handleResumeOperation(request, opDesc, methodParser, returnType, startTracingSpan(resumeMethod, Context.NONE));
 
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
-                ContextData contextData = methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
-                contextData = startTracingSpan(method, contextData);
+                Context context = methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName());
+                context = startTracingSpan(method, context);
 
-                final Mono<HttpResponse> asyncResponse = send(request, contextData);
+                final Mono<HttpResponse> asyncResponse = send(request, context);
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
-                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(), contextData);
+                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType(), context);
             }
 
         } catch (Exception e) {
@@ -169,11 +168,11 @@ public class RestProxy implements InvocationHandler {
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
      * additional context information.
      * @param method Service method being called.
-     * @param contextData Context information about the current service call.
+     * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    private ContextData startTracingSpan(Method method, ContextData contextData) {
-        return TracerProxy.start(String.format(SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), contextData);
+    private Context startTracingSpan(Method method, Context context) {
+        return TracerProxy.start(String.format(SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), context);
     }
 
     /**
@@ -494,11 +493,11 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType, ContextData contextData) {
-        return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, contextData);
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType, Context context) {
+        return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, context);
     }
 
-    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, ContextData contextData)
+    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType, Context context)
         throws Exception {
         throw new Exception("The resume operation is not available in the base RestProxy class.");
     }
@@ -511,10 +510,10 @@ public class RestProxy implements InvocationHandler {
      * @param returnType the type of value that will be returned
      * @return the deserialized result
      */
-    public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, ContextData contextData) {
+    public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, Context context) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
             .doOnEach(RestProxy::endTracingSpan)
-            .subscriberContext(Context.of("TRACING_CONTEXT", contextData));
+            .subscriberContext(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -553,8 +552,8 @@ public class RestProxy implements InvocationHandler {
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Context context = signal.getContext();
-        Optional<ContextData> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
+        reactor.util.context.Context context = signal.getContext();
+        Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
 
         if (!tracingContext.isPresent()) {
             return;

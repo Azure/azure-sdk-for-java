@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.function.Supplier;
 
+/**
+ * This class handles adding SPI plug-able policies to a pipeline automatically.
+ */
 public final class HttpPolicyProviders {
 
     private static Map<Class<? extends PolicyProvider>, ServiceLoader<? extends PolicyProvider>> serviceLoaders = new HashMap<>();

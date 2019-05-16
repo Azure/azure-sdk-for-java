@@ -14,7 +14,6 @@ final class HttpTraceUtil {
     private static final Status STATUS_409 = Status.UNKNOWN.withDescription("Conflict");
     private static final Status STATUS_410 = Status.UNKNOWN.withDescription("Gone");
     private static final Status STATUS_411 = Status.UNKNOWN.withDescription("Length Required");
-    private static final Status STATUS_412 = Status.UNKNOWN.withDescription("Precondition Failed");
     private static final Status STATUS_413 =
         Status.UNKNOWN.withDescription("Request Entity Too Large");
     private static final Status STATUS_414 = Status.UNKNOWN.withDescription("Request-URI Too Large");
@@ -91,7 +90,7 @@ final class HttpTraceUtil {
                     case 411:
                         return STATUS_411;
                     case 412:
-                        return STATUS_412;
+                        return Status.FAILED_PRECONDITION.withDescription(message);
                     case 413:
                         return STATUS_413;
                     case 414:

@@ -9,8 +9,8 @@ import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.ContextData;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 import java.util.List;
 
@@ -75,7 +75,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), ContextData.NONE);
+        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, ContextData.NONE);
+        return addSetting(setting, Context.NONE);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add to the configuration service.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -123,8 +123,8 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpRequestException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, ContextData contextData) {
-        return client.addSetting(setting, contextData).block();
+    public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
+        return client.addSetting(setting, context).block();
     }
 
     /**
@@ -153,7 +153,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), ContextData.NONE);
+        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, ContextData.NONE);
+        return setSetting(setting, Context.NONE);
     }
 
     /**
@@ -218,7 +218,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The configuration setting to create or update.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw ServiceRequestException described below).
@@ -229,8 +229,8 @@ public final class ConfigurationClient {
      * setting exists and is locked.
      * @throws HttpRequestException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, ContextData contextData) {
-        return client.setSetting(setting, contextData).block();
+    public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
+        return client.setSetting(setting, context).block();
     }
 
     /**
@@ -254,7 +254,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), ContextData.NONE);
+        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
 
     /**
@@ -282,7 +282,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, ContextData.NONE);
+        return updateSetting(setting, Context.NONE);
     }
 
     /**
@@ -300,7 +300,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add or update in the service.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -310,8 +310,8 @@ public final class ConfigurationClient {
      * the current value.
      * @throws HttpRequestException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, ContextData contextData) {
-        return client.updateSetting(setting, contextData).block();
+    public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
+        return client.updateSetting(setting, context).block();
     }
 
     /**
@@ -333,7 +333,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), ContextData.NONE);
+        return getSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
 
     /**
@@ -356,7 +356,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If the {@code} key is an empty string.
      */
     public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, ContextData.NONE);
+        return getSetting(setting, Context.NONE);
     }
 
     /**
@@ -371,7 +371,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -379,8 +379,8 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpRequestException If the {@code} key is an empty string.
      */
-    public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, ContextData contextData) {
-        return client.getSetting(setting, contextData).block();
+    public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
+        return client.getSetting(setting, context).block();
     }
 
     /**
@@ -402,7 +402,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), ContextData.NONE);
+        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
 
     /**
@@ -432,7 +432,7 @@ public final class ConfigurationClient {
      * @throws HttpRequestException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, ContextData.NONE);
+        return deleteSetting(setting, Context.NONE);
     }
 
     /**
@@ -451,7 +451,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The ConfigurationSetting to delete.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
      * current etag (which will also throw ServiceRequestException described below).
@@ -462,8 +462,8 @@ public final class ConfigurationClient {
      * character, and does not match the current etag value.
      * @throws HttpRequestException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, ContextData contextData) {
-        return client.deleteSetting(setting, contextData).block();
+    public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
+        return client.deleteSetting(setting, context).block();
     }
 
     /**
@@ -484,7 +484,7 @@ public final class ConfigurationClient {
      * contains all of the current settings in the service.
      */
     public List<ConfigurationSetting> listSettings(SettingSelector options) {
-        return listSettings(options, ContextData.NONE);
+        return listSettings(options, Context.NONE);
     }
 
     /**
@@ -501,12 +501,12 @@ public final class ConfigurationClient {
      * }</pre>
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
-    public List<ConfigurationSetting> listSettings(SettingSelector options, ContextData contextData) {
-        return client.listSettings(options, contextData).collectList().block();
+    public List<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+        return client.listSettings(options, context).collectList().block();
     }
 
     /**
@@ -530,7 +530,7 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return listSettingRevisions(selector, ContextData.NONE);
+        return listSettingRevisions(selector, Context.NONE);
     }
 
     /**
@@ -551,10 +551,10 @@ public final class ConfigurationClient {
      * }</pre>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @param contextData Additional context that is passed during the service call.
+     * @param context Additional context that is passed during the service call.
      * @return Revisions of the ConfigurationSetting
      */
-    public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector, ContextData contextData) {
-        return client.listSettingRevisions(selector, contextData).collectList().block();
+    public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return client.listSettingRevisions(selector, context).collectList().block();
     }
 }
