@@ -165,9 +165,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                  delay.
                  */
                 if (!((this.factory.retryTestScenario == RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS
-                        && this.factory.tryNumber > 4) ||
-                        (this.factory.retryTestScenario ==
-                                RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
+                        && this.factory.tryNumber > 4)
+                        || (this.factory.retryTestScenario
+                                == RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
                                 && this.factory.tryNumber > 2))) {
                     expectedHost = RETRY_TEST_SECONDARY_HOST;
                 }

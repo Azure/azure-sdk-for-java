@@ -15,7 +15,7 @@ import java.util.concurrent.locks.Lock;
  */
 public final class ProgressReporter {
 
-    private static abstract class ProgressReporterImpl implements IProgressReceiver{
+    private abstract static class ProgressReporterImpl implements IProgressReceiver {
         long blockProgress;
 
         final IProgressReceiver progressReceiver;
@@ -109,7 +109,7 @@ public final class ProgressReporter {
             transferLock.lock();
             this.progressReceiver.reportProgress(this.totalProgress.addAndGet(bytesTransferred));
             transferLock.unlock();
-    }
+        }
 
         /*
         This is used in the case of retries to rewind the amount of progress reported so as not to over-report at the
@@ -149,8 +149,7 @@ public final class ProgressReporter {
             IProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
-        }
-        else {
+        } else {
             ProgressReporterImpl tracker = new SequentialProgressReporter(progressReceiver);
             return tracker.addProgressReporting(data);
         }
@@ -160,8 +159,7 @@ public final class ProgressReporter {
             IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
-        }
-        else {
+        } else {
             ParallelProgressReporter tracker = new ParallelProgressReporter(progressReceiver, lock, totalProgress);
             return tracker.addProgressReporting(data);
         }
