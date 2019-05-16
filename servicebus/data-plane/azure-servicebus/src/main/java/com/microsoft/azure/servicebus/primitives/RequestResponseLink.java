@@ -627,7 +627,7 @@ class RequestResponseLink extends ClientEntity{
             // Return response in a separate thread so reactor thread is free to handle reactor events
             final Message finalResponseMessage = responseMessage;
             MessagingFactory.INTERNAL_THREAD_POOL.submit(() -> {
-                String requestMessageId = (String)finalResponseMessage.getCorrelationId();
+                String requestMessageId = (String) finalResponseMessage.getCorrelationId();
                 if (requestMessageId != null) {
                     TRACE_LOGGER.debug("RequestRespnseLink received response for request with id :{}", requestMessageId);
                     this.parent.completeRequestWithResponse(requestMessageId, finalResponseMessage);
@@ -866,9 +866,9 @@ class RequestResponseLink extends ClientEntity{
                             assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
                             delivery.settle();
                             this.availableCredit.decrementAndGet();
-                            TRACE_LOGGER.debug("RequestResonseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
-                        } catch(Exception e) {
-                            TRACE_LOGGER.error("RequestResonseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
+                            TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
+                        } catch (Exception e) {
+                            TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
                             this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
                         }
                     } else {
