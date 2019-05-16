@@ -10,19 +10,19 @@ import org.apache.qpid.proton.engine.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     
     private final IAmqpSender msgSender;
-    private final Object firstFlow;
-    private boolean isFirstFlow;
+    private AtomicBoolean isFirstFlow;
 
     public SendLinkHandler(final IAmqpSender sender) {
         super(sender);
 
         this.msgSender = sender;
-        this.firstFlow = new Object();
-        this.isFirstFlow = true;
+        this.isFirstFlow = new AtomicBoolean(true);
     }
 
     @Override
@@ -33,8 +33,7 @@ public class SendLinkHandler extends BaseLinkHandler {
             if (link.getRemoteTarget() != null) {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
 
-                synchronized (this.firstFlow) {
-                    this.isFirstFlow = false;
+                if (this.isFirstFlow.compareAndSet(true, false)) {
                     this.msgSender.onOpenComplete(null);
                 }
             } else {
@@ -51,8 +50,7 @@ public class SendLinkHandler extends BaseLinkHandler {
             Sender sender = (Sender) delivery.getLink();
 
             TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
-                    sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
-
+                sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
             msgSender.onSendComplete(delivery);
             delivery.settle();
 
@@ -62,13 +60,8 @@ public class SendLinkHandler extends BaseLinkHandler {
 
     @Override
     public void onLinkFlow(Event event) {
-        if (this.isFirstFlow) {
-            synchronized (this.firstFlow) {
-                if (this.isFirstFlow) {
-                    this.msgSender.onOpenComplete(null);
-                    this.isFirstFlow = false;
-                }
-            }
+        if (this.isFirstFlow.compareAndSet(true, false)) {
+            this.msgSender.onOpenComplete(null);
         }
 
         Sender sender = event.getSender();

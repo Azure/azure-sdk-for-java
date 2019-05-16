@@ -34,7 +34,7 @@ public final class ReactorDispatcher {
     public ReactorDispatcher(final Reactor reactor) throws IOException {
         this.reactor = reactor;
         this.ioSignal = Pipe.open();
-        this.workQueue = new ConcurrentLinkedQueue<BaseHandler>();
+        this.workQueue = new ConcurrentLinkedQueue<>();
         this.workScheduler = new ScheduleHandler();
 
         initializeSelectable();
@@ -68,7 +68,7 @@ public final class ReactorDispatcher {
         }
     }
 
-    private final class DelayHandler extends BaseHandler {
+    private static final class DelayHandler extends BaseHandler {
         final int delay;
         final BaseHandler timerCallback;
         final Reactor reactor;
@@ -107,15 +107,13 @@ public final class ReactorDispatcher {
         public void run(Selectable selectable) {
             try {
                 selectable.getChannel().close();
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
 
             try {
                 if (ioSignal.sink().isOpen()) {
                     ioSignal.sink().close();
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
 
             workScheduler.run(null);
 
@@ -123,8 +121,7 @@ public final class ReactorDispatcher {
                 if (ioSignal.source().isOpen()) {
                     ioSignal.source().close();
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
         }
     }
 }

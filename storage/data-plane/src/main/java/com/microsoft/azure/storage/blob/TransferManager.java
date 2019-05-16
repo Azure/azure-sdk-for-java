@@ -15,12 +15,16 @@ import io.reactivex.Single;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.StrictMath.toIntExact;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains a collection of methods (and structures associated with those methods) which perform higher-level
@@ -108,16 +112,16 @@ public final class TransferManager {
                  */
                 .concatMapEager(i -> {
                     // The max number of bytes for a block is currently 100MB, so the final result must be an int.
-                    int count = (int) Math.min((long)blockLength, (file.size() - i * (long)blockLength));
+                    int count = (int) Math.min((long) blockLength, (file.size() - i * (long) blockLength));
                     // i * blockLength could be a long, so we need a cast to prevent overflow.
-                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long)blockLength, count);
+                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long) blockLength, count);
 
                     // Report progress as necessary.
                     data = ProgressReporter.addParallelProgressReporting(data, optionsReal.progressReceiver(),
                                 progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
@@ -188,8 +192,7 @@ public final class TransferManager {
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
             BlobRange range, TransferManagerDownloadFromBlobOptions options) {
         BlobRange rangeReal = range == null ? new BlobRange() : range;
-        TransferManagerDownloadFromBlobOptions optionsReal = options == null ?
-                new TransferManagerDownloadFromBlobOptions() : options;
+        TransferManagerDownloadFromBlobOptions optionsReal = options == null ? new TransferManagerDownloadFromBlobOptions() : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
@@ -445,7 +448,7 @@ public final class TransferManager {
                             optionsReal.progressReceiver(), progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
