@@ -179,8 +179,9 @@ class QueueDescriptionSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry")
-            return parseFromEntry(doc);
+            if ("entry".equals(doc.getTagName())) {
+                return parseFromEntry(doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
