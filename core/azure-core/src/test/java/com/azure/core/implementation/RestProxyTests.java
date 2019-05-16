@@ -1501,7 +1501,7 @@ public abstract class RestProxyTests {
         //
         final HttpPipeline httpPipeline = HttpPipeline.builder()
             .httpClient(httpClient)
-            .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
+            .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
             .build();
         //
         Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));

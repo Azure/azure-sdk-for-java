@@ -560,7 +560,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         return HttpPipeline.builder()
-            .setPolicies(policies)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
 

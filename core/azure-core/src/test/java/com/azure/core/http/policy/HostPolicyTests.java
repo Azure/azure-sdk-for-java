@@ -33,17 +33,12 @@ public class HostPolicyTests {
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
         return HttpPipeline.builder()
-            .httpClient(new MockHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.empty(); // NOP
-                }
-            })
-            .addPolicy(new HostPolicy(host))
-            .addPolicy((context, next) -> {
-                assertEquals(expectedUrl, context.httpRequest().url().toString());
-                return next.process();
-            })
+            .httpClient(new MockHttpClient())
+            .policies(new HostPolicy(host),
+                (context, next) -> {
+                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    return next.process();
+                })
             .build();
     }
 
@@ -51,10 +46,12 @@ public class HostPolicyTests {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 
-    private abstract static class MockHttpClient implements HttpClient {
+    private static class MockHttpClient implements HttpClient {
 
         @Override
-        public abstract Mono<HttpResponse> send(HttpRequest request);
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return Mono.empty(); // NOP
+        }
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {

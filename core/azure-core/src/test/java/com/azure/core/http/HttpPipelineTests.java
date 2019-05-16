@@ -32,9 +32,9 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline = HttpPipeline.builder()
-            .addPolicy(new PortPolicy(80, true))
-            .addPolicy(new ProtocolPolicy("ftp", true))
-            .addPolicy(new RetryPolicy())
+            .policies(new PortPolicy(80, true),
+                new ProtocolPolicy("ftp", true),
+                new RetryPolicy())
             .build();
 
         assertEquals(3, pipeline.getPolicyCount());
@@ -48,9 +48,9 @@ public class HttpPipelineTests {
     @Test
     public void withRequestOptions() throws MalformedURLException {
         HttpPipeline pipeline = HttpPipeline.builder()
-            .addPolicy(new PortPolicy(80, true))
-            .addPolicy(new ProtocolPolicy("ftp", true))
-            .addPolicy(new RetryPolicy())
+            .policies(new PortPolicy(80, true),
+                new ProtocolPolicy("ftp", true),
+                new RetryPolicy())
             .build();
 
         HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
@@ -98,7 +98,7 @@ public class HttpPipelineTests {
 
         final HttpPipeline httpPipeline = HttpPipeline.builder()
             .httpClient(httpClient)
-            .addPolicy(new UserAgentPolicy(expectedUserAgent))
+            .policies(new UserAgentPolicy(expectedUserAgent))
             .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
@@ -124,7 +124,7 @@ public class HttpPipelineTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             })
-            .addPolicy(new RequestIdPolicy())
+            .policies(new RequestIdPolicy())
             .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();

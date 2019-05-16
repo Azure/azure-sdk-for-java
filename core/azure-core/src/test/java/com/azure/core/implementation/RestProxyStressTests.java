@@ -116,7 +116,7 @@ public class RestProxyStressTests {
         //
         service = RestProxy.create(IOService.class,
             HttpPipeline.builder()
-                .setPolicies(polices)
+                .policies(polices.toArray(new HttpPipelinePolicy[0]))
                 .build());
 
         RestProxyStressTests.tempFolderPath = Paths.get(tempFolderPath);
@@ -512,9 +512,8 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-            HttpPipeline
-                .builder()
-                .setPolicies(policies)
+            HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build());
 
         // When running with MockServer, connections sometimes get dropped,

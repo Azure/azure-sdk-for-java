@@ -29,7 +29,7 @@ public class UserAgentTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             })
-            .addPolicy(new UserAgentPolicy("AutoRest-Java"))
+            .policies(new UserAgentPolicy("AutoRest-Java"))
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(
@@ -49,7 +49,7 @@ public class UserAgentTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             })
-            .addPolicy(new UserAgentPolicy("Awesome"))
+            .policies(new UserAgentPolicy("Awesome"))
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,

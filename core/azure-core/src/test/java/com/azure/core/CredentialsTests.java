@@ -30,8 +30,7 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .addPolicy(new CredentialsPolicy(credentials))
-            .addPolicy(auditorPolicy)
+            .policies(new CredentialsPolicy(credentials), auditorPolicy)
             .build();
 
 
@@ -51,8 +50,7 @@ public class CredentialsTests {
 
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .addPolicy(new CredentialsPolicy(credentials))
-            .addPolicy(auditorPolicy)
+            .policies(new CredentialsPolicy(credentials), auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));

@@ -33,33 +33,23 @@ public class ProtocolPolicyTests {
     }
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
         return HttpPipeline.builder()
-            .httpClient(new MockHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.empty(); // NOP
-                }
-            })
-            .addPolicy(new ProtocolPolicy(protocol, true))
-            .addPolicy((context, next) -> {
-                assertEquals(expectedUrl, context.httpRequest().url().toString());
-                return next.process();
-            })
+            .httpClient(new MockHttpClient())
+            .policies(new ProtocolPolicy(protocol, true),
+                (context, next) -> {
+                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    return next.process();
+                })
             .build();
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
         return HttpPipeline.builder()
-            .httpClient(new MockHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.empty(); // NOP
-                }
-            })
-            .addPolicy(new ProtocolPolicy(protocol, overwrite))
-            .addPolicy((context, next) -> {
-                assertEquals(expectedUrl, context.httpRequest().url().toString());
-                return next.process();
-            })
+            .httpClient(new MockHttpClient())
+            .policies(new ProtocolPolicy(protocol, overwrite),
+                (context, next) -> {
+                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    return next.process();
+                })
             .build();
     }
 
@@ -67,10 +57,12 @@ public class ProtocolPolicyTests {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 
-    private abstract static class MockHttpClient implements HttpClient {
+    private static class MockHttpClient implements HttpClient {
 
         @Override
-        public abstract Mono<HttpResponse> send(HttpRequest request);
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return Mono.empty();
+        }
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {

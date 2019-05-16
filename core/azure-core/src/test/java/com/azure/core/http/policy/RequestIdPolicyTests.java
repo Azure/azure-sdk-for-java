@@ -80,7 +80,7 @@ public class RequestIdPolicyTests {
                     return Mono.just(mockResponse);
                 }
             })
-            .addPolicy(new RequestIdPolicy())
+            .policies(new RequestIdPolicy())
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
@@ -107,8 +107,7 @@ public class RequestIdPolicyTests {
                     return Mono.just(mockResponse);
                 }
             })
-            .addPolicy(new RequestIdPolicy())
-            .addPolicy(new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)))
+            .policies(new RequestIdPolicy(), new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)))
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();

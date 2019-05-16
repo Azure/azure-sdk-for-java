@@ -129,7 +129,7 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = HttpPipeline.builder()
-            .setPolicies(policies)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
 
