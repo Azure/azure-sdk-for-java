@@ -83,7 +83,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default serializer.
      */
     public static SerializerAdapter createDefaultSerializer() {
-        return new AzureJacksonAdapter();
+        return  AzureJacksonAdapter.createDefaultSerializerAdapter();
     }
 
     private static String operatingSystem;
@@ -212,7 +212,7 @@ public final class AzureProxy extends RestProxy {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, AzureServiceClient azureServiceClient) {
-        return AzureProxy.create(swaggerInterface, azureServiceClient.azureEnvironment(), azureServiceClient.httpPipeline(), azureServiceClient.serializerAdapter());
+        return AzureProxy.create(swaggerInterface, azureServiceClient.azureEnvironment(), azureServiceClient.httpPipeline(), createDefaultSerializer());
     }
 
     /**
