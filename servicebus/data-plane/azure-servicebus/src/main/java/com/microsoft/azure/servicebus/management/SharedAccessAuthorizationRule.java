@@ -102,8 +102,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public void setRights(List<AccessRights> rights) {
-        if (rights == null || rights.size() <= 0 || rights.size() > ManagementClientConstants.supportedClaimsCount) {
-            throw new IllegalArgumentException("Rights cannot be null, empty or greater than " + ManagementClientConstants.supportedClaimsCount);
+        if (rights == null || rights.size() <= 0 || rights.size() > ManagementClientConstants.SupportedClaimsCount) {
+            throw new IllegalArgumentException("Rights cannot be null, empty or greater than " + ManagementClientConstants.SupportedClaimsCount);
         }
 
         HashSet<AccessRights> dedupedAccessRights = new HashSet<>(rights);

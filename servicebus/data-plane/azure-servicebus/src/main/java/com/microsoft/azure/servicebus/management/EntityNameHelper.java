@@ -98,7 +98,7 @@ public class EntityNameHelper {
             throw new IllegalArgumentException("The entity name contains an invalid character '" + pathDelimiter + "'");
         }
 
-        for (char key : ManagementClientConstants.invalidEntityPathCharacters) {
+        for (char key : ManagementClientConstants.InvalidEntityPathCharacters) {
             if (entityName.indexOf(key) >= 0) {
                 throw new IllegalArgumentException(entityName + " contains character '" + key + "' which is not allowed" +
                         "because it is reserved in the Uri scheme.");
