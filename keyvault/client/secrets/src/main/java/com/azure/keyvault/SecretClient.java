@@ -85,14 +85,14 @@ public final class SecretClient extends ServiceClient {
      * Secret secret = new Secret("secretName", "secretValue")
      *   .expires(OffsetDateTime.now.plusDays(60));
      *
-     * Secret retSecret = secretClient.(keySecret).value();
+     * Secret retSecret = secretClient.setSecret(keySecret).value();
      * System.out.printf("Secret is created with name %s and value %s \n", retSecret.name(), retSecret.value());
      * </pre>
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpRequestException if {@link Secret#name()}  name} or {@link Secret#value() value} are empty strings.
+     * @throws HttpRequestException if {@link Secret#name() name} or {@link Secret#value() value} are empty strings.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Response<Secret> setSecret(Secret secret) {
@@ -170,7 +170,7 @@ public final class SecretClient extends ServiceClient {
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} are empty strings.
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Response<Secret> getSecret(SecretBase secretBase) {
@@ -218,7 +218,7 @@ public final class SecretClient extends ServiceClient {
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link SecretBase#name() name} or {@link SecretBase#version() version} are empty strings.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
     public Response<SecretBase> updateSecret(SecretBase secret) {

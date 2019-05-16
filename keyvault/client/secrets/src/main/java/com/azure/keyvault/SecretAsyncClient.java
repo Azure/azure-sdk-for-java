@@ -94,7 +94,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpRequestException if {@link Secret#name()}  name} or {@link Secret#value() value} is empty string.
+     * @throws HttpRequestException if {@link Secret#name()  name} or {@link Secret#value() value} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Mono<Response<Secret>> setSecret(Secret secret) {
