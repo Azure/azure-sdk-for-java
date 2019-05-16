@@ -80,6 +80,39 @@ public class EventHubSender implements AutoCloseable {
         return send(partitionId, Flux.just(events));
     }
 
+
+    /**
+     * Sends the {@code events} to the Event Hubs service. If {@link EventData#partitionKey()} is specified, the events
+     * are grouped by that key and sent to the service in batches.
+     *
+     * @param events Events to send to the service.
+     * @return A {@link Mono} that completes when all events are pushed to the service.
+     */
+    public Mono<Void> send(Iterable<EventData> events) {
+        if (events == null) {
+            return Mono.empty();
+        }
+
+        return send(Flux.fromIterable(events));
+    }
+
+    /**
+     * Sends the {@code events} to the specified Event Hubs {@code partitionId}. If {@link EventData#partitionKey()} is
+     * specified, these are dropped from being sent.
+     *
+     * @param partitionId Event Hubs partition to send the events to.
+     * @param events Events to send to the service.
+     * @return A {@link Mono} that completes when all events are pushed to the service.
+     */
+    public Mono<Void> send(String partitionId, Iterable<EventData> events) {
+        if (events == null) {
+            return Mono.empty();
+        }
+
+        return send(partitionId, Flux.fromIterable(events));
+    }
+
+
     /**
      * Sends the {@code events} to the specified Event Hubs {@code partitionId}. If {@link EventData#partitionKey()} is
      * specified, these are dropped from being sent.
