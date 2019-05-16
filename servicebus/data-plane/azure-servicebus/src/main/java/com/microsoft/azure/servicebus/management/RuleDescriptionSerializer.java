@@ -26,6 +26,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 class RuleDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RuleDescriptionSerializer.class);
 
@@ -213,7 +215,7 @@ class RuleDescriptionSerializer {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
+            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes(UTF_8)));
             Element doc = dom.getDocumentElement();
             doc.normalize();
             if ("entry".equals(doc.getTagName())) {
@@ -239,20 +241,17 @@ class RuleDescriptionSerializer {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                switch(element.getTagName()) {
                     case "title":
                         rd = new RuleDescription(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "Name":
                                         rd.setName(element.getFirstChild().getNodeValue());
                                         break;
@@ -261,6 +260,8 @@ class RuleDescriptionSerializer {
                                         break;
                                     case "Action":
                                         rd.setAction(parseActionFromElement(element));
+                                        break;
+                                    default:
                                         break;
                                 }
                             }
@@ -349,6 +350,8 @@ class RuleDescriptionSerializer {
                         break;
                     case "ContentType":
                         filter.setContentType(element.getFirstChild().getNodeValue());
+                        break;
+                    default:
                         break;
                     // todo: parse properties
                 }

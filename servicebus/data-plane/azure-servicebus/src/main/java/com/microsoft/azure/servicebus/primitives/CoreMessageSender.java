@@ -4,6 +4,7 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -675,9 +676,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                             TRACE_LOGGER.warn(operationTimedout.getMessage());
                             linkReopenFutureThatCanBeCancelled.completeExceptionally(operationTimedout);
                         }
-                    }
-                    , CoreMessageSender.LINK_REOPEN_TIMEOUT
-                    , TimerType.OneTimeRun);
+                    },
+                    CoreMessageSender.LINK_REOPEN_TIMEOUT,
+                    TimerType.OneTimeRun);
                 this.cancelSASTokenRenewTimer();
 
                 CompletableFuture<Void> authenticationFuture = null;
@@ -901,7 +902,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag> {
+    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
+        private static final long serialVersionUID = -7057500582037295636L;
         @Override
         public int compare(WeightedDeliveryTag deliveryTag0, WeightedDeliveryTag deliveryTag1) {
             return deliveryTag1.getPriority() - deliveryTag0.getPriority();
