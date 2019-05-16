@@ -52,7 +52,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
         if (ast.getType() == TokenTypes.PACKAGE_DEF) {
             String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
             this.isTrackTwo = packageName.startsWith(COM_AZURE);
-            this.isImplPackage = Pattern.matches(IMPL_PACKAGE_REGULAR_EXPR, packageName);
+            this.isImplPackage = packageName.contains(DOT_IMPLEMENTATION);
             return;
         } else {
             if (this.isTrackTwo) {
