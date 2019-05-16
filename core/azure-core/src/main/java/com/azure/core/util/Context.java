@@ -1,36 +1,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.util;
 
 import java.util.Optional;
 
 /**
- * {@code ContextData} offers a means of passing arbitrary data (key-value pairs) to {@link HttpPipeline}'s
- * policy objects. Most applications do not need to pass arbitrary data to the pipeline and can pass
- * {@code ContextData.NONE} or {@code null}. Each context object is immutable.
- * The {@code addData(Object, Object)} method creates a new {@code ContextData} object that refers
- * to its parent, forming a linked list.
+ * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+ * Most applications do not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or
+ * {@code null}. Each context object is immutable. The {@code addData(Object, Object)} method creates a new
+ * {@code Context} object that refers to its parent, forming a linked list.
  */
-public class ContextData {
+public class Context {
     // All fields must be immutable.
     //
     /**
      * Signifies that no data need be passed to the pipeline.
      */
-    public static final ContextData NONE = new ContextData(null, null, null);
+    public static final Context NONE = new Context(null, null, null);
 
-    private final ContextData parent;
+    private final Context parent;
     private final Object key;
     private final Object value;
 
     /**
-     * Constructs a new {@link ContextData} object.
+     * Constructs a new {@link Context} object.
      *
      * @param key the key
      * @param value the value
      */
-    public ContextData(Object key, Object value) {
+    public Context(Object key, Object value) {
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
         }
@@ -39,29 +38,29 @@ public class ContextData {
         this.value = value;
     }
 
-    private ContextData(ContextData parent, Object key, Object value) {
+    private Context(Context parent, Object key, Object value) {
         this.parent = parent;
         this.key = key;
         this.value = value;
     }
 
     /**
-     * Adds a new immutable {@link ContextData} object with the specified key-value pair to
-     * the existing {@link ContextData} chain.
+     * Adds a new immutable {@link Context} object with the specified key-value pair to
+     * the existing {@link Context} chain.
      *
      * @param key the key
      * @param value the value
-     * @return the new {@link ContextData} object containing the specified pair added to the set of pairs
+     * @return the new {@link Context} object containing the specified pair added to the set of pairs
      */
-    public ContextData addData(Object key, Object value) {
+    public Context addData(Object key, Object value) {
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
         }
-        return new ContextData(this, key, value);
+        return new Context(this, key, value);
     }
 
     /**
-     * Scans the linked-list of {@link ContextData} objects looking for one with the specified key.
+     * Scans the linked-list of {@link Context} objects looking for one with the specified key.
      * Note that the first key found, i.e. the most recently added, will be returned.
      *
      * @param key the key to search for
@@ -71,7 +70,7 @@ public class ContextData {
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
         }
-        for (ContextData c = this; c != null; c = c.parent) {
+        for (Context c = this; c != null; c = c.parent) {
             if (key.equals(c.key)) {
                 return Optional.of(c.value);
             }
