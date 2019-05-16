@@ -13,12 +13,7 @@ public class MessageWithDeliveryTag {
 
     public MessageWithDeliveryTag(Message message, byte[] deliveryTag) {
         this.message = message;
-
-        if (deliveryTag == null) {
-            this.deliveryTag = null;
-        } else {
-            this.deliveryTag = Arrays.copyOf(deliveryTag, deliveryTag.length);
-        }
+        this.deliveryTag = deliveryTag == null ? null : Arrays.copyOf(deliveryTag, deliveryTag.length);
     }
 
     public Message getMessage() {
@@ -26,9 +21,6 @@ public class MessageWithDeliveryTag {
     }
 
     public byte[] getDeliveryTag() {
-        if (this.deliveryTag == null) {
-            return null;
-        }
-        return Arrays.copyOf(this.deliveryTag, this.deliveryTag.length);
+        return deliveryTag == null ? null : Arrays.copyOf(deliveryTag, deliveryTag.length);
     }
 }
