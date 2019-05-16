@@ -3,9 +3,12 @@
 
 package com.azure.eventhubs;
 
+import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.
@@ -33,6 +36,15 @@ public class EventHubReceiver implements AutoCloseable {
      * @return A stream of events for this receiver.
      */
     public Flux<EventData> receive() {
+        final ConnectableFlux<EventData> publish = receiveFromPartition().flatMap(x -> {
+            String data = String.format("Something %s", x);
+            return Flux.just(new EventData(data.getBytes(UTF_8)));
+        }).publish();
+
+        return publish.refCount();
+    }
+
+    private Flux<EventData> receiveFromPartition() {
         return Flux.empty();
     }
 
