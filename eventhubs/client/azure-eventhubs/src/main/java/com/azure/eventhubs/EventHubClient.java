@@ -7,19 +7,31 @@ import com.azure.eventhubs.implementation.ClientConstants;
 
 // Each time a build method is called, a new receiver or sender is created.
 class EventHubClient implements AutoCloseable {
+
+    EventHubClient() {
+    }
+
+    /**
+     * Creates a builder that can configure options for the {@link EventHubClient} before creating an instance of it.
+     *
+     * @return A new {@link EventHubClientBuilder} to create an EventHubClient from.
+     */
+    public static EventHubClientBuilder builder() {
+        return new EventHubClientBuilder();
+    }
+
     // Creates a new sender.
-    EventHubSender createSender() {
+    public EventHubSender createSender() {
         return new EventHubSender(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
     }
 
     // Creates a partition receiver that listens to the $DEFAULT consumer group starting at
     // the given position.
-    // Throw exception at that point
-    EventHubReceiver createReceiver(String partitionId, EventPosition position) {
+    public EventHubReceiver createReceiver(String partitionId, EventPosition position) {
         return new EventHubReceiver();
     }
 
-    EventHubReceiver createReceiver(ReceiverOptions options) {
+    public EventHubReceiver createReceiver(ReceiverOptions options) {
         return new EventHubReceiver();
     }
 
