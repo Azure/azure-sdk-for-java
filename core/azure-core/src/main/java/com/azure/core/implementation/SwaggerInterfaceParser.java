@@ -62,7 +62,7 @@ public class SwaggerInterfaceParser {
     public SwaggerMethodParser methodParser(Method swaggerMethod) {
         SwaggerMethodParser result = methodParsers.get(swaggerMethod);
         if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, serializer, host());
+            result = new SwaggerMethodParser(swaggerMethod, host());
             methodParsers.put(swaggerMethod, result);
         }
         return result;

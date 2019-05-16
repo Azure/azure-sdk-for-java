@@ -521,7 +521,7 @@ public class RestProxy implements InvocationHandler {
      *
      * @return the default serializer
      */
-    public static SerializerAdapter createDefaultSerializer() {
+    private static SerializerAdapter createDefaultSerializer() {
         return JacksonAdapter.createDefaultSerializerAdapter();
     }
 

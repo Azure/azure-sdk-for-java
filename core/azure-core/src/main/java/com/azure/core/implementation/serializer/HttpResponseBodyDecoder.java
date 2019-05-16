@@ -361,7 +361,7 @@ final class HttpResponseBodyDecoder {
                 try {
                     // TODO: anuchan - unwrap OperationStatus a different way
                     // Check for OperationStatus<?>
-                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.azure.core.management.OperationStatus"))) {
+                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.azure.core.management.implementation.OperationStatus"))) {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
@@ -374,7 +374,7 @@ final class HttpResponseBodyDecoder {
 
             try {
                 // TODO: anuchan - unwrap OperationStatus a different way
-                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.azure.core.management.OperationStatus"))) {
+                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.azure.core.management.implementation.OperationStatus"))) {
                     // Get Type of 'T' from OperationStatus<T>
                     token = TypeUtil.getTypeArgument(token);
                 }

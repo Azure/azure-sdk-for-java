@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.implementation;
 
 /**
  * A container for a generic type. Serves a similar purpose as pointers in C/C++. It's a workaround
  * for the fact that Java doesn't allow mutation of local variables in closure.
  * @param <T>
  */
-class Value<T> {
+public class Value<T> {
     private T value;
 
     /**
