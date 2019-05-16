@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
-import java.util.jar.JarException;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -27,7 +25,7 @@ interface IMessageAndSessionPump {
      * @deprecated Use {@link #registerMessageHandler(IMessageHandler, ExecutorService)}
      */
     @Deprecated
-    public void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException;
+    void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException;
     
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
@@ -38,7 +36,7 @@ interface IMessageAndSessionPump {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
-    public void registerMessageHandler(IMessageHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
+    void registerMessageHandler(IMessageHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
@@ -50,7 +48,7 @@ interface IMessageAndSessionPump {
      * @throws ServiceBusException  if register failed
      */
     @Deprecated
-    public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
+    void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
     
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
@@ -62,7 +60,7 @@ interface IMessageAndSessionPump {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
-    public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
+    void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
@@ -73,7 +71,7 @@ interface IMessageAndSessionPump {
      * @throws ServiceBusException  if register failed
      */
     @Deprecated
-    public void registerSessionHandler(ISessionHandler handler) throws InterruptedException, ServiceBusException;
+    void registerSessionHandler(ISessionHandler handler) throws InterruptedException, ServiceBusException;
     
     /**
      * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
@@ -84,7 +82,7 @@ interface IMessageAndSessionPump {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
-    public void registerSessionHandler(ISessionHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
+    void registerSessionHandler(ISessionHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
@@ -96,7 +94,7 @@ interface IMessageAndSessionPump {
      * @throws ServiceBusException  if register failed
      */
     @Deprecated
-    public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
+    void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
     
     /**
      * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
@@ -108,7 +106,7 @@ interface IMessageAndSessionPump {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
-    public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
+    void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Abandon {@link Message} with lock token. This will make the message available again for processing. Abandoning a message will increase the delivery count on the message
