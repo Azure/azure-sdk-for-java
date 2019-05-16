@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
-        HttpPipeline pipeline = new HttpPipeline();
+        HttpPipeline pipeline = HttpPipeline.builder().build();
         assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
@@ -31,9 +31,11 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestPolicy() {
-        HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
-                new ProtocolPolicy("ftp", true),
-                new RetryPolicy());
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .addPolicy(new PortPolicy(80, true))
+            .addPolicy(new ProtocolPolicy("ftp", true))
+            .addPolicy(new RetryPolicy())
+            .build();
 
         assertEquals(3, pipeline.getPolicyCount());
         assertEquals(PortPolicy.class, pipeline.getPolicy(0).getClass());
@@ -45,9 +47,11 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestOptions() throws MalformedURLException {
-        HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
-                new ProtocolPolicy("ftp", true),
-                new RetryPolicy());
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .addPolicy(new PortPolicy(80, true))
+            .addPolicy(new ProtocolPolicy("ftp", true))
+            .addPolicy(new RetryPolicy())
+            .build();
 
         HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
@@ -59,15 +63,17 @@ public class HttpPipelineTests {
     public void withNoRequestPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com");
-        final HttpPipeline httpPipeline = new HttpPipeline(new MockHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                assertEquals(0, request.headers().size());
-                assertEquals(expectedHttpMethod, request.httpMethod());
-                assertEquals(expectedUrl, request.url());
-                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
-            }
-        });
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    assertEquals(0, request.headers().size());
+                    assertEquals(expectedHttpMethod, request.httpMethod());
+                    assertEquals(expectedUrl, request.url());
+                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
@@ -90,8 +96,10 @@ public class HttpPipelineTests {
             }
         };
 
-        final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new UserAgentPolicy(expectedUserAgent));
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .addPolicy(new UserAgentPolicy(expectedUserAgent))
+            .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
@@ -102,7 +110,8 @@ public class HttpPipelineTests {
     public void withRequestIdRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com/1");
-        final HttpPipeline httpPipeline = new HttpPipeline(new MockHttpClient() {
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     assertEquals(1, request.headers().size());
@@ -114,8 +123,9 @@ public class HttpPipelineTests {
                     assertEquals(expectedUrl, request.url());
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
-            },
-            new RequestIdPolicy());
+            })
+            .addPolicy(new RequestIdPolicy())
+            .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);

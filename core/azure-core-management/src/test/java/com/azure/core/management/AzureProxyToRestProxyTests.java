@@ -745,7 +745,9 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     private <T> T createService(Class<T> serviceClass) {
-        HttpPipeline pipeline = new HttpPipeline(createHttpClient());
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(createHttpClient())
+            .build();
         //
         return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }

@@ -32,31 +32,35 @@ public class ProtocolPolicyTests {
         pipeline.send(createHttpRequest("https://www.bing.com"));
     }
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
-        return new HttpPipeline(new MockHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.empty(); // NOP
-            }
-        },
-        new ProtocolPolicy(protocol, true),
-            (context, next) -> {
+        return HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.empty(); // NOP
+                }
+            })
+            .addPolicy(new ProtocolPolicy(protocol, true))
+            .addPolicy((context, next) -> {
                 assertEquals(expectedUrl, context.httpRequest().url().toString());
                 return next.process();
-            });
+            })
+            .build();
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
-        return new HttpPipeline(new MockHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.empty(); // NOP
-            }
-        },
-        new ProtocolPolicy(protocol, overwrite),
-            (context, next) -> {
+        return HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.empty(); // NOP
+                }
+            })
+            .addPolicy(new ProtocolPolicy(protocol, overwrite))
+            .addPolicy((context, next) -> {
                 assertEquals(expectedUrl, context.httpRequest().url().toString());
                 return next.process();
-            });
+            })
+            .build();
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

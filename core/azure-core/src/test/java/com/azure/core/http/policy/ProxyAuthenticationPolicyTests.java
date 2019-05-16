@@ -23,13 +23,15 @@ public class ProxyAuthenticationPolicyTests {
         final String username = "testuser";
         final String password = "testpass";
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-            new ProxyAuthenticationPolicy(username, password),
-            (context, next) -> {
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient())
+            .addPolicy(new ProxyAuthenticationPolicy(username, password))
+            .addPolicy((context, next) -> {
                 assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.httpRequest().headers().value("Proxy-Authentication"));
                 auditorVisited.set(true);
                 return next.process();
-            });
+            })
+            .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost")))
                 .block();

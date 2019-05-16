@@ -28,9 +28,11 @@ public class CredentialsTests {
             return next.process();
         };
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new CredentialsPolicy(credentials),
-                auditorPolicy);
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient())
+            .addPolicy(new CredentialsPolicy(credentials))
+            .addPolicy(auditorPolicy)
+            .build();
 
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
@@ -47,9 +49,11 @@ public class CredentialsTests {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new CredentialsPolicy(credentials),
-                auditorPolicy);
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient())
+            .addPolicy(new CredentialsPolicy(credentials))
+            .addPolicy(auditorPolicy)
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();

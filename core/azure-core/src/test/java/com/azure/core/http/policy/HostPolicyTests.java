@@ -32,17 +32,19 @@ public class HostPolicyTests {
     }
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
-        return new HttpPipeline(new MockHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.empty(); // NOP
-            }
-        },
-        new HostPolicy(host),
-            (context, next) -> {
+        return HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.empty(); // NOP
+                }
+            })
+            .addPolicy(new HostPolicy(host))
+            .addPolicy((context, next) -> {
                 assertEquals(expectedUrl, context.httpRequest().url().toString());
                 return next.process();
-            });
+            })
+            .build();
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

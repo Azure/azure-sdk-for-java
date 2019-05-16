@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,16 @@ import java.util.Objects;
 public final class HttpPipeline {
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
+
+
+    /**
+     * Creates a builder that can configure options for the HttpPipeline before creating an instance of it.
+     *
+     * @return A new {@link HttpPipelineBuilder} to create a HttpPipeline from.
+     */
+    public static HttpPipelineBuilder builder() {
+        return new HttpPipelineBuilder();
+    }
 
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
@@ -26,26 +37,11 @@ public final class HttpPipeline {
      *                                  be made hence changing the original array after the creation of pipeline
      *                                  will not  mutate the pipeline
      */
-    public HttpPipeline(HttpClient httpClient, HttpPipelinePolicy... pipelinePolicies) {
+    HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient);
         Objects.requireNonNull(pipelinePolicies);
-        this.pipelinePolicies = Arrays.copyOf(pipelinePolicies, pipelinePolicies.length);
         this.httpClient = httpClient;
-    }
-
-    /**
-     * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
-     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
-     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
-     * receive response from wire.
-     *
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *                                  be made hence changing the original array after the creation of pipeline
-     *                                  will not  mutate the pipeline
-     */
-    public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
-        this(HttpClient.createDefault(), pipelinePolicies);
+        this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
     }
 
     /**
