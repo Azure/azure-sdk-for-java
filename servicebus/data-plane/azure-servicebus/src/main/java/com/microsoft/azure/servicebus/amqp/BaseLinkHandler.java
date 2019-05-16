@@ -3,8 +3,11 @@
 
 package com.microsoft.azure.servicebus.amqp;
 
-import org.apache.qpid.proton.amqp.transport.*;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 

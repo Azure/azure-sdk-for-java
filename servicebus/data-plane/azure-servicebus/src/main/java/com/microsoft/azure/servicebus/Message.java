@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-final public class Message implements Serializable, IMessage {
+public final class Message implements Serializable, IMessage {
     private static final long serialVersionUID = 7849508139219590863L;
     private static final Charset DEFAULT_CHAR_SET = Charset.forName("UTF-8");
     private static final String DEFAULT_CONTENT_TYPE = null;
@@ -63,8 +63,7 @@ final public class Message implements Serializable, IMessage {
     /**
      * Creates an empty message with an empty byte array as body.
      */
-    public Message()
-    {
+    public Message() {
         this(DEFAULT_CONTENT);
     }
 
@@ -72,8 +71,7 @@ final public class Message implements Serializable, IMessage {
      * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array and message body type is set to binary.
      * @param content content of the message.
      */
-    public Message(String content)
-    {
+    public Message(String content) {
         this(content.getBytes(DEFAULT_CHAR_SET));
     }
 
@@ -81,8 +79,7 @@ final public class Message implements Serializable, IMessage {
      * Creates a message from a byte array. Message body type is set to binary.
      * @param content content of the message
      */
-    public Message(byte[] content)
-    {
+    public Message(byte[] content) {
         this(Utils.fromBinay(content));
     }
 
@@ -90,8 +87,7 @@ final public class Message implements Serializable, IMessage {
      * Creates a message from message body.
      * @param body message body
      */
-    public Message(MessageBody body)
-    {
+    public Message(MessageBody body) {
         this(body, DEFAULT_CONTENT_TYPE);
     }
 
@@ -100,8 +96,7 @@ final public class Message implements Serializable, IMessage {
      * @param content content of the message
      * @param contentType content type of the message
      */
-    public Message(String content, String contentType)
-    {
+    public Message(String content, String contentType) {
         this(content.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
@@ -110,8 +105,7 @@ final public class Message implements Serializable, IMessage {
      * @param content content of the message
      * @param contentType content type of the message
      */
-    public Message(byte[] content, String contentType)
-    {
+    public Message(byte[] content, String contentType) {
         this(Utils.fromBinay(content), contentType);
     }
 
@@ -120,8 +114,7 @@ final public class Message implements Serializable, IMessage {
      * @param body message body
      * @param contentType content type of the message
      */
-    public Message(MessageBody body, String contentType)
-    {
+    public Message(MessageBody body, String contentType) {
         this(UUID.randomUUID().toString(), body, contentType);
     }
 
@@ -131,8 +124,7 @@ final public class Message implements Serializable, IMessage {
      * @param content content of the message
      * @param contentType content type of the message
      */
-    public Message(String messageId, String content, String contentType)
-    {
+    public Message(String messageId, String content, String contentType) {
         this(messageId, content.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
@@ -142,8 +134,7 @@ final public class Message implements Serializable, IMessage {
      * @param content content of the message
      * @param contentType content type of the message
      */
-    public Message(String messageId, byte[] content, String contentType)
-    {
+    public Message(String messageId, byte[] content, String contentType) {
         this(messageId, Utils.fromBinay(content), contentType);
     }
 
@@ -153,8 +144,7 @@ final public class Message implements Serializable, IMessage {
      * @param body message body
      * @param contentType content type of the message
      */
-    public Message(String messageId, MessageBody body, String contentType)
-    {
+    public Message(String messageId, MessageBody body, String contentType) {
         this.messageId = messageId;
         this.messageBody = body;
         this.contentType = contentType;
@@ -269,7 +259,7 @@ final public class Message implements Serializable, IMessage {
 
     @Override
     public void setTo(String to) {
-        this.to= to;
+        this.to = to;
     }
 
     @Override
@@ -358,43 +348,37 @@ final public class Message implements Serializable, IMessage {
         return this.lockToken;
     }
 
-    void setLockToken(UUID lockToken){
+    void setLockToken(UUID lockToken) {
         this.lockToken = lockToken;
     }
 
-    byte[] getDeliveryTag()
-    {
+    byte[] getDeliveryTag() {
         return this.deliveryTag;
     }
 
-    void setDeliveryTag(byte[] deliveryTag)
-    {
+    void setDeliveryTag(byte[] deliveryTag) {
         this.deliveryTag = deliveryTag;
     }
 
     @Override
     @Deprecated
-    public byte[] getBody()
-    {
+    public byte[] getBody() {
         return Utils.getDataFromMessageBody(this.messageBody);
     }
 
     @Override
     @Deprecated
-    public void setBody(byte[] body)
-    {
+    public void setBody(byte[] body) {
         this.messageBody = Utils.fromBinay(body);
     }
 
     @Override
-    public MessageBody getMessageBody()
-    {
+    public MessageBody getMessageBody() {
         return this.messageBody;
     }
 
     @Override
-    public void setMessageBody(MessageBody body)
-    {
+    public void setMessageBody(MessageBody body) {
         this.messageBody = body;
     }
 
