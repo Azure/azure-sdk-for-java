@@ -15,7 +15,7 @@ class EventHubClient implements AutoCloseable {
     // Creates a partition receiver that listens to the $DEFAULT consumer group starting at
     // the given position.
     // Throw exception at that point
-    EventHubReceiver createReceiver(EventPosition position) {
+    EventHubReceiver createReceiver(String partitionId, EventPosition position) {
         return new EventHubReceiver();
     }
 
