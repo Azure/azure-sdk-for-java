@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.Context;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
@@ -114,7 +115,7 @@ public final class HttpPipeline {
      * @param data the data to associate with the context
      * @return the request context
      */
-    public HttpPipelineCallContext newContext(HttpRequest httpRequest, ContextData data) {
+    public HttpPipelineCallContext newContext(HttpRequest httpRequest, Context data) {
         return new HttpPipelineCallContext(httpRequest, data);
     }
 
