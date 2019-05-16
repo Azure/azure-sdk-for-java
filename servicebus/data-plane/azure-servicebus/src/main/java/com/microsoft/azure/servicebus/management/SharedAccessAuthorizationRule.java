@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class SharedAccessAuthorizationRule extends AuthorizationRule {
-    static int supportedSasKeyLength = 44;
-    static String fixedClaimType = "SharedAccessKey";
+    static final int SUPPORTED_SAS_KEY_LENGTH  = 44;
+    static final String FIXED_CLAIM_TYPE  = "SharedAccessKey";
 
     private String keyName;
     private String primaryKey;
@@ -39,7 +39,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public String getClaimType() {
-        return SharedAccessAuthorizationRule.fixedClaimType;
+        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE ;
     }
 
     @Override
@@ -74,8 +74,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             throw new IllegalArgumentException("Argument cannot be null");
         }
 
-        if (primaryKey.length() > SharedAccessAuthorizationRule.supportedSasKeyLength) {
-            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.supportedSasKeyLength + " characters.");
+        if (primaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {
+            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH + " characters.");
         }
 
         this.primaryKey = primaryKey;
@@ -90,8 +90,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             throw new IllegalArgumentException("Argument cannot be null");
         }
 
-        if (secondaryKey.length() > SharedAccessAuthorizationRule.supportedSasKeyLength) {
-            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.supportedSasKeyLength + " characters.");
+        if (secondaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {
+            throw new IllegalArgumentException("sasKey cannot be greater than " + SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH + " characters.");
         }
 
         this.secondaryKey = secondaryKey;
