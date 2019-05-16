@@ -32,7 +32,7 @@ public class SendLinkHandler extends BaseLinkHandler {
             Sender sender = (Sender) link;
             if (link.getRemoteTarget() != null) {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
-                
+
                 if (this.isFirstFlow.compareAndSet(true, false)) {
                     this.msgSender.onOpenComplete(null);
                 }
@@ -48,6 +48,7 @@ public class SendLinkHandler extends BaseLinkHandler {
 
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
+
             TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
                 sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
             msgSender.onSendComplete(delivery);

@@ -218,7 +218,7 @@ class RuleDescriptionSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes(UTF_8)));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry") {
+            if ("entry".equals(doc.getTagName())) {
                 return parseFromEntry(doc);
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
