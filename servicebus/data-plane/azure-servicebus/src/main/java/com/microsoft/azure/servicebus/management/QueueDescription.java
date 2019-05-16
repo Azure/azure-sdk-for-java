@@ -36,16 +36,14 @@ public class QueueDescription {
      *             Max length is 260 chars. Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    public QueueDescription(String path)
-    {
+    public QueueDescription(String path) {
         this.setPath(path);
     }
 
     /**
      * @return The path of the queue.
      */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
 
@@ -54,8 +52,7 @@ public class QueueDescription {
      *             Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    private void setPath(String path)
-    {
+    private void setPath(String path) {
         EntityNameHelper.checkValidQueueName(path);
         this.path = path;
     }
@@ -65,8 +62,7 @@ public class QueueDescription {
      * so that no other receiver receives the same message.
      * @return The duration of a peek lock. Default value is 60 seconds.
      */
-    public Duration getLockDuration()
-    {
+    public Duration getLockDuration() {
         return this.lockDuration;
     }
 
@@ -146,8 +142,8 @@ public class QueueDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null
-            && (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+        if (defaultMessageTimeToLive == null
+            || (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
                 || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
@@ -156,8 +152,7 @@ public class QueueDescription {
         }
 
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
-        if (this.defaultMessageTimeToLive != null
-            && this.defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
+        if (this.defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.defaultMessageTimeToLive = ManagementClientConstants.MAX_DURATION;
         }
     }
@@ -175,16 +170,15 @@ public class QueueDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null
-            && autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
+        if (autoDeleteOnIdle == null
+            || autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));
         }
 
         this.autoDeleteOnIdle = autoDeleteOnIdle;
-        if (this.autoDeleteOnIdle != null
-            && this.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
+        if (this.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.autoDeleteOnIdle = ManagementClientConstants.MAX_DURATION;
         }
     }
@@ -219,8 +213,8 @@ public class QueueDescription {
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
-        if (duplicationDetectionHistoryTimeWindow != null
-            && (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0
+        if (duplicationDetectionHistoryTimeWindow == null
+            || (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0
                 || duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
@@ -229,8 +223,7 @@ public class QueueDescription {
         }
 
         this.duplicationDetectionHistoryTimeWindow = duplicationDetectionHistoryTimeWindow;
-        if (this.duplicationDetectionHistoryTimeWindow != null
-            && this.duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
+        if (this.duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.duplicationDetectionHistoryTimeWindow = ManagementClientConstants.MAX_DURATION;
         }
     }
