@@ -40,22 +40,16 @@ public class BillingProfileCreationParameters {
     private Boolean invoiceEmailOptIn;
 
     /**
-     * Azure skus to enable for this billing profile.
+     * Azure skus to enable for this billing profile..
      */
-    @JsonProperty(value = "enableAzureSkuIds")
-    private List<String> enableAzureSkuIds;
+    @JsonProperty(value = "enableAzureSKUs")
+    private List<EnabledAzureSKUs> enableAzureSKUs;
 
     /**
      * Create azure subscriptions when creating this billing profile.
      */
     @JsonProperty(value = "createAzureSubscriptions")
     private Boolean createAzureSubscriptions;
-
-    /**
-     * The paymentInstrument associated with the billing profile at creation.
-     */
-    @JsonProperty(value = "paymentInstrumentId")
-    private String paymentInstrumentId;
 
     /**
      * Get the billing profile name.
@@ -138,22 +132,22 @@ public class BillingProfileCreationParameters {
     }
 
     /**
-     * Get azure skus to enable for this billing profile.
+     * Get azure skus to enable for this billing profile..
      *
-     * @return the enableAzureSkuIds value
+     * @return the enableAzureSKUs value
      */
-    public List<String> enableAzureSkuIds() {
-        return this.enableAzureSkuIds;
+    public List<EnabledAzureSKUs> enableAzureSKUs() {
+        return this.enableAzureSKUs;
     }
 
     /**
-     * Set azure skus to enable for this billing profile.
+     * Set azure skus to enable for this billing profile..
      *
-     * @param enableAzureSkuIds the enableAzureSkuIds value to set
+     * @param enableAzureSKUs the enableAzureSKUs value to set
      * @return the BillingProfileCreationParameters object itself.
      */
-    public BillingProfileCreationParameters withEnableAzureSkuIds(List<String> enableAzureSkuIds) {
-        this.enableAzureSkuIds = enableAzureSkuIds;
+    public BillingProfileCreationParameters withEnableAzureSKUs(List<EnabledAzureSKUs> enableAzureSKUs) {
+        this.enableAzureSKUs = enableAzureSKUs;
         return this;
     }
 
@@ -174,26 +168,6 @@ public class BillingProfileCreationParameters {
      */
     public BillingProfileCreationParameters withCreateAzureSubscriptions(Boolean createAzureSubscriptions) {
         this.createAzureSubscriptions = createAzureSubscriptions;
-        return this;
-    }
-
-    /**
-     * Get the paymentInstrument associated with the billing profile at creation.
-     *
-     * @return the paymentInstrumentId value
-     */
-    public String paymentInstrumentId() {
-        return this.paymentInstrumentId;
-    }
-
-    /**
-     * Set the paymentInstrument associated with the billing profile at creation.
-     *
-     * @param paymentInstrumentId the paymentInstrumentId value to set
-     * @return the BillingProfileCreationParameters object itself.
-     */
-    public BillingProfileCreationParameters withPaymentInstrumentId(String paymentInstrumentId) {
-        this.paymentInstrumentId = paymentInstrumentId;
         return this;
     }
 
