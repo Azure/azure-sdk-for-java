@@ -6,7 +6,7 @@ package com.azure.core.exception;
 /**
  * The base exception type for all Azure-related exceptions.
  *
- * @see ServiceRequestException
+ * @see HttpRequestException
  * @see ServiceResponseException
  * @see HttpResponseException
  */
