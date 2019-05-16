@@ -21,9 +21,7 @@ public class MessageBody implements Serializable {
     private List<List<Object>> sequenceData;
     private List<byte[]> binaryData;
     
-    private MessageBody() {
-
-    }
+    private MessageBody() { }
     
     /**
      * Creates message body of AMQPValue type.
