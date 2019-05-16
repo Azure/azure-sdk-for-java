@@ -21,7 +21,7 @@ class AsyncUtil {
     }
 
     public static <T> void completeFuture(CompletableFuture<T> future, T result) {
-        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<T>(future, result));
+        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<>(future, result));
     }
 
     public static <T> boolean completeFutureExceptionallyAndGetStatus(CompletableFuture<T> future, Throwable exception) {
@@ -34,7 +34,7 @@ class AsyncUtil {
     }
 
     public static <T> void completeFutureExceptionally(CompletableFuture<T> future, Throwable exception) {
-        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<T>(future, exception));
+        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<>(future, exception));
     }
 
     public static void run(Runnable runnable) {
