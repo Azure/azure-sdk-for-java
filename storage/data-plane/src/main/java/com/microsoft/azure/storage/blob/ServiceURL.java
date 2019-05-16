@@ -3,7 +3,14 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.KeyInfo;
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetUserDelegationKeyResponse;
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse;
+import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
