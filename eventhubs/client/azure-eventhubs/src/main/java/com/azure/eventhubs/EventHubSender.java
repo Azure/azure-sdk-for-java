@@ -190,7 +190,7 @@ public class EventHubSender implements AutoCloseable {
                 logger.asError().log(error.toString());
             }).doOnComplete(() -> {
                 logger.asInformational().log(String.format("TOTAL BATCHES: %s. EVENTS: %s", number.get(), totalEvents.get()));
-            }).last();
+            }).then();
     }
 
     //TODO (conniey): Add implementation to push through proton-j link.
