@@ -32,6 +32,7 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
  * Each EventHubs partition can be visualized as a Stream of {@link EventData}.
+ *
  * <p>
  * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
  * types) and Data section is not supported.
@@ -41,10 +42,10 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
  * Here's how AMQP message sections map to {@link EventData}. Here's the reference used for AMQP 1.0 specification:
  * http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf
  *
- * <pre>
- * i.   {@link #properties(Map)} - AMQPMessage.ApplicationProperties section
- * ii.  {@link #data()} - if AMQPMessage.Body has Data section
- * </pre>
+ * <ol>
+ *      <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
+ *      <li>{@link #data()} - if AMQPMessage.Body has Data section</li>
+ * </ol>
  *
  * While using client libraries released by Microsoft Azure EventHubs, sections (i) and (ii) alone are sufficient.
  */
@@ -52,14 +53,15 @@ public class EventData implements Serializable, Comparable<EventData> {
     private static final long serialVersionUID = -5631628195600014255L;
     private static final int BODY_DATA_NULL = -1;
 
+    private final Map<String, Object> properties = new HashMap<>();
     private transient ByteBuffer data;
 
-    private SystemProperties systemProperties;
-    private Map<String, Object> properties = Collections.emptyMap();
+    private SystemProperties systemProperties = new SystemProperties(Collections.emptyMap());
     private String partitionKey;
 
     /**
      * Creates an event containing the {@code data}.
+     *
      * @param data The data to set for this event.
      */
     public EventData(byte[] data) {
@@ -72,6 +74,7 @@ public class EventData implements Serializable, Comparable<EventData> {
 
     /**
      * Creates an event containing the {@code data}.
+     *
      * @param data The data to set for this event.
      */
     public EventData(ByteBuffer data) {
@@ -83,13 +86,19 @@ public class EventData implements Serializable, Comparable<EventData> {
     }
 
     /**
-     * Sets the application properties associated with this event.
-     * @param properties The application properties for this event.
+     * Adds an application property associated with this event. If the {@code key} exists in the map, its existing value
+     * is overwritten.
+     *
+     * @param key The key for this application property
+     * @param value The value for this application property.
      * @return The updated EventData object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    public EventData properties(Map<String, Object> properties) {
-        Objects.requireNonNull(properties);
-        this.properties = properties;
+    public EventData addProperty(String key, Object value) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
+
+        properties.put(key, value);
         return this;
     }
 
@@ -131,9 +140,9 @@ public class EventData implements Serializable, Comparable<EventData> {
      * final String offset = eventData.systemProperties().offset();
      * </code>
      * </p>
+     *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
      * the {@link EventData} is not received and is created by the public constructors.
-     *
      * @see SystemProperties#offset()
      * @see SystemProperties#sequenceNumber()
      * @see SystemProperties#partitionKey()
@@ -154,6 +163,7 @@ public class EventData implements Serializable, Comparable<EventData> {
 
     /**
      * Creates the AMQP message represented by this EventData.
+     *
      * @return A new AMQP message for this EventData.
      */
     Message createAmqpMessage() {
@@ -296,7 +306,7 @@ public class EventData implements Serializable, Comparable<EventData> {
     public class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
-        SystemProperties(final HashMap<String, Object> map) {
+        SystemProperties(final Map<String, Object> map) {
             super(Collections.unmodifiableMap(map));
         }
 
@@ -309,6 +319,7 @@ public class EventData implements Serializable, Comparable<EventData> {
 
         /**
          * Gets the offset within the Event Hubs stream.
+         *
          * @return The offset within the Event Hubs stream.
          */
         public String offset() {
@@ -316,16 +327,19 @@ public class EventData implements Serializable, Comparable<EventData> {
         }
 
         /**
-         * Partition key for this {@link EventData}.
-         * @return The partitionKey.
+         * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
+         * select a partition to send the message to.
+         *
+         * @return A partition key for this Event Data.
          */
         public String partitionKey() {
             return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME);
         }
 
         /**
-         * The time that this event was enqueued.
-         * @return The time this was enqueued.
+         * Gets the time this event was enqueued in the Event Hub.
+         *
+         * @return The time this was enqueued in the service.
          */
         public Instant enqueuedTime() {
             final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME);
@@ -333,7 +347,9 @@ public class EventData implements Serializable, Comparable<EventData> {
         }
 
         /**
-         * Sequence number in the event stream for this event.
+         * Gets the sequence number in the event stream for this event. This is unique for every message received in the
+         * Event Hub.
+         *
          * @return Sequence number for this event.
          */
         public long sequenceNumber() {
@@ -347,8 +363,9 @@ public class EventData implements Serializable, Comparable<EventData> {
         }
 
         /**
-         * Gets the name of the publisher.
-         * @return The name of the publisher.
+         * Gets the name of the publisher if this was sent to a publisher endpoint.
+         *
+         * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
          */
         public String publisher() {
             return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME);
