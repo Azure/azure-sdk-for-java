@@ -113,8 +113,7 @@ public final class ClientFactory {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException if the sender cannot be created
      */
-    public static IMessageSender createTransferMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)  throws InterruptedException, ServiceBusException
-    {
+    public static IMessageSender createTransferMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)  throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createTransferMessageSenderFromEntityPathAsync(messagingFactory, entityPath, viaEntityPath));
     }
 
@@ -152,8 +151,7 @@ public final class ClientFactory {
      * @param clientSettings client settings
      * @return a CompletableFuture representing the pending creating of IMessageSender instance
      */
-    public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings)
-    {
+    public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings) {
         Utils.assertNonNull("namespaceName", namespaceName);
         Utils.assertNonNull("entityPath", entityPath);
         return createMessageSenderFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, clientSettings);
@@ -166,13 +164,11 @@ public final class ClientFactory {
      * @param clientSettings client settings
      * @return a CompletableFuture representing the pending creating of IMessageSender instance
      */
-    public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings)
-    {
+    public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
         return createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, null, clientSettings);
     }
 
-    static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings)
-    {
+    static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings) {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
         MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, entityType, clientSettings);
         return sender.initializeAsync().thenApply((v) -> sender);
@@ -206,8 +202,7 @@ public final class ClientFactory {
      * @param viaEntityPath The initial destination of the message.
      * @return a CompletableFuture representing the pending creating of IMessageSender instance.
      */
-    public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)
-    {
+    public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath, null);
         return sender.initializeAsync().thenApply((v) -> sender);
@@ -417,7 +412,7 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
         Utils.assertNonNull("namespaceName", namespaceName);
-        return createMessageReceiverFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName),entityPath, clientSettings, receiveMode);
+        return createMessageReceiverFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, clientSettings, receiveMode);
     }
 
     /**
@@ -683,7 +678,7 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(String namespaceName, String entityPath, String sessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
         Utils.assertNonNull("namespaceName", namespaceName);
-        return acceptSessionFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName),entityPath, sessionId, clientSettings, receiveMode);
+        return acceptSessionFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, sessionId, clientSettings, receiveMode);
     }
 
     /**
