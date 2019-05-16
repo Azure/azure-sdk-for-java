@@ -6,7 +6,7 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-eventhubs-clients</artifactId>
+    <artifactId>azure-eventhubs-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
