@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -32,6 +33,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
@@ -45,7 +47,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in HanaInstances.
  */
-public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, InnerSupportsListing<HanaInstanceInner> {
+public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, InnerSupportsDelete<HanaInstanceInner>, InnerSupportsListing<HanaInstanceInner> {
     /** The Retrofit service to perform REST calls. */
     private HanaInstancesService service;
     /** The service client containing this operation class. */
@@ -78,6 +80,10 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
@@ -427,6 +433,96 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
     private ServiceResponse<HanaInstanceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a SAP HANA instance.
+     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HanaInstanceInner object if successful.
+     */
+    public HanaInstanceInner delete(String resourceGroupName, String hanaInstanceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a SAP HANA instance.
+     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HanaInstanceInner> deleteAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * Deletes a SAP HANA instance.
+     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<HanaInstanceInner> deleteAsync(String resourceGroupName, String hanaInstanceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+            @Override
+            public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a SAP HANA instance.
+     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<ServiceResponse<HanaInstanceInner>> deleteWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HanaInstanceInner> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HanaInstanceInner> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<HanaInstanceInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
