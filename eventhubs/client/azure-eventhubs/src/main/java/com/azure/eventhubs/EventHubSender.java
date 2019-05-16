@@ -152,11 +152,23 @@ public class EventHubSender implements AutoCloseable {
     private Mono<Void> sendInternal(String partitionId, Flux<EventData> events) {
         final Flux<EventDataBatch> batches = Flux.defer(() -> events)
             .windowTimeout(WINDOW_SIZE, WINDOW_DURATION)
-            .flatMap(flux -> flux.groupBy(event -> {
+            .flatMap(flux -> flux.map(event -> {
+                // If the user has specified that they want all events to go to a particular partition, we overwrite
+                // any partitionKey on that event. This is probably non-null due to user error.
+                if (!ImplUtils.isNullOrEmpty(partitionId) && !ImplUtils.isNullOrEmpty(event.partitionKey())) {
+                    logger.asInformational().log(
+                        "EventData has partitionKey '%s' set and user has specified partitionId '%s'. Event will be"
+                            + " sent to the given partitionId.",
+                        event.partitionKey(), partitionId);
+
+                    event.partitionKey(null);
+                }
+
+                return event;
+            }).groupBy(event -> {
                 // It is OK to group by this because when partitionId is not null, partitionKey is always empty.
                 return event.partitionKey() != null ? event.partitionKey() : EMPTY_PARTITION_KEY;
-            }))
-            .flatMap(group -> {
+            })).flatMap(group -> {
                 EventDataCollector collector;
 
                 if (!ImplUtils.isNullOrEmpty(partitionId) || EMPTY_PARTITION_KEY.equals(group.key())) {
@@ -166,8 +178,7 @@ public class EventHubSender implements AutoCloseable {
                 }
 
                 return group.collect(collector);
-            })
-            .flatMap(Flux::fromIterable);
+            }).flatMap(Flux::fromIterable);
 
         return sendBatch(partitionId, batches);
     }
@@ -177,11 +188,9 @@ public class EventHubSender implements AutoCloseable {
             .flatMap(batch -> sendBatch(partitionId, batch))
             .doOnError(error -> {
                 logger.asError().log(error.toString());
-            })
-            .doOnComplete(() -> {
+            }).doOnComplete(() -> {
                 logger.asInformational().log(String.format("TOTAL BATCHES: %s. EVENTS: %s", number.get(), totalEvents.get()));
-            })
-            .last();
+            }).last();
     }
 
     //TODO (conniey): Add implementation to push through proton-j link.
