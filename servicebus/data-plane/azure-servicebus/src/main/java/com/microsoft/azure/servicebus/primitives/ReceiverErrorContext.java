@@ -7,6 +7,8 @@ import java.util.Locale;
 
 public class ReceiverErrorContext extends ErrorContext
 {
+    private static final long serialVersionUID = -8154706630781986787L;
+
     final static boolean EPOCH_RECEIVER_TYPE = true;
     final static boolean NON_EPOCH_RECEIVER_TYPE = !ReceiverErrorContext.EPOCH_RECEIVER_TYPE;
 
