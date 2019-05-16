@@ -353,6 +353,8 @@
   <Match>
     <Package name="com.microsoft.azure.storage.blob"/>
     <Bug pattern="NM_CONFUSING"/>
+  </Match>
+  
   <!--The public field already exists in the public API surface area-->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
