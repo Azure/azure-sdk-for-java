@@ -201,20 +201,17 @@ class QueueDescriptionSerializer {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                switch (element.getTagName()) {
                     case "title":
                         qd = new QueueDescription(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "MaxSizeInMegabytes":
                                         qd.maxSizeInMB = Long.parseLong(element.getFirstChild().getNodeValue());
                                         break;
@@ -268,6 +265,8 @@ class QueueDescriptionSerializer {
                                         break;
                                     case "AuthorizationRules":
                                         qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
+                                        break;
+                                    default:
                                         break;
                                 }
                             }
