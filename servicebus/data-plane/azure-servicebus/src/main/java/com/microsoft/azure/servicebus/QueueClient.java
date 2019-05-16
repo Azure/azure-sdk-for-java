@@ -53,13 +53,11 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         }
     }
     
-    public QueueClient(String namespace, String queuePath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    public QueueClient(String namespace, String queuePath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(Util.convertNamespaceToEndPointURI(namespace), queuePath, clientSettings, receiveMode);
     }
     
-    public QueueClient(URI namespaceEndpointURI, String queuePath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    public QueueClient(URI namespaceEndpointURI, String queuePath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(receiveMode, queuePath);
         CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(namespaceEndpointURI, clientSettings);
         Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createInternals(f, queuePath, receiveMode), MessagingFactory.INTERNAL_THREAD_POOL));
@@ -90,26 +88,19 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         return CompletableFuture.allOf(postSessionBrowserFuture, messagePumpInitFuture);
     }
     
-    private CompletableFuture<Void> createSenderAsync()
-    {
+    private CompletableFuture<Void> createSenderAsync() {
         synchronized (this.senderCreationLock) {
-            if(this.senderCreationFuture == null)
-            {
-                this.senderCreationFuture = new CompletableFuture<Void>();
-                ClientFactory.createMessageSenderFromEntityPathAsync(this.factory, this.queuePath, MessagingEntityType.QUEUE).handleAsync((sender, ex) ->
-                {
-                    if(ex == null)
-                    {
+            if (this.senderCreationFuture == null) {
+                this.senderCreationFuture = new CompletableFuture<>();
+                ClientFactory.createMessageSenderFromEntityPathAsync(this.factory, this.queuePath, MessagingEntityType.QUEUE).handleAsync((sender, ex) -> {
+                    if (ex == null) {
                         this.sender = sender;
                         this.senderCreationFuture.complete(null);
-                    }
-                    else
-                    {
+                    } else {
                         Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
                         this.senderCreationFuture.completeExceptionally(cause);
                         // Set it to null so next call will retry sender creation
-                        synchronized (this.senderCreationLock)
-                        {
+                        synchronized (this.senderCreationLock) {
                             this.senderCreationFuture = null;
                         }
                     }
@@ -121,20 +112,13 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         }
     }
     
-    private CompletableFuture<Void> closeSenderAsync()
-    {
-        synchronized (this.senderCreationLock)
-        {
-            if(this.senderCreationFuture != null)
-            {
-                CompletableFuture<Void> senderCloseFuture = this.senderCreationFuture.thenComposeAsync((v) -> {
-                    return this.sender.closeAsync();
-                }, MessagingFactory.INTERNAL_THREAD_POOL);
+    private CompletableFuture<Void> closeSenderAsync() {
+        synchronized (this.senderCreationLock) {
+            if (this.senderCreationFuture != null) {
+                CompletableFuture<Void> senderCloseFuture = this.senderCreationFuture.thenComposeAsync((v) -> this.sender.closeAsync(), MessagingFactory.INTERNAL_THREAD_POOL);
                 this.senderCreationFuture = null;
                 return senderCloseFuture;
-            }
-            else
-            {
+            } else {
                 return CompletableFuture.completedFuture(null);
             }
         }
@@ -168,17 +152,13 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     @Override
     public CompletableFuture<Void> sendAsync(IMessage message) {
         return this.createSenderAsync().thenComposeAsync((v) ->
-        {
-            return this.sender.sendAsync(message);
-        }, MessagingFactory.INTERNAL_THREAD_POOL);
+            this.sender.sendAsync(message), MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
     @Override
     public CompletableFuture<Void> sendAsync(IMessage message, TransactionContext transaction) {
         return this.createSenderAsync().thenComposeAsync((v) ->
-        {
-            return this.sender.sendAsync(message, transaction);
-        });
+            this.sender.sendAsync(message, transaction));
     }
 
     @Override
@@ -189,9 +169,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     @Override
     public CompletableFuture<Void> sendBatchAsync(Collection<? extends IMessage> messages, TransactionContext transaction) {
         return this.createSenderAsync().thenComposeAsync((v) ->
-        {
-            return this.sender.sendBatchAsync(messages, transaction);
-        }, MessagingFactory.INTERNAL_THREAD_POOL);
+            this.sender.sendBatchAsync(messages, transaction), MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
     @Override
@@ -202,17 +180,12 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     @Override
     public CompletableFuture<Long> scheduleMessageAsync(IMessage message, Instant scheduledEnqueueTimeUtc, TransactionContext transaction) {
         return this.createSenderAsync().thenComposeAsync((v) ->
-        {
-            return this.sender.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, transaction);
-        }, MessagingFactory.INTERNAL_THREAD_POOL);
+            this.sender.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, transaction), MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
     @Override
     public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
-        return this.createSenderAsync().thenComposeAsync((v) ->
-        {
-            return this.sender.cancelScheduledMessageAsync(sequenceNumber);
-        }, MessagingFactory.INTERNAL_THREAD_POOL);
+        return this.createSenderAsync().thenComposeAsync((v) -> this.sender.cancelScheduledMessageAsync(sequenceNumber), MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
     @Override
