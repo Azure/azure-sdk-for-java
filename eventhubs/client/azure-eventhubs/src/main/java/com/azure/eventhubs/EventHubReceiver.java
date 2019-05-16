@@ -20,7 +20,7 @@ import java.time.Duration;
  *      <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.</li>
  * </ul>
  *
- * @see EventHubClient#createReceiver(EventPosition)
+ * @see EventHubClient#createReceiver(String, EventPosition)
  * @see EventHubClient#createReceiver(ReceiverOptions)
  */
 public class EventHubReceiver implements AutoCloseable {
@@ -33,18 +33,6 @@ public class EventHubReceiver implements AutoCloseable {
      * @return A stream of events for this receiver.
      */
     public Flux<EventData> receive() {
-        return Flux.empty();
-    }
-
-    /**
-     * Begin receiving events for the {@code partitionId} until there are no longer any events emitted specified by
-     * {@link EventHubClientBuilder#timeout(Duration)}, are no longer any subscribers, or
-     * {@link EventHubReceiver#close()} is called.
-     *
-     * @param parititionId Partition to receive events from.
-     * @return A stream of events for this receiver sent to the {@code partitionId}.
-     */
-    public Flux<EventData> receive(String parititionId) {
         return Flux.empty();
     }
 
