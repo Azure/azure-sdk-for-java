@@ -9,15 +9,13 @@ import java.util.Locale;
  * This is the base exception that service bus will generate for all error cases.
  * @since 1.0
  */
-public class ServiceBusException extends Exception
-{
+public class ServiceBusException extends Exception {
     private static final long serialVersionUID = -3654294093967132325L;
 
     private boolean isTransient;
     private ErrorContext errorContext;
 
-    public ServiceBusException(final boolean isTransient)
-    {
+    public ServiceBusException(final boolean isTransient) {
         super();
         this.isTransient = isTransient;
     }

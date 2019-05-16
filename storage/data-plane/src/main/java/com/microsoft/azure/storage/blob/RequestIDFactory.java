@@ -26,7 +26,7 @@ public final class RequestIDFactory implements RequestPolicyFactory {
         return new RequestIDPolicy(next, options);
     }
 
-    private final class RequestIDPolicy implements RequestPolicy {
+    private static final class RequestIDPolicy implements RequestPolicy {
         private final RequestPolicy nextPolicy;
 
         private final RequestPolicyOptions options;
