@@ -33,7 +33,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders(Map<String, String> headers) {
         for (final Map.Entry<String, String> header : headers.entrySet()) {
-            this.set(header.getKey(), header.getValue());
+            this.put(header.getKey(), header.getValue());
         }
     }
 
@@ -46,7 +46,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
         this();
 
         for (final HttpHeader header : headers) {
-            this.set(header.name(), header.value());
+            this.put(header.name(), header.value());
         }
     }
 
@@ -62,25 +62,20 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     /**
      * Set a header.
      *
-     * if header with same name already exists then the value will be overwritten.
-     * if value is null and header with provided name already exists then it will be removed.
+     * If header with same name already exists then the value will be overwritten.
      *
      * @param name the name
      * @param value the value
      * @return The updated HttpHeaders object
      */
-    public HttpHeaders set(String name, String value) {
-        final String headerKey = formatKey(name);
-        if (value == null) {
-            headers.remove(headerKey);
-        } else {
-            headers.put(headerKey, new HttpHeader(name, value));
-        }
+    public HttpHeaders put(String name, String value) {
+        headers.put(formatKey(name), new HttpHeader(name, value));
         return this;
     }
 
     /**
-     * Get the header for the provided header name. Null will be returned if the header name isn't found.
+     * Get the {@link HttpHeader header} for the provided header name. Null will be returned if the header isn't found.
+     *
      * @param name the name of the header to find.
      * @return the header if found, null otherwise.
      */
