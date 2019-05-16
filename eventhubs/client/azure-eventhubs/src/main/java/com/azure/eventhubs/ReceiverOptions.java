@@ -19,11 +19,14 @@ public class ReceiverOptions {
     /**
      * Creates a new instance with the {@code position} to start receiving events from.
      *
+     * @param partitionId Partition id for this receiver to get events from.
      * @param position Position to start receiving events from.
      */
-    public ReceiverOptions(EventPosition position) {
+    public ReceiverOptions(String partitionId, EventPosition position) {
+        Objects.requireNonNull(partitionId);
         Objects.requireNonNull(position);
 
+        this.partitionId = partitionId;
         this.position = position;
     }
 
@@ -46,17 +49,6 @@ public class ReceiverOptions {
      */
     public ReceiverOptions consumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
-        return this;
-    }
-
-    /**
-     * Sets the partition id for this receiver.
-     *
-     * @param partitionId The partition id this receiver listens to.
-     * @return The updated ReceiverOptions object.
-     */
-    public ReceiverOptions partitionId(String partitionId) {
-        this.partitionId = partitionId;
         return this;
     }
 
