@@ -83,7 +83,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default serializer.
      */
     public static SerializerAdapter createDefaultSerializer() {
-        return  AzureJacksonAdapter.createDefaultSerializerAdapter();
+        return AzureJacksonAdapter.createDefaultSerializerAdapter();
     }
 
     private static String operatingSystem;

@@ -18,6 +18,8 @@ import java.io.Serializable;
  * state property is in a completed state.
  */
 public final class ProvisioningStatePollStrategy extends PollStrategy {
+
+
     private ProvisioningStatePollStrategyData data;
     ProvisioningStatePollStrategy(ProvisioningStatePollStrategyData data) {
         super(data);
@@ -29,6 +31,10 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
      * The ProvisioningStatePollStrategy data.
      */
     public static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
+
+        /**Serial version id for this class*/
+        private static final long serialVersionUID = 1L;
+
         HttpRequest originalRequest;
         String provisioningState;
 

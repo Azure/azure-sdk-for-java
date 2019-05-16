@@ -29,11 +29,6 @@ public abstract class AzureServiceClient extends ServiceClient {
         this.azureEnvironment = azureEnvironment;
     }
 
-    @Override
-    protected SerializerAdapter createSerializerAdapter() {
-        return AzureProxy.createDefaultSerializer();
-    }
-
     /**
      * Get the environment that this AzureServiceClient targets.
      * @return the environment that this AzureServiceClient targets.

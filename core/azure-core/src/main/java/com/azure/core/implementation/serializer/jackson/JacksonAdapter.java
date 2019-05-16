@@ -43,7 +43,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     /**
      * The lazily-created serializer for this ServiceClient.
-     **/
+     */
     private static SerializerAdapter serializerAdapter  = null;
 
     /**

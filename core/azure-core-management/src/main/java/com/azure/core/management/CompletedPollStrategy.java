@@ -38,6 +38,9 @@ public class CompletedPollStrategy extends PollStrategy {
     public static class CompletedPollStrategyData extends PollStrategyData {
         HttpResponse firstHttpResponse;
 
+        /**Serial version id for this class*/
+        private static final long serialVersionUID = 1L;
+
         /**
          * Create a new CompletedPollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
