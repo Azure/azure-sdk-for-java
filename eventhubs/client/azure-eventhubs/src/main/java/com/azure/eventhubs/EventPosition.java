@@ -101,7 +101,8 @@ public final class EventPosition implements Serializable {
                 logger.asWarning().log(
                     "Receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
             }
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, com.azure.eventhubs.implementation.StringUtil.EMPTY, ms);
+
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, "", ms);
         }
 
         throw new IllegalArgumentException("No starting position was set.");

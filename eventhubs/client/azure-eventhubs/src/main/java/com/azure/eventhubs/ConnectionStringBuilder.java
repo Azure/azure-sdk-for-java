@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.StringUtil;
 
 import java.net.URI;
@@ -243,22 +244,22 @@ public final class ConnectionStringBuilder {
                     this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.eventHubName)) {
+        if (!ImplUtils.isNullOrWhiteSpace(this.eventHubName)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.eventHubName, KEY_VALUE_PAIR_DELIMITER));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
+        if (!ImplUtils.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_NAME_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.sharedAccessKeyName, KEY_VALUE_PAIR_DELIMITER));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey)) {
+        if (!ImplUtils.isNullOrWhiteSpace(this.sharedAccessKey)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.sharedAccessKey, KEY_VALUE_PAIR_DELIMITER));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSignature)) {
+        if (!ImplUtils.isNullOrWhiteSpace(this.sharedAccessSignature)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_SIGNATURE_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.sharedAccessSignature, KEY_VALUE_PAIR_DELIMITER));
         }
@@ -268,7 +269,7 @@ public final class ConnectionStringBuilder {
     }
 
     private void parseConnectionString(final String connectionString) {
-        if (StringUtil.isNullOrWhiteSpace(connectionString)) {
+        if (ImplUtils.isNullOrWhiteSpace(connectionString)) {
             throw new IllegalArgumentException("connectionString cannot be empty");
         }
 
@@ -282,7 +283,7 @@ public final class ConnectionStringBuilder {
             throw new IllegalArgumentException("Connection String cannot be parsed.");
         }
 
-        if (!StringUtil.isNullOrWhiteSpace((values[0]))) {
+        if (!ImplUtils.isNullOrWhiteSpace((values[0]))) {
             throw new IllegalArgumentException(
                     String.format(Locale.US, "Cannot parse part of ConnectionString: %s", values[0]));
         }

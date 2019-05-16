@@ -3,8 +3,11 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.StringUtil;
 import org.junit.Test;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -28,7 +31,7 @@ public class EventHubSenderTest {
             final String partition = partitions[index];
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
 
-            if (!StringUtil.isNullOrEmpty(partition)) {
+            if (!ImplUtils.isNullOrEmpty(partition)) {
                 data.partitionKey(partition);
             }
 

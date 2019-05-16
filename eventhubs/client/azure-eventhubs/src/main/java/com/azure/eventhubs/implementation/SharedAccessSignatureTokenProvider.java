@@ -3,6 +3,8 @@
 
 package com.azure.eventhubs.implementation;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
@@ -41,15 +43,15 @@ public class SharedAccessSignatureTokenProvider {
             final String resource,
             final Duration tokenTimeToLive)
             throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        if (StringUtil.isNullOrWhiteSpace(keyName)) {
+        if (ImplUtils.isNullOrWhiteSpace(keyName)) {
             throw new IllegalArgumentException("keyName cannot be empty");
         }
 
-        if (StringUtil.isNullOrWhiteSpace(sharedAccessKey)) {
+        if (ImplUtils.isNullOrWhiteSpace(sharedAccessKey)) {
             throw new IllegalArgumentException("sharedAccessKey cannot be empty");
         }
 
-        if (StringUtil.isNullOrWhiteSpace(resource)) {
+        if (ImplUtils.isNullOrWhiteSpace(resource)) {
             throw new IllegalArgumentException("resource cannot be empty");
         }
 
