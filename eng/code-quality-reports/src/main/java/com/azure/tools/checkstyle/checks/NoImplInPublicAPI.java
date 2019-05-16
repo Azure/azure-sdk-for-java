@@ -7,11 +7,13 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
     private static final String DOT_IMPLEMENTATION = ".implementation";
+    private static final String IMPL_PACKAGE_REGULAR_EXPR = "^com\\.azure(\\..*)+\\.implementation(\\..*)*";
     private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
     private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
 
@@ -50,7 +52,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
         if (ast.getType() == TokenTypes.PACKAGE_DEF) {
             String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
             this.isTrackTwo = packageName.startsWith(COM_AZURE);
-            this.isImplPackage = packageName.endsWith(DOT_IMPLEMENTATION);
+            this.isImplPackage = Pattern.matches(IMPL_PACKAGE_REGULAR_EXPR, packageName);
             return;
         } else {
             if (this.isTrackTwo) {
