@@ -30,24 +30,22 @@ import static com.azure.eventhubs.implementation.AmqpConstants.PUBLISHER_ANNOTAT
 import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
- * The data structure encapsulating the Event being sent-to and received-from EventHubs.
- * Each EventHubs partition can be visualized as a Stream of {@link EventData}.
+ * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
+ * be visualized as a stream of {@link EventData}.
  *
  * <p>
- * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
- * types) and Data section is not supported.
- * </p>
- *
- * <p>
- * Here's how AMQP message sections map to {@link EventData}. Here's the reference used for AMQP 1.0 specification:
- * http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf
+ * Here's how AMQP message sections map to {@link EventData}. For reference, the specification can be found here:
+ * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
  *      <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
  *      <li>{@link #data()} - if AMQPMessage.Body has Data section</li>
  * </ol>
  *
- * While using client libraries released by Microsoft Azure EventHubs, sections (i) and (ii) alone are sufficient.
+ * <p>
+ * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
+ * types) and Data section is not supported.
+ * </p>
  */
 public class EventData implements Serializable, Comparable<EventData> {
     private static final long serialVersionUID = -5631628195600014255L;
