@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public class ReceiverOptions {
     private final EventPosition position;
-    private String id;
+    private String name;
     private String consumerGroup;
     private String partitionId;
     private Long epoch;
@@ -31,13 +31,13 @@ public class ReceiverOptions {
     }
 
     /**
-     * Sets the id of the receiver.
+     * Sets the name of the receiver.
      *
-     * @param id The receiver id.
+     * @param name The receiver name.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions id(String id) {
-        this.id = id;
+    public ReceiverOptions name(String name) {
+        this.name = name;
         return this;
     }
 
@@ -66,12 +66,12 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets the id of the receiver.
+     * Gets the name of the receiver.
      *
-     * @return The id of the receiver.
+     * @return The name of the receiver.
      */
-    public String id() {
-        return id;
+    public String name() {
+        return name;
     }
 
     /**
@@ -84,9 +84,9 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets the partition id for this receiver.
+     * Gets the partition name for this receiver.
      *
-     * @return The partition id for this receiver.
+     * @return The partition name for this receiver.
      */
     public String partitionId() {
         return partitionId;
