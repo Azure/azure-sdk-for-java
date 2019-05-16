@@ -1085,12 +1085,12 @@ public class ManagementClientAsync {
                 break;
 
             case 409: /*Conflict*/
-                if (request.getMethod() == HttpConstants.Methods.DELETE) {
+                if (HttpConstants.Methods.DELETE.equals(request.getMethod())) {
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;
                 }
 
-                if (request.getMethod() == HttpConstants.Methods.PUT && request.getHeaders().contains("IfMatch")) {
+                if (HttpConstants.Methods.PUT.equals(request.getMethod()) && request.getHeaders().contains("IfMatch")) {
                     /*Update request*/
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;

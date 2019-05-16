@@ -99,8 +99,7 @@ public abstract class ClientTests extends Tests {
         managementClientAsync.close();
     }
     
-    protected void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    protected void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
             this.receiveClient = (QueueClient)this.sendClient;
