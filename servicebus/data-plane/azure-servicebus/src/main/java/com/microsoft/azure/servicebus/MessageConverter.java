@@ -22,35 +22,25 @@ import com.microsoft.azure.servicebus.primitives.MessageWithLockToken;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
 
-class MessageConverter
-{
-    public static org.apache.qpid.proton.message.Message convertBrokeredMessageToAmqpMessage(Message brokeredMessage)
-    {
+class MessageConverter {
+    public static org.apache.qpid.proton.message.Message convertBrokeredMessageToAmqpMessage(Message brokeredMessage) {
         org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
         MessageBody body = brokeredMessage.getMessageBody();
-        if( body != null)
-        {
-            if (body.getBodyType() == MessageBodyType.VALUE)
-            {
+        if (body != null) {
+            if (body.getBodyType() == MessageBodyType.VALUE) {
                 amqpMessage.setBody(new AmqpValue(body.getValueData()));
-            }
-            else if (body.getBodyType() == MessageBodyType.SEQUENCE)
-            {
+            } else if (body.getBodyType() == MessageBodyType.SEQUENCE) {
                 amqpMessage.setBody(new AmqpSequence(Utils.getSequenceFromMessageBody(body)));
-            }
-            else
-            {
+            } else {
                 amqpMessage.setBody(new Data(new Binary(Utils.getDataFromMessageBody(body))));
             }
         }
 
-        if(brokeredMessage.getProperties() != null)
-        {
+        if (brokeredMessage.getProperties() != null) {
             amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getProperties()));
         }
 
-        if(brokeredMessage.getTimeToLive() != null)
-        {
+        if (brokeredMessage.getTimeToLive() != null) {
             amqpMessage.setTtl(brokeredMessage.getTimeToLive().toMillis());
         }
 
@@ -63,19 +53,16 @@ class MessageConverter
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
 
-        Map<Symbol, Object> messageAnnotationsMap = new HashMap<Symbol, Object>();
-        if(brokeredMessage.getScheduledEnqueueTimeUtc() != null)
-        {
+        Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
+        if (brokeredMessage.getScheduledEnqueueTimeUtc() != null) {
             messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueueTimeUtc()));
         }
 
-        if(!StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey()))
-        {
+        if (!StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey())) {
             messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.PARTITIONKEYNAME), brokeredMessage.getPartitionKey());
         }
 
-        if(!StringUtil.isNullOrEmpty(brokeredMessage.getViaPartitionKey()))
-        {
+        if (!StringUtil.isNullOrEmpty(brokeredMessage.getViaPartitionKey())) {
             messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.VIAPARTITIONKEYNAME), brokeredMessage.getViaPartitionKey());
         }
 
@@ -84,61 +71,46 @@ class MessageConverter
         return amqpMessage;
     }
 
-    public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage)
-    {
-        return convertAmqpMessageToBrokeredMessage(amqpMessage, (byte[])null);
+    public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage) {
+        return convertAmqpMessageToBrokeredMessage(amqpMessage, null);
     }
 
-    public static Message convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag)
-    {
+    public static Message convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag) {
         org.apache.qpid.proton.message.Message amqpMessage = amqpMessageWithDeliveryTag.getMessage();
         byte[] deliveryTag = amqpMessageWithDeliveryTag.getDeliveryTag();
         return convertAmqpMessageToBrokeredMessage(amqpMessage, deliveryTag);
     }
 
-    public static Message convertAmqpMessageToBrokeredMessage(MessageWithLockToken amqpMessageWithLockToken)
-    {
-        Message convertedMessage = convertAmqpMessageToBrokeredMessage(amqpMessageWithLockToken.getMessage(), (byte[])null);
+    public static Message convertAmqpMessageToBrokeredMessage(MessageWithLockToken amqpMessageWithLockToken) {
+        Message convertedMessage = convertAmqpMessageToBrokeredMessage(amqpMessageWithLockToken.getMessage(), null);
         convertedMessage.setLockToken(amqpMessageWithLockToken.getLockToken());
         return convertedMessage;
     }
 
-    public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage, byte[] deliveryTag)
-    {
+    public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage, byte[] deliveryTag) {
         Message brokeredMessage;
         Section body = amqpMessage.getBody();
-        if(body != null)
-        {
-            if(body instanceof Data)
-            {
+        if (body != null) {
+            if (body instanceof Data) {
                 Binary messageData = ((Data)body).getValue();
                 brokeredMessage = new Message(Utils.fromBinay(messageData.getArray()));
-            }
-            else if (body instanceof AmqpValue)
-            {
+            } else if (body instanceof AmqpValue) {
                 Object messageData = ((AmqpValue)body).getValue();
                 brokeredMessage = new Message(MessageBody.fromValueData(messageData));
-            }
-            else if (body instanceof AmqpSequence)
-            {
+            } else if (body instanceof AmqpSequence) {
                 List<Object> messageData = ((AmqpSequence)body).getValue();
                 brokeredMessage = new Message(Utils.fromSequence(messageData));
-            }
-            else
-            {
+            } else {
                 // Should never happen
                 brokeredMessage = new Message();
             }
-        }
-        else
-        {
+        } else {
             brokeredMessage = new Message();
         }
 
         // Application properties
         ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-        if(applicationProperties != null)
-        {
+        if (applicationProperties != null) {
             brokeredMessage.setProperties(applicationProperties.getValue());
         }
 
@@ -148,21 +120,18 @@ class MessageConverter
 
         // Properties
         Object messageId = amqpMessage.getMessageId();
-        if (messageId != null)
-        {
+        if (messageId != null) {
             brokeredMessage.setMessageId(messageId.toString());
         }
 
         brokeredMessage.setContentType(amqpMessage.getContentType());
         Object correlationId = amqpMessage.getCorrelationId();
-        if(correlationId != null)
-        {
+        if (correlationId != null) {
             brokeredMessage.setCorrelationId(correlationId.toString());
         }
 
         Properties properties = amqpMessage.getProperties();
-        if (properties != null)
-        {
+        if (properties != null) {
             brokeredMessage.setTo(properties.getTo());
         }
 
@@ -173,16 +142,12 @@ class MessageConverter
 
         // Message Annotations
         MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-        if(messageAnnotations != null)
-        {
+        if (messageAnnotations != null) {
             Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
-            if(messageAnnotationsMap != null)
-            {
-                for(Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet())
-                {
+            if (messageAnnotationsMap != null) {
+                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
                     String entryName = entry.getKey().toString();
-                    switch(entryName)
-                    {
+                    switch (entryName) {
                         case ClientConstants.ENQUEUEDTIMEUTCNAME:
                             brokeredMessage.setEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
                             break;
@@ -204,18 +169,17 @@ class MessageConverter
                         case ClientConstants.DEADLETTERSOURCENAME:
                             brokeredMessage.setDeadLetterSource((String)entry.getValue());
                             break;
+                        default:
+                            break;
                     }
                 }
             }
         }
 
-        if(deliveryTag != null && deliveryTag.length == ClientConstants.LOCKTOKENSIZE)
-        {
+        if (deliveryTag != null && deliveryTag.length == ClientConstants.LOCKTOKENSIZE) {
             UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);
             brokeredMessage.setLockToken(lockToken);
-        }
-        else
-        {
+        } else {
             brokeredMessage.setLockToken(ClientConstants.ZEROLOCKTOKEN);
         }
 

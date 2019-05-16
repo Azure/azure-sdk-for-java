@@ -3,25 +3,24 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-abstract class ErrorContext
-{
+abstract class ErrorContext implements Serializable {
+
+    private static final long serialVersionUID = -6342329018037308640L;
     private final String namespaceName;
 
-    ErrorContext(final String namespaceName)
-    {
+    ErrorContext(final String namespaceName) {
         this.namespaceName = namespaceName;
     }
 
-    protected String getNamespaceName()
-    {
+    protected String getNamespaceName() {
         return this.namespaceName;
     }
 
     @Override
-    public String toString()
-    {
-        return StringUtil.isNullOrEmpty(this.namespaceName) ? null : String.format(Locale.US, "NS: %s", this.namespaceName);
+    public String toString() {
+        return StringUtil.isNullOrEmpty(this.namespaceName) ? "" : String.format(Locale.US, "NS: %s", this.namespaceName);
     }
 }
