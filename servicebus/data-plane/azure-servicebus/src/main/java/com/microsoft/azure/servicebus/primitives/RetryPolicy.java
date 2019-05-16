@@ -45,13 +45,8 @@ public abstract class RetryPolicy
      * Resets the number of retry attempts made by a client. This method is called by the client when retried operation succeeds.
      * @param clientId id of the client that just retried a failed operation and succeeded.
      */
-    public void resetRetryCount(String clientId)
-    {
-        Integer currentRetryCount = this.retryCounts.get(clientId);
-        if (currentRetryCount != null && currentRetryCount.intValue() != 0)
-        {
-            this.retryCounts.put(clientId, 0);
-        }
+    public void resetRetryCount(String clientId) {
+        this.retryCounts.computeIfPresent(clientId, (k, v) -> 0);
     }
 
     /**
