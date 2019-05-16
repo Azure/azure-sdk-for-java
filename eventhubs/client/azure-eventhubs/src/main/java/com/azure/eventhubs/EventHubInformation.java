@@ -11,13 +11,13 @@ import java.util.Arrays;
  * like {@link EventHubClient#createReceiver(String, EventPosition)} and
  * {@link EventHubClient#createReceiver(ReceiverOptions)}.
  */
-public final class EventHubRuntimeInformation {
+public final class EventHubInformation {
     private final String path;
     private final Instant createdAt;
     private final int partitionCount;
     private final String[] partitionIds;
 
-    EventHubRuntimeInformation(
+    EventHubInformation(
             final String path,
             final Instant createdAt,
             final int partitionCount,

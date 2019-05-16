@@ -8,7 +8,7 @@ import java.time.Instant;
 /**
  * Contains runtime information about an Event Hub partition.
  */
-public final class PartitionRuntimeInformation {
+public final class PartitionInformation {
     private final String eventHubPath;
     private final String partitionId;
     private final long beginSequenceNumber;
@@ -17,7 +17,7 @@ public final class PartitionRuntimeInformation {
     private final Instant lastEnqueuedTimeUtc;
     private final boolean isEmpty;
 
-    PartitionRuntimeInformation(
+    PartitionInformation(
             final String eventHubPath,
             final String partitionId,
             final long beginSequenceNumber,
