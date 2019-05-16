@@ -17,7 +17,7 @@ public final class PartitionRuntimeInformation {
     private final Instant lastEnqueuedTimeUtc;
     private final boolean isEmpty;
 
-    public PartitionRuntimeInformation(
+    PartitionRuntimeInformation(
             final String eventHubPath,
             final String partitionId,
             final long beginSequenceNumber,
@@ -34,30 +34,64 @@ public final class PartitionRuntimeInformation {
         this.isEmpty = isEmpty;
     }
 
+    /**
+     * Gets the Event Hub path for this partition.
+     *
+     * @return The Event Hub path for this partition.
+     */
     public String eventHubPath() {
         return this.eventHubPath;
     }
 
+    /**
+     * Gets the identifier of the partition within the Event Hub.
+     *
+     * @return The identifier of the partition within the Event Hub.
+     */
     public String partitionId() {
         return this.partitionId;
     }
 
+    /**
+     * Gets the starting sequence number of the partition's message stream.
+     *
+     * @return The starting sequence number of the partition's message stream.
+     */
     public long beginSequenceNumber() {
         return this.beginSequenceNumber;
     }
 
+    /**
+     * Gets the last sequence number of the partition's message stream.
+     *
+     * @return the last sequence number of the partition's message stream.
+     */
     public long lastEnqueuedSequenceNumber() {
         return this.lastEnqueuedSequenceNumber;
     }
 
+    /**
+     * Gets the offset of the last enqueued message in the partition's stream.
+     *
+     * @return the offset of the last enqueued message in the partition's stream.
+     */
     public String lastEnqueuedOffset() {
         return this.lastEnqueuedOffset;
     }
 
+    /**
+     * Gets the time of the last enqueued message in the partition's stream.
+     *
+     * @return the time of the last enqueued message in the partition's stream.
+     */
     public Instant lastEnqueuedTimeUtc() {
         return this.lastEnqueuedTimeUtc;
     }
 
+    /**
+     * Indicates whether or not there are events in the partition.
+     * @return true if there are no events, and false otherwise.
+     */
     public boolean isEmpty() {
         return this.isEmpty;
     }

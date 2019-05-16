@@ -17,7 +17,7 @@ public final class EventHubRuntimeInformation {
     private final int partitionCount;
     private final String[] partitionIds;
 
-    public EventHubRuntimeInformation(
+    EventHubRuntimeInformation(
             final String path,
             final Instant createdAt,
             final int partitionCount,
