@@ -19,7 +19,7 @@ final class SessionBrowser {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SessionBrowser.class);
     private static final int PAGESIZE = 100;
     // .net DateTime.MaxValue need to be passed
-    private static final Date MAXDATE = new Date(253402300800000l);
+    private static final Date MAXDATE = new Date(253402300800000L);
 
     private final MessagingFactory messagingFactory;
     private final String entityPath;
@@ -43,8 +43,7 @@ final class SessionBrowser {
 
     private CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Date lastUpdatedTime, int lastReceivedSkip, String lastSessionId) {
         TRACE_LOGGER.debug("Getting '{}' browsable sessions from entity '{}', lastUpdatedTime '{}', lastReceivedSkip '{}', lastSessionId '{}'", PAGESIZE, this.entityPath, lastUpdatedTime, lastReceivedSkip, lastSessionId);
-        return this.miscRequestResponseHandler.getMessageSessionsAsync(lastUpdatedTime, lastReceivedSkip, PAGESIZE, lastSessionId).thenComposeAsync((p) ->
-        {
+        return this.miscRequestResponseHandler.getMessageSessionsAsync(lastUpdatedTime, lastReceivedSkip, PAGESIZE, lastSessionId).thenComposeAsync((p) -> {
             int newLastReceivedSkip = p.getSecondItem();
             String[] sessionIds = p.getFirstItem();
             ArrayList<IMessageSession> sessionsList = new ArrayList<>();
