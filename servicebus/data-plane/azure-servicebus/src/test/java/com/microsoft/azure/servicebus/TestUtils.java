@@ -4,7 +4,11 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -39,16 +43,16 @@ public class TestUtils extends TestBase {
         // Read proxy settings only if transport type is WebSockets
         runWithProxy = Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR));
         proxyHostName = System.getenv(PROXY_HOSTNAME_ENV_VAR);
-        proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ?
-                        0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
+        proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ? 0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
     }
 
-    public static URI getNamespaceEndpointURI()
-    {
+    public static URI getNamespaceEndpointURI() {
         return namespaceConnectionStringBuilder.getEndpoint();
     }
 
-    public static String getNamespaceConnectionString() { return namespaceConnectionString; }
+    public static String getNamespaceConnectionString() {
+        return namespaceConnectionString;
+    }
 
     public static ClientSettings getClientSettings() {
         if (runWithProxy) {
