@@ -6,7 +6,7 @@ package com.azure.applicationconfig;
 /*
  * Gets the SDK information for this library component.
  */
-class AzureAppConfiguration {
+class AzureConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "application-configuration";
     static final String VERSION = "1.0.0-SNAPSHOT";

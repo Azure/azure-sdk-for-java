@@ -102,17 +102,30 @@ public final class Configuration {
     /**
      * @return a clone of the Configuration object.
      */
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
         return new Configuration(configurations);
     }
 
+    /**
+     * Attempts to convert the configuration value to {@code T}.
+     *
+     * If the value is null or empty then the default value is returned.
+     *
+     * @param value Configuration value retrieved from the map.
+     * @param defaultValue Default value to return if the configuration value is null or empty.
+     * @param <T> Generic type that the value is converted to if not null or empty.
+     * @return The converted configuration, if null or empty the default value.
+     */
     @SuppressWarnings("unchecked")
     static <T> T convertOrDefault(String value, T defaultValue) {
+        // Value is null or empty, return the default.
         if (ImplUtils.isNullOrEmpty(value)) {
             return defaultValue;
         }
 
-        Object convertedValue = null;
+        // Check the default value's type to determine how it needs to be converted.
+        Object convertedValue;
         if (defaultValue instanceof Byte) {
             convertedValue = Byte.parseByte(value);
         } else if (defaultValue instanceof Short) {

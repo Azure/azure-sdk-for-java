@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.core.implementation.configuration;
 
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -11,7 +12,7 @@ import java.util.function.Function;
  * Manages the global configuration store.
  */
 public final class ConfigurationManager {
-    private static final ServiceLogger logger = new ServiceLogger(ConfigurationManager.class);
+    private static final ServiceLogger LOGGER = new ServiceLogger(ConfigurationManager.class);
     private static Configuration configuration = new Configuration();
 
     /**
@@ -21,7 +22,7 @@ public final class ConfigurationManager {
      * @return Value of the configuration if found, otherwise null.
      */
     public static String get(String name) {
-        return loadConfiguration(name);
+        return getOrLoad(name);
     }
 
     /**
@@ -35,7 +36,7 @@ public final class ConfigurationManager {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public static <T> T get(String name, T defaultValue) {
-        return Configuration.convertOrDefault(loadConfiguration(name), defaultValue);
+        return Configuration.convertOrDefault(getOrLoad(name), defaultValue);
     }
 
     /**
@@ -47,7 +48,7 @@ public final class ConfigurationManager {
      * @return The converted configuration if found, otherwise null.
      */
     public static <T> T get(String name, Function<String, T> converter) {
-        return converter.apply(loadConfiguration(name));
+        return converter.apply(getOrLoad(name));
     }
 
     /**
@@ -57,7 +58,17 @@ public final class ConfigurationManager {
         return configuration.clone();
     }
 
-    private static String loadConfiguration(String name) {
+    /**
+     * First attempts to retrieve the configuration from the global configuration store.
+     *
+     * If not found in the store then the runtime parameters and environment variables are checked for the configuration,
+     * if found the value is loaded into the store.
+     *
+     * @param name Name of the configuration.
+     * @return Value of the configuration from either the global store, runtime parameters, or environment variables,
+     * check in that order. If the configuration value is not found then null.
+     */
+    private static String getOrLoad(String name) {
         if (configuration.contains(name)) {
             return configuration.get(name);
         }
@@ -65,14 +76,14 @@ public final class ConfigurationManager {
         String value = System.getProperty(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
             configuration.put(name, value);
-            logger.asInformational().log("Found configuration {} in the runtime parameters.", name);
+            LOGGER.asInformational().log("Found configuration {} in the runtime parameters.", name);
             return value;
         }
 
         value = System.getenv(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
             configuration.put(name, value);
-            logger.asInformational().log("Found configuration {} in the environment variables.", name);
+            LOGGER.asInformational().log("Found configuration {} in the environment variables.", name);
             return value;
         }
 
