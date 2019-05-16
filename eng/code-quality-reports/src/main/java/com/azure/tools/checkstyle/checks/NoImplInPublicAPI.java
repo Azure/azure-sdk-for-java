@@ -11,7 +11,7 @@ import java.util.Set;
 public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
-    private static final String COM_AZURE_CORE_IMPLEMENTATION = "com.azure.core.implementation";
+    private static final String DOT_IMPLEMENTATION = ".implementation";
     private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
     private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
 
@@ -50,7 +50,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
         if (ast.getType() == TokenTypes.PACKAGE_DEF) {
             String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
             this.isTrackTwo = packageName.startsWith(COM_AZURE);
-            this.isImplPackage = packageName.startsWith(COM_AZURE_CORE_IMPLEMENTATION);
+            this.isImplPackage = packageName.endsWith(DOT_IMPLEMENTATION);
             return;
         } else {
             if (this.isTrackTwo) {
@@ -65,11 +65,14 @@ public class NoImplInPublicAPI extends AbstractCheck {
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
-                if (importClassPath.startsWith(COM_AZURE_CORE_IMPLEMENTATION)) {
-                    String remainingPath = importClassPath.substring(COM_AZURE_CORE_IMPLEMENTATION.length());
-                    if (remainingPath != null && remainingPath.length() > 1) {
-                        String className = remainingPath.substring(remainingPath.lastIndexOf(".") + 1);
-                        implementationClassSet.add(className);
+                if (importClassPath.startsWith(COM_AZURE)) {
+                    int idx = importClassPath.indexOf(DOT_IMPLEMENTATION);
+                    if (idx > -1) {
+                        String remainingPath = importClassPath.substring(idx + DOT_IMPLEMENTATION.length());
+                        if (remainingPath != null && remainingPath.length() > 1) {
+                            String className = remainingPath.substring(remainingPath.lastIndexOf(".") + 1);
+                            implementationClassSet.add(className);
+                        }
                     }
                 }
                 break;
