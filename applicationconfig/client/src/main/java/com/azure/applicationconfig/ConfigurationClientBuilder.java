@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.configuration.Configuration;
 
 import java.net.MalformedURLException;
 
@@ -142,6 +143,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(pipeline);
+        return this;
+    }
+
+    /**
+     * Sets the {@link Configuration configuration} to use when constructing the service client.
+     *
+     * Opt out of using configurations by passing {@link Configuration#NONE}.
+     *
+     * @param configuration The configuration to use to construct the service client.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder configuration(Configuration configuration) {
+        builder.configuration(configuration);
         return this;
     }
 }

@@ -18,6 +18,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.configuration.Configuration;
+import com.azure.core.implementation.configuration.ConfigurationManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,6 +75,7 @@ public final class ConfigurationAsyncClientBuilder {
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     ConfigurationAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
@@ -105,6 +108,9 @@ public final class ConfigurationAsyncClientBuilder {
     public ConfigurationAsyncClient build() {
         Objects.requireNonNull(serviceEndpoint);
 
+        // TODO (alzimmer): Actually use the configuration to do stuff.
+        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.configuration().clone() : configuration;
+
         if (pipeline != null) {
             return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
         }
@@ -116,7 +122,7 @@ public final class ConfigurationAsyncClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION));
+        policies.add(new UserAgentPolicy(AzureAppConfiguration.NAME, AzureAppConfiguration.VERSION));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
@@ -213,6 +219,19 @@ public final class ConfigurationAsyncClientBuilder {
     public ConfigurationAsyncClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link Configuration configuration} to use when constructing the service client.
+     *
+     * Opt out of using configurations by passing {@link Configuration#NONE}.
+     *
+     * @param configuration The configuration to use to construct the service client.
+     * @return The updated ConfigurationAsyncClientBuilder object.
+     */
+    public ConfigurationAsyncClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 }

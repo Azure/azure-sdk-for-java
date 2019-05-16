@@ -70,7 +70,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private Mono<Void> logRequest(final ServiceLogger logger, final HttpRequest request) {
         if (detailLevel.shouldLogURL()) {
-            logger.asInformational().log("--> %s %s", request.httpMethod(), request.url());
+            logger.asInformational().log("--> {} {}", request.httpMethod(), request.url());
         }
 
         if (detailLevel.shouldLogHeaders()) {
