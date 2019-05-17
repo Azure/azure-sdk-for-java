@@ -12,16 +12,14 @@ import org.slf4j.LoggerFactory;
 
 // ServiceBus <-> ProtonReactor interaction 
 // handles all recvLink - reactor events
-public final class ReceiveLinkHandler extends BaseLinkHandler
-{
+public final class ReceiveLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
     
     private final IAmqpReceiver amqpReceiver;
     private final Object firstResponse;
     private boolean isFirstResponse;
 
-    public ReceiveLinkHandler(final IAmqpReceiver receiver)
-    {
+    public ReceiveLinkHandler(final IAmqpReceiver receiver) {
         super(receiver);
 
         this.amqpReceiver = receiver;
@@ -30,47 +28,36 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
     }
 
     @Override
-    public void onLinkLocalOpen(Event evt)
-    {
+    public void onLinkLocalOpen(Event evt) {
         Link link = evt.getLink();
-        if (link instanceof Receiver)
-        {
+        if (link instanceof Receiver) {
             Receiver receiver = (Receiver) link;
             TRACE_LOGGER.debug("onLinkLocalOpen: linkName:{}, localSource:{}", receiver.getName(), receiver.getSource());
         }
     }
 
     @Override
-    public void onLinkRemoteOpen(Event event)
-    {
+    public void onLinkRemoteOpen(Event event) {
         Link link = event.getLink();
-        if (link != null && link instanceof Receiver)
-        {
+        if (link != null && link instanceof Receiver) {
             Receiver receiver = (Receiver) link;
-            if (link.getRemoteSource() != null)
-            {
+            if (link.getRemoteSource() != null) {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteSource:{}", receiver.getName(), receiver.getRemoteSource());
 
-                synchronized (this.firstResponse)
-                {
+                synchronized (this.firstResponse) {
                     this.isFirstResponse = false;
                     this.amqpReceiver.onOpenComplete(null);
                 }
-            }
-            else
-            {
+            } else {
                 TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteTarget:{}, action:{}", receiver.getName(), null, null, "waitingForError");
             }
         }
     }
 
     @Override
-    public void onDelivery(Event event)
-    {
-        synchronized (this.firstResponse)
-        {
-            if (this.isFirstResponse)
-            {
+    public void onDelivery(Event event) {
+        synchronized (this.firstResponse) {
+            if (this.isFirstResponse) {
                 this.isFirstResponse = false;
                 this.amqpReceiver.onOpenComplete(null);
             }
@@ -87,8 +74,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         // If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k),
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
-        if (!delivery.isPartial())
-        {
+        if (!delivery.isPartial()) {
             this.amqpReceiver.onReceiveComplete(delivery);
         }
     }

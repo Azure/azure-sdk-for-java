@@ -98,8 +98,7 @@ public class RestProxyStressTests {
             tempFolderPath = "temp";
         }
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         List<HttpPipelinePolicy> polices = new ArrayList<HttpPipelinePolicy>();
         polices.add(new AddDatePolicy());
@@ -496,8 +495,7 @@ public class RestProxyStressTests {
     public void testHighParallelism() {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         //
         List<HttpPipelinePolicy> policies = new ArrayList<>();

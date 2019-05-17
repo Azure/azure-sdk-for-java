@@ -25,8 +25,7 @@ import com.microsoft.azure.servicebus.primitives.Util;
 import com.microsoft.azure.servicebus.rules.Filter;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 
-public final class SubscriptionClient extends InitializableEntity implements ISubscriptionClient
-{
+public final class SubscriptionClient extends InitializableEntity implements ISubscriptionClient {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionClient.class);
     private static final String SUBSCRIPTIONS_DELIMITER = "/subscriptions/";
     private final ReceiveMode receiveMode;
@@ -38,31 +37,26 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
     public static final String DEFAULT_RULE_NAME = "$Default";
 
-    private SubscriptionClient(ReceiveMode receiveMode, String subscriptionPath)
-    {
+    private SubscriptionClient(ReceiveMode receiveMode, String subscriptionPath) {
         super(StringUtil.getShortRandomString());
         this.receiveMode = receiveMode;
         this.subscriptionPath = subscriptionPath;
     }
 
-    public SubscriptionClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    public SubscriptionClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(receiveMode, amqpConnectionStringBuilder.getEntityPath());
         CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
         Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f), MessagingFactory.INTERNAL_THREAD_POOL));
-        if(TRACE_LOGGER.isInfoEnabled())
-        {
+        if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Created subscription client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
         }
     }
 
-    public SubscriptionClient(String namespace, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    public SubscriptionClient(String namespace, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(Util.convertNamespaceToEndPointURI(namespace), subscriptionPath, clientSettings, receiveMode);
     }
     
-    public SubscriptionClient(URI namespaceEndpointURI, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    public SubscriptionClient(URI namespaceEndpointURI, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(receiveMode, subscriptionPath);
         CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(namespaceEndpointURI, clientSettings);
         Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f), MessagingFactory.INTERNAL_THREAD_POOL));
@@ -71,15 +65,13 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
         }
     }
 
-    SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
-    {
+    SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(receiveMode, subscriptionPath);
         Utils.completeFuture(this.createPumpAndBrowserAsync(factory));
         TRACE_LOGGER.info("Created subscription client to subscripton '{}'", subscriptionPath);
     }
 
-    private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory)
-    {
+    private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory) {
         this.factory = factory;
         CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION).thenAcceptAsync((msoh) -> {
             this.miscRequestResponseHandler = msoh;
@@ -138,8 +130,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     }
 
     @Override
-    public CompletableFuture<Collection<RuleDescription>> getRulesAsync()
-    {
+    public CompletableFuture<Collection<RuleDescription>> getRulesAsync() {
         // Skip and Top can be used to implement pagination.
         // In this case, we are trying to fetch all the rules associated with the subscription.
         int skip = 0, top = Integer.MAX_VALUE;
@@ -393,21 +384,18 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
     @Override
     public String getTopicName() {
-       String entityPath = this.getEntityPath();
-       String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
-       return parts[0];
+        String entityPath = this.getEntityPath();
+        String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
+        return parts[0];
     }
 
     @Override
     public String getSubscriptionName() {
         String entityPath = this.getEntityPath();
         String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
-        if(parts.length == 2)
-        {
+        if (parts.length == 2) {
             return parts[1];
-        }
-        else
-        {
+        } else {
             throw new RuntimeException("Invalid entity path in the subscription client.");
         }
     }

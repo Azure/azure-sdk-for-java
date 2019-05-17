@@ -39,7 +39,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                context.httpRequest().headers().set(entry.getKey(), String.join(",", entry.getValue()));
+                context.httpRequest().headers().put(entry.getKey(), String.join(",", entry.getValue()));
             }
 
             return next.process().map(httpResponse -> {

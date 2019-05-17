@@ -9,30 +9,25 @@ package com.microsoft.azure.servicebus.primitives;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  * @since 1.0
  */
-public class TimeoutException extends ServiceBusException
-{
+public class TimeoutException extends ServiceBusException {
     private static final long serialVersionUID = -3505469991851121512L;
 
     /**
      * Default constructor for exception type.
      */
-    public TimeoutException()
-    {
+    public TimeoutException() {
         super(true);
     }
 
-    public TimeoutException(final String message)
-    {
+    public TimeoutException(final String message) {
         super(true, message);
     }
 
-    public TimeoutException(final Throwable cause)
-    {
+    public TimeoutException(final Throwable cause) {
         super(true, cause);
     }
 
-    public TimeoutException(final String message, final Throwable cause)
-    {
+    public TimeoutException(final String message, final Throwable cause) {
         super(true, message, cause);
     }
 }
