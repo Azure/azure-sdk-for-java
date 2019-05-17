@@ -3,7 +3,7 @@
 
 package com.azure.core.management;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
