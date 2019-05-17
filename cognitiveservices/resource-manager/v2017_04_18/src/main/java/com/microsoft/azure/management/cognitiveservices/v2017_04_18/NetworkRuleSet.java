@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A set of rules governing the network accessibility of a vault.
+ * A set of rules governing the network accessibility.
  */
 public class NetworkRuleSet {
     /**
