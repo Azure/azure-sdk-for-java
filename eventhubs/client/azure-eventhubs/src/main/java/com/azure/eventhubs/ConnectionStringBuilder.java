@@ -4,7 +4,6 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.eventhubs.implementation.StringUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;

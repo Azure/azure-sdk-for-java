@@ -4,10 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.eventhubs.implementation.StringUtil;
 import org.junit.Test;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
