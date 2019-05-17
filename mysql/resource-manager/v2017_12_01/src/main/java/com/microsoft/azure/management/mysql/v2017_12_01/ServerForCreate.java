@@ -40,7 +40,7 @@ public class ServerForCreate {
     private Map<String, String> tags;
 
     /**
-     * Get the sku value.
+     * Get the SKU (pricing tier) of the server.
      *
      * @return the sku value
      */
@@ -49,7 +49,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU (pricing tier) of the server.
      *
      * @param sku the sku value to set
      * @return the ServerForCreate object itself.
@@ -60,7 +60,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Get the properties value.
+     * Get properties of the server.
      *
      * @return the properties value
      */
@@ -69,7 +69,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the server.
      *
      * @param properties the properties value to set
      * @return the ServerForCreate object itself.
@@ -80,7 +80,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Get the location value.
+     * Get the location the resource resides in.
      *
      * @return the location value
      */
@@ -89,7 +89,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Set the location value.
+     * Set the location the resource resides in.
      *
      * @param location the location value to set
      * @return the ServerForCreate object itself.
@@ -100,7 +100,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Get the tags value.
+     * Get application-specific metadata in the form of key-value pairs.
      *
      * @return the tags value
      */
@@ -109,7 +109,7 @@ public class ServerForCreate {
     }
 
     /**
-     * Set the tags value.
+     * Set application-specific metadata in the form of key-value pairs.
      *
      * @param tags the tags value to set
      * @return the ServerForCreate object itself.
