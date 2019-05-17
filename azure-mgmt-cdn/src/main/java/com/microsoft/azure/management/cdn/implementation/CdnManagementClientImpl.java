@@ -274,7 +274,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2019-04-15";
+        this.apiVersion = "41234123412341234";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -296,7 +296,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "2019-04-15");
+        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "41234123412341234");
     }
 
     private void initializeService() {
