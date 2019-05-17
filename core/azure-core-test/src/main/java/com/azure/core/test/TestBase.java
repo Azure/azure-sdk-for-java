@@ -96,7 +96,7 @@ public abstract class TestBase {
 
     private static TestMode getTestMode() {
         final Logger logger = LoggerFactory.getLogger(TestBase.class);
-        final String azureTestMode = ConfigurationManager.get("AZURE_TEST_MODE");
+        final String azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE");
 
         if (azureTestMode != null) {
             try {

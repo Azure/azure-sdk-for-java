@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.configuration;
 
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Contains configuration information that is used during construction of service clients.
+ * Contains configuration information that is used during construction of client libraries.
  */
 public final class Configuration {
 
@@ -19,9 +20,11 @@ public final class Configuration {
      */
     public static final Configuration NONE = new Configuration();
 
+    private final ServiceLogger logger = new ServiceLogger(Configuration.class);
+
     private Map<String, String> configurations = new HashMap<>();
 
-    Configuration() {
+    public Configuration() {
     }
 
     private Configuration(Map<String, String> configurations) {
@@ -35,7 +38,7 @@ public final class Configuration {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return configurations.get(name);
+        return getOrLoad(name);
     }
 
     /**
@@ -49,7 +52,7 @@ public final class Configuration {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertOrDefault(get(name), defaultValue);
+        return convertOrDefault(getOrLoad(name), defaultValue);
     }
 
     /**
@@ -66,7 +69,7 @@ public final class Configuration {
             return null;
         }
 
-        return converter.apply(get(name));
+        return converter.apply(getOrLoad(name));
     }
 
     /**
@@ -118,7 +121,7 @@ public final class Configuration {
      * @return The converted configuration, if null or empty the default value.
      */
     @SuppressWarnings("unchecked")
-    static <T> T convertOrDefault(String value, T defaultValue) {
+    private <T> T convertOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
         if (ImplUtils.isNullOrEmpty(value)) {
             return defaultValue;
@@ -145,5 +148,37 @@ public final class Configuration {
         }
 
         return (T) convertedValue;
+    }
+
+    /**
+     * First attempts to retrieve the configuration from the global configuration store.
+     *
+     * If not found in the store then the runtime parameters and environment variables are checked for the configuration,
+     * if found the value is loaded into the store.
+     *
+     * @param name Name of the configuration.
+     * @return Value of the configuration from either the global store, runtime parameters, or environment variables,
+     * check in that order. If the configuration value is not found then null.
+     */
+    private String getOrLoad(String name) {
+        if (configurations.containsKey(name)) {
+            return configurations.get(name);
+        }
+
+        String value = System.getProperty(name);
+        if (!ImplUtils.isNullOrEmpty(value)) {
+            configurations.put(name, value);
+            logger.asInformational().log("Found configuration {} in the runtime parameters.", name);
+            return value;
+        }
+
+        value = System.getenv(name);
+        if (!ImplUtils.isNullOrEmpty(value)) {
+            configurations.put(name, value);
+            logger.asInformational().log("Found configuration {} in the environment variables.", name);
+            return value;
+        }
+
+        return null;
     }
 }

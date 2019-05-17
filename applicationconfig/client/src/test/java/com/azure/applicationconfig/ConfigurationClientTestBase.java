@@ -68,7 +68,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.get("AZCONFIG_CONNECTION_STRING");
+                : ConfigurationManager.getConfiguration().get("AZCONFIG_CONNECTION_STRING");
         }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
