@@ -4,7 +4,7 @@
 package com.azure.core.implementation.logging;
 
 import com.azure.core.implementation.configuration.ConfigurationManager;
-import com.azure.core.implementation.configuration.EnvironmentConfigurations;
+import com.azure.core.implementation.configuration.BaseConfigurations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,6 +163,6 @@ public class ServiceLogger implements ServiceLoggerAPI {
     }
 
     private int minimumLoggingLevel() {
-        return ConfigurationManager.getConfiguration().get(EnvironmentConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
     }
 }

@@ -14,8 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 // TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
-public abstract class RetryPolicy
-{    
+public abstract class RetryPolicy {
     private static final RetryPolicy NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0, ClientConstants.NO_RETRY);
 
     private final String name;
@@ -25,18 +24,16 @@ public abstract class RetryPolicy
      * Creates an instance of RetryPolicy with the given name.
      * @param name name of the policy
      */
-    protected RetryPolicy(final String name)
-    {
+    protected RetryPolicy(final String name) {
         this.name = name;
-        this.retryCounts = new ConcurrentHashMap<String, Integer>();
+        this.retryCounts = new ConcurrentHashMap<>();
     }
 
     /**
      * Increments the number of successive retry attempts made by a client.
      * @param clientId id of the client retrying a failed operation
      */
-    public void incrementRetryCount(String clientId)
-    {
+    public void incrementRetryCount(String clientId) {
         Integer retryCount = this.retryCounts.get(clientId);
         this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
     }
@@ -54,15 +51,12 @@ public abstract class RetryPolicy
      * @param exception exception encountered by an operation, to be determined if it is retry-able.
      * @return true if the exception is retry-able (like ServerBusy or other transient exception), else returns false
      */
-    public static boolean isRetryableException(Exception exception)
-    {
-        if (exception == null)
-        {
+    public static boolean isRetryableException(Exception exception) {
+        if (exception == null) {
             throw new IllegalArgumentException("exception cannot be null");
         }
 
-        if (exception instanceof ServiceBusException)
-        {
+        if (exception instanceof ServiceBusException) {
             return ((ServiceBusException) exception).getIsTransient();
         }
 
@@ -74,8 +68,7 @@ public abstract class RetryPolicy
      * if no retry policy is specified.
      * @return a retry policy that provides exponentially increasing retry intervals
      */
-    public static RetryPolicy getDefault()
-    {
+    public static RetryPolicy getDefault() {
         return new RetryExponential(
                 ClientConstants.DEFAULT_RERTRY_MIN_BACKOFF,
                 ClientConstants.DEFAULT_RERTRY_MAX_BACKOFF,
@@ -87,13 +80,11 @@ public abstract class RetryPolicy
      * Gets a retry policy that doesn't retry any operations, effectively disabling retries. Clients can use this retry policy in case they do not want any operation automatically retried.
      * @return a retry policy that doesn't retry any operations
      */
-    public static RetryPolicy getNoRetry()
-    {
+    public static RetryPolicy getNoRetry() {
         return RetryPolicy.NO_RETRY;
     }
 
-    protected int getRetryCount(String clientId)
-    {
+    protected int getRetryCount(String clientId) {
         Integer retryCount = this.retryCounts.get(clientId);
         return retryCount == null ? 0 : retryCount;
     }
@@ -106,17 +97,14 @@ public abstract class RetryPolicy
      * @param remainingTime remainingTime to retry before the operation times out
      * @return duration after which the operation will be retried. Returns null when the operation should not retried.
      */
-    public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
-    {
-        if (!RetryPolicy.isRetryableException(lastException))
-        {
+    public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime) {
+        if (!RetryPolicy.isRetryableException(lastException)) {
             return null;
         }
 
         int baseWaitTime = 0;
-        if (lastException != null &&
-                (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException)))
-        {
+        if (lastException != null
+                && (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException))) {
             baseWaitTime += ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
         }
 
@@ -135,8 +123,7 @@ public abstract class RetryPolicy
     protected abstract Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime, int baseWaitTime);
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.name;
     }
 }

@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.configuration.ConfigurationManager;
-import com.azure.core.implementation.configuration.EnvironmentConfigurations;
+import com.azure.core.implementation.configuration.BaseConfigurations;
 import reactor.core.publisher.Mono;
 
 /**
@@ -65,7 +65,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().set("User-Agent", header);
+        context.httpRequest().headers().put("User-Agent", header);
         return next.process();
     }
 
@@ -74,6 +74,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     private static String getUserAgentOrDefault() {
-        return ConfigurationManager.getConfiguration().get(EnvironmentConfigurations.AZURE_USER_AGENT, DEFAULT_USER_AGENT_HEADER);
+        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_USER_AGENT, DEFAULT_USER_AGENT_HEADER);
     }
 }

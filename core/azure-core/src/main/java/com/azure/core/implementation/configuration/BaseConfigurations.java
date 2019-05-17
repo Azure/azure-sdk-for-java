@@ -6,7 +6,7 @@ package com.azure.core.implementation.configuration;
 /**
  * Represents the well-known, commonly expected, environment variables.
  */
-public final class EnvironmentConfigurations {
+public final class BaseConfigurations {
 
     /**
      * URI of the proxy for HTTP connections.

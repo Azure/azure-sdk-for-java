@@ -8,27 +8,23 @@ package com.microsoft.azure.servicebus.primitives;
  * @since 1.0
  *
  */
-public class MessagingEntityDisabledException extends ServiceBusException{
+public class MessagingEntityDisabledException extends ServiceBusException {
 
     private static final long serialVersionUID = 9086472912026637605L;
 
-    public MessagingEntityDisabledException()
-    {
+    public MessagingEntityDisabledException() {
         super(false);
     }
 
-    public MessagingEntityDisabledException(String message)
-    {
+    public MessagingEntityDisabledException(String message) {
         super(false, message);
     }
 
-    public MessagingEntityDisabledException(Throwable cause)
-    {
+    public MessagingEntityDisabledException(Throwable cause) {
         super(false, cause);
     }
 
-    public MessagingEntityDisabledException(String message, Throwable cause)
-    {
+    public MessagingEntityDisabledException(String message, Throwable cause) {
         super(false, message, cause);
     }
 }

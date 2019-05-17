@@ -5,27 +5,20 @@ package com.microsoft.azure.servicebus.primitives;
 
 import java.util.Iterator;
 
-final class IteratorUtil
-{
-    private IteratorUtil()
-    {
+final class IteratorUtil {
+    private IteratorUtil() {
     }
 
-    public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize)
-    {
+    public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize) {
         Iterator<T> iterator = iterable.iterator();
 
         int currentSize = 0;
-        while(iterator.hasNext())
-        {
-            if (expectedSize > currentSize)
-            {
+        while (iterator.hasNext()) {
+            if (expectedSize > currentSize) {
                 currentSize++;
                 iterator.next();
                 continue;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -33,27 +26,22 @@ final class IteratorUtil
         return true;
     }
 
-    public static <T> T getLast(Iterator<T> iterator)
-    {
+    public static <T> T getLast(Iterator<T> iterator) {
         T last = null;
-        while(iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             last = iterator.next();
         }
 
         return last;
     }
 
-    public static <T> T getFirst(final Iterable<T> iterable)
-    {
-        if (iterable == null)
-        {
+    public static <T> T getFirst(final Iterable<T> iterable) {
+        if (iterable == null) {
             return null;
         }
 
         final Iterator<T> iterator = iterable.iterator();
-        if (iterator == null)
-        {
+        if (iterator == null) {
             return null;
         }
 
