@@ -1,11 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tracing.opencensus;
 
+import com.azure.core.exception.HttpRequestException;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.spi.AfterRetryPolicyProvider;
+import com.azure.core.implementation.util.ImplUtils;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Kind;
@@ -35,20 +40,18 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
     private static final String HTTP_METHOD = "http.method";
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
+    private static final String REQUEST_ID = "x-ms-request-id";
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http request
     private final TextFormat traceContextFormat = Tracing.getPropagationComponent().getTraceContextFormat();
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        Span parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
-
+        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(tracer.getCurrentSpan());
         HttpRequest request = context.httpRequest();
+
         // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(
-            getSpanName(request), // Name is request's URL's path
-            parentSpan); // reference to the parent
+        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(getSpanName(request), parentSpan);
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
         spanBuilder.setSpanKind(Kind.CLIENT);
@@ -73,14 +76,15 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
             .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
-    private void addSpanRequestAttributes(Span span, HttpRequest request) {
+    private static void addSpanRequestAttributes(Span span, HttpRequest request) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.headers().value("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.httpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.url().toString());
     }
 
-    private void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
-        if (value != null && !value.isEmpty()) {
+    private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
+        // AttributeValue will throw an error if the value is null.
+        if (!ImplUtils.isNullOrEmpty(value)) {
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         }
     }
@@ -100,27 +104,32 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         }
 
         Span span = tracingSpan.get();
+        HttpResponse httpResponse = null;
+        Throwable error = null;
         if (signal.isOnNext()) {
-            HttpResponse httpResponse = signal.get();
-            if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-                // Successful response, add x-ms-request-id header attribute to span before logging.
-                String serverRequestId = httpResponse.headers().value("x-ms-request-id");
-                if (serverRequestId != null) {
-                    span.putAttribute("x-ms-request-id", AttributeValue.stringAttributeValue(serverRequestId));
-                }
-            }
-
-            spanEnd(span, httpResponse, null);
+            httpResponse = signal.get();
         } else {
-            spanEnd(span, null, signal.getThrowable());
+            error = signal.getThrowable();
+            if (error instanceof HttpRequestException) {
+                HttpRequestException exception = (HttpRequestException) error;
+                httpResponse = exception.response();
+            }
         }
+
+        spanEnd(span, httpResponse, error);
     }
 
     // Sets status on the span and ends it
     private static void spanEnd(Span span, HttpResponse response, Throwable error) {
         if (span.getOptions().contains(Options.RECORD_EVENTS)) {
-            // If sampled in, add status code and set overall status
-            int statusCode = response == null ? 0 : response.statusCode();
+            int statusCode = 0;
+            String requestId = null;
+            if (response != null) {
+                statusCode = response.statusCode();
+                requestId = response.headerValue(REQUEST_ID);
+            }
+
+            putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
             span.putAttribute(HTTP_STATUS_CODE, AttributeValue.longAttributeValue(statusCode));
             span.setStatus(HttpTraceUtil.parseResponseStatus(statusCode, error));
         }

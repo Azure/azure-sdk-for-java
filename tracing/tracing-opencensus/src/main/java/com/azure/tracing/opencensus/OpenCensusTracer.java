@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tracing.opencensus;
 
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
@@ -22,21 +26,10 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
 
     @Override
     public Context start(String methodName, Context context) {
-        /*
-         * TODO inspect ContextData for existing OpenCensus-specific tracing information. If present, augment. If not
-         * present, create new tracing information.
-         *
-         * TODO Need to determine the key that users will use to insert the tracing information into the Context, or if a utility method will do this for end users.
-         */
-        Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
-        Span parentSpan = (Span) spanOptional.orElse(tracer.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(tracer.getCurrentSpan());
 
-        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(
-            methodName, // this is a coarse name like "Azure.KeyVault/getSecret"
-            parentSpan); // link to the parent span
-
+        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(methodName, parentSpan);
         Span span = spanBuilder.startSpan();
-
 
         return context.addData(Constants.OPENCENSUS_SPAN_KEY, span);
     }
@@ -59,6 +52,9 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
 
     @Override
     public void setAttribute(String key, String value, Context context) {
+        if (ImplUtils.isNullOrEmpty(value)) {
+            return;
+        }
 
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {

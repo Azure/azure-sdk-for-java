@@ -143,6 +143,7 @@ public final class ImplUtils {
     /*
      * Extracts and combines the generic items from all the pages linked together.
      * @param page The paged response from server holding generic items.
+     * @param context Metadata that is passed into the function that fetches the items from the next page.
      * @param content The function which fetches items from the next page.
      * @param <T> The type of the item being returned in the paged response.
      * @return The publisher holding all the generic items combined.
