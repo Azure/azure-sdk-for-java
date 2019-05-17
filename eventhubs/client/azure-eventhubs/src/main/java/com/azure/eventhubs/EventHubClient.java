@@ -27,11 +27,29 @@ class EventHubClient implements AutoCloseable {
 
     // Creates a partition receiver that listens to the $DEFAULT consumer group starting at
     // the given position.
+
+    /**
+     * Creates a receiver that listens to the Event Hub {@code partitionId} at the given {@link EventPosition}. The
+     * consumer group used is the "$DEFAULT" consumer group.
+     *
+     * @param partitionId The identifier of the Event Hub partition.
+     * @param position Position within the partition's stream to start receiving events at.
+     * @return An new {@link EventHubReceiver} that receives events from the partition at the given position.
+     */
     public EventHubReceiver createReceiver(String partitionId, EventPosition position) {
         return new EventHubReceiver();
     }
 
-    public EventHubReceiver createReceiver(ReceiverOptions options) {
+    /**
+     * Creates a receiver that listens to the Event Hub {@code partitionId} at the given {@link EventPosition} with the
+     * provided options.
+     *
+     * @param partitionId The identifier of the Event Hub partition.
+     * @param position Position within the partition's stream to start receiving events at.
+     * @param options Additional options for the receiver.
+     * @return An new {@link EventHubReceiver} that receives events from the partition at the given position.
+     */
+    public EventHubReceiver createReceiver(String partitionId, EventPosition position, ReceiverOptions options) {
         return new EventHubReceiver();
     }
 

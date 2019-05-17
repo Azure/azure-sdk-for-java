@@ -3,31 +3,32 @@
 
 package com.azure.eventhubs;
 
-import java.util.Objects;
+import com.azure.core.http.policy.RetryPolicy;
+
+import java.time.Duration;
 import java.util.Optional;
 
 /**
  * Options when receiving events from Event Hubs.
  */
 public class ReceiverOptions {
-    private final EventPosition position;
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     private String name;
     private String consumerGroup;
-    private String partitionId;
     private Long epoch;
+    private RetryPolicy retryPolicy;
+    private boolean keepUpdated;
+    private Duration receiveTimeout;
 
     /**
-     * Creates a new instance with the {@code position} to start receiving events from.
-     *
-     * @param partitionId Partition id for this receiver to get events from.
-     * @param position Position to start receiving events from.
+     * Creates a new instance with the consumer group set to {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      */
-    public ReceiverOptions(String partitionId, EventPosition position) {
-        Objects.requireNonNull(partitionId);
-        Objects.requireNonNull(position);
-
-        this.partitionId = partitionId;
-        this.position = position;
+    public ReceiverOptions() {
+        consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
     }
 
     /**
@@ -66,6 +67,43 @@ public class ReceiverOptions {
     }
 
     /**
+     * Sets the retry policy used to govern retry attempts for receiving events. If not specified, the retry policy
+     * configured on the associated {@link EventHubClient} is used.
+     *
+     * @param retryPolicy The retry policy to use when receiving events.
+     * @return The updated ReceiverOptions object.
+     */
+    public ReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the timeout to apply when receiving events. If not specified, the timeout configured with the associated
+     * {@link EventHubClient} is used.
+     *
+     * @param duration The timeout when receiving events.
+     * @return The updated ReceiverOptions object.
+     */
+    public ReceiverOptions receiveTimeout(Duration duration) {
+        this.receiveTimeout = duration;
+        return this;
+    }
+
+    /**
+     * Sets whether or not the {@link EventHubReceiver#partitionInformation()} is updated when the receiver reads
+     * events.
+     *
+     * @param keepUpdated {@code true} if the partition information should be kept up-to-date as events are received;
+     * otherwise, false.
+     * @return The updated ReceiverOptions object.
+     */
+    public ReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
+        this.keepUpdated = keepUpdated;
+        return this;
+    }
+
+    /**
      * Gets the name of the receiver.
      *
      * @return The name of the receiver.
@@ -84,21 +122,13 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets the partition name for this receiver.
+     * Gets the retry policy when receiving events. If not specified, the retry policy configured on the associated
+     * {@link EventHubClient} is used.
      *
-     * @return The partition name for this receiver.
+     * @return The retry policy when receiving events.
      */
-    public String partitionId() {
-        return partitionId;
-    }
-
-    /**
-     * Gets the position in the Event Hubs stream to start listening for events.
-     *
-     * @return The position in the Event Hubs stream to start listening for events.
-     */
-    public EventPosition position() {
-        return position;
+    public RetryPolicy retryPolicy() {
+        return retryPolicy;
     }
 
     /**
@@ -109,5 +139,26 @@ public class ReceiverOptions {
      */
     public Optional<Long> epoch() {
         return Optional.ofNullable(epoch);
+    }
+
+    /**
+     * Gets whether or not the {@link EventHubReceiver#partitionInformation()} is updated when the receiver reads
+     * events.
+     *
+     * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,
+     * false.
+     */
+    public boolean keepPartitionInformationUpdated() {
+        return this.keepUpdated;
+    }
+
+    /**
+     * Gets the timeout to apply when receiving events. If not specified, the timeout configured with the associated
+     * {@link EventHubClient} is used.
+     *
+     * @return The timeout when receiving events.
+     */
+    public Duration receiveTimeout() {
+        return this.receiveTimeout;
     }
 }

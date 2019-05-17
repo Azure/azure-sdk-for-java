@@ -14,7 +14,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * This is a logical representation of receiving from a EventHub partition.
  *
  * <p>
- * A {@link EventHubReceiver#receive(String)} is tied to a ConsumerGroup + Event Hubs PartitionId combination.
+ * A {@link EventHubReceiver#receive()} is tied to a ConsumerGroup + Event Hubs PartitionId combination.
  *
  * <ul>
  *      <li>If the {@link EventHubReceiver} is created where {@link ReceiverOptions#epoch()} has a value, then Event
@@ -24,9 +24,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </ul>
  *
  * @see EventHubClient#createReceiver(String, EventPosition)
- * @see EventHubClient#createReceiver(ReceiverOptions)
+ * @see EventHubClient#createReceiver(String, EventPosition, ReceiverOptions)
  */
 public class EventHubReceiver implements AutoCloseable {
+
+    private PartitionInformation partitionInformation;
+
+    /**
+     * Gets the most recent information about a partition by the current receiver.
+     *
+     * @return If {@link ReceiverOptions}
+     */
+    public PartitionInformation partitionInformation() {
+        return partitionInformation;
+    }
 
     /**
      * Begin receiving events until there are no longer any events emitted specified by
