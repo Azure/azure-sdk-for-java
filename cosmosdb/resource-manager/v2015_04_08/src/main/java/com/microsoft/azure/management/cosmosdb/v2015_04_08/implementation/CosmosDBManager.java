@@ -33,9 +33,9 @@ import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImp
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
- * Entry point to Azure DocumentDB resource management.
+ * Entry point to Azure CosmosDB resource management.
  */
-public final class DocumentDBManager extends ManagerCore<DocumentDBManager, CosmosDBImpl> {
+public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDBImpl> {
     private DatabaseAccounts databaseAccounts;
     private Operations operations;
     private Databases databases;
@@ -50,22 +50,22 @@ public final class DocumentDBManager extends ManagerCore<DocumentDBManager, Cosm
     private PartitionKeyRangeIds partitionKeyRangeIds;
     private PartitionKeyRangeIdRegions partitionKeyRangeIdRegions;
     /**
-    * Get a Configurable instance that can be used to create DocumentDBManager with optional configuration.
+    * Get a Configurable instance that can be used to create CosmosDBManager with optional configuration.
     *
     * @return the instance allowing configurations
     */
     public static Configurable configure() {
-        return new DocumentDBManager.ConfigurableImpl();
+        return new CosmosDBManager.ConfigurableImpl();
     }
     /**
-    * Creates an instance of DocumentDBManager that exposes DocumentDB resource management API entry points.
+    * Creates an instance of CosmosDBManager that exposes CosmosDB resource management API entry points.
     *
     * @param credentials the credentials to use
     * @param subscriptionId the subscription UUID
-    * @return the DocumentDBManager
+    * @return the CosmosDBManager
     */
-    public static DocumentDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new DocumentDBManager(new RestClient.Builder()
+    public static CosmosDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new CosmosDBManager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
@@ -73,27 +73,27 @@ public final class DocumentDBManager extends ManagerCore<DocumentDBManager, Cosm
             .build(), subscriptionId);
     }
     /**
-    * Creates an instance of DocumentDBManager that exposes DocumentDB resource management API entry points.
+    * Creates an instance of CosmosDBManager that exposes CosmosDB resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
     * @param subscriptionId the subscription UUID
-    * @return the DocumentDBManager
+    * @return the CosmosDBManager
     */
-    public static DocumentDBManager authenticate(RestClient restClient, String subscriptionId) {
-        return new DocumentDBManager(restClient, subscriptionId);
+    public static CosmosDBManager authenticate(RestClient restClient, String subscriptionId) {
+        return new CosmosDBManager(restClient, subscriptionId);
     }
     /**
     * The interface allowing configurations to be set.
     */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-        * Creates an instance of DocumentDBManager that exposes DocumentDB management API entry points.
+        * Creates an instance of CosmosDBManager that exposes CosmosDB management API entry points.
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing DocumentDB management API entry points that work across subscriptions
+        * @return the interface exposing CosmosDB management API entry points that work across subscriptions
         */
-        DocumentDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        CosmosDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -230,11 +230,11 @@ public final class DocumentDBManager extends ManagerCore<DocumentDBManager, Cosm
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public DocumentDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return DocumentDBManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public CosmosDBManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+           return CosmosDBManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
      }
-    private DocumentDBManager(RestClient restClient, String subscriptionId) {
+    private CosmosDBManager(RestClient restClient, String subscriptionId) {
         super(
             restClient,
             subscriptionId,
