@@ -1499,8 +1499,10 @@ public abstract class RestProxyTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true));
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
+            .build();
         //
         Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));
 
@@ -1578,14 +1580,14 @@ public abstract class RestProxyTests {
     @Test(expected = HttpRequestException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
         service.get();
     }
 
     @Test(expected = HttpRequestException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testSingleMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
         service.getAsync().block();
         service.getBodyResponseAsync().block();
     }
@@ -1593,7 +1595,7 @@ public abstract class RestProxyTests {
     @Test(expected = HttpRequestException.class)
     @Ignore("Decoding is not a policy anymore")
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.builder().build());
         service.getBodyResponseAsync().block();
     }
 
@@ -1605,7 +1607,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void postUrlFormEncoded() {
-        Service26 service = RestProxy.create(Service26.class, new HttpPipeline());
+        Service26 service = RestProxy.create(Service26.class, HttpPipeline.builder().build());
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
@@ -1626,7 +1628,9 @@ public abstract class RestProxyTests {
     }
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
-        final HttpPipeline httpPipeline = new HttpPipeline(httpClient);
+        final HttpPipeline httpPipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .build();
 
         return RestProxy.create(serviceClass, httpPipeline, SERIALIZER);
     }
