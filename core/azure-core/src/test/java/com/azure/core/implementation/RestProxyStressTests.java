@@ -114,7 +114,9 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-                new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
+            HttpPipeline.builder()
+                .policies(polices.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         RestProxyStressTests.tempFolderPath = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -508,7 +510,9 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-                new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
+            HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.
