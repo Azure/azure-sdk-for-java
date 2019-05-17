@@ -868,9 +868,9 @@ class RequestResponseLink extends ClientEntity {
                             assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
                             delivery.settle();
                             this.availableCredit.decrementAndGet();
-                            TRACE_LOGGER.debug("RequestResonseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
+                            TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
                         } catch (Exception e) {
-                            TRACE_LOGGER.error("RequestResonseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
+                            TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
                             this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
                         }
                     } else {

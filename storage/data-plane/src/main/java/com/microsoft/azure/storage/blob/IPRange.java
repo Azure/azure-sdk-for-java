@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.storage.blob;
 
-import java.net.Inet4Address;
-
 /**
  * This type specifies a continuous range of IP addresses. It is used to limit permissions on SAS tokens. Null may be
  * set if it is not desired to confine the sas permissions to an IP range. Please refer to

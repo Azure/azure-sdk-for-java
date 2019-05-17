@@ -43,10 +43,7 @@ public abstract class RetryPolicy {
      * @param clientId id of the client that just retried a failed operation and succeeded.
      */
     public void resetRetryCount(String clientId) {
-        Integer currentRetryCount = this.retryCounts.get(clientId);
-        if (currentRetryCount != null && currentRetryCount.intValue() != 0) {
-            this.retryCounts.put(clientId, 0);
-        }
+        this.retryCounts.computeIfPresent(clientId, (k, v) -> 0);
     }
 
     /**

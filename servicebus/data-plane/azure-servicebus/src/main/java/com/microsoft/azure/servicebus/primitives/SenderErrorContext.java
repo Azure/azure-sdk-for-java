@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus.primitives;
 import java.util.Locale;
 
 public class SenderErrorContext extends ErrorContext {
+    private static final long serialVersionUID = -8426189357575601244L;
     final String sendPath;
     final String referenceId;
     final Integer currentLinkCredit;
