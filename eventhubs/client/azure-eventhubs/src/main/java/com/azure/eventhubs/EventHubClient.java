@@ -23,10 +23,10 @@ class EventHubClient implements AutoCloseable {
     /**
      * Creates a sender that can push events to Event Hub.
      *
-     * @return A new {@link EventHubSender}.
+     * @return A new {@link EventSender}.
      */
-    public EventHubSender createSender() {
-        return new EventHubSender(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+    public EventSender createSender() {
+        return new EventSender(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
     }
 
     /**
@@ -35,10 +35,10 @@ class EventHubClient implements AutoCloseable {
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @param position Position within the partition's stream to start receiving events at.
-     * @return An new {@link EventHubReceiver} that receives events from the partition at the given position.
+     * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventHubReceiver createReceiver(String partitionId, EventPosition position) {
-        return new EventHubReceiver();
+    public EventReceiver createReceiver(String partitionId, EventPosition position) {
+        return new EventReceiver();
     }
 
     /**
@@ -48,10 +48,10 @@ class EventHubClient implements AutoCloseable {
      * @param partitionId The identifier of the Event Hub partition.
      * @param position Position within the partition's stream to start receiving events at.
      * @param options Additional options for the receiver.
-     * @return An new {@link EventHubReceiver} that receives events from the partition at the given position.
+     * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventHubReceiver createReceiver(String partitionId, EventPosition position, ReceiverOptions options) {
-        return new EventHubReceiver();
+    public EventReceiver createReceiver(String partitionId, EventPosition position, ReceiverOptions options) {
+        return new EventReceiver();
     }
 
     /**

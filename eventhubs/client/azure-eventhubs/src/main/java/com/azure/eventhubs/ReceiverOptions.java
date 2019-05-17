@@ -54,8 +54,8 @@ public class ReceiverOptions {
     }
 
     /**
-     * Sets the epoch value on this receiver. When specified, this becomes an Epoch {@link EventHubReceiver}.
-     * An Epoch receiver guarantees that only one {@link EventHubReceiver} can listen to each
+     * Sets the epoch value on this receiver. When specified, this becomes an Epoch {@link EventReceiver}.
+     * An Epoch receiver guarantees that only one {@link EventReceiver} can listen to each
      * "partition + consumer group" combination.
      *
      * @param epoch The Epoch value for this receiver.
@@ -91,7 +91,7 @@ public class ReceiverOptions {
     }
 
     /**
-     * Sets whether or not the {@link EventHubReceiver#partitionInformation()} is updated when the receiver reads
+     * Sets whether or not the {@link EventReceiver#partitionInformation()} is updated when the receiver reads
      * events.
      *
      * @param keepUpdated {@code true} if the partition information should be kept up-to-date as events are received;
@@ -142,7 +142,7 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets whether or not the {@link EventHubReceiver#partitionInformation()} is updated when the receiver reads
+     * Gets whether or not the {@link EventReceiver#partitionInformation()} is updated when the receiver reads
      * events.
      *
      * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,

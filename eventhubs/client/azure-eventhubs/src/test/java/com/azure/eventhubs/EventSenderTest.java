@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubSenderTest {
+public class EventSenderTest {
     private final String[] partitions = new String[]{
         "Partition-A",
         "Partition-B",
@@ -35,7 +35,7 @@ public class EventHubSenderTest {
             return Flux.just(data);
         });
 
-        EventHubSender sender = new EventHubSender(maxMessageSize);
+        EventSender sender = new EventSender(maxMessageSize);
 
         StepVerifier.create(sender.send(map))
             .verifyComplete();

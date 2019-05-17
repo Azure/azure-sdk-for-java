@@ -28,12 +28,12 @@ import java.util.stream.Collector;
  *
  * @see EventHubClient#createSender()
  */
-public class EventHubSender implements AutoCloseable {
+public class EventSender implements AutoCloseable {
     private static final String EMPTY_PARTITION_KEY = "";
     private static final Duration WINDOW_DURATION = Duration.ofMillis(1000);
     private static final int WINDOW_SIZE = 100;
 
-    private final ServiceLogger logger = new ServiceLogger(EventHubSender.class);
+    private final ServiceLogger logger = new ServiceLogger(EventSender.class);
     private final int maxMessageSize;
 
     //TODO (conniey): Remove this after I verify it all works.
@@ -41,9 +41,9 @@ public class EventHubSender implements AutoCloseable {
     private final AtomicInteger totalEvents = new AtomicInteger(0);
 
     /**
-     * Creates a new instance of the EventHubSender.
+     * Creates a new instance of the EventSender.
      */
-    EventHubSender() {
+    EventSender() {
         this(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
     }
 
@@ -52,7 +52,7 @@ public class EventHubSender implements AutoCloseable {
      *
      * @param maxMessageSize Message size for each batch.
      */
-    EventHubSender(int maxMessageSize) {
+    EventSender(int maxMessageSize) {
         this.maxMessageSize = maxMessageSize;
     }
 
