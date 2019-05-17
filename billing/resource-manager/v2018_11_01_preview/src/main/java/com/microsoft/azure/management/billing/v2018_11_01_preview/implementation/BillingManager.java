@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountsValidateAddress;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
@@ -45,6 +46,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private BillingAccounts billingAccounts;
+    private BillingAccountsValidateAddress billingAccountsValidateAddress;
     private AvailableBalances availableBalances;
     private PaymentMethods paymentMethods;
     private BillingProfiles billingProfiles;
@@ -120,6 +122,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingAccounts = new BillingAccountsImpl(this);
         }
         return this.billingAccounts;
+    }
+
+    /**
+     * @return Entry point to manage BillingAccountsValidateAddress.
+     */
+    public BillingAccountsValidateAddress billingAccountsValidateAddress() {
+        if (this.billingAccountsValidateAddress == null) {
+            this.billingAccountsValidateAddress = new BillingAccountsValidateAddressImpl(this);
+        }
+        return this.billingAccountsValidateAddress;
     }
 
     /**
