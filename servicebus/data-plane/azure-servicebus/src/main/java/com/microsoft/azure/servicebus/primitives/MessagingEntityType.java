@@ -12,13 +12,11 @@ public enum MessagingEntityType {
     FILTER(3);
 
     private int enumValue;
-    MessagingEntityType(int enumValue)
-    {
+    MessagingEntityType(int enumValue) {
         this.enumValue = enumValue;
     }
 
-    public int getIntValue()
-    {
+    public int getIntValue() {
         return this.enumValue;
     }
 }
