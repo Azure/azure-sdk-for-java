@@ -13,7 +13,6 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Collections;
@@ -47,8 +46,7 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
  * types) and Data section is not supported.
  * </p>
  */
-public class EventData implements Serializable, Comparable<EventData> {
-    private static final long serialVersionUID = -5631628195600014255L;
+public class EventData implements Comparable<EventData> {
     private static final int BODY_DATA_NULL = -1;
 
     private final Map<String, Object> properties = new HashMap<>();
@@ -301,7 +299,7 @@ public class EventData implements Serializable, Comparable<EventData> {
     /**
      * A collection of properties populated by Azure Event Hubs service.
      */
-    public class SystemProperties extends HashMap<String, Object> {
+    public static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
         SystemProperties(final Map<String, Object> map) {

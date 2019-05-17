@@ -6,7 +6,6 @@ package com.azure.eventhubs;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.AmqpConstants;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Locale;
 
@@ -17,8 +16,7 @@ import static com.azure.eventhubs.implementation.ClientConstants.START_OF_STREAM
  * Defines a position of an {@link EventData} in the event hub partition.
  * The position can be an Offset, Sequence Number, or EnqueuedTime.
  */
-public final class EventPosition implements Serializable {
-    private static final long serialVersionUID = 7304813338251422629L;
+public final class EventPosition {
 
     private final ServiceLogger logger = new ServiceLogger(EventPosition.class);
     private final String offset;
