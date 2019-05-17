@@ -11,7 +11,10 @@ import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.transaction.*;
+import org.apache.qpid.proton.amqp.transaction.Coordinator;
+import org.apache.qpid.proton.amqp.transaction.Declare;
+import org.apache.qpid.proton.amqp.transaction.Declared;
+import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.amqp.transport.Target;
 import org.apache.qpid.proton.message.Message;
@@ -32,7 +35,7 @@ class Controller {
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
 
-    public Controller (URI namespaceEndpointURI, MessagingFactory factory, ClientSettings clientSettings) {
+    Controller(URI namespaceEndpointURI, MessagingFactory factory, ClientSettings clientSettings) {
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.messagingFactory = factory;
         this.clientSettings = clientSettings;

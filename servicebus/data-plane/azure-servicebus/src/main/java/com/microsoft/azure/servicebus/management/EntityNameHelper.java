@@ -7,14 +7,14 @@ package com.microsoft.azure.servicebus.management;
  * This class can be used to format the path for different Service Bus entity types.
  */
 public class EntityNameHelper {
-    private static final String pathDelimiter = "/";
-    private static final String subscriptionsSubPath = "Subscriptions";
-    private static final String rulesSubPath = "Rules";
-    private static final String subQueuePrefix = "$";
-    private static final String deadLetterQueueSuffix = "DeadLetterQueue";
-    private static final String deadLetterQueueName = subQueuePrefix + deadLetterQueueSuffix;
-    private static final String transfer = "Transfer";
-    private static final String transferDeadLetterQueueName = subQueuePrefix + transfer + pathDelimiter + deadLetterQueueName;
+    private static final String PATH_DELIMITER = "/";
+    private static final String SUBSCRIPTIONS_SUB_PATH = "Subscriptions";
+    private static final String RULES_SUB_PATH = "Rules";
+    private static final String SUB_QUEUE_PREFIX = "$";
+    private static final String DEAD_LETTER_QUEUE_SUFFIX = "DeadLetterQueue";
+    private static final String DEAD_LETTER_QUEUE_NAME = SUB_QUEUE_PREFIX + DEAD_LETTER_QUEUE_SUFFIX;
+    private static final String TRANSFER = "Transfer";
+    private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME = SUB_QUEUE_PREFIX + TRANSFER + PATH_DELIMITER + DEAD_LETTER_QUEUE_NAME;
 
     /**
      * Formats the dead letter path for either a queue, or a subscription.
@@ -22,7 +22,7 @@ public class EntityNameHelper {
      * @return - The path as a String of the dead letter entity.
      */
     public static String formatDeadLetterPath(String entityPath) {
-        return formatSubQueuePath(entityPath, deadLetterQueueName);
+        return formatSubQueuePath(entityPath, DEAD_LETTER_QUEUE_NAME);
     }
 
     /**
@@ -32,7 +32,7 @@ public class EntityNameHelper {
      * @return The path of the subscription.
      */
     public static String formatSubscriptionPath(String topicPath, String subscriptionName) {
-        return String.join(pathDelimiter, topicPath, subscriptionsSubPath, subscriptionName);
+        return String.join(PATH_DELIMITER, topicPath, SUBSCRIPTIONS_SUB_PATH, subscriptionName);
     }
 
     /**
@@ -43,11 +43,11 @@ public class EntityNameHelper {
      * @return The path of the rule
      */
     public static String formatRulePath(String topicPath, String subscriptionName, String ruleName) {
-        return String.join(pathDelimiter,
+        return String.join(PATH_DELIMITER,
                 topicPath,
-                subscriptionsSubPath,
+                SUBSCRIPTIONS_SUB_PATH,
                 subscriptionName,
-                rulesSubPath,
+                RULES_SUB_PATH,
                 ruleName);
     }
 
@@ -57,11 +57,11 @@ public class EntityNameHelper {
      * @return The path of the transfer dead letter sub-queue for the entity
      */
     public static String formatTransferDeadLetterPath(String entityPath) {
-        return String.join(pathDelimiter, entityPath, transferDeadLetterQueueName);
+        return String.join(PATH_DELIMITER, entityPath, TRANSFER_DEAD_LETTER_QUEUE_NAME);
     }
 
     static String formatSubQueuePath(String entityPath, String subQueueName) {
-        return entityPath + EntityNameHelper.pathDelimiter + subQueueName;
+        return entityPath + EntityNameHelper.PATH_DELIMITER + subQueueName;
     }
 
     static void checkValidQueueName(String queueName) {
@@ -90,18 +90,18 @@ public class EntityNameHelper {
             throw new IllegalArgumentException("Entity path " + entityName + " exceeds the " + maxEntityNameLength + " character limit");
         }
 
-        if (tempName.startsWith(pathDelimiter) || tempName.endsWith(pathDelimiter)) {
+        if (tempName.startsWith(PATH_DELIMITER) || tempName.endsWith(PATH_DELIMITER)) {
             throw new IllegalArgumentException("The entity name cannot contain '/' as prefix or suffix.");
         }
 
-        if (!allowSeparator && tempName.contains(pathDelimiter)) {
-            throw new IllegalArgumentException("The entity name contains an invalid character '" + pathDelimiter + "'");
+        if (!allowSeparator && tempName.contains(PATH_DELIMITER)) {
+            throw new IllegalArgumentException("The entity name contains an invalid character '" + PATH_DELIMITER + "'");
         }
 
         for (char key : ManagementClientConstants.InvalidEntityPathCharacters) {
             if (entityName.indexOf(key) >= 0) {
-                throw new IllegalArgumentException(entityName + " contains character '" + key + "' which is not allowed" +
-                        "because it is reserved in the Uri scheme.");
+                throw new IllegalArgumentException(entityName + " contains character '" + key + "' which is not allowed"
+                    + "because it is reserved in the Uri scheme.");
             }
         }
     }
