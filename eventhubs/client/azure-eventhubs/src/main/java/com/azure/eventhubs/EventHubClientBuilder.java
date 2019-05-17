@@ -102,6 +102,6 @@ public class EventHubClientBuilder {
     }
 
     //TODO (conniey): Remove placeholder when the client is updated.
-    public class ProxyConfiguration {
+    public static class ProxyConfiguration {
     }
 }
