@@ -13,103 +13,77 @@ import java.util.concurrent.ExecutionException;
  *  Internal-class
  *  @since 1.0
  */
-public abstract class ClientEntity
-{
+public abstract class ClientEntity {
     private final String clientId;
     private final Object syncClose;
 
     private boolean isClosing;
     private boolean isClosed;
 
-    protected ClientEntity(final String clientId)
-    {
+    protected ClientEntity(final String clientId) {
         this.clientId = clientId;
         this.syncClose = new Object();
     }
 
     protected abstract CompletableFuture<Void> onClose();
 
-    public String getClientId()
-    {
+    public String getClientId() {
         return this.clientId;
     }
 
-    protected boolean getIsClosed()
-    {
-        synchronized (this.syncClose)
-        {
+    protected boolean getIsClosed() {
+        synchronized (this.syncClose) {
             return this.isClosed;
         }
     }
 
-    protected boolean getIsClosingOrClosed()
-    {
-
-        synchronized (this.syncClose)
-        {
+    protected boolean getIsClosingOrClosed() {
+        synchronized (this.syncClose) {
             return this.isClosing || this.isClosed;
         }
     }
 
     // used to force close when entity is faulted
-    protected final void setClosed()
-    {
-        synchronized (this.syncClose)
-        {
+    protected final void setClosed() {
+        synchronized (this.syncClose) {
             this.isClosed = true;
         }
     }
 
-    public final CompletableFuture<Void> closeAsync()
-    {
-        if(this.getIsClosingOrClosed())
-        {
+    public final CompletableFuture<Void> closeAsync() {
+        if (this.getIsClosingOrClosed()) {
             return CompletableFuture.completedFuture(null);
         }
 
-        synchronized (this.syncClose)
-        {
+        synchronized (this.syncClose) {
             this.isClosing = true;
         }
 
-        return this.onClose().thenRunAsync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                synchronized (ClientEntity.this.syncClose)
-                {
-                    ClientEntity.this.isClosing = false;
-                    ClientEntity.this.isClosed = true;
-                }
-            }}, MessagingFactory.INTERNAL_THREAD_POOL);
+        return this.onClose().thenRunAsync(() -> {
+            synchronized (ClientEntity.this.syncClose) {
+                ClientEntity.this.isClosing = false;
+                ClientEntity.this.isClosed = true;
+            }
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
-    public final void close() throws ServiceBusException
-    {
-        try
-        {
+    public final void close() throws ServiceBusException {
+        try {
             this.closeAsync().get();
-        }
-        catch (InterruptedException|ExecutionException exception)
-        {
-            if (exception instanceof InterruptedException)
-            {
+        } catch (InterruptedException | ExecutionException exception) {
+            if (exception instanceof InterruptedException) {
                 // Re-assert the thread's interrupted status
                 Thread.currentThread().interrupt();
             }
 
             Throwable throwable = exception.getCause();
-            if (throwable != null)
-            {
-                if (throwable instanceof RuntimeException)
-                {
-                    throw (RuntimeException)throwable;
+            if (throwable != null) {
+                if (throwable instanceof RuntimeException) {
+                    throw (RuntimeException) throwable;
                 }
 
-                if (throwable instanceof ServiceBusException)
-                {
-                    throw (ServiceBusException)throwable;
+                if (throwable instanceof ServiceBusException) {
+                    throw (ServiceBusException) throwable;
                 }
 
                 throw new ServiceBusException(true, throwable);
@@ -117,20 +91,16 @@ public abstract class ClientEntity
         }
     }
 
-    protected final void throwIfClosed(Throwable cause)
-    {
-        if (this.getIsClosingOrClosed())
-        {
+    protected final void throwIfClosed(Throwable cause) {
+        if (this.getIsClosingOrClosed()) {
             throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is closed.", this.getClass().getName()), cause);
         }
     }
 
     @Override
-    protected void finalize()
-    {
+    protected void finalize() {
         try {
-            if(!this.isClosed)
-            {
+            if (!this.isClosed) {
                 this.close();
             }
 
