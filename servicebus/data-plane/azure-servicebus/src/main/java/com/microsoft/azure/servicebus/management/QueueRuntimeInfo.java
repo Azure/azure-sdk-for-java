@@ -11,8 +11,7 @@ public class QueueRuntimeInfo extends EntityRuntimeInfo {
     private long messageCount;
     private long sizeInBytes;
 
-    QueueRuntimeInfo(String path)
-    {
+    QueueRuntimeInfo(String path) {
         this.path = path;
     }
 
