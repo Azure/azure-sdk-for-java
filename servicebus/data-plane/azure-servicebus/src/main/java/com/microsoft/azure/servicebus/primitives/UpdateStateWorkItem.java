@@ -11,12 +11,12 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 class UpdateStateWorkItem extends WorkItem<Void> {
     final DeliveryState deliveryState;
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, Duration timeout) {
+    UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, Duration timeout) {
         super(completableFuture, new TimeoutTracker(timeout, true));
         this.deliveryState = expectedOutcome;
     }
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, final TimeoutTracker tracker) {
+    UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, final TimeoutTracker tracker) {
         super(completableFuture, tracker);
         this.deliveryState = expectedOutcome;
     }

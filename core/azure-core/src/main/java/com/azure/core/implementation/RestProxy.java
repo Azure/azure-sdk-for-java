@@ -223,7 +223,7 @@ public class RestProxy implements InvocationHandler {
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
-            request.headers().set("Content-Length", "0");
+            request.headers().put("Content-Length", "0");
         } else {
             String contentType = methodParser.bodyContentType();
             if (contentType == null || contentType.isEmpty()) {
@@ -234,7 +234,7 @@ public class RestProxy implements InvocationHandler {
                 }
             }
 
-            request.headers().set("Content-Type", contentType);
+            request.headers().put("Content-Type", contentType);
 
             boolean isJson = false;
             final String[] contentTypeParts = contentType.split(";");

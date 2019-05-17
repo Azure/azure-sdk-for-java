@@ -170,7 +170,7 @@ public class MockHttpResponse extends HttpResponse {
      * @return The updated response object.
      */
     public MockHttpResponse addHeader(String name, String value) {
-        headers.set(name, value);
+        headers.put(name, value);
         return this;
     }
 }
