@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
 import com.azure.core.credentials.ServiceClientCredentials;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
