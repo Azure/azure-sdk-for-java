@@ -13,8 +13,8 @@ import java.util.List;
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link HttpPipeline},
  * calling {@link HttpPipelineBuilder#build() build} constructs an instance of the pipeline.
  *
- * <p>A pipeline uses a HttpClient to send requests, if no client is configured a default client will be used.
- * A pipeline may also contain a list of policies that are applied to each service request that is sent.</p>
+ * <p>A pipeline is configured with a HttpClient that sends the request, if no client is set a default is used.
+ * A pipeline may be configured with a list of policies that are applied to each request.</p>
  *
  * <p><strong>Code Samples</strong></p>
  *
@@ -60,7 +60,7 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Sets the HttpClient for the pipeline instance.
+     * Sets the HttpClient that the pipeline will use to send requests.
      *
      * @param httpClient The HttpClient the pipeline will use when sending requests.
      * @return The updated HttpPipelineBuilder object.
@@ -71,7 +71,8 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Adds a {@link HttpPipelinePolicy} to the list of policies that the pipeline will use.
+     * Adds {@link HttpPipelinePolicy policies} to the set of policies that the pipeline will use
+     * when sending requests.
      *
      * @param policies Policies to add to the policy set.
      * @return The updated HttpPipelineBuilder object.
