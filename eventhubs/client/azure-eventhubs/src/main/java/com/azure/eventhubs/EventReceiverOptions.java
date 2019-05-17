@@ -4,8 +4,10 @@
 package com.azure.eventhubs;
 
 import com.azure.core.http.policy.RetryPolicy;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,6 +25,7 @@ public class EventReceiverOptions {
     private RetryPolicy retryPolicy;
     private boolean keepUpdated;
     private Duration receiveTimeout;
+    private Scheduler scheduler;
 
     /**
      * Creates a new instance with the consumer group set to {@link #DEFAULT_CONSUMER_GROUP_NAME}.
@@ -104,11 +107,24 @@ public class EventReceiverOptions {
     }
 
     /**
+     * Sets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
+     * associated {@link EventHubClient} is used.
+     *
+     * @param scheduler The scheduler for receiving events.
+     * @return The updated EventHubClientBuilder object.
+     */
+    public EventReceiverOptions scheduler(Scheduler scheduler) {
+        Objects.requireNonNull(scheduler);
+        this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
      * Gets the name of the receiver.
      *
      * @return The name of the receiver.
      */
-    public String name() {
+    String name() {
         return name;
     }
 
@@ -117,7 +133,7 @@ public class EventReceiverOptions {
      *
      * @return The name of the consumer group.
      */
-    public String consumerGroup() {
+    String consumerGroup() {
         return consumerGroup;
     }
 
@@ -127,7 +143,7 @@ public class EventReceiverOptions {
      *
      * @return The retry policy when receiving events.
      */
-    public RetryPolicy retryPolicy() {
+    RetryPolicy retryPolicy() {
         return retryPolicy;
     }
 
@@ -137,7 +153,7 @@ public class EventReceiverOptions {
      *
      * @return An optional epoch for this receiver.
      */
-    public Optional<Long> epoch() {
+    Optional<Long> epoch() {
         return Optional.ofNullable(epoch);
     }
 
@@ -148,7 +164,7 @@ public class EventReceiverOptions {
      * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,
      * false.
      */
-    public boolean keepPartitionInformationUpdated() {
+    boolean keepPartitionInformationUpdated() {
         return this.keepUpdated;
     }
 
@@ -158,7 +174,17 @@ public class EventReceiverOptions {
      *
      * @return The timeout when receiving events.
      */
-    public Duration receiveTimeout() {
+    Duration receiveTimeout() {
         return this.receiveTimeout;
+    }
+
+    /**
+     * Gets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
+     * associated {@link EventHubClient} is used.
+     *
+     * @return The scheduler for receiving events.
+     */
+    Scheduler scheduler() {
+        return scheduler;
     }
 }

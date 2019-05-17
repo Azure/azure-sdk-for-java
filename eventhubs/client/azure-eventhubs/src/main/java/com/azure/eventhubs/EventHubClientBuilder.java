@@ -4,9 +4,9 @@
 package com.azure.eventhubs;
 
 import com.azure.core.http.policy.RetryPolicy;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Builder to create an {@link EventHubClient}.
@@ -15,7 +15,7 @@ public class EventHubClientBuilder {
     private ConnectionStringBuilder credentials;
     private TransportType transport;
     private Duration duration;
-    private ScheduledExecutorService executor;
+    private Scheduler scheduler;
     private ProxyConfiguration proxyConfiguration;
     private RetryPolicy retryPolicy;
 
@@ -61,13 +61,14 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the scheduler for EventHubClient.
+     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
+     * specified, an elastic pool is used.
      *
-     * @param executor The task scheduler.
+     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder scheduler(ScheduledExecutorService executor) {
-        this.executor = executor;
+    public EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
         return this;
     }
 
@@ -95,6 +96,7 @@ public class EventHubClientBuilder {
 
     /**
      * Creates a new {@link EventHubClient} based on the configuration set in this builder.
+     *
      * @return A new {@link EventHubClient} instance.
      */
     public EventHubClient build() {
