@@ -96,6 +96,9 @@ public class SubscriptionDescription {
      * @param lockDuration - The duration of a peek lock. Max value is 5 minutes.
      */
     public void setLockDuration(Duration lockDuration) {
+        if (lockDuration == null) {
+            throw new IllegalArgumentException("Value cannot be null");
+        }
         this.lockDuration = lockDuration;
         if (this.lockDuration.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.lockDuration = ManagementClientConstants.MAX_DURATION;
@@ -134,9 +137,9 @@ public class SubscriptionDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null
-                && (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
-                    || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
+        if (defaultMessageTimeToLive == null
+            || (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+                || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MAX_ALLOWED_TTL,
@@ -159,8 +162,8 @@ public class SubscriptionDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null
-            && autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
+        if (autoDeleteOnIdle == null
+            || autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));

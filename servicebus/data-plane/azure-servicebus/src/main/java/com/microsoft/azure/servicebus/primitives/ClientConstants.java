@@ -3,6 +3,10 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.UUID;
@@ -190,12 +194,22 @@ public final class ClientConstants {
     private static String getClientVersion() {
         String clientVersion;
         final Properties properties = new Properties();
+        InputStream clientPropInputStream = null;
         try {
-            properties.load(ClientConstants.class.getResourceAsStream("/client.properties"));
+            clientPropInputStream = ClientConstants.class.getResourceAsStream("/client.properties");
+            properties.load(clientPropInputStream);
             clientVersion = properties.getProperty("client.version");
         } catch (Exception e) {
             clientVersion = "NOTFOUND";
             TRACE_LOGGER.error("Exception while retrieving client version. Exception: ", e.toString());
+        } finally {
+            if (clientPropInputStream != null) {
+                try {
+                    clientPropInputStream.close();
+                } catch (IOException e) {
+                    TRACE_LOGGER.error("Client Properties InputStream doesn't close properly. Exception: ", e.toString());
+                }
+            }
         }
 
         return clientVersion;
