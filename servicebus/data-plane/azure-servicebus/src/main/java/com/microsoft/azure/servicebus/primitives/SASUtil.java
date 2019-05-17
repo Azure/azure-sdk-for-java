@@ -29,37 +29,32 @@ import org.slf4j.MarkerFactory;
 public class SASUtil {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SASUtil.class);
     private static final String SAS_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
-    private static final String HMACAlgorithm = "HMACSHA256";
-    private static final Base64.Encoder base64Encoder = Base64.getEncoder();
+    private static final String HMAC_ALGORITHM = "HMACSHA256";
+    private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();
     
-    public static String generateSharedAccessSignatureToken(String sasKeyName, String sasKey, String resourceURI, int validityInSeconds) throws InvalidKeyException
-    {
-        if(StringUtil.isNullOrWhiteSpace(sasKey))
-        {
+    public static String generateSharedAccessSignatureToken(String sasKeyName, String sasKey, String resourceURI, int validityInSeconds) throws InvalidKeyException {
+        if (StringUtil.isNullOrWhiteSpace(sasKey)) {
             throw new IllegalArgumentException("Invalid SAS key");
         }
         
-        if(StringUtil.isNullOrWhiteSpace(resourceURI))
-        {
+        if (StringUtil.isNullOrWhiteSpace(resourceURI)) {
             throw new IllegalArgumentException("Invalid resourceURI");
         }
         
-        if(validityInSeconds <= 0)
-        {
+        if (validityInSeconds <= 0) {
             throw new IllegalArgumentException("validityInSeconds should be positive");
         }
         
         String validUntil = String.valueOf(Instant.now().getEpochSecond() + validityInSeconds);
-        try
-        {
+        try {
             String utf8EncodingName = StandardCharsets.UTF_8.name();
             String encodedResourceURI = URLEncoder.encode(resourceURI, utf8EncodingName);
             String secretToSign = encodedResourceURI + "\n" + validUntil;
-            Mac hmac = Mac.getInstance(HMACAlgorithm);
-            SecretKeySpec secretKey = new SecretKeySpec(StringUtil.convertStringToBytes(sasKey), HMACAlgorithm);
+            Mac hmac = Mac.getInstance(HMAC_ALGORITHM);
+            SecretKeySpec secretKey = new SecretKeySpec(StringUtil.convertStringToBytes(sasKey), HMAC_ALGORITHM);
             hmac.init(secretKey);
             byte[] signatureBytes = hmac.doFinal(StringUtil.convertStringToBytes(secretToSign));
-            String signature = base64Encoder.encodeToString(signatureBytes);
+            String signature = BASE64_ENCODER.encodeToString(signatureBytes);
             TRACE_LOGGER.debug("Generated SAS token for resource: {} with sas key name : {}", resourceURI, sasKeyName);
             return String.format(Locale.US, SAS_FORMAT,
                     encodedResourceURI,
