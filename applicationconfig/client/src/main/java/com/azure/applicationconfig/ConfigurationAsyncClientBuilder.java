@@ -79,10 +79,10 @@ public final class ConfigurationAsyncClientBuilder {
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
-        headers = new HttpHeaders();
-        headers.set(ECHO_REQUEST_ID_HEADER, "true");
-        headers.set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE);
-        headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     /**
@@ -128,9 +128,10 @@ public final class ConfigurationAsyncClientBuilder {
 
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
 
         return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
     }
