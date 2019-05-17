@@ -721,11 +721,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page, Context context) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink, context));
+        return ImplUtils.extractAndFetch(page, context, this::listSettings);
     }
 
     /*

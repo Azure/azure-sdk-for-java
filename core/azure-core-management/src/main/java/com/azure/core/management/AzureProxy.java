@@ -200,7 +200,10 @@ public final class AzureProxy extends RestProxy {
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(policies);
+
+        return HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     /**
