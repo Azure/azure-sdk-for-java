@@ -17,14 +17,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * A {@link EventReceiver#receive()} is tied to a ConsumerGroup + Event Hubs PartitionId combination.
  *
  * <ul>
- *      <li>If the {@link EventReceiver} is created where {@link ReceiverOptions#epoch()} has a value, then Event
+ *      <li>If the {@link EventReceiver} is created where {@link EventReceiverOptions#epoch()} has a value, then Event
  *      Hubs service will guarantee only 1 active receiver exists per ConsumerGroup + PartitionId combo.  This is the
  *      recommended approach to create a {@link EventReceiver}.</li>
  *      <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.</li>
  * </ul>
  *
  * @see EventHubClient#createReceiver(String, EventPosition)
- * @see EventHubClient#createReceiver(String, EventPosition, ReceiverOptions)
+ * @see EventHubClient#createReceiver(String, EventPosition, EventReceiverOptions)
  */
 public class EventReceiver implements AutoCloseable {
 
@@ -33,7 +33,7 @@ public class EventReceiver implements AutoCloseable {
     /**
      * Gets the most recent information about a partition by the current receiver.
      *
-     * @return If {@link ReceiverOptions}
+     * @return If {@link EventReceiverOptions}
      */
     public PartitionInformation partitionInformation() {
         return partitionInformation;

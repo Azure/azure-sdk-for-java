@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * Options when receiving events from Event Hubs.
  */
-public class ReceiverOptions {
+public class EventReceiverOptions {
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -27,7 +27,7 @@ public class ReceiverOptions {
     /**
      * Creates a new instance with the consumer group set to {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      */
-    public ReceiverOptions() {
+    public EventReceiverOptions() {
         consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
     }
 
@@ -35,9 +35,9 @@ public class ReceiverOptions {
      * Sets the name of the receiver.
      *
      * @param name The receiver name.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions name(String name) {
+    public EventReceiverOptions name(String name) {
         this.name = name;
         return this;
     }
@@ -46,9 +46,9 @@ public class ReceiverOptions {
      * Sets the name of the consumer group.
      *
      * @param consumerGroup The name of the consumer group.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions consumerGroup(String consumerGroup) {
+    public EventReceiverOptions consumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
         return this;
     }
@@ -59,9 +59,9 @@ public class ReceiverOptions {
      * "partition + consumer group" combination.
      *
      * @param epoch The Epoch value for this receiver.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions epoch(long epoch) {
+    public EventReceiverOptions epoch(long epoch) {
         this.epoch = epoch;
         return this;
     }
@@ -71,9 +71,9 @@ public class ReceiverOptions {
      * configured on the associated {@link EventHubClient} is used.
      *
      * @param retryPolicy The retry policy to use when receiving events.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
+    public EventReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -83,9 +83,9 @@ public class ReceiverOptions {
      * {@link EventHubClient} is used.
      *
      * @param duration The timeout when receiving events.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions receiveTimeout(Duration duration) {
+    public EventReceiverOptions receiveTimeout(Duration duration) {
         this.receiveTimeout = duration;
         return this;
     }
@@ -96,9 +96,9 @@ public class ReceiverOptions {
      *
      * @param keepUpdated {@code true} if the partition information should be kept up-to-date as events are received;
      * otherwise, false.
-     * @return The updated ReceiverOptions object.
+     * @return The updated EventReceiverOptions object.
      */
-    public ReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
+    public EventReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
         this.keepUpdated = keepUpdated;
         return this;
     }

@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * Holds information about Event Hubs which can come handy while performing data-plane operations
  * like {@link EventHubClient#createReceiver(String, EventPosition)} and
- * {@link EventHubClient#createReceiver(ReceiverOptions)}.
+ * {@link EventHubClient#createReceiver(EventReceiverOptions)}.
  */
 public final class EventHubInformation {
     private final String path;
