@@ -8,6 +8,7 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.configuration.Configuration;
 import com.azure.core.implementation.configuration.ConfigurationManager;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
@@ -40,6 +41,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
+    private static final String AZCONFIG_CONNECTION_STRING = "AZCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
@@ -68,7 +70,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.getConfiguration().get("AZCONFIG_CONNECTION_STRING");
+                : ConfigurationManager.getConfiguration().getOrLoad(AZCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");

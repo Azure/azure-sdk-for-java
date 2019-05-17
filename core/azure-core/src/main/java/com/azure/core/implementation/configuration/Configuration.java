@@ -13,12 +13,15 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  */
-public final class Configuration {
+public class Configuration {
 
     /**
-     * Empty Configuration object used to opt out of using global configurations when constructing clients.
+     * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
      */
-    public static final Configuration NONE = new Configuration();
+    public static final Configuration NONE = new NoopConfiguration();
+
+    private static final String LOADED_FROM_RUNTIME = "Found configuration {} in the runtime parameters.";
+    private static final String LOADED_FROM_ENVIRONMENT = "Found configuration {} in the environment variables.";
 
     private final ServiceLogger logger = new ServiceLogger(Configuration.class);
 
@@ -38,7 +41,7 @@ public final class Configuration {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return getOrLoad(name);
+        return configurations.get(name);
     }
 
     /**
@@ -52,7 +55,7 @@ public final class Configuration {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertOrDefault(getOrLoad(name), defaultValue);
+        return convertOrDefault(get(name), defaultValue);
     }
 
     /**
@@ -69,17 +72,59 @@ public final class Configuration {
             return null;
         }
 
-        return converter.apply(getOrLoad(name));
+        return converter.apply(value);
     }
 
     /**
-     * Adds the configuration.
+     * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
+     * attempts to load it from the runtime parameters then the environment variables.
+     *
+     * If no configuration is found null is returned.
+     *
+     * @param name Name of the configuration.
+     * @return The configuration value from either the configuration store, runtime parameters, or environment
+     * variable, in that order, if found, otherwise null.
+     */
+    public String getOrLoad(String name) {
+        if (configurations.containsKey(name)) {
+            return configurations.get(name);
+        }
+
+        return load(name).get(name);
+    }
+
+    /**
+     * Attempts to load the configuration from the environment.
+     *
+     * The runtime parameters are checked first followed by the environment variables. If the configuration is found
+     * the value is loaded into the configuration store and if a configuration with the same name already exists this
+     * will update it to the loaded value.
+     *
+     * @param name Name of the configuration.
+     * @return the updated Configuration object.
+     */
+    public Configuration load(String name) {
+        if (loadFrom(name, System::getProperty, LOADED_FROM_RUNTIME)) {
+            return this;
+        } else if (loadFrom(name, System::getenv, LOADED_FROM_ENVIRONMENT)) {
+            return this;
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * Adds a configuration with the given value.
+     *
+     * If a configuration with the same name already exists this will update it to the passed value.
      *
      * @param name Name of the configuration.
      * @param value Value of the configuration.
+     * @return the updated Configuration object.
      */
-    public void put(String name, String value) {
+    public Configuration put(String name, String value) {
         configurations.put(name, value);
+        return this;
     }
 
     /**
@@ -151,34 +196,67 @@ public final class Configuration {
     }
 
     /**
-     * First attempts to retrieve the configuration from the global configuration store.
-     *
-     * If not found in the store then the runtime parameters and environment variables are checked for the configuration,
-     * if found the value is loaded into the store.
+     * Attempts to load the configuration using the passed loader. If the configuration is found it will be added to
+     * the configuration store and a message will be logged.
      *
      * @param name Name of the configuration.
-     * @return Value of the configuration from either the global store, runtime parameters, or environment variables,
-     * check in that order. If the configuration value is not found then null.
+     * @param loader Loading function to apply.
+     * @param logMessage Message to log if the configuration is found.
+     * @return True if the configuration was loaded, false otherwise.
      */
-    private String getOrLoad(String name) {
-        if (configurations.containsKey(name)) {
-            return configurations.get(name);
-        }
-
-        String value = System.getProperty(name);
+    private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
+        String value = loader.apply(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
             configurations.put(name, value);
-            logger.asInformational().log("Found configuration {} in the runtime parameters.", name);
-            return value;
+            logger.asInformational().log(logMessage, name);
+            return true;
         }
 
-        value = System.getenv(name);
-        if (!ImplUtils.isNullOrEmpty(value)) {
-            configurations.put(name, value);
-            logger.asInformational().log("Found configuration {} in the environment variables.", name);
-            return value;
+        return false;
+    }
+
+    /*
+     * Noop Configuration used to opt out of using global configurations when constructing client libraries.
+     */
+    private static class NoopConfiguration extends Configuration {
+        @Override
+        public String get(String name) {
+            return null;
         }
 
-        return null;
+        @Override
+        public <T> T get(String name, T defaultValue) {
+            return null;
+        }
+
+        @Override
+        public <T> T get(String name, Function<String, T> converter) {
+            return null;
+        }
+
+        @Override
+        public String getOrLoad(String name) {
+            return null;
+        }
+
+        @Override
+        public Configuration load(String name) {
+            return this;
+        }
+
+        @Override
+        public Configuration put(String name, String value) {
+            return this;
+        }
+
+        @Override
+        public String remove(String name) {
+            return null;
+        }
+
+        @Override
+        public boolean contains(String name) {
+            return false;
+        }
     }
 }

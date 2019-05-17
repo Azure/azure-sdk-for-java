@@ -50,4 +50,17 @@ public final class BaseConfigurations {
      * Whether tracing happens.
      */
     public static final String AZURE_TRACING_ENABLED = "AZURE_TRACING_ENABLED";
+
+    /*
+     * Configurations that are loaded into the global configuration store when the application starts.
+     */
+    static final String[] DEFAULT_CONFIGURATIONS = {
+        HTTP_PROXY,
+        HTTPS_PROXY,
+        NO_PROXY,
+        AZURE_USER_AGENT,
+        AZURE_LOG_LEVEL,
+        AZURE_LOGGING_ENABLED,
+        AZURE_TRACING_ENABLED
+    };
 }

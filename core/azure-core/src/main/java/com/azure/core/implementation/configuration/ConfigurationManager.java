@@ -7,10 +7,17 @@ package com.azure.core.implementation.configuration;
  * Manages the global configuration store.
  */
 public final class ConfigurationManager {
-    private static Configuration configuration = new Configuration();
+    private static Configuration configuration;
+
+    static {
+        configuration = new Configuration();
+        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
+            configuration.load(config);
+        }
+    }
 
     /**
-     * @return a mutable clone of the global configuration store.
+     * @return the global configuration store.
      */
     public static Configuration getConfiguration() {
         return configuration;
