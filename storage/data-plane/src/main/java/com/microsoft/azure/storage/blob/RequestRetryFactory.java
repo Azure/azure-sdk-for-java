@@ -44,7 +44,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         return new RequestRetryPolicy(next, this.requestRetryOptions);
     }
 
-    private final class RequestRetryPolicy implements RequestPolicy {
+    private static final class RequestRetryPolicy implements RequestPolicy {
 
         private final RequestPolicy nextPolicy;
 
@@ -97,7 +97,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             logf("\n=====> Try=%d\n", attempt);
 
             // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
-            final boolean tryingPrimary = !considerSecondary || (attempt % 2 == 1);
+            final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
             // Select the correct host and delay.
             long delayMs;

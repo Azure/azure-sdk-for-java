@@ -850,7 +850,9 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        HttpPipeline pipeline = new HttpPipeline(httpClient);
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .build();
 
         return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }

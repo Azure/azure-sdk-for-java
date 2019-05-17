@@ -51,7 +51,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private int prefetchCount;
     private ExecutorService customCodeExecutor;
 
-    public MessageAndSessionPump(MessagingFactory factory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
+    MessageAndSessionPump(MessagingFactory factory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
         super(StringUtil.getShortRandomString());
         this.factory = factory;
         this.entityPath = entityPath;
@@ -89,8 +89,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
         this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.entityType, this.receiveMode);
         TRACE_LOGGER.info("Created MessageReceiver to entity '{}'", this.entityPath);
-        if(this.prefetchCount != UNSET_PREFETCH_COUNT)
-        {
+        if (this.prefetchCount != UNSET_PREFETCH_COUNT) {
             this.innerReceiver.setPrefetchCount(this.prefetchCount);
         }
         for (int i = 0; i < handlerOptions.getMaxConcurrentCalls(); i++) {
@@ -129,10 +128,8 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         }
     }
     
-    private static void assertNonNulls(Object handler, Object options, ExecutorService executorService)
-    {
-        if(handler == null || options == null || executorService == null)
-        {
+    private static void assertNonNulls(Object handler, Object options, ExecutorService executorService) {
+        if (handler == null || options == null || executorService == null) {
             throw new IllegalArgumentException("None of the arguments can be null.");
         }
     }
@@ -185,8 +182,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         }
                         
                         // Some clients are returning null from the call
-                        if(onMessageFuture == null)
-                        {
+                        if (onMessageFuture == null) {
                             onMessageFuture = COMPLETED_FUTURE;
                         }
 
@@ -215,13 +211,10 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                                 } else {
                                     // Abandon message
                                     dispositionPhase = ExceptionPhase.ABANDON;
-                                    if(this.messageHandlerOptions.isAutoComplete())
-                                    {
+                                    if (this.messageHandlerOptions.isAutoComplete()) {
                                         TRACE_LOGGER.debug("Abandoning message with sequence number '{}'", message.getSequenceNumber());
                                         updateDispositionFuture = this.innerReceiver.abandonAsync(message.getLockToken());
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         updateDispositionFuture = CompletableFuture.completedFuture(null);
                                     }
                                 }
@@ -275,8 +268,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                 } else {
                     // Received a session.. Now pump messages..
                     TRACE_LOGGER.debug("Accepted a session '{}' from entity '{}'", session.getSessionId(), this.entityPath);
-                    if(this.prefetchCount != UNSET_PREFETCH_COUNT)
-                    {
+                    if (this.prefetchCount != UNSET_PREFETCH_COUNT) {
                         try {
                             session.setPrefetchCount(this.prefetchCount);
                         } catch (ServiceBusException e) {
@@ -325,11 +317,12 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         sessionTracker.notifyMessageReceived();
                         // There is no need to renew message locks as session messages are locked for a day
                         ScheduledFuture<?> renewCancelTimer = Timer.schedule(() -> {
-                                    TRACE_LOGGER.warn("onMessage task timed out. Cancelling loop to renew lock on session '{}'", session.getSessionId());
-                                    sessionTracker.sessionRenewLockLoop.cancelLoop();
-                                },
-                                this.sessionHandlerOptions.getMaxAutoRenewDuration(),
-                                TimerType.OneTimeRun);
+                            TRACE_LOGGER.warn("onMessage task timed out. Cancelling loop to renew lock on session '{}'", session.getSessionId());
+                            sessionTracker.sessionRenewLockLoop.cancelLoop();
+                        },
+                            this.sessionHandlerOptions.getMaxAutoRenewDuration(),
+                            TimerType.OneTimeRun);
+
                         TRACE_LOGGER.debug("Invoking onMessage with message containing sequence number '{}'", message.getSequenceNumber());
                         CompletableFuture<Void> onMessageFuture;
                         try {
@@ -341,8 +334,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         }
 
                         // Some clients are returning null from the call
-                        if(onMessageFuture == null)
-                        {
+                        if (onMessageFuture == null) {
                             onMessageFuture = COMPLETED_FUTURE;
                         }
                         
@@ -368,13 +360,10 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                                 } else {
                                     // Abandon message
                                     dispositionPhase = ExceptionPhase.ABANDON;
-                                    if (this.sessionHandlerOptions.isAutoComplete())
-                                    {
+                                    if (this.sessionHandlerOptions.isAutoComplete()) {
                                         TRACE_LOGGER.debug("Abandoning message with sequence number '{}'", message.getSequenceNumber());
                                         updateDispositionFuture = session.abandonAsync(message.getLockToken());
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         updateDispositionFuture = CompletableFuture.completedFuture(null);
                                     }
                                 }
@@ -450,7 +439,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
         synchronized CompletableFuture<Boolean> shouldRetryOnNoMessageOrException() {
             if (this.retryFuture == null || this.retryFuture.isDone()) {
-                this.retryFuture = new CompletableFuture<Boolean>();
+                this.retryFuture = new CompletableFuture<>();
             }
             this.waitingRetryThreads++;
             if (this.waitingRetryThreads == this.numberReceivingThreads) {
@@ -459,23 +448,23 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
                 // close current session and accept another session
                 ScheduledFuture<?> renewCancelTimer = Timer.schedule(() -> {
-                            TRACE_LOGGER.warn("Closing session timed out. Cancelling loop to renew lock on session '{}'", this.session.getSessionId());
-                            SessionTracker.this.sessionRenewLockLoop.cancelLoop();
-                        },
-                        this.messageAndSessionPump.sessionHandlerOptions.getMaxAutoRenewDuration(),
-                        TimerType.OneTimeRun);
+                    TRACE_LOGGER.warn("Closing session timed out. Cancelling loop to renew lock on session '{}'", this.session.getSessionId());
+                    SessionTracker.this.sessionRenewLockLoop.cancelLoop();
+                },
+                    this.messageAndSessionPump.sessionHandlerOptions.getMaxAutoRenewDuration(),
+                    TimerType.OneTimeRun);
+
                 CompletableFuture<Void> onCloseFuture;
                 try {
                     onCloseFuture = COMPLETED_FUTURE.thenComposeAsync((v) -> this.messageAndSessionPump.sessionHandler.OnCloseSessionAsync(session), this.messageAndSessionPump.customCodeExecutor);
                 } catch (Exception onCloseSyncEx) {
                     TRACE_LOGGER.error("Invocation of onCloseSession on session '{}' threw unexpected exception", this.session.getSessionId(), onCloseSyncEx);
-                    onCloseFuture = new CompletableFuture<Void>();
+                    onCloseFuture = new CompletableFuture<>();
                     onCloseFuture.completeExceptionally(onCloseSyncEx);
                 }
                 
                 // Some clients are returning null from the call
-                if(onCloseFuture == null)
-                {
+                if (onCloseFuture == null) {
                     onCloseFuture = COMPLETED_FUTURE;
                 }
 
@@ -489,8 +478,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
                     this.sessionRenewLockLoop.cancelLoop();
                     TRACE_LOGGER.debug("Cancelled loop to renew lock on session '{}'", this.session.getSessionId());
-                    this.session.closeAsync().handleAsync((z, closeEx) ->
-                    {
+                    this.session.closeAsync().handleAsync((z, closeEx) -> {
                         if (closeEx != null) {
                             closeEx = ExceptionUtil.extractAsyncCompletionCause(closeEx);
                             TRACE_LOGGER.info("Closing session '{}' from entity '{}' failed", this.session.getSessionId(), this.messageAndSessionPump.entityPath, closeEx);
@@ -583,8 +571,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                 if (renewInterval != null && !renewInterval.isNegative()) {
                     this.timerFuture = Timer.schedule(() -> {
                         TRACE_LOGGER.debug("Renewing lock on '{}'", this.messageIdentifier);
-                        this.innerReceiver.renewMessageLockAsync(message).handleAsync((v, renewLockEx) ->
-                        {
+                        this.innerReceiver.renewMessageLockAsync(message).handleAsync((v, renewLockEx) -> {
                             if (renewLockEx != null) {
                                 renewLockEx = ExceptionUtil.extractAsyncCompletionCause(renewLockEx);
                                 TRACE_LOGGER.error("Renewing lock on '{}' failed", this.messageIdentifier, renewLockEx);
@@ -638,8 +625,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                 if (renewInterval != null && !renewInterval.isNegative()) {
                     this.timerFuture = Timer.schedule(() -> {
                         TRACE_LOGGER.debug("Renewing lock on '{}'", this.sessionIdentifier);
-                        this.session.renewSessionLockAsync().handleAsync((v, renewLockEx) ->
-                        {
+                        this.session.renewSessionLockAsync().handleAsync((v, renewLockEx) -> {
                             if (renewLockEx != null) {
                                 renewLockEx = ExceptionUtil.extractAsyncCompletionCause(renewLockEx);
                                 TRACE_LOGGER.error("Renewing lock on '{}' failed", this.sessionIdentifier, renewLockEx);
@@ -847,13 +833,13 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     // Don't notify handler if the pump is already closed
     private void notifyExceptionToSessionHandler(Throwable ex, ExceptionPhase phase) {
         if (!(ex instanceof IllegalStateException && this.getIsClosingOrClosed())) {
-            this.customCodeExecutor.execute(() -> {this.sessionHandler.notifyException(ex, phase);});
+            this.customCodeExecutor.execute(() -> this.sessionHandler.notifyException(ex, phase));
         }
     }
 
     private void notifyExceptionToMessageHandler(Throwable ex, ExceptionPhase phase) {
         if (!(ex instanceof IllegalStateException && this.getIsClosingOrClosed())) {
-            this.customCodeExecutor.execute(() -> {this.messageHandler.notifyException(ex, phase);});
+            this.customCodeExecutor.execute(() -> this.messageHandler.notifyException(ex, phase));
         }
     }
 
@@ -864,27 +850,21 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
     @Override
     public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
-        if(prefetchCount < 0)
-        {
+        if (prefetchCount < 0) {
             throw new IllegalArgumentException("Prefetch count cannot be negative.");
         }
         
         this.prefetchCount = prefetchCount;
-        if(this.innerReceiver != null)
-        {
+        if (this.innerReceiver != null) {
             this.innerReceiver.setPrefetchCount(prefetchCount);
         }
 
         // For accepted session receivers also
         IMessageSession[] currentAcceptedSessions = this.openSessions.values().toArray(new IMessageSession[0]);
-        for(IMessageSession session : currentAcceptedSessions)
-        {
-            try
-            {
+        for (IMessageSession session : currentAcceptedSessions) {
+            try {
                 session.setPrefetchCount(prefetchCount);
-            }
-            catch(IllegalStateException ise)
-            {
+            } catch (IllegalStateException ise) {
                 // Session might have been closed.. Ignore the exception as this is a best effort setter on already accepted sessions
             }
         }

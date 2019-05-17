@@ -15,5 +15,5 @@ public interface ITopicClient extends IMessageSender, IMessageBrowser, IMessageE
      * Get the name of the topic
      * @return the name of the topic
      */
-    public String getTopicName();
+    String getTopicName();
 }

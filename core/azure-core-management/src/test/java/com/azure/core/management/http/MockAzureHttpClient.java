@@ -303,11 +303,11 @@ public class MockAzureHttpClient implements HttpClient {
 
     public static HttpHeaders responseHeaders() {
         return new HttpHeaders()
-                .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-                .set("Via", "1.1 vegur")
-                .set("Connection", "keep-alive")
-                .set("X-Processed-Time", "1.0")
-                .set("Access-Control-Allow-Credentials", "true")
-                .set("Content-Type", "application/json");
+                .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+                .put("Via", "1.1 vegur")
+                .put("Connection", "keep-alive")
+                .put("X-Processed-Time", "1.0")
+                .put("Access-Control-Allow-Credentials", "true")
+                .put("Content-Type", "application/json");
     }
 }

@@ -9,8 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import com.microsoft.azure.servicebus.TransactionContext;
 import org.apache.qpid.proton.message.Message;
 
-public class RequestResponseWorkItem extends WorkItem<Message>
-{
+public class RequestResponseWorkItem extends WorkItem<Message> {
     Message request;
     TransactionContext transaction;
 
@@ -26,10 +25,11 @@ public class RequestResponseWorkItem extends WorkItem<Message>
         this.transaction = transaction;
     }
 
-    public Message getRequest()
-    {
+    public Message getRequest() {
         return this.request;
     }
 
-    public TransactionContext getTransaction() { return this.transaction; }
+    public TransactionContext getTransaction() {
+        return this.transaction;
+    }
 }

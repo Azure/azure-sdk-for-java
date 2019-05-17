@@ -5,13 +5,8 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.UserDelegationKey;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 
 /**
  * ServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
