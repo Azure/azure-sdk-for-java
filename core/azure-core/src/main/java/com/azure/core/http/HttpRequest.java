@@ -118,7 +118,7 @@ public class HttpRequest implements Serializable {
      * @return this HttpRequest
      */
     public HttpRequest withHeader(String name, String value) {
-        headers.set(name, value);
+        headers.put(name, value);
         return this;
     }
 
@@ -150,7 +150,7 @@ public class HttpRequest implements Serializable {
      * @return this HttpRequest
      */
     public HttpRequest withBody(byte[] content) {
-        headers.set("Content-Length", String.valueOf(content.length));
+        headers.put("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
         return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
     }

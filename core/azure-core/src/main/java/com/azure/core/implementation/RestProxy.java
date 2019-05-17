@@ -34,6 +34,7 @@ import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -112,7 +113,7 @@ public class RestProxy implements InvocationHandler {
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
     public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
-        return httpPipeline.send(httpPipeline.newContext(request, contextData));
+        return httpPipeline.send(request, contextData);
     }
 
     @Override
@@ -223,7 +224,7 @@ public class RestProxy implements InvocationHandler {
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
-            request.headers().set("Content-Length", "0");
+            request.headers().put("Content-Length", "0");
         } else {
             String contentType = methodParser.bodyContentType();
             if (contentType == null || contentType.isEmpty()) {
@@ -234,7 +235,7 @@ public class RestProxy implements InvocationHandler {
                 }
             }
 
-            request.headers().set("Content-Type", contentType);
+            request.headers().put("Content-Type", contentType);
 
             boolean isJson = false;
             final String[] contentTypeParts = contentType.split(";");
@@ -558,7 +559,10 @@ public class RestProxy implements InvocationHandler {
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+
+        return HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     /**

@@ -4,15 +4,33 @@
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.primitives.*;
+import com.microsoft.azure.servicebus.primitives.AuthorizationFailedException;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityAlreadyExistsException;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
+import com.microsoft.azure.servicebus.primitives.QuotaExceededException;
+import com.microsoft.azure.servicebus.primitives.ServerBusyException;
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import com.microsoft.azure.servicebus.primitives.Util;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 import com.microsoft.azure.servicebus.security.SecurityToken;
 import com.microsoft.azure.servicebus.security.TokenProvider;
-import org.asynchttpclient.*;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
+import org.asynchttpclient.Dsl;
+import org.asynchttpclient.ListenableFuture;
+import org.asynchttpclient.Request;
+import org.asynchttpclient.RequestBuilder;
+import org.asynchttpclient.Response;
 import org.asynchttpclient.util.HttpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -72,8 +90,8 @@ public class ManagementClientAsync {
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.clientSettings = clientSettings;
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
-                .setConnectTimeout((int)CONNECTION_TIMEOUT.toMillis())
-                .setRequestTimeout((int)this.clientSettings.getOperationTimeout().toMillis());
+                .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
+                .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
     }
 
@@ -977,7 +995,7 @@ public class ManagementClientAsync {
             return exceptionFuture;
         }
 
-        return sendManagementHttpRequestAsync(HttpConstants.Methods.DELETE, entityURL, null, null).thenAccept(c -> {});
+        return sendManagementHttpRequestAsync(HttpConstants.Methods.DELETE, entityURL, null, null).thenAccept(c -> { });
     }
 
     /**
@@ -990,7 +1008,7 @@ public class ManagementClientAsync {
 
     private static URL getManagementURL(URI namespaceEndpontURI, String entityPath, String query) throws ServiceBusException {
         try {
-            URI httpURI = new URI("https", null, namespaceEndpontURI.getHost(), getPortNumberFromHost(namespaceEndpontURI.getHost()), "/"+entityPath, query, null);
+            URI httpURI = new URI("https", null, namespaceEndpontURI.getHost(), getPortNumberFromHost(namespaceEndpontURI.getHost()), "/" + entityPath, query, null);
             return httpURI.toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new ServiceBusException(false, e);
@@ -1027,8 +1045,7 @@ public class ManagementClientAsync {
 
         CompletableFuture<String> outputFuture = new CompletableFuture<>();
         listenableFuture.toCompletableFuture()
-                .handleAsync((response, ex) ->
-                {
+                .handleAsync((response, ex) -> {
                     if (ex != null) {
                         outputFuture.completeExceptionally(ex);
                     } else {
@@ -1057,8 +1074,7 @@ public class ManagementClientAsync {
         }
 
         ServiceBusException exception = null;
-        switch (response.getStatusCode())
-        {
+        switch (response.getStatusCode()) {
             case 401:   /*UnAuthorized*/
                 exception = new AuthorizationFailedException(exceptionMessage);
                 break;
@@ -1092,8 +1108,7 @@ public class ManagementClientAsync {
                 if (exceptionMessage.contains(ManagementClientConstants.ForbiddenInvalidOperationSubCode)) {
                     //todo: log
                     throw new UnsupportedOperationException(exceptionMessage);
-                }
-                else {
+                } else {
                     exception = new QuotaExceededException(exceptionMessage);
                 }
                 break;
@@ -1145,18 +1160,15 @@ public class ManagementClientAsync {
         return null;
     }
 
-    private static String getSecurityToken(TokenProvider tokenProvider, String url ) throws InterruptedException, ExecutionException {
+    private static String getSecurityToken(TokenProvider tokenProvider, String url) throws InterruptedException, ExecutionException {
         SecurityToken token = tokenProvider.getSecurityTokenAsync(url).get();
         return token.getTokenValue();
     }
     
     private static int getPortNumberFromHost(String host) {
-        if(host.endsWith("onebox.windows-int.net"))
-        {
+        if (host.endsWith("onebox.windows-int.net")) {
             return ONE_BOX_HTTPS_PORT;
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }

@@ -3,6 +3,10 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.http.rest.PagedResponse;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -19,7 +23,7 @@ public final class ImplUtils {
         // Exists only to defeat instantiation.
     }
 
-    /**
+    /*
      * Creates a copy of the source byte array.
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
@@ -33,7 +37,7 @@ public final class ImplUtils {
         return copy;
     }
 
-    /**
+    /*
      * Creates a copy of the source int array.
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
@@ -47,7 +51,7 @@ public final class ImplUtils {
         return copy;
     }
 
-    /**
+    /*
      * Creates a copy of the source array.
      * @param source Array being copied.
      * @param <T> Generic representing the type of the source array.
@@ -61,7 +65,7 @@ public final class ImplUtils {
         return Arrays.copyOf(source, source.length);
     }
 
-    /**
+    /*
      * Checks if the array is null or empty.
      * @param array Array being checked for nullness or emptiness.
      * @return True if the array is null or empty, false otherwise.
@@ -70,7 +74,7 @@ public final class ImplUtils {
         return array == null || array.length == 0;
     }
 
-    /**
+    /*
      * Checks if the collection is null or empty.
      * @param collection Collection being checked for nullness or emptiness.
      * @return True if the collection is null or empty, false otherwise.
@@ -79,7 +83,7 @@ public final class ImplUtils {
         return collection == null || collection.isEmpty();
     }
 
-    /**
+    /*
      * Checks if the map is null or empty.
      * @param map Map being checked for nullness or emptiness.
      * @return True if the map is null or empty, false otherwise.
@@ -88,7 +92,7 @@ public final class ImplUtils {
         return map == null || map.isEmpty();
     }
 
-    /**
+    /*
      * Turns an array into a string mapping each element to a string and delimits them using a coma.
      * @param array Array being formatted to a string.
      * @param mapper Function that maps each element to a string.
@@ -103,7 +107,7 @@ public final class ImplUtils {
         return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
     }
 
-    /**
+    /*
      * Returns the first instance of the given class from an array of Objects.
      * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
@@ -122,5 +126,30 @@ public final class ImplUtils {
         }
 
         return null;
+    }
+
+
+    /*
+     * Checks if the character sequence is null or empty.
+     * @param charSequence Character sequence being checked for nullness or emptiness.
+     * @return True if the character sequence is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(CharSequence charSequence) {
+        return charSequence == null || charSequence.length() == 0;
+    }
+
+    /*
+     * Extracts and combines the generic items from all the pages linked together.
+     * @param page The paged response from server holding generic items.
+     * @param content The function which fetches items from the next page.
+     * @param <T> The type of the item being returned in the paged response.
+     * @return The publisher holding all the generic items combined.
+     */
+    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
+        String nextPageLink = page.nextLink();
+        if (nextPageLink == null) {
+            return Flux.fromIterable(page.items());
+        }
+        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
     }
 }
