@@ -28,12 +28,15 @@ import java.util.Optional;
 
 public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
+    /**
+     * @return a OpenCensus HTTP policy.
+     */
     public HttpPipelinePolicy create() {
         return this;
     }
 
     // Singleton OpenCensus tracer capable of starting and exporting spans.
-    private static final Tracer tracer = Tracing.getTracer();
+    private static final Tracer TRACER = Tracing.getTracer();
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -47,11 +50,11 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(tracer.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.httpRequest();
 
         // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(getSpanName(request), parentSpan);
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(getSpanName(request), parentSpan);
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
         spanBuilder.setSpanKind(Kind.CLIENT);

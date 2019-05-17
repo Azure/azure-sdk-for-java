@@ -25,7 +25,7 @@ final class HttpTraceUtil {
     private static final Status STATUS_502 = Status.UNKNOWN.withDescription("Bad Gateway");
     private static final Status STATUS_505 = Status.UNKNOWN.withDescription("HTTP Version not supported");
 
-    private HttpTraceUtil() {}
+    private HttpTraceUtil() { }
 
     /**
      * Parse OpenCensus Status from HTTP response status code.
@@ -58,7 +58,7 @@ final class HttpTraceUtil {
 
         // Good response from the server.
         if (statusCode >= 200 && statusCode < 400) {
-                return Status.OK;
+            return Status.OK;
         }
 
         // Error status, try to parse the error message.

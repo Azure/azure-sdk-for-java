@@ -20,15 +20,15 @@ import java.util.Optional;
  */
 public class OpenCensusTracer implements com.azure.core.implementation.tracing.Tracer {
     // Singleton OpenCensus tracer capable of starting and exporting spans.
-    private static final Tracer tracer = Tracing.getTracer();
+    private static final Tracer TRACER = Tracing.getTracer();
 
     private final ServiceLogger logger = new ServiceLogger(OpenCensusTracer.class);
 
     @Override
     public Context start(String methodName, Context context) {
-        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(tracer.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
 
-        SpanBuilder spanBuilder = tracer.spanBuilderWithExplicitParent(methodName, parentSpan);
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(methodName, parentSpan);
         Span span = spanBuilder.startSpan();
 
         return context.addData(Constants.OPENCENSUS_SPAN_KEY, span);
@@ -38,7 +38,7 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
     public void end(int responseCode, Throwable throwable, Context context) {
         Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {
-           Span span = (Span) spanOptional.get();
+            Span span = (Span) spanOptional.get();
 
             if (span.getOptions().contains(Options.RECORD_EVENTS)) {
                 span.setStatus(HttpTraceUtil.parseResponseStatus(responseCode, throwable));
