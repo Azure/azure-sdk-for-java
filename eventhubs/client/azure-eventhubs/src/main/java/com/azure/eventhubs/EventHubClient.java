@@ -20,17 +20,18 @@ class EventHubClient implements AutoCloseable {
         return new EventHubClientBuilder();
     }
 
-    // Creates a new sender.
+    /**
+     * Creates a sender that can push events to Event Hub.
+     *
+     * @return A new {@link EventHubSender}.
+     */
     public EventHubSender createSender() {
         return new EventHubSender(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
     }
 
-    // Creates a partition receiver that listens to the $DEFAULT consumer group starting at
-    // the given position.
-
     /**
      * Creates a receiver that listens to the Event Hub {@code partitionId} at the given {@link EventPosition}. The
-     * consumer group used is the "$DEFAULT" consumer group.
+     * consumer group used is the {@link ReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @param position Position within the partition's stream to start receiving events at.
@@ -53,6 +54,9 @@ class EventHubClient implements AutoCloseable {
         return new EventHubReceiver();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() {
 
