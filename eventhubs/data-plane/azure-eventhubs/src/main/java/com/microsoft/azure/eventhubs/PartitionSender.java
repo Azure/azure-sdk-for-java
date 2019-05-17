@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
  *
  * @see EventHubClient#createPartitionSender(String)
- * @see EventHubClient#create(String, ScheduledExecutorService)
+ * @see EventHubClient#createFromConnectionString(String, ScheduledExecutorService)
  */
 public interface PartitionSender {
 

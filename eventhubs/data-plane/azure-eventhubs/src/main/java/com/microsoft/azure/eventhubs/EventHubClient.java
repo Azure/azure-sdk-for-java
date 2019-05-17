@@ -3,11 +3,6 @@
 
 package com.microsoft.azure.eventhubs;
 
-import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
-import com.microsoft.aad.adal4j.AuthenticationCallback;
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
 import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 
@@ -15,20 +10,19 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
  *
- * @see EventHubClient#create(String, ScheduledExecutorService)
+ * @see EventHubClient#createFromConnectionString(String, ScheduledExecutorService)
  */
 public interface EventHubClient {
 
     String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     /**
-     * Synchronous version of {@link #create(String, ScheduledExecutorService)}.
+     * Synchronous version of {@link #createFromConnectionString(String, ScheduledExecutorService)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
@@ -36,13 +30,13 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
-    static EventHubClient createSync(final String connectionString, final ScheduledExecutorService executor)
+    static EventHubClient createFromConnectionStringSync(final String connectionString, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
-        return EventHubClient.createSync(connectionString, null, executor);
+        return createFromConnectionStringSync(connectionString, null, executor);
     }
 
     /**
-     * Synchronous version of {@link #create(String, ScheduledExecutorService)}.
+     * Synchronous version of {@link #createFromConnectionString(String, ScheduledExecutorService)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
@@ -51,9 +45,9 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
-    static EventHubClient createSync(final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
+    static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
-        return ExceptionUtil.syncWithIOException(() -> create(connectionString, retryPolicy, executor).get());
+        return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor).get());
     }
 
     /**
@@ -67,11 +61,101 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
-    static CompletableFuture<EventHubClient> create(final String connectionString, final ScheduledExecutorService executor)
+    static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
-        return EventHubClient.create(connectionString, null, executor);
+        return createFromConnectionString(connectionString, null, executor);
     }
 
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+     * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
+     * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If Service Bus service encountered problems during connection creation.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
+     */
+    static CompletableFuture<EventHubClient> createFromConnectionString(
+            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
+            throws EventHubException, IOException {
+        return EventHubClientImpl.create(connectionString, retryPolicy, executor);
+    }
+
+
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName  EventHub name
+     * @param authCallback  A callback which returns a JSON Web Token obtained from AAD.
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> createWithAzureActiveDirectory(
+            final URI endpointAddress,
+            final String eventHubName,
+            final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+    	return createWithAzureActiveDirectory(endpointAddress, eventHubName, authCallback, AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY, executor, options);
+    }
+    
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName  EventHub name
+     * @param authCallback  A callback which returns a JSON Web Token obtained from AAD.
+     * @param authority		Address of the AAD authority to issue the token.
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> createWithAzureActiveDirectory(
+            final URI endpointAddress,
+            final String eventHubName,
+            final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback,
+            final String authority,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+    	ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(authCallback, authority, null);
+    	return createWithTokenProvider(endpointAddress, eventHubName, tokenProvider, executor, options);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
+     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+     *
+     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+     * @param eventHubName EventHub name
+     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
+     * @throws IOException If the underlying Proton-J layer encounter network errors.
+     */
+    public static CompletableFuture<EventHubClient> createWithManagedIdentity(
+            final URI endpointAddress,
+            final String eventHubName,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws EventHubException, IOException {
+        return createWithTokenProvider(endpointAddress, eventHubName, new ManagedIdentityTokenProvider(), executor, options);
+    }
+    
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
@@ -86,143 +170,13 @@ public interface EventHubClient {
      * @throws EventHubException If the EventHubs service encountered problems during connection creation.
      * @throws IOException If the underlying Proton-J layer encounter network errors.
      */
-    public static CompletableFuture<EventHubClient> create(
+    public static CompletableFuture<EventHubClient> createWithTokenProvider(
             final URI endpointAddress,
             final String eventHubName,
             final ITokenProvider tokenProvider,
             final ScheduledExecutorService executor,
             final EventHubClientOptions options) throws EventHubException, IOException {
-    	EventHubClientOptions effectiveOptions = (options != null) ? options : new EventHubClientOptions();
-    	return EventHubClientImpl.create(endpointAddress, eventHubName, tokenProvider, executor, effectiveOptions);
-    }
-
-    /**
-     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
-     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
-     *
-     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param eventHubName 	EventHub name
-     * @param authenticationContext The Azure Active Directory {@link AuthenticationContext}
-     * @param clientCredential 		The Azure Active Directory {@link ClientCredential}
-     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
-     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
-     * @throws IOException If the underlying Proton-J layer encounter network errors.
-     */
-    public static CompletableFuture<EventHubClient> create(
-            final URI endpointAddress,
-            final String eventHubName,
-            final AuthenticationContext authenticationContext,
-            final ClientCredential clientCredential,
-            final ScheduledExecutorService executor,
-            final EventHubClientOptions options) throws EventHubException, IOException {
-        if (authenticationContext == null) {
-            throw new IllegalArgumentException("authenticationContext cannot be null");
-        }
-        if (clientCredential == null) {
-            throw new IllegalArgumentException("clientCredential cannot be null");
-        }
-
-        ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(
-        		authenticationContext,
-                new AzureActiveDirectoryTokenProvider.ITokenAcquirer() {
-                	@Override
-                    public Future<AuthenticationResult> acquireToken(
-                    	final AuthenticationContext authenticationContext,
-                        final AuthenticationCallback authenticationCallback) {
-                        	return authenticationContext.acquireToken(
-                        			AzureActiveDirectoryTokenProvider.EVENTHUBS_REGISTERED_AUDIENCE,
-                                    clientCredential,
-                                    authenticationCallback);
-                	}
-        		});
-        return create(endpointAddress, eventHubName, tokenProvider, executor, options);
-    }
-
-    /**
-     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
-     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
-     *
-     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param eventHubName EventHub name
-     * @param authenticationContext The Azure Active Directory {@link AuthenticationContext}
-     * @param credential The Azure Active Directory {@link AsymmetricKeyCredential}
-     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
-     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
-     * @throws IOException If the underlying Proton-J layer encounter network errors.
-     */
-    public static CompletableFuture<EventHubClient> create(
-            final URI endpointAddress,
-            final String eventHubName,
-            final AuthenticationContext authenticationContext,
-            final AsymmetricKeyCredential credential,
-            final ScheduledExecutorService executor,
-            final EventHubClientOptions options) throws EventHubException, IOException {
-        if (authenticationContext == null) {
-            throw new IllegalArgumentException("authenticationContext cannot be null");
-        }
-        if (credential == null) {
-            throw new IllegalArgumentException("credential cannot be null");
-        }
-
-        ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(
-        		authenticationContext,
-                new AzureActiveDirectoryTokenProvider.ITokenAcquirer() {
-                    @Override
-                    public Future<AuthenticationResult> acquireToken(
-                        final AuthenticationContext authenticationContext,
-                        final AuthenticationCallback authenticationCallback) {
-                            return authenticationContext.acquireToken(
-                                    AzureActiveDirectoryTokenProvider.EVENTHUBS_REGISTERED_AUDIENCE,
-                                    credential,
-                                    authenticationCallback);
-                    }
-                });
-        return create(endpointAddress, eventHubName, tokenProvider, executor, options);
-    }
-
-    /**
-     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
-     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
-     *
-     * @param endpointAddress  namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param eventHubName EventHub name
-     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
-     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
-     * @throws IOException If the underlying Proton-J layer encounter network errors.
-     */
-    public static CompletableFuture<EventHubClient> createWithManagedServiceIdentity(
-            final URI endpointAddress,
-            final String eventHubName,
-            final ScheduledExecutorService executor,
-            final EventHubClientOptions options) throws EventHubException, IOException {
-        return create(endpointAddress, eventHubName, new ManagedServiceIdentityTokenProvider(), executor, options);
-    }
-
-    /**
-     * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
-     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
-     *
-     * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
-     * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
-     * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
-     * @throws EventHubException If Service Bus service encountered problems during connection creation.
-     * @throws IOException       If the underlying Proton-J layer encounter network errors.
-     */
-    static CompletableFuture<EventHubClient> create(
-            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
-            throws EventHubException, IOException {
-        return EventHubClientImpl.create(connectionString, retryPolicy, executor);
+    	return EventHubClientImpl.create(endpointAddress, eventHubName, tokenProvider, executor, options);
     }
 
     /**

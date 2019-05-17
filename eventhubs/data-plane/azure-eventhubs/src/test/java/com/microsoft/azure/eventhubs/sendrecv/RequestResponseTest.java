@@ -216,7 +216,7 @@ public class RequestResponseTest extends ApiTestBase {
     }
 
     public void testGetRuntimeInfos(ConnectionStringBuilder connectionString) throws Exception {
-        EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
         Assert.assertNotNull(ehInfo);
@@ -258,7 +258,7 @@ public class RequestResponseTest extends ApiTestBase {
 
     @Test
     public void testGetRuntimeInfoCallTimesout() throws Exception {
-        final EventHubClientImpl eventHubClient = (EventHubClientImpl) EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        final EventHubClientImpl eventHubClient = (EventHubClientImpl) EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         // set operation timeout to 5ms - so that the actual operation doesn't event start
         final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
@@ -288,7 +288,7 @@ public class RequestResponseTest extends ApiTestBase {
                 .setEventHubName("NOHUBZZZZZ")
                 .setSasKeyName(connectionString.getSasKeyName())
                 .setSasKey(connectionString.getSasKey());
-        EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         try {
             ehc.getRuntimeInformation().get();
@@ -330,7 +330,7 @@ public class RequestResponseTest extends ApiTestBase {
                 .setEventHubName(connectionString.getEventHubName())
                 .setSasKeyName("xxxnokeyxxx")
                 .setSasKey(connectionString.getSasKey());
-        EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         try {
             ehc.getRuntimeInformation().get();
@@ -357,7 +357,7 @@ public class RequestResponseTest extends ApiTestBase {
 
     @Test
     public void testGetRuntimesClosedClient() throws EventHubException, IOException, InterruptedException, ExecutionException {
-        EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         ehc.closeSync();
 
         try {

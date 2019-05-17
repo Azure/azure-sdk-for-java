@@ -33,8 +33,13 @@
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>adal4j</artifactId>
-      <version>1.6.4</version>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>1.6.7</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>3.8.0</version>
     </dependency>
   </dependencies>
 

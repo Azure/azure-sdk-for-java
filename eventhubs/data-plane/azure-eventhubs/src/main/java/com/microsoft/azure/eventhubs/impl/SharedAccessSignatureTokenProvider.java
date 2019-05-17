@@ -19,7 +19,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -86,19 +85,17 @@ public class SharedAccessSignatureTokenProvider implements ITokenProvider {
 
     public CompletableFuture<SecurityToken> getToken(final String resource, final Duration tokenTimeToLive) {
         final CompletableFuture<SecurityToken> result = new CompletableFuture<>();
-        final String token;
 
         if (this.sharedAccessSignature == null) {
             try {
             	// Generation is nonblocking so there is no need to run it async.
-                token = generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, ClientConstants.TOKEN_VALIDITY);
+                final String token = generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, ClientConstants.TOKEN_VALIDITY);
+                result.complete(new SecurityToken(token, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY)), resource, ClientConstants.SAS_TOKEN_TYPE));
             } catch (NoSuchAlgorithmException|IOException|InvalidKeyException e) {
                 result.completeExceptionally(e);
-                return result;
             }
-            result.complete(new SecurityToken(ClientConstants.SAS_TOKEN_TYPE, token, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY))));
         } else {
-            result.complete(new SecurityToken(ClientConstants.SAS_TOKEN_TYPE, this.sharedAccessSignature, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY))));
+            result.complete(new SecurityToken(this.sharedAccessSignature, Date.from(Instant.now().plus(ClientConstants.TOKEN_VALIDITY)), resource, ClientConstants.SAS_TOKEN_TYPE));
         }
 
         return result;

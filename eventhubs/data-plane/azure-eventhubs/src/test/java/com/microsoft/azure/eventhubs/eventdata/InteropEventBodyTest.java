@@ -48,7 +48,7 @@ public class InteropEventBodyTest extends ApiTestBase {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         final String connectionString = connStrBuilder.toString();
 
-        ehClient = EventHubClient.createSync(connectionString, TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString, TestContext.EXECUTOR_SERVICE);
         msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
         receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
         partitionSender = ehClient.createPartitionSenderSync(PARTITION_ID);

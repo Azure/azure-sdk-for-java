@@ -5,15 +5,17 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.Date;
 
-public final class SecurityToken {
+public class SecurityToken {
     private final String tokenType;
     private final String token;
     private final Date validTo;
+    private final String audience;
 
-    public SecurityToken(final String tokenType, final String token, final Date validTo) {
+    public SecurityToken(final String token, final Date validTo, final String audience, final String tokenType) {
         this.tokenType = tokenType;
         this.token = token;
         this.validTo = validTo;
+        this.audience = audience;
     }
 
     public String getTokenType() {
@@ -26,5 +28,9 @@ public final class SecurityToken {
 
     public Date validTo() {
         return this.validTo;
+    }
+    
+    public String getAudience() {
+    	return this.audience;
     }
 }

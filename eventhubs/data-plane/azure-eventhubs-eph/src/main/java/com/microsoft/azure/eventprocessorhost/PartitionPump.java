@@ -175,7 +175,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
 
         CompletableFuture<EventHubClient> startOpeningFuture = null;
         try {
-            startOpeningFuture = EventHubClient.create(this.hostContext.getEventHubConnectionString(),
+            startOpeningFuture = EventHubClient.createFromConnectionString(this.hostContext.getEventHubConnectionString(),
                     this.hostContext.getRetryPolicy(), this.hostContext.getExecutor());
         } catch (EventHubException | IOException e2) {
             // Marking startOpeningFuture as completed exceptionally will cause all the

@@ -32,7 +32,7 @@ public class EventHubClientTest extends ApiTestBase {
         try {
             ConnectionStringBuilder connectionString = TestContext.getConnectionString();
             for (int i = 0; i < noOfClients; i++) {
-                createFutures[i] = EventHubClient.create(connectionString.toString(), executorService);
+                createFutures[i] = EventHubClient.createFromConnectionString(connectionString.toString(), executorService);
             }
 
             CompletableFuture.allOf(createFutures).get();

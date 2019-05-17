@@ -23,8 +23,6 @@ import com.microsoft.azure.eventhubs.impl.MessagingFactory.MessagingFactoryBuild
 
 import java.io.IOException;
 import java.net.URI;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,15 +97,13 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     	if (tokenProvider == null) {
     		throw new IllegalArgumentException("Token provider cannot be null");
     	}
-    	if (options == null) {
-    		throw new IllegalArgumentException("Options cannot be null");
-    	}
     	
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
-        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor).
-        		setOperationTimeout(options.getOperationTimeout()).
-        		setTransportType(options.getTransportType()).
-        		setRetryPolicy(options.getRetryPolicy());
+        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
+        if (options != null) {
+    		builder.setOperationTimeout(options.getOperationTimeout()).setTransportType(options.getTransportType()).
+    				setRetryPolicy(options.getRetryPolicy());
+        }
 
         return builder.build()
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {

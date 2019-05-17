@@ -35,7 +35,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     public static void initializeEventHub() throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
