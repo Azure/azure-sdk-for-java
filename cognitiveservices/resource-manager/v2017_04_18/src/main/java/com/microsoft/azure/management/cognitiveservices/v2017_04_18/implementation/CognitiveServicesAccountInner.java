@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.NetworkRuleSet;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -57,6 +58,13 @@ public class CognitiveServicesAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.customSubDomainName")
     private String customSubDomainName;
+
+    /**
+     * A collection of rules governing the accessibility from specific network
+     * locations.
+     */
+    @JsonProperty(value = "properties.networkAcls")
+    private NetworkRuleSet networkAcls;
 
     /**
      * The SKU of Cognitive Services account.
@@ -170,6 +178,26 @@ public class CognitiveServicesAccountInner extends Resource {
      */
     public CognitiveServicesAccountInner withCustomSubDomainName(String customSubDomainName) {
         this.customSubDomainName = customSubDomainName;
+        return this;
+    }
+
+    /**
+     * Get a collection of rules governing the accessibility from specific network locations.
+     *
+     * @return the networkAcls value
+     */
+    public NetworkRuleSet networkAcls() {
+        return this.networkAcls;
+    }
+
+    /**
+     * Set a collection of rules governing the accessibility from specific network locations.
+     *
+     * @param networkAcls the networkAcls value to set
+     * @return the CognitiveServicesAccountInner object itself.
+     */
+    public CognitiveServicesAccountInner withNetworkAcls(NetworkRuleSet networkAcls) {
+        this.networkAcls = networkAcls;
         return this;
     }
 

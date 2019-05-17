@@ -51,6 +51,11 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     String kind();
 
     /**
+     * @return the networkAcls value.
+     */
+    NetworkRuleSet networkAcls();
+
+    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
