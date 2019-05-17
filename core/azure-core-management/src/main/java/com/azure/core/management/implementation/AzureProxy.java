@@ -57,13 +57,11 @@ public final class AzureProxy extends RestProxy {
     /**
      * Create a new instance of RestProxy.
      * @param httpPipeline The HttpPipeline that will be used by this AzureProxy to send HttpRequests.
-     //* @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
     private AzureProxy(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, createDefaultSerializer(), interfaceParser);
-        //super(httpPipeline, serializer, interfaceParser);
     }
 
     /**
@@ -218,20 +216,6 @@ public final class AzureProxy extends RestProxy {
     public static <A> A create(Class<A> swaggerInterface, AzureServiceClient azureServiceClient) {
         return AzureProxy.create(swaggerInterface, azureServiceClient.azureEnvironment(), azureServiceClient.httpPipeline());
     }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param httpPipeline The HTTP httpPipeline will be used to make REST calls.
-    // * @param serializer The serializer that will be used to convert POJOs to and from request and
-     *                   response bodies.
-     * @param <A> The type of the Swagger interface.
-     * @return A proxy implementation of the provided Swagger interface.
-     */
-    /*@SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
-        return AzureProxy.create(swaggerInterface, null, httpPipeline, serializer);
-    }*/
 
     /**
      * Create a proxy implementation of the provided Swagger interface.

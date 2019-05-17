@@ -41,7 +41,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     private final XmlMapper xmlMapper;
 
-    /**
+    /*
      * The lazily-created serializer for this ServiceClient.
      */
     private static SerializerAdapter serializerAdapter  = null;
