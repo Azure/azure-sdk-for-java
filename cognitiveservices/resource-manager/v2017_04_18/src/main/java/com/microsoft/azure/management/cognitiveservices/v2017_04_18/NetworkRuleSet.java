@@ -35,7 +35,7 @@ public class NetworkRuleSet {
      * The list of IP address rules.
      */
     @JsonProperty(value = "ipRules")
-    private List<IPRule> ipRules;
+    private List<IpRule> ipRules;
 
     /**
      * The list of virtual network rules.
@@ -88,7 +88,7 @@ public class NetworkRuleSet {
      *
      * @return the ipRules value
      */
-    public List<IPRule> ipRules() {
+    public List<IpRule> ipRules() {
         return this.ipRules;
     }
 
@@ -98,7 +98,7 @@ public class NetworkRuleSet {
      * @param ipRules the ipRules value to set
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
+    public NetworkRuleSet withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }

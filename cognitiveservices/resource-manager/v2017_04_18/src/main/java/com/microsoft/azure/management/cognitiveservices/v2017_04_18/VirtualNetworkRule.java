@@ -28,6 +28,12 @@ public class VirtualNetworkRule {
     private String state;
 
     /**
+     * Ignore missing vnet service endpoint or not.
+     */
+    @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
+    private Boolean ignoreMissingVnetServiceEndpoint;
+
+    /**
      * Get full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
      *
      * @return the id value
@@ -64,6 +70,26 @@ public class VirtualNetworkRule {
      */
     public VirtualNetworkRule withState(String state) {
         this.state = state;
+        return this;
+    }
+
+    /**
+     * Get ignore missing vnet service endpoint or not.
+     *
+     * @return the ignoreMissingVnetServiceEndpoint value
+     */
+    public Boolean ignoreMissingVnetServiceEndpoint() {
+        return this.ignoreMissingVnetServiceEndpoint;
+    }
+
+    /**
+     * Set ignore missing vnet service endpoint or not.
+     *
+     * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set
+     * @return the VirtualNetworkRule object itself.
+     */
+    public VirtualNetworkRule withIgnoreMissingVnetServiceEndpoint(Boolean ignoreMissingVnetServiceEndpoint) {
+        this.ignoreMissingVnetServiceEndpoint = ignoreMissingVnetServiceEndpoint;
         return this;
     }
 
