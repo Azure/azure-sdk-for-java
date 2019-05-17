@@ -695,9 +695,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                 for(UUID lockToken : lockTokens) {
                     if (lockTimeIterator.hasNext()) {
                         Instant lockedUntilUtc = lockTimeIterator.next();
-                        if (this.requestResponseLockTokensToLockTimesMap.containsKey(lockToken)) {
-                            this.requestResponseLockTokensToLockTimesMap.put(lockToken, lockedUntilUtc);
-                        }
+                        this.requestResponseLockTokensToLockTimesMap.computeIfPresent(lockToken, (k, v) -> lockedUntilUtc);
                     }
                 }
                 return newLockedUntilTimes;

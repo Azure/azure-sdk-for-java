@@ -11,48 +11,41 @@ import java.util.concurrent.ExecutionException;
 // which badly affects perf and a client can potentially kill the thread or lock the thread.
 class AsyncUtil {
 
-    public static <T> boolean completeFutureAndGetStatus(CompletableFuture<T> future, T result)
-    {
+    public static <T> boolean completeFutureAndGetStatus(CompletableFuture<T> future, T result) {
         try {
-            return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<T>(future, result)).get();
+            return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<>(future, result)).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public static <T> void completeFuture(CompletableFuture<T> future, T result)
-    {
-        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<T>(future, result));
+    public static <T> void completeFuture(CompletableFuture<T> future, T result) {
+        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<>(future, result));
     }
 
-    public static <T> boolean completeFutureExceptionallyAndGetStatus(CompletableFuture<T> future, Throwable exception)
-    {
+    public static <T> boolean completeFutureExceptionallyAndGetStatus(CompletableFuture<T> future, Throwable exception) {
         try {
-            return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<T>(future, exception)).get();
+            return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<>(future, exception)).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public static <T> void completeFutureExceptionally(CompletableFuture<T> future, Throwable exception)
-    {
-        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<T>(future, exception));
+    public static <T> void completeFutureExceptionally(CompletableFuture<T> future, Throwable exception) {
+        MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<>(future, exception));
     }
 
-    public static void run(Runnable runnable)
-    {
+    public static void run(Runnable runnable) {
         MessagingFactory.INTERNAL_THREAD_POOL.submit(runnable);
     }
 
-    private static class CompleteCallable<T> implements Callable<Boolean>
-    {
+    private static class CompleteCallable<T> implements Callable<Boolean> {
         private CompletableFuture<T> future;
         private T result;
 
-        CompleteCallable(CompletableFuture<T> future, T result)
-        {
+        CompleteCallable(CompletableFuture<T> future, T result) {
             this.future = future;
             this.result = result;
         }
@@ -63,13 +56,11 @@ class AsyncUtil {
         }
     }
 
-    private static class CompleteExceptionallyCallable<T> implements Callable<Boolean>
-    {
+    private static class CompleteExceptionallyCallable<T> implements Callable<Boolean> {
         private CompletableFuture<T> future;
         private Throwable exception;
 
-        CompleteExceptionallyCallable(CompletableFuture<T> future, Throwable exception)
-        {
+        CompleteExceptionallyCallable(CompletableFuture<T> future, Throwable exception) {
             this.future = future;
             this.exception = exception;
         }

@@ -8,8 +8,6 @@ import io.reactivex.Flowable;
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This type is to support the implementation of uploadFromNonReplaybleFlowable only. It is mandatory that the caller
