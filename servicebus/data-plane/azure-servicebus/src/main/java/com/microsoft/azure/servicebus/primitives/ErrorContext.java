@@ -3,9 +3,12 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-abstract class ErrorContext {
+abstract class ErrorContext implements Serializable {
+
+    private static final long serialVersionUID = -6342329018037308640L;
     private final String namespaceName;
 
     ErrorContext(final String namespaceName) {

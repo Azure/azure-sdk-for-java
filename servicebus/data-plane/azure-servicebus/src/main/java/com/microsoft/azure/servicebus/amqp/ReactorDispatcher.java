@@ -73,7 +73,7 @@ public final class ReactorDispatcher {
         final BaseHandler timerCallback;
         final Reactor reactor;
 
-        public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
+        DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
             this.delay = delay;
             this.timerCallback = timerCallback;
             this.reactor = reactor;
@@ -91,8 +91,7 @@ public final class ReactorDispatcher {
             try {
                 ioSignal.source().read(ByteBuffer.allocate(1024));
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-
-            } catch(IOException ioException) {
+            } catch (IOException ioException) {
                 throw new RuntimeException(ioException);
             }
 
@@ -108,15 +107,13 @@ public final class ReactorDispatcher {
         public void run(Selectable selectable) {
             try {
                 selectable.getChannel().close();
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
 
             try {
                 if (ioSignal.sink().isOpen()) {
                     ioSignal.sink().close();
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
 
             workScheduler.run(null);
 
@@ -124,8 +121,7 @@ public final class ReactorDispatcher {
                 if (ioSignal.source().isOpen()) {
                     ioSignal.source().close();
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) { }
         }
     }
 }

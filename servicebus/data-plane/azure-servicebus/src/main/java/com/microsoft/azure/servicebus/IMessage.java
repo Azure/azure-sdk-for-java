@@ -25,7 +25,7 @@ public interface IMessage {
      * @return delivery count of this message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message transfers, locks, and settlement.</a>
      */
-    public long getDeliveryCount();
+    long getDeliveryCount();
 
     /**
      * Gets the Id of this message.
@@ -39,14 +39,14 @@ public interface IMessage {
      * 
      * @return Id of this message
      */
-    public String getMessageId();
+    String getMessageId();
 
     /**
      * Sets the Id of this message.
      * @param messageId Id of this message
      * @see #getMessageId()
      */
-    public void setMessageId(String messageId);
+    void setMessageId(String messageId);
 
     /**
      * Gets the duration before this message expires. 
@@ -61,7 +61,7 @@ public interface IMessage {
      * @return Time to Live duration of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>  
      */
-    public Duration getTimeToLive();
+    Duration getTimeToLive();
 
     /**
      * Sets the duration of time before this message expires. 
@@ -69,7 +69,7 @@ public interface IMessage {
      * @param timeToLive Time to Live duration of this message
      * @see #getTimeToLive()
      */
-    public void setTimeToLive(Duration timeToLive);
+    void setTimeToLive(Duration timeToLive);
 
     /**
      * Gets the content type of this message.
@@ -79,7 +79,7 @@ public interface IMessage {
      * 
      * @return content type of this message
      */
-    public String getContentType();
+    String getContentType();
 
     /**
      * Sets the content type of this message.
@@ -87,7 +87,7 @@ public interface IMessage {
      * @param contentType content type of this message
      * @see #getContentType()
      */
-    public void setContentType(String contentType);
+    void setContentType(String contentType);
 
     /**
      * Gets the instant at which this message will expire. 
@@ -100,7 +100,7 @@ public interface IMessage {
      * @return instant at which this message expires
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
-    public Instant getExpiresAtUtc();
+    Instant getExpiresAtUtc();
 
     /**
      * Gets the instant at which the lock of this message expires. 
@@ -112,7 +112,7 @@ public interface IMessage {
      * @return the instant at which the lock of this message expires if the message is received using PEEKLOCK mode. Otherwise it returns null.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message transfers, locks, and settlement</a>
      */
-    public Instant getLockedUntilUtc();
+    Instant getLockedUntilUtc();
 
     /**
      * Gets the instant at which this message was enqueued in Azure Service Bus.
@@ -125,7 +125,7 @@ public interface IMessage {
      * @return the instant at which the message was enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
      */
-    public Instant getEnqueuedTimeUtc();
+    Instant getEnqueuedTimeUtc();
 
     /**
      * Gets the scheduled enqueue time of this message. 
@@ -140,7 +140,7 @@ public interface IMessage {
      * @deprecated Replaced by {@link #getScheduledEnqueueTimeUtc()}
      */
     @Deprecated
-    public Instant getScheduledEnqueuedTimeUtc();
+    Instant getScheduledEnqueuedTimeUtc();
 
     /**
      * Sets the scheduled enqueue time of this message.  
@@ -150,7 +150,7 @@ public interface IMessage {
      * @deprecated Replaced by {@link #setScheduledEnqueueTimeUtc(Instant)}
      */
     @Deprecated
-    public void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc);
+    void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc);
     
     /**
      * Gets the scheduled enqueue time of this message. 
@@ -163,7 +163,7 @@ public interface IMessage {
      * @return the instant at which the message will be enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
      */
-    public Instant getScheduledEnqueueTimeUtc();
+    Instant getScheduledEnqueueTimeUtc();
 
     /**
      * Sets the scheduled enqueue time of this message.  
@@ -171,7 +171,7 @@ public interface IMessage {
      * @param scheduledEnqueueTimeUtc the instant at which this message should be enqueued in Azure Service Bus
      * @see #getScheduledEnqueueTimeUtc()
      */
-    public void setScheduledEnqueueTimeUtc(Instant scheduledEnqueueTimeUtc);
+    void setScheduledEnqueueTimeUtc(Instant scheduledEnqueueTimeUtc);
 
     /**
      * Gets the unique number assigned to a message by Service Bus.
@@ -184,7 +184,7 @@ public interface IMessage {
      * @return sequence number of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
      */
-    public long getSequenceNumber();
+    long getSequenceNumber();
 
     /**
      * Gets the session identifier for a session-aware entity.
@@ -197,7 +197,7 @@ public interface IMessage {
      * @return session id of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sessions">Message Sessions</a> 
      */
-    public String getSessionId();
+    String getSessionId();
 
     /**
      * Sets the session identifier for a session-aware entity.
@@ -205,7 +205,7 @@ public interface IMessage {
      * @param sessionId session id of this message
      * @see #getSessionId()
      */
-    public void setSessionId(String sessionId);
+    void setSessionId(String sessionId);
 
     /**
      * Gets the body of this message as a byte array. It is up to client applications 
@@ -216,7 +216,7 @@ public interface IMessage {
      * @deprecated Message body need not just a byte array. Replaced by {@link #getMessageBody()}
      */
     @Deprecated
-    public byte[] getBody();
+    byte[] getBody();
 
     /**
      * Sets the body of this message as a byte array.
@@ -226,7 +226,7 @@ public interface IMessage {
      * @deprecated Message body need not just a byte array. Replaced by {@link #setMessageBody(MessageBody)}
      */
     @Deprecated
-    public void setBody(byte[] body);
+    void setBody(byte[] body);
 
     /**
      * Gets the body of this message. Client applications should extract message content based on body type.
@@ -234,7 +234,7 @@ public interface IMessage {
      * @return body of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Messages, payloads, and serialization</a>
      */
-    public MessageBody getMessageBody();
+    MessageBody getMessageBody();
 
     /**
      * Sets the body of this message.
@@ -242,7 +242,7 @@ public interface IMessage {
      * @param body body of this message
      * @see #getMessageBody()
      */
-    public void setMessageBody(MessageBody body);
+    void setMessageBody(MessageBody body);
     
     /**
      * Gets the map of user application properties of this message. Client 
@@ -251,7 +251,7 @@ public interface IMessage {
      * @return the map of user application properties of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Messages, payloads, and serialization</a>
      */
-    public Map<String, Object> getProperties();
+    Map<String, Object> getProperties();
 
     /**
      * Sets the map of user application properties of this message. Client applications 
@@ -271,7 +271,7 @@ public interface IMessage {
      * @return correlation Id of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>
      */
-    public String getCorrelationId();
+    String getCorrelationId();
 
     /**
      * Sets a correlation identifier.
@@ -279,14 +279,14 @@ public interface IMessage {
      * @param correlationId correlation Id of this message
      * @see #getCorrelationId()
      */
-    public void setCorrelationId(String correlationId);
+    void setCorrelationId(String correlationId);
 
     /**
      * Gets the "to" address.
      *
      * @return To property value of this message
      */
-    public String getTo();
+    String getTo();
 
     /**
      * Sets the "to" address.
@@ -298,7 +298,7 @@ public interface IMessage {
      *   
      * @param to To property value of this message
      */
-    public void setTo(String to);
+    void setTo(String to);
 
     /**
      * Gets the address of an entity to send replies to.
@@ -310,7 +310,7 @@ public interface IMessage {
      * @return ReplyTo property value of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>
      */
-    public String getReplyTo();
+    String getReplyTo();
 
     /**
      * Sets the address of an entity to send replies to.
@@ -318,7 +318,7 @@ public interface IMessage {
      * @param replyTo ReplyTo property value of this message
      * @see #getReplyTo()
      */
-    public void setReplyTo(String replyTo);
+    void setReplyTo(String replyTo);
 
     /**
      * Gets the application specific message label.
@@ -328,7 +328,7 @@ public interface IMessage {
      *
      * @return Label property value of this message
      */
-    public String getLabel();
+    String getLabel();
 
     /**
      * Sets an application specific message label.
@@ -336,7 +336,7 @@ public interface IMessage {
      * @param label Label property value of this message
      * @see #getLabel()
      */
-    public void setLabel(String label);
+    void setLabel(String label);
 
     /**
      * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
@@ -347,14 +347,14 @@ public interface IMessage {
      * @return ReplyToSessionId property value of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>
      */
-    public String getReplyToSessionId();
+    String getReplyToSessionId();
 
     /**
      * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
      *
      * @param replyToSessionId ReplyToSessionId property value of this message
      */
-    public void setReplyToSessionId(String replyToSessionId);
+    void setReplyToSessionId(String replyToSessionId);
 
     /**
      * Gets the partition key for sending a message to a partitioned entity.
@@ -367,7 +367,7 @@ public interface IMessage {
      * @return partition key of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned entities</a>
      */
-    public String getPartitionKey();
+    String getPartitionKey();
 
     /**
      * Sets a partition key for sending a message to a partitioned entity
@@ -375,7 +375,7 @@ public interface IMessage {
      * @param partitionKey partition key of this message
      * @see #getPartitionKey()
      */
-    public void setPartitionKey(String partitionKey);
+    void setPartitionKey(String partitionKey);
 
     /**
      * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
@@ -387,7 +387,7 @@ public interface IMessage {
      * @return partition key on the via queue.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
      */
-    public String getViaPartitionKey();
+    String getViaPartitionKey();
 
     /**
      * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
@@ -395,7 +395,7 @@ public interface IMessage {
      * @param viaPartitionKey via-partition key of this message
      * @see #getViaPartitionKey()
      */
-    public void setViaPartitionKey(String viaPartitionKey);
+    void setViaPartitionKey(String viaPartitionKey);
 
     /**
      * Gets the name of the queue or subscription that this message was enqueued on, before it was deadlettered.
@@ -406,7 +406,7 @@ public interface IMessage {
      * @return dead letter source of this message
      * @see <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead-letter queues</a>
      */
-    public String getDeadLetterSource();
+    String getDeadLetterSource();
 
     /**
      * Gets the lock token for the current message.
@@ -419,11 +419,11 @@ public interface IMessage {
      * @return lock token of this message. 
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message transfers, locks, and settlement</a>
      */
-    public UUID getLockToken();
+    UUID getLockToken();
     
     /**
      * Creates a shallow copy of this message.
      * @return copy of this message
      */
-    public IMessage createCopy();
+    IMessage createCopy();
 }

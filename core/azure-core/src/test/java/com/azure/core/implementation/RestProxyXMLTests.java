@@ -47,8 +47,7 @@ public class RestProxyXMLTests {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/xml");
+            HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/xml");
             HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
             return res;
         }
@@ -95,7 +94,9 @@ public class RestProxyXMLTests {
     @Test
     public void canReadXMLResponse() throws Exception {
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockXMLHTTPClient())
+            .build();
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
@@ -159,7 +160,9 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
-        final HttpPipeline pipeline = new HttpPipeline(httpClient);
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .build();
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
                 pipeline,
@@ -193,7 +196,9 @@ public class RestProxyXMLTests {
     public void canDeserializeXMLWithAttributes() throws Exception {
         JacksonAdapter serializer = new JacksonAdapter();
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockXMLHTTPClient())
+            .build();
 
         //
         MyXMLServiceWithAttributes myXMLService = RestProxy.create(
