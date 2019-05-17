@@ -197,7 +197,7 @@ public class CorrelationFilter extends Filter {
             return false;
         }
 
-        CorrelationFilter other = (CorrelationFilter)o;
+        CorrelationFilter other = (CorrelationFilter) o;
 
         if ((this.correlationId == null ? other.correlationId == null : this.correlationId.equals(other.correlationId))
                 && (this.messageId == null ? other.messageId == null : this.messageId.equals(other.messageId))
