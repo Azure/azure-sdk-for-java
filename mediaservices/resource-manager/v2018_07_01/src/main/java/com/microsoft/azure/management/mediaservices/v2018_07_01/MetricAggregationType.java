@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for MetricAggregationType.
  */
-public enum MetricAggregationType {
-    /** The average. */
-    AVERAGE("Average"),
+public final class MetricAggregationType extends ExpandableStringEnum<MetricAggregationType> {
+    /** Static value Average for MetricAggregationType. */
+    public static final MetricAggregationType AVERAGE = fromString("Average");
 
-    /** The count of a number of items, usually requests. */
-    COUNT("Count"),
+    /** Static value Count for MetricAggregationType. */
+    public static final MetricAggregationType COUNT = fromString("Count");
 
-    /** The sum. */
-    TOTAL("Total");
+    /** Static value Total for MetricAggregationType. */
+    public static final MetricAggregationType TOTAL = fromString("Total");
 
-    /** The actual serialized value for a MetricAggregationType instance. */
-    private String value;
-
-    MetricAggregationType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a MetricAggregationType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding MetricAggregationType
+     */
+    @JsonCreator
+    public static MetricAggregationType fromString(String name) {
+        return fromString(name, MetricAggregationType.class);
     }
 
     /**
-     * Parses a serialized value to a MetricAggregationType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed MetricAggregationType object, or null if unable to parse.
+     * @return known MetricAggregationType values
      */
-    @JsonCreator
-    public static MetricAggregationType fromString(String value) {
-        MetricAggregationType[] items = MetricAggregationType.values();
-        for (MetricAggregationType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<MetricAggregationType> values() {
+        return values(MetricAggregationType.class);
     }
 }

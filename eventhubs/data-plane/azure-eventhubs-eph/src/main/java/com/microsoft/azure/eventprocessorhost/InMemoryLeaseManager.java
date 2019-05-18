@@ -14,7 +14,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /***
- * An ILeaseManager implementation based on an in-memory store. 
+ * An ILeaseManager implementation based on an in-memory store.
  *
  * THIS CLASS IS PROVIDED AS A CONVENIENCE FOR TESTING ONLY. All data stored via this class is in memory
  * only and not persisted in any way. In addition, it is only visible within the same process: multiple
@@ -46,11 +46,11 @@ public class InMemoryLeaseManager implements ILeaseManager {
     public void initialize(HostContext hostContext) {
         this.hostContext = hostContext;
     }
-    
+
     public void setLatency(long milliseconds) {
         this.millisecondsLatency = milliseconds;
     }
-    
+
     private void latency(String caller) {
         if (this.millisecondsLatency > 0) {
             try {
@@ -91,7 +91,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         latency("deleteLeaseStore");
         return CompletableFuture.completedFuture(null);
     }
-    
+
     @Override
     public CompletableFuture<CompleteLease> getLease(String partitionId) {
         TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
@@ -110,7 +110,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         latency("getAllLeasesStateInfo");
         return CompletableFuture.completedFuture(infos);
     }
-    
+
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
         ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
@@ -297,7 +297,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
     private static class InMemoryLeaseStore {
         static final InMemoryLeaseStore SINGLETON = new InMemoryLeaseStore();
-        private static int leaseDurationInMilliseconds;
+        private volatile int leaseDurationInMilliseconds;
 
         private ConcurrentHashMap<String, InMemoryLease> inMemoryLeasesPrivate = null;
         private ConcurrentHashMap<String, Callable<?>> notifiers = new ConcurrentHashMap<String, Callable<?>>();
@@ -310,7 +310,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
             if (this.inMemoryLeasesPrivate == null) {
                 this.inMemoryLeasesPrivate = new ConcurrentHashMap<String, InMemoryLease>();
             }
-            InMemoryLeaseStore.leaseDurationInMilliseconds = leaseDurationInMilliseconds;
+            this.leaseDurationInMilliseconds = leaseDurationInMilliseconds;
         }
 
         synchronized void deleteMap() {
@@ -333,7 +333,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
             InMemoryLease leaseInStore = getLease(partitionId);
             if (leaseInStore.isExpiredSync() || (leaseInStore.getOwner() == null) || leaseInStore.getOwner().isEmpty()) {
                 leaseInStore.setOwner(newOwner);
-                leaseInStore.setExpirationTime(System.currentTimeMillis() + InMemoryLeaseStore.leaseDurationInMilliseconds);
+                leaseInStore.setExpirationTime(System.currentTimeMillis() + this.leaseDurationInMilliseconds);
             } else {
                 // Return null if it was already owned
                 leaseInStore = null;
@@ -348,6 +348,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 try {
                     notifier.call();
                 } catch (Exception e) {
+                    TRACE_LOGGER.warn("notifier call failed: " + e.getMessage());
                 }
             } else {
                 this.notifiers.put(partitionId, notifier);
@@ -361,6 +362,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 try {
                     notifier.call();
                 } catch (Exception e) {
+                    TRACE_LOGGER.warn("notifier call failed: " + e.getMessage());
                 }
             }
         }
@@ -402,6 +404,16 @@ public class InMemoryLeaseManager implements ILeaseManager {
             boolean hasExpired = (System.currentTimeMillis() >= this.expirationTimeMillis);
             TRACE_LOGGER.debug("isExpired(" + this.getPartitionId() + (hasExpired ? ") expired " : ") leased ") + (this.expirationTimeMillis - System.currentTimeMillis()));
             return hasExpired;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return super.equals(o);
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
         }
     }
 }

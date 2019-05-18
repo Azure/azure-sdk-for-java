@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Represents input files for a Job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.JobInputClip")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputAsset", value = JobInputAsset.class),
@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class JobInputClip extends JobInput {
     /**
-     * List of files. Required for JobInputHttp.
+     * List of files. Required for JobInputHttp. Maximum of 4000 characters
+     * each.
      */
     @JsonProperty(value = "files")
     private List<String> files;
@@ -42,7 +43,7 @@ public class JobInputClip extends JobInput {
     private String label;
 
     /**
-     * Get list of files. Required for JobInputHttp.
+     * Get list of files. Required for JobInputHttp. Maximum of 4000 characters each.
      *
      * @return the files value
      */
@@ -51,7 +52,7 @@ public class JobInputClip extends JobInput {
     }
 
     /**
-     * Set list of files. Required for JobInputHttp.
+     * Set list of files. Required for JobInputHttp. Maximum of 4000 characters each.
      *
      * @param files the files value to set
      * @return the JobInputClip object itself.

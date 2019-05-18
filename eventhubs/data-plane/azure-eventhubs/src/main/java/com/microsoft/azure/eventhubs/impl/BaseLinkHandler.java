@@ -12,12 +12,16 @@ import org.apache.qpid.proton.engine.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+
 public class BaseLinkHandler extends BaseHandler {
     protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseLinkHandler.class);
 
+    private final String name;
     private final AmqpLink underlyingEntity;
 
-    public BaseLinkHandler(final AmqpLink amqpLink) {
+    public BaseLinkHandler(final AmqpLink amqpLink, final String name) {
+        this.name = name;
         this.underlyingEntity = amqpLink;
     }
 
@@ -27,10 +31,8 @@ public class BaseLinkHandler extends BaseHandler {
         final ErrorCondition condition = link.getCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkLocalClose linkName[%s], errorCondition[%s], errorDescription[%s]",
-                    link.getName(),
-                    condition != null ? condition.getCondition() : "n/a",
-                    condition != null ? condition.getDescription() : "n/a"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onLinkLocalClose clientName[%s], linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
 
         closeSession(link, link.getCondition());
@@ -39,13 +41,11 @@ public class BaseLinkHandler extends BaseHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         final Link link = event.getLink();
-        final ErrorCondition condition = link.getCondition();
+        final ErrorCondition condition = link.getRemoteCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkRemoteClose linkName[%s], errorCondition[%s], errorDescription[%s]",
-                    link.getName(),
-                    condition != null ? condition.getCondition() : "n/a",
-                    condition != null ? condition.getDescription() : "n/a"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteClose clientName[%s], linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
 
         handleRemoteLinkClosed(event);
@@ -57,10 +57,8 @@ public class BaseLinkHandler extends BaseHandler {
         final ErrorCondition condition = link.getCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkRemoteDetach linkName[%s], errorCondition[%s], errorDescription[%s]",
-                    link.getName(),
-                    condition != null ? condition.getCondition() : "n/a",
-                    condition != null ? condition.getDescription() : "n/a"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteDetach clientName[%s], linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
 
         handleRemoteLinkClosed(event);
@@ -68,16 +66,19 @@ public class BaseLinkHandler extends BaseHandler {
 
     public void processOnClose(Link link, ErrorCondition condition) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("processOnClose linkName[%s], errorCondition[%s], errorDescription[%s]",
-                    link.getName(),
-                    condition != null ? condition.getCondition() : "n/a",
-                    condition != null ? condition.getDescription() : "n/a"));
+            TRACE_LOGGER.info(String.format(Locale.US, "processOnClose clientName[%s], linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
 
         this.underlyingEntity.onClose(condition);
     }
 
     public void processOnClose(Link link, Exception exception) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "processOnClose clientName[%s],  linkName[%s], exception[%s]",
+                    this.name, link.getName(), exception != null ? exception.getMessage() : "n/a"));
+        }
+
         this.underlyingEntity.onError(exception);
     }
 
@@ -86,10 +87,8 @@ public class BaseLinkHandler extends BaseHandler {
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("closeSession for linkName[%s], errorCondition[%s], errorDescription[%s]",
-                        link.getName(),
-                        condition != null ? condition.getCondition() : "n/a",
-                        condition != null ? condition.getDescription() : "n/a"));
+                TRACE_LOGGER.info(String.format(Locale.US, "closeSession for clientName[%s], linkName[%s], errorCondition[%s], errorDescription[%s]",
+                        this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
             }
 
             session.setCondition(condition);

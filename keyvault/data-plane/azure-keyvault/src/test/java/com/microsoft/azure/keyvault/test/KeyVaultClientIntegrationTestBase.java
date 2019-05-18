@@ -52,8 +52,8 @@ public class KeyVaultClientIntegrationTestBase {
     protected static KeyVaultClient keyVaultClient;
     protected static KeyVaultClient alternativeKeyVaultClient;
 
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
     protected static String alternativePlaybackUri = null;
@@ -178,12 +178,12 @@ public class KeyVaultClientIntegrationTestBase {
         // Determine whether to run the test based on the condition the test has been
         // configured with
         switch (this.runCondition) {
-        case MOCK_ONLY:
-            return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
-        case LIVE_ONLY:
-            return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
-        default:
-            return null;
+            case MOCK_ONLY:
+                return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
+            case LIVE_ONLY:
+                return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
+            default:
+                return null;
         }
     }
 
@@ -224,13 +224,15 @@ public class KeyVaultClientIntegrationTestBase {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null)
+        if (testMode == null) {
             try {
                 initTestMode();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
+        }
+
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 

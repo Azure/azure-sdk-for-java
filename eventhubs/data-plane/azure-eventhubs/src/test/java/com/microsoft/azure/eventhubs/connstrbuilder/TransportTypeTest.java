@@ -12,20 +12,22 @@ import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TransportTypeTest extends ApiTestBase {
-
-    public volatile boolean isProxySelectorInvoked = false;
+    private volatile boolean isProxySelectorInvoked = false;
 
     @Test
     public void transportTypeAmqpCreatesConnectionWithPort5671() throws Exception {
@@ -89,7 +91,8 @@ public class TransportTypeTest extends ApiTestBase {
     public void transportTypeAmqpWebSocketsWithProxyCreatesConnectionWithCorrectPorts() throws Exception {
         int proxyPort = 8899;
         ProxyServer proxyServer = ProxyServer.create("localhost", proxyPort);
-        proxyServer.start(throwable -> {});
+        proxyServer.start(throwable -> {
+        });
 
         ProxySelector defaultProxySelector = ProxySelector.getDefault();
         this.isProxySelectorInvoked = false;
