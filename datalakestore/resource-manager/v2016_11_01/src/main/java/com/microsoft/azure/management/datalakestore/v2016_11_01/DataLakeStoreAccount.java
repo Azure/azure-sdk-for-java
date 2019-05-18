@@ -201,7 +201,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param firewallRules The list of firewall rules associated with this Data Lake Store account
              * @return the next definition stage
              */
-            WithCreate withFirewallRulesForCreate(List<CreateFirewallRuleWithAccountParameters> firewallRules);
+            WithCreate withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules);
         }
 
         /**
@@ -249,7 +249,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param trustedIdProviders The list of trusted identity providers associated with this Data Lake Store account
              * @return the next definition stage
              */
-            WithCreate withTrustedIdProvidersForCreate(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders);
+            WithCreate withTrustedIdProviders(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders);
         }
 
         /**
@@ -273,7 +273,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param virtualNetworkRules The list of virtual network rules associated with this Data Lake Store account
              * @return the next definition stage
              */
-            WithCreate withVirtualNetworkRulesForCreate(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules);
+            WithCreate withVirtualNetworkRules(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules);
         }
 
         /**
@@ -339,7 +339,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param firewallRules The list of firewall rules associated with this Data Lake Store account
              * @return the next update stage
              */
-            Update withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules);
+            Update withFirewallRules(List<UpdateFirewallRuleWithAccountParameters> firewallRules);
         }
 
         /**
@@ -375,7 +375,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param trustedIdProviders The list of trusted identity providers associated with this Data Lake Store account
              * @return the next update stage
              */
-            Update withTrustedIdProvidersForUpdate(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders);
+            Update withTrustedIdProviders(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders);
         }
 
         /**
@@ -399,7 +399,7 @@ public interface DataLakeStoreAccount extends HasInner<DataLakeStoreAccountInner
              * @param virtualNetworkRules The list of virtual network rules associated with this Data Lake Store account
              * @return the next update stage
              */
-            Update withVirtualNetworkRulesForUpdate(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules);
+            Update withVirtualNetworkRules(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules);
         }
 
     }

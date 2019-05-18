@@ -1346,7 +1346,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1374,7 +1374,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1403,7 +1403,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccountInner&gt; object
      */
@@ -1429,7 +1429,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccountInner&gt; object
      */
@@ -1459,7 +1459,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeStoreAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1614,7 +1614,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1641,7 +1641,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1669,7 +1669,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccountInner&gt; object
      */
@@ -1694,7 +1694,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccountInner&gt; object
      */
@@ -1723,7 +1723,7 @@ public class AccountsInner implements InnerSupportsGet<DataLakeStoreAccountInner
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
     ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInner>> * @param format The desired return format. Return the response in particular format without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeStoreAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
