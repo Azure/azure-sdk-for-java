@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.RejectedExecutionException;
@@ -86,24 +87,12 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 		if (StringUtil.isNullOrWhiteSpace(hostname)) {
 			throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
 		}
-		if (operationTimeout == null) {
-			throw new IllegalArgumentException("Operation timeout cannot be null");
-		}
-		if (transportType == null) {
-			throw new IllegalArgumentException("Transport type cannot be null");
-		}
-		if (tokenProvider == null) {
-			throw new IllegalArgumentException("Token provider cannot be null");
-		}
-		if (retryPolicy == null) {
-			throw new IllegalArgumentException("Retry policy cannot be null");
-		}
-		if (executor == null) {
-			throw new IllegalArgumentException("Executor cannot be null");
-		}
-		if (reactorFactory == null) {
-			throw new IllegalArgumentException("Reactor factory cannot be null");
-		}
+		Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null");
+		Objects.requireNonNull(transportType, "Transport type cannot be null");
+		Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
+		Objects.requireNonNull(retryPolicy, "Retry policy cannot be null");
+		Objects.requireNonNull(executor, "Executor cannot be null");
+		Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null");
         
         this.hostName = hostname;
         this.reactorFactory = reactorFactory;
@@ -174,15 +163,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     		}
     		this.hostname = hostname;
     		
-    		if (tokenProvider == null) {
-    			throw new IllegalArgumentException("Token provider cannot be null");
-    		}
-    		this.tokenProvider = tokenProvider;
-    		
-    		if (executor == null) {
-    			throw new IllegalArgumentException("Executor cannot be null");
-    		}
-    		this.executor = executor;
+    		this.tokenProvider = Objects.requireNonNull(tokenProvider);
+    		this.executor = Objects.requireNonNull(executor);
     	}
     	
     	public MessagingFactoryBuilder setOperationTimeout(Duration operationTimeout) {

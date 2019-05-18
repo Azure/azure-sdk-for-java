@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -64,9 +65,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     	if (StringUtil.isNullOrWhiteSpace(connectionString)) {
     		throw new IllegalArgumentException("Connection string cannot be null or empty");
     	}
-    	if (executor == null) {
-    		throw new IllegalArgumentException("Executor cannot be null");
-    	}
+    	Objects.requireNonNull(executor, "Executor cannot be null");
     	
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
@@ -94,9 +93,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     	if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
     		throw new IllegalArgumentException("Event hub name cannot be null or empty");
     	}
-    	if (tokenProvider == null) {
-    		throw new IllegalArgumentException("Token provider cannot be null");
-    	}
+    	Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
     	
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
