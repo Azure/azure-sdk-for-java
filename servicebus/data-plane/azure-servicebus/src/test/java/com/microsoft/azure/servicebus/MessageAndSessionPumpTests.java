@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,7 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpAutoComplete(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for (int i=0; i<numMessages; i++) {
+        for (int i = 0; i < numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = true;
@@ -48,7 +47,7 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpClientComplete(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for (int i=0; i<numMessages; i++) {
+        for (int i = 0; i < numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = false;
@@ -63,7 +62,7 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpAbandonOnException(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for (int i=0; i<numMessages; i++) {
+        for (int i = 0; i < numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = false;
@@ -78,7 +77,7 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpRenewLock(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 5;
-        for (int i=0; i<numMessages; i++) {
+        for (int i = 0; i < numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = true;
@@ -102,14 +101,14 @@ public class MessageAndSessionPumpTests {
         try {
             messagePump.registerMessageHandler(messageHandler, EXECUTOR_SERVICE);
             Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
-        } catch(UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             // Expected
         }
 
         try {
             messagePump.registerSessionHandler(new CountingSessionHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
             Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
-        } catch(UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             // Expected
         }
     }
@@ -121,14 +120,14 @@ public class MessageAndSessionPumpTests {
         try {
             messagePump.registerSessionHandler(countingSessionHandler, EXECUTOR_SERVICE);
             Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
-        } catch(UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             // Expected
         }
 
         try {
             messagePump.registerMessageHandler(new CountingMessageHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
             Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
-        } catch(UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             // Expected
         }
     }
@@ -145,10 +144,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for (int i=0; i<numSessions; i++) {
+        for (int i = 0; i < numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for (int j=0; j<numMessagePerSession; j++) {
+            for (int j = 0; j < numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -174,10 +173,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for (int i=0; i<numSessions; i++) {
+        for (int i = 0; i < numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for (int j=0; j<numMessagePerSession; j++) {
+            for (int j = 0; j < numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -201,10 +200,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for (int i=0; i<numSessions; i++) {
+        for (int i = 0; i < numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for (int j=0; j<numMessagePerSession; j++) {
+            for (int j = 0; j < numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -230,10 +229,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 5;
         int numMessagePerSession = 2;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for (int i=0; i<numSessions; i++) {
+        for (int i = 0; i < numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for (int j=0; j<numMessagePerSession; j++) {
+            for (int j = 0; j < numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -314,16 +313,14 @@ public class MessageAndSessionPumpTests {
             return completeFuture.thenRunAsync(() -> {
                 this.messageCountDownLatch.countDown();
                 this.maxConcurrencyCounter.decrementCount();
-                }, EXECUTOR_SERVICE);
+            }, EXECUTOR_SERVICE);
         }
 
-        public CountDownLatch getMessageCountDownLatch()
-        {
+        public CountDownLatch getMessageCountDownLatch() {
             return this.messageCountDownLatch;
         }
 
-        public MaxConcurrencyCounter getMaxConcurrencyCounter()
-        {
+        public MaxConcurrencyCounter getMaxConcurrencyCounter() {
             return this.maxConcurrencyCounter;
         }
     }
@@ -385,9 +382,9 @@ public class MessageAndSessionPumpTests {
             }
 
             return completeFuture.thenRunAsync(() -> {
-                    this.messageCountDownLatch.countDown();
-                    this.maxConcurrencyCounter.decrementCount();
-                }, EXECUTOR_SERVICE);
+                this.messageCountDownLatch.countDown();
+                this.maxConcurrencyCounter.decrementCount();
+            }, EXECUTOR_SERVICE);
         }
 
         @Override

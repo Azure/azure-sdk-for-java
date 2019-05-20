@@ -7,13 +7,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request.
  */
-public class HttpRequest {
+public class HttpRequest implements Serializable {
+    private static final long serialVersionUID = 6338479743058758810L;
+
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
@@ -115,7 +118,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest withHeader(String name, String value) {
-        headers.set(name, value);
+        headers.put(name, value);
         return this;
     }
 
@@ -147,7 +150,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest withBody(byte[] content) {
-        headers.set("Content-Length", String.valueOf(content.length));
+        headers.put("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
         return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
     }

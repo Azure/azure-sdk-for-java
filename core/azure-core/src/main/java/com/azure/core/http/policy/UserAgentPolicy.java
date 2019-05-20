@@ -63,7 +63,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().set("User-Agent", header);
+        context.httpRequest().headers().put("User-Agent", header);
         return next.process();
     }
 

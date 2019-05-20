@@ -52,20 +52,17 @@ public class TopicRuntimeInfoSerializer {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                switch (element.getTagName()) {
                     case "title":
                         topicRuntimeInfo = new TopicRuntimeInfo(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "AccessedAt":
                                         topicRuntimeInfo.setAccessedAt(Instant.parse(element.getFirstChild().getNodeValue()));
                                         break;
@@ -104,6 +101,8 @@ public class TopicRuntimeInfoSerializer {
                                                         break;
                                                     case "TransferDeadLetterMessageCount":
                                                         topicRuntimeInfo.getMessageCountDetails().setTransferDeadLetterMessageCount(Long.parseLong(element.getFirstChild().getNodeValue()));
+                                                        break;
+                                                    default:
                                                         break;
                                                 }
                                             }
