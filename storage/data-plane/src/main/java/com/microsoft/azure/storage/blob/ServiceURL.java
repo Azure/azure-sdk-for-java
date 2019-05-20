@@ -276,8 +276,8 @@ public final class ServiceURL extends StorageURL {
                 this.storageClient.generatedServices().getUserDelegationKeyWithRestResponseAsync(
                         context,
                         new KeyInfo()
-                                .withStart(start == null ? "" : Utility.ISO8601UTCDateFormatter.format(start))
-                                .withExpiry(Utility.ISO8601UTCDateFormatter.format(expiry)),
+                                .withStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                                .withExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                         null, null)
         );
     }

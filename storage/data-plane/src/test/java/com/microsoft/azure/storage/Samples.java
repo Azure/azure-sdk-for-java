@@ -313,6 +313,7 @@ public class Samples {
         if (response.body().segment().blobPrefixes() != null) {
             for (BlobPrefix bp : response.body().segment().blobPrefixes()) {
                 // Process the prefixes.
+                System.out.println("Blob prefix is " + bp.name());
             }
         }
 
@@ -504,6 +505,7 @@ public class Samples {
                             HttpResponse response = exception.response();
                         } else if (exception.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                             // Process the error
+                            System.out.println("The container url is " + containerURL.toString());
                         }
                     }
                     // We just fake a successful response to prevent the example from crashing.
@@ -687,7 +689,7 @@ public class Samples {
 
     // This example shows how to manipulate a container's permissions.
     @Test
-    public void exampleContainerURL_SetPermissions() throws InvalidKeyException, MalformedURLException {
+    public void exampleContainerURLSetPermissions() throws InvalidKeyException, MalformedURLException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -867,7 +869,7 @@ public class Samples {
 
     // This example shows how to create a container with metadata and then how to read & update the metadata.
     @Test
-    public void exampleMetadata_containers() throws MalformedURLException, InvalidKeyException {
+    public void exampleMetadataContainers() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -918,7 +920,7 @@ public class Samples {
     and metadata.
      */
     @Test
-    public void exampleMetadata_blob() throws MalformedURLException, InvalidKeyException {
+    public void exampleMetadataBlob() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1273,7 +1275,7 @@ public class Samples {
     list blobs with their snapshots, and how to delete blob snapshots.
      */
     @Test
-    public void example_blobSnapshot() throws MalformedURLException, InvalidKeyException {
+    public void exampleBlobSnapshot() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1351,7 +1353,7 @@ public class Samples {
     This example shows how to add progress reporting to the upload and download of blobs.
      */
     @Test
-    public void example_progressReporting() throws MalformedURLException, InvalidKeyException {
+    public void exampleProgressReporting() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1367,33 +1369,33 @@ public class Samples {
 
         // Create the container.
         containerURL.create(null, null, null)
-                .flatMap(response ->
-                        /*
-                        In the call to upload, we add progress reporting to the flowable. Here we choose to just print
-                        out the progress. Note that for operations with the TransferManager, progress reporting need
-                        not be pre-applied. A ProgressReceiver may simply be set on the options, and the TransferManager
-                        will handle coordinating the reporting between parallel requests.
-                         */
-                        blobURL.upload(ProgressReporter.addProgressReporting(data, System.out::println),
-                                4L, null, null, null, null))
-                .flatMap(response ->
-                        blobURL.download(null, null, false, null))
-                .flatMapPublisher(response ->
-                        /*
-                        Here we add progress reporting to the download response in the same manner.
-                         */
-                        ProgressReporter.addProgressReporting(response.body(null), System.out::println))
-                 /*
-                This will synchronize all the above operations. This is strongly discouraged for use in production as
-                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
-                demonstrate its effectiveness.
-                 */
-                .blockingSubscribe();
+            .flatMap(response ->
+                    /*
+                    In the call to upload, we add progress reporting to the flowable. Here we choose to just print
+                    out the progress. Note that for operations with the TransferManager, progress reporting need
+                    not be pre-applied. A ProgressReceiver may simply be set on the options, and the TransferManager
+                    will handle coordinating the reporting between parallel requests.
+                     */
+                    blobURL.upload(ProgressReporter.addProgressReporting(data, System.out::println),
+                            4L, null, null, null, null))
+            .flatMap(response ->
+                    blobURL.download(null, null, false, null))
+            .flatMapPublisher(response ->
+                    /*
+                    Here we add progress reporting to the download response in the same manner.
+                     */
+                    ProgressReporter.addProgressReporting(response.body(null), System.out::println))
+             /*
+            This will synchronize all the above operations. This is strongly discouraged for use in production as
+            it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+            demonstrate its effectiveness.
+             */
+            .blockingSubscribe();
     }
 
     // This example shows how to copy a source document on the Internet to a blob.
     @Test
-    public void exampleBlobURL_startCopy() throws MalformedURLException, InvalidKeyException {
+    public void exampleBlobURLStartCopy() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1408,24 +1410,24 @@ public class Samples {
 
         // Create the container.
         containerURL.create(null, null, null)
-                .flatMap(response ->
-                        // Start the copy from the source url to the destination, which is the url pointed to by blobURL
-                        blobURL.startCopyFromURL(
-                                new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
-                                null, null, null, null))
-                .flatMap(response ->
-                        blobURL.getProperties(null, null))
-                .flatMap(response ->
-                        waitForCopyHelper(blobURL, response))
-                .flatMap(response ->
-                        // Delete the container we created earlier.
-                        containerURL.delete(null, null))
-                /*
-                This will synchronize all the above operations. This is strongly discouraged for use in production as
-                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
-                demonstrate its effectiveness.
-                 */
-                .blockingGet();
+            .flatMap(response ->
+                    // Start the copy from the source url to the destination, which is the url pointed to by blobURL
+                    blobURL.startCopyFromURL(
+                            new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
+                            null, null, null, null))
+            .flatMap(response ->
+                    blobURL.getProperties(null, null))
+            .flatMap(response ->
+                    waitForCopyHelper(blobURL, response))
+            .flatMap(response ->
+                    // Delete the container we created earlier.
+                    containerURL.delete(null, null))
+            /*
+            This will synchronize all the above operations. This is strongly discouraged for use in production as
+            it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+            demonstrate its effectiveness.
+             */
+            .blockingGet();
 
     }
 
@@ -1468,21 +1470,21 @@ public class Samples {
         // Create the container.
         containerURL.create(null, null, null)
             .flatMap(response -> Single.using(
-                    () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
-                    channel -> Single.fromFuture(channel
-                            .write(ByteBuffer.wrap("Big data".getBytes()), 0)),
-                    AsynchronousFileChannel::close
+                () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                channel -> Single.fromFuture(channel
+                        .write(ByteBuffer.wrap("Big data".getBytes()), 0)),
+                AsynchronousFileChannel::close
             ))
             .flatMap(response -> Single.using(
-                    () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
-                    channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
-                            BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
-                    AsynchronousFileChannel::close)
+                () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
+                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
+                AsynchronousFileChannel::close)
             )
             .flatMap(response -> Single.using(
-                    () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
-                    channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
-                    AsynchronousFileChannel::close)
+                () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
+                AsynchronousFileChannel::close)
             )
             .flatMap(response ->
                     // Delete the container.
@@ -1565,28 +1567,28 @@ public class Samples {
         of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
          */
         containerURL.create(null, null, null)
-                .flatMap(response ->
-                        // Upload some data to a blob
-                        Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
-                                fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
-                                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
-                                        new TransferManagerUploadToBlockBlobOptions()),
-                                AsynchronousFileChannel::close))
-                .flatMap(response ->
-                        blobURL.download(null, null, false, null))
-                .flatMapPublisher(response ->
-                        response.body(options))
-                .lastOrError() // Place holder for processing all the intermediary data.
-                // After the last piece of data, clean up by deleting the container and all its contents.
-                .flatMap(buffer ->
-                        // Delete the container
-                        containerURL.delete(null, null))
-                /*
-                This will synchronize all the above operations. This is strongly discouraged for use in production as
-                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
-                demonstrate its effectiveness.
-                 */
-                .blockingGet();
+            .flatMap(response ->
+                    // Upload some data to a blob
+                    Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
+                        fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+                                new TransferManagerUploadToBlockBlobOptions()),
+                        AsynchronousFileChannel::close))
+            .flatMap(response ->
+                    blobURL.download(null, null, false, null))
+            .flatMapPublisher(response ->
+                    response.body(options))
+            .lastOrError() // Place holder for processing all the intermediary data.
+            // After the last piece of data, clean up by deleting the container and all its contents.
+            .flatMap(buffer ->
+                    // Delete the container
+                    containerURL.delete(null, null))
+            /*
+            This will synchronize all the above operations. This is strongly discouraged for use in production as
+            it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+            demonstrate its effectiveness.
+             */
+            .blockingGet();
 
     }
 
@@ -1608,25 +1610,25 @@ public class Samples {
                 + System.currentTimeMillis());
 
         createContainerIfNotExists(containerURL)
-                .flatMap(r -> {
-                    System.out.println("Container created: " + r.toString());
-                    return createContainerIfNotExists(containerURL);
-                })
-                .flatMap(r -> {
-                    System.out.println("Container created: " + r.toString());
-                    return deleteContainerIfExists(containerURL);
-                })
-                .flatMap(r -> {
-                    System.out.println("Container deleted: " + r.toString());
-                    return deleteContainerIfExists(containerURL);
-                })
-                .doOnSuccess(r -> System.out.println("Container deleted: " + r.toString()))
-                /*
-                This will synchronize all the above operations. This is strongly discouraged for use in production as
-                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
-                demonstrate its effectiveness.
-                 */
-                .blockingGet();
+            .flatMap(r -> {
+                System.out.println("Container created: " + r.toString());
+                return createContainerIfNotExists(containerURL);
+            })
+            .flatMap(r -> {
+                System.out.println("Container created: " + r.toString());
+                return deleteContainerIfExists(containerURL);
+            })
+            .flatMap(r -> {
+                System.out.println("Container deleted: " + r.toString());
+                return deleteContainerIfExists(containerURL);
+            })
+            .doOnSuccess(r -> System.out.println("Container deleted: " + r.toString()))
+            /*
+            This will synchronize all the above operations. This is strongly discouraged for use in production as
+            it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+            demonstrate its effectiveness.
+             */
+            .blockingGet();
     }
 
     /*
@@ -1646,22 +1648,22 @@ public class Samples {
         ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy" + System.currentTimeMillis());
 
         containerURL.create(null, null, null).toCompletable()
-                .andThen(Observable.range(0, 5))
-                .flatMap(integer -> {
-                    AppendBlobURL bu = containerURL.createAppendBlobURL(integer.toString());
-                    return bu.create(null, null, null, null).toObservable();
-                })
-                .ignoreElements()
-                .andThen(listBlobsLazy(containerURL, null))
-                .doOnNext(b -> System.out.println("Blob: " + b.name()))
-                .ignoreElements()
-                .andThen(containerURL.delete(null, null))
-                /*
-                This will synchronize all the above operations. This is strongly discouraged for use in production as
-                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
-                demonstrate its effectiveness.
-                 */
-                .blockingGet();
+            .andThen(Observable.range(0, 5))
+            .flatMap(integer -> {
+                AppendBlobURL bu = containerURL.createAppendBlobURL(integer.toString());
+                return bu.create(null, null, null, null).toObservable();
+            })
+            .ignoreElements()
+            .andThen(listBlobsLazy(containerURL, null))
+            .doOnNext(b -> System.out.println("Blob: " + b.name()))
+            .ignoreElements()
+            .andThen(containerURL.delete(null, null))
+            /*
+            This will synchronize all the above operations. This is strongly discouraged for use in production as
+            it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+            demonstrate its effectiveness.
+             */
+            .blockingGet();
     }
 
     /*
@@ -1715,49 +1717,50 @@ public class Samples {
 
         // Create the container on the service (with no metadata and no public access)
         Single<DownloadResponse> downloadResponse = containerURL.create(null, null, null)
-                .flatMap(containersCreateResponse ->
-                        /*
-                         Create the blob with string (plain text) content.
-                         NOTE: It is imperative that the provided length matches the actual length exactly.
-                         */
-                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null, null))
-                .flatMap(blobUploadResponse ->
-                        // Download the blob's content.
-                        blobURL.download(null, null, false, null));
+            .flatMap(containersCreateResponse ->
+                    /*
+                     Create the blob with string (plain text) content.
+                     NOTE: It is imperative that the provided length matches the actual length exactly.
+                     */
+                    blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                            null, null, null, null))
+            .flatMap(blobUploadResponse ->
+                    // Download the blob's content.
+                    blobURL.download(null, null, false, null));
         downloadResponse.flatMap(blobDownloadResponse ->
                 // Verify that the blob data round-tripped correctly.
-                FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
-                        .doOnSuccess(byteBuffer -> {
-                            if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
-                                throw new Exception("The downloaded data does not match the uploaded data.");
-                            }
-                        }));
+            FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
+                    .doOnSuccess(byteBuffer -> {
+                        if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
+                            throw new Exception("The downloaded data does not match the uploaded data.");
+                        }
+                    }));
         downloadResponse.subscribe();
         // </upload_download>
 
         // <exception>
         containerURL.create(null, null, null)
                 // An error occurred.
-                .onErrorResumeNext(throwable -> {
-                    // Check if this error is from the service.
-                    if (throwable instanceof StorageException) {
-                        StorageException exception = (StorageException) throwable;
-                        // StorageErrorCode defines constants corresponding to all error codes returned by the service.
-                        if (exception.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
-                            // Log more detailed information.
-                            System.out.println("Extended details: " + exception.message());
+            .onErrorResumeNext(throwable -> {
+                // Check if this error is from the service.
+                if (throwable instanceof StorageException) {
+                    StorageException exception = (StorageException) throwable;
+                    // StorageErrorCode defines constants corresponding to all error codes returned by the service.
+                    if (exception.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
+                        // Log more detailed information.
+                        System.out.println("Extended details: " + exception.message());
 
-                            // Examine the raw response.
-                            HttpResponse response = exception.response();
-                        } else if (exception.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
-                            // Process the error
-                        }
+                        // Examine the raw response.
+                        HttpResponse response = exception.response();
+                    } else if (exception.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                        // Process the error
+                        System.out.println("The container url is " + containerURL.toString());
                     }
-                    // We just fake a successful response to prevent the example from crashing.
-                    return Single.just(
-                            new ContainerCreateResponse(null, 200, null, null, null));
-                }).subscribe();
+                }
+                // We just fake a successful response to prevent the example from crashing.
+                return Single.just(
+                        new ContainerCreateResponse(null, 200, null, null, null));
+            }).subscribe();
         // </exception>
 
         // <url_parts>
@@ -2279,23 +2282,23 @@ public class Samples {
         tempFile.deleteOnExit();
         // <tm_file>
         Single.using(
+            () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+            channel -> Single.fromFuture(channel
+                    .write(ByteBuffer.wrap("Big data".getBytes()), 0)), AsynchronousFileChannel::close)
+            .flatMap(response -> Single.using(
+                () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
+                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
+                AsynchronousFileChannel::close)
+            )
+            .flatMap(response -> Single.using(
                 () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
-                channel -> Single.fromFuture(channel
-                        .write(ByteBuffer.wrap("Big data".getBytes()), 0)), AsynchronousFileChannel::close)
-                .flatMap(response -> Single.using(
-                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
-                        channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
-                        AsynchronousFileChannel::close)
-                )
-                .flatMap(response -> Single.using(
-                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
-                        channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
-                        AsynchronousFileChannel::close)
-                )
-                .flatMap(response ->
-                        // Delete the container.
-                        containerURL.delete(null, null));
+                channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
+                AsynchronousFileChannel::close)
+            )
+            .flatMap(response ->
+                    // Delete the container.
+                    containerURL.delete(null, null));
         // </tm_file>
 
         // <tm_nrf>

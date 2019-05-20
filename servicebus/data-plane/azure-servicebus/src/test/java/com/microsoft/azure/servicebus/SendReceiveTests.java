@@ -7,11 +7,18 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
-import com.microsoft.azure.servicebus.management.*;
-import org.junit.*;
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public abstract class SendReceiveTests extends Tests {
     static ManagementClientAsync managementClient = null;
@@ -92,7 +99,7 @@ public abstract class SendReceiveTests extends Tests {
         if (managementClient == null) {
             return;
         }
-        if(SendReceiveTests.entityNameCreatedForAllTests != null) {
+        if (SendReceiveTests.entityNameCreatedForAllTests != null) {
             managementClient.deleteQueueAsync(SendReceiveTests.entityNameCreatedForAllTests).get();
             managementClient.close();
         }

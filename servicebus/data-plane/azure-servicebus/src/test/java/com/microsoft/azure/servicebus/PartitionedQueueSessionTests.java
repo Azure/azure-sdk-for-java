@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus;
 public class PartitionedQueueSessionTests extends QueueSessionTests {
     @Override
     public String getEntityNamePrefix() {
-       return "PartitionedQueueSessionTests";
+        return "PartitionedQueueSessionTests";
     }
 
     @Override
