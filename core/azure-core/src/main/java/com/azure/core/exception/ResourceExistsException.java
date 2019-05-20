@@ -7,10 +7,8 @@ import com.azure.core.http.HttpResponse;
 
 /**
  * The exception thrown when HTTP request tried to create an already existing resource with status code of 4XX, typically 412 conflict.
- *
- * @see HttpRequestException
  */
-public class ResourceExistsException extends HttpRequestException {
+public class ResourceExistsException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the ResourceExistsException class.
