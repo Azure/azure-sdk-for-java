@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.IMessage;
@@ -28,16 +31,14 @@ public class TopicDescription {
      *             Max length is 260 chars. Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    public TopicDescription(String path)
-    {
+    public TopicDescription(String path) {
         this.setPath(path);
     }
 
     /**
      * @return the path of the topic.
      */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
 
@@ -46,8 +47,7 @@ public class TopicDescription {
      * Max length is 260 chars. Cannot start or end with a slash.
      * Cannot have restricted characters: '@','?','#','*'
      */
-    private void setPath(String path)
-    {
+    private void setPath(String path) {
         EntityNameHelper.checkValidTopicName(path);
         this.path = path;
     }
@@ -63,8 +63,7 @@ public class TopicDescription {
     /**
      * @param maxSize - Sets the maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
      */
-    public void setMaxSizeInMB(long maxSize)
-    {
+    public void setMaxSizeInMB(long maxSize) {
         this.maxSizeInMB = maxSize;
     }
 
@@ -103,10 +102,9 @@ public class TopicDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null &&
-                (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0 ||
-                        defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0))
-        {
+        if (defaultMessageTimeToLive == null
+                || (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+                    || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MAX_ALLOWED_TTL,
@@ -129,9 +127,8 @@ public class TopicDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null &&
-                autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0)
-        {
+        if (autoDeleteOnIdle == null
+                || autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));
@@ -156,10 +153,9 @@ public class TopicDescription {
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
-        if (duplicationDetectionHistoryTimeWindow != null &&
-                (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0 ||
-                        duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0))
-        {
+        if (duplicationDetectionHistoryTimeWindow == null
+                || (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0
+                    || duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION,

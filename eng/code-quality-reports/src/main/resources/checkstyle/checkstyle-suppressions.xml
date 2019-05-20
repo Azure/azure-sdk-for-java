@@ -59,4 +59,12 @@
   <!-- Public API already released without final modifier -->
   <suppress checks="FinalClass" files="BatchClient.java"/>
   <suppress checks="FinalClass" files="DetailLevel.java"/>
+
+  <!-- All auto generated files need to exclude from checkstyle -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
+  <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
+
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+
 </suppressions>

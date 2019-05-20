@@ -6,7 +6,7 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
@@ -58,8 +58,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
-        keyPrefix = sdkContext.randomResourceName(KEY_PREFIX, PREFIX_LENGTH);
-        labelPrefix = sdkContext.randomResourceName(LABEL_PREFIX, PREFIX_LENGTH);
+        keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
+        labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
@@ -82,11 +82,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     String getKey() {
-        return sdkContext.randomResourceName(keyPrefix, RESOURCE_LENGTH);
+        return testResourceNamer.randomName(keyPrefix, RESOURCE_LENGTH);
     }
 
     String getLabel() {
-        return sdkContext.randomResourceName(labelPrefix, RESOURCE_LENGTH);
+        return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
     }
 
     @Test
@@ -505,10 +505,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpRequestException.class, expectedStatusCode);
+        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -518,18 +518,18 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
+     * Helper method to verify the error was a HttpResponseException and it has a specific HTTP response code.
      *
      * @param exception Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpRequestException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpRequestException) exception).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
     }
 
     /**

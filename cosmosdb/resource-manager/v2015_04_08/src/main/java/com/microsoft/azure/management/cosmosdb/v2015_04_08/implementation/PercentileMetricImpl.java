@@ -17,14 +17,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MetricName;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.UnitType;
 
 class PercentileMetricImpl extends WrapperImpl<PercentileMetricInner> implements PercentileMetric {
-    private final DocumentDBManager manager;
-    PercentileMetricImpl(PercentileMetricInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    PercentileMetricImpl(PercentileMetricInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

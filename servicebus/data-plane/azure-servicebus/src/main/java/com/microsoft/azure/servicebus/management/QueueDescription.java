@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.IMessage;
@@ -33,16 +36,14 @@ public class QueueDescription {
      *             Max length is 260 chars. Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    public QueueDescription(String path)
-    {
+    public QueueDescription(String path) {
         this.setPath(path);
     }
 
     /**
      * @return The path of the queue.
      */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
 
@@ -51,8 +52,7 @@ public class QueueDescription {
      *             Cannot start or end with a slash.
      *             Cannot have restricted characters: '@','?','#','*'
      */
-    private void setPath(String path)
-    {
+    private void setPath(String path) {
         EntityNameHelper.checkValidQueueName(path);
         this.path = path;
     }
@@ -62,8 +62,7 @@ public class QueueDescription {
      * so that no other receiver receives the same message.
      * @return The duration of a peek lock. Default value is 60 seconds.
      */
-    public Duration getLockDuration()
-    {
+    public Duration getLockDuration() {
         return this.lockDuration;
     }
 
@@ -72,8 +71,10 @@ public class QueueDescription {
      * so that no other receiver receives the same message.
      * @param lockDuration - The duration of a peek lock. Max value is 5 minutes.
      */
-    public void setLockDuration(Duration lockDuration)
-    {
+    public void setLockDuration(Duration lockDuration) {
+        if (lockDuration == null) {
+            throw new IllegalArgumentException("Value cannot be null");
+        }
         this.lockDuration = lockDuration;
         if (this.lockDuration.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.lockDuration = ManagementClientConstants.MAX_DURATION;
@@ -91,8 +92,7 @@ public class QueueDescription {
     /**
      * @param maxSize - Maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
      */
-    public void setMaxSizeInMB(long maxSize)
-    {
+    public void setMaxSizeInMB(long maxSize) {
         this.maxSizeInMB = maxSize;
     }
 
@@ -145,10 +145,9 @@ public class QueueDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null &&
-                (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0 ||
-                defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0))
-        {
+        if (defaultMessageTimeToLive == null
+            || (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+                || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                     ManagementClientConstants.MAX_ALLOWED_TTL,
@@ -174,9 +173,8 @@ public class QueueDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null &&
-            autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0)
-        {
+        if (autoDeleteOnIdle == null
+            || autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));
@@ -218,10 +216,9 @@ public class QueueDescription {
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
-        if (duplicationDetectionHistoryTimeWindow != null &&
-                (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0 ||
-                        duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0))
-        {
+        if (duplicationDetectionHistoryTimeWindow == null
+            || (duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION) < 0
+                || duplicationDetectionHistoryTimeWindow.compareTo(ManagementClientConstants.MAX_DUPLICATE_HISTORY_DURATION) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MIN_DUPLICATE_HISTORY_DURATION,
@@ -251,8 +248,7 @@ public class QueueDescription {
      * @param maxDeliveryCount - Minimum value is 1.
      */
     public void setMaxDeliveryCount(int maxDeliveryCount) {
-        if (maxDeliveryCount < ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT)
-        {
+        if (maxDeliveryCount < ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT));

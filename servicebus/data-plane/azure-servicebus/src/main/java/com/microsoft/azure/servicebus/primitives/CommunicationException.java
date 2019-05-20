@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -16,27 +15,22 @@ package com.microsoft.azure.servicebus.primitives;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  * @since 1.0
  */
-public class CommunicationException extends ServiceBusException
-{
-	private static final long serialVersionUID = 7968596830506494332L;
+public class CommunicationException extends ServiceBusException {
+    private static final long serialVersionUID = 7968596830506494332L;
 
-	CommunicationException()
-	{
-		super(true);
-	}
+    CommunicationException() {
+        super(true);
+    }
 
-	CommunicationException(final String message)
-	{
-		super(true, message);
-	}
+    CommunicationException(final String message) {
+        super(true, message);
+    }
 
-	CommunicationException(final Throwable cause)
-	{
-		super(true, cause);
-	}
+    CommunicationException(final Throwable cause) {
+        super(true, cause);
+    }
 
-	CommunicationException(final String message, final Throwable cause)
-	{
-		super(true, message, cause);
-	}
+    CommunicationException(final String message, final Throwable cause) {
+        super(true, message, cause);
+    }
 }

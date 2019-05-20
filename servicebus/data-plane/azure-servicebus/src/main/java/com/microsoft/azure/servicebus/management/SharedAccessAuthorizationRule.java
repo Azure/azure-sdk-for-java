@@ -1,13 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.security.SecurityConstants;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
 
 public class SharedAccessAuthorizationRule extends AuthorizationRule {
-    static int SUPPORTED_SAS_KEY_LENGTH = 44;
-    static String FIXED_CLAIM_TYPE = "SharedAccessKey";
+    static final int SUPPORTED_SAS_KEY_LENGTH  = 44;
+    static final String FIXED_CLAIM_TYPE  = "SharedAccessKey";
 
     private String keyName;
     private String primaryKey;
@@ -34,7 +39,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public String getClaimType() {
-        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE;
+        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE ;
     }
 
     @Override
@@ -132,8 +137,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
             return false;
         }
 
-        if ((this.rights != null && other.rights == null) ||
-                this.rights == null && other.rights != null) {
+        if ((this.rights != null && other.rights == null)
+                || this.rights == null && other.rights != null) {
             return false;
         }
 

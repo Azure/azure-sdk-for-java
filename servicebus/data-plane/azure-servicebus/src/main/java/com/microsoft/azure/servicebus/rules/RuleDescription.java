@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.rules;
 
@@ -110,7 +110,7 @@ public class RuleDescription {
             return false;
         }
 
-        RuleDescription otherRule = (RuleDescription)other;
+        RuleDescription otherRule = (RuleDescription) other;
         if (this.name == null ? otherRule.name == null : this.name.equalsIgnoreCase(otherRule.name)
             && this.filter == null ? otherRule.filter == null : this.filter.equals(otherRule.filter)
             && this.action == null ? otherRule.action == null : this.action.equals(otherRule.action)) {

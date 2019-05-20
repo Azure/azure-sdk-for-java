@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.rules;
 
@@ -36,7 +36,7 @@ public class SqlFilter extends Filter {
             return false;
         }
 
-        SqlFilter other = (SqlFilter)o;
+        SqlFilter other = (SqlFilter) o;
         return (this.sqlExpression == null ? other.sqlExpression == null : this.sqlExpression.equals(other.sqlExpression));
     }
 

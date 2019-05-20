@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.security;
 
 /**
@@ -21,7 +24,7 @@ public class SecurityConstants {
     /**
      * Default validity of a security token in seconds.
      */
-    public static final int DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS = 20*60; // 20 minutes
+    public static final int DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS = 20 * 60; // 20 minutes
     /**
      * Max allowed length for security key name.
      */

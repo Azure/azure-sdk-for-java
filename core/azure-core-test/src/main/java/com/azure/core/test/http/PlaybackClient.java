@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ import java.util.function.Supplier;
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
  */
 public final class PlaybackClient implements HttpClient {
-    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
+    private final Logger logger = LoggerFactory.getLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
@@ -108,7 +107,7 @@ public final class PlaybackClient implements HttpClient {
                         rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
                     }
                 }
-                headers.set(pair.getKey(), rawHeader);
+                headers.put(pair.getKey(), rawHeader);
             }
         }
 
@@ -123,7 +122,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             bytes = rawBody.getBytes(StandardCharsets.UTF_8);
-            headers.set("Content-Length", String.valueOf(bytes.length));
+            headers.put("Content-Length", String.valueOf(bytes.length));
         }
 
         HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);

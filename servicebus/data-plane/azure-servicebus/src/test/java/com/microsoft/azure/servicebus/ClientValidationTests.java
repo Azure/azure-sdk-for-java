@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -8,7 +9,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.microsoft.azure.servicebus.management.*;
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -163,8 +167,7 @@ public class ClientValidationTests extends TestBase {
 
                     @Override
                     public void notifyException(Throwable exception, ExceptionPhase phase) {
-                        if(exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION)
-                        {
+                        if (exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION) {
                             unsupportedExceptionOccured.set(true);
                         }
                     }
@@ -200,8 +203,7 @@ public class ClientValidationTests extends TestBase {
 
                     @Override
                     public void notifyException(Throwable exception, ExceptionPhase phase) {
-                        if(exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION)
-                        {
+                        if (exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION) {
                             unsupportedExceptionOccured.set(true);
                         }
                     }

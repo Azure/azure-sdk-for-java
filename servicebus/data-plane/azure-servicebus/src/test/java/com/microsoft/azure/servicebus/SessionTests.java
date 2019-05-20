@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -8,7 +9,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import com.microsoft.azure.servicebus.management.*;
+
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -51,7 +56,7 @@ public abstract class SessionTests extends Tests {
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 queueDescription.setRequiresSession(true);
                 managementClient.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     SessionTests.entityNameCreatedForAllTests = entityName;
                     SessionTests.receiveEntityPathForAllTest = entityName;
                 }
@@ -290,7 +295,7 @@ public abstract class SessionTests extends Tests {
         try {
             this.session = ClientFactory.acceptSessionFromEntityPath(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, null, shortTimeoutClientSettings, ReceiveMode.PEEKLOCK);
             Assert.fail("Session " + this.session.getSessionId() + " accepted even though there is no such session on the entity.");
-        } catch(TimeoutException te) {
+        } catch (TimeoutException te) {
             // Expected..
         }
 
@@ -309,7 +314,7 @@ public abstract class SessionTests extends Tests {
         String sessionId = TestUtils.getRandomString();
         this.session = ClientFactory.acceptSessionFromEntityPath(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, sessionId, TestUtils.getClientSettings(), ReceiveMode.PEEKLOCK);
         CompletableFuture[] futures = new CompletableFuture[limitToTest];
-        for (int i=0; i<limitToTest; i++) {
+        for (int i = 0; i < limitToTest; i++) {
             CompletableFuture<Void> future = this.session.renewSessionLockAsync();
             futures[i] = future;
         }

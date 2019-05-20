@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -244,15 +244,15 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         Utils.completeFuture(this.completeAsync(lockToken, transaction));
     }
 
-	/*
+    /*
     @Override
-	public void completeBatch(Collection<? extends IMessage> messages) {
-	}
-	*/
+    public void completeBatch(Collection<? extends IMessage> messages) {
+    }
+    */
 
-	@Override
+    @Override
     public CompletableFuture<Void> completeAsync(UUID lockToken) {
-	    return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
+        return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
     }
 
     @Override
@@ -269,13 +269,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         });
     }
 
-	/*
+    /*
     @Override
-	public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
+    public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    */
 
     @Override
     public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
@@ -695,9 +695,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                 for(UUID lockToken : lockTokens) {
                     if (lockTimeIterator.hasNext()) {
                         Instant lockedUntilUtc = lockTimeIterator.next();
-                        if (this.requestResponseLockTokensToLockTimesMap.containsKey(lockToken)) {
-                            this.requestResponseLockTokensToLockTimesMap.put(lockToken, lockedUntilUtc);
-                        }
+                        this.requestResponseLockTokensToLockTimesMap.computeIfPresent(lockToken, (k, v) -> lockedUntilUtc);
                     }
                 }
                 return newLockedUntilTimes;
@@ -762,15 +760,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     private void schedulePruningRequestResponseLockTokens() {
         // Run it every 1 hour
-        Timer.schedule(new Runnable() {
-            public void run() {
-                Instant systemTime = Instant.now();
-                Entry<UUID, Instant>[] copyOfEntries = (Entry<UUID, Instant>[]) MessageReceiver.this.requestResponseLockTokensToLockTimesMap.entrySet().toArray();
-                for (Entry<UUID, Instant> entry : copyOfEntries) {
-                    if (entry.getValue().isBefore(systemTime)) {
-                        // lock expired
-                        MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(entry.getKey());
-                    }
+        Timer.schedule(() -> {
+            Instant systemTime = Instant.now();
+            Entry<UUID, Instant>[] copyOfEntries = (Entry<UUID, Instant>[]) MessageReceiver.this.requestResponseLockTokensToLockTimesMap.entrySet().toArray();
+            for (Entry<UUID, Instant> entry : copyOfEntries) {
+                if (entry.getValue().isBefore(systemTime)) {
+                    // lock expired
+                    MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(entry.getKey());
                 }
             }
         }, Duration.ofSeconds(3600), TimerType.RepeatRun);

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.management.QueueDescription;
@@ -15,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class QueueSendReceiveTests extends SendReceiveTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSendReceiveTests";
+        return "QueueSendReceiveTests";
     }
 
     @Override

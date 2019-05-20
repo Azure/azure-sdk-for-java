@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
 import java.io.IOException;
@@ -26,135 +25,103 @@ import org.apache.qpid.proton.reactor.Selectable.Callback;
  * Cardinality: multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}.
  * Each {@link ReactorDispatcher} should be initialized Synchronously - as it calls API in {@link Reactor} which is not thread-safe. 
  */
-public final class ReactorDispatcher
-{
-	private final Reactor reactor;
-	private final Pipe ioSignal;
-	private final ConcurrentLinkedQueue<BaseHandler> workQueue;
-	private final ScheduleHandler workScheduler;
+public final class ReactorDispatcher {
+    private final Reactor reactor;
+    private final Pipe ioSignal;
+    private final ConcurrentLinkedQueue<BaseHandler> workQueue;
+    private final ScheduleHandler workScheduler;
 
-	public ReactorDispatcher(final Reactor reactor) throws IOException
-	{
-		this.reactor = reactor;
-		this.ioSignal = Pipe.open();
-		this.workQueue = new ConcurrentLinkedQueue<BaseHandler>();
-		this.workScheduler = new ScheduleHandler();
-		
-		initializeSelectable();
-	}
-	
-	private void initializeSelectable()
-	{
-		Selectable schedulerSelectable = this.reactor.selectable();
-		
-		schedulerSelectable.setChannel(this.ioSignal.source());
-		schedulerSelectable.onReadable(this.workScheduler);
-		schedulerSelectable.onFree(new CloseHandler());
-		
-		schedulerSelectable.setReading(true);
-		this.reactor.update(schedulerSelectable);
-	}
+    public ReactorDispatcher(final Reactor reactor) throws IOException {
+        this.reactor = reactor;
+        this.ioSignal = Pipe.open();
+        this.workQueue = new ConcurrentLinkedQueue<>();
+        this.workScheduler = new ScheduleHandler();
 
-	public void invoke(final DispatchHandler timerCallback) throws IOException
-	{
-		this.workQueue.offer(timerCallback);
-		this.signalWorkQueue();
-	}
-	
-	public void invoke(final int delay, final DispatchHandler timerCallback) throws IOException
-	{
-		this.workQueue.offer(new DelayHandler(this.reactor, delay, timerCallback));
-		this.signalWorkQueue();
-	}
-	
-	private void signalWorkQueue() throws IOException
-	{
-		try
-		{
-			this.ioSignal.sink().write(ByteBuffer.allocate(1));
-		}
-		catch(ClosedChannelException ignorePipeClosedDuringReactorShutdown)
-		{
+        initializeSelectable();
+    }
+
+    private void initializeSelectable() {
+        Selectable schedulerSelectable = this.reactor.selectable();
+
+        schedulerSelectable.setChannel(this.ioSignal.source());
+        schedulerSelectable.onReadable(this.workScheduler);
+        schedulerSelectable.onFree(new CloseHandler());
+
+        schedulerSelectable.setReading(true);
+        this.reactor.update(schedulerSelectable);
+    }
+
+    public void invoke(final DispatchHandler timerCallback) throws IOException {
+        this.workQueue.offer(timerCallback);
+        this.signalWorkQueue();
+    }
+
+    public void invoke(final int delay, final DispatchHandler timerCallback) throws IOException {
+        this.workQueue.offer(new DelayHandler(this.reactor, delay, timerCallback));
+        this.signalWorkQueue();
+    }
+
+    private void signalWorkQueue() throws IOException {
+        try {
+            this.ioSignal.sink().write(ByteBuffer.allocate(1));
+        } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
         }
-	}
-	
-	private final class DelayHandler extends BaseHandler
-	{
-		final int delay;
-		final BaseHandler timerCallback;
-		final Reactor reactor;
-		
-		public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback)
-		{
-			this.delay = delay;
-			this.timerCallback = timerCallback;
-			this.reactor = reactor;
-		}
-		
-		@Override
-		public void onTimerTask(Event e) 
-		{
-			this.reactor.schedule(this.delay, this.timerCallback);
-		}
-	}
-	
-	private final class ScheduleHandler implements Callback
-	{
-		@Override
-		public void run(Selectable selectable)
-		{
-			try
-			{
-				ioSignal.source().read(ByteBuffer.allocate(1024));
-			}
-			catch(ClosedChannelException ignorePipeClosedDuringReactorShutdown)
-			{
-			}
-			catch(IOException ioException)
-			{
-				throw new RuntimeException(ioException);
-			}			
-			
-			BaseHandler topWork; 
-			while ((topWork = workQueue.poll()) != null)
-			{
-				topWork.onTimerTask(null);
-			}
-		}
-	}
-	
-	private final class CloseHandler implements Callback
-	{
-		@Override
-		public void run(Selectable selectable)
-		{
-			try
-			{
-				selectable.getChannel().close();
-			}
-			catch (IOException ignore)
-			{
-			}
-			
-			try
-			{
-				if (ioSignal.sink().isOpen())
-					ioSignal.sink().close();
-			}
-			catch (IOException ignore)
-			{
-			}
-			
-			workScheduler.run(null);
-			
-			try
-			{
-				if (ioSignal.source().isOpen())
-					ioSignal.source().close();
-			}
-			catch (IOException ignore)
-			{
-			}
-		}
-	}
+    }
+
+    private static final class DelayHandler extends BaseHandler {
+        final int delay;
+        final BaseHandler timerCallback;
+        final Reactor reactor;
+
+        DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
+            this.delay = delay;
+            this.timerCallback = timerCallback;
+            this.reactor = reactor;
+        }
+
+        @Override
+        public void onTimerTask(Event e) {
+            this.reactor.schedule(this.delay, this.timerCallback);
+        }
+    }
+
+    private final class ScheduleHandler implements Callback {
+        @Override
+        public void run(Selectable selectable) {
+            try {
+                ioSignal.source().read(ByteBuffer.allocate(1024));
+            } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
+            } catch (IOException ioException) {
+                throw new RuntimeException(ioException);
+            }
+
+            BaseHandler topWork;
+            while ((topWork = workQueue.poll()) != null) {
+                topWork.onTimerTask(null);
+            }
+        }
+    }
+
+    private final class CloseHandler implements Callback {
+        @Override
+        public void run(Selectable selectable) {
+            try {
+                selectable.getChannel().close();
+            } catch (IOException ignore) { }
+
+            try {
+                if (ioSignal.sink().isOpen()) {
+                    ioSignal.sink().close();
+                }
+            } catch (IOException ignore) { }
+
+            workScheduler.run(null);
+
+            try {
+                if (ioSignal.source().isOpen()) {
+                    ioSignal.source().close();
+                }
+            } catch (IOException ignore) { }
+        }
+    }
 }

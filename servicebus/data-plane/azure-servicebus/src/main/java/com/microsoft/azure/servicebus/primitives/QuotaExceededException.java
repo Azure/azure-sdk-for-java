@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -7,27 +10,23 @@ package com.microsoft.azure.servicebus.primitives;
  *
  */
 public class QuotaExceededException extends ServiceBusException {
-	
-	private static final long serialVersionUID = -6963913971977282430L;
-	
-	public QuotaExceededException()
-	{
-		super(false);
-	}
-	
-	public QuotaExceededException(String message)
-	{
-		super(false, message);
-	}
-	
-	public QuotaExceededException(Throwable cause)
-	{
-		super(false, cause);
-	}
-	
-	public QuotaExceededException(String message, Throwable cause)
-	{
-		super(false, message, cause);
-	}
+
+    private static final long serialVersionUID = -6963913971977282430L;
+
+    public QuotaExceededException() {
+        super(false);
+    }
+
+    public QuotaExceededException(String message) {
+        super(false, message);
+    }
+
+    public QuotaExceededException(Throwable cause) {
+        super(false, cause);
+    }
+
+    public QuotaExceededException(String message, Throwable cause) {
+        super(false, message, cause);
+    }
 
 }

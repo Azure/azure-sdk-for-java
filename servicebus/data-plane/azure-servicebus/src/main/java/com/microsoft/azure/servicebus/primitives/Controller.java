@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 import com.microsoft.azure.servicebus.ClientSettings;
@@ -8,10 +11,12 @@ import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.transaction.*;
+import org.apache.qpid.proton.amqp.transaction.Coordinator;
+import org.apache.qpid.proton.amqp.transaction.Declare;
+import org.apache.qpid.proton.amqp.transaction.Declared;
+import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.amqp.transport.Target;
-import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,23 +25,24 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class Controller {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Controller.class);
     private MessagingFactory messagingFactory;
     private CoreMessageSender internalSender;
-    private boolean isInitialized = false;
+    private AtomicBoolean isInitialized = new AtomicBoolean(false);
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
 
-    public Controller (URI namespaceEndpointURI, MessagingFactory factory, ClientSettings clientSettings) {
+    Controller(URI namespaceEndpointURI, MessagingFactory factory, ClientSettings clientSettings) {
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.messagingFactory = factory;
         this.clientSettings = clientSettings;
     }
 
     synchronized CompletableFuture<Void> initializeAsync() {
-        if (this.isInitialized) {
+        if (this.isInitialized.get()) {
             return CompletableFuture.completedFuture(null);
         } else {
             TRACE_LOGGER.info("Creating MessageSender to coordinator");
@@ -49,7 +55,7 @@ class Controller {
             senderFuture.handleAsync((s, coreSenderCreationEx) -> {
                 if (coreSenderCreationEx == null) {
                     this.internalSender = s;
-                    this.isInitialized = true;
+                    this.isInitialized.set(true);
                     TRACE_LOGGER.info("Created MessageSender to coordinator");
                     postSenderCreationFuture.complete(null);
                 } else {
@@ -67,12 +73,12 @@ class Controller {
     public CompletableFuture<Binary> declareAsync() {
         Message message = Message.Factory.create();
         Declare declare = new Declare();
-        message.setBody(new AmqpValue(declare));        
+        message.setBody(new AmqpValue(declare));
 
         return this.internalSender.sendAndReturnDeliveryStateAsync(
                 message,
                 TransactionContext.NULL_TXN)
-                .thenApply( state -> {
+                .thenApply(state -> {
                     Binary txnId = null;
                     if (state instanceof Declared) {
                         Declared declared = (Declared) state;
@@ -97,11 +103,10 @@ class Controller {
         return this.internalSender.sendAndReturnDeliveryStateAsync(
                 message,
                 TransactionContext.NULL_TXN)
-                .thenCompose( state -> {
+                .thenCompose(state -> {
                     if (state instanceof Accepted) {
                         return CompletableFuture.completedFuture(null);
-                    }
-                    else {
+                    } else {
                         CompletableFuture<Void> returnTask = new CompletableFuture<>();
                         returnTask.completeExceptionally(new UnsupportedOperationException("Received unknown state: " + state.toString()));
                         return returnTask;
@@ -113,8 +118,7 @@ class Controller {
         return null;
     }
 
-    private static SenderLinkSettings getControllerLinkSettings(MessagingFactory underlyingFactory)
-    {
+    private static SenderLinkSettings getControllerLinkSettings(MessagingFactory underlyingFactory) {
         SenderLinkSettings linkSettings = new SenderLinkSettings();
         linkSettings.linkPath = "coordinator";
 

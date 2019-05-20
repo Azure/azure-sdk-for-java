@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -39,13 +39,11 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
         }
     }
     
-    public TopicClient(String namespace, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException
-    {
+    public TopicClient(String namespace, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         this(Util.convertNamespaceToEndPointURI(namespace), topicPath, clientSettings);
     }
     
-    public TopicClient(URI namespaceEndpointURI, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException
-    {
+    public TopicClient(URI namespaceEndpointURI, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         this();
         this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, topicPath, MessagingEntityType.TOPIC, clientSettings);
         this.browser = new MessageBrowser((MessageSender) sender);

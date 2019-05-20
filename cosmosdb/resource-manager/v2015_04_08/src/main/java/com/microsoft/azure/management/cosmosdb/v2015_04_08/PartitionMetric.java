@@ -10,7 +10,7 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.PartitionMetricInner;
 import org.joda.time.DateTime;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing PartitionMetric.
  */
-public interface PartitionMetric extends HasInner<PartitionMetricInner>, HasManager<DocumentDBManager> {
+public interface PartitionMetric extends HasInner<PartitionMetricInner>, HasManager<CosmosDBManager> {
     /**
      * @return the endTime value.
      */

@@ -6,8 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
 import com.azure.core.credentials.ServiceClientCredentials;
-import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -32,7 +31,9 @@ import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -110,8 +111,8 @@ public class RestProxy implements InvocationHandler {
      * @param contextData the context
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
-    public Mono<HttpResponse> send(HttpRequest request, ContextData contextData) {
-        return httpPipeline.send(httpPipeline.newContext(request, contextData));
+    public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
+        return httpPipeline.send(request, contextData);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser;
             final HttpRequest request;
             if (method.isAnnotationPresent(ResumeOperation.class)) {
-                OperationDescription opDesc = (OperationDescription) args[0];
+                OperationDescription opDesc = ImplUtils.findFirstOfType(args, OperationDescription.class);
                 Method resumeMethod = null;
                 Method[] methods = method.getDeclaringClass().getMethods();
                 for (Method origMethod : methods) {
@@ -138,7 +139,7 @@ public class RestProxy implements InvocationHandler {
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
-                final Mono<HttpResponse> asyncResponse = send(request, methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName()));
+                final Mono<HttpResponse> asyncResponse = send(request, methodParser.context(args).addData("caller-method", methodParser.fullyQualifiedMethodName()));
                 //
                 Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
                 //
@@ -222,7 +223,7 @@ public class RestProxy implements InvocationHandler {
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
-            request.headers().set("Content-Length", "0");
+            request.headers().put("Content-Length", "0");
         } else {
             String contentType = methodParser.bodyContentType();
             if (contentType == null || contentType.isEmpty()) {
@@ -233,7 +234,7 @@ public class RestProxy implements InvocationHandler {
                 }
             }
 
-            request.headers().set("Content-Type", contentType);
+            request.headers().put("Content-Type", contentType);
 
             boolean isJson = false;
             final String[] contentTypeParts = contentType.split(";");
@@ -287,7 +288,7 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends HttpRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
+            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);
@@ -557,7 +558,10 @@ public class RestProxy implements InvocationHandler {
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+
+        return HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     /**

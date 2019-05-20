@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.ClientSettings;
 import com.microsoft.azure.servicebus.Utils;
-import com.microsoft.azure.servicebus.primitives.*;
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import com.microsoft.azure.servicebus.primitives.Util;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 import java.io.IOException;

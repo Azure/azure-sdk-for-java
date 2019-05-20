@@ -1,12 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
-import com.microsoft.azure.servicebus.management.*;
+import com.microsoft.azure.servicebus.management.EntityNameHelper;
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +50,7 @@ public abstract class ClientSessionTests extends Tests {
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 queueDescription.setRequiresSession(true);
                 managementClient.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     ClientSessionTests.entityNameCreatedForAllTests = entityName;
                     ClientSessionTests.receiveEntityPathForAllTest = entityName;
                 }
@@ -75,9 +80,9 @@ public abstract class ClientSessionTests extends Tests {
         }
         if (this.receiveClient != null) {
             if (this.receiveClient instanceof SubscriptionClient) {
-                ((SubscriptionClient)this.receiveClient).close();
+                ((SubscriptionClient) this.receiveClient).close();
             } else {
-                ((QueueClient)this.receiveClient).close();
+                ((QueueClient) this.receiveClient).close();
             }
         }
         
@@ -90,7 +95,7 @@ public abstract class ClientSessionTests extends Tests {
     
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
-        if (managementClient != null ) {
+        if (managementClient != null) {
             if (ClientSessionTests.entityNameCreatedForAllTests != null) {
                 managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
             }
@@ -102,7 +107,7 @@ public abstract class ClientSessionTests extends Tests {
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
-            this.receiveClient = (QueueClient)this.sendClient;
+            this.receiveClient = (QueueClient) this.sendClient;
         } else {
             this.sendClient = new TopicClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings());
             this.receiveClient = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, TestUtils.getClientSettings(), receiveMode);

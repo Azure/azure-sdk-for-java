@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.Serializable;
@@ -9,35 +12,33 @@ import java.util.List;
  * Client should test for body type before calling corresponding get method.
  * Get methods not corresponding to the type of the body return null.
  */
-public class MessageBody implements Serializable{
+public class MessageBody implements Serializable {
     
-	private static final long serialVersionUID = 7215009530928988502L;
-	
-	private MessageBodyType bodyType;
+    private static final long serialVersionUID = 7215009530928988502L;
+
+    private MessageBodyType bodyType;
     private Object valueData;
     private List<List<Object>> sequenceData;
     private List<byte[]> binaryData;
     
-    private MessageBody() {}
+    private MessageBody() { }
     
     /**
      * Creates message body of AMQPValue type.
      * @param value AMQPValue content of the message. It must be of a type supported by AMQP.
      * @return MessageBody instance wrapping around the value data.
      */
-    public static MessageBody fromValueData(Object value)
-    {
-    	if(value == null)
-    	{
-    		throw new IllegalArgumentException("Value data is null.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.VALUE;
-    	body.valueData = value;
-    	body.sequenceData = null;
-    	body.binaryData = null;
-    	return body;
+    public static MessageBody fromValueData(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value data is null.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.VALUE;
+        body.valueData = value;
+        body.sequenceData = null;
+        body.binaryData = null;
+        return body;
     }
     
     /**
@@ -46,18 +47,16 @@ public class MessageBody implements Serializable{
      * @param sequenceData a list of AMQPSequence sections. Each AMQPSequence section is in turn a list of objects. Every object in each list must of a type supported by AMQP.
      * @return MessageBody instance wrapping around the sequence data.
      */
-    public static MessageBody fromSequenceData(List<List<Object>> sequenceData)
-    {
-    	if(sequenceData == null || sequenceData.size() == 0 || sequenceData.size() > 1)
-    	{
-    		throw new IllegalArgumentException("Sequence data is null or has more than one collection in it.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.SEQUENCE;
-    	body.valueData = null;
-    	body.sequenceData = sequenceData;
-    	body.binaryData = null;
+    public static MessageBody fromSequenceData(List<List<Object>> sequenceData) {
+        if (sequenceData == null || sequenceData.size() == 0 || sequenceData.size() > 1) {
+            throw new IllegalArgumentException("Sequence data is null or has more than one collection in it.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.SEQUENCE;
+        body.valueData = null;
+        body.sequenceData = sequenceData;
+        body.binaryData = null;
         return body;
     }
     
@@ -67,18 +66,16 @@ public class MessageBody implements Serializable{
      * @param binaryData a list of byte arrays.
      * @return MessageBody instance wrapping around the binary data.
      */
-    public static MessageBody fromBinaryData(List<byte[]> binaryData)
-    {
-    	if(binaryData == null || binaryData.size() == 0 || binaryData.size() > 1)
-    	{
-    		throw new IllegalArgumentException("Binary data is null or has more than one byte array in it.");
-    	}
-    	
-    	MessageBody body = new MessageBody();
-    	body.bodyType = MessageBodyType.BINARY;
-    	body.valueData = null;
-    	body.sequenceData = null;
-    	body.binaryData = binaryData;
+    public static MessageBody fromBinaryData(List<byte[]> binaryData) {
+        if (binaryData == null || binaryData.size() == 0 || binaryData.size() > 1) {
+            throw new IllegalArgumentException("Binary data is null or has more than one byte array in it.");
+        }
+
+        MessageBody body = new MessageBody();
+        body.bodyType = MessageBodyType.BINARY;
+        body.valueData = null;
+        body.sequenceData = null;
+        body.binaryData = binaryData;
         return body;
     }
     

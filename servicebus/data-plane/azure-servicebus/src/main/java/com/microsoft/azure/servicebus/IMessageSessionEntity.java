@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -13,9 +13,9 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
  * Represents a session full client entity.
  */
 public interface IMessageSessionEntity {
-//	int getSessionPrefetchCount();
-//	
-//	void setSessionPrefetchCount(int prefetchCount);
+//    int getSessionPrefetchCount();
+//
+//    void setSessionPrefetchCount(int prefetchCount);
 //
 //    IMessageSession acceptMessageSession() throws InterruptedException, ServiceBusException;
 //

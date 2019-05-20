@@ -1,22 +1,19 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
-import com.microsoft.azure.servicebus.ClientSettings;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Link;
 
-public interface IAmqpConnection
-{
-	String getHostName();
-	
-	void onConnectionOpen();
+public interface IAmqpConnection {
+    String getHostName();
 
-	void onConnectionError(ErrorCondition error);
+    void onConnectionOpen();
 
-	void registerForConnectionError(Link link);
+    void onConnectionError(ErrorCondition error);
 
-	void deregisterForConnectionError(Link link);
+    void registerForConnectionError(Link link);
+
+    void deregisterForConnectionError(Link link);
 }

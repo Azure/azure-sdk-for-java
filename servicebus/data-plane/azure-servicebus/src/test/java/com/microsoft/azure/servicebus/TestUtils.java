@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -38,16 +43,16 @@ public class TestUtils extends TestBase {
         // Read proxy settings only if transport type is WebSockets
         runWithProxy = Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR));
         proxyHostName = System.getenv(PROXY_HOSTNAME_ENV_VAR);
-        proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ?
-                        0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
+        proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ? 0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
     }
 
-    public static URI getNamespaceEndpointURI()
-    {
+    public static URI getNamespaceEndpointURI() {
         return namespaceConnectionStringBuilder.getEndpoint();
     }
 
-    public static String getNamespaceConnectionString() { return namespaceConnectionString; }
+    public static String getNamespaceConnectionString() {
+        return namespaceConnectionString;
+    }
 
     public static ClientSettings getClientSettings() {
         if (runWithProxy) {
@@ -77,13 +82,11 @@ public class TestUtils extends TestBase {
         });
     }
 
-    public static String randomizeEntityName(String entityName)
-    {
+    public static String randomizeEntityName(String entityName) {
         return entityName + getRandomString();
     }
 
-    public static String getRandomString()
-    {
+    public static String getRandomString() {
         return UUID.randomUUID().toString();
     }
     
@@ -93,8 +96,7 @@ public class TestUtils extends TestBase {
      * will create one entity at the start, uses it for all test and deletes the entity at the end.
      * @return true if each test should create and delete its own entity. Else return false.
      */
-    public static boolean shouldCreateEntityForEveryTest()
-    {
+    public static boolean shouldCreateEntityForEveryTest() {
         return true;
     }
 }

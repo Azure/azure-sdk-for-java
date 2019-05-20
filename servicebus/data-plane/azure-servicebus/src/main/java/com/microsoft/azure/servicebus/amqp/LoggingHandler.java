@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -10,10 +13,8 @@ public class LoggingHandler extends BaseHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(LoggingHandler.class);
     
     @Override
-    public void onUnhandled(Event event)
-    {
-        if(TRACE_LOGGER.isTraceEnabled() && event.getType() != Type.REACTOR_QUIESCED ) // Too may REACTOR_QUIESCED events will be raised
-        {
+    public void onUnhandled(Event event) {
+        if (TRACE_LOGGER.isTraceEnabled() && event.getType() != Type.REACTOR_QUIESCED) { // Too may REACTOR_QUIESCED events will be raised
             TRACE_LOGGER.trace("Event raised by protonj: {}", event.toString());
         }
     }   

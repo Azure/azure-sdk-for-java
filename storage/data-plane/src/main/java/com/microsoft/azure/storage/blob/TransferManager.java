@@ -15,12 +15,16 @@ import io.reactivex.Single;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.StrictMath.toIntExact;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains a collection of methods (and structures associated with those methods) which perform higher-level
@@ -71,12 +75,11 @@ public final class TransferManager {
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
         if (maxSingleShotSize != null) {
             Utility.assertInBounds("maxSingleShotSize", maxSingleShotSize, 0, BlockBlobURL.MAX_UPLOAD_BLOB_BYTES);
-        }
-        else {
+        } else {
             maxSingleShotSize = BlockBlobURL.MAX_UPLOAD_BLOB_BYTES;
         }
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                new TransferManagerUploadToBlockBlobOptions() : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -108,16 +111,16 @@ public final class TransferManager {
                  */
                 .concatMapEager(i -> {
                     // The max number of bytes for a block is currently 100MB, so the final result must be an int.
-                    int count = (int) Math.min((long)blockLength, (file.size() - i * (long)blockLength));
+                    int count = (int) Math.min((long) blockLength, (file.size() - i * (long) blockLength));
                     // i * blockLength could be a long, so we need a cast to prevent overflow.
-                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long)blockLength, count);
+                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long) blockLength, count);
 
                     // Report progress as necessary.
                     data = ProgressReporter.addParallelProgressReporting(data, optionsReal.progressReceiver(),
                                 progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
@@ -188,8 +191,7 @@ public final class TransferManager {
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
             BlobRange range, TransferManagerDownloadFromBlobOptions options) {
         BlobRange rangeReal = range == null ? new BlobRange() : range;
-        TransferManagerDownloadFromBlobOptions optionsReal = options == null ?
-                new TransferManagerDownloadFromBlobOptions() : options;
+        TransferManagerDownloadFromBlobOptions optionsReal = options == null ? new TransferManagerDownloadFromBlobOptions() : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
@@ -276,9 +278,9 @@ public final class TransferManager {
                     We need to double check that the total size is zero in the case that the customer has attempted an
                     invalid range on a non-zero length blob.
                      */
-                    if (throwable instanceof StorageException &&
-                            ((StorageException) throwable).errorCode() == StorageErrorCode.INVALID_RANGE &&
-                            extractTotalBlobLength(((StorageException) throwable).response()
+                    if (throwable instanceof StorageException
+                            && ((StorageException) throwable).errorCode() == StorageErrorCode.INVALID_RANGE
+                            && extractTotalBlobLength(((StorageException) throwable).response()
                                     .headers().value("Content-Range")) == 0) {
                         return blobURL.download(new BlobRange().withOffset(0).withCount(0L), o.accessConditions(),
                                 false, null)
@@ -288,8 +290,8 @@ public final class TransferManager {
                                     (200 is for full blob; 206 is partial).
                                      */
                                     if (response.statusCode() != 200) {
-                                        throw new IllegalStateException("Blob was modified mid download. It was " +
-                                                "originally 0 bytes and is now larger.");
+                                        throw new IllegalStateException("Blob was modified mid download. It was "
+                                            + "originally 0 bytes and is now larger.");
                                     }
                                     return new DownloadHelper(0L, o.accessConditions(), response);
                                 });
@@ -404,8 +406,8 @@ public final class TransferManager {
         Utility.assertNotNull("source", source);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
 
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                new TransferManagerUploadToBlockBlobOptions() : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -424,11 +426,11 @@ public final class TransferManager {
                 return Flowable.just(buffer);
             }
             List<ByteBuffer> smallerChunks = new ArrayList<>();
-            for (int i=0; i < Math.ceil(buffer.remaining() / (double)blockSize); i++) {
+            for (int i = 0; i < Math.ceil(buffer.remaining() / (double) blockSize); i++) {
                 // Note that duplicate does not duplicate data. It simply creates a duplicate view of the data.
                 ByteBuffer duplicate = buffer.duplicate();
                 duplicate.position(i * blockSize);
-                duplicate.limit(Math.min(duplicate.limit(), (i+1) * blockSize));
+                duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
                 smallerChunks.add(duplicate);
             }
             return Flowable.fromIterable(smallerChunks);
@@ -445,7 +447,7 @@ public final class TransferManager {
                             optionsReal.progressReceiver(), progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other

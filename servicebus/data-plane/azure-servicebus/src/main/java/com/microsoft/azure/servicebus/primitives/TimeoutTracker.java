@@ -1,56 +1,49 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
-import java.time.*;
 
-public class TimeoutTracker
-{
-	private final Duration originalTimeout;
-	private boolean isTimerStarted;
-	private Instant startTime;
+import java.time.Duration;
+import java.time.Instant;
 
-	/**
-	 * @param timeout original operationTimeout
-	 * @param startTrackingTimeout whether/not to start the timeout tracking - right now. if not started now, timer tracking will start upon the first call to {@link TimeoutTracker#elapsed()}/{@link TimeoutTracker#remaining()} 
-	 */
-	public TimeoutTracker(Duration timeout, boolean startTrackingTimeout)
-	{
-		if (timeout.compareTo(Duration.ZERO) < 0)
-		{
-			throw new IllegalArgumentException("timeout should be non-negative");
-		}
+public class TimeoutTracker {
+    private final Duration originalTimeout;
+    private boolean isTimerStarted;
+    private Instant startTime;
 
-		this.originalTimeout = timeout;
+    /**
+     * @param timeout original operationTimeout
+     * @param startTrackingTimeout whether/not to start the timeout tracking - right now. if not started now, timer tracking will start upon the first call to {@link TimeoutTracker#elapsed()}/{@link TimeoutTracker#remaining()}
+     */
+    public TimeoutTracker(Duration timeout, boolean startTrackingTimeout) {
+        if (timeout.compareTo(Duration.ZERO) < 0) {
+            throw new IllegalArgumentException("timeout should be non-negative");
+        }
 
-		if (startTrackingTimeout)
-		{
-			this.startTime = Instant.now();
-		}
+        this.originalTimeout = timeout;
 
-		this.isTimerStarted = startTrackingTimeout;
-	}
+        if (startTrackingTimeout) {
+            this.startTime = Instant.now();
+        }
 
-	public static TimeoutTracker create(Duration timeout)
-	{
-		return new TimeoutTracker(timeout, true);
-	}
+        this.isTimerStarted = startTrackingTimeout;
+    }
 
-	public Duration remaining()
-	{
-		return this.originalTimeout.minus(this.elapsed());
-	}
+    public static TimeoutTracker create(Duration timeout) {
+        return new TimeoutTracker(timeout, true);
+    }
 
-	public Duration elapsed()
-	{
-		if (!this.isTimerStarted)
-		{
-			this.startTime = Instant.now();
-			this.isTimerStarted = true;
-		}
+    public Duration remaining() {
+        return this.originalTimeout.minus(this.elapsed());
+    }
 
-		return Duration.between(this.startTime, Instant.now());
-	}
+    public Duration elapsed() {
+        if (!this.isTimerStarted) {
+            this.startTime = Instant.now();
+            this.isTimerStarted = true;
+        }
+
+        return Duration.between(this.startTime, Instant.now());
+    }
 }

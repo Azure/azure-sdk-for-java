@@ -353,8 +353,7 @@ public final class SASQueryParameters {
             this.keyExpiry = key.signedExpiry();
             this.keyService = key.signedService();
             this.keyVersion = key.signedVersion();
-        }
-        else {
+        } else {
             this.keyOid = null;
             this.keyTid = null;
             this.keyStart = null;
@@ -537,28 +536,28 @@ public final class SASQueryParameters {
          themselves, we cheat except for the signature value.
          */
         String[] params = {
-                Constants.UrlConstants.SAS_SERVICE_VERSION,
-                Constants.UrlConstants.SAS_SERVICES,
-                Constants.UrlConstants.SAS_RESOURCES_TYPES,
-                Constants.UrlConstants.SAS_PROTOCOL,
-                Constants.UrlConstants.SAS_START_TIME,
-                Constants.UrlConstants.SAS_EXPIRY_TIME,
-                Constants.UrlConstants.SAS_IP_RANGE,
-                Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
-                Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
-                Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
-                Constants.UrlConstants.SAS_SIGNED_KEY_START,
-                Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-                Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
-                Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
-                Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-                Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
-                Constants.UrlConstants.SAS_SIGNATURE,
-                Constants.UrlConstants.SAS_CACHE_CONTROL,
-                Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
-                Constants.UrlConstants.SAS_CONTENT_ENCODING,
-                Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
-                Constants.UrlConstants.SAS_CONTENT_TYPE
+            Constants.UrlConstants.SAS_SERVICE_VERSION,
+            Constants.UrlConstants.SAS_SERVICES,
+            Constants.UrlConstants.SAS_RESOURCES_TYPES,
+            Constants.UrlConstants.SAS_PROTOCOL,
+            Constants.UrlConstants.SAS_START_TIME,
+            Constants.UrlConstants.SAS_EXPIRY_TIME,
+            Constants.UrlConstants.SAS_IP_RANGE,
+            Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
+            Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
+            Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
+            Constants.UrlConstants.SAS_SIGNED_KEY_START,
+            Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
+            Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
+            Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
+            Constants.UrlConstants.SAS_SIGNED_RESOURCE,
+            Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
+            Constants.UrlConstants.SAS_SIGNATURE,
+            Constants.UrlConstants.SAS_CACHE_CONTROL,
+            Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
+            Constants.UrlConstants.SAS_CONTENT_ENCODING,
+            Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
+            Constants.UrlConstants.SAS_CONTENT_TYPE
         };
         StringBuilder sb = new StringBuilder();
         for (String param : params) {
@@ -577,11 +576,11 @@ public final class SASQueryParameters {
                     break;
                 case Constants.UrlConstants.SAS_START_TIME:
                     tryAppendQueryParameter(sb, param,
-                            this.startTime == null ? null : Utility.ISO8601UTCDateFormatter.format(this.startTime));
+                            this.startTime == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime));
                     break;
                 case Constants.UrlConstants.SAS_EXPIRY_TIME:
                     tryAppendQueryParameter(sb, param,
-                            this.expiryTime == null ? null : Utility.ISO8601UTCDateFormatter.format(this.expiryTime));
+                            this.expiryTime == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime));
                     break;
                 case Constants.UrlConstants.SAS_IP_RANGE:
                     tryAppendQueryParameter(sb, param, this.ipRange);
@@ -597,11 +596,11 @@ public final class SASQueryParameters {
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_START:
                     tryAppendQueryParameter(sb, param,
-                            this.keyStart == null ? null : Utility.ISO8601UTCDateFormatter.format(this.keyStart));
+                            this.keyStart == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.keyStart));
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY:
                     tryAppendQueryParameter(sb, param,
-                            this.keyExpiry == null ? null : Utility.ISO8601UTCDateFormatter.format(this.keyExpiry));
+                            this.keyExpiry == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.keyExpiry));
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE:
                     tryAppendQueryParameter(sb, param, this.keyService);
@@ -633,6 +632,8 @@ public final class SASQueryParameters {
                 case Constants.UrlConstants.SAS_CONTENT_TYPE:
                     tryAppendQueryParameter(sb, param, this.contentType);
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid URL constant.");
             }
         }
         return sb.toString();
