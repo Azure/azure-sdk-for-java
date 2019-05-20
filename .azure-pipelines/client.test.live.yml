@@ -3,16 +3,6 @@ jobs:
 
     strategy:
       matrix:
-        AzureBatch:
-          pomFilePath: './batch/data-plane/pom.xml'
-        AzureKeyVault:
-          pomFilePath: './keyvault/data-plane/pom.xml'
-        AzureEventHubs:
-          pomFilePath: './eventhubs/data-plane/pom.xml'
-        AzureStorage:
-          pomFilePath: './storage/data-plane/pom.xml'
-        AzureAppConfiguration:
-          pomFilePath: './applicationconfig/client/pom.xml'
         AzureServiceBus:
           pomFilePath: './servicebus/data-plane/pom.xml'
 
