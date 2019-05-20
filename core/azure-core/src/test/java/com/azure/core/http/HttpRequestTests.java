@@ -25,9 +25,8 @@ public class HttpRequestTests {
 
     @Test
     public void testClone() throws IOException {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.set("my-header", "my-value");
-        headers.set("other-header", "other-value");
+        final HttpHeaders headers = new HttpHeaders().put("my-header", "my-value")
+            .put("other-header", "other-value");
 
         final HttpRequest request = new HttpRequest(
                 HttpMethod.PUT,
@@ -43,7 +42,7 @@ public class HttpRequestTests {
         assertEquals(request.url(), bufferedRequest.url());
 
         assertNotSame(request.headers(), bufferedRequest.headers());
-        assertEquals(request.headers().toMap().size(), bufferedRequest.headers().toMap().size());
+        assertEquals(request.headers().size(), bufferedRequest.headers().size());
         for (HttpHeader clonedHeader : bufferedRequest.headers()) {
             for (HttpHeader originalHeader : request.headers()) {
                 assertNotSame(clonedHeader, originalHeader);

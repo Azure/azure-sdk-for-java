@@ -35,7 +35,7 @@ public class SqlRuleAction extends RuleAction {
             return false;
         }
 
-        SqlRuleAction other = (SqlRuleAction)o;
+        SqlRuleAction other = (SqlRuleAction) o;
         return (this.sqlExpression == null ? other.sqlExpression == null : this.sqlExpression.equals(other.sqlExpression));
     }
 

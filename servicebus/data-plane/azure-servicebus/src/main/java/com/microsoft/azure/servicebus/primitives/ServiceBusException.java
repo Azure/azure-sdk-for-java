@@ -20,27 +20,23 @@ public class ServiceBusException extends Exception {
         this.isTransient = isTransient;
     }
 
-    public ServiceBusException(final boolean isTransient, final String message)
-    {
+    public ServiceBusException(final boolean isTransient, final String message) {
         super(message);
         this.isTransient = isTransient;
     }
 
-    public ServiceBusException(final boolean isTransient, final Throwable cause)
-    {
+    public ServiceBusException(final boolean isTransient, final Throwable cause) {
         super(cause);
         this.isTransient = isTransient;
     }
 
-    public ServiceBusException(final boolean isTransient, final String message, final Throwable cause)
-    {
+    public ServiceBusException(final boolean isTransient, final String message, final Throwable cause) {
         super(message, cause);
         this.isTransient = isTransient;
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         final String baseMessage = super.getMessage();
         return this.errorContext == null || StringUtil.isNullOrEmpty(this.errorContext.toString())
                 ? baseMessage
@@ -53,18 +49,15 @@ public class ServiceBusException extends Exception {
      * A boolean indicating if the exception is a transient error or not.
      * @return returns true when user can retry the operation that generated the exception without additional intervention.
      */
-    public boolean getIsTransient()
-    {
+    public boolean getIsTransient() {
         return this.isTransient;
     }
 
-    public ErrorContext getContext()
-    {
+    public ErrorContext getContext() {
         return this.errorContext;
     }
 
-    void setContext(ErrorContext errorContext)
-    {
+    void setContext(ErrorContext errorContext) {
         this.errorContext = errorContext;
     }
 }

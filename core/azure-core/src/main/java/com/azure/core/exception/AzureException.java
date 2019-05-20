@@ -5,6 +5,10 @@ package com.azure.core.exception;
 
 /**
  * The base exception type for all Azure-related exceptions.
+ *
+ * @see HttpRequestException
+ * @see ServiceResponseException
+ * @see HttpResponseException
  */
 public class AzureException extends RuntimeException {
 
@@ -26,5 +30,4 @@ public class AzureException extends RuntimeException {
     public AzureException(final String message, final Throwable cause) {
         super(message, cause);
     }
-
 }

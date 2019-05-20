@@ -19,7 +19,8 @@ import java.net.URL;
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assert.assertEquals(
@@ -27,8 +28,9 @@ public class UserAgentTests {
                             "AutoRest-Java");
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
-            },
-            new UserAgentPolicy("AutoRest-Java"));
+            })
+            .policies(new UserAgentPolicy("AutoRest-Java"))
+            .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(
                 HttpMethod.GET, new URL("http://localhost"))).block();
@@ -38,15 +40,17 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
-            @Override
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockHttpClient() {
+                @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.headers().value("User-Agent");
                     Assert.assertEquals("Awesome", header);
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
-            },
-            new UserAgentPolicy("Awesome"));
+            })
+            .policies(new UserAgentPolicy("Awesome"))
+            .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost"))).block();

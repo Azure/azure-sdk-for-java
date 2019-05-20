@@ -3,22 +3,18 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
-public final class TrackingUtil
-{
+public final class TrackingUtil {
     public static final String TRACKING_ID_TOKEN_SEPARATOR = "_";
 
-    private TrackingUtil()
-    {
+    private TrackingUtil() {
     }
 
     /**
      * parses ServiceBus role identifiers from trackingId
      * @return null if no roleIdentifier found
      */
-    static String parseRoleIdentifier(final String trackingId)
-    {
-        if (StringUtil.isNullOrWhiteSpace(trackingId) || !trackingId.contains(TRACKING_ID_TOKEN_SEPARATOR))
-        {
+    static String parseRoleIdentifier(final String trackingId) {
+        if (StringUtil.isNullOrWhiteSpace(trackingId) || !trackingId.contains(TRACKING_ID_TOKEN_SEPARATOR)) {
             return null;
         }
 
