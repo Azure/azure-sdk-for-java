@@ -34,7 +34,7 @@ import java.util.List;
 
 class RntbdContextDecoder extends ByteToMessageDecoder {
 
-    final private static Logger logger = LoggerFactory.getLogger("RntbdContextDecoder");
+    private static final Logger logger = LoggerFactory.getLogger(RntbdContextDecoder.class);
 
     /**
      * Deserialize from an input {@link ByteBuf} to an {@link RntbdContext} instance
@@ -48,11 +48,11 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
      * @throws Exception thrown if an error occurs
      */
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) throws Exception {
 
         if (RntbdFramer.canDecodeHead(in)) {
 
-            RntbdContext rntbdContext = RntbdContext.decode(in);
+            final RntbdContext rntbdContext = RntbdContext.decode(in);
             context.fireUserEventTriggered(rntbdContext);
             in.discardReadBytes();
 

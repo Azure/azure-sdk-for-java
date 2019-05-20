@@ -35,19 +35,18 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
-import java.util.Objects;
-
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
-class RntbdToken {
+final class RntbdToken {
 
     // region Fields
 
     private static final int HEADER_LENGTH = Short.BYTES + Byte.BYTES;
 
     static {
-        RntbdObjectMapper.registerPropertyFilter(RntbdToken.class, PropertyFilter.class);
+        RntbdObjectMapper.registerPropertyFilter(RntbdToken.class, RntbdToken.PropertyFilter.class);
     }
 
     private final RntbdHeader header;
@@ -56,28 +55,28 @@ class RntbdToken {
 
     // endregion
 
-    private RntbdToken(RntbdHeader header) {
-        Objects.requireNonNull(header);
+    private RntbdToken(final RntbdHeader header) {
+        checkNotNull(header, "header");
         this.header = header;
         this.value = null;
         this.length = Integer.MIN_VALUE;
     }
 
     @JsonProperty
-    RntbdTokenType getType() {
-        return this.header.type();
+    final short getId() {
+        return this.header.id();
     }
 
     // region Accessors
 
     @JsonProperty
-    final short getId() {
-        return this.header.id();
+    final String getName() {
+        return this.header.name();
     }
 
     @JsonProperty
-    final String getName() {
-        return this.header.name();
+    final RntbdTokenType getType() {
+        return this.header.type();
     }
 
     @JsonProperty
@@ -88,7 +87,7 @@ class RntbdToken {
         }
 
         if (this.value instanceof ByteBuf) {
-            ByteBuf buffer = (ByteBuf)this.value;
+            final ByteBuf buffer = (ByteBuf)this.value;
             this.value = this.header.type().codec().read(buffer);
             buffer.release();
         } else {
@@ -98,27 +97,8 @@ class RntbdToken {
         return this.value;
     }
 
-    final int computeLength() {
-
-        if (!this.isPresent()) {
-            return 0;
-        }
-
-        if (this.value instanceof ByteBuf) {
-            ByteBuf buffer = (ByteBuf)this.value;
-            assert buffer.readerIndex() == 0;
-            return HEADER_LENGTH + buffer.readableBytes();
-        }
-
-        if (this.length == Integer.MIN_VALUE) {
-            this.length = HEADER_LENGTH + this.header.type().codec().computeLength(this.value);
-        }
-
-        return this.length;
-    }
-
     @JsonProperty
-    final void setValue(Object value) {
+    final void setValue(final Object value) {
         this.ensureValid(value);
         this.length = Integer.MIN_VALUE;
         this.value = value;
@@ -134,17 +114,36 @@ class RntbdToken {
         return this.header.isRequired();
     }
 
+    final int computeLength() {
+
+        if (!this.isPresent()) {
+            return 0;
+        }
+
+        if (this.value instanceof ByteBuf) {
+            final ByteBuf buffer = (ByteBuf)this.value;
+            assert buffer.readerIndex() == 0;
+            return HEADER_LENGTH + buffer.readableBytes();
+        }
+
+        if (this.length == Integer.MIN_VALUE) {
+            this.length = HEADER_LENGTH + this.header.type().codec().computeLength(this.value);
+        }
+
+        return this.length;
+    }
+
     // endregion
 
     // region Methods
 
-    static RntbdToken create(RntbdHeader header) {
+    static RntbdToken create(final RntbdHeader header) {
         return new RntbdToken(header);
     }
 
-    void decode(ByteBuf in) {
+    void decode(final ByteBuf in) {
 
-        Objects.requireNonNull(in);
+        checkNotNull(in, "in");
 
         if (this.value instanceof ByteBuf) {
             ((ByteBuf)this.value).release();
@@ -153,13 +152,13 @@ class RntbdToken {
         this.value = this.header.type().codec().readSlice(in).retain(); // No data transfer until the first call to RntbdToken.getValue
     }
 
-    final void encode(ByteBuf out) {
+    final void encode(final ByteBuf out) {
 
-        Objects.requireNonNull(out);
+        checkNotNull(out, "out");
 
         if (!this.isPresent()) {
             if (this.isRequired()) {
-                String message = String.format("Missing value for required header: %s", this);
+                final String message = String.format("Missing value for required header: %s", this);
                 throw new IllegalStateException(message);
             }
             return;
@@ -171,38 +170,38 @@ class RntbdToken {
         if (this.value instanceof ByteBuf) {
             out.writeBytes((ByteBuf)this.value);
         } else {
-            this.ensureValid(value);
-            this.header.type().codec().write(value, out);
+            this.ensureValid(this.value);
+            this.header.type().codec().write(this.value, out);
         }
     }
 
-    @Override
-    public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
-        try {
-            return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
-            throw new CorruptedFrameException(error);
-        }
-    }
-
-    final <T> T getValue(Class<T> cls) {
+    final <T> T getValue(final Class<T> cls) {
         return cls.cast(this.getValue());
     }
 
     final void releaseBuffer() {
         if (this.value instanceof ByteBuf) {
-            ByteBuf buffer = (ByteBuf)this.value;
+            final ByteBuf buffer = (ByteBuf)this.value;
             buffer.release();
         }
     }
 
-    private void ensureValid(Object value) {
+    @Override
+    public String toString() {
+        final ObjectWriter writer = RntbdObjectMapper.writer();
+        try {
+            return writer.writeValueAsString(this);
+        } catch (final JsonProcessingException error) {
+            throw new CorruptedFrameException(error);
+        }
+    }
 
-        Objects.requireNonNull(value);
+    private void ensureValid(final Object value) {
+
+        checkNotNull(value, "value");
 
         if (!this.header.type().codec().isValid(value)) {
-            String reason = String.format("value: %s", value.getClass());
+            final String reason = String.format("value: %s", value.getClass());
             throw new IllegalArgumentException(reason);
         }
     }
@@ -214,11 +213,11 @@ class RntbdToken {
     static class PropertyFilter extends SimpleBeanPropertyFilter {
 
         @Override
-        public void serializeAsField(Object object, JsonGenerator generator, SerializerProvider provider, PropertyWriter writer) throws Exception {
+        public void serializeAsField(final Object object, final JsonGenerator generator, final SerializerProvider provider, final PropertyWriter writer) throws Exception {
 
             if (generator.canOmitFields()) {
 
-                Object value = writer.getMember().getValue(object);
+                final Object value = writer.getMember().getValue(object);
 
                 if (value instanceof RntbdToken && !((RntbdToken)value).isPresent()) {
                     return;

@@ -31,26 +31,31 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-final public class RntbdRequestArgs {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public final class RntbdRequestArgs {
+
+    private static final String className = RntbdRequestArgs.class.getCanonicalName();
 
     private final UUID activityId;
     private final long birthTime;
     private final Stopwatch lifetime;
+    private final URI physicalAddress;
     private final String replicaPath;
     private final RxDocumentServiceRequest serviceRequest;
 
-
-    public RntbdRequestArgs(RxDocumentServiceRequest serviceRequest, String replicaPath) {
+    public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
         this.activityId = UUID.fromString(serviceRequest.getActivityId());
         this.birthTime = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
-        this.replicaPath = StringUtils.stripEnd(replicaPath, "/");
+        this.physicalAddress = physicalAddress;
+        this.replicaPath = StringUtils.stripEnd(physicalAddress.getPath(), "/");
         this.serviceRequest = serviceRequest;
     }
 
@@ -70,25 +75,32 @@ final public class RntbdRequestArgs {
         return this.replicaPath;
     }
 
-    RxDocumentServiceRequest getServiceRequest() {
+    public URI getPhysicalAddress() {
+        return this.physicalAddress;
+    }
+
+    public RxDocumentServiceRequest getServiceRequest() {
         return this.serviceRequest;
     }
 
     @Override
     public String toString() {
-        return "[activityId: " + this.serviceRequest.getActivityId() + ", operationType: "
-            + this.serviceRequest.getOperationType() + ", resourceType: "
-            + this.serviceRequest.getResourceType() + ", replicaPath: "
-            + this.replicaPath + "]";
+        return '[' + RntbdRequestArgs.className + '(' + this.serviceRequest.getActivityId()
+            + ", origin: " + this.physicalAddress.getScheme() + "://" + this.physicalAddress.getAuthority()
+            + ", operationType: " + this.serviceRequest.getOperationType()
+            + ", resourceType: " + this.serviceRequest.getResourceType()
+            + ", replicaPath: " + this.replicaPath
+            + ", lifetime: " + this.getLifetime()
+            + ")]";
     }
 
-    public void traceOperation(Logger logger, ChannelHandlerContext context, String operationName, Object... args) {
+    public void traceOperation(final Logger logger, final ChannelHandlerContext context, final String operationName, final Object... args) {
 
-        Objects.requireNonNull(logger);
+        checkNotNull(logger, "logger");
 
         if (logger.isTraceEnabled()) {
             final BigDecimal lifetime = BigDecimal.valueOf(this.lifetime.elapsed().toNanos(), 6);
-            logger.info("{},{},\"{}({})\",\"{}\",\"{}\"", this.birthTime, lifetime, operationName,
+            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.birthTime, lifetime, operationName,
                 Stream.of(args).map(arg ->
                     arg == null ? "null" : arg.toString()).collect(Collectors.joining(",")
                 ),

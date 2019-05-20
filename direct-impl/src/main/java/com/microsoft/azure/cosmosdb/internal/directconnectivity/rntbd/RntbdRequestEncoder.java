@@ -31,7 +31,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final public class RntbdRequestEncoder extends MessageToByteEncoder {
+public final class RntbdRequestEncoder extends MessageToByteEncoder {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestEncoder.class);
 
@@ -44,7 +44,7 @@ final public class RntbdRequestEncoder extends MessageToByteEncoder {
      * @return {@code true}, if the given message is an an {@link RntbdRequest} instance; otherwise @{false}
      */
     @Override
-    public boolean acceptOutboundMessage(Object message) {
+    public boolean acceptOutboundMessage(final Object message) {
         return message instanceof RntbdRequestArgs;
     }
 
@@ -58,20 +58,20 @@ final public class RntbdRequestEncoder extends MessageToByteEncoder {
      * @param out     the {@link ByteBuf} into which the encoded message will be written
      */
     @Override
-    protected void encode(ChannelHandlerContext context, Object message, ByteBuf out) throws Exception {
+    protected void encode(final ChannelHandlerContext context, final Object message, final ByteBuf out) throws Exception {
 
-        RntbdRequest request = RntbdRequest.from((RntbdRequestArgs)message);
-        int start = out.writerIndex();
+        final RntbdRequest request = RntbdRequest.from((RntbdRequestArgs)message);
+        final int start = out.writerIndex();
 
         try {
             request.encode(out);
-        } catch (Throwable error) {
+        } catch (final Throwable error) {
             out.writerIndex(start);
             throw error;
         }
 
         if (logger.isDebugEnabled()) {
-            int length = out.writerIndex() - start;
+            final int length = out.writerIndex() - start;
             logger.debug("{}: ENCODE COMPLETE: length={}, request={}", context.channel(), length, request);
         }
     }

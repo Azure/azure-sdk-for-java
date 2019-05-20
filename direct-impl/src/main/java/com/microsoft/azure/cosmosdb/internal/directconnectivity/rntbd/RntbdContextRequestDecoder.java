@@ -44,12 +44,12 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
      * @throws Exception thrown if an error occurs
      */
     @Override
-    public void channelRead(ChannelHandlerContext context, Object message) throws Exception {
+    public void channelRead(final ChannelHandlerContext context, final Object message) throws Exception {
 
         if (message instanceof ByteBuf) {
 
-            ByteBuf in = (ByteBuf)message;
-            int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
+            final ByteBuf in = (ByteBuf)message;
+            final int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
 
             if (resourceOperationType == 0) {
                 assert this.isSingleDecode();
@@ -72,14 +72,14 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
      * @throws IllegalStateException thrown if an error occurs
      */
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) throws IllegalStateException {
+    protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) throws IllegalStateException {
 
-        RntbdContextRequest request;
+        final RntbdContextRequest request;
         in.markReaderIndex();
 
         try {
             request = RntbdContextRequest.decode(in);
-        } catch (IllegalStateException error) {
+        } catch (final IllegalStateException error) {
             in.resetReaderIndex();
             throw error;
         }

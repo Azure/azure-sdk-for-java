@@ -36,7 +36,8 @@ SOFTWARE.
     <test.groups>unit</test.groups>
     <cosmosdb-sdk.version>2.4.5</cosmosdb-sdk.version>
     <guava.version>27.0.1-jre</guava.version>
-    </properties>
+    <metrics.version>4.0.5</metrics.version>
+  </properties>
   <profiles>
     <profile>
       <!-- unit test -->
@@ -219,7 +220,6 @@ SOFTWARE.
           </classpathContainers>
         </configuration>
       </plugin>
-
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.0.1</version>
@@ -298,6 +298,11 @@ SOFTWARE.
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
     </dependency>
   </dependencies>
   <licenses>

@@ -41,83 +41,15 @@ import java.util.UUID;
 import static com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdConstants.CurrentProtocolVersion;
 import static com.microsoft.azure.cosmosdb.internal.directconnectivity.rntbd.RntbdConstants.RntbdContextHeader;
 
-final public class RntbdContext {
+public final class RntbdContext {
 
-    final private RntbdResponseStatus frame;
-    final private Headers headers;
+    private final RntbdResponseStatus frame;
+    private final Headers headers;
 
-    private RntbdContext(RntbdResponseStatus frame, Headers headers) {
+    private RntbdContext(final RntbdResponseStatus frame, final Headers headers) {
 
         this.frame = frame;
         this.headers = headers;
-    }
-
-    static RntbdContext decode(ByteBuf in) throws TransportException {
-
-        in.markReaderIndex();
-
-        final RntbdResponseStatus frame = RntbdResponseStatus.decode(in);
-        final int statusCode = frame.getStatusCode();
-        final int headersLength = frame.getHeadersLength();
-
-        if (statusCode < 200 || statusCode >= 400) {
-            if (!RntbdFramer.canDecodePayload(in, in.readerIndex() + headersLength)) {
-                in.resetReaderIndex();
-                return null;
-            }
-        }
-
-        final Headers headers = Headers.decode(in.readSlice(headersLength));
-
-        if (statusCode < 200 || statusCode >= 400) {
-
-            final ObjectNode details = (ObjectNode)RntbdObjectMapper.readTree(in.readSlice(in.readIntLE()));
-            final HashMap<String, Object> map = new HashMap<>(4);
-
-            if (headers.clientVersion.isPresent()) {
-                map.put("requiredClientVersion", headers.clientVersion.getValue());
-            }
-
-            if (headers.protocolVersion.isPresent()) {
-                map.put("requiredProtocolVersion", headers.protocolVersion.getValue());
-            }
-
-            if (headers.serverAgent.isPresent()) {
-                map.put("serverAgent", headers.serverAgent.getValue());
-            }
-
-            if (headers.serverVersion.isPresent()) {
-                map.put("serverVersion", headers.serverVersion.getValue());
-            }
-
-            throw new TransportException(frame.getStatus(), details, Collections.unmodifiableMap(map));
-        }
-
-        return new RntbdContext(frame, headers);
-    }
-
-    public static RntbdContext from(RntbdContextRequest request, ServerProperties properties, HttpResponseStatus status) {
-
-        // NOTE TO CODE REVIEWERS
-        // ----------------------
-        // In its current form this method is meant to enable a limited set of test scenarios. It will be revised as
-        // required to support test scenarios as they are developed.
-
-        final Headers headers = new Headers();
-
-        headers.clientVersion.setValue(request.getClientVersion());
-        headers.idleTimeoutInSeconds.setValue(0);
-        headers.protocolVersion.setValue(CurrentProtocolVersion);
-        headers.serverAgent.setValue(properties.getAgent());
-        headers.serverVersion.setValue(properties.getVersion());
-        headers.unauthenticatedTimeoutInSeconds.setValue(0);
-
-        final int length = RntbdResponseStatus.LENGTH + headers.computeLength();
-        final UUID activityId = request.getActivityId();
-
-        final RntbdResponseStatus frame = new RntbdResponseStatus(length, status, activityId);
-
-        return new RntbdContext(frame, headers);
     }
 
     @JsonProperty
@@ -162,31 +94,99 @@ final public class RntbdContext {
         return this.headers.unauthenticatedTimeoutInSeconds.getValue(Long.class);
     }
 
-    public void encode(ByteBuf out) {
+    static RntbdContext decode(final ByteBuf in) throws TransportException {
 
-        int start = out.writerIndex();
+        in.markReaderIndex();
+
+        final RntbdResponseStatus frame = RntbdResponseStatus.decode(in);
+        final int statusCode = frame.getStatusCode();
+        final int headersLength = frame.getHeadersLength();
+
+        if (statusCode < 200 || statusCode >= 400) {
+            if (!RntbdFramer.canDecodePayload(in, in.readerIndex() + headersLength)) {
+                in.resetReaderIndex();
+                return null;
+            }
+        }
+
+        final Headers headers = Headers.decode(in.readSlice(headersLength));
+
+        if (statusCode < 200 || statusCode >= 400) {
+
+            final ObjectNode details = RntbdObjectMapper.readTree(in.readSlice(in.readIntLE()));
+            final HashMap<String, Object> map = new HashMap<>(4);
+
+            if (headers.clientVersion.isPresent()) {
+                map.put("requiredClientVersion", headers.clientVersion.getValue());
+            }
+
+            if (headers.protocolVersion.isPresent()) {
+                map.put("requiredProtocolVersion", headers.protocolVersion.getValue());
+            }
+
+            if (headers.serverAgent.isPresent()) {
+                map.put("serverAgent", headers.serverAgent.getValue());
+            }
+
+            if (headers.serverVersion.isPresent()) {
+                map.put("serverVersion", headers.serverVersion.getValue());
+            }
+
+            throw new TransportException(frame.getStatus(), details, Collections.unmodifiableMap(map));
+        }
+
+        return new RntbdContext(frame, headers);
+    }
+
+    public void encode(final ByteBuf out) {
+
+        final int start = out.writerIndex();
 
         this.frame.encode(out);
         this.headers.encode(out);
 
-        int length = out.writerIndex() - start;
+        final int length = out.writerIndex() - start;
 
         if (length != this.frame.getLength()) {
             throw new IllegalStateException();
         }
     }
 
+    public static RntbdContext from(final RntbdContextRequest request, final ServerProperties properties, final HttpResponseStatus status) {
+
+        // NOTE TO CODE REVIEWERS
+        // ----------------------
+        // In its current form this method is meant to enable a limited set of test scenarios. It will be revised as
+        // required to support test scenarios as they are developed.
+
+        final Headers headers = new Headers();
+
+        headers.clientVersion.setValue(request.getClientVersion());
+        headers.idleTimeoutInSeconds.setValue(0);
+        headers.protocolVersion.setValue(CurrentProtocolVersion);
+        headers.serverAgent.setValue(properties.getAgent());
+        headers.serverVersion.setValue(properties.getVersion());
+        headers.unauthenticatedTimeoutInSeconds.setValue(0);
+
+        final int length = RntbdResponseStatus.LENGTH + headers.computeLength();
+        final UUID activityId = request.getActivityId();
+
+        final RntbdResponseStatus frame = new RntbdResponseStatus(length, status, activityId);
+
+        return new RntbdContext(frame, headers);
+    }
+
     @Override
     public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
+        final ObjectWriter writer = RntbdObjectMapper.writer();
         try {
             return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
+        } catch (final JsonProcessingException error) {
             throw new CorruptedFrameException(error);
         }
     }
 
-    final private static class Headers extends RntbdTokenStream<RntbdContextHeader> {
+    private static final class Headers extends RntbdTokenStream<RntbdContextHeader> {
 
         RntbdToken clientVersion;
         RntbdToken idleTimeoutInSeconds;
@@ -207,8 +207,8 @@ final public class RntbdContext {
             this.unauthenticatedTimeoutInSeconds = this.get(RntbdContextHeader.UnauthenticatedTimeoutInSeconds);
         }
 
-        static Headers decode(ByteBuf in) {
-            Headers headers = new Headers();
+        static Headers decode(final ByteBuf in) {
+            final Headers headers = new Headers();
             Headers.decode(in, headers);
             return headers;
         }

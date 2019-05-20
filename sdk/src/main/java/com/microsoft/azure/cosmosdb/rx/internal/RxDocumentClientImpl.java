@@ -235,10 +235,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public RxDocumentClientImpl(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel, Configs configs) {
 
-        logger.info(
-                "Initializing DocumentClient with"
-                        + " serviceEndpoint [{}], ConnectionPolicy [{}], ConsistencyLevel [{}]",
-                serviceEndpoint, connectionPolicy, consistencyLevel);
+        logger.info("Initializing DocumentClient with serviceEndpoint [{}], connectionPolicy [{}], "
+            + "consistencyLevel [{}], protocol [{}]", serviceEndpoint, connectionPolicy,
+            consistencyLevel, configs.getProtocol());
 
         this.configs = configs;
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
