@@ -6,7 +6,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
@@ -72,7 +72,7 @@ public final class ConfigurationClient {
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
@@ -96,7 +96,7 @@ public final class ConfigurationClient {
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return addSetting(setting, Context.NONE);
@@ -111,17 +111,17 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
+     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add to the configuration service.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
         return client.addSetting(setting, context).block();
@@ -150,7 +150,7 @@ public final class ConfigurationClient {
      * value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
@@ -188,7 +188,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
      * wildcard character, and the current configuration value's etag does not match, or the
      * setting exists and is locked.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
         return setSetting(setting, Context.NONE);
@@ -207,18 +207,18 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
+     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * <p>Update the value of the setting to "updated_db_connection".</p>
      *
      * <pre>
      * result = client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
+     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"), Context.NONE)
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The configuration setting to create or update.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw ServiceRequestException described below).
@@ -227,7 +227,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
      * wildcard character, and the current configuration value's etag does not match, or the
      * setting exists and is locked.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
         return client.setSetting(setting, context).block();
@@ -249,9 +249,9 @@ public final class ConfigurationClient {
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpRequestException If a ConfigurationSetting with the key does not exist or the configuration value
+     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value
      * is locked.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
@@ -279,7 +279,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
      * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
      * the current value.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
         return updateSetting(setting, Context.NONE);
@@ -296,11 +296,11 @@ public final class ConfigurationClient {
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"));
+     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"), Context.NONE);
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add or update in the service.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -308,7 +308,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
      * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
      * the current value.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
         return client.updateSetting(setting, context).block();
@@ -330,7 +330,7 @@ public final class ConfigurationClient {
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key), Context.NONE);
@@ -353,7 +353,7 @@ public final class ConfigurationClient {
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpRequestException If the {@code} key is an empty string.
+     * @throws HttpResponseException If the {@code} key is an empty string.
      */
     public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
         return getSetting(setting, Context.NONE);
@@ -367,17 +367,17 @@ public final class ConfigurationClient {
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
+     * ConfigurationSetting result = client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"), Context.NONE);
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpRequestException If the {@code} key is an empty string.
+     * @throws HttpResponseException If the {@code} key is an empty string.
      */
     public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
         return client.getSetting(setting, context).block();
@@ -399,7 +399,7 @@ public final class ConfigurationClient {
      * the {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
@@ -429,7 +429,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
      * character, and does not match the current etag value.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
         return deleteSetting(setting, Context.NONE);
@@ -447,11 +447,11 @@ public final class ConfigurationClient {
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * <pre>
-     * ConfigurationSetting result = client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
+     * ConfigurationSetting result = client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"), Context.NONE);
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The ConfigurationSetting to delete.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
      * current etag (which will also throw ServiceRequestException described below).
@@ -460,7 +460,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
      * character, and does not match the current etag value.
-     * @throws HttpRequestException If {@code key} is an empty string.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
         return client.deleteSetting(setting, context).block();
@@ -496,12 +496,12 @@ public final class ConfigurationClient {
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
      * <pre>
-     * for (ConfigurationSetting setting : client.listSettings(new SettingSelector().key("prodDBConnection"))) {
+     * for (ConfigurationSetting setting : client.listSettings(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
      *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
      * }</pre>
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
@@ -546,12 +546,12 @@ public final class ConfigurationClient {
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
      * <pre>
-     * for (ConfigurationSetting revision : client.listSettingRevisions(new SettingSelector().key("prodDBConnection"))) {
+     * for (ConfigurationSetting revision : client.listSettingRevisions(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
      *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
      * }</pre>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @param context Additional context that is passed during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
     public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {

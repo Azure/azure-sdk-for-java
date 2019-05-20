@@ -10,13 +10,13 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.PartitionUsageInner;
 
 /**
  * Type representing PartitionUsage.
  */
-public interface PartitionUsage extends HasInner<PartitionUsageInner>, HasManager<DocumentDBManager> {
+public interface PartitionUsage extends HasInner<PartitionUsageInner>, HasManager<CosmosDBManager> {
     /**
      * @return the currentValue value.
      */

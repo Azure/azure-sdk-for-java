@@ -19,14 +19,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabasisDatabaseAcco
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabasisDatabaseAccountUsage;
 
 class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    DatabasesImpl(DocumentDBManager manager) {
+    DatabasesImpl(CosmosDBManager manager) {
         super(manager.inner().databases());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

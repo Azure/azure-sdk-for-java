@@ -25,12 +25,13 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class Controller {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Controller.class);
     private MessagingFactory messagingFactory;
     private CoreMessageSender internalSender;
-    private boolean isInitialized = false;
+    private AtomicBoolean isInitialized = new AtomicBoolean(false);
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
 
@@ -41,7 +42,7 @@ class Controller {
     }
 
     synchronized CompletableFuture<Void> initializeAsync() {
-        if (this.isInitialized) {
+        if (this.isInitialized.get()) {
             return CompletableFuture.completedFuture(null);
         } else {
             TRACE_LOGGER.info("Creating MessageSender to coordinator");
@@ -54,7 +55,7 @@ class Controller {
             senderFuture.handleAsync((s, coreSenderCreationEx) -> {
                 if (coreSenderCreationEx == null) {
                     this.internalSender = s;
-                    this.isInitialized = true;
+                    this.isInitialized.set(true);
                     TRACE_LOGGER.info("Created MessageSender to coordinator");
                     postSenderCreationFuture.complete(null);
                 } else {
@@ -72,7 +73,7 @@ class Controller {
     public CompletableFuture<Binary> declareAsync() {
         Message message = Message.Factory.create();
         Declare declare = new Declare();
-        message.setBody(new AmqpValue(declare));        
+        message.setBody(new AmqpValue(declare));
 
         return this.internalSender.sendAndReturnDeliveryStateAsync(
                 message,

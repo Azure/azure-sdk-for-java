@@ -3,13 +3,13 @@
 
 package com.azure.tracing.opencensus;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.spi.AfterRetryPolicyProvider;
+import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
 import com.azure.core.implementation.util.ImplUtils;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
@@ -54,7 +54,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         HttpRequest request = context.httpRequest();
 
         // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(getSpanName(request), parentSpan);
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(request.url().getPath(), parentSpan);
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
         spanBuilder.setSpanKind(Kind.CLIENT);
@@ -113,8 +113,8 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
             httpResponse = signal.get();
         } else {
             error = signal.getThrowable();
-            if (error instanceof HttpRequestException) {
-                HttpRequestException exception = (HttpRequestException) error;
+            if (error instanceof HttpResponseException) {
+                HttpResponseException exception = (HttpResponseException) error;
                 httpResponse = exception.response();
             }
         }
@@ -139,15 +139,6 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
         // Ending the span schedules it for export if sampled in or just ignores it if sampled out.
         span.end();
-    }
-
-    private String getSpanName(HttpRequest request) {
-        // you can probably optimize it away and remove all checks for null and preceding '/' if path is guaranteed to be valid and not empty
-        String path = request.url().getPath();
-        if (path == null) {
-            path = "/";
-        }
-        return path;
     }
 
     // lambda that actually injects arbitrary header into the request

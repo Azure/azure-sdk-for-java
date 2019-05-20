@@ -9,9 +9,9 @@ import com.azure.core.http.HttpResponse;
  * This exception is thrown when an HTTP request has reached the maximum number of redirect attempts
  * with HTTP status code of 3XX.
  *
- * @see HttpRequestException
+ * @see HttpResponseException
  */
-public class TooManyRedirectsException extends HttpRequestException {
+public class TooManyRedirectsException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the TooManyRedirectsException class.
