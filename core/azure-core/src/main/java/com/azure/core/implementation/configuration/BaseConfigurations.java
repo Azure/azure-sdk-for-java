@@ -8,6 +8,9 @@ package com.azure.core.implementation.configuration;
  */
 public final class BaseConfigurations {
 
+    private BaseConfigurations() {
+    }
+
     /**
      * URI of the proxy for HTTP connections.
      *

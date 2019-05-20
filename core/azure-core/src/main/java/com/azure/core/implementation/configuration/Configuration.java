@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  */
-public class Configuration {
+public class Configuration implements Cloneable {
 
     /**
      * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
@@ -41,7 +41,7 @@ public class Configuration {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return configurations.get(name);
+        return getOrLoad(name);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Configuration {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertOrDefault(get(name), defaultValue);
+        return convertOrDefault(getOrLoad(name), defaultValue);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Configuration {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        String value = get(name);
+        String value = getOrLoad(name);
         if (ImplUtils.isNullOrEmpty(value)) {
             return null;
         }
@@ -85,12 +85,12 @@ public class Configuration {
      * @return The configuration value from either the configuration store, runtime parameters, or environment
      * variable, in that order, if found, otherwise null.
      */
-    public String getOrLoad(String name) {
+    private String getOrLoad(String name) {
         if (configurations.containsKey(name)) {
             return configurations.get(name);
         }
 
-        return load(name).get(name);
+        return load(name);
     }
 
     /**
@@ -101,16 +101,16 @@ public class Configuration {
      * will update it to the loaded value.
      *
      * @param name Name of the configuration.
-     * @return the updated Configuration object.
+     * @return If found the loaded configuration, otherwise null.
      */
-    public Configuration load(String name) {
-        if (loadFrom(name, System::getProperty, LOADED_FROM_RUNTIME)) {
-            return this;
-        } else if (loadFrom(name, System::getenv, LOADED_FROM_ENVIRONMENT)) {
-            return this;
-        } else {
-            return this;
+    private String load(String name) {
+        if (loadFrom(name, System::getProperty)) {
+            logger.asInformational().log(LOADED_FROM_RUNTIME, name);
+        } else if (loadFrom(name, System::getenv)) {
+            logger.asInformational().log(LOADED_FROM_ENVIRONMENT, name);
         }
+
+        return configurations.get(name);
     }
 
     /**
@@ -152,6 +152,12 @@ public class Configuration {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
+        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
+            if (!configurations.containsKey(config)) {
+                load(config);
+            }
+        }
+
         return new Configuration(configurations);
     }
 
@@ -201,62 +207,15 @@ public class Configuration {
      *
      * @param name Name of the configuration.
      * @param loader Loading function to apply.
-     * @param logMessage Message to log if the configuration is found.
      * @return True if the configuration was loaded, false otherwise.
      */
-    private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
+    private boolean loadFrom(String name, Function<String, String> loader) {
         String value = loader.apply(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
             configurations.put(name, value);
-            logger.asInformational().log(logMessage, name);
             return true;
         }
 
         return false;
-    }
-
-    /*
-     * Noop Configuration used to opt out of using global configurations when constructing client libraries.
-     */
-    private static class NoopConfiguration extends Configuration {
-        @Override
-        public String get(String name) {
-            return null;
-        }
-
-        @Override
-        public <T> T get(String name, T defaultValue) {
-            return null;
-        }
-
-        @Override
-        public <T> T get(String name, Function<String, T> converter) {
-            return null;
-        }
-
-        @Override
-        public String getOrLoad(String name) {
-            return null;
-        }
-
-        @Override
-        public Configuration load(String name) {
-            return this;
-        }
-
-        @Override
-        public Configuration put(String name, String value) {
-            return this;
-        }
-
-        @Override
-        public String remove(String name) {
-            return null;
-        }
-
-        @Override
-        public boolean contains(String name) {
-            return false;
-        }
     }
 }
