@@ -25,18 +25,6 @@ class KeyRequestAttributes {
     }
 
     /**
-     * The secret value.
-     */
-    @JsonProperty(value = "value")
-    private String value;
-
-    /**
-     * The secret id.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /**
      * Determines whether the object is enabled.
      */
     @JsonProperty(value = "enabled")

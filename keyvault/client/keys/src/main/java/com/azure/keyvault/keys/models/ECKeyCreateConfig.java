@@ -1,19 +1,17 @@
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
 import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
 import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class ECKeyCreateConfig extends  KeyBase{
     private List<JsonWebKeyOperation> keyOperations;
     private JsonWebKeyCurveName curve;
     private JsonWebKeyType keyType;
-
-    @JsonProperty(value = "key")
-    private JsonWebKey key;
 
     public ECKeyCreateConfig(String name, JsonWebKeyType keyType) {
         super.name = name;
@@ -67,5 +65,53 @@ public class ECKeyCreateConfig extends  KeyBase{
      */
     public JsonWebKeyType keyType() {
         return this.keyType;
+    }
+
+    /**
+     * Set the {@link OffsetDateTime notBefore} UTC time.
+     *
+     * @param notBefore The notBefore UTC time to set
+     * @return the ECKeyCreateConfig object itself.
+     */
+    @Override
+    public ECKeyCreateConfig notBefore(OffsetDateTime notBefore) {
+        super.notBefore(notBefore);
+        return this;
+    }
+
+    /**
+     * Set the {@link OffsetDateTime expires} UTC time.
+     *
+     * @param expires The expiry time to set for the key.
+     * @return the ECKeyCreateConfig object itself.
+     */
+    @Override
+    public ECKeyCreateConfig expires(OffsetDateTime expires) {
+        super.expires(expires);
+        return this;
+    }
+
+    /**
+     * Set the contentType.
+     *
+     * @param contentType The contentType to set
+     * @return the ECKeyCreateConfig object itself.
+     */
+    @Override
+    public ECKeyCreateConfig contentType(String contentType) {
+        super.contentType(contentType);
+        return this;
+    }
+
+    /**
+     * Set the tags to be associated with the key.
+     *
+     * @param tags The tags to set
+     * @return the ECKeyCreateConfig object itself.
+     */
+    @Override
+    public ECKeyCreateConfig tags(Map<String, String> tags) {
+        super.tags(tags);
+        return this;
     }
 }

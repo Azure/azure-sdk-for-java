@@ -1,5 +1,6 @@
 package com.azure.keyvault.keys.models;
 
+import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
@@ -7,6 +8,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Map;
 
 public class KeyBase {
@@ -59,7 +61,7 @@ public class KeyBase {
     /**
      * Key identifier.
      */
-    @JsonProperty(value = "kid")
+    @JsonProperty(value = "keyId")
     String keyId;
 
     /**
@@ -80,6 +82,11 @@ public class KeyBase {
      */
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
+
+    /**
+     * The key operations.
+     */
+    private List<JsonWebKeyOperation> keyOperations;
 
 
     /**
@@ -232,6 +239,26 @@ public class KeyBase {
     }
 
     /**
+     * Get the key operations.
+     *
+     * @return the key operations
+     */
+    public List<JsonWebKeyOperation> keyOperations() {
+        return this.keyOperations;
+    }
+
+    /**
+     * Set the keyOps value.
+     *
+     * @param keyOperations The key operations to set.
+     * @return the Key object itself.
+     */
+    public KeyBase keyOperations(List<JsonWebKeyOperation> keyOperations) {
+        this.keyOperations = keyOperations;
+        return this;
+    }
+
+    /**
      * Get the managed value.
      *
      * @return the managed value
@@ -266,7 +293,7 @@ public class KeyBase {
         this.contentType = (String) lazyValueSelection(attributes.get("contentType"), this.contentType);
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
-        unpackId((String) lazyValueSelection(attributes.get("kid"), this.keyId));
+        unpackId((String) lazyValueSelection(attributes.get("keyId"), this.keyId));
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {

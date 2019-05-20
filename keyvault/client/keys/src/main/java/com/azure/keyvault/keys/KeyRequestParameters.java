@@ -48,18 +48,18 @@ class KeyRequestParameters {
     private JsonWebKeyCurveName curve;
 
     /**
-     * Get the kty value.
+     * Get the keyType value.
      *
-     * @return the kty value
+     * @return the keyType value
      */
     public JsonWebKeyType kty() {
         return this.kty;
     }
 
     /**
-     * Set the kty value.
+     * Set the keyType value.
      *
-     * @param kty the kty value to set
+     * @param kty the keyType value to set
      * @return the KeyRequestParameters object itself.
      */
     public KeyRequestParameters kty(JsonWebKeyType kty) {
