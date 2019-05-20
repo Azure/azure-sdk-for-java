@@ -11,10 +11,8 @@ import com.azure.core.http.HttpResponse;
  * A runtime exception indicating request authorization failure caused by one of the following scenarios:
  * A client did not send the required authorization credentials to access the requested resource, i.e. Authorization HTTP header is missing in the request,
  * OR - In case the request already contains the HTTP Authorization header - then the exception indicates that authorization has been refused for the credentials contained in the request header.
- *
- * @see HttpRequestException
  */
-public class ClientAuthenticationException extends HttpRequestException {
+public class ClientAuthenticationException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the ClientAuthenticationException class.

@@ -362,6 +362,12 @@
     <Bug pattern="MS_SHOULD_BE_FINAL"/>
   </Match>
 
+  <!-- The HttpRequest fields are serializable. Flux<T> and HttpHeaders are able to serialize and deserialize. -->
+  <Match>
+    <Class name="com.azure.core.http.HttpRequest"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
