@@ -1,5 +1,7 @@
-package com.azure.keyvault.keys.models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.webkey.JsonWebKey;
 

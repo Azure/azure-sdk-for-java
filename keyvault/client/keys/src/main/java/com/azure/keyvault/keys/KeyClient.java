@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.keyvault.keys;
 
 import com.azure.core.ServiceClient;
@@ -278,7 +281,7 @@ public final class KeyClient extends ServiceClient {
      * then the latest version of the key is returned. The get key operation is applicable to all key types and If the requested key is symmetric,
      * then no key material is released in the response. This operation requires the {@code keys/get} permission.
      *
-     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeytVersions(String)} return
+     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
      * the {@link List} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
      * <pre>
@@ -525,7 +528,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public List<KeyBase> listKeytVersions(String name) {
+    public List<KeyBase> listKeyVersions(String name) {
         return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchKeys).collectList().block();
     }
 

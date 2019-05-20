@@ -3,7 +3,6 @@
 
 package com.azure.keyvault.keys;
 
-
 import com.azure.core.credentials.AsyncServiceClientCredentials;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;

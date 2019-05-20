@@ -287,7 +287,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * then the latest version of the key is returned. The get key operation is applicable to all key types and If the requested key is symmetric,
      * then no key material is released in the response. This operation requires the {@code keys/get} permission.
      *
-     * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeytVersions(String)} return
+     * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
      * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
      * <pre>
@@ -548,7 +548,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Flux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
      */
-    public Flux<KeyBase> listKeytVersions(String name) {
+    public Flux<KeyBase> listKeyVersions(String name) {
         return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchKeys);
     }
 

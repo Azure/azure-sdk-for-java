@@ -1,13 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.keyvault.keys;
 
 import com.azure.keyvault.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Map;
 
 class KeyImportRequestParameters {
-
 
     /**
      * Whether to import as a hardware key (HSM) or software key.
@@ -20,7 +21,6 @@ class KeyImportRequestParameters {
      */
     @JsonProperty(value = "key", required = true)
     private JsonWebKey key;
-
 
     /**
      * The keyAttributes property.
