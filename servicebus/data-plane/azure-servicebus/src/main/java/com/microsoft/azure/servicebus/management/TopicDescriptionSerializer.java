@@ -175,7 +175,7 @@ class TopicDescriptionSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
+                Element element = (Element) node;
                 switch (element.getTagName()) {
                     case "title":
                         td = new TopicDescription(element.getFirstChild().getNodeValue());
@@ -225,6 +225,8 @@ class TopicDescriptionSerializer {
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

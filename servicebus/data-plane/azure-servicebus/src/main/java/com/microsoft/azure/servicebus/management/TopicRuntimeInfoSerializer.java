@@ -51,7 +51,7 @@ public class TopicRuntimeInfoSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
+                Element element = (Element) node;
                 switch (element.getTagName()) {
                     case "title":
                         topicRuntimeInfo = new TopicRuntimeInfo(element.getFirstChild().getNodeValue());
@@ -108,9 +108,13 @@ public class TopicRuntimeInfoSerializer {
                                             }
                                         }
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

@@ -14,8 +14,7 @@ public class MaxConcurrencyCounter {
         }
     }
 
-    public synchronized void decrementCount()
-    {
+    public synchronized void decrementCount() {
         this.concurrencyCount--;
     }
 

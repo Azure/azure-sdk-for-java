@@ -10,8 +10,7 @@ public class TopicRuntimeInfo extends EntityRuntimeInfo {
     private long sizeInBytes;
     private int subscriptionCount;
 
-    TopicRuntimeInfo(String path)
-    {
+    TopicRuntimeInfo(String path) {
         this.path = path;
     }
 

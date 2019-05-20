@@ -39,7 +39,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public String getClaimType() {
-        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE ;
+        return SharedAccessAuthorizationRule.FIXED_CLAIM_TYPE;
     }
 
     @Override
@@ -104,8 +104,8 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     @Override
     public void setRights(List<AccessRights> rights) {
-        if (rights == null || rights.size() <= 0 || rights.size() > ManagementClientConstants.SupportedClaimsCount) {
-            throw new IllegalArgumentException("Rights cannot be null, empty or greater than " + ManagementClientConstants.SupportedClaimsCount);
+        if (rights == null || rights.size() <= 0 || rights.size() > ManagementClientConstants.SUPPORTED_CLAIMS_COUNT) {
+            throw new IllegalArgumentException("Rights cannot be null, empty or greater than " + ManagementClientConstants.SUPPORTED_CLAIMS_COUNT);
         }
 
         HashSet<AccessRights> dedupedAccessRights = new HashSet<>(rights);

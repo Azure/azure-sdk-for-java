@@ -17,13 +17,13 @@ public class ManagementClientConstants {
     static final String SB_NS = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
     static final String XML_SCHEMA_INSTANCE_NS = "http://www.w3.org/2001/XMLSchema-instance";
 
-    static final String ServiceBusSupplementartyAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
-    static final String ServiceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
-    static final String HttpErrorSubCodeFormatString = "SubCode=%s";
-    static final String ConflictOperationInProgressSubCode =
-        String.format(HttpErrorSubCodeFormatString, ExceptionErrorCodes.ConflictOperationInProgress);
-    static final String ForbiddenInvalidOperationSubCode =
-        String.format(HttpErrorSubCodeFormatString, ExceptionErrorCodes.ForbiddenInvalidOperation);
+    static final String SERVICEBUS_SUPPLEMENTARTY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
+    static final String SERVICEBUS_DLQ_SUPPLEMENTARTY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
+    static final String HTTP_ERROR_SUB_CODE_FORMAT_STRING = "SubCode=%s";
+    static final String CONFLICT_OPERATION_IN_PROGRESS_SUB_CODE =
+        String.format(HTTP_ERROR_SUB_CODE_FORMAT_STRING, ExceptionErrorCodes.CONFLICT_OPERATION_IN_PROGRESS);
+    static final String FORBIDDEN_INVALID_OPERATION_SUB_CODE =
+        String.format(HTTP_ERROR_SUB_CODE_FORMAT_STRING, ExceptionErrorCodes.FORBIDDEN_INVALID_OPERATION);
 
     // Defaults
     static final Duration DEFAULT_HISTORY_DEDUP_WINDOW = Duration.ofMinutes(1);
@@ -40,13 +40,13 @@ public class ManagementClientConstants {
     static final int MIN_ALLOWED_MAX_DELIVERYCOUNT = 1;
     static final int MAX_USERMETADATA_LENGTH = 1024;
 
-    static final char[] InvalidEntityPathCharacters = { '@', '?', '#', '*' };
+    static final char[] INVALID_ENTITY_PATH_CHARACTERS = { '@', '?', '#', '*' };
 
     // Authorization constants
-    static final int SupportedClaimsCount = 3;
+    static final int SUPPORTED_CLAIMS_COUNT = 3;
 
     static class ExceptionErrorCodes {
-        public static final String ConflictOperationInProgress = "40901";
-        public static final String ForbiddenInvalidOperation = "40301";
+        public static final String CONFLICT_OPERATION_IN_PROGRESS = "40901";
+        public static final String FORBIDDEN_INVALID_OPERATION = "40301";
     }
 }
