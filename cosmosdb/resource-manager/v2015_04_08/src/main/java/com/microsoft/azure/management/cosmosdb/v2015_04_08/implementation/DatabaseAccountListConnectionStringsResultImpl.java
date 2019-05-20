@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountConnectionString;
 
 class DatabaseAccountListConnectionStringsResultImpl extends WrapperImpl<DatabaseAccountListConnectionStringsResultInner> implements DatabaseAccountListConnectionStringsResult {
-    private final DocumentDBManager manager;
-    DatabaseAccountListConnectionStringsResultImpl(DatabaseAccountListConnectionStringsResultInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    DatabaseAccountListConnectionStringsResultImpl(DatabaseAccountListConnectionStringsResultInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

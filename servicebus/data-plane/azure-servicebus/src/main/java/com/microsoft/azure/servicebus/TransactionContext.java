@@ -34,7 +34,9 @@ public class TransactionContext {
      * Represents the service-side transactionID
      * @return transaction ID
      */
-    public ByteBuffer getTransactionId() { return this.txnId; }
+    public ByteBuffer getTransactionId() {
+        return this.txnId;
+    }
 
     @Override
     public String toString() {
@@ -105,12 +107,11 @@ public class TransactionContext {
         }
     }
 
-    void registerHandler(ITransactionHandler handler)
-    {
+    void registerHandler(ITransactionHandler handler) {
         this.txnHandler = handler;
     }
 
     interface ITransactionHandler {
-        public void onTransactionCompleted(boolean commit);
+        void onTransactionCompleted(boolean commit);
     }
 }

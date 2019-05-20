@@ -86,7 +86,9 @@ public final class MessageHandlerOptions {
      * Gets the time to wait for receiving a message. Defaults to 1 minute.
      * @return The wait duration for receive calls.
      */
-    public Duration getMessageWaitDuration() { return this.messageWaitDuration; }
+    public Duration getMessageWaitDuration() {
+        return this.messageWaitDuration;
+    }
 
     @Override
     public String toString() {

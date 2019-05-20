@@ -11,12 +11,12 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.UsageInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 
 /**
  * Type representing DatabaseAccountUsage.
  */
-public interface DatabaseAccountUsage extends HasInner<UsageInner>, HasManager<DocumentDBManager> {
+public interface DatabaseAccountUsage extends HasInner<UsageInner>, HasManager<CosmosDBManager> {
     /**
      * @return the currentValue value.
      */
