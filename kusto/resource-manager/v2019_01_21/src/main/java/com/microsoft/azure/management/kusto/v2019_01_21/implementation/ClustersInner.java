@@ -14,7 +14,6 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.ClusterCheckNameRequest;
 import com.microsoft.azure.management.kusto.v2019_01_21.ClusterUpdate;
 import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseRequest;
@@ -134,10 +133,6 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/checkNameAvailability")
         Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ClusterCheckNameRequest clusterName, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters checkNameAvailability1" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability1(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body CheckNameRequest resourceName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.Clusters listSkusByResource" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus")
@@ -1552,100 +1547,6 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     }
 
     private ServiceResponse<CheckNameResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CheckNameResultInner object if successful.
-     */
-    public CheckNameResultInner checkNameAvailability1(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        return checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CheckNameResultInner> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName, final ServiceCallback<CheckNameResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName), serviceCallback);
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameResultInner object
-     */
-    public Observable<CheckNameResultInner> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        return checkNameAvailability1WithServiceResponseAsync(resourceGroupName, clusterName, resourceName).map(new Func1<ServiceResponse<CheckNameResultInner>, CheckNameResultInner>() {
-            @Override
-            public CheckNameResultInner call(ServiceResponse<CheckNameResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CheckNameResultInner object
-     */
-    public Observable<ServiceResponse<CheckNameResultInner>> checkNameAvailability1WithServiceResponseAsync(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (clusterName == null) {
-            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (resourceName == null) {
-            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
-        }
-        Validator.validate(resourceName);
-        return service.checkNameAvailability1(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), resourceName, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CheckNameResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CheckNameResultInner> clientResponse = checkNameAvailability1Delegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<CheckNameResultInner> checkNameAvailability1Delegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<CheckNameResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CheckNameResultInner>() { }.getType())
                 .registerError(CloudException.class)

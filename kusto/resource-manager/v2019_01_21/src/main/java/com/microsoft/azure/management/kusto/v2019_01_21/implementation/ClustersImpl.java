@@ -24,9 +24,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseResult;
-import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.FollowerDatabaseRequest;
-import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameRequest;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.AzureResourceSku;
 import com.microsoft.azure.management.kusto.v2019_01_21.SkuDescription;
 
@@ -176,18 +175,6 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
             @Override
             public FollowerDatabaseResult call(FollowerDatabaseResultInner inner) {
                 return new FollowerDatabaseResultImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<CheckNameResult> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        ClustersInner client = this.inner();
-        return client.checkNameAvailability1Async(resourceGroupName, clusterName, resourceName)
-        .map(new Func1<CheckNameResultInner, CheckNameResult>() {
-            @Override
-            public CheckNameResult call(CheckNameResultInner inner) {
-                return new CheckNameResultImpl(inner, manager());
             }
         });
     }

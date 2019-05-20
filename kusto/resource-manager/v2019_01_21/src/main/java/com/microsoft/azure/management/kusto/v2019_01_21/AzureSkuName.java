@@ -49,6 +49,9 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
     /** Static value Standard_L4s for AzureSkuName. */
     public static final AzureSkuName STANDARD_L4S = fromString("Standard_L4s");
 
+    /** Static value Dev(No SLA)_Standard_D11_v2 for AzureSkuName. */
+    public static final AzureSkuName DEV_NO_SLA_STANDARD_D11_V2 = fromString("Dev(No SLA)_Standard_D11_v2");
+
     /**
      * Creates or finds a AzureSkuName from its string representation.
      * @param name a name to look for

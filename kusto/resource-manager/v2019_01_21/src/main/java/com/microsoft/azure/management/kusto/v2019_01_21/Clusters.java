@@ -66,17 +66,6 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
     Observable<FollowerDatabaseResult> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName, FollowerDatabaseRequest followerDatabasesToRemove);
 
     /**
-     * Checks that the database name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<CheckNameResult> checkNameAvailability1Async(String resourceGroupName, String clusterName, CheckNameRequest resourceName);
-
-    /**
      * Checks that the cluster name is valid and is not already in use.
      *
      * @param location Azure location.

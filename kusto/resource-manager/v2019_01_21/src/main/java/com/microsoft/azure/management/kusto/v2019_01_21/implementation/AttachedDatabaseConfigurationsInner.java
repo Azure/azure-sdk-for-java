@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -55,6 +56,10 @@ public class AttachedDatabaseConfigurationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AttachedDatabaseConfigurationsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfigurations listByCluster" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations")
+        Observable<Response<ResponseBody>> listByCluster(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfigurations get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -75,6 +80,97 @@ public class AttachedDatabaseConfigurationsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Returns the list of attached database configurations of the given Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;AttachedDatabaseConfigurationInner&gt; object if successful.
+     */
+    public List<AttachedDatabaseConfigurationInner> listByCluster(String resourceGroupName, String clusterName) {
+        return listByClusterWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the list of attached database configurations of the given Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AttachedDatabaseConfigurationInner>> listByClusterAsync(String resourceGroupName, String clusterName, final ServiceCallback<List<AttachedDatabaseConfigurationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByClusterWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Returns the list of attached database configurations of the given Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AttachedDatabaseConfigurationInner&gt; object
+     */
+    public Observable<List<AttachedDatabaseConfigurationInner>> listByClusterAsync(String resourceGroupName, String clusterName) {
+        return listByClusterWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<List<AttachedDatabaseConfigurationInner>>, List<AttachedDatabaseConfigurationInner>>() {
+            @Override
+            public List<AttachedDatabaseConfigurationInner> call(ServiceResponse<List<AttachedDatabaseConfigurationInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the list of attached database configurations of the given Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AttachedDatabaseConfigurationInner&gt; object
+     */
+    public Observable<ServiceResponse<List<AttachedDatabaseConfigurationInner>>> listByClusterWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByCluster(resourceGroupName, clusterName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AttachedDatabaseConfigurationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<AttachedDatabaseConfigurationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AttachedDatabaseConfigurationInner>> result = listByClusterDelegate(response);
+                        List<AttachedDatabaseConfigurationInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<AttachedDatabaseConfigurationInner>> clientResponse = new ServiceResponse<List<AttachedDatabaseConfigurationInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AttachedDatabaseConfigurationInner>> listByClusterDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AttachedDatabaseConfigurationInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AttachedDatabaseConfigurationInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**

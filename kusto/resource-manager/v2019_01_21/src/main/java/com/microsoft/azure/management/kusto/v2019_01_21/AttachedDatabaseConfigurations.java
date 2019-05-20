@@ -30,6 +30,16 @@ public interface AttachedDatabaseConfigurations extends SupportsCreating<Attache
     Observable<AttachedDatabaseConfiguration> getAsync(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
 
     /**
+     * Returns the list of attached database configurations of the given Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AttachedDatabaseConfiguration> listByClusterAsync(String resourceGroupName, String clusterName);
+
+    /**
      * Deletes the attached database configuration with the given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.

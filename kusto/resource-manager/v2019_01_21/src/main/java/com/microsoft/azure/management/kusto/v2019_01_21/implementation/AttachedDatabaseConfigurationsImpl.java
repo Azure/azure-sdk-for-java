@@ -14,6 +14,7 @@ import com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfigur
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.AttachedDatabaseConfiguration;
 
 class AttachedDatabaseConfigurationsImpl extends WrapperImpl<AttachedDatabaseConfigurationsInner> implements AttachedDatabaseConfigurations {
@@ -39,6 +40,24 @@ class AttachedDatabaseConfigurationsImpl extends WrapperImpl<AttachedDatabaseCon
 
     private AttachedDatabaseConfigurationImpl wrapModel(String name) {
         return new AttachedDatabaseConfigurationImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<AttachedDatabaseConfiguration> listByClusterAsync(String resourceGroupName, String clusterName) {
+        AttachedDatabaseConfigurationsInner client = this.inner();
+        return client.listByClusterAsync(resourceGroupName, clusterName)
+        .flatMap(new Func1<List<AttachedDatabaseConfigurationInner>, Observable<AttachedDatabaseConfigurationInner>>() {
+            @Override
+            public Observable<AttachedDatabaseConfigurationInner> call(List<AttachedDatabaseConfigurationInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<AttachedDatabaseConfigurationInner, AttachedDatabaseConfiguration>() {
+            @Override
+            public AttachedDatabaseConfiguration call(AttachedDatabaseConfigurationInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override
