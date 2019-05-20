@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.PartitionMetric;
 
 class PartitionKeyRangeIdsImpl extends WrapperImpl<PartitionKeyRangeIdsInner> implements PartitionKeyRangeIds {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    PartitionKeyRangeIdsImpl(DocumentDBManager manager) {
+    PartitionKeyRangeIdsImpl(CosmosDBManager manager) {
         super(manager.inner().partitionKeyRangeIds());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

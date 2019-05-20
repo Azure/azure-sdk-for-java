@@ -15,13 +15,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import java.util.Map;
 
 /**
  * Type representing CassandraKeyspace.
  */
-public interface CassandraKeyspace extends HasInner<CassandraKeyspaceInner>, Indexable, Updatable<CassandraKeyspace.Update>, HasManager<DocumentDBManager> {
+public interface CassandraKeyspace extends HasInner<CassandraKeyspaceInner>, Indexable, Updatable<CassandraKeyspace.Update>, HasManager<CosmosDBManager> {
     /**
      * @return the cassandraKeyspaceId value.
      */

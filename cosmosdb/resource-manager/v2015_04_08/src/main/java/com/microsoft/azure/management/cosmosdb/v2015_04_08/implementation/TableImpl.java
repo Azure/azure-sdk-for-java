@@ -17,13 +17,13 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableResource;
 import rx.functions.Func1;
 
 class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> implements Table, Table.Definition, Table.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String tableName;
     private TableCreateUpdateParameters createOrUpdateParameter;
 
-    TableImpl(String name, DocumentDBManager manager) {
+    TableImpl(String name, CosmosDBManager manager) {
         super(name, new TableInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
         this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
 
-    TableImpl(TableInner inner, DocumentDBManager manager) {
+    TableImpl(TableInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,7 +46,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

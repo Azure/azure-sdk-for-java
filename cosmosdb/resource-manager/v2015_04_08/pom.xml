@@ -14,11 +14,11 @@
         <version>0.0.3-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-documentdb</artifactId>
+    <artifactId>azure-mgmt-cosmosdb</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for DocumentDB Management</name>
-    <description>This package contains Microsoft DocumentDB Management SDK.</description>
+    <name>Microsoft Azure SDK for CosmosDB Management</name>
+    <description>This package contains Microsoft CosmosDB Management SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>

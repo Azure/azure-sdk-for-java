@@ -44,8 +44,8 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateU
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspace;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 
-class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, DatabaseAccountImpl, DatabaseAccountInner, DatabaseAccountsInner, DocumentDBManager>  implements DatabaseAccounts {
-    protected DatabaseAccountsImpl(DocumentDBManager manager) {
+class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, DatabaseAccountImpl, DatabaseAccountInner, DatabaseAccountsInner, CosmosDBManager>  implements DatabaseAccounts {
+    protected DatabaseAccountsImpl(CosmosDBManager manager) {
         super(manager.inner().databaseAccounts(), manager);
     }
 

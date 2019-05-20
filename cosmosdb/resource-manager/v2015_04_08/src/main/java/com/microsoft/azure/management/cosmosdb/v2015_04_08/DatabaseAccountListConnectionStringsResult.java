@@ -10,14 +10,14 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DatabaseAccountListConnectionStringsResultInner;
 import java.util.List;
 
 /**
  * Type representing DatabaseAccountListConnectionStringsResult.
  */
-public interface DatabaseAccountListConnectionStringsResult extends HasInner<DatabaseAccountListConnectionStringsResultInner>, HasManager<DocumentDBManager> {
+public interface DatabaseAccountListConnectionStringsResult extends HasInner<DatabaseAccountListConnectionStringsResultInner>, HasManager<CosmosDBManager> {
     /**
      * @return the connectionStrings value.
      */

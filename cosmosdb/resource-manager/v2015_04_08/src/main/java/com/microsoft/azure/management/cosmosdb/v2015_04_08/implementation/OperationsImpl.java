@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Operation;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    OperationsImpl(DocumentDBManager manager) {
+    OperationsImpl(CosmosDBManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

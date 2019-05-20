@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.Map;
 
 class MongoDBDatabaseImpl extends WrapperImpl<MongoDBDatabaseInner> implements MongoDBDatabase {
-    private final DocumentDBManager manager;
-    MongoDBDatabaseImpl(MongoDBDatabaseInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    MongoDBDatabaseImpl(MongoDBDatabaseInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

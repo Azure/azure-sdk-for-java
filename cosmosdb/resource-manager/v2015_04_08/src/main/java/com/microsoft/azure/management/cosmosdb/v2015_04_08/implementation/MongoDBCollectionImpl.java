@@ -19,14 +19,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollectionReso
 import rx.functions.Func1;
 
 class MongoDBCollectionImpl extends CreatableUpdatableImpl<MongoDBCollection, MongoDBCollectionInner, MongoDBCollectionImpl> implements MongoDBCollection, MongoDBCollection.Definition, MongoDBCollection.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseName;
     private String collectionName;
     private MongoDBCollectionCreateUpdateParameters createOrUpdateParameter;
 
-    MongoDBCollectionImpl(String name, DocumentDBManager manager) {
+    MongoDBCollectionImpl(String name, CosmosDBManager manager) {
         super(name, new MongoDBCollectionInner());
         this.manager = manager;
         // Set resource name
@@ -35,7 +35,7 @@ class MongoDBCollectionImpl extends CreatableUpdatableImpl<MongoDBCollection, Mo
         this.createOrUpdateParameter = new MongoDBCollectionCreateUpdateParameters();
     }
 
-    MongoDBCollectionImpl(MongoDBCollectionInner inner, DocumentDBManager manager) {
+    MongoDBCollectionImpl(MongoDBCollectionInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -50,7 +50,7 @@ class MongoDBCollectionImpl extends CreatableUpdatableImpl<MongoDBCollection, Mo
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

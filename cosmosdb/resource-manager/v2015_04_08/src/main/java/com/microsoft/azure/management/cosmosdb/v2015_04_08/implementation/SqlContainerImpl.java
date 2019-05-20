@@ -21,14 +21,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerResource;
 import rx.functions.Func1;
 
 class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainerInner, SqlContainerImpl> implements SqlContainer, SqlContainer.Definition, SqlContainer.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseName;
     private String containerName;
     private SqlContainerCreateUpdateParameters createOrUpdateParameter;
 
-    SqlContainerImpl(String name, DocumentDBManager manager) {
+    SqlContainerImpl(String name, CosmosDBManager manager) {
         super(name, new SqlContainerInner());
         this.manager = manager;
         // Set resource name
@@ -37,7 +37,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
         this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
     }
 
-    SqlContainerImpl(SqlContainerInner inner, DocumentDBManager manager) {
+    SqlContainerImpl(SqlContainerInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -52,7 +52,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

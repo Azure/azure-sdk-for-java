@@ -10,14 +10,14 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CassandraTableInner;
 import java.util.Map;
 
 /**
  * Type representing CassandraTable.
  */
-public interface CassandraTable extends HasInner<CassandraTableInner>, HasManager<DocumentDBManager> {
+public interface CassandraTable extends HasInner<CassandraTableInner>, HasManager<CosmosDBManager> {
     /**
      * @return the cassandraTableId value.
      */
