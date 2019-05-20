@@ -1,6 +1,6 @@
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
@@ -24,7 +24,7 @@ public class KeyBase {
     private OffsetDateTime notBefore;
 
     /**
-     * The secret version.
+     * The key version.
      */
     String version;
 
@@ -277,10 +277,10 @@ public class KeyBase {
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
+     * Unpacks the attributes json response and updates the variables in the Key Attributes object.
      * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
+     * part of main json body and not attributes json body when the key response comes from list keys operations.
+     * @param attributes The key value mapping of the key attributes
      */
     @JsonProperty("attributes")
     private void unpackAttributes(Map<String, Object> attributes) {

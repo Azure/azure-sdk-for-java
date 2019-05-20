@@ -38,7 +38,7 @@ public final class DeletedKey extends KeyBase {
      * Set the recoveryId identifier.
      *
      * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedSecret object itself.
+     * @return the DeletedKey object itself.
      */
     public DeletedKey recoveryId(String recoveryId) {
         this.recoveryId = recoveryId;

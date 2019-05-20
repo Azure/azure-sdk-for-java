@@ -1,6 +1,9 @@
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.*;
+import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyCurveName;
+import com.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
@@ -91,10 +94,8 @@ public class Key extends KeyBase {
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Key Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the key response comes from list key operations.
-     * @param key The key value mapping of the key attributes
+     * Unpacks the key material json response and updates the variables in the Key Base object.
+     * @param key The key value mapping of the key material
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {

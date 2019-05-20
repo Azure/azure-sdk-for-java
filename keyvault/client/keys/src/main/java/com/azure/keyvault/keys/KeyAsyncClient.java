@@ -16,8 +16,8 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.keyvault.keys.implementation.KeyBasePage;
 import com.azure.keyvault.keys.models.*;
-import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,6 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 import java.util.function.Function;
-
 
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -81,7 +80,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when the callback happens.</p>
      * <pre>
-     * keyAsyncClient.createKey("keyName", JsonWebKeyType.EC).subscribe(keyResponse ->
+     * keyAsyncClient.createKey("keyName", JsonWebKeyType.EC).subscribe(keyResponse -&gt;
      *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *
@@ -116,7 +115,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createRSAKey(rsaKeyCreateConfig).subscribe(keyResponse ->
+     * keyAsyncClient.createRSAKey(rsaKeyCreateConfig).subscribe(keyResponse -&gt;
      *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *
@@ -156,7 +155,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createECKey(ecKeyCreateConfig).subscribe(keyResponse ->
+     * keyAsyncClient.createECKey(ecKeyCreateConfig).subscribe(keyResponse -&gt;
      *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *
@@ -182,7 +181,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key details
      * when the callback happens.</p>
      * <pre>
-     * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse ->
+     * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse -&gt;
      *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *
@@ -214,7 +213,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *   .hsm(true)
      *   .expires(OffsetDateTime.now().plusDays(60));
      *
-     * keyAsyncClient.importKey(keyImportConfig).subscribe(keyResponse ->
+     * keyAsyncClient.importKey(keyImportConfig).subscribe(keyResponse -&gt;
      *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *
@@ -259,12 +258,6 @@ public final class KeyAsyncClient extends ServiceClient {
         }
         return service.getKey(endpoint, name, keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
-
-    public Mono<Response<KeyVariant>> getKeyVariant(String name) {
-        String keyVersion = "";
-        return service.getKeyVariant(endpoint, name, keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-    }
-
 
     /**
      * Get the public part of the latest version of the specified key from the key vault. The get key operation is applicable to all key types and

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.keys.models.webkey;
+package com.azure.keyvault.webkey;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public final class JsonWebKeyType {
 
     /**
      * Creates a custom value for JsonWebKeyType.
-     * @param value the custom value
+     * @param value The custom value
      */
     public JsonWebKeyType(String value) {
         this.value = value;

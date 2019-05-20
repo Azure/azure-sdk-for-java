@@ -13,8 +13,8 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.keyvault.keys.implementation.KeyBasePage;
 import com.azure.keyvault.keys.models.*;
-import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -282,7 +282,7 @@ public final class KeyClient extends ServiceClient {
      * the {@link List} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
      * <pre>
-     * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse ->
+     * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse -&gt;
      *   System.out.printf("Key is returned with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
      * </pre>
      *

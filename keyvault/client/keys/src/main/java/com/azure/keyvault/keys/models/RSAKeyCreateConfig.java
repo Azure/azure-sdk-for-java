@@ -1,11 +1,8 @@
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 
 import java.time.OffsetDateTime;
 import java.util.List;

@@ -32,7 +32,21 @@
     <tag>HEAD</tag>
   </scm>
 
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-keyvault-webkey</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+
   <modules>
     <module>keys</module>
+    <module>webkey</module>
   </modules>
 </project>
