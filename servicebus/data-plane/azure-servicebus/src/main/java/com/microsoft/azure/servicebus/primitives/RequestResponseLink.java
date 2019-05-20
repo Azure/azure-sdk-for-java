@@ -6,7 +6,11 @@ package com.microsoft.azure.servicebus.primitives;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -46,7 +50,7 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-class RequestResponseLink extends ClientEntity{
+class RequestResponseLink extends ClientEntity {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLink.class);
 
     private final Object recreateLinksLock;
@@ -110,8 +114,7 @@ class RequestResponseLink extends ClientEntity{
                 try {
                     messagingFactory.scheduleOnReactorThread(new DispatchHandler() {
                         @Override
-                        public void onEvent()
-                        {
+                        public void onEvent() {
                             requestReponseLink.createInternalLinks();
                         }
                     });
@@ -143,8 +146,7 @@ class RequestResponseLink extends ClientEntity{
         return String.format("%s/%s", entityPath,  AmqpConstants.MANAGEMENT_NODE_ADDRESS_SEGMENT);
     }
 
-    public static String getCBSNodeLinkPath()
-    {
+    public static String getCBSNodeLinkPath() {
         return AmqpConstants.CBS_NODE_ADDRESS_SEGMENT;
     }
 
@@ -185,7 +187,7 @@ class RequestResponseLink extends ClientEntity{
             return CompletableFuture.completedFuture(null);
         } else {
             CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSecurityTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
-            CompletableFuture<Void> sasTokenFuture = sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;});
+            CompletableFuture<Void> sasTokenFuture = sendTokenFuture.thenAccept((f) -> this.sasTokenRenewTimerFuture = f);
 
             if (additionalAudienceURI != null) {
                 CompletableFuture<Void> transferSendTokenFuture = this.underlyingFactory.sendSecurityToken(this.additionalAudienceURI);
@@ -249,9 +251,9 @@ class RequestResponseLink extends ClientEntity{
         BaseHandler.setHandler(session, new SessionHandler(this.linkPath));
 
         String sendLinkNamePrefix = "RequestResponseLink-Sender".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
-        String sendLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ?
-                sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
-                sendLinkNamePrefix;
+        String sendLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer())
+                ? sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer())
+                : sendLinkNamePrefix;
 
         Sender sender = session.sender(sendLinkName);
         Target sednerTarget = new Target();
@@ -272,9 +274,9 @@ class RequestResponseLink extends ClientEntity{
         BaseHandler.setHandler(session, new SessionHandler(this.linkPath));
 
         String receiveLinkNamePrefix = "RequestResponseLink-Receiver".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
-        String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ?
-                receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
-                receiveLinkNamePrefix;
+        String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer())
+                ? receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer())
+                : receiveLinkNamePrefix;
         Receiver receiver = session.receiver(receiveLinkName);
         Source receiverSource = new Source();
         receiverSource.setAddress(this.linkPath);
@@ -519,7 +521,7 @@ class RequestResponseLink extends ClientEntity{
         protected InternalReceiver(String clientId, RequestResponseLink parent) {
             super(clientId);
             this.parent = parent;
-            this.linkGeneration = parent.internalLinkGeneration;// Read it in the constructor as it may change later
+            this.linkGeneration = parent.internalLinkGeneration; // Read it in the constructor as it may change later
             this.openFuture = new CompletableFuture<>();
             this.closeFuture = new CompletableFuture<>();
         }
@@ -660,12 +662,12 @@ class RequestResponseLink extends ClientEntity{
         protected InternalSender(String clientId, RequestResponseLink parent, InternalSender senderToBeCopied) {
             super(clientId);
             this.parent = parent;
-            this.linkGeneration = parent.internalLinkGeneration;// Read it in the constructor as it may change later
+            this.linkGeneration = parent.internalLinkGeneration; // Read it in the constructor as it may change later
             this.availableCredit = new AtomicInteger(0);
             this.pendingSendsSyncLock = new Object();
             this.isSendLoopRunning = false;
-            this.openFuture = new CompletableFuture<Void>();
-            this.closeFuture = new CompletableFuture<Void>();
+            this.openFuture = new CompletableFuture<>();
+            this.closeFuture = new CompletableFuture<>();
 
             if (senderToBeCopied == null) {
                 this.pendingFreshSends = new LinkedList<>();
@@ -858,7 +860,7 @@ class RequestResponseLink extends ClientEntity{
                         try {
                             encodedPair = Util.encodeMessageToOptimalSizeArray(requestToBeSent.getRequest(), this.maxMessageSize);
                         } catch (PayloadSizeExceededException exception) {
-                            this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getRequest().getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024), exception), false);
+                            this.parent.exceptionallyCompleteRequest((String) requestToBeSent.getRequest().getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024), exception), false);
                         }
 
                         try {
