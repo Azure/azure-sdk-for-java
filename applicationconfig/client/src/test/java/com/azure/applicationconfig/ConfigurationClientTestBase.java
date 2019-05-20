@@ -69,14 +69,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-        T client;
-        try {
-            client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.error("Could not create an configuration client credentials.", e);
-            fail();
-            client = null;
-        }
+        T client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
 
         return Objects.requireNonNull(client);
     }

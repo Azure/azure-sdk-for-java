@@ -11,7 +11,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AsyncCredentialsPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -120,8 +119,7 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy());
-        policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(credentials));
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
