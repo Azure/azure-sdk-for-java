@@ -6,6 +6,12 @@ import java.util.function.Function;
  * Noop Configuration used to opt out of using global configurations when constructing client libraries.
  */
 class NoopConfiguration extends Configuration {
+    /**
+     * Creates a no-op configuration.
+     */
+    NoopConfiguration() {
+    }
+
     @Override
     public String get(String name) {
         return null;

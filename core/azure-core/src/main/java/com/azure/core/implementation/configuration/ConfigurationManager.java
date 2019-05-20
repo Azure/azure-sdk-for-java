@@ -9,6 +9,9 @@ package com.azure.core.implementation.configuration;
 public final class ConfigurationManager {
     private static Configuration configuration = new Configuration();
 
+    private ConfigurationManager() {
+    }
+
     /**
      * @return the global configuration store.
      */
