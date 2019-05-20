@@ -33,6 +33,6 @@
 
   <modules>
     <module>azure-servicebus</module>
-    <module>../../core</module>
+    <module>../../core/azure-core-test</module>
   </modules>
 </project>
