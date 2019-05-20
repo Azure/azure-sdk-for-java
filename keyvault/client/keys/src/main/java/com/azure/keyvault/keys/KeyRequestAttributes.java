@@ -14,7 +14,7 @@ class KeyRequestAttributes {
 
     /**
      * Creates an instance of KeyRequestAttributes. Reads keyBase.notBefore, keyBase.expires and keyBase.enabled fields
-     * from {@code secretBase}
+     * from {@code keyBase}
      * @param keyBase the {@link KeyBase} object with populated attributes
      */
     KeyRequestAttributes(KeyBase keyBase) {
