@@ -4,14 +4,12 @@
 package com.microsoft.azure.servicebus.primitives;
 
 // Utility class to encapsulate any pair
-public class Pair<T,V>
-{
+public class Pair<T, V> {
     private T t;
     private V v;
 
-    Pair(T t, V v)
-    {
-        this.t= t;
+    Pair(T t, V v) {
+        this.t = t;
         this.v = v;
     }
 
@@ -34,23 +32,30 @@ public class Pair<T,V>
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Pair other = (Pair) obj;
         if (t == null) {
-            if (other.t != null)
+            if (other.t != null) {
                 return false;
-        } else if (!t.equals(other.t))
+            }
+        } else if (!t.equals(other.t)) {
             return false;
+        }
         if (v == null) {
-            if (other.v != null)
+            if (other.v != null) {
                 return false;
-        } else if (!v.equals(other.v))
+            }
+        } else if (!v.equals(other.v)) {
             return false;
+        }
         return true;
     }
 }

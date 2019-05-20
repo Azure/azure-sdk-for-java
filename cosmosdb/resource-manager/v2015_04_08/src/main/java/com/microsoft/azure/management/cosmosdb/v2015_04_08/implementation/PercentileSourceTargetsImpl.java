@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.PercentileMetric;
 
 class PercentileSourceTargetsImpl extends WrapperImpl<PercentileSourceTargetsInner> implements PercentileSourceTargets {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    PercentileSourceTargetsImpl(DocumentDBManager manager) {
+    PercentileSourceTargetsImpl(CosmosDBManager manager) {
         super(manager.inner().percentileSourceTargets());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

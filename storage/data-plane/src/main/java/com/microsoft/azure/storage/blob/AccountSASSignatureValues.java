@@ -215,8 +215,8 @@ public final class AccountSASSignatureValues {
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,
-                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,

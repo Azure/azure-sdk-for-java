@@ -19,14 +19,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.CollectionDatabasisDa
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CollectionDatabasisDatabaseAccountUsage;
 
 class CollectionsImpl extends WrapperImpl<CollectionsInner> implements Collections {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    CollectionsImpl(DocumentDBManager manager) {
+    CollectionsImpl(CosmosDBManager manager) {
         super(manager.inner().collections());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

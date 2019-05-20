@@ -17,9 +17,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 // Wraps over a standard SSL context and disables the SSLv2Hello protocol.
-public class StrictTLSContextSpi extends SSLContextSpi{
+public class StrictTLSContextSpi extends SSLContextSpi {
 
-    private static final String SSLv2Hello = "SSLv2Hello";
+    private static final String SSL_V2_HELLO = "SSLv2Hello";
 
     SSLContext innerContext;
     public StrictTLSContextSpi(SSLContext innerContext) {
@@ -65,26 +65,20 @@ public class StrictTLSContextSpi extends SSLContextSpi{
         this.innerContext.init(km, tm, sr);
     }
 
-    private void removeSSLv2Hello(SSLEngine engine)
-    {
+    private void removeSSLv2Hello(SSLEngine engine) {
         String[] enabledProtocols = engine.getEnabledProtocols();
         boolean sslv2HelloFound = false;
-        for(String protocol : enabledProtocols)
-        {
-            if(protocol.equalsIgnoreCase(SSLv2Hello))
-            {
+        for (String protocol : enabledProtocols) {
+            if (protocol.equalsIgnoreCase(SSL_V2_HELLO)) {
                 sslv2HelloFound = true;
                 break;
             }
         }
 
-        if(sslv2HelloFound)
-        {
+        if (sslv2HelloFound) {
             ArrayList<String> modifiedProtocols = new ArrayList<String>();
-            for(String protocol : enabledProtocols)
-            {
-                if(!protocol.equalsIgnoreCase(SSLv2Hello))
-                {
+            for (String protocol : enabledProtocols) {
+                if (!protocol.equalsIgnoreCase(SSL_V2_HELLO)) {
                     modifiedProtocols.add(protocol);
                 }
             }

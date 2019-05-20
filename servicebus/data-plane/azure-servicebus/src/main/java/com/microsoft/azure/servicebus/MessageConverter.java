@@ -13,8 +13,13 @@ import java.util.UUID;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Properties;
+import org.apache.qpid.proton.amqp.messaging.Section;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
@@ -92,13 +97,13 @@ class MessageConverter {
         Section body = amqpMessage.getBody();
         if (body != null) {
             if (body instanceof Data) {
-                Binary messageData = ((Data)body).getValue();
+                Binary messageData = ((Data) body).getValue();
                 brokeredMessage = new Message(Utils.fromBinay(messageData.getArray()));
             } else if (body instanceof AmqpValue) {
-                Object messageData = ((AmqpValue)body).getValue();
+                Object messageData = ((AmqpValue) body).getValue();
                 brokeredMessage = new Message(MessageBody.fromValueData(messageData));
             } else if (body instanceof AmqpSequence) {
-                List<Object> messageData = ((AmqpSequence)body).getValue();
+                List<Object> messageData = ((AmqpSequence) body).getValue();
                 brokeredMessage = new Message(Utils.fromSequence(messageData));
             } else {
                 // Should never happen
@@ -149,25 +154,25 @@ class MessageConverter {
                     String entryName = entry.getKey().toString();
                     switch (entryName) {
                         case ClientConstants.ENQUEUEDTIMEUTCNAME:
-                            brokeredMessage.setEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
+                            brokeredMessage.setEnqueuedTimeUtc(((Date) entry.getValue()).toInstant());
                             break;
                         case ClientConstants.SCHEDULEDENQUEUETIMENAME:
-                            brokeredMessage.setScheduledEnqueueTimeUtc(((Date)entry.getValue()).toInstant());
+                            brokeredMessage.setScheduledEnqueueTimeUtc(((Date) entry.getValue()).toInstant());
                             break;
                         case ClientConstants.SEQUENCENUBMERNAME:
-                            brokeredMessage.setSequenceNumber((long)entry.getValue());
+                            brokeredMessage.setSequenceNumber((long) entry.getValue());
                             break;
                         case ClientConstants.LOCKEDUNTILNAME:
-                            brokeredMessage.setLockedUntilUtc(((Date)entry.getValue()).toInstant());
+                            brokeredMessage.setLockedUntilUtc(((Date) entry.getValue()).toInstant());
                             break;
                         case ClientConstants.PARTITIONKEYNAME:
-                            brokeredMessage.setPartitionKey((String)entry.getValue());
+                            brokeredMessage.setPartitionKey((String) entry.getValue());
                             break;
                         case ClientConstants.VIAPARTITIONKEYNAME:
-                            brokeredMessage.setViaPartitionKey((String)entry.getValue());
+                            brokeredMessage.setViaPartitionKey((String) entry.getValue());
                             break;
                         case ClientConstants.DEADLETTERSOURCENAME:
-                            brokeredMessage.setDeadLetterSource((String)entry.getValue());
+                            brokeredMessage.setDeadLetterSource((String) entry.getValue());
                             break;
                         default:
                             break;

@@ -190,20 +190,17 @@ class SubscriptionDescriptionSerializer {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                switch (element.getTagName()) {
                     case "title":
                         sd = new SubscriptionDescription(topicName, element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "RequiresSession":
                                         sd.requiresSession = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
@@ -245,6 +242,8 @@ class SubscriptionDescriptionSerializer {
                                         if (fwdDlq != null) {
                                             sd.forwardDeadLetteredMessagesTo = fwdDlq.getNodeValue();
                                         }
+                                        break;
+                                    default:
                                         break;
                                 }
                             }
