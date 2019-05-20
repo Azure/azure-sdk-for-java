@@ -76,5 +76,7 @@
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
-  <!-- No default case needed for the switch-->
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+
 </suppressions>

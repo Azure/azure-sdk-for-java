@@ -53,6 +53,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 this.scenarioData = APISpec.getRandomData(1024);
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid downlaod resource test scenario.");
         }
     }
 
@@ -145,6 +147,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                         // All calls to getter checked. Exit. This test does not check for data.
                         s.onComplete();
                         break;
+                    default:
+                        throw new IllegalArgumentException("Invalid try number.");
                 }
                 break;
 
