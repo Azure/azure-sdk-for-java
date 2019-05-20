@@ -14,6 +14,8 @@ import java.util.Locale;
  * @see AmqpException
  */
 public class ErrorContext implements Serializable {
+    private static final long serialVersionUID = -2819764407122954922L;
+
     private final String namespaceName;
 
     public ErrorContext(final String namespaceName) {
@@ -25,8 +27,8 @@ public class ErrorContext implements Serializable {
     }
 
     /**
-     * Gets the
-     * @return
+     * Gets the namespace for this error.
+     * @return The namespace for this error.
      */
     public String namespaceName() {
         return namespaceName;

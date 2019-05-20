@@ -7,7 +7,7 @@ import com.azure.amqp.exception.ErrorCondition;
 import org.apache.qpid.proton.amqp.Symbol;
 
 public final class AmqpConstants {
-    private static final String VENDOR = "com.microsoft";
+    static final String VENDOR = "com.microsoft";
 
     public static final String APACHE = "apache.org";
     public static final String PROTON = "proton";
@@ -37,15 +37,15 @@ public final class AmqpConstants {
 
     // These are AMQP errors that are vendor specific.
     public static final Symbol PROTON_IO_ERROR = Symbol.getSymbol(AmqpConstants.PROTON + ":io");
-    public static final Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(ErrorCondition.SERVER_BUSY_ERROR);
-    public static final Symbol ARGUMENT_ERROR = Symbol.getSymbol(ErrorCondition.ARGUMENT_ERROR);
-    public static final Symbol ARGUMENT_OUT_OF_RANGE_ERROR = Symbol.getSymbol(ErrorCondition.ARGUMENT_OUT_OF_RANGE_ERROR);
-    public static final Symbol ENTITY_DISABLED_ERROR = Symbol.getSymbol(ErrorCondition.ENTITY_DISABLED_ERROR);
-    public static final Symbol PARTITION_NOT_OWNED_ERROR = Symbol.getSymbol(ErrorCondition.PARTITION_NOT_OWNED_ERROR);
-    public static final Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(ErrorCondition.STORE_LOCK_LOST_ERROR);
-    public static final Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(ErrorCondition.PUBLISHER_REVOKED_ERROR);
-    public static final Symbol TIMEOUT_ERROR = Symbol.getSymbol(ErrorCondition.TIMEOUT_ERROR);
-    public static final Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(ErrorCondition.TRACKING_ID_PROPERTY);
+    public static final Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(ErrorCondition.SERVER_BUSY_ERROR.getErrorCondition());
+    public static final Symbol ARGUMENT_ERROR = Symbol.getSymbol(ErrorCondition.ARGUMENT_ERROR.getErrorCondition());
+    public static final Symbol ARGUMENT_OUT_OF_RANGE_ERROR = Symbol.getSymbol(ErrorCondition.ARGUMENT_OUT_OF_RANGE_ERROR.getErrorCondition());
+    public static final Symbol ENTITY_DISABLED_ERROR = Symbol.getSymbol(ErrorCondition.ENTITY_DISABLED_ERROR.getErrorCondition());
+    public static final Symbol PARTITION_NOT_OWNED_ERROR = Symbol.getSymbol(ErrorCondition.PARTITION_NOT_OWNED_ERROR.getErrorCondition());
+    public static final Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(ErrorCondition.STORE_LOCK_LOST_ERROR.getErrorCondition());
+    public static final Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(ErrorCondition.PUBLISHER_REVOKED_ERROR.getErrorCondition());
+    public static final Symbol TIMEOUT_ERROR = Symbol.getSymbol(ErrorCondition.TIMEOUT_ERROR.getErrorCondition());
+    public static final Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(ErrorCondition.TRACKING_ID_PROPERTY.getErrorCondition());
 
     private AmqpConstants() {
     }

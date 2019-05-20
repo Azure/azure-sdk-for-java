@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.amqp.MessageConstants;
 import com.azure.eventhubs.implementation.AmqpConstants;
 import com.azure.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.Proton;
@@ -207,45 +208,45 @@ public class EventData implements Comparable<EventData> {
                 return;
             }
 
-            if (AmqpConstants.RESERVED_PROPERTY_NAMES.contains(key)) {
+            if (MessageConstants.RESERVED_PROPERTY_NAMES.contains(key)) {
                 switch (key) {
-                    case AmqpConstants.AMQP_PROPERTY_MESSAGE_ID:
+                    case MessageConstants.MESSAGE_ID:
                         message.setMessageId(value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_USER_ID:
+                    case MessageConstants.USER_ID:
                         message.setUserId((byte[]) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_TO:
+                    case MessageConstants.TO:
                         message.setAddress((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_SUBJECT:
+                    case MessageConstants.SUBJECT:
                         message.setSubject((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_REPLY_TO:
+                    case MessageConstants.REPLY_TO:
                         message.setReplyTo((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_CORRELATION_ID:
+                    case MessageConstants.CORRELATION_ID:
                         message.setCorrelationId(value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE:
+                    case MessageConstants.CONTENT_TYPE:
                         message.setContentType((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING:
+                    case MessageConstants.CONTENT_ENCODING:
                         message.setContentEncoding((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME:
+                    case MessageConstants.ABSOLUTE_EXPRITY_TIME:
                         message.setExpiryTime((long) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_CREATION_TIME:
+                    case MessageConstants.CREATION_TIME:
                         message.setCreationTime((long) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_GROUP_ID:
+                    case MessageConstants.GROUP_ID:
                         message.setGroupId((String) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_GROUP_SEQUENCE:
+                    case MessageConstants.GROUP_SEQUENCE:
                         message.setGroupSequence((long) value);
                         break;
-                    case AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID:
+                    case MessageConstants.REPLY_TO_GROUP_ID:
                         message.setReplyToGroupId((String) value);
                         break;
                     default:

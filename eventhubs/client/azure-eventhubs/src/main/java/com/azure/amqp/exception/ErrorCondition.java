@@ -101,12 +101,21 @@ public enum ErrorCondition {
 
     static {
         for(ErrorCondition error : ErrorCondition.values()) {
-            ERROR_CONSTANT_MAP.put(error.errorCondition, error);
+            ERROR_CONSTANT_MAP.put(error.getErrorCondition(), error);
         }
     }
 
     ErrorCondition(String errorCondition) {
         this.errorCondition = errorCondition;
+    }
+
+    /**
+     * Gets the AMQP header value for this error condition.
+     *
+     * @return AMQP header value for this error condition.
+     */
+    public String getErrorCondition() {
+        return errorCondition;
     }
 
     /**
