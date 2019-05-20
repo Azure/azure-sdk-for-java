@@ -17,13 +17,13 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseResource;
 import rx.functions.Func1;
 
 class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInner, SqlDatabaseImpl> implements SqlDatabase, SqlDatabase.Definition, SqlDatabase.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseName;
     private SqlDatabaseCreateUpdateParameters createOrUpdateParameter;
 
-    SqlDatabaseImpl(String name, DocumentDBManager manager) {
+    SqlDatabaseImpl(String name, CosmosDBManager manager) {
         super(name, new SqlDatabaseInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
         this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
     }
 
-    SqlDatabaseImpl(SqlDatabaseInner inner, DocumentDBManager manager) {
+    SqlDatabaseImpl(SqlDatabaseInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,7 +46,7 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

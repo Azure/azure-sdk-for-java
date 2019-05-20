@@ -17,13 +17,13 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceReso
 import rx.functions.Func1;
 
 class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, CassandraKeyspaceInner, CassandraKeyspaceImpl> implements CassandraKeyspace, CassandraKeyspace.Definition, CassandraKeyspace.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String keyspaceName;
     private CassandraKeyspaceCreateUpdateParameters createOrUpdateParameter;
 
-    CassandraKeyspaceImpl(String name, DocumentDBManager manager) {
+    CassandraKeyspaceImpl(String name, CosmosDBManager manager) {
         super(name, new CassandraKeyspaceInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
         this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
 
-    CassandraKeyspaceImpl(CassandraKeyspaceInner inner, DocumentDBManager manager) {
+    CassandraKeyspaceImpl(CassandraKeyspaceInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,7 +46,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

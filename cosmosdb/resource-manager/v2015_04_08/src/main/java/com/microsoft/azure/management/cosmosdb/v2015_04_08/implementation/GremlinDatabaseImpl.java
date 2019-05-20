@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.Map;
 
 class GremlinDatabaseImpl extends WrapperImpl<GremlinDatabaseInner> implements GremlinDatabase {
-    private final DocumentDBManager manager;
-    GremlinDatabaseImpl(GremlinDatabaseInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    GremlinDatabaseImpl(GremlinDatabaseInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

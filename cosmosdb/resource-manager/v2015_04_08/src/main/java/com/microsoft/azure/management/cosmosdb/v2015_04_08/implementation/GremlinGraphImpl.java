@@ -21,14 +21,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraphResource;
 import rx.functions.Func1;
 
 class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraphInner, GremlinGraphImpl> implements GremlinGraph, GremlinGraph.Definition, GremlinGraph.Update {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseName;
     private String graphName;
     private GremlinGraphCreateUpdateParameters createOrUpdateParameter;
 
-    GremlinGraphImpl(String name, DocumentDBManager manager) {
+    GremlinGraphImpl(String name, CosmosDBManager manager) {
         super(name, new GremlinGraphInner());
         this.manager = manager;
         // Set resource name
@@ -37,7 +37,7 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
         this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
 
-    GremlinGraphImpl(GremlinGraphInner inner, DocumentDBManager manager) {
+    GremlinGraphImpl(GremlinGraphInner inner, CosmosDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -52,7 +52,7 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

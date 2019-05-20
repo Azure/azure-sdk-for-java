@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DatabaseAccountInner;
 
 /**
  * Type representing DatabaseAccount.
  */
-public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resource, GroupableResourceCore<DocumentDBManager, DatabaseAccountInner>, HasResourceGroup, Refreshable<DatabaseAccount>, Updatable<DatabaseAccount.Update>, HasManager<DocumentDBManager> {
+public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resource, GroupableResourceCore<CosmosDBManager, DatabaseAccountInner>, HasResourceGroup, Refreshable<DatabaseAccount>, Updatable<DatabaseAccount.Update>, HasManager<CosmosDBManager> {
     /**
      * @return the capabilities value.
      */
