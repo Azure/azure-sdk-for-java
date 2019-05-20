@@ -34,5 +34,9 @@
   <modules>
     <module>azure-servicebus</module>
     <module>../../core/azure-core-test</module>
+    <module>../../core</module>
+    <module>../../core/azure-core</module>
+    <module>../../core/azure-core-auth</module>
+    <module>../../core/azure-core-management</module>
   </modules>
 </project>
