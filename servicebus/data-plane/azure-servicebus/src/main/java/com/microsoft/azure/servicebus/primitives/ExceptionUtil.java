@@ -125,7 +125,7 @@ public final class ExceptionUtil {
     }
 
     public static Throwable extractAsyncCompletionCause(Throwable completionEx) {
-        if(completionEx instanceof CompletionException || completionEx instanceof ExecutionException) {
+        if (completionEx instanceof CompletionException || completionEx instanceof ExecutionException) {
             return completionEx.getCause();
         } else {
             return completionEx;

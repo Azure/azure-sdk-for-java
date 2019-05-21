@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.PercentileMetric;
 
 class PercentilesImpl extends WrapperImpl<PercentilesInner> implements Percentiles {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    PercentilesImpl(DocumentDBManager manager) {
+    PercentilesImpl(CosmosDBManager manager) {
         super(manager.inner().percentiles());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

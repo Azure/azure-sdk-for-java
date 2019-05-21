@@ -12,7 +12,7 @@ import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -521,8 +521,8 @@ public class RestProxyStressTests {
                 .flatMap(integer ->
                         innerService.createContainer(integer.toString(), sas)
                                 .onErrorResume(throwable -> {
-                                    if (throwable instanceof HttpRequestException) {
-                                        HttpRequestException restException = (HttpRequestException) throwable;
+                                    if (throwable instanceof HttpResponseException) {
+                                        HttpResponseException restException = (HttpResponseException) throwable;
                                         if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
                                             return Mono.empty();
                                         }
