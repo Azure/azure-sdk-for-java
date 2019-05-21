@@ -74,9 +74,6 @@ public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, I
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
-            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
-            * @param serverName The name of the server
-            * @return the next definition stage
             */
             WithVirtualNetworkSubnetId withExistingServer(String resourceGroupName, String serverName);
         }
@@ -87,8 +84,6 @@ public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, I
         interface WithVirtualNetworkSubnetId {
            /**
             * Specifies virtualNetworkSubnetId.
-            * @param virtualNetworkSubnetId The ARM resource id of the virtual network subnet
-            * @return the next definition stage
             */
             WithCreate withVirtualNetworkSubnetId(String virtualNetworkSubnetId);
         }
@@ -99,8 +94,6 @@ public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, I
         interface WithIgnoreMissingVnetServiceEndpoint {
             /**
              * Specifies ignoreMissingVnetServiceEndpoint.
-             * @param ignoreMissingVnetServiceEndpoint Create firewall rule before the virtual network has vnet service endpoint enabled
-             * @return the next definition stage
              */
             WithCreate withIgnoreMissingVnetServiceEndpoint(Boolean ignoreMissingVnetServiceEndpoint);
         }
@@ -129,8 +122,6 @@ public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, I
         interface WithIgnoreMissingVnetServiceEndpoint {
             /**
              * Specifies ignoreMissingVnetServiceEndpoint.
-             * @param ignoreMissingVnetServiceEndpoint Create firewall rule before the virtual network has vnet service endpoint enabled
-             * @return the next update stage
              */
             Update withIgnoreMissingVnetServiceEndpoint(Boolean ignoreMissingVnetServiceEndpoint);
         }

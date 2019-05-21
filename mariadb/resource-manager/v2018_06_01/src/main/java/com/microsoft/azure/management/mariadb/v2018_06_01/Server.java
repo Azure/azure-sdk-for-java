@@ -108,20 +108,16 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
         interface WithProperties {
            /**
             * Specifies properties.
-            * @param properties Properties of the server
-            * @return the next definition stage
-*/
+            */
             WithCreate withProperties(ServerPropertiesForCreate properties);
         }
 
         /**
-         * The stage of the server definition allowing to specify Sku.
+         * The stage of the server update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The SKU (pricing tier) of the server
-             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
@@ -145,73 +141,61 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
      */
     interface UpdateStages {
         /**
-         * The stage of the server update allowing to specify AdministratorLoginPassword.
+         * The stage of the server {0} allowing to specify AdministratorLoginPassword.
          */
         interface WithAdministratorLoginPassword {
             /**
              * Specifies administratorLoginPassword.
-             * @param administratorLoginPassword The password of the administrator login
-             * @return the next update stage
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
 
         /**
-         * The stage of the server update allowing to specify ReplicationRole.
+         * The stage of the server {0} allowing to specify ReplicationRole.
          */
         interface WithReplicationRole {
             /**
              * Specifies replicationRole.
-             * @param replicationRole The replication role of the server
-             * @return the next update stage
              */
             Update withReplicationRole(String replicationRole);
         }
 
         /**
-         * The stage of the server update allowing to specify Sku.
+         * The stage of the server {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The SKU (pricing tier) of the server
-             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
 
         /**
-         * The stage of the server update allowing to specify SslEnforcement.
+         * The stage of the server {0} allowing to specify SslEnforcement.
          */
         interface WithSslEnforcement {
             /**
              * Specifies sslEnforcement.
-             * @param sslEnforcement Enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'
-             * @return the next update stage
              */
             Update withSslEnforcement(SslEnforcementEnum sslEnforcement);
         }
 
         /**
-         * The stage of the server update allowing to specify StorageProfile.
+         * The stage of the server {0} allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
             /**
              * Specifies storageProfile.
-             * @param storageProfile Storage profile of a server
-             * @return the next update stage
              */
             Update withStorageProfile(StorageProfile storageProfile);
         }
 
         /**
-         * The stage of the server update allowing to specify Version.
+         * The stage of the server {0} allowing to specify Version.
          */
         interface WithVersion {
             /**
              * Specifies version.
-             * @param version The version of a server. Possible values include: '5.6', '5.7'
-             * @return the next update stage
              */
             Update withVersion(ServerVersion version);
         }

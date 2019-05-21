@@ -69,9 +69,6 @@ public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Re
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
-            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
-            * @param serverName The name of the server
-            * @return the next definition stage
             */
             WithEndIpAddress withExistingServer(String resourceGroupName, String serverName);
         }
@@ -82,8 +79,6 @@ public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Re
         interface WithEndIpAddress {
            /**
             * Specifies endIpAddress.
-            * @param endIpAddress The end IP address of the server firewall rule. Must be IPv4 format
-            * @return the next definition stage
             */
             WithStartIpAddress withEndIpAddress(String endIpAddress);
         }
@@ -94,8 +89,6 @@ public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Re
         interface WithStartIpAddress {
            /**
             * Specifies startIpAddress.
-            * @param startIpAddress The start IP address of the server firewall rule. Must be IPv4 format
-            * @return the next definition stage
             */
             WithCreate withStartIpAddress(String startIpAddress);
         }
