@@ -601,6 +601,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
                 .register(202, new TypeToken<HanaInstanceInner>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
