@@ -11,7 +11,6 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.LineOfCredits;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.LineOfCredit;
@@ -41,9 +40,15 @@ class LineOfCreditsImpl extends WrapperImpl<LineOfCreditsInner> implements LineO
     }
 
     @Override
-    public Completable increaseAsync() {
+    public Observable<LineOfCredit> increaseAsync() {
         LineOfCreditsInner client = this.inner();
-        return client.increaseAsync().toCompletable();
+        return client.increaseAsync()
+        .map(new Func1<LineOfCreditInner, LineOfCredit>() {
+            @Override
+            public LineOfCredit call(LineOfCreditInner inner) {
+                return new LineOfCreditImpl(inner, manager());
+            }
+        });
     }
 
 }

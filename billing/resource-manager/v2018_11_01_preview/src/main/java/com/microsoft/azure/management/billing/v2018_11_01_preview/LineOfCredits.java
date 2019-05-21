@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
-import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.LineOfCreditsInner;
 import com.microsoft.azure.arm.model.HasInner;
@@ -31,6 +30,6 @@ public interface LineOfCredits extends HasInner<LineOfCreditsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable increaseAsync();
+    Observable<LineOfCredit> increaseAsync();
 
 }

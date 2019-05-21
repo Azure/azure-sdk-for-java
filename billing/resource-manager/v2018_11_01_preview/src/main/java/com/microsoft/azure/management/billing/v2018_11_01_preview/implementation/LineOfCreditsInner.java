@@ -148,9 +148,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LineOfCreditInner object if successful.
      */
-    public void increase() {
-        increaseWithServiceResponseAsync().toBlocking().last().body();
+    public LineOfCreditInner increase() {
+        return increaseWithServiceResponseAsync().toBlocking().last().body();
     }
 
     /**
@@ -160,7 +161,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> increaseAsync(final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<LineOfCreditInner> increaseAsync(final ServiceCallback<LineOfCreditInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(increaseWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -170,10 +171,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> increaseAsync() {
-        return increaseWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>, Void>() {
+    public Observable<LineOfCreditInner> increaseAsync() {
+        return increaseWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>, LineOfCreditInner>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> response) {
+            public LineOfCreditInner call(ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> response) {
                 return response.body();
             }
         });
@@ -185,7 +186,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> increaseWithServiceResponseAsync() {
+    public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> increaseWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -196,7 +197,7 @@ public class LineOfCreditsInner {
         IncreaseLineOfCreditRequestProperties parameters = new IncreaseLineOfCreditRequestProperties();
         parameters.withDesiredCreditLimit(null);
         Observable<Response<ResponseBody>> observable = service.increase(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), LineOfCreditsIncreaseHeaders.class);
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<LineOfCreditInner>() { }.getType(), LineOfCreditsIncreaseHeaders.class);
     }
     /**
      * Increase the current line of credit.
@@ -205,9 +206,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LineOfCreditInner object if successful.
      */
-    public void increase(Double desiredCreditLimit) {
-        increaseWithServiceResponseAsync(desiredCreditLimit).toBlocking().last().body();
+    public LineOfCreditInner increase(Double desiredCreditLimit) {
+        return increaseWithServiceResponseAsync(desiredCreditLimit).toBlocking().last().body();
     }
 
     /**
@@ -218,7 +220,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> increaseAsync(Double desiredCreditLimit, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<LineOfCreditInner> increaseAsync(Double desiredCreditLimit, final ServiceCallback<LineOfCreditInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(increaseWithServiceResponseAsync(desiredCreditLimit), serviceCallback);
     }
 
@@ -229,10 +231,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> increaseAsync(Double desiredCreditLimit) {
-        return increaseWithServiceResponseAsync(desiredCreditLimit).map(new Func1<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>, Void>() {
+    public Observable<LineOfCreditInner> increaseAsync(Double desiredCreditLimit) {
+        return increaseWithServiceResponseAsync(desiredCreditLimit).map(new Func1<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>, LineOfCreditInner>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> response) {
+            public LineOfCreditInner call(ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> response) {
                 return response.body();
             }
         });
@@ -245,7 +247,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> increaseWithServiceResponseAsync(Double desiredCreditLimit) {
+    public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> increaseWithServiceResponseAsync(Double desiredCreditLimit) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -255,7 +257,7 @@ public class LineOfCreditsInner {
         IncreaseLineOfCreditRequestProperties parameters = new IncreaseLineOfCreditRequestProperties();
         parameters.withDesiredCreditLimit(desiredCreditLimit);
         Observable<Response<ResponseBody>> observable = service.increase(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), LineOfCreditsIncreaseHeaders.class);
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<LineOfCreditInner>() { }.getType(), LineOfCreditsIncreaseHeaders.class);
     }
 
     /**
@@ -264,9 +266,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LineOfCreditInner object if successful.
      */
-    public void beginIncrease() {
-        beginIncreaseWithServiceResponseAsync().toBlocking().single().body();
+    public LineOfCreditInner beginIncrease() {
+        return beginIncreaseWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -276,7 +279,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginIncreaseAsync(final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<LineOfCreditInner> beginIncreaseAsync(final ServiceCallback<LineOfCreditInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(beginIncreaseWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -284,12 +287,12 @@ public class LineOfCreditsInner {
      * Increase the current line of credit.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable to the LineOfCreditInner object
      */
-    public Observable<Void> beginIncreaseAsync() {
-        return beginIncreaseWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>, Void>() {
+    public Observable<LineOfCreditInner> beginIncreaseAsync() {
+        return beginIncreaseWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>, LineOfCreditInner>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> response) {
+            public LineOfCreditInner call(ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> response) {
                 return response.body();
             }
         });
@@ -299,9 +302,9 @@ public class LineOfCreditsInner {
      * Increase the current line of credit.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable to the LineOfCreditInner object
      */
-    public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> beginIncreaseWithServiceResponseAsync() {
+    public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> beginIncreaseWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -312,11 +315,11 @@ public class LineOfCreditsInner {
         IncreaseLineOfCreditRequestProperties parameters = new IncreaseLineOfCreditRequestProperties();
         parameters.withDesiredCreditLimit(null);
         return service.beginIncrease(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> clientResponse = beginIncreaseDelegate(response);
+                        ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> clientResponse = beginIncreaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -332,9 +335,10 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LineOfCreditInner object if successful.
      */
-    public void beginIncrease(Double desiredCreditLimit) {
-        beginIncreaseWithServiceResponseAsync(desiredCreditLimit).toBlocking().single().body();
+    public LineOfCreditInner beginIncrease(Double desiredCreditLimit) {
+        return beginIncreaseWithServiceResponseAsync(desiredCreditLimit).toBlocking().single().body();
     }
 
     /**
@@ -345,7 +349,7 @@ public class LineOfCreditsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginIncreaseAsync(Double desiredCreditLimit, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<LineOfCreditInner> beginIncreaseAsync(Double desiredCreditLimit, final ServiceCallback<LineOfCreditInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(beginIncreaseWithServiceResponseAsync(desiredCreditLimit), serviceCallback);
     }
 
@@ -354,12 +358,12 @@ public class LineOfCreditsInner {
      *
      * @param desiredCreditLimit The desired credit limit.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable to the LineOfCreditInner object
      */
-    public Observable<Void> beginIncreaseAsync(Double desiredCreditLimit) {
-        return beginIncreaseWithServiceResponseAsync(desiredCreditLimit).map(new Func1<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>, Void>() {
+    public Observable<LineOfCreditInner> beginIncreaseAsync(Double desiredCreditLimit) {
+        return beginIncreaseWithServiceResponseAsync(desiredCreditLimit).map(new Func1<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>, LineOfCreditInner>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> response) {
+            public LineOfCreditInner call(ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> response) {
                 return response.body();
             }
         });
@@ -370,9 +374,9 @@ public class LineOfCreditsInner {
      *
      * @param desiredCreditLimit The desired credit limit.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable to the LineOfCreditInner object
      */
-    public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> beginIncreaseWithServiceResponseAsync(Double desiredCreditLimit) {
+    public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> beginIncreaseWithServiceResponseAsync(Double desiredCreditLimit) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -382,11 +386,11 @@ public class LineOfCreditsInner {
         IncreaseLineOfCreditRequestProperties parameters = new IncreaseLineOfCreditRequestProperties();
         parameters.withDesiredCreditLimit(desiredCreditLimit);
         return service.beginIncrease(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> clientResponse = beginIncreaseDelegate(response);
+                        ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> clientResponse = beginIncreaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -395,8 +399,9 @@ public class LineOfCreditsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<Void, LineOfCreditsIncreaseHeaders> beginIncreaseDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponseWithHeaders<LineOfCreditInner, LineOfCreditsIncreaseHeaders> beginIncreaseDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LineOfCreditInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LineOfCreditInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, LineOfCreditsIncreaseHeaders.class);
