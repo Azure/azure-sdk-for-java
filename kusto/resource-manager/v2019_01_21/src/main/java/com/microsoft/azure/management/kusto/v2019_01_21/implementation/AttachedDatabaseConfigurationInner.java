@@ -42,7 +42,7 @@ public class AttachedDatabaseConfigurationInner extends ProxyResource {
      * The list of databases from the clusterResourceId which are currently
      * attached to the cluster.
      */
-    @JsonProperty(value = "properties.AttachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.attachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedDatabaseNames;
 
     /**
