@@ -47,7 +47,7 @@ public class Sku {
     private String family;
 
     /**
-     * Get the name value.
+     * Get the name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -67,7 +67,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get the tier of the particular SKU, e.g. Basic. Possible values include: 'Basic', 'GeneralPurpose', 'MemoryOptimized'.
      *
      * @return the tier value
      */
@@ -76,7 +76,7 @@ public class Sku {
     }
 
     /**
-     * Set the tier value.
+     * Set the tier of the particular SKU, e.g. Basic. Possible values include: 'Basic', 'GeneralPurpose', 'MemoryOptimized'.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -87,7 +87,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get the scale up/out capacity, representing server's compute units.
      *
      * @return the capacity value
      */
@@ -96,7 +96,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set the scale up/out capacity, representing server's compute units.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
@@ -107,7 +107,7 @@ public class Sku {
     }
 
     /**
-     * Get the size value.
+     * Get the size code, to be interpreted by resource as appropriate.
      *
      * @return the size value
      */
@@ -116,7 +116,7 @@ public class Sku {
     }
 
     /**
-     * Set the size value.
+     * Set the size code, to be interpreted by resource as appropriate.
      *
      * @param size the size value to set
      * @return the Sku object itself.
@@ -127,7 +127,7 @@ public class Sku {
     }
 
     /**
-     * Get the family value.
+     * Get the family of hardware.
      *
      * @return the family value
      */
@@ -136,7 +136,7 @@ public class Sku {
     }
 
     /**
-     * Set the family value.
+     * Set the family of hardware.
      *
      * @param family the family value to set
      * @return the Sku object itself.
