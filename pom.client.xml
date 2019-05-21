@@ -723,10 +723,16 @@
               <include>**/*Tests.java</include>
               <include>**/*TestCase.java</include>
             </includes>
+            <systemPropertyVariables>
+              <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+              <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+            </systemPropertyVariables>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
               <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
               <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+              <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+              <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
             </environmentVariables>
           </configuration>
         </plugin>
