@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import java.util.Map;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.NetworkRuleSet;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
 import rx.functions.Func1;
 
@@ -97,6 +98,11 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     @Override
     public String kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public NetworkRuleSet networkAcls() {
+        return this.inner().networkAcls();
     }
 
     @Override
