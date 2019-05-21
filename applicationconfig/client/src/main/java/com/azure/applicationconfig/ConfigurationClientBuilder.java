@@ -5,20 +5,36 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AsyncCredentialsPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationClient},
- * calling {@link ConfigurationClientBuilder#build() build} constructs an instance of the client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of configuration clients.
+ * Calling {@link ConfigurationClientBuilder#buildRawClient() buildRawClient} constructs an instance of {@link ConfigurationRawClient},
+ * {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of {@link ConfigurationAsyncClient},
+ * and {@link ConfigurationClientBuilder#buildClient() buildClient} constructs an instance of {@link ConfigurationClient}.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
- * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
+ * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
@@ -30,7 +46,7 @@ import java.net.MalformedURLException;
  * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
  * {@link ConfigurationClientBuilder#pipeline(HttpPipeline) this}, additionally set the service endpoint with
  * {@link ConfigurationClientBuilder#serviceEndpoint(String) this}. Using a pipeline requires additional setup but
- * allows for finer control on how the ConfigurationClient it built.</p>
+ * allows for finer control on how the ConfigurationAsyncClient it built.</p>
  *
  * <pre>
  * ConfigurationAsyncClient.builder()
@@ -39,34 +55,96 @@ import java.net.MalformedURLException;
  *     .build();
  * </pre>
  *
- * @see ConfigurationClient
+ * @see ConfigurationRawClient
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClientBuilder {
-    private final ConfigurationAsyncClientBuilder builder;
+    // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
+    // request was sent.
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final String ACCEPT_HEADER = "Accept";
+    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+
+    private final List<HttpPipelinePolicy> policies;
+    private final HttpHeaders headers;
+
+    private ConfigurationClientCredentials credentials;
+    private URL serviceEndpoint;
+    private HttpClient httpClient;
+    private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpPipeline pipeline;
+    private RetryPolicy retryPolicy;
 
     ConfigurationClientBuilder() {
-        builder = ConfigurationAsyncClient.builder();
+        retryPolicy = new RetryPolicy();
+        httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
+
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     /**
-     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is
-     * called, a new instance of {@link ConfigurationClient} is created.
+     * Creates a {@link ConfigurationRawClient} based on options set in the Builder. Every time {@code build()} is
+     * called, a new instance of {@link ConfigurationRawClient} is created.
      *
      * <p>
      * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} are used to create the
-     * {@link ConfigurationClient client}. All other builder settings are ignored.</p>
+     * {@link ConfigurationRawClient client}. All other builder settings are ignored.
+     * </p>
      *
-     * @return A ConfigurationClient with the options set from the builder.
+     * @return A ConfigurationAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when
      * {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) credentials} are set through
      * the builder. Or can be set explicitly by calling {@link ConfigurationClientBuilder#serviceEndpoint(String)}.
      * @throws IllegalStateException If {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)}
      * has not been set.
      */
-    public ConfigurationClient build() {
-        return new ConfigurationClient(builder.build());
+    public ConfigurationRawClient buildRawClient() {
+        Objects.requireNonNull(serviceEndpoint);
+
+        if (pipeline != null) {
+            return new ConfigurationRawClient(serviceEndpoint, pipeline);
+        }
+
+        if (credentials == null) {
+            throw new IllegalStateException("'credentials' is required.");
+        }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
+        policies.add(new AddDatePolicy());
+        policies.add(new ConfigurationCredentialsPolicy());
+        policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(retryPolicy);
+
+        policies.addAll(this.policies);
+
+        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        return new ConfigurationRawClient(serviceEndpoint, pipeline);
+    }
+
+    public ConfigurationClient buildClient() {
+        return new ConfigurationClient(buildRawClient());
+    }
+
+    public ConfigurationAsyncClient buildAsyncClient() {
+        return new ConfigurationAsyncClient(buildRawClient());
     }
 
     /**
@@ -74,24 +152,26 @@ public final class ConfigurationClientBuilder {
      *
      * @param serviceEndpoint The URL of the Azure App Configuration instance to send {@link ConfigurationSetting}
      * service requests to and receive responses from.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws MalformedURLException if {@code serviceEndpoint} is null or it cannot be parsed into a valid URL.
      */
     public ConfigurationClientBuilder serviceEndpoint(String serviceEndpoint) throws MalformedURLException {
-        builder.serviceEndpoint(serviceEndpoint);
+        this.serviceEndpoint = new URL(serviceEndpoint);
         return this;
     }
 
     /**
      * Sets the credentials to use when authenticating HTTP requests. Also, sets the
-     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} for this ConfigurationClientBuilder.
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} for this ConfigurationAsyncClientBuilder.
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code credentials} is {@code null}.
      */
     public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
-        builder.credentials(credentials);
+        Objects.requireNonNull(credentials);
+        this.credentials = credentials;
+        this.serviceEndpoint = credentials.baseUri();
         return this;
     }
 
@@ -99,23 +179,24 @@ public final class ConfigurationClientBuilder {
      * Sets the logging level for HTTP requests and responses.
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      */
     public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        builder.httpLogDetailLevel(logLevel);
+        httpLogDetailLevel = logLevel;
         return this;
     }
 
     /**
      * Adds a policy to the set of existing policies that are executed after
-     * {@link ConfigurationClient} required policies.
+     * {@link ConfigurationRawClient} required policies.
      *
      * @param policy The retry policy for service requests.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        builder.addPolicy(policy);
+        Objects.requireNonNull(policy);
+        policies.add(policy);
         return this;
     }
 
@@ -123,11 +204,12 @@ public final class ConfigurationClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
-        builder.httpClient(client);
+        Objects.requireNonNull(client);
+        this.httpClient = client;
         return this;
     }
 
@@ -135,13 +217,14 @@ public final class ConfigurationClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationClient}.
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationRawClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ConfigurationAsyncClientBuilder object.
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
-        builder.pipeline(pipeline);
+        Objects.requireNonNull(pipeline);
+        this.pipeline = pipeline;
         return this;
     }
 }

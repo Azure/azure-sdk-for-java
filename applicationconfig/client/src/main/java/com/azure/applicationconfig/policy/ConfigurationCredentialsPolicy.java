@@ -3,7 +3,6 @@
 package com.azure.applicationconfig.policy;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
-import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;

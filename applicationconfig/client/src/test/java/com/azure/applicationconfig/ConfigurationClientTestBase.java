@@ -89,6 +89,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
     }
 
+    /**
+     * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
+     */
     @Test
     public abstract void addSetting();
 
@@ -107,9 +110,15 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label(getLabel()));
     }
 
+    /**
+     * Tests that we cannot add a configuration setting when the key is an empty string.
+     */
     @Test
     public abstract void addSettingEmptyKey();
 
+    /**
+     * Tests that we can add configuration settings when value is not null or an empty string.
+     */
     @Test
     public abstract void addSettingEmptyValue();
 
@@ -122,9 +131,15 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting2);
     }
 
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
     @Test
     public abstract void addSettingNullKey();
 
+    /**
+     * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
+     */
     @Test
     public abstract void addExistingSetting();
 
@@ -135,6 +150,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label(getLabel()));
     }
 
+    /**
+     * Tests that a configuration is able to be added or updated with set.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
     @Test
     public abstract void setSetting();
 
@@ -149,6 +168,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
     }
 
+    /**
+     * Tests that when an etag is passed to set it will only set if the current representation of the setting has the
+     * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
+     * prevent set from doing an add as well.
+     */
     @Test
     public abstract void setSettingIfEtag();
 
@@ -163,9 +187,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
+    /**
+     * Tests that we cannot set a configuration setting when the key is an empty string.
+     */
     @Test
     public abstract void setSettingEmptyKey();
 
+    /**
+     * Tests that we can set configuration settings when value is not null or an empty string.
+     * Value is not a required property.
+     */
     @Test
     public abstract void setSettingEmptyValue();
 
@@ -179,8 +210,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting2);
     }
 
-    @Test public abstract void setSettingNullKey();
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public abstract void setSettingNullKey();
 
+    /**
+     * Tests that update cannot be done to a non-existent configuration, this will result in a 412.
+     * Unlike set update isn't able to create the configuration.
+     */
     @Test
     public abstract void updateNoExistingSetting();
 
@@ -191,6 +230,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(expectedFail.label(getLabel()));
     }
 
+    /**
+     * Tests that a configuration is able to be updated when it exists.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
     @Test
     public abstract void updateSetting();
 
@@ -218,6 +261,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(original.label(label), updated.label(label));
     }
 
+    /**
+     * Tests that a configuration is able to be updated when it exists with the convenience overload.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
     @Test
     public abstract void updateSettingOverload();
 
@@ -230,9 +277,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(original, updated);
     }
 
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
     @Test
     public abstract void updateSettingNullKey();
 
+    /**
+     * Tests that when an etag is passed to update it will only update if the current representation of the setting has the etag.
+     * If the update etag doesn't match anything the update won't happen, this will result in a 412.
+     */
     @Test
     public abstract void updateSettingIfEtag();
 
@@ -247,6 +301,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(Arrays.asList(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label)));
     }
 
+    /**
+     * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
+     */
     @Test
     public abstract void getSetting();
 
@@ -259,9 +316,17 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label("myLabel"));
     }
 
+    /**
+     * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
+     */
     @Test
     public abstract void getSettingNotFound();
 
+    /**
+     * Tests that configurations are able to be deleted when they exist.
+     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
+     * configuration never existed.
+     */
     @Test
     public abstract void deleteSetting();
 
@@ -275,9 +340,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(deletableConfiguration.label(label));
     }
 
+    /**
+     * Tests that attempting to delete a non-existent configuration will return a 204.
+     */
     @Test
     public abstract void deleteSettingNotFound();
 
+    /**
+     * Tests that when an etag is passed to delete it will only delete if the current representation of the setting has the etag.
+     * If the delete etag doesn't match anything the delete won't happen, this will result in a 412.
+     */
     @Test
     public abstract void deleteSettingWithETag();
 
@@ -292,12 +364,23 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
+    /**
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     */
     @Test
     public abstract void deleteSettingNullKey();
 
+    /**
+     * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
+     * from the service when filtering by either its label or just its key.
+     */
     @Test
     public abstract void listWithKeyAndLabel();
 
+    /**
+     * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
+     * service when filtering by their keys.
+     */
     @Test
     public abstract void listWithMultipleKeys();
 
@@ -313,6 +396,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
+    /**
+     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
+     * from the service when filtering by their labels.
+     */
     @Test
     public abstract void listWithMultipleLabels();
 
@@ -328,6 +415,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
+    /**
+     * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
+     */
     @Test
     public abstract void listSettingsSelectFields();
 
@@ -364,9 +454,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         }
     }
 
+    /**
+     * Verifies that we can get a ConfigurationSetting at the provided accept datetime
+     */
     @Test
     public abstract void listSettingsAcceptDateTime();
 
+    /**
+     * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
+     * specific fields.
+     */
     @Test
     public abstract void listRevisions();
 
@@ -377,6 +474,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertNull(actual.lastModified());
     }
 
+    /**
+     * Verifies that we can get all the revisions for all settings with the specified keys.
+     */
     @Test
     public abstract void listRevisionsWithMultipleKeys();
 
@@ -395,6 +495,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
+    /**
+     * Verifies that we can get all revisions for all settings with the specified labels.
+     */
     @Test
     public abstract void listRevisionsWithMultipleLabels();
 
@@ -413,25 +516,49 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
+    /**
+     * Verifies that the range header for revision selections returns the expected values.
+     */
     @Test
     public abstract void listRevisionsWithRange();
 
+    /**
+     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
+     */
     @Test
     public abstract void listRevisionsInvalidRange();
 
+    /**
+     * Verifies that we can get a subset of revisions based on the "acceptDateTime"
+     */
     @Test
     public abstract void listRevisionsAcceptDateTime();
 
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
     @Test
     public abstract void listRevisionsWithPagination();
 
+    /**
+     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.
+     */
     @Test
     public abstract void listSettingsWithPagination();
 
+    /**
+     * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
+     * scenario will return a setting when the etag provided does not match the one of the current setting.
+     */
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public abstract void getSettingWhenValueNotUpdated();
 
+    /**
+     * Deletes all settings in the AppConfig store.
+     */
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public abstract void deleteAllSettings();

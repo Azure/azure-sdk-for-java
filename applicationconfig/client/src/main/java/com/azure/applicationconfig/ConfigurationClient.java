@@ -9,7 +9,6 @@ import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.Response;
 
 import java.util.List;
 
@@ -33,15 +32,15 @@ import java.util.List;
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClient {
-    private final ConfigurationAsyncClient client;
+    private final ConfigurationRawClient client;
 
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param client The {@link ConfigurationAsyncClient} that the client routes its request through.
+     * @param client The {@link ConfigurationRawClient} that the client routes its request through.
      */
-    ConfigurationClient(ConfigurationAsyncClient client) {
+    ConfigurationClient(ConfigurationRawClient client) {
         this.client = client;
     }
 
@@ -73,7 +72,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> addSetting(String key, String value) {
+    public ConfigurationSetting addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value));
     }
 
@@ -97,8 +96,8 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return client.addSetting(setting).block();
+    public ConfigurationSetting addSetting(ConfigurationSetting setting) {
+        return client.addSetting(setting).block().value();
     }
 
     /**
@@ -126,7 +125,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> setSetting(String key, String value) {
+    public ConfigurationSetting setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value));
     }
 
@@ -164,8 +163,8 @@ public final class ConfigurationClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return client.setSetting(setting).block();
+    public ConfigurationSetting setSetting(ConfigurationSetting setting) {
+        return client.setSetting(setting).block().value();
     }
 
     /**
@@ -188,7 +187,7 @@ public final class ConfigurationClient {
      * is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> updateSetting(String key, String value) {
+    public ConfigurationSetting updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value));
     }
 
@@ -216,8 +215,8 @@ public final class ConfigurationClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return client.updateSetting(setting).block();
+    public ConfigurationSetting updateSetting(ConfigurationSetting setting) {
+        return client.updateSetting(setting).block().value();
     }
 
     /**
@@ -238,7 +237,7 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> getSetting(String key) {
+    public ConfigurationSetting getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key));
     }
 
@@ -261,8 +260,8 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return client.getSetting(setting).block();
+    public ConfigurationSetting getSetting(ConfigurationSetting setting) {
+        return client.getSetting(setting).block().value();
     }
 
     /**
@@ -283,7 +282,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> deleteSetting(String key) {
+    public ConfigurationSetting deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key));
     }
 
@@ -313,8 +312,8 @@ public final class ConfigurationClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return client.deleteSetting(setting).block();
+    public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
+        return client.deleteSetting(setting).block().value();
     }
 
     /**

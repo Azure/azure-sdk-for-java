@@ -28,7 +28,7 @@ public class HelloWorld {
         // Instantiate a client that will be used to call the service.
         ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
             .credentials(new ConfigurationClientCredentials(connectionString))
-            .build();
+            .buildAsyncClient();
 
         // Name of the key to add to the configuration service.
         String key = "hello";
@@ -40,10 +40,7 @@ public class HelloWorld {
         // If an error occurs, we print out that error. On completion of the subscription, we delete the setting.
         // .block() exists there so the program does not end before the deletion has completed.
         client.setSetting(key, "world").subscribe(
-            result -> {
-                ConfigurationSetting setting = result.value();
-                System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
-            },
+            result -> System.out.println(String.format("Key: %s, Value: %s", result.key(), result.value())),
             error -> System.err.println("There was an error adding the setting: " + error.toString()),
             () -> {
                 System.out.println("Completed. Deleting setting...");

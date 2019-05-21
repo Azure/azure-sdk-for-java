@@ -3,6 +3,7 @@
 
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.implementation.ConfigurationSettingPage;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.core.annotations.BodyParam;
