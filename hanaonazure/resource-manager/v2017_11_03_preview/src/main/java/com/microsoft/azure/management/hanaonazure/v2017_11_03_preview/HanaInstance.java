@@ -97,22 +97,118 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
         }
 
         /**
+         * The stage of the hanainstance definition allowing to specify HardwareProfile.
+         */
+        interface WithHardwareProfile {
+            /**
+             * Specifies hardwareProfile.
+             * @param hardwareProfile Specifies the hardware settings for the HANA instance
+             * @return the next definition stage
+             */
+            WithCreate withHardwareProfile(HardwareProfile hardwareProfile);
+        }
+
+        /**
+         * The stage of the hanainstance definition allowing to specify NetworkProfile.
+         */
+        interface WithNetworkProfile {
+            /**
+             * Specifies networkProfile.
+             * @param networkProfile Specifies the network settings for the HANA instance
+             * @return the next definition stage
+             */
+            WithCreate withNetworkProfile(NetworkProfile networkProfile);
+        }
+
+        /**
+         * The stage of the hanainstance definition allowing to specify OsProfile.
+         */
+        interface WithOsProfile {
+            /**
+             * Specifies osProfile.
+             * @param osProfile Specifies the operating system settings for the HANA instance
+             * @return the next definition stage
+             */
+            WithCreate withOsProfile(OSProfile osProfile);
+        }
+
+        /**
+         * The stage of the hanainstance definition allowing to specify StorageProfile.
+         */
+        interface WithStorageProfile {
+            /**
+             * Specifies storageProfile.
+             * @param storageProfile Specifies the storage settings for the HANA instance disks
+             * @return the next definition stage
+             */
+            WithCreate withStorageProfile(StorageProfile storageProfile);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<HanaInstance>, Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<HanaInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHardwareProfile, DefinitionStages.WithNetworkProfile, DefinitionStages.WithOsProfile, DefinitionStages.WithStorageProfile {
         }
     }
     /**
      * The template for a HanaInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithHardwareProfile, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithStorageProfile {
     }
 
     /**
      * Grouping of HanaInstance update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the hanainstance update allowing to specify HardwareProfile.
+         */
+        interface WithHardwareProfile {
+            /**
+             * Specifies hardwareProfile.
+             * @param hardwareProfile Specifies the hardware settings for the HANA instance
+             * @return the next update stage
+             */
+            Update withHardwareProfile(HardwareProfile hardwareProfile);
+        }
+
+        /**
+         * The stage of the hanainstance update allowing to specify NetworkProfile.
+         */
+        interface WithNetworkProfile {
+            /**
+             * Specifies networkProfile.
+             * @param networkProfile Specifies the network settings for the HANA instance
+             * @return the next update stage
+             */
+            Update withNetworkProfile(NetworkProfile networkProfile);
+        }
+
+        /**
+         * The stage of the hanainstance update allowing to specify OsProfile.
+         */
+        interface WithOsProfile {
+            /**
+             * Specifies osProfile.
+             * @param osProfile Specifies the operating system settings for the HANA instance
+             * @return the next update stage
+             */
+            Update withOsProfile(OSProfile osProfile);
+        }
+
+        /**
+         * The stage of the hanainstance update allowing to specify StorageProfile.
+         */
+        interface WithStorageProfile {
+            /**
+             * Specifies storageProfile.
+             * @param storageProfile Specifies the storage settings for the HANA instance disks
+             * @return the next update stage
+             */
+            Update withStorageProfile(StorageProfile storageProfile);
+        }
+
     }
 }

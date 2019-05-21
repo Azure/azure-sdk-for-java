@@ -12,11 +12,11 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstance;
 import rx.Observable;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HardwareProfile;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaProvisioningStatesEnum;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
 
 class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance, HanaInstance.Definition, HanaInstance.Update {
     HanaInstanceImpl(String name, HanaInstanceInner inner, HanaOnAzureManager manager) {
@@ -26,14 +26,14 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     @Override
     public Observable<HanaInstance> createResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return client.createAsync(this.resourceGroupName(), this.name())
+        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<HanaInstance> updateResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return client.createAsync(this.resourceGroupName(), this.name())
+        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -97,6 +97,30 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     @Override
     public StorageProfile storageProfile() {
         return this.inner().storageProfile();
+    }
+
+    @Override
+    public HanaInstanceImpl withHardwareProfile(HardwareProfile hardwareProfile) {
+        this.inner().withHardwareProfile(hardwareProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withNetworkProfile(NetworkProfile networkProfile) {
+        this.inner().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withOsProfile(OSProfile osProfile) {
+        this.inner().withOsProfile(osProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withStorageProfile(StorageProfile storageProfile) {
+        this.inner().withStorageProfile(storageProfile);
+        return this;
     }
 
 }

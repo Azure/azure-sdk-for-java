@@ -82,11 +82,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body HanaInstanceInner hanaInstanceParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body HanaInstanceInner hanaInstanceParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
@@ -446,13 +446,14 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HanaInstanceInner object if successful.
      */
-    public HanaInstanceInner create(String resourceGroupName, String hanaInstanceName) {
-        return createWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().last().body();
+    public HanaInstanceInner create(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
+        return createWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).toBlocking().last().body();
     }
 
     /**
@@ -461,12 +462,13 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<HanaInstanceInner> createAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    public ServiceFuture<HanaInstanceInner> createAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter), serviceCallback);
     }
 
     /**
@@ -475,11 +477,12 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<HanaInstanceInner> createAsync(String resourceGroupName, String hanaInstanceName) {
-        return createWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+    public Observable<HanaInstanceInner> createAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
+        return createWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
             @Override
             public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
                 return response.body();
@@ -493,10 +496,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<HanaInstanceInner>> createWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+    public Observable<ServiceResponse<HanaInstanceInner>> createWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -509,7 +513,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        if (hanaInstanceParameter == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceParameter is required and cannot be null.");
+        }
+        Validator.validate(hanaInstanceParameter);
+        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), hanaInstanceParameter, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<HanaInstanceInner>() { }.getType());
     }
 
@@ -519,13 +527,14 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HanaInstanceInner object if successful.
      */
-    public HanaInstanceInner beginCreate(String resourceGroupName, String hanaInstanceName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    public HanaInstanceInner beginCreate(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).toBlocking().single().body();
     }
 
     /**
@@ -534,12 +543,13 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<HanaInstanceInner> beginCreateAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    public ServiceFuture<HanaInstanceInner> beginCreateAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter), serviceCallback);
     }
 
     /**
@@ -548,11 +558,12 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<HanaInstanceInner> beginCreateAsync(String resourceGroupName, String hanaInstanceName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+    public Observable<HanaInstanceInner> beginCreateAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
             @Override
             public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
                 return response.body();
@@ -566,10 +577,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param hanaInstanceParameter Request body representing a HanaInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<ServiceResponse<HanaInstanceInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+    public Observable<ServiceResponse<HanaInstanceInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -582,7 +594,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        if (hanaInstanceParameter == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceParameter is required and cannot be null.");
+        }
+        Validator.validate(hanaInstanceParameter);
+        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), hanaInstanceParameter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
