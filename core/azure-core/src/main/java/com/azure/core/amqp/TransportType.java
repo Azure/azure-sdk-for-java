@@ -33,6 +33,13 @@ public enum TransportType {
         return this.value;
     }
 
+    /**
+     * Creates an TransportType from its display value.
+     *
+     * @param value The string value of the TransportType.
+     * @return The TransportType represented by the value.
+     * @throws IllegalArgumentException If a TransportType cannot be parsed from the string value.
+     */
     public static TransportType fromString(final String value) {
         for (TransportType transportType : values()) {
             if (transportType.value.equalsIgnoreCase(value)) {

@@ -21,22 +21,28 @@ public class AmqpException extends AzureException {
     private final boolean isTransient;
     private final ErrorCondition errorCondition;
 
+    /**
+     * Initializes a new instance of the AmqpException class.
+     *
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
+     * can be retried; otherwise not.
+     * @param description Text containing any supplementary details of the exception.
+     */
     public AmqpException(boolean isTransient, String description) {
         this(isTransient, null, description);
     }
 
+    /**
+     * Initializes a new instance of the AmqpException class.
+     *
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
+     * can be retried; otherwise not.
+     * @param errorCondition The symbolic value indicating the error condition.
+     * @param description Text containing any supplementary details not indicated by the condition field. This text can
+     * be logged as an aid to resolving issues.
+     */
     public AmqpException(boolean isTransient, ErrorCondition errorCondition, String description) {
         super(description);
-        this.errorCondition = errorCondition;
-        this.isTransient = isTransient;
-    }
-
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, Throwable cause) {
-        this(isTransient, errorCondition, cause.toString(), cause);
-    }
-
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, String description, Throwable cause) {
-        super(description, cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
     }
@@ -65,6 +71,7 @@ public class AmqpException extends AzureException {
 
     /**
      * Gets the ErrorCondition for this exception.
+     *
      * @return The ErrorCondition for this exception, or {@code null} if nothing was set.
      */
     public ErrorCondition getErrorCondition() {

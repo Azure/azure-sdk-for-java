@@ -72,6 +72,9 @@ public class MessageConstants {
      */
     public static final String REPLY_TO_GROUP_ID = "reply-to-group-id";
 
+    /**
+     * A readonly set of property names that are part of the AMQP protocol.
+     */
     @SuppressWarnings("serial")
     public static final Set<String> RESERVED_PROPERTY_NAMES = Collections.unmodifiableSet(new HashSet<String>() {{
         add(MessageConstants.MESSAGE_ID);

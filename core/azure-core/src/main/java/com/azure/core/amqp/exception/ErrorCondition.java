@@ -100,7 +100,7 @@ public enum ErrorCondition {
     private final String errorCondition;
 
     static {
-        for(ErrorCondition error : ErrorCondition.values()) {
+        for (ErrorCondition error : ErrorCondition.values()) {
             ERROR_CONSTANT_MAP.put(error.getErrorCondition(), error);
         }
     }

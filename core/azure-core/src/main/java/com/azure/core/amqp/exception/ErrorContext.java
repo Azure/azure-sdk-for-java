@@ -18,6 +18,11 @@ public class ErrorContext implements Serializable {
 
     private final String namespaceName;
 
+    /**
+     * Creates a new instance with the provided {@code namespaceName}.
+     *
+     * @param namespaceName Namespace of the error context.
+     */
     public ErrorContext(final String namespaceName) {
         if (ImplUtils.isNullOrEmpty(namespaceName)) {
             throw new IllegalArgumentException("'namespaceName' cannot be null or empty");
@@ -28,12 +33,16 @@ public class ErrorContext implements Serializable {
 
     /**
      * Gets the namespace for this error.
+     *
      * @return The namespace for this error.
      */
     public String namespaceName() {
         return namespaceName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return String.format(Locale.US, "NS: %s", this.namespaceName);
