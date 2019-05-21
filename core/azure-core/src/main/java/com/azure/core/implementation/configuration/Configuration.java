@@ -20,8 +20,8 @@ public class Configuration implements Cloneable {
      */
     public static final Configuration NONE = new NoopConfiguration();
 
-    private static final String LOADED_FROM_RUNTIME = "Found configuration {} in the runtime parameters.";
-    private static final String LOADED_FROM_ENVIRONMENT = "Found configuration {} in the environment variables.";
+    private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters with value {}.";
+    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables with value {}.";
 
     private final ServiceLogger logger = new ServiceLogger(Configuration.class);
 
@@ -104,13 +104,12 @@ public class Configuration implements Cloneable {
      * @return If found the loaded configuration, otherwise null.
      */
     private String load(String name) {
-        if (loadFrom(name, System::getProperty)) {
-            logger.asInformational().log(LOADED_FROM_RUNTIME, name);
-        } else if (loadFrom(name, System::getenv)) {
-            logger.asInformational().log(LOADED_FROM_ENVIRONMENT, name);
+        if (loadFrom(name, System::getProperty, LOADED_FROM_RUNTIME)
+            || loadFrom(name, System::getenv, LOADED_FROM_ENVIRONMENT)) {
+            return configurations.get(name);
         }
 
-        return configurations.get(name);
+        return null;
     }
 
     /**
@@ -209,9 +208,10 @@ public class Configuration implements Cloneable {
      * @param loader Loading function to apply.
      * @return True if the configuration was loaded, false otherwise.
      */
-    private boolean loadFrom(String name, Function<String, String> loader) {
+    private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
+            logger.asInformational().log(logMessage, name, value);
             configurations.put(name, value);
             return true;
         }
