@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.logging;
 
-import com.azure.core.implementation.configuration.ConfigurationManager;
-import com.azure.core.implementation.configuration.BaseConfigurations;
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.configuration.BaseConfigurations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
