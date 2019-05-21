@@ -6,6 +6,8 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.configuration.BaseConfigurations;
 import reactor.core.publisher.Mono;
 
 /**
@@ -27,7 +29,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * Creates a {@link UserAgentPolicy} with a default user agent string.
      */
     public UserAgentPolicy() {
-        this(null);
+        this(getUserAgentOrDefault());
     }
 
     /**
@@ -40,7 +42,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         if (userAgent != null) {
             this.userAgent = userAgent;
         } else {
-            this.userAgent = DEFAULT_USER_AGENT_HEADER;
+            this.userAgent = getUserAgentOrDefault();
         }
     }
 
@@ -58,16 +60,20 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.httpRequest().headers().value("User-Agent");
-        if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
+        if (header == null || getUserAgentOrDefault().equals(header)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().set("User-Agent", header);
+        context.httpRequest().headers().put("User-Agent", header);
         return next.process();
     }
 
     private static String getOSInformation() {
         return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
+    }
+
+    private static String getUserAgentOrDefault() {
+        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_USER_AGENT, DEFAULT_USER_AGENT_HEADER);
     }
 }

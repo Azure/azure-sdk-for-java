@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
-import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -32,38 +31,29 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor
-public class ConnectionHandler extends BaseHandler
-{
+public class ConnectionHandler extends BaseHandler {
     private static final SslDomain.VerifyMode VERIFY_MODE;
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
     protected final IAmqpConnection messagingFactory;
 
-    static
-    {
+    static {
         String verifyModePropValue = System.getProperty(ClientConstants.SSL_VERIFY_MODE_PROPERTY_NAME);
-        if(ClientConstants.SSL_VERIFY_MODE_ANONYMOUS.equalsIgnoreCase(verifyModePropValue))
-        {
+        if (ClientConstants.SSL_VERIFY_MODE_ANONYMOUS.equalsIgnoreCase(verifyModePropValue)) {
             VERIFY_MODE = SslDomain.VerifyMode.ANONYMOUS_PEER;
-        }
-        else if(ClientConstants.SSL_VERIFY_MODE_CERTONLY.equalsIgnoreCase(verifyModePropValue))
-        {
+        } else if (ClientConstants.SSL_VERIFY_MODE_CERTONLY.equalsIgnoreCase(verifyModePropValue)) {
             VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
-        }
-        else
-        {
+        } else {
             VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
         }
     }
 
-    protected ConnectionHandler(final IAmqpConnection messagingFactory)
-    {
+    protected ConnectionHandler(final IAmqpConnection messagingFactory) {
         add(new Handshaker());
         this.messagingFactory = messagingFactory;
     }
 
-    public static ConnectionHandler create(TransportType transportType, IAmqpConnection messagingFactory)
-    {
-        switch(transportType) {
+    public static ConnectionHandler create(TransportType transportType, IAmqpConnection messagingFactory) {
+        switch (transportType) {
             case AMQP_WEB_SOCKETS:
                 if (ProxyConnectionHandler.shouldUseProxy(messagingFactory.getHostName())) {
                     return new ProxyConnectionHandler(messagingFactory);
@@ -77,8 +67,7 @@ public class ConnectionHandler extends BaseHandler
     }
 
     @Override
-    public void onConnectionInit(Event event)
-    {
+    public void onConnectionInit(Event event) {
         final Connection connection = event.getConnection();
         final String hostName = new StringBuilder(messagingFactory.getHostName())
                                     .append(":")
@@ -97,18 +86,15 @@ public class ConnectionHandler extends BaseHandler
         connection.open();
     }
 
-    protected IAmqpConnection getMessagingFactory()
-    {
+    protected IAmqpConnection getMessagingFactory() {
         return this.messagingFactory;
     }
 
-    public void addTransportLayers(final Event event, final TransportInternal transport)
-    {
+    public void addTransportLayers(final Event event, final TransportInternal transport) {
         SslDomain domain = Proton.sslDomain();
         domain.init(SslDomain.Mode.CLIENT);
 
-        if(VERIFY_MODE == SslDomain.VerifyMode.VERIFY_PEER_NAME)
-        {
+        if (VERIFY_MODE == SslDomain.VerifyMode.VERIFY_PEER_NAME) {
             try {
                 // Default SSL context will have the root certificate from azure in truststore anyway
                 SSLContext defaultContext = SSLContext.getDefault();
@@ -116,16 +102,14 @@ public class ConnectionHandler extends BaseHandler
                 SSLContext strictTlsContext = new StrictTLSContext(strictTlsContextSpi, defaultContext.getProvider(), defaultContext.getProtocol());
                 domain.setSslContext(strictTlsContext);
                 domain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER_NAME);
-            SslPeerDetails peerDetails = Proton.sslPeerDetails(this.getOutboundSocketHostName(), this.getOutboundSocketPort());
+                SslPeerDetails peerDetails = Proton.sslPeerDetails(this.getOutboundSocketHostName(), this.getOutboundSocketPort());
                 transport.ssl(domain, peerDetails);
             } catch (NoSuchAlgorithmException e) {
                 // Should never happen
                 TRACE_LOGGER.error("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
 //                this.messagingFactory.onConnectionError(new ErrorCondition(AmqpErrorCode.InternalError, e.getMessage()));
             }
-        }
-        else if (VERIFY_MODE == SslDomain.VerifyMode.VERIFY_PEER)
-        {
+        } else if (VERIFY_MODE == SslDomain.VerifyMode.VERIFY_PEER) {
             // Default SSL context will have the root certificate from azure in truststore anyway
             try {
                 SSLContext defaultContext = SSLContext.getDefault();
@@ -138,33 +122,34 @@ public class ConnectionHandler extends BaseHandler
 //                this.messagingFactory.onConnectionError(new ErrorCondition(AmqpErrorCode.InternalError, e.getMessage()));
             }
 
-        }
-        else
-        {
+        } else {
             domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
             transport.ssl(domain);
         }
     }
 
-    protected void notifyTransportErrors(final Event event) { /* no-op */ }
+    protected void notifyTransportErrors(final Event event) {
+        /* no-op */
+    }
 
-    public String getOutboundSocketHostName() { return messagingFactory.getHostName(); }
+    public String getOutboundSocketHostName() {
+        return messagingFactory.getHostName();
+    }
 
-    public int getOutboundSocketPort() { return this.getProtocolPort(); }
+    public int getOutboundSocketPort() {
+        return this.getProtocolPort();
+    }
 
-    public int getProtocolPort()
-    {
+    public int getProtocolPort() {
         return ClientConstants.AMQPS_PORT;
     }
 
-    public int getMaxFrameSize()
-    {
+    public int getMaxFrameSize() {
         return AmqpConstants.MAX_FRAME_SIZE;
     }
 
     @Override
-    public void onConnectionBound(Event event)
-    {
+    public void onConnectionBound(Event event) {
         TRACE_LOGGER.debug("onConnectionBound: hostname:{}", event.getConnection().getHostname());
         Transport transport = event.getTransport();
 
@@ -174,22 +159,17 @@ public class ConnectionHandler extends BaseHandler
     }
 
     @Override
-    public void onTransportError(Event event)
-    {
+    public void onTransportError(Event event) {
         ErrorCondition condition = event.getTransport().getCondition();
-        if (condition != null)
-        {
+        if (condition != null) {
             TRACE_LOGGER.warn("Connection.onTransportError: hostname:{}, error:{}", event.getConnection().getHostname(), condition.getDescription());
-        }
-        else
-        {
+        } else {
             TRACE_LOGGER.warn("Connection.onTransportError: hostname:{}. error:{}", event.getConnection().getHostname(), "no description returned");
         }
 
         this.messagingFactory.onConnectionError(condition);
         Connection connection = event.getConnection();
-        if(connection != null)
-        {
+        if (connection != null) {
             connection.free();
         }
 
@@ -197,23 +177,20 @@ public class ConnectionHandler extends BaseHandler
     }
 
     @Override
-    public void onConnectionRemoteOpen(Event event)
-    {
+    public void onConnectionRemoteOpen(Event event) {
         TRACE_LOGGER.debug("Connection.onConnectionRemoteOpen: hostname:{}, remotecontainer:{}", event.getConnection().getHostname(), event.getConnection().getRemoteContainer());
         this.messagingFactory.onConnectionOpen();
     }
 
     @Override
-    public void onConnectionRemoteClose(Event event)
-    {
+    public void onConnectionRemoteClose(Event event) {
         final Connection connection = event.getConnection();
         final ErrorCondition error = connection.getRemoteCondition();
 
         TRACE_LOGGER.debug("onConnectionRemoteClose: hostname:{},errorCondition:{}", connection.getHostname(), error != null ? error.getCondition() + "," + error.getDescription() : null);
         boolean shouldFreeConnection = connection.getLocalState() == EndpointState.CLOSED;
         this.messagingFactory.onConnectionError(error);
-        if(shouldFreeConnection)
-        {
+        if (shouldFreeConnection) {
             connection.free();
         }
     }
@@ -227,11 +204,9 @@ public class ConnectionHandler extends BaseHandler
     public void onConnectionLocalClose(Event event) {
         Connection connection = event.getConnection();
         TRACE_LOGGER.debug("onConnectionLocalClose: hostname:{}", connection.getHostname());
-        if(connection.getRemoteState() == EndpointState.CLOSED)
-        {
+        if (connection.getRemoteState() == EndpointState.CLOSED) {
             // Service closed it first. In some such cases transport is not unbound and causing a leak.
-            if(connection.getTransport() != null)
-            {
+            if (connection.getTransport() != null) {
                 connection.getTransport().unbind();
             }
 

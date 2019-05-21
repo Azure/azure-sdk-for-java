@@ -3,8 +3,11 @@
 
 package com.microsoft.azure.servicebus.amqp;
 
-import org.apache.qpid.proton.amqp.transport.*;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -19,19 +22,17 @@ public class BaseLinkHandler extends BaseHandler {
 
     @Override
     public void onLinkLocalClose(Event event) {
-        Link link = event.getLink();
-        if (link != null) {            
+        final Link link = event.getLink();
+        if (link != null) {
             TRACE_LOGGER.debug("local link close. linkName:{}", link.getName());
+            closeSession(link);
         }
-
-        closeSession(link);
     }
 
     @Override
     public void onLinkRemoteClose(Event event) {
         final Link link = event.getLink();
-        if(link != null)
-        {
+        if (link != null) {
             TRACE_LOGGER.debug("link remote close. linkName:{}", link.getName());
             if (link.getLocalState() != EndpointState.CLOSED) {
                 link.close();
@@ -46,8 +47,7 @@ public class BaseLinkHandler extends BaseHandler {
     @Override
     public void onLinkRemoteDetach(Event event) {
         final Link link = event.getLink();
-        if(link != null)
-        {
+        if (link != null) {
             TRACE_LOGGER.debug("link remote detach. linkName:{}", link.getName());
             if (link.getLocalState() != EndpointState.CLOSED) {
                 link.close();
@@ -56,7 +56,6 @@ public class BaseLinkHandler extends BaseHandler {
             this.processOnClose(link, link.getRemoteCondition());
             closeSession(link);
         }
-        
     }
 
     public void processOnClose(Link link, ErrorCondition condition) {
@@ -72,7 +71,8 @@ public class BaseLinkHandler extends BaseHandler {
     }
 
     private void closeSession(Link link) {
-        if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED)
+        if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED) {
             link.getSession().close();
+        }
     }
 }

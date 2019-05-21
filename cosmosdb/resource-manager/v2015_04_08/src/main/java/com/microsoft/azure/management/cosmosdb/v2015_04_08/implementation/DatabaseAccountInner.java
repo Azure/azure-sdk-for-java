@@ -18,12 +18,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
  * An Azure Cosmos DB database account.
  */
 @JsonFlatten
+@SkipParentValidation
 public class DatabaseAccountInner extends Resource {
     /**
      * Indicates the type of database account. This can only be set at database
@@ -112,6 +114,12 @@ public class DatabaseAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.virtualNetworkRules")
     private List<VirtualNetworkRule> virtualNetworkRules;
+
+    /**
+     * Enables the account to write in multiple locations.
+     */
+    @JsonProperty(value = "properties.enableMultipleWriteLocations")
+    private Boolean enableMultipleWriteLocations;
 
     /**
      * Get indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'.
@@ -315,6 +323,26 @@ public class DatabaseAccountInner extends Resource {
      */
     public DatabaseAccountInner withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
+        return this;
+    }
+
+    /**
+     * Get enables the account to write in multiple locations.
+     *
+     * @return the enableMultipleWriteLocations value
+     */
+    public Boolean enableMultipleWriteLocations() {
+        return this.enableMultipleWriteLocations;
+    }
+
+    /**
+     * Set enables the account to write in multiple locations.
+     *
+     * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set
+     * @return the DatabaseAccountInner object itself.
+     */
+    public DatabaseAccountInner withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        this.enableMultipleWriteLocations = enableMultipleWriteLocations;
         return this;
     }
 

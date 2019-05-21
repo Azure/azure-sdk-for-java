@@ -387,7 +387,7 @@ public class CollectionsInner {
     }
 
     /**
-     * Retrieves metric defintions for the given collection.
+     * Retrieves metric definitions for the given collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -403,7 +403,7 @@ public class CollectionsInner {
     }
 
     /**
-     * Retrieves metric defintions for the given collection.
+     * Retrieves metric definitions for the given collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -418,7 +418,7 @@ public class CollectionsInner {
     }
 
     /**
-     * Retrieves metric defintions for the given collection.
+     * Retrieves metric definitions for the given collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -437,7 +437,7 @@ public class CollectionsInner {
     }
 
     /**
-     * Retrieves metric defintions for the given collection.
+     * Retrieves metric definitions for the given collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.

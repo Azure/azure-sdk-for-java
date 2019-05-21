@@ -14,5 +14,5 @@ public interface IMessageEntityClient extends ICloseable {
      *
      * @return path of the entity this client is connecting to
      */
-    public String getEntityPath();
+    String getEntityPath();
 }

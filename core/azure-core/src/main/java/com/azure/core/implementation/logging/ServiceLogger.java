@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation.logging;
 
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.configuration.BaseConfigurations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,15 @@ public class ServiceLogger implements ServiceLoggerAPI {
      * @param clazz Class creating the logger.
      */
     public ServiceLogger(Class clazz) {
-        logger = LoggerFactory.getLogger(clazz);
+        this(clazz.getName());
+    }
+
+    /**
+     * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
+     * @param className Class name creating the logger.
+     */
+    public ServiceLogger(String className) {
+        logger = LoggerFactory.getLogger(className);
     }
 
     /**
@@ -129,9 +139,13 @@ public class ServiceLogger implements ServiceLoggerAPI {
     /**
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
-     * @return True if logging is enabled.
+     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
      */
     private boolean canLogAtLevel(int level) {
+        if (level < minimumLoggingLevel()) {
+            return false;
+        }
+
         switch (level) {
             case TRACE_LEVEL:
                 return logger != null && logger.isTraceEnabled();
@@ -146,5 +160,9 @@ public class ServiceLogger implements ServiceLoggerAPI {
             default:
                 return false;
         }
+    }
+
+    private int minimumLoggingLevel() {
+        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
     }
 }

@@ -42,6 +42,10 @@
     "source": "specification/containerregistry/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
+  "cosmosdb/resource-manager": {
+    "source": "specification/cosmos-db/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"

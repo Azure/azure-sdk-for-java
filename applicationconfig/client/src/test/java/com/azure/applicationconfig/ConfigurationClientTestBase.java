@@ -6,15 +6,16 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
@@ -39,12 +40,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
+    private static final String AZCONFIG_CONNECTION_STRING = "AZCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
+    private static String connectionString;
 
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTestBase.class);
+    private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTestBase.class);
 
     String keyPrefix;
     String labelPrefix;
@@ -63,9 +66,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : System.getenv("AZCONFIG_CONNECTION_STRING");
+        if (ImplUtils.isNullOrEmpty(connectionString)) {
+            connectionString = interceptorManager.isPlaybackMode()
+                ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+                : ConfigurationManager.getConfiguration().get(AZCONFIG_CONNECTION_STRING);
+        }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
@@ -73,7 +78,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         try {
             client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.error("Could not create an configuration client credentials.", e);
+            logger.asError().log("Could not create an configuration client credentials.", e);
             fail();
             client = null;
         }
@@ -505,10 +510,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpRequestException.class, expectedStatusCode);
+        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -518,18 +523,18 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
+     * Helper method to verify the error was a HttpResponseException and it has a specific HTTP response code.
      *
      * @param exception Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpRequestException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpRequestException) exception).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
     }
 
     /**

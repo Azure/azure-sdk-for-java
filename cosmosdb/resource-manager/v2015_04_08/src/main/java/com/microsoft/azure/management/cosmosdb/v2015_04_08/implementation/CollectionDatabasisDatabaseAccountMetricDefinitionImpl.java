@@ -18,15 +18,15 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.PrimaryAggregationTyp
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.UnitType;
 
 class CollectionDatabasisDatabaseAccountMetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner> implements CollectionDatabasisDatabaseAccountMetricDefinition {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    CollectionDatabasisDatabaseAccountMetricDefinitionImpl(MetricDefinitionInner inner,  DocumentDBManager manager) {
+    CollectionDatabasisDatabaseAccountMetricDefinitionImpl(MetricDefinitionInner inner,  CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 
