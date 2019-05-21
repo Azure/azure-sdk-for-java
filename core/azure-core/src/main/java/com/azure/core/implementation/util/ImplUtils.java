@@ -128,7 +128,6 @@ public final class ImplUtils {
         return null;
     }
 
-
     /*
      * Checks if the character sequence is null or empty.
      * @param charSequence Character sequence being checked for nullness or emptiness.
