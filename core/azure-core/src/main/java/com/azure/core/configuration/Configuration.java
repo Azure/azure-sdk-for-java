@@ -27,6 +27,9 @@ public class Configuration implements Cloneable {
 
     private Map<String, String> configurations = new HashMap<>();
 
+    /**
+     * Constructs an empty configuration.
+     */
     public Configuration() {
     }
 

@@ -27,7 +27,7 @@ public class ConfigurationTests {
      * Verifies that a runtime parameter is able to be retrieved.
      */
     @Test
-    public void RuntimeConfigurationFound() {
+    public void runtimeConfigurationFound() {
         assertNotNull(ConfigurationManager.getConfiguration().get(runtimeConfigurationName));
     }
 
@@ -35,7 +35,7 @@ public class ConfigurationTests {
      * Verifies that an environment variable is able to be retrieved.
      */
     @Test
-    public void EnvironmentConfigurationFound() {
+    public void environmentConfigurationFound() {
         assertNotNull(ConfigurationManager.getConfiguration().get(environmentConfigurationName));
     }
 
@@ -43,7 +43,7 @@ public class ConfigurationTests {
      * Verifies that null is returned when a configuration isn't found.
      */
     @Test
-    public void ConfigurationNotFound() {
+    public void configurationNotFound() {
         assertNull(ConfigurationManager.getConfiguration().get("invalidConfiguration"));
     }
 
@@ -51,7 +51,7 @@ public class ConfigurationTests {
      * Verifies that runtime parameters are preferred over environment variables.
      */
     @Test
-    public void RuntimeConfigurationPreferredOverEnvironmentConfiguration() {
+    public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
         String configurationValue = ConfigurationManager.getConfiguration().get(runtimeOverEnvironmentName);
         assertEquals(runtimeConfiguration, configurationValue);
     }
@@ -60,7 +60,7 @@ public class ConfigurationTests {
      * Verifies that a found configuration value is preferred over the default value.
      */
     @Test
-    public void FoundConfigurationPreferredOverDefault() {
+    public void foundConfigurationPreferredOverDefault() {
         String configurationValue = ConfigurationManager.getConfiguration().get(environmentConfigurationName, defaultConfiguration);
         assertEquals(environmentConfiguration, configurationValue);
     }
@@ -69,7 +69,7 @@ public class ConfigurationTests {
      * Verifies that when a configuration value isn't found the default will be returned.
      */
     @Test
-    public void FallbackToDefaultConfiguration() {
+    public void fallbackToDefaultConfiguration() {
         String configurationValue = ConfigurationManager.getConfiguration().get("invalidConfiguration", defaultConfiguration);
         assertEquals(defaultConfiguration, configurationValue);
     }
@@ -78,7 +78,7 @@ public class ConfigurationTests {
      * Verifies that a found configuration value is able to be mapped.
      */
     @Test
-    public void FoundConfigurationIsConverted() {
+    public void foundConfigurationIsConverted() {
         String configurationValue = ConfigurationManager.getConfiguration().get(runtimeConfigurationName, String::toUpperCase);
         assertEquals(runtimeConfiguration.toUpperCase(), configurationValue);
     }
@@ -87,7 +87,7 @@ public class ConfigurationTests {
      * Verifies that when a configuration isn't found the converter returns null.
      */
     @Test
-    public void NotFoundConfigurationIsConvertedToNull() {
+    public void notFoundConfigurationIsConvertedToNull() {
         assertNull(ConfigurationManager.getConfiguration().get("invalidConfiguration", String::toUpperCase));
     }
 }
