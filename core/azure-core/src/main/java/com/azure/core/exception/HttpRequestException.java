@@ -3,74 +3,49 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpRequest;
 
 /**
- * The exception thrown when an unsuccessful response is received
- *  with http status code (e.g. 3XX, 4XX, 5XX) from the service request.
+ * The exception occurred while attempting to connect a socket to a azure service address and port.
+ * Typically, the connection was refused remotely (e.g., no process is listening on the azure service address/port).
  *
- * @see ServiceRequestException
+ * These errors are safe to retry.
  */
-public class HttpRequestException extends ServiceRequestException {
-
-    /**
-     * The HTTP response value.
-     */
-    private Object value;
+public class HttpRequestException extends AzureException {
 
     /**
      * Information about the associated HTTP response.
      */
-    private final HttpResponse response;
+    private final HttpRequest request;
 
     /**
-     * Initializes a new instance of the HttpRequestException class.
+     * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
+     * @param request the HTTP request sends to the Azure service
      */
-    public HttpRequestException(final String message, final HttpResponse response) {
+    public HttpRequestException(final String message, final HttpRequest request) {
         super(message);
-        this.response = response;
+        this.request = request;
     }
 
     /**
-     * Initializes a new instance of the HttpRequestException class.
+     * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param value the deserialized response value
+     * @param request the HTTP request sends to the Azure service
+     * @param cause the Throwable which caused the creation of this ServiceRequestException
      */
-    public HttpRequestException(final String message, final HttpResponse response, final Object value) {
-        super(message);
-        this.value = value;
-        this.response = response;
-    }
-
-    /**
-     * Initializes a new instance of the HttpRequestException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param cause the Throwable which caused the creation of this HttpRequestException
-     */
-    public HttpRequestException(final String message, final HttpResponse response, final Throwable cause) {
+    public HttpRequestException(final String message, final HttpRequest request, final Throwable cause) {
         super(message, cause);
-        this.response = response;
+        this.request = request;
     }
-
 
     /**
      * @return information about the associated HTTP response
      */
-    public HttpResponse response() {
-        return response;
+    public HttpRequest request() {
+        return request;
     }
 
-    /**
-     * @return the HTTP response value
-     */
-    public Object value() {
-        return value;
-    }
 }

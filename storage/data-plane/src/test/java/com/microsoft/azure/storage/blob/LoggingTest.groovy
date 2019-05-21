@@ -92,7 +92,7 @@ class LoggingTest extends APISpec {
         logCount1 * <method> means that we expect this method to be called with these parameters logCount1 number of
         times. '_' means we don't care what the value of that parameter is, so in both of these cases, we are specifying
         that log should be called with HttpPipelineLogLevel.INFO as the first argument, and the other arguments can
-        be anything. The '>>' operator allows us to specify some behavior on the mocked forceLogger when this method is
+        be anything. The '>>' operator allows us to specify some behavior on the mocked FORCE_LOGGER when this method is
         called. Because there is lots of string formatting going on, we can't match against the log string in the
         argument list, so we perform some logic to see if it looks correct and throw if it looks incorrect to actually
         validate the logging behavior.

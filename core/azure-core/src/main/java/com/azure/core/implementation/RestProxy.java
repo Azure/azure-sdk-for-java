@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -14,9 +14,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -288,7 +288,7 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends HttpRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
+            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);

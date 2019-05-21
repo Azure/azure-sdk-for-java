@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DatabaseAccountInner;
 
 /**
  * Type representing DatabaseAccount.
  */
-public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resource, GroupableResourceCore<DocumentDBManager, DatabaseAccountInner>, HasResourceGroup, Refreshable<DatabaseAccount>, Updatable<DatabaseAccount.Update>, HasManager<DocumentDBManager> {
+public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resource, GroupableResourceCore<CosmosDBManager, DatabaseAccountInner>, HasResourceGroup, Refreshable<DatabaseAccount>, Updatable<DatabaseAccount.Update>, HasManager<CosmosDBManager> {
     /**
      * @return the capabilities value.
      */
@@ -49,6 +49,11 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
      * @return the enableAutomaticFailover value.
      */
     Boolean enableAutomaticFailover();
+
+    /**
+     * @return the enableMultipleWriteLocations value.
+     */
+    Boolean enableMultipleWriteLocations();
 
     /**
      * @return the failoverPolicies value.
@@ -118,7 +123,9 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
         interface WithDatabaseAccountOfferType {
            /**
             * Specifies databaseAccountOfferType.
-            */
+            * @param databaseAccountOfferType The offer type for the database
+            * @return the next definition stage
+*/
             WithLocations withDatabaseAccountOfferType(String databaseAccountOfferType);
         }
 
@@ -128,76 +135,104 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
         interface WithLocations {
            /**
             * Specifies locations.
-            */
+            * @param locations An array that contains the georeplication locations enabled for the Cosmos DB account
+            * @return the next definition stage
+*/
             WithCreate withLocations(List<Location> locations);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify Capabilities.
+         * The stage of the databaseaccount definition allowing to specify Capabilities.
          */
         interface WithCapabilities {
             /**
              * Specifies capabilities.
+             * @param capabilities List of Cosmos DB capabilities for the account
+             * @return the next definition stage
              */
             WithCreate withCapabilities(List<Capability> capabilities);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify ConsistencyPolicy.
+         * The stage of the databaseaccount definition allowing to specify ConsistencyPolicy.
          */
         interface WithConsistencyPolicy {
             /**
              * Specifies consistencyPolicy.
+             * @param consistencyPolicy The consistency policy for the Cosmos DB account
+             * @return the next definition stage
              */
             WithCreate withConsistencyPolicy(ConsistencyPolicy consistencyPolicy);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify EnableAutomaticFailover.
+         * The stage of the databaseaccount definition allowing to specify EnableAutomaticFailover.
          */
         interface WithEnableAutomaticFailover {
             /**
              * Specifies enableAutomaticFailover.
+             * @param enableAutomaticFailover Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account
+             * @return the next definition stage
              */
             WithCreate withEnableAutomaticFailover(Boolean enableAutomaticFailover);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify IpRangeFilter.
+         * The stage of the databaseaccount definition allowing to specify EnableMultipleWriteLocations.
+         */
+        interface WithEnableMultipleWriteLocations {
+            /**
+             * Specifies enableMultipleWriteLocations.
+             * @param enableMultipleWriteLocations Enables the account to write in multiple locations
+             * @return the next definition stage
+             */
+            WithCreate withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations);
+        }
+
+        /**
+         * The stage of the databaseaccount definition allowing to specify IpRangeFilter.
          */
         interface WithIpRangeFilter {
             /**
              * Specifies ipRangeFilter.
+             * @param ipRangeFilter Cosmos DB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IPs for a given database account. IP addresses/ranges must be comma separated and must not contain any spaces
+             * @return the next definition stage
              */
             WithCreate withIpRangeFilter(String ipRangeFilter);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify IsVirtualNetworkFilterEnabled.
+         * The stage of the databaseaccount definition allowing to specify IsVirtualNetworkFilterEnabled.
          */
         interface WithIsVirtualNetworkFilterEnabled {
             /**
              * Specifies isVirtualNetworkFilterEnabled.
+             * @param isVirtualNetworkFilterEnabled Flag to indicate whether to enable/disable Virtual Network ACL rules
+             * @return the next definition stage
              */
             WithCreate withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify Kind.
+         * The stage of the databaseaccount definition allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
+             * @return the next definition stage
              */
             WithCreate withKind(DatabaseAccountKind kind);
         }
 
         /**
-         * The stage of the databaseaccount update allowing to specify VirtualNetworkRules.
+         * The stage of the databaseaccount definition allowing to specify VirtualNetworkRules.
          */
         interface WithVirtualNetworkRules {
             /**
              * Specifies virtualNetworkRules.
+             * @param virtualNetworkRules List of Virtual Network ACL rules configured for the Cosmos DB account
+             * @return the next definition stage
              */
             WithCreate withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
         }
@@ -207,7 +242,7 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DatabaseAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCapabilities, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithIpRangeFilter, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKind, DefinitionStages.WithVirtualNetworkRules {
+        interface WithCreate extends Creatable<DatabaseAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCapabilities, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithEnableMultipleWriteLocations, DefinitionStages.WithIpRangeFilter, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKind, DefinitionStages.WithVirtualNetworkRules {
         }
     }
     /**
@@ -221,11 +256,13 @@ public interface DatabaseAccount extends HasInner<DatabaseAccountInner>, Resourc
      */
     interface UpdateStages {
         /**
-         * The stage of the databaseaccount {0} allowing to specify Capabilities.
+         * The stage of the databaseaccount update allowing to specify Capabilities.
          */
         interface WithCapabilities {
             /**
              * Specifies capabilities.
+             * @param capabilities List of Cosmos DB capabilities for the account
+             * @return the next update stage
              */
             Update withCapabilities(List<Capability> capabilities);
         }
