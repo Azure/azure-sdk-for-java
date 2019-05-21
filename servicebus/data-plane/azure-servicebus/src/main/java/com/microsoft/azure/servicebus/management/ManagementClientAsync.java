@@ -793,7 +793,7 @@ public class ManagementClientAsync {
         if (forwardTo != null && !forwardTo.isEmpty()) {
             try {
                 String securityToken = getSecurityToken(this.clientSettings.getTokenProvider(), forwardTo);
-                additionalHeaders.put(ManagementClientConstants.ServiceBusSupplementartyAuthorizationHeaderName, securityToken);
+                additionalHeaders.put(ManagementClientConstants.SERVICEBUS_SUPPLEMENTARTY_AUTHORIZATION_HEADER_NAME, securityToken);
             } catch (InterruptedException | ExecutionException e) {
                 final CompletableFuture<String> exceptionFuture = new CompletableFuture<>();
                 exceptionFuture.completeExceptionally(e);
@@ -804,7 +804,7 @@ public class ManagementClientAsync {
         if (fwdDeadLetterTo != null && !fwdDeadLetterTo.isEmpty()) {
             try {
                 String securityToken = getSecurityToken(this.clientSettings.getTokenProvider(), fwdDeadLetterTo);
-                additionalHeaders.put(ManagementClientConstants.ServiceBusDlqSupplementaryAuthorizationHeaderName, securityToken);
+                additionalHeaders.put(ManagementClientConstants.SERVICEBUS_DLQ_SUPPLEMENTARTY_AUTHORIZATION_HEADER_NAME, securityToken);
             } catch (InterruptedException | ExecutionException e) {
                 final CompletableFuture<String> exceptionFuture = new CompletableFuture<>();
                 exceptionFuture.completeExceptionally(e);
@@ -1096,7 +1096,7 @@ public class ManagementClientAsync {
                     break;
                 }
 
-                if (exceptionMessage.contains(ManagementClientConstants.ConflictOperationInProgressSubCode)) {
+                if (exceptionMessage.contains(ManagementClientConstants.CONFLICT_OPERATION_IN_PROGRESS_SUB_CODE)) {
                     exception = new ServiceBusException(true, exceptionMessage);
                     break;
                 }
@@ -1105,7 +1105,7 @@ public class ManagementClientAsync {
                 break;
 
             case 403: /*Forbidden*/
-                if (exceptionMessage.contains(ManagementClientConstants.ForbiddenInvalidOperationSubCode)) {
+                if (exceptionMessage.contains(ManagementClientConstants.FORBIDDEN_INVALID_OPERATION_SUB_CODE)) {
                     //todo: log
                     throw new UnsupportedOperationException(exceptionMessage);
                 } else {
