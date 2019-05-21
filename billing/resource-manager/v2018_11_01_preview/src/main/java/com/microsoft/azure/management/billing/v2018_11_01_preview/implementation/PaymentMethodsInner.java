@@ -56,14 +56,134 @@ public class PaymentMethodsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface PaymentMethodsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods listByBillingAccountName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/paymentMethods")
+        Observable<Response<ResponseBody>> listByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods listByBillingProfileName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethods")
         Observable<Response<ResponseBody>> listByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods listByBillingAccountNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByBillingAccountNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods listByBillingProfileNameNext" })
         @GET
         Observable<Response<ResponseBody>> listByBillingProfileNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PaymentMethodInner&gt; object if successful.
+     */
+    public PagedList<PaymentMethodInner> listByBillingAccountName(final String billingAccountName) {
+        ServiceResponse<Page<PaymentMethodInner>> response = listByBillingAccountNameSinglePageAsync(billingAccountName).toBlocking().single();
+        return new PagedList<PaymentMethodInner>(response.body()) {
+            @Override
+            public Page<PaymentMethodInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PaymentMethodInner>> listByBillingAccountNameAsync(final String billingAccountName, final ListOperationCallback<PaymentMethodInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameSinglePageAsync(billingAccountName),
+            new Func1<String, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
+     */
+    public Observable<Page<PaymentMethodInner>> listByBillingAccountNameAsync(final String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName)
+            .map(new Func1<ServiceResponse<Page<PaymentMethodInner>>, Page<PaymentMethodInner>>() {
+                @Override
+                public Page<PaymentMethodInner> call(ServiceResponse<Page<PaymentMethodInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PaymentMethodInner>>> listByBillingAccountNameWithServiceResponseAsync(final String billingAccountName) {
+        return listByBillingAccountNameSinglePageAsync(billingAccountName)
+            .concatMap(new Func1<ServiceResponse<Page<PaymentMethodInner>>, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(ServiceResponse<Page<PaymentMethodInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+    ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PaymentMethodInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PaymentMethodInner>>> listByBillingAccountNameSinglePageAsync(final String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PaymentMethodInner>> result = listByBillingAccountNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PaymentMethodInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PaymentMethodInner>> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PaymentMethodInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PaymentMethodInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -180,6 +300,117 @@ public class PaymentMethodsInner {
     }
 
     private ServiceResponse<PageImpl<PaymentMethodInner>> listByBillingProfileNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PaymentMethodInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PaymentMethodInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PaymentMethodInner&gt; object if successful.
+     */
+    public PagedList<PaymentMethodInner> listByBillingAccountNameNext(final String nextPageLink) {
+        ServiceResponse<Page<PaymentMethodInner>> response = listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PaymentMethodInner>(response.body()) {
+            @Override
+            public Page<PaymentMethodInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PaymentMethodInner>> listByBillingAccountNameNextAsync(final String nextPageLink, final ServiceFuture<List<PaymentMethodInner>> serviceFuture, final ListOperationCallback<PaymentMethodInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
+     */
+    public Observable<Page<PaymentMethodInner>> listByBillingAccountNameNextAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PaymentMethodInner>>, Page<PaymentMethodInner>>() {
+                @Override
+                public Page<PaymentMethodInner> call(ServiceResponse<Page<PaymentMethodInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PaymentMethodInner>>> listByBillingAccountNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PaymentMethodInner>>, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(ServiceResponse<Page<PaymentMethodInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the Payment Methods by billing account Id.
+     *
+    ServiceResponse<PageImpl<PaymentMethodInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PaymentMethodInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PaymentMethodInner>>> listByBillingAccountNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByBillingAccountNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PaymentMethodInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PaymentMethodInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PaymentMethodInner>> result = listByBillingAccountNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PaymentMethodInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PaymentMethodInner>> listByBillingAccountNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PaymentMethodInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PaymentMethodInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)

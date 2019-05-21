@@ -146,19 +146,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The AvailableBalancesInner object to access its operations.
-     */
-    private AvailableBalancesInner availableBalances;
-
-    /**
-     * Gets the AvailableBalancesInner object to access its operations.
-     * @return the AvailableBalancesInner object.
-     */
-    public AvailableBalancesInner availableBalances() {
-        return this.availableBalances;
-    }
-
-    /**
      * The PaymentMethodsInner object to access its operations.
      */
     private PaymentMethodsInner paymentMethods;
@@ -169,6 +156,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     public PaymentMethodsInner paymentMethods() {
         return this.paymentMethods;
+    }
+
+    /**
+     * The AvailableBalancesInner object to access its operations.
+     */
+    private AvailableBalancesInner availableBalances;
+
+    /**
+     * Gets the AvailableBalancesInner object to access its operations.
+     * @return the AvailableBalancesInner object.
+     */
+    public AvailableBalancesInner availableBalances() {
+        return this.availableBalances;
     }
 
     /**
@@ -441,8 +441,8 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.billingAccounts = new BillingAccountsInner(restClient().retrofit(), this);
-        this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
         this.paymentMethods = new PaymentMethodsInner(restClient().retrofit(), this);
+        this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);
