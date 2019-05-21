@@ -146,6 +146,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PaymentMethodsInner object to access its operations.
+     */
+    private PaymentMethodsInner paymentMethods;
+
+    /**
+     * Gets the PaymentMethodsInner object to access its operations.
+     * @return the PaymentMethodsInner object.
+     */
+    public PaymentMethodsInner paymentMethods() {
+        return this.paymentMethods;
+    }
+
+    /**
      * The BillingAccountsValidateAddressInner object to access its operations.
      */
     private BillingAccountsValidateAddressInner billingAccountsValidateAddress;
@@ -169,19 +182,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     public AvailableBalancesInner availableBalances() {
         return this.availableBalances;
-    }
-
-    /**
-     * The PaymentMethodsInner object to access its operations.
-     */
-    private PaymentMethodsInner paymentMethods;
-
-    /**
-     * Gets the PaymentMethodsInner object to access its operations.
-     * @return the PaymentMethodsInner object.
-     */
-    public PaymentMethodsInner paymentMethods() {
-        return this.paymentMethods;
     }
 
     /**
@@ -454,9 +454,9 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.billingAccounts = new BillingAccountsInner(restClient().retrofit(), this);
+        this.paymentMethods = new PaymentMethodsInner(restClient().retrofit(), this);
         this.billingAccountsValidateAddress = new BillingAccountsValidateAddressInner(restClient().retrofit(), this);
         this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
-        this.paymentMethods = new PaymentMethodsInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);

@@ -45,6 +45,24 @@ class PaymentMethodsImpl extends WrapperImpl<PaymentMethodsInner> implements Pay
         .map(new Func1<PaymentMethodInner, PaymentMethod>() {
             @Override
             public PaymentMethod call(PaymentMethodInner inner) {
+                return new PaymentMethodImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<PaymentMethod> listByBillingAccountNameAsync(final String billingAccountName) {
+        PaymentMethodsInner client = this.inner();
+        return client.listByBillingAccountNameAsync(billingAccountName)
+        .flatMapIterable(new Func1<Page<PaymentMethodInner>, Iterable<PaymentMethodInner>>() {
+            @Override
+            public Iterable<PaymentMethodInner> call(Page<PaymentMethodInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PaymentMethodInner, PaymentMethod>() {
+            @Override
+            public PaymentMethod call(PaymentMethodInner inner) {
                 return wrapModel(inner);
             }
         });
