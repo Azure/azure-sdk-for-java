@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.amqp;
 
 import java.util.Collections;
@@ -77,18 +80,18 @@ public class MessageConstants {
      */
     @SuppressWarnings("serial")
     public static final Set<String> RESERVED_PROPERTY_NAMES = Collections.unmodifiableSet(new HashSet<String>() {{
-        add(MessageConstants.MESSAGE_ID);
-        add(USER_ID);
-        add(TO);
-        add(SUBJECT);
-        add(REPLY_TO);
-        add(CORRELATION_ID);
-        add(CONTENT_TYPE);
-        add(CONTENT_ENCODING);
-        add(ABSOLUTE_EXPRITY_TIME);
-        add(CREATION_TIME);
-        add(GROUP_ID);
-        add(GROUP_SEQUENCE);
-        add(REPLY_TO_GROUP_ID);
-    }});
+            add(MessageConstants.MESSAGE_ID);
+            add(USER_ID);
+            add(TO);
+            add(SUBJECT);
+            add(REPLY_TO);
+            add(CORRELATION_ID);
+            add(CONTENT_TYPE);
+            add(CONTENT_ENCODING);
+            add(ABSOLUTE_EXPRITY_TIME);
+            add(CREATION_TIME);
+            add(GROUP_ID);
+            add(GROUP_SEQUENCE);
+            add(REPLY_TO_GROUP_ID);
+        }});
 }
