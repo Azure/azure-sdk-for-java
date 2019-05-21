@@ -17,8 +17,8 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
@@ -45,8 +45,8 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private BillingAccounts billingAccounts;
-    private AvailableBalances availableBalances;
     private PaymentMethods paymentMethods;
+    private AvailableBalances availableBalances;
     private BillingProfiles billingProfiles;
     private InvoiceSections invoiceSections;
     private Departments departments;
@@ -123,16 +123,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage AvailableBalances.
-     */
-    public AvailableBalances availableBalances() {
-        if (this.availableBalances == null) {
-            this.availableBalances = new AvailableBalancesImpl(this);
-        }
-        return this.availableBalances;
-    }
-
-    /**
      * @return Entry point to manage PaymentMethods.
      */
     public PaymentMethods paymentMethods() {
@@ -140,6 +130,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.paymentMethods = new PaymentMethodsImpl(this);
         }
         return this.paymentMethods;
+    }
+
+    /**
+     * @return Entry point to manage AvailableBalances.
+     */
+    public AvailableBalances availableBalances() {
+        if (this.availableBalances == null) {
+            this.availableBalances = new AvailableBalancesImpl(this);
+        }
+        return this.availableBalances;
     }
 
     /**
