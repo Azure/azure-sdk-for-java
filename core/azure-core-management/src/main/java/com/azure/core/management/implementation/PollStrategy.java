@@ -3,7 +3,7 @@
 
 package com.azure.core.management.implementation;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.OperationState;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpRequest;
@@ -172,7 +172,7 @@ abstract class PollStrategy {
             try {
                 final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
-            } catch (HttpRequestException e) {
+            } catch (HttpResponseException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
         }

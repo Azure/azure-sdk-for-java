@@ -15,15 +15,15 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MetricName;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.UnitType;
 
 class DatabaseAccountUsageImpl extends WrapperImpl<UsageInner> implements DatabaseAccountUsage {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    DatabaseAccountUsageImpl(UsageInner inner,  DocumentDBManager manager) {
+    DatabaseAccountUsageImpl(UsageInner inner,  CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 
