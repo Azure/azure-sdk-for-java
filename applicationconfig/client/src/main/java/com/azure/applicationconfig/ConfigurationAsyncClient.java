@@ -103,7 +103,7 @@ public final class ConfigurationAsyncClient {
      */
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return client.addSetting(setting)
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .map(response -> response.value());
     }
 
     /**
@@ -182,7 +182,7 @@ public final class ConfigurationAsyncClient {
      */
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
         return client.setSetting(setting)
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .map(response -> response.value());
     }
 
     /**
@@ -241,7 +241,7 @@ public final class ConfigurationAsyncClient {
      */
     public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
         return client.updateSetting(setting)
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .map(response -> response.value());
     }
 
     /**
@@ -293,7 +293,7 @@ public final class ConfigurationAsyncClient {
      */
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
         return client.getSetting(setting)
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .map(response -> response.value());
     }
 
     /**
@@ -352,7 +352,7 @@ public final class ConfigurationAsyncClient {
      */
     public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
         return client.deleteSetting(setting)
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .map(response -> response.value() == null ? ConfigurationSetting.EMPTY_SETTING : response.value());
     }
 
     /**

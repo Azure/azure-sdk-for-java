@@ -22,6 +22,8 @@ public class ConfigurationSetting {
      */
     public static final String NO_LABEL = "\0";
 
+    public static final ConfigurationSetting EMPTY_SETTING = new ConfigurationSetting();
+
     @JsonProperty(value = "key", required = true)
     private String key;
 

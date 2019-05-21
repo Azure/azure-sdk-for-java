@@ -276,11 +276,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         StepVerifier.create(client.deleteSetting("myNonExistentKey"))
-                .assertNext(response -> assertConfigurationEquals(null, response))
+                .assertNext(response -> assertConfigurationEquals(ConfigurationSetting.EMPTY_SETTING, response))
                 .verifyComplete();
 
         StepVerifier.create(client.deleteSetting(new ConfigurationSetting().key(neverDeletedConfiguation.key()).label("myNonExistentLabel")))
-                .assertNext(response -> assertConfigurationEquals(null, response))
+                .assertNext(response -> assertConfigurationEquals(ConfigurationSetting.EMPTY_SETTING, response))
                 .verifyComplete();
 
         StepVerifier.create(client.getSetting(neverDeletedConfiguation.key()))
