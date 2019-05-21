@@ -1,4 +1,4 @@
-package com.azure.amqp.exception;
+package com.azure.core.amqp.exception;
 
 import java.util.HashMap;
 import java.util.Map;

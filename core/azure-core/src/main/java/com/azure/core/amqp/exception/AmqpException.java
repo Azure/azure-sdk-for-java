@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.amqp.exception;
+package com.azure.core.amqp.exception;
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.implementation.util.ImplUtils;

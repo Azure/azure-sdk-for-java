@@ -1,4 +1,4 @@
-package com.azure.amqp;
+package com.azure.core.amqp;
 
 import java.util.Collections;
 import java.util.HashSet;

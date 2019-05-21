@@ -4,4 +4,4 @@
 /**
  * Package contains classes related to AMQP exceptions.
  */
-package com.azure.amqp.exception;
+package com.azure.core.amqp.exception;

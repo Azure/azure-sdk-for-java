@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.amqp;
+package com.azure.core.amqp;
 
 import java.util.Locale;
 

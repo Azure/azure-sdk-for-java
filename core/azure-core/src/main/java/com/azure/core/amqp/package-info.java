@@ -4,4 +4,4 @@
 /**
  * Package contains classes common to AMQP.
  */
-package com.azure.amqp;
+package com.azure.core.amqp;
