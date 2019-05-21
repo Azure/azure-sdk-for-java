@@ -108,7 +108,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -123,7 +123,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -137,7 +137,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -155,7 +155,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -197,10 +197,10 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -214,10 +214,10 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -230,10 +230,10 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -250,10 +250,10 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -300,7 +300,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -313,7 +313,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -326,7 +326,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -343,7 +343,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -368,7 +368,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -382,7 +382,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -396,7 +396,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -414,7 +414,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -440,7 +440,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -453,7 +453,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -466,7 +466,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -483,7 +483,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -519,7 +519,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -533,7 +533,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -547,7 +547,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -565,7 +565,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -610,7 +610,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -624,7 +624,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -637,7 +637,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -654,7 +654,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -696,7 +696,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -710,7 +710,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -723,7 +723,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -740,7 +740,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -779,9 +779,9 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -795,9 +795,9 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -810,9 +810,9 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -829,9 +829,9 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
@@ -876,7 +876,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -895,7 +895,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -915,7 +915,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
@@ -932,7 +932,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
@@ -953,7 +953,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -985,7 +985,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1005,7 +1005,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1026,7 +1026,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
@@ -1044,7 +1044,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
@@ -1066,7 +1066,7 @@ public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDel
     /**
      * Lists the DNS zones within a resource group.
      *
-    ServiceResponse<PageImpl<ZoneInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ZoneInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
     ServiceResponse<PageImpl<ZoneInner>> * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.

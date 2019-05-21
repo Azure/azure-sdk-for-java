@@ -28,11 +28,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription. */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +51,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Specifies the API version. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets Specifies the API version.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
@@ -63,11 +63,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -76,7 +76,7 @@ public class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -86,11 +86,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -99,7 +99,7 @@ public class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -109,11 +109,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -122,7 +122,7 @@ public class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -205,6 +205,6 @@ public class DnsManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "DnsManagementClient", "2016-04-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "DnsManagementClient", "2016-04-01");
     }
 }

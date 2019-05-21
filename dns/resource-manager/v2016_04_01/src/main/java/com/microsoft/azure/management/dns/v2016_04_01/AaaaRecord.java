@@ -21,7 +21,7 @@ public class AaaaRecord {
     private String ipv6Address;
 
     /**
-     * Get the ipv6Address value.
+     * Get the IPv6 address of this AAAA record.
      *
      * @return the ipv6Address value
      */
@@ -30,7 +30,7 @@ public class AaaaRecord {
     }
 
     /**
-     * Set the ipv6Address value.
+     * Set the IPv6 address of this AAAA record.
      *
      * @param ipv6Address the ipv6Address value to set
      * @return the AaaaRecord object itself.
