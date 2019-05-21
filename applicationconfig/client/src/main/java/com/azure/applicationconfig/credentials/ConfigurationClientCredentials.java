@@ -86,10 +86,10 @@ public class ConfigurationClientCredentials {
                     throw Exceptions.propagate(e);
                 }
             }, (messageDigest, byteBuffer) -> {
-                if (messageDigest != null) {
-                    messageDigest.update(byteBuffer.nioBuffer());
-                }
-            })
+                    if (messageDigest != null) {
+                        messageDigest.update(byteBuffer.nioBuffer());
+                    }
+                })
             .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));
     }
 

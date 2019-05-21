@@ -15,9 +15,6 @@ import io.netty.buffer.UnpooledByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * A policy that authenticates requests with Azure Application Configuration service. The content added by this policy
  * is leveraged in {@link ConfigurationClientCredentials} to generate the correct "Authorization" header value.
@@ -36,8 +33,6 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      * Creates an instance that is able to apply a {@link ConfigurationClientCredentials} credential to a request in the pipeline.
      *
      * @param credentials the credential information to authenticate to Azure App Configuration service
-     * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
-     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
      */
     public ConfigurationCredentialsPolicy(ConfigurationClientCredentials credentials)  {
         this.credentials = credentials;
