@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.credentials;
 
+import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.credentials.AsyncServiceClientCredentials;
 import com.azure.core.http.HttpHeaders;

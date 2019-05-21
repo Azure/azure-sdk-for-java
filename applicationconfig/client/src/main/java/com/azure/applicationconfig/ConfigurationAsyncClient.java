@@ -104,7 +104,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return client.addSetting(setting).flatMap(ConfigurationAsyncClient::unwrapResponse);
+        return client.addSetting(setting).map(ConfigurationAsyncClient::unwrapResponse);
     }
 
     /**
@@ -170,7 +170,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return client.setSetting(setting).flatMap(ConfigurationAsyncClient::unwrapResponse);
+        return client.setSetting(setting).map(ConfigurationAsyncClient::unwrapResponse);
     }
 
     /**
@@ -222,7 +222,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return client.updateSetting(setting).flatMap(ConfigurationAsyncClient::unwrapResponse);
+        return client.updateSetting(setting).map(ConfigurationAsyncClient::unwrapResponse);
     }
 
     /**
@@ -267,7 +267,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return client.getSetting(setting).flatMap(ConfigurationAsyncClient::unwrapResponse);
+        return client.getSetting(setting).map(ConfigurationAsyncClient::unwrapResponse);
     }
 
     /**
@@ -319,7 +319,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return client.deleteSetting(setting).flatMap(ConfigurationAsyncClient::unwrapResponse);
+        return client.deleteSetting(setting).map(ConfigurationAsyncClient::unwrapResponse);
     }
 
     /**
@@ -368,7 +368,7 @@ public final class ConfigurationAsyncClient {
     /*
      * Unwraps the Response<T> to T.
      */
-    private static Mono<ConfigurationSetting> unwrapResponse(Response<ConfigurationSetting> response) {
-        return Mono.defer(() -> Mono.justOrEmpty(response.value()));
+    private static ConfigurationSetting unwrapResponse(Response<ConfigurationSetting> response) {
+        return response.value() == null ? new ConfigurationSetting() : response.value();
     }
 }
