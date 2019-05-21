@@ -34,7 +34,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .credentials(credentials)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildClient());
+                .build());
         } else {
             client = clientSetup(credentials -> ConfigurationClient.builder()
                 .credentials(credentials)
@@ -42,7 +42,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .buildClient());
+                .build());
         }
     }
 

@@ -54,6 +54,13 @@ public final class ConfigurationClient {
     }
 
     /**
+     * @return the {@link ConfigurationRawClient raw client} that handles sending and receiving the requests.
+     */
+    public ConfigurationRawClient getRawClient() {
+        return this.client;
+    }
+
+    /**
      * Adds a configuration value in the service if that key does not exist.
      *
      * <p><strong>Code Samples</strong></p>
@@ -97,7 +104,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public ConfigurationSetting addSetting(ConfigurationSetting setting) {
-        return client.addSetting(setting).block().value();
+        return client.addSetting(setting).value();
     }
 
     /**
@@ -164,7 +171,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public ConfigurationSetting setSetting(ConfigurationSetting setting) {
-        return client.setSetting(setting).block().value();
+        return client.setSetting(setting).value();
     }
 
     /**
@@ -216,7 +223,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public ConfigurationSetting updateSetting(ConfigurationSetting setting) {
-        return client.updateSetting(setting).block().value();
+        return client.updateSetting(setting).value();
     }
 
     /**
@@ -261,7 +268,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     public ConfigurationSetting getSetting(ConfigurationSetting setting) {
-        return client.getSetting(setting).block().value();
+        return client.getSetting(setting).value();
     }
 
     /**
@@ -313,7 +320,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
-        return client.deleteSetting(setting).block().value();
+        return client.deleteSetting(setting).value();
     }
 
     /**
@@ -334,7 +341,7 @@ public final class ConfigurationClient {
      * contains all of the current settings in the service.
      */
     public List<ConfigurationSetting> listSettings(SettingSelector options) {
-        return client.listSettings(options).collectList().block();
+        return client.listSettings(options);
     }
 
     /**
@@ -358,6 +365,6 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return client.listSettingRevisions(selector).collectList().block();
+        return client.listSettingRevisions(selector);
     }
 }

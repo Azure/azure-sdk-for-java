@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 public class ConfigurationRawClientTests extends ConfigurationClientTestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
-    private ConfigurationRawClient client;
+    private ConfigurationRawAsyncClient client;
 
     @Override
     protected void beforeTest() {
@@ -40,7 +40,7 @@ public class ConfigurationRawClientTests extends ConfigurationClientTestBase {
                 .credentials(credentials)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildRawClient());
+                .build().getRawClient());
         } else {
             client = clientSetup(credentials -> ConfigurationAsyncClient.builder()
                 .credentials(credentials)
@@ -48,7 +48,7 @@ public class ConfigurationRawClientTests extends ConfigurationClientTestBase {
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .buildRawClient());
+                .build().getRawClient());
         }
     }
 
