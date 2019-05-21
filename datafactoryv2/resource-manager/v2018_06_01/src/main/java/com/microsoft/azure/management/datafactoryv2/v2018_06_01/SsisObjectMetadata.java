@@ -11,12 +11,19 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * SSIS object metadata.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SsisObjectMetadata")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Environment", value = SsisEnvironment.class),
+    @JsonSubTypes.Type(name = "Package", value = SsisPackage.class),
+    @JsonSubTypes.Type(name = "Project", value = SsisProject.class),
+    @JsonSubTypes.Type(name = "Folder", value = SsisFolder.class)
+})
 public class SsisObjectMetadata {
     /**
      * Metadata id.
