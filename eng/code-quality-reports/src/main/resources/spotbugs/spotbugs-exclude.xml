@@ -367,7 +367,7 @@
     <Class name="com.azure.core.http.HttpRequest"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
-  
+
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
@@ -407,5 +407,12 @@
     <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
     <Method name="onReceiveComplete"/>
     <Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/>
+  </Match>
+
+  <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
+  <Match>
+    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Method name="endTracingSpan"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

@@ -26,6 +26,9 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
+/**
+ * Pipeline policy that creates an OpenCensus span which traces the service request.
+ */
 public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
     /**
@@ -37,6 +40,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
+    private static final String OPENCENSUS_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -50,7 +54,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.httpRequest();
 
         // Build new child span representing this outgoing request.
@@ -92,6 +96,11 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         }
     }
 
+    /**
+     * Handles retrieving the information from the service response and ending the span.
+     *
+     * @param signal Reactive Stream signal fired by Reactor.
+     */
     private static void handleResponse(Signal<HttpResponse> signal) {
         // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
         if (signal.isOnComplete() || signal.isOnSubscribe()) {
@@ -122,7 +131,12 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
         spanEnd(span, httpResponse, error);
     }
 
-    // Sets status on the span and ends it
+    /**
+     * Sets status information and ends the span.
+     * @param span Span to end.
+     * @param response Response from the service.
+     * @param error Potential error returned from the service.
+     */
     private static void spanEnd(Span span, HttpResponse response, Throwable error) {
         if (span.getOptions().contains(Options.RECORD_EVENTS)) {
             int statusCode = 0;

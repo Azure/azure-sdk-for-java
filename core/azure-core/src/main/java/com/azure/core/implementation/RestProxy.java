@@ -564,10 +564,10 @@ public class RestProxy implements InvocationHandler {
         Throwable throwable = null;
 
         // On next contains the response information.
-        if (signal.isOnNext()) {
+        if (signal.hasValue()) {
             httpDecodedResponse = signal.get();
             statusCode = httpDecodedResponse.sourceResponse().statusCode();
-        } else {
+        } else if (signal.hasError()) {
             // The last status available is on error, this contains the error thrown by the REST response.
             throwable = signal.getThrowable();
 

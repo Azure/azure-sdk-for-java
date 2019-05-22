@@ -10,6 +10,22 @@ import com.azure.core.util.Context;
  */
 public interface Tracer {
     /**
+     * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
+     * as the parent span for all spans the SDK creates.
+     *
+     * If no span data is listed when the SDK creates its first span it will be used as the parent for all further spans
+     * it creates.
+     */
+    String OPENCENSUS_SPAN_KEY = "opencensus-span";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are created.
+     *
+     * If no span name is listed when the span is created it will default to using the calling method's name.
+     */
+    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
+
+    /**
      * Creates a new tracing span.
      *
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
@@ -70,4 +86,13 @@ public interface Tracer {
      * @param context Additional metadata that is passed through the call stack.
      */
     // void setAttribute(String key, boolean value, Context context);
+
+    /**
+     * Configures the name for spans that are created.
+     *
+     * @param spanName Name to give the next span.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated context object.
+     */
+    Context setSpanName(String spanName, Context context);
 }

@@ -154,6 +154,12 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException ex) {
+            //
+        }
+
         for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
             if (!configurations.containsKey(config)) {
                 load(config);

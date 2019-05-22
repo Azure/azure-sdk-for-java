@@ -21,22 +21,25 @@ import java.util.Optional;
 public class OpenCensusTracer implements com.azure.core.implementation.tracing.Tracer {
     // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
+    private static final String OPENCENSUS_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+    private static final String OPENCENSUS_SPAN_NAME_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_NAME_KEY;
 
     private final ServiceLogger logger = new ServiceLogger(OpenCensusTracer.class);
 
     @Override
     public Context start(String methodName, Context context) {
-        Span parentSpan = (Span) context.getData(Constants.OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        String spanName = (String) context.getData(OPENCENSUS_SPAN_NAME_KEY).orElse(methodName);
 
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(methodName, parentSpan);
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanName, parentSpan);
         Span span = spanBuilder.startSpan();
 
-        return context.addData(Constants.OPENCENSUS_SPAN_KEY, span);
+        return context.addData(OPENCENSUS_SPAN_KEY, span);
     }
 
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
-        Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
+        Optional<Object> spanOptional = context.getData(OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {
             Span span = (Span) spanOptional.get();
 
@@ -53,15 +56,21 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
     @Override
     public void setAttribute(String key, String value, Context context) {
         if (ImplUtils.isNullOrEmpty(value)) {
+            logger.asInformational().log("Failed to set span attribute since value is null or empty.");
             return;
         }
 
-        Optional<Object> spanOptional = context.getData(Constants.OPENCENSUS_SPAN_KEY);
+        Optional<Object> spanOptional = context.getData(OPENCENSUS_SPAN_KEY);
         if (spanOptional.isPresent()) {
             Span span = (Span) spanOptional.get();
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
             logger.asWarning().log("Failed to find span to add attribute.");
         }
+    }
+
+    @Override
+    public Context setSpanName(String spanName, Context context) {
+        return context.addData(OPENCENSUS_SPAN_NAME_KEY, spanName);
     }
 }

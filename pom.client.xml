@@ -746,6 +746,8 @@
               <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
               <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
             </environmentVariables>
+            <parallel>all</parallel>
+            <threadCount>4</threadCount>
           </configuration>
         </plugin>
 
