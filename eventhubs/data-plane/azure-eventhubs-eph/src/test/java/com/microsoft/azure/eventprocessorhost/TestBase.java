@@ -151,15 +151,17 @@ public class TestBase {
         settings.inOptions.setExceptionNotification(settings.outGeneralErrorHandler);
 
         if (settings.inoutEPHConstructorArgs.useExplicitManagers()) {
-            ICheckpointManager effectiveCheckpointMananger = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CHECKPOINT_MANAGER_OVERRIDE)
+            ICheckpointManager effectiveCheckpointManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CHECKPOINT_MANAGER_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getCheckpointMananger()
                     : new BogusCheckpointMananger();
             ILeaseManager effectiveLeaseManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.LEASE_MANAGER_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getLeaseManager()
                     : new BogusLeaseManager();
 
-            settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
-                    effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor, null);
+            settings.outHost = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
+            	.useUserCheckpointAndLeaseManagers(effectiveCheckpointManager, effectiveLeaseManager)
+            	.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath)
+            	.setExecutor(effectiveExecutor).build();
         } else {
             String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getStorageConnection()
@@ -178,9 +180,11 @@ public class TestBase {
             String effectiveBlobPrefix = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_BLOB_PREFIX_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getStorageBlobPrefix()
                     : null;
-
-            settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
-                    effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix, effectiveExecutor);
+                    
+            settings.outHost = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
+            		.useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix)
+            		.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath)
+            		.setExecutor(effectiveExecutor).build();
         }
 
         if (!settings.inEventHubDoesNotExist) {

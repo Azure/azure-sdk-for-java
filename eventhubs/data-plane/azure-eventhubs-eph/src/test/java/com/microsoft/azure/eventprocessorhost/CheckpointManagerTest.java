@@ -238,9 +238,11 @@ public class CheckpointManagerTest extends TestBase {
         }
 
         // Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix,
-            EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix, checkpointMgr, leaseMgr);
-
+        EventProcessorHost host = EventProcessorHost.EventProcessorHostBuilder.newBuilder("dummyHost" + String.valueOf(index), EventHubClient.DEFAULT_CONSUMER_GROUP_NAME)
+        		.useUserCheckpointAndLeaseManagers(checkpointMgr, leaseMgr)
+        		.useEventHubConnectionString(RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix,
+        				RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix)
+        		.build();
 
         try {
             if (!useAzureStorage) {
