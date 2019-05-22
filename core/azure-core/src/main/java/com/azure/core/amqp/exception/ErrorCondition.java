@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Contains constants common to the AMQP protocol and constants shared by Azure services.
  *
- * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error>AMQP
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error">AMQP
  * 1.0: Transport Errors</a>
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">Azure Messaging Exceptions</a>
  */
