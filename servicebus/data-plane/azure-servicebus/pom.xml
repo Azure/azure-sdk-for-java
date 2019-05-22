@@ -46,7 +46,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <forkCount>20</forkCount> <!-- Speeds up test execution using multiple JVMs. Set it to 0 if you want to run test sequentially in the build vm itself -->
+          <forkCount>10</forkCount> <!-- Speeds up test execution using multiple JVMs. Set it to 0 if you want to run test sequentially in the build vm itself -->
           <reuseForks>true</reuseForks>
         </configuration>
       </plugin>
