@@ -122,7 +122,6 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new AddDatePolicy());
         policies.add(new ConfigurationCredentialsPolicy(credentials));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
