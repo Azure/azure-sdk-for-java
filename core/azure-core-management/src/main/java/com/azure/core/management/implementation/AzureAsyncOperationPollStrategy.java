@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
+import com.azure.core.management.AsyncOperationResource;
+import com.azure.core.management.CloudException;
+import com.azure.core.management.OperationState;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

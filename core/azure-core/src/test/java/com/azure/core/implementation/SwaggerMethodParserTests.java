@@ -31,7 +31,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
         assertEquals("testMethod1", testMethod1.getName());
 
-        new SwaggerMethodParser(testMethod1, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        new SwaggerMethodParser(testMethod1, "https://raw.host.com");
     }
 
     interface TestInterface2 {
@@ -45,7 +45,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod2 = TestInterface2.class.getDeclaredMethods()[0];
         assertEquals("testMethod2", testMethod2.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -68,7 +68,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];
         assertEquals("testMethod3", testMethod3.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -92,7 +92,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod4 = TestInterface4.class.getDeclaredMethods()[0];
         assertEquals("testMethod4", testMethod4.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface4.testMethod4", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -117,7 +117,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod5 = TestInterface5.class.getDeclaredMethods()[0];
         assertEquals("testMethod5", testMethod5.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface5.testMethod5", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -144,7 +144,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod6 = TestInterface6.class.getDeclaredMethods()[0];
         assertEquals("testMethod6", testMethod6.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface6.testMethod6", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -175,7 +175,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod7 = TestInterface7.class.getDeclaredMethods()[0];
         assertEquals("testMethod7", testMethod7.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
@@ -196,7 +196,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod8 = TestInterface8.class.getDeclaredMethods()[0];
         assertEquals("testMethod8", testMethod8.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(404).exceptionBodyType());
