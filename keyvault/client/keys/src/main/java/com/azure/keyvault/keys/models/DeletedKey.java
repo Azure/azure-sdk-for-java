@@ -3,11 +3,17 @@
 
 package com.azure.keyvault.keys.models;
 
+import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyCurveName;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.codec.binary.Base64;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Map;
 
 public final class DeletedKey extends KeyBase {
 
@@ -17,6 +23,10 @@ public final class DeletedKey extends KeyBase {
      */
     @JsonProperty(value = "recoveryId")
     private String recoveryId;
+
+
+    @JsonProperty(value = "key")
+    private JsonWebKey keyMaterial;
 
     /**
      * The time when the key is scheduled to be purged, in UTC.
@@ -82,5 +92,15 @@ public final class DeletedKey extends KeyBase {
     @JsonProperty("deletedDate")
     private void deletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
+    }
+
+    /**
+     * Unpacks the key material json response and updates the variables in the Key Base object.
+     * @param key The key value mapping of the key material
+     */
+    @JsonProperty("key")
+    private void unpackKeyMaterial(Map<String, Object> key) {
+        final Base64 BASE64 = new Base64(-1, null, true);
+        keyMaterial = createKeyMaterialFromJson(key);
     }
 }

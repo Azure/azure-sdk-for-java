@@ -83,7 +83,7 @@ public final class KeyClient extends ServiceClient {
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
      * <pre>
      * Key retKey = keyClient.createKey("keyName", JsonWebKeyType.EC).value();
-     * System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.keyId());
+     * System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
      * </pre>
      *
      * @param name The name of the key being created.
@@ -101,9 +101,9 @@ public final class KeyClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@code rsaKeyCreateConfig} is required and its fields {@link RSAKeyCreateConfig#name() name} and {@link RSAKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link RSAKeyCreateConfig#keySize() key size}, {@link RSAKeyCreateConfig#expires() expires}, {@link RSAKeyCreateConfig#contentType() contentType}
-     * and {@link RSAKeyCreateConfig#notBefore() notBefore} values in {@code rsaKeyCreateConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link RSAKeyCreateConfig#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * be null. The {@link RSAKeyCreateConfig#keySize() key size}, {@link RSAKeyCreateConfig#expires() expires} and {@link RSAKeyCreateConfig#notBefore() notBefore} values
+     * in {@code rsaKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link RSAKeyCreateConfig#enabled() enabled} field is
+     * set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link RSAKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA},
      * {@link JsonWebKeyType#RSA_HSM RSA-HSM}.</p>
@@ -117,7 +117,7 @@ public final class KeyClient extends ServiceClient {
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
      * Key rsaKey = keyClient.createRSAKey(rsaKeyCreateConfig).value();
-     * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.keyId());
+     * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
      * </pre>
      *
      * @param rsaKeyCreateConfig The key configuration object containing information about the rsa key being created.
@@ -139,9 +139,9 @@ public final class KeyClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@code ecKeyCreateConfig} is required and its fields {@link ECKeyCreateConfig#name() name} and {@link ECKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link ECKeyCreateConfig#curve() key curve}, {@link ECKeyCreateConfig#expires() expires}, {@link ECKeyCreateConfig#contentType() contentType}
-     * and {@link ECKeyCreateConfig#notBefore() notBefore} values in {@code ecKeyCreateConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link ECKeyCreateConfig#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * be null. The {@link ECKeyCreateConfig#curve() key curve}, {@link ECKeyCreateConfig#expires() expires} and {@link ECKeyCreateConfig#notBefore() notBefore} values
+     * in {@code ecKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link ECKeyCreateConfig#enabled() enabled} field is
+     * set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link ECKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
      * {@link JsonWebKeyType#EC_HSM EC-HSM}.</p>
@@ -156,7 +156,7 @@ public final class KeyClient extends ServiceClient {
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
      * Key ecKey = keyClient.createECKey(ecKeyCreateConfig).value();
-     * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.keyId());
+     * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
      * </pre>
      *
      * @param ecKeyCreateConfig The key configuration object containing information about the rsa key being created.
@@ -181,7 +181,7 @@ public final class KeyClient extends ServiceClient {
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
      * <pre>
      * Key importedKey = keyClient.importKey("keyName", jsonWebKeyToImport).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.keyId());
+     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
      * </pre>
      *
      * @param name The name for the imported key.
@@ -199,9 +199,8 @@ public final class KeyClient extends ServiceClient {
      * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportConfig} is required and its fields {@link KeyImportConfig#name() name} and {@link KeyImportConfig#keyMaterial() key material} cannot
-     * be null. The {@link KeyImportConfig#expires() expires}, {@link KeyImportConfig#contentType() contentType}
-     * and {@link KeyImportConfig#notBefore() notBefore} values in {@code keyImportConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link KeyImportConfig#enabled() enabled} field is set to true and the {@link KeyImportConfig#hsm() hsm} field is
+     * be null. The {@link KeyImportConfig#expires() expires} and {@link KeyImportConfig#notBefore() notBefore} values in {@code keyImportConfig} are optional. If not
+     * specified, no values are set for the fields. The {@link KeyImportConfig#enabled() enabled} field is set to true and the {@link KeyImportConfig#hsm() hsm} field is
      * set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -212,7 +211,7 @@ public final class KeyClient extends ServiceClient {
      *   .expires(OffsetDateTime.now().plusDays(60));
      *
      * Key importedKey = keyClient.importKey(keyImportConfig).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.keyId());
+     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
      * </pre>
      *
      * @param keyImportConfig The key import configuration object containing information about the json web key being imported.
@@ -238,7 +237,7 @@ public final class KeyClient extends ServiceClient {
      * <pre>
      * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
      * Key keyWithVersion = keyClient.getKey("keyName", keyVersion).value();
-     * System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.keyId());
+     * System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
      * </pre>
      *
      * @param name The name of the key, cannot be null
@@ -263,7 +262,7 @@ public final class KeyClient extends ServiceClient {
      * <p>Gets the latest version of the key in the key vault. Prints out the details of the returned key.</p>
      * <pre>
      * Key key = keyClient.getKey("keyName").value();
-     * System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.value().keyId());
+     * System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.value().id());
      * </pre>
      *
      * @param name The name of the key.
@@ -286,7 +285,7 @@ public final class KeyClient extends ServiceClient {
      * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
      * <pre>
      * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Key is returned with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Key is returned with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
@@ -463,7 +462,7 @@ public final class KeyClient extends ServiceClient {
      * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
      * KeyClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param backup The backup blob associated with the key.
@@ -484,7 +483,7 @@ public final class KeyClient extends ServiceClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with value included of its latest version.</p>
      * <pre>
      * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Received key with name %s and id %s", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Received key with name %s and id %s", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
@@ -520,7 +519,7 @@ public final class KeyClient extends ServiceClient {
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with values included of the specified versions.</p>
      * <pre>
      * keyClient.listKeyVersions("keyName").stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Received key's version with name %s and id %s", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Received key's version with name %s and id %s", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param name The name of the key.

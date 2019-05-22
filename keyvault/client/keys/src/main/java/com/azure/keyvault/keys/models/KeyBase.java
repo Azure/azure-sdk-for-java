@@ -3,14 +3,19 @@
 
 package com.azure.keyvault.keys.models;
 
+import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.codec.binary.Base64;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,14 +69,8 @@ public class KeyBase {
     /**
      * Key identifier.
      */
-    @JsonProperty(value = "keyId")
-    String keyId;
-
-    /**
-     * Type of the key.
-     */
-    @JsonProperty(value = "contentType")
-    private String contentType;
+    @JsonProperty(value = "kid")
+    String id;
 
     /**
      * Application specific metadata in the form of key-value pairs.
@@ -89,7 +88,7 @@ public class KeyBase {
     /**
      * The key operations.
      */
-    private List<JsonWebKeyOperation> keyOperations;
+    List<JsonWebKeyOperation> keyOperations;
 
 
     /**
@@ -197,29 +196,10 @@ public class KeyBase {
      *
      * @return the key identifier.
      */
-    public String keyId() {
-        return this.keyId;
+    public String id() {
+        return this.id;
     }
 
-    /**
-     * Get the content type.
-     *
-     * @return the content type.
-     */
-    public String contentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType.
-     *
-     * @param contentType The contentType to set
-     * @return the KeyBase object itself.
-     */
-    public KeyBase contentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
 
     /**
      * Get the tags associated with the key.
@@ -281,7 +261,7 @@ public class KeyBase {
 
     /**
      * Unpacks the attributes json response and updates the variables in the Key Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
+     * Uses Lazy Update to set values for variables id, tags, contentType, managed and id as these variables are
      * part of main json body and not attributes json body when the key response comes from list keys operations.
      * @param attributes The key value mapping of the key attributes
      */
@@ -293,10 +273,9 @@ public class KeyBase {
         this.created = epochToOffsetDateTime(attributes.get("created"));
         this.updated = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.contentType = (String) lazyValueSelection(attributes.get("contentType"), this.contentType);
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
-        unpackId((String) lazyValueSelection(attributes.get("keyId"), this.keyId));
+        unpackId((String) lazyValueSelection(attributes.get("id"), this.id));
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
@@ -314,9 +293,10 @@ public class KeyBase {
         return input1;
     }
 
+    @JsonProperty(value = "kid")
     void unpackId(String keyId) {
         if (keyId != null && keyId.length() > 0) {
-            this.keyId = keyId;
+            this.id = keyId;
             try {
                 URL url = new URL(keyId);
                 String[] tokens = url.getPath().split("/");
@@ -326,5 +306,37 @@ public class KeyBase {
                 e.printStackTrace();
             }
         }
+    }
+
+    List<JsonWebKeyOperation> getKeyOperations(List<String> jsonWebKeyOps){
+        List<JsonWebKeyOperation> output = new ArrayList<>();
+        for(String keyOp : jsonWebKeyOps){
+            output.add(new JsonWebKeyOperation(keyOp));
+        }
+        return output;
+    }
+
+    JsonWebKey createKeyMaterialFromJson(Map<String, Object> key){
+        final Base64 BASE64 = new Base64(-1, null, true);
+        JsonWebKey outputKey = new JsonWebKey()
+                .ecPublicKeyYComponent(BASE64.decode((String)key.get("y")))
+                .ecPublicKeyXComponent(BASE64.decode((String)key.get("x")))
+                .curve(new JsonWebKeyCurveName((String)key.get("crv")))
+                .keyOps(getKeyOperations((List<String>)key.get("key_ops")))
+                .keyHsm(BASE64.decode((String)key.get("key_hsm")))
+                .symmetricKey(BASE64.decode((String)key.get("k")))
+                .rsaSecretPrimeBounded(BASE64.decode((String)key.get("q")))
+                .rsaSecretPrime(BASE64.decode((String)key.get("p")))
+                .rsaPrivateKeyParameterQi(BASE64.decode((String)key.get("qi")))
+                .rsaPrivateKeyParameterDq(BASE64.decode((String)key.get("dq")))
+                .rsaPrivateKeyParameterDp(BASE64.decode((String)key.get("dp")))
+                .rsaPrivateExponent(BASE64.decode((String)key.get("d")))
+                .rsaExponent(BASE64.decode((String)key.get("e")))
+                .rsaModulus(BASE64.decode((String)key.get("n")))
+                .keyType(new JsonWebKeyType((String)key.get("kty")))
+                .keyId((String)key.get("kid"));
+        keyOperations(getKeyOperations((List<String>)key.get("key_ops")));
+        unpackId((String)key.get("kid"));
+        return outputKey;
     }
 }

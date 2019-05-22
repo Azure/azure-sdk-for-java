@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class RSAKeyCreateConfig extends KeyBase {
     private Integer keySize;
-    private List<JsonWebKeyOperation> keyOperations;
     private JsonWebKeyType keyType;
 
     public RSAKeyCreateConfig(String name, JsonWebKeyType keyType) {
@@ -56,6 +55,7 @@ public class RSAKeyCreateConfig extends KeyBase {
      * @param keyOperations The key operations value to set
      * @return the RSAKeyCreateConfig object itself.
      */
+    @Override
     public RSAKeyCreateConfig keyOperations(List<JsonWebKeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
@@ -92,18 +92,6 @@ public class RSAKeyCreateConfig extends KeyBase {
     @Override
     public RSAKeyCreateConfig expires(OffsetDateTime expires) {
         super.expires(expires);
-        return this;
-    }
-
-    /**
-     * Set the contentType.
-     *
-     * @param contentType The contentType to set
-     * @return the RSAKeyCreateConfig object itself.
-     */
-    @Override
-    public RSAKeyCreateConfig contentType(String contentType) {
-        super.contentType(contentType);
         return this;
     }
 

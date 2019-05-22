@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ECKeyCreateConfig extends  KeyBase{
-    private List<JsonWebKeyOperation> keyOperations;
     private JsonWebKeyCurveName curve;
     private JsonWebKeyType keyType;
 
@@ -56,6 +55,7 @@ public class ECKeyCreateConfig extends  KeyBase{
      * @param keyOperations The key operations value to set
      * @return the RSAKeyCreateConfig object itself.
      */
+    @Override
     public ECKeyCreateConfig keyOperations(List<JsonWebKeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
@@ -94,17 +94,6 @@ public class ECKeyCreateConfig extends  KeyBase{
         return this;
     }
 
-    /**
-     * Set the contentType.
-     *
-     * @param contentType The contentType to set
-     * @return the ECKeyCreateConfig object itself.
-     */
-    @Override
-    public ECKeyCreateConfig contentType(String contentType) {
-        super.contentType(contentType);
-        return this;
-    }
 
     /**
      * Set the tags to be associated with the key.

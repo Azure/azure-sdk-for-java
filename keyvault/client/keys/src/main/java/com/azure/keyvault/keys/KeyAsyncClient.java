@@ -81,7 +81,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when the callback happens.</p>
      * <pre>
      * keyAsyncClient.createKey("keyName", JsonWebKeyType.EC).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param name The name of the key being created.
@@ -99,9 +99,9 @@ public final class KeyAsyncClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@code rsaKeyCreateConfig} is required and its fields {@link RSAKeyCreateConfig#name() name} and {@link RSAKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link RSAKeyCreateConfig#keySize() key size}, {@link RSAKeyCreateConfig#expires() expires}, {@link RSAKeyCreateConfig#contentType() contentType}
-     * and {@link RSAKeyCreateConfig#notBefore() notBefore} values in {@code rsaKeyCreateConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link RSAKeyCreateConfig#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * be null. The {@link RSAKeyCreateConfig#keySize() key size}, {@link RSAKeyCreateConfig#expires() expires} and {@link RSAKeyCreateConfig#notBefore() notBefore} values
+     * in {@code rsaKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link RSAKeyCreateConfig#enabled() enabled} field
+     * is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link RSAKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA},
      * {@link JsonWebKeyType#RSA_HSM RSA-HSM}.</p>
@@ -116,7 +116,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
      * keyAsyncClient.createRSAKey(rsaKeyCreateConfig).subscribe(keyResponse -&gt;
-     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param rsaKeyCreateConfig The key configuration object containing information about the rsa key being created.
@@ -139,9 +139,9 @@ public final class KeyAsyncClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@code ecKeyCreateConfig} is required and its fields {@link ECKeyCreateConfig#name() name} and {@link ECKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link ECKeyCreateConfig#curve() key curve}, {@link ECKeyCreateConfig#expires() expires}, {@link ECKeyCreateConfig#contentType() contentType}
-     * and {@link ECKeyCreateConfig#notBefore() notBefore} values in {@code ecKeyCreateConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link ECKeyCreateConfig#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * be null. The {@link ECKeyCreateConfig#curve() key curve}, {@link ECKeyCreateConfig#expires() expires} and {@link ECKeyCreateConfig#notBefore() notBefore} values
+     * in {@code ecKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link ECKeyCreateConfig#enabled() enabled} field is
+     * set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link ECKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
      * {@link JsonWebKeyType#EC_HSM EC-HSM}.</p>
@@ -156,7 +156,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
      * keyAsyncClient.createECKey(ecKeyCreateConfig).subscribe(keyResponse -&gt;
-     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param ecKeyCreateConfig The key configuration object containing information about the rsa key being created.
@@ -182,7 +182,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * when the callback happens.</p>
      * <pre>
      * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param name The name for the imported key.
@@ -200,10 +200,9 @@ public final class KeyAsyncClient extends ServiceClient {
      * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportConfig} is required and its fields {@link KeyImportConfig#name() name} and {@link KeyImportConfig#keyMaterial() key material} cannot
-     * be null. The {@link KeyImportConfig#expires() expires}, {@link KeyImportConfig#contentType() contentType}
-     * and {@link KeyImportConfig#notBefore() notBefore} values in {@code keyImportConfig} are optional. If not specified, no values are set for the
-     * fields. The {@link KeyImportConfig#enabled() enabled} field is set to true and the {@link KeyImportConfig#hsm() hsm} field is
-     * set to false by Azure Key Vault, if they are not specified.</p>
+     * be null. The {@link KeyImportConfig#expires() expires} and {@link KeyImportConfig#notBefore() notBefore} values in {@code keyImportConfig}
+     * are optional. If not specified, no values are set for the fields. The {@link KeyImportConfig#enabled() enabled} field is set to true and
+     * the {@link KeyImportConfig#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key details
@@ -214,7 +213,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *   .expires(OffsetDateTime.now().plusDays(60));
      *
      * keyAsyncClient.importKey(keyImportConfig).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param keyImportConfig The key import configuration object containing information about the json web key being imported.
@@ -242,7 +241,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
      * keyAsyncClient.getKey("keyName", keyVersion).subscribe(keyResponse -&gt;
      *   System.out.printf("Key returned with name %s, id %s and version %s", keyResponse.value().name(),
-     *   keyResponse.value().keyId(), keyResponse.value().version()));
+     *   keyResponse.value().id(), keyResponse.value().version()));
      * </pre>
      *
      * @param name The name of the key, cannot be null
@@ -269,7 +268,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <pre>
      * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt;
      *   System.out.printf("Key with name %s, id %s \n", keyResponse.value().name(),
-     *   keyResponse.value().keyId()));
+     *   keyResponse.value().id()));
      * </pre>
      *
      * @param name The name of the key.
@@ -293,7 +292,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <pre>
      * keyAsyncClient.listKeys().subscribe(keyBase -&gt;
      *     client.getKey(keyBase).subscribe(keyResponse -&gt;
-     *       System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(), keyResponse.value().keyId())));
+     *       System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(), keyResponse.value().id())));
      * </pre>
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
@@ -479,7 +478,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
      * keyAsyncClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().keyId()));
+     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
      * @param backup The backup blob associated with the key.

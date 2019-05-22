@@ -4,14 +4,11 @@
 package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.webkey.JsonWebKey;
-import com.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.azure.keyvault.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +26,6 @@ public class Key extends KeyBase {
         return this.keyMaterial;
     }
 
-
-    private List<JsonWebKeyOperation> getKeyOperations(List<String> jsonWebKeyOps){
-        List<JsonWebKeyOperation> output = new ArrayList<>();
-        for(String keyOp : jsonWebKeyOps){
-            output.add(new JsonWebKeyOperation(keyOp));
-        }
-        return output;
-    }
 
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
@@ -59,17 +48,6 @@ public class Key extends KeyBase {
     @Override
     public Key expires(OffsetDateTime expires) {
         super.expires(expires);
-        return this;
-    }
-
-    /**
-     * Set the contentType.
-     *
-     * @param contentType The contentType to set
-     * @return the Key object itself.
-     */
-    public Key contentType(String contentType) {
-        super.contentType(contentType);
         return this;
     }
 
@@ -103,24 +81,6 @@ public class Key extends KeyBase {
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
         final Base64 BASE64 = new Base64(-1, null, true);
-        keyMaterial = new JsonWebKey()
-                .ecPublicKeyYComponent(BASE64.decode((String)key.get("y")))
-                .ecPublicKeyXComponent(BASE64.decode((String)key.get("x")))
-                .curve(new JsonWebKeyCurveName((String)key.get("crv")))
-                .keyOps(getKeyOperations((List<String>)key.get("key_ops")))
-                .keyHsm(BASE64.decode((String)key.get("key_hsm")))
-                .symmetricKey(BASE64.decode((String)key.get("k")))
-                .rsaSecretPrimeBounded(BASE64.decode((String)key.get("q")))
-                .rsaSecretPrime(BASE64.decode((String)key.get("p")))
-                .rsaPrivateKeyParameterQi(BASE64.decode((String)key.get("qi")))
-                .rsaPrivateKeyParameterDq(BASE64.decode((String)key.get("dq")))
-                .rsaPrivateKeyParameterDp(BASE64.decode((String)key.get("dp")))
-                .rsaPrivateExponent(BASE64.decode((String)key.get("d")))
-                .rsaExponent(BASE64.decode((String)key.get("e")))
-                .rsaModulus(BASE64.decode((String)key.get("n")))
-                .keyType(new JsonWebKeyType((String)key.get("kty")))
-                .keyId((String)key.get("kid"));
-        keyOperations(getKeyOperations((List<String>)key.get("key_ops")));
-        unpackId((String)key.get("kid"));
+        keyMaterial = createKeyMaterialFromJson(key);
     }
 }
