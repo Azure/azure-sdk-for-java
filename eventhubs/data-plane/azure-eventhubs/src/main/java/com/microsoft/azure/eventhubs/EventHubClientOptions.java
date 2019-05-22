@@ -13,24 +13,27 @@ public class EventHubClientOptions {
 	public EventHubClientOptions() {
 	}
 	
-	public void setOperationTimeout(Duration operationTimeout) {
+	public EventHubClientOptions setOperationTimeout(Duration operationTimeout) {
 		this.operationTimeout = operationTimeout;
+		return this;
 	}
 	
 	public Duration getOperationTimeout() {
 		return this.operationTimeout;
 	}
 	
-	public void setTransportType(TransportType transportType) {
+	public EventHubClientOptions setTransportType(TransportType transportType) {
 		this.transportType = transportType;
+		return this;
 	}
 	
 	public TransportType getTransportType() {
 		return this.transportType;
 	}
 	
-	public void setRetryPolicy(RetryPolicy retryPolicy) {
+	public EventHubClientOptions setRetryPolicy(RetryPolicy retryPolicy) {
 		this.retryPolicy = retryPolicy;
+		return this;
 	}
 	
 	public RetryPolicy getRetryPolicy() {

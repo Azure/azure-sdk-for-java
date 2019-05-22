@@ -3,15 +3,25 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider.AuthenticationCallback;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubClientOptions;
+import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.TransportType;
+import com.microsoft.azure.eventhubs.impl.StringUtil;
 import com.microsoft.azure.storage.StorageException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -39,243 +49,23 @@ public final class EventProcessorHost {
     private PartitionManager partitionManager;
     private PartitionManagerOptions partitionManagerOptions = null;
 
-    /**
-     * Create a new host instance to process events from an Event Hub.
-     * <p>
-     * Since Event Hubs are generally used for scale-out, high-traffic scenarios, in most scenarios there will
-     * be only one host instances per process, and the processes will be run on separate machines. Besides scale, this also
-     * provides isolation: one process or machine crashing will not take out multiple host instances. However, it is
-     * supported to run multiple host instances on one machine, or even within one process, for development and testing.
-     * <p>
-     * The hostName parameter is a name for this event processor host, which must be unique among all event processor host instances
-     * receiving from this event hub+consumer group combination: the unique name is used to distinguish which event processor host
-     * instance owns the lease for a given partition. An easy way to generate a unique hostName which also includes
-     * other information is to call EventProcessorHost.createHostName("mystring").
-     * <p>
-     * This overload of the constructor uses the built-in lease and checkpoint managers. The
-     * Azure Storage account specified by the storageConnectionString parameter is used by the built-in
-     * managers to record leases and checkpoints, in the specified container.
-     * <p>
-     * The Event Hub connection string may be conveniently constructed using the ConnectionStringBuilder class
-     * from the Java Event Hub client.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param storageConnectionString  Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-     * @param storageContainerName     Azure Storage container name for use by built-in lease and checkpoint manager.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString,
-            final String storageContainerName) {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, (ScheduledExecutorService) null);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * <p>
-     * This overload adds an argument to specify a user-provided thread pool. The number of partitions in the
-     * target event hub and the number of host instances should be considered when choosing the size of the thread pool:
-     * how many partitions is one instance expected to own under normal circumstances? One thread per partition should
-     * provide good performance, while being able to support more partitions adequately if a host instance fails and its
-     * partitions must be redistributed.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param storageConnectionString  Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-     * @param storageContainerName     Azure Storage container name for use by built-in lease and checkpoint manager.
-     * @param executorService          User-supplied thread executor, or null to use EventProcessorHost-internal executor.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString,
-            final String storageContainerName,
-            final ScheduledExecutorService executorService) {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, (String) null, executorService);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * <p>
-     * This overload adds an argument to specify a prefix used by the built-in lease manager when naming blobs in Azure Storage.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param storageConnectionString  Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-     * @param storageContainerName     Azure Storage container name for use by built-in lease and checkpoint manager.
-     * @param storageBlobPrefix        Prefix used when naming blobs within the storage container.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString,
-            final String storageContainerName,
-            final String storageBlobPrefix) {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, storageBlobPrefix,
-                (ScheduledExecutorService) null);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * <p>
-     * This overload allows the caller to specify both a user-supplied thread pool and
-     * a prefix used by the built-in lease manager when naming blobs in Azure Storage.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param storageConnectionString  Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-     * @param storageContainerName     Azure Storage container name for use by built-in lease and checkpoint manager.
-     * @param storageBlobPrefix        Prefix used when naming blobs within the storage container.
-     * @param executorService          User-supplied thread executor, or null to use EventProcessorHost-internal executor.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString,
-            final String storageContainerName,
-            final String storageBlobPrefix,
-            final ScheduledExecutorService executorService) {
-        // Would like to check storageConnectionString and storageContainerName here but can't, because Java doesn't allow statements before
-        // calling another constructor. storageBlobPrefix is allowed to be null or empty, doesn't need checking.
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
-                new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix), executorService);
-        this.initializeLeaseManager = true;
-        this.partitionManagerOptions = new AzureStoragePartitionManagerOptions();
-    }
-
-    // Because Java won't let you do ANYTHING before calling another constructor. In particular, you can't
-    // new up an object and pass it as TWO parameters of the other constructor.
     private EventProcessorHost(
             final String hostName,
             final String eventHubPath,
             final String consumerGroupName,
-            final String eventHubConnectionString,
-            final AzureStorageCheckpointLeaseManager combinedManager,
-            final ScheduledExecutorService executorService) {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService, null);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * <p>
-     * This overload allows the caller to provide their own lease and checkpoint managers to replace the built-in
-     * ones based on Azure Storage.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param checkpointManager        Implementation of ICheckpointManager, to be replacement checkpoint manager.
-     * @param leaseManager             Implementation of ILeaseManager, to be replacement lease manager.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            ICheckpointManager checkpointManager,
-            ILeaseManager leaseManager) {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, checkpointManager, leaseManager, null, null);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * <p>
-     * This overload allows the caller to provide their own lease and checkpoint managers to replace the built-in
-     * ones based on Azure Storage, and to provide an executor service and a retry policy for communications with the event hub.
-     *
-     * @param hostName                 A name for this event processor host. See method notes.
-     * @param eventHubPath             Specifies the Event Hub to receive events from.
-     * @param consumerGroupName        The name of the consumer group to use when receiving from the Event Hub.
-     * @param eventHubConnectionString Connection string for the Event Hub to receive from.
-     * @param checkpointManager        Implementation of ICheckpointManager, to be replacement checkpoint manager.
-     * @param leaseManager             Implementation of ILeaseManager, to be replacement lease manager.
-     * @param executorService          User-supplied thread executor, or null to use EventProcessorHost-internal executor.
-     * @param retryPolicy              Retry policy governing communications with the event hub.
-     */
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
+            final EventHubClientFactory eventHubClientFactory,
             ICheckpointManager checkpointManager,
             ILeaseManager leaseManager,
-            ScheduledExecutorService executorService,
-            RetryPolicy retryPolicy) {
-        if ((hostName == null) || hostName.isEmpty()) {
-            throw new IllegalArgumentException("hostName argument must not be null or empty string");
-        }
-
-        // eventHubPath is allowed to be null or empty if it is provided in the connection string. That will be checked later.
-        if ((consumerGroupName == null) || consumerGroupName.isEmpty()) {
-            throw new IllegalArgumentException("consumerGroupName argument must not be null or empty");
-        }
-
-        if ((eventHubConnectionString == null) || eventHubConnectionString.isEmpty()) {
-            throw new IllegalArgumentException("eventHubConnectionString argument must not be null or empty");
-        }
-
-        // The event hub path must appear in at least one of the eventHubPath argument or the connection string.
-        // If it appears in both, then it must be the same in both. If it appears in only one, populate the other.
-        ConnectionStringBuilder providedCSB = new ConnectionStringBuilder(eventHubConnectionString);
-        String extractedEntityPath = providedCSB.getEventHubName();
-        String effectiveEventHubPath = eventHubPath;
-        String effectiveEventHubConnectionString = eventHubConnectionString;
-        if ((effectiveEventHubPath != null) && !effectiveEventHubPath.isEmpty()) {
-            if (extractedEntityPath != null) {
-                if (effectiveEventHubPath.compareTo(extractedEntityPath) != 0) {
-                    throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
-                }
-                // else they are the same and that's fine
-            } else {
-                // There is no entity path in the connection string, so put it there.
-                ConnectionStringBuilder rebuildCSB = new ConnectionStringBuilder()
-                        .setEndpoint(providedCSB.getEndpoint())
-                        .setEventHubName(effectiveEventHubPath)
-                        .setSasKeyName(providedCSB.getSasKeyName())
-                        .setSasKey(providedCSB.getSasKey());
-                rebuildCSB.setOperationTimeout(providedCSB.getOperationTimeout());
-                effectiveEventHubConnectionString = rebuildCSB.toString();
-            }
+            final boolean initializeLeaseManager,
+            ScheduledExecutorService executorService) {
+        this.initializeLeaseManager = initializeLeaseManager;
+        if (this.initializeLeaseManager) {
+        	this.partitionManagerOptions = new AzureStoragePartitionManagerOptions();
         } else {
-            if ((extractedEntityPath != null) && !extractedEntityPath.isEmpty()) {
-                effectiveEventHubPath = extractedEntityPath;
-            } else {
-                throw new IllegalArgumentException("Provide EventHub entity path in either eventHubPath argument or in eventHubConnectionString");
-            }
+        	// Using user-supplied implementation.
+        	// Establish generic defaults in case the user doesn't provide an options object.
+        	this.partitionManagerOptions = new PartitionManagerOptions();
         }
-
-        if (checkpointManager == null) {
-            throw new IllegalArgumentException("Must provide an object which implements ICheckpointManager");
-        }
-        if (leaseManager == null) {
-            throw new IllegalArgumentException("Must provide an object which implements ILeaseManager");
-        }
-
-        // executorService argument is allowed to be null, that is the indication to use an internal threadpool.
-
-        // Normally will not be null because we're using the AzureStorage implementation.
-        // If it is null, we're using user-supplied implementation. Establish generic defaults
-        // in case the user doesn't provide an options object.
-        this.partitionManagerOptions = new PartitionManagerOptions();
 
         if (executorService != null) {
             // User has supplied an ExecutorService, so use that.
@@ -285,12 +75,12 @@ public final class EventProcessorHost {
             this.weOwnExecutor = true;
             this.executorService = Executors.newScheduledThreadPool(
                     this.executorServicePoolSize,
-                    new EventProcessorHostThreadPoolFactory(hostName, effectiveEventHubPath, consumerGroupName));
+                    new EventProcessorHostThreadPoolFactory(hostName, eventHubPath, consumerGroupName));
         }
 
         this.hostContext = new HostContext(this.executorService,
                 this, hostName,
-                effectiveEventHubPath, consumerGroupName, effectiveEventHubConnectionString, retryPolicy,
+                eventHubPath, consumerGroupName, eventHubClientFactory,
                 leaseManager, checkpointManager);
 
         this.partitionManager = new PartitionManager(hostContext);
@@ -570,5 +360,268 @@ public final class EventProcessorHost {
                 TRACE_LOGGER.warn("Uncaught exception occurred. Thread " + t.getName(), e);
             }
         }
+    }
+    
+    
+    public static class EventProcessorHostBuilder {
+    	public static ManagerStep newBuilder(final String hostName, final String consumerGroupName) {
+    		return new Steps(hostName, consumerGroupName);
+    	}
+    	
+    	private EventProcessorHostBuilder() {
+    	}
+    	
+    	public static interface ManagerStep {
+    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName);
+    		
+    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String StorageBlobPrefix);
+    		
+    		AuthStep useUserCheckpointAndLeaseManagers(ICheckpointManager checkpointManager, ILeaseManager leaseManager);
+    	}
+    	
+    	public static interface AuthStep {
+    		OptionalStep useEventHubConnectionString(String eventHubConnectionString);
+    		
+    		OptionalStep useEventHubConnectionString(String eventHubConnectionString, String eventHubPath);
+    		
+    		AADAuthStep useAADAuthentication(URI endpoint, String eventHubPath);
+    	}
+    	
+    	public static interface AADAuthStep {
+    		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback);
+    		
+    		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback, String authority);
+    		
+    		OptionalStep useManagedIdentity();
+    		
+    		OptionalStep useTokenProvider(ITokenProvider tokenProvider);
+    	}
+    	
+    	public static interface OptionalStep {
+    		OptionalStep setExecutor(ScheduledExecutorService executor);
+    		
+    		OptionalStep setRetryPolicy(RetryPolicy retryPolicy);
+    		
+    		OptionalStep setTransportType(TransportType transportType);
+    		
+    		OptionalStep setOperationTimeout(Duration operationTimeout);
+    		
+    		EventProcessorHost build();
+    	}
+    	
+    	private static class Steps implements ManagerStep, AuthStep, AADAuthStep, OptionalStep {
+    		private final String hostName;
+    		private final String consumerGroupName;
+    		
+    		// OptionalStep
+    		private ScheduledExecutorService executor = null;
+    		private RetryPolicy retryPolicy = null;
+    		private TransportType transportType = null;
+    		private Duration operationTimeout = null;
+    		
+    		// Auth steps
+    		private String eventHubConnectionString = null; // group 1
+    		private String eventHubPath = null; // optional for group 1, required for groups 2-4
+    		private URI endpoint = null; // groups 2-4
+    		private AuthenticationCallback authCallback = null; // group 2
+    		private String authority = null; // group 2
+    		private boolean useManagedIdentity = false; // group 3
+    		private ITokenProvider tokenProvider = null; // group 4
+    		
+    		// ManagerStep
+    		private ICheckpointManager checkpointManager;
+    		private ILeaseManager leaseManager;
+    		private boolean initializeManagers = false;
+    		
+    		
+    		public Steps(final String hostName, final String consumerGroupName) {
+    			if (StringUtil.isNullOrWhiteSpace(hostName) || StringUtil.isNullOrWhiteSpace(consumerGroupName)) {
+    				throw new IllegalArgumentException("hostName and consumerGroupName cannot be null or empty");
+    			}
+    			
+    			this.hostName = hostName;
+    			this.consumerGroupName = consumerGroupName;
+    		}
+
+			@Override
+			public OptionalStep setExecutor(final ScheduledExecutorService executor) {
+				Objects.requireNonNull(executor);
+				
+				this.executor = executor;
+				return this;
+			}
+
+			@Override
+			public OptionalStep setRetryPolicy(final RetryPolicy retryPolicy) {
+				this.retryPolicy = retryPolicy;
+				return this;
+			}
+
+			@Override
+			public OptionalStep setTransportType(final TransportType transportType) {
+				Objects.requireNonNull(transportType);
+				
+				this.transportType = transportType;
+				return this;
+			}
+
+			@Override
+			public OptionalStep setOperationTimeout(final Duration operationTimeout) {
+				Objects.requireNonNull(operationTimeout);
+				
+				this.operationTimeout = operationTimeout;
+				return this;
+			}
+
+			@Override
+			public OptionalStep useAuthenticationCallback(final AuthenticationCallback authCallback) {
+				return useAuthenticationCallback(authCallback, AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY);
+			}
+
+			@Override
+			public OptionalStep useAuthenticationCallback(final AuthenticationCallback authCallback, final String authority) {
+				Objects.requireNonNull(authCallback);
+				if (StringUtil.isNullOrWhiteSpace(authority)) {
+					throw new IllegalArgumentException("authority cannot be null or empty");
+				}
+				
+				this.authCallback = authCallback;
+				this.authority = authority;
+				return this;
+			}
+
+			@Override
+			public OptionalStep useManagedIdentity() {
+				this.useManagedIdentity = true;
+				return this;
+			}
+
+			@Override
+			public OptionalStep useTokenProvider(final ITokenProvider tokenProvider) {
+				Objects.requireNonNull(tokenProvider);
+				
+				this.tokenProvider = tokenProvider;
+				return this;
+			}
+
+			@Override
+			public OptionalStep useEventHubConnectionString(final String eventHubConnectionString) {
+				return useEventHubConnectionString(eventHubConnectionString, null);
+			}
+
+			@Override
+			public OptionalStep useEventHubConnectionString(final String eventHubConnectionString, final String eventHubPath) {
+				if (StringUtil.isNullOrWhiteSpace(eventHubConnectionString)) {
+					throw new IllegalArgumentException("eventHubConnectionString cannot be null or empty");
+				}
+				if ((eventHubPath != null) && StringUtil.isNullOrWhiteSpace(eventHubPath)) {
+					throw new IllegalArgumentException("eventHubPath cannot be empty. Use null if the connection string already contains the path.");
+				}
+				
+				this.eventHubConnectionString = eventHubConnectionString;
+				this.eventHubPath = eventHubPath;
+				return this;
+			}
+
+			@Override
+			public AADAuthStep useAADAuthentication(final URI endpoint, final String eventHubPath) {
+				Objects.requireNonNull(endpoint);
+				if (StringUtil.isNullOrWhiteSpace(eventHubPath)) {
+					throw new IllegalArgumentException("eventHubPath cannot be null or empty");
+				}
+				
+				this.endpoint = endpoint;
+				this.eventHubPath = eventHubPath;
+				return this;
+			}
+
+			@Override
+			public AuthStep useAzureStorageCheckpointLeaseManager(final String storageConnectionString,
+					final String storageContainerName) {
+				return useAzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, "");
+			}
+
+			@Override
+			public AuthStep useAzureStorageCheckpointLeaseManager(final String storageConnectionString,
+					final String storageContainerName, final String storageBlobPrefix) {
+				AzureStorageCheckpointLeaseManager mgr = new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix);
+				this.initializeManagers = true;
+				return useUserCheckpointAndLeaseManagers(mgr, mgr);
+			}
+
+			@Override
+			public AuthStep useUserCheckpointAndLeaseManagers(final ICheckpointManager checkpointManager,
+					final ILeaseManager leaseManager) {
+				Objects.requireNonNull(checkpointManager);
+				Objects.requireNonNull(leaseManager);
+				
+				this.checkpointManager = checkpointManager;
+				this.leaseManager = leaseManager;
+				return this;
+			}
+
+			@Override
+			public EventProcessorHost build() {
+				// One of these conditions MUST be true. Can't get to the OptionalStep interface where build() is available
+				// without setting one of the auth options.
+				EventHubClientFactory ehcFactory = null;
+				if (this.eventHubConnectionString != null) {
+					normalizeConnectionStringAndEventHubPath();
+					ehcFactory = new EventHubClientFactory.EHCFWithConnectionString(this.eventHubConnectionString, this.retryPolicy, this.executor);
+				} else if (this.authCallback != null) {
+					ehcFactory = new EventHubClientFactory.EHCFWithAuthCallback(this.endpoint, this.eventHubPath,
+							this.authCallback, this.authority, packOptions(), this.executor);
+				} else if (this.tokenProvider != null) {
+					ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, packOptions(), this.executor);
+				} else if (this.useManagedIdentity) {
+					ehcFactory = new EventHubClientFactory.EHCFWithManagedIdentity(this.endpoint, this.eventHubPath, packOptions(), this.executor);
+				}
+				return new EventProcessorHost(this.hostName,
+						this.eventHubPath,
+						this.consumerGroupName,
+						ehcFactory,
+						this.checkpointManager,
+						this.leaseManager,
+						this.initializeManagers,
+						this.executor);
+			}
+			
+			private EventHubClientOptions packOptions() {
+				return (new EventHubClientOptions()).setOperationTimeout(this.operationTimeout).setRetryPolicy(this.retryPolicy).setTransportType(this.transportType);
+			}
+			
+			private void normalizeConnectionStringAndEventHubPath() {
+		        // The event hub path must appear in at least one of the eventHubPath argument or the connection string.
+		        // If it appears in both, then it must be the same in both. If it appears in only one, populate the other.
+		        ConnectionStringBuilder csb = new ConnectionStringBuilder(this.eventHubConnectionString);
+		        String extractedEntityPath = csb.getEventHubName();
+		        if ((this.eventHubPath != null) && !this.eventHubPath.isEmpty()) {
+		            if (extractedEntityPath != null) {
+		                if (this.eventHubPath.compareTo(extractedEntityPath) != 0) {
+		                    throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
+		                }
+		                // else they are the same and that's fine
+		            } else {
+		                // There is no entity path in the connection string, so put it there.
+		            	csb.setEventHubName(this.eventHubPath);
+		            }
+		        } else {
+		            if ((extractedEntityPath != null) && !extractedEntityPath.isEmpty()) {
+		                this.eventHubPath = extractedEntityPath;
+		            } else {
+		                throw new IllegalArgumentException("Provide EventHub entity path in either eventHubPath argument or in eventHubConnectionString");
+		            }
+		        }
+		        
+				if (this.transportType != null) {
+					csb.setTransportType(this.transportType);
+				}
+				if (this.operationTimeout != null) {
+					csb.setOperationTimeout(this.operationTimeout);
+				}
+
+				this.eventHubConnectionString = csb.toString();
+			}
+    	}
     }
 }
