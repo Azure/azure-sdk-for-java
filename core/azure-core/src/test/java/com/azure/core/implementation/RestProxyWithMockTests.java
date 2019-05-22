@@ -549,7 +549,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     /**
-     * Verifies that we can get a PagedResponse<T> when the user has implemented their own class from {@link Page}.
+     * Verifies that we can get a PagedResponse&lt;T&gt; when the user has implemented their own class from {@link Page}.
      */
     @Test
     public void service2getPage() {

@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import org.reactivestreams.Publisher;
@@ -44,6 +45,8 @@ import java.util.Objects;
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
+    private static final String SPAN_NAME_TEMPLATE = "Azure.AppConfig/%s";
+
     private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
@@ -155,6 +158,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = setSpanName("addSetting", context);
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
@@ -286,6 +290,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = setSpanName("setSetting", context);
 
         // This service method call is similar to addSetting except it will create or update a configuration setting.
         // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
@@ -388,6 +393,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = setSpanName("updateSetting", context);
 
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
@@ -474,6 +480,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = setSpanName("getSetting", context);
 
         return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null, context)
             .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving ConfigurationSetting - {}", setting))
@@ -572,6 +579,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = setSpanName("deleteSetting", context);
 
         return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null, context)
             .doOnRequest(ignoredValue -> logger.asInformational().log("Deleting ConfigurationSetting - {}", setting))
@@ -618,23 +626,25 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
+        final Context contextWithSpanName = setSpanName("listSettings", context);
+
         if (options != null) {
             String fields = ImplUtils.arrayToString(options.fields(), SettingFields::toStringMapper);
             String keys = ImplUtils.arrayToString(options.keys(), key -> key);
             String labels = ImplUtils.arrayToString(options.labels(), label -> label);
 
-            result = service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime(), context)
+            result = service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime(), contextWithSpanName)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSettings - {}", options))
                 .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSettings - {}", options))
                 .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting - {}", options, error));
         } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null, context)
+            result = service.listKeyValues(serviceEndpoint, null, null, null, null, contextWithSpanName)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing all ConfigurationSettings"))
                 .doOnSuccess(response -> logger.asInformational().log("Listed all ConfigurationSettings"))
                 .doOnError(error -> logger.asWarning().log("Failed to list all ConfigurationSetting", error));
         }
 
-        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextWithSpanName));
     }
 
     /**
@@ -682,27 +692,29 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
+        final Context contextWithSpanName = setSpanName("listSettingRevisions", context);
+
         if (selector != null) {
             String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
             String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
             String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
             String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
 
-            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
+            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, contextWithSpanName)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions - {}", selector))
                 .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions - {}", selector))
                 .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting revisions - {}", selector, error));
         } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, contextWithSpanName)
                 .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions"))
                 .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions"))
                 .doOnError(error -> logger.asWarning().log("Failed to list all ConfigurationSetting revisions", error));
         }
 
-        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextWithSpanName));
     }
 
-    /**
+    /*
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
      * {@link ConfigurationAsyncClient#listSettings(SettingSelector)} or a call from this method.
      *
@@ -745,7 +757,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         }
     }
 
-    /**
+    /*
      * Remaps the exception returned from the service if it is a PRECONDITION_FAILED response. This is performed since
      * add setting returns PRECONDITION_FAILED when the configuration already exists, all other uses of setKey return
      * this status when the configuration doesn't exist.
@@ -760,5 +772,16 @@ public final class ConfigurationAsyncClient extends ServiceClient {
 
         ResourceNotFoundException notFoundException = (ResourceNotFoundException) throwable;
         return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.response());
+    }
+
+    /*
+     * Sets the span name for the service call.
+     *
+     * @param method Service call method.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return An updated Context object.
+     */
+    private static Context setSpanName(String method, Context context) {
+        return TracerProxy.setSpanName(String.format(SPAN_NAME_TEMPLATE, method), context);
     }
 }

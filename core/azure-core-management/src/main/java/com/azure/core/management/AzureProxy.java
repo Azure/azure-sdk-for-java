@@ -4,16 +4,15 @@
 package com.azure.core.management;
 
 import com.azure.core.AzureEnvironment;
-import com.azure.core.credentials.AsyncServiceClientCredentials;
-import com.azure.core.credentials.ServiceClientCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.CredentialsPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.OperationDescription;
 import com.azure.core.implementation.RestProxy;
@@ -26,7 +25,6 @@ import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.management.annotations.AzureHost;
-import com.azure.core.management.policy.AsyncCredentialsPolicy;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
 import reactor.core.Exceptions;
@@ -167,19 +165,8 @@ public final class AzureProxy extends RestProxy {
      * @param credentials The credentials to use to apply authentication to the pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
-        return createDefaultPipeline(swaggerInterface, new CredentialsPolicy(credentials));
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
-     *                         string.
-     * @param credentials The credentials to use to apply authentication to the pipeline.
-     * @return the default HttpPipeline.
-     */
-    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, AsyncServiceClientCredentials credentials) {
-        return createDefaultPipeline(swaggerInterface, new AsyncCredentialsPolicy(credentials));
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, TokenCredential credentials) {
+        return createDefaultPipeline(swaggerInterface, new TokenCredentialPolicy(credentials));
     }
 
     /**

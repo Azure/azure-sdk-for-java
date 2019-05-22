@@ -60,4 +60,20 @@ public final class TracerProxy {
     public static void end(int responseCode, Throwable error, Context context) {
         tracers.forEach(tracer -> tracer.end(responseCode, error, context));
     }
+
+    /**
+     * For each tracer plugged into the SDK the span name is set.
+     *
+     * @param spanName Name of the span.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated context object.
+     */
+    public static Context setSpanName(String spanName, Context context) {
+        Context local = context;
+        for (Tracer tracer : tracers) {
+            local = tracer.setSpanName(spanName, context);
+        }
+
+        return local;
+    }
 }

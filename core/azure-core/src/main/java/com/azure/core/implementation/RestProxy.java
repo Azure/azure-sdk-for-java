@@ -5,7 +5,7 @@ package com.azure.core.implementation;
 
 import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
-import com.azure.core.credentials.ServiceClientCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -14,9 +14,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.CredentialsPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
-    private static final String SPAN_NAME_TEMPLATE = "Azure.%s/%s";
+    private static final String DEFAULT_SPAN_NAME_TEMPLATE = "Azure.%s/%s";
 
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
@@ -172,7 +172,7 @@ public class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        return TracerProxy.start(String.format(SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), context);
+        return TracerProxy.start(String.format(DEFAULT_SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), context);
     }
 
     /**
@@ -508,6 +508,7 @@ public class RestProxy implements InvocationHandler {
      * @param asyncHttpDecodedResponse the asynchronous HTTP response to the original HTTP request
      * @param methodParser the SwaggerMethodParser that the request originates from
      * @param returnType the type of value that will be returned
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return the deserialized result
      */
     public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType, Context context) {
@@ -605,8 +606,8 @@ public class RestProxy implements InvocationHandler {
      * @param credentials the credentials to use to apply authentication to the pipeline
      * @return the default HttpPipeline
      */
-    public static HttpPipeline createDefaultPipeline(ServiceClientCredentials credentials) {
-        return createDefaultPipeline(new CredentialsPolicy(credentials));
+    public static HttpPipeline createDefaultPipeline(TokenCredential credentials) {
+        return createDefaultPipeline(new TokenCredentialPolicy(credentials));
     }
 
     /**
