@@ -92,22 +92,4 @@ public abstract class EventHubClientFactory {
 			return EventHubClient.createWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, this.executor, this.options);
 		}
 	}
-	
-	public static class EHCFWithManagedIdentity extends EventHubClientFactory {
-		private final URI endpoint;
-		private final String eventHubPath;
-		
-		public EHCFWithManagedIdentity(final URI endpoint,
-				final String eventHubPath,
-				final EventHubClientOptions options,
-				final ScheduledExecutorService executor) {
-			super(executor, options);
-			this.endpoint = endpoint;
-			this.eventHubPath = eventHubPath;
-		}
-		
-		public CompletableFuture<EventHubClient> createEventHubClient() throws EventHubException, IOException {
-			return EventHubClient.createWithManagedIdentity(this.endpoint, this.eventHubPath, this.executor, this.options);
-		}
-	}
 }

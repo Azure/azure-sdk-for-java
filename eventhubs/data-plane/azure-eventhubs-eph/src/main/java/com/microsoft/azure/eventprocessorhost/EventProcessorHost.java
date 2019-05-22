@@ -392,8 +392,6 @@ public final class EventProcessorHost {
     		
     		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback, String authority);
     		
-    		OptionalStep useManagedIdentity();
-    		
     		OptionalStep useTokenProvider(ITokenProvider tokenProvider);
     	}
     	
@@ -421,12 +419,11 @@ public final class EventProcessorHost {
     		
     		// Auth steps
     		private String eventHubConnectionString = null; // group 1
-    		private String eventHubPath = null; // optional for group 1, required for groups 2-4
-    		private URI endpoint = null; // groups 2-4
+    		private String eventHubPath = null; // optional for group 1, required for groups 2-3
+    		private URI endpoint = null; // groups 2-3
     		private AuthenticationCallback authCallback = null; // group 2
     		private String authority = null; // group 2
-    		private boolean useManagedIdentity = false; // group 3
-    		private ITokenProvider tokenProvider = null; // group 4
+    		private ITokenProvider tokenProvider = null; // group 3
     		
     		// ManagerStep
     		private ICheckpointManager checkpointManager;
@@ -487,12 +484,6 @@ public final class EventProcessorHost {
 				
 				this.authCallback = authCallback;
 				this.authority = authority;
-				return this;
-			}
-
-			@Override
-			public OptionalStep useManagedIdentity() {
-				this.useManagedIdentity = true;
 				return this;
 			}
 
@@ -573,8 +564,6 @@ public final class EventProcessorHost {
 							this.authCallback, this.authority, packOptions(), this.executor);
 				} else if (this.tokenProvider != null) {
 					ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, packOptions(), this.executor);
-				} else if (this.useManagedIdentity) {
-					ehcFactory = new EventHubClientFactory.EHCFWithManagedIdentity(this.endpoint, this.eventHubPath, packOptions(), this.executor);
 				}
 				return new EventProcessorHost(this.hostName,
 						this.eventHubPath,
