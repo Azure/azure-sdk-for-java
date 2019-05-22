@@ -25,8 +25,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.implementation.http.ContentType;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+
+import com.azure.core.management.implementation.AzureProxy;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -749,7 +749,7 @@ public abstract class AzureProxyToRestProxyTests {
             .httpClient(createHttpClient())
             .build();
         //
-        return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
+        return AzureProxy.create(serviceClass, null, pipeline);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
@@ -768,5 +768,4 @@ public abstract class AzureProxyToRestProxyTests {
         Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }

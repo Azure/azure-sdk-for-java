@@ -79,4 +79,6 @@
   <!-- The constant name is public static. -->
   <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
 
+  <!-- Add NoImplInPublicAPI suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="src[/\\]test[/\\]java[/\\].*.java"/>
 </suppressions>
