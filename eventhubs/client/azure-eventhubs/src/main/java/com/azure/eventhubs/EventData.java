@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs;
 
-import com.azure.amqp.MessageConstants;
+import com.azure.core.amqp.MessageConstant;
 import com.azure.eventhubs.implementation.AmqpConstants;
 import com.azure.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.Proton;
@@ -38,8 +38,8 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
  * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
- *      <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
- *      <li>{@link #data()} - if AMQPMessage.Body has Data section</li>
+ * <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
+ * <li>{@link #data()} - if AMQPMessage.Body has Data section</li>
  * </ol>
  *
  * <p>
@@ -54,7 +54,6 @@ public class EventData implements Comparable<EventData> {
     private transient ByteBuffer data;
 
     private SystemProperties systemProperties = new SystemProperties(Collections.emptyMap());
-    private String partitionKey;
 
     /**
      * Creates an event containing the {@code data}.
@@ -100,32 +99,12 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Sets the partitionKey for this EventData
-     *
-     * @param partitionKey Key to set for this EventData.
-     * @return The updated EventData object.
-     */
-    public EventData partitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
-        return this;
-    }
-
-    /**
      * Gets the application property bag
      *
      * @return Application properties associated with this EventData.
      */
     public Map<String, Object> properties() {
         return properties;
-    }
-
-    /**
-     * Gets the partitionKey for this EventData.
-     *
-     * @return The partitionKey for this EventData.
-     */
-    public String partitionKey() {
-        return this.partitionKey;
     }
 
     /**
@@ -163,12 +142,12 @@ public class EventData implements Comparable<EventData> {
      *
      * @return A new AMQP message for this EventData.
      */
-    Message createAmqpMessage() {
+    Message createAmqpMessage(String partitionKey) {
         final Message message = Proton.message();
 
         setApplicationProperties(message);
         setSystemProperties(message);
-        setPartitionKey(message);
+        setPartitionKey(message, partitionKey);
 
         if (data() != null) {
             message.setBody(new Data(Binary.create(data())));
@@ -177,15 +156,15 @@ public class EventData implements Comparable<EventData> {
         return message;
     }
 
-    private void setPartitionKey(Message message) {
-        if (partitionKey() == null) {
+    private void setPartitionKey(Message message, String partitionKey) {
+        if (partitionKey == null) {
             return;
         }
 
         final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
             ? new MessageAnnotations(new HashMap<>())
             : message.getMessageAnnotations();
-        messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey());
+        messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
         message.setMessageAnnotations(messageAnnotations);
     }
 
@@ -208,45 +187,47 @@ public class EventData implements Comparable<EventData> {
                 return;
             }
 
-            if (MessageConstants.RESERVED_PROPERTY_NAMES.contains(key)) {
-                switch (key) {
-                    case MessageConstants.MESSAGE_ID:
+            final MessageConstant constant = MessageConstant.fromString(key);
+
+            if (constant != null) {
+                switch (constant) {
+                    case MESSAGE_ID:
                         message.setMessageId(value);
                         break;
-                    case MessageConstants.USER_ID:
+                    case USER_ID:
                         message.setUserId((byte[]) value);
                         break;
-                    case MessageConstants.TO:
+                    case TO:
                         message.setAddress((String) value);
                         break;
-                    case MessageConstants.SUBJECT:
+                    case SUBJECT:
                         message.setSubject((String) value);
                         break;
-                    case MessageConstants.REPLY_TO:
+                    case REPLY_TO:
                         message.setReplyTo((String) value);
                         break;
-                    case MessageConstants.CORRELATION_ID:
+                    case CORRELATION_ID:
                         message.setCorrelationId(value);
                         break;
-                    case MessageConstants.CONTENT_TYPE:
+                    case CONTENT_TYPE:
                         message.setContentType((String) value);
                         break;
-                    case MessageConstants.CONTENT_ENCODING:
+                    case CONTENT_ENCODING:
                         message.setContentEncoding((String) value);
                         break;
-                    case MessageConstants.ABSOLUTE_EXPRITY_TIME:
+                    case ABSOLUTE_EXPRITY_TIME:
                         message.setExpiryTime((long) value);
                         break;
-                    case MessageConstants.CREATION_TIME:
+                    case CREATION_TIME:
                         message.setCreationTime((long) value);
                         break;
-                    case MessageConstants.GROUP_ID:
+                    case GROUP_ID:
                         message.setGroupId((String) value);
                         break;
-                    case MessageConstants.GROUP_SEQUENCE:
+                    case GROUP_SEQUENCE:
                         message.setGroupSequence((long) value);
                         break;
-                    case MessageConstants.REPLY_TO_GROUP_ID:
+                    case REPLY_TO_GROUP_ID:
                         message.setReplyToGroupId((String) value);
                         break;
                     default:

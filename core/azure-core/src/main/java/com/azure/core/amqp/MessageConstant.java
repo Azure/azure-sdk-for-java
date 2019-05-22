@@ -101,7 +101,7 @@ public enum MessageConstant {
      * Parses an header value to its message constant.
      *
      * @param headerValue the messaging header value to parse.
-     * @return the parsed ErrorCondition object, or null if unable to parse.
+     * @return the parsed MessageConstant object, or {@code null} if unable to parse.
      * @throws NullPointerException if {@code constant} is {@code null}.
      */
     public static MessageConstant fromString(String headerValue) {

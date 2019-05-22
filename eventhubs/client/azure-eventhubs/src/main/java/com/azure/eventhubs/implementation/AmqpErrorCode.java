@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.exception.ErrorCondition;
 import org.apache.qpid.proton.amqp.Symbol;
 
 public final class AmqpErrorCode {
