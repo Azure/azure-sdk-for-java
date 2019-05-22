@@ -362,8 +362,28 @@ public final class EventProcessorHost {
         }
     }
     
-    
+    /**
+     * Builder class to create EventProcessorHost instances. 
+     * <p>
+     * To use, start with: EventProcessorHost.EventProcessorHostBuilder.newBuilder(...)
+     * Then either use the built-in Azure Storage-based lease and checkpoint managers, or user implementations.
+     * Then either supply an Event Hub connection string or use Azure Active Directory (AAD) authentication.
+     *    If using AAD auth, either provide a callback or an ITokenProvider
+     * Finally, set various optional values as desired, then call build() to get an EventProcessorHost instance.
+     */
     public static class EventProcessorHostBuilder {
+    	/**
+    	 * The process of building starts here, with arguments that are always required.
+    	 * <p>
+    	 * The hostName parameter is a name for this EventProcessorHost instance, which must be unique among
+    	 * all instances consuming from the same Event Hub and consumer group. The name must be unique because
+    	 * it is used to distinguish which instance owns the lease for a given partition of the event hub. An
+    	 * easy way to generate a unique host name is to call EventProcessorHost.createHostName("mystring").
+    	 * 
+    	 * @param hostName  a name for this host instance. See method notes.
+    	 * @param consumerGroupName  the consumer group on the Event Hub 
+    	 * @return  interface for setting the lease and checkpoint managers
+    	 */
     	public static ManagerStep newBuilder(final String hostName, final String consumerGroupName) {
     		return new Steps(hostName, consumerGroupName);
     	}
@@ -371,39 +391,137 @@ public final class EventProcessorHost {
     	private EventProcessorHostBuilder() {
     	}
     	
-    	public static interface ManagerStep {
+    	static interface ManagerStep {
+    		/**
+    		 * Use the built-in Azure Storage-based lease and checkpoint managers.
+    		 * 
+    		 * @param storageConnectionString  connection string for an Azure Storage account  
+    		 * @param storageContainerName     name for the blob container within the Storage account
+    		 * @return  interface for setting the Event Hub connection info and auth
+    		 */
     		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName);
     		
-    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String StorageBlobPrefix);
+    		/**
+    		 * Use the built-in Azure Storage-based lease and checkpoint managers.
+    		 * 
+    		 * @param storageConnectionString  connection string for an Azure Storage account  
+    		 * @param storageContainerName     name for the blob container within the Storage account
+    		 * @param storageBlobPrefix        prefix for the names of the blobs within the blob container
+    		 * @return  interface for setting the Event Hub connection info and auth
+    		 */
+    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix);
     		
+    		/**
+    		 * Use user-implemented lease and checkpoint managers.
+    		 * 
+    		 * @param checkpointManager  user-supplied implementation of {@link ICheckpointManager}
+    		 * @param leaseManager       user-supplied implementation of {@link ILeaseManager}
+    		 * @return  interface for setting the Event Hub connection info and auth
+    		 */
     		AuthStep useUserCheckpointAndLeaseManagers(ICheckpointManager checkpointManager, ILeaseManager leaseManager);
     	}
     	
-    	public static interface AuthStep {
+    	static interface AuthStep {
+    		/**
+    		 * Azure Portal can provide a connection string with auth information that applies only to one
+    		 * individual Event Hub. In that case, the connection string contains the name of the Event Hub.
+    		 * 
+    		 * @param eventHubConnectionString  Event Hub connection string (which contains the name of the Event Hub)
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep useEventHubConnectionString(String eventHubConnectionString);
     		
+    		/**
+    		 * Azure Portal can provide a connection string with auth information that applies to the entire
+    		 * namespace instead of an individual Event Hub. Use this overload with such a connection string,
+    		 * which requires you to specify the name of the Event Hub separately.
+    		 * 
+    		 * @param eventHubConnectionString  Event Hub connection string (which does not contain the name of the Event Hub)
+    		 * @param eventHubPath              name of the Event Hub
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep useEventHubConnectionString(String eventHubConnectionString, String eventHubPath);
     		
+    		/**
+    		 * When using AAD auth, call this method to specify the Event Hub, then add AAD-based auth information in the next step.
+    		 * 
+    		 * @param endpoint      URI of the Event Hub namespace
+    		 * @param eventHubPath  name of the Event Hub
+    		 * @return  interface for setting AAD auth info
+    		 */
     		AADAuthStep useAADAuthentication(URI endpoint, String eventHubPath);
     	}
     	
-    	public static interface AADAuthStep {
+    	static interface AADAuthStep {
+    		/**
+    		 * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
+    		 * The callback will be called with an AAD authority string which is appropriate for public Azure.
+    		 * 
+    		 * @param authCallback  the callback
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback);
     		
+    		/**
+    		 * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
+    		 * 
+    		 * @param authCallback  the callback
+    		 * @param authority     AAD authority string which will be passed to the callback. Used for national cloud support.
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback, String authority);
     		
+    		/**
+    		 * Provide a user-implemented token provider which will be called when a token is needed.
+    		 * 
+    		 * @param tokenProvider  user implementation of ITokenProvider
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep useTokenProvider(ITokenProvider tokenProvider);
     	}
     	
-    	public static interface OptionalStep {
+    	static interface OptionalStep {
+    		/**
+    		 * Event Processor Host runs tasks on the supplied threadpool, or creates an internal one. 
+    		 * @param executor  threadpool
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep setExecutor(ScheduledExecutorService executor);
     		
+    		/**
+    		 * {@link RetryPolicy} for Event Hubs operations. Event Processor Host uses RetryPolicy.getDefault()
+    		 * if none is supplied.
+    		 * 
+    		 * @param retryPolicy  desired retry policy
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep setRetryPolicy(RetryPolicy retryPolicy);
     		
+    		/**
+    		 * {@link TransportType} for connections to the Event Hubs service. Defaults to TransportType.AMQP.
+    		 * The transport type can also be set in the Event Hub connection string. The value set here will
+    		 * override the value in the connection string, if any.
+    		 * 
+    		 * @param transportType  desired transport type
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep setTransportType(TransportType transportType);
     		
+    		/**
+    		 * The timeout for Event Hubs operations. Defaults to MessagingFactory.DefaultOperationTimeout.
+    		 * The timeout can also be set in the Event Hub connection string. The value set here will override
+    		 * the value in the connection string, if any.
+    		 * 
+    		 * @param operationTimeout  desired timeout
+    		 * @return  interface for setting optional values
+    		 */
     		OptionalStep setOperationTimeout(Duration operationTimeout);
     		
+    		/**
+    		 * After setting all desired optional values, call this method to build an EventProcessorHost instance.
+    		 * 
+    		 * @return  new EventProcessorHost instance
+    		 */
     		EventProcessorHost build();
     	}
     	

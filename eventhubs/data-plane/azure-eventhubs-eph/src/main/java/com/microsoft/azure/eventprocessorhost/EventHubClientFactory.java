@@ -15,7 +15,7 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 
-public abstract class EventHubClientFactory {
+abstract class EventHubClientFactory {
 	protected final ScheduledExecutorService executor;
 	
 	protected final EventHubClientOptions options;
@@ -32,7 +32,7 @@ public abstract class EventHubClientFactory {
 	
 	abstract CompletableFuture<EventHubClient> createEventHubClient() throws EventHubException, IOException;
 	
-	public static class EHCFWithConnectionString extends EventHubClientFactory {
+	static class EHCFWithConnectionString extends EventHubClientFactory {
 		private final String eventHubConnectionString;
 		
 		public EHCFWithConnectionString(final String eventHubConnectionString,
@@ -47,7 +47,7 @@ public abstract class EventHubClientFactory {
 		}
 	}
 	
-	public static class EHCFWithAuthCallback extends EventHubClientFactory {
+	static class EHCFWithAuthCallback extends EventHubClientFactory {
 		private final URI endpoint;
 		private final String eventHubPath;
 		private final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback;
@@ -72,7 +72,7 @@ public abstract class EventHubClientFactory {
 		}
 	}
 	
-	public static class EHCFWithTokenProvider extends EventHubClientFactory {
+	static class EHCFWithTokenProvider extends EventHubClientFactory {
 		private final URI endpoint;
 		private final String eventHubPath;
 		private final ITokenProvider tokenProvider;
