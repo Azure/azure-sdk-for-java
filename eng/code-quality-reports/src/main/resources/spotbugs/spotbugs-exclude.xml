@@ -322,13 +322,13 @@
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- The checked field is always not null. -->
   <Match>
-    <Class name="com.azure.core.management.AzureProxy"/>
+    <Class name="com.azure.core.management.implementation.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 

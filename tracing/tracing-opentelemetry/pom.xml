@@ -11,11 +11,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>tracing-opencensus</artifactId>
+  <artifactId>tracing-opentelemetry</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>Microsoft Azure OpenCensus tracing plugin</name>
-  <description>This package contains the OpenCensus tracing plugin for Azure client libraries.</description>
+  <name>Microsoft Azure OpenTelemetry tracing plugin</name>
+  <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

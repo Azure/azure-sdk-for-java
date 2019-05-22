@@ -83,6 +83,6 @@
   </build>
 
   <modules>
-    <module>tracing-opencensus</module>
+    <module>tracing-opentelemetry</module>
   </modules>
 </project>

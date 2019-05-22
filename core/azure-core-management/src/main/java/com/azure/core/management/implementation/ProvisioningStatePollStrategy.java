@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
+import com.azure.core.management.CloudException;
+import com.azure.core.management.OperationState;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.io.Serializable;
  * state property is in a completed state.
  */
 public final class ProvisioningStatePollStrategy extends PollStrategy {
+
+
     private ProvisioningStatePollStrategyData data;
     ProvisioningStatePollStrategy(ProvisioningStatePollStrategyData data) {
         super(data);
@@ -29,6 +33,10 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
      * The ProvisioningStatePollStrategy data.
      */
     public static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
+
+        /**Serial version id for this class*/
+        private static final long serialVersionUID = 1L;
+
         HttpRequest originalRequest;
         String provisioningState;
 

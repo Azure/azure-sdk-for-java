@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.implementation;
 
 import com.azure.core.annotations.DELETE;
 import com.azure.core.annotations.ExpectedResponses;
@@ -17,8 +17,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.OperationDescription;
 import com.azure.core.implementation.exception.InvalidReturnTypeException;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.management.MockResource;
 import com.azure.core.management.http.MockAzureHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -856,12 +855,11 @@ public class AzureProxyTests {
             .httpClient(httpClient)
             .build();
 
-        return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
+        return AzureProxy.create(serviceClass, null, pipeline);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }

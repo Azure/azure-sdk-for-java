@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpRequest;
@@ -10,6 +10,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.SerializerEncoding;
+import com.azure.core.management.OperationState;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,6 @@ import java.time.Duration;
 abstract class PollStrategy {
     private final RestProxy restProxy;
     private final SwaggerMethodParser methodParser;
-
     private long delayInMilliseconds;
     private String status;
 
@@ -37,6 +37,9 @@ abstract class PollStrategy {
     }
 
     abstract static class PollStrategyData implements Serializable {
+
+        /*Serial version id for this class*/
+        private static final long serialVersionUID = 1L;
         transient RestProxy restProxy;
         transient SwaggerMethodParser methodParser;
         long delayInMilliseconds;
@@ -48,7 +51,6 @@ abstract class PollStrategy {
             this.methodParser = methodParser;
             this.delayInMilliseconds = delayInMilliseconds;
         }
-
 
         abstract PollStrategy initializeStrategy(RestProxy restProxy,
                                         SwaggerMethodParser methodParser);

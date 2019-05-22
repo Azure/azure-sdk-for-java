@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tracing.opencensus;
+package com.azure.tracing.opentelemetry;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -27,20 +27,20 @@ import reactor.util.context.Context;
 import java.util.Optional;
 
 /**
- * Pipeline policy that creates an OpenCensus span which traces the service request.
+ * Pipeline policy that creates an OpenTelemetry span which traces the service request.
  */
-public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
+public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
     /**
-     * @return a OpenCensus HTTP policy.
+     * @return a OpenTelemetry HTTP policy.
      */
     public HttpPipelinePolicy create() {
         return this;
     }
 
-    // Singleton OpenCensus tracer capable of starting and exporting spans.
+    // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
-    private static final String OPENCENSUS_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -54,7 +54,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.httpRequest();
 
         // Build new child span representing this outgoing request.
@@ -79,7 +79,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
         // run the next policy and handle success and error
         return next.process()
-            .doOnEach(OpenCensusHttpPolicy::handleResponse)
+            .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
             .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 

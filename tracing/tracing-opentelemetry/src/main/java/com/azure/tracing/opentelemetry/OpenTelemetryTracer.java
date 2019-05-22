@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tracing.opencensus;
+package com.azure.tracing.opentelemetry;
 
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
@@ -16,30 +16,30 @@ import io.opencensus.trace.Tracing;
 import java.util.Optional;
 
 /**
- * OpenCensus span
+ * OpenTelemetry span
  */
-public class OpenCensusTracer implements com.azure.core.implementation.tracing.Tracer {
-    // Singleton OpenCensus tracer capable of starting and exporting spans.
+public class OpenTelemetryTracer implements com.azure.core.implementation.tracing.Tracer {
+    // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
-    private static final String OPENCENSUS_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
-    private static final String OPENCENSUS_SPAN_NAME_KEY = com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_NAME_KEY;
+    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+    private static final String OPENTELEMETRY_SPAN_NAME_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_NAME_KEY;
 
-    private final ServiceLogger logger = new ServiceLogger(OpenCensusTracer.class);
+    private final ServiceLogger logger = new ServiceLogger(OpenTelemetryTracer.class);
 
     @Override
     public Context start(String methodName, Context context) {
-        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
-        String spanName = (String) context.getData(OPENCENSUS_SPAN_NAME_KEY).orElse(methodName);
+        Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        String spanName = (String) context.getData(OPENTELEMETRY_SPAN_NAME_KEY).orElse(methodName);
 
         SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanName, parentSpan);
         Span span = spanBuilder.startSpan();
 
-        return context.addData(OPENCENSUS_SPAN_KEY, span);
+        return context.addData(OPENTELEMETRY_SPAN_KEY, span);
     }
 
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
-        Optional<Object> spanOptional = context.getData(OPENCENSUS_SPAN_KEY);
+        Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
         if (spanOptional.isPresent()) {
             Span span = (Span) spanOptional.get();
 
@@ -60,7 +60,7 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
             return;
         }
 
-        Optional<Object> spanOptional = context.getData(OPENCENSUS_SPAN_KEY);
+        Optional<Object> spanOptional = context.getData(OPENTELEMETRY_SPAN_KEY);
         if (spanOptional.isPresent()) {
             Span span = (Span) spanOptional.get();
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
@@ -71,6 +71,6 @@ public class OpenCensusTracer implements com.azure.core.implementation.tracing.T
 
     @Override
     public Context setSpanName(String spanName, Context context) {
-        return context.addData(OPENCENSUS_SPAN_NAME_KEY, spanName);
+        return context.addData(OPENTELEMETRY_SPAN_NAME_KEY, spanName);
     }
 }

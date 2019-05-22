@@ -18,7 +18,6 @@ import java.util.Map;
  * interface.
  */
 public class SwaggerInterfaceParser {
-    private final SerializerAdapter serializer;
     private final String host;
     private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
@@ -41,8 +40,6 @@ public class SwaggerInterfaceParser {
      * @param host The host of URLs that this Swagger interface targets.
      */
     public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
-        this.serializer = serializer;
-
         if (!ImplUtils.isNullOrEmpty(host)) {
             this.host = host;
         } else {
@@ -72,7 +69,7 @@ public class SwaggerInterfaceParser {
     public SwaggerMethodParser methodParser(Method swaggerMethod) {
         SwaggerMethodParser result = methodParsers.get(swaggerMethod);
         if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, serializer, host());
+            result = new SwaggerMethodParser(swaggerMethod, host());
             methodParsers.put(swaggerMethod, result);
         }
         return result;
