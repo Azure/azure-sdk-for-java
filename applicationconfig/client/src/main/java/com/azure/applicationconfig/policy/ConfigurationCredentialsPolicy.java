@@ -70,12 +70,12 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
 
                     // All three of these headers are used by ConfigurationClientCredentials to generate the
                     // Authentication header value. So, we need to ensure that they exist.
-                    headers.set(HOST_HEADER, context.httpRequest().url().getHost());
-                    headers.set(CONTENT_HASH_HEADER, contentHash);
+                    headers.put(HOST_HEADER, context.httpRequest().url().getHost())
+                        .put(CONTENT_HASH_HEADER, contentHash);
 
                     if (headers.value(DATE_HEADER) == null) {
                         String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
-                        headers.set(DATE_HEADER, utcNow);
+                        headers.put(DATE_HEADER, utcNow);
                     }
 
                     return next.process();

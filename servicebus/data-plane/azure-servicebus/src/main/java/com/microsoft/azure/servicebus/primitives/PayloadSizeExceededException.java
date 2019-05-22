@@ -10,27 +10,22 @@ package com.microsoft.azure.servicebus.primitives;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  * @since 1.0
  */
-public class PayloadSizeExceededException extends ServiceBusException
-{
+public class PayloadSizeExceededException extends ServiceBusException {
     private static final long serialVersionUID = 3627182744252750014L;
 
-    PayloadSizeExceededException()
-    {
+    PayloadSizeExceededException() {
         super(false);
     }
 
-    PayloadSizeExceededException(final String message)
-    {
+    PayloadSizeExceededException(final String message) {
         super(false, message);
     }
 
-    PayloadSizeExceededException(final Throwable cause)
-    {
+    PayloadSizeExceededException(final Throwable cause) {
         super(false, cause);
     }
 
-    PayloadSizeExceededException(final String message, final Throwable cause)
-    {
+    PayloadSizeExceededException(final String message, final Throwable cause) {
         super(false, message, cause);
     }
 }

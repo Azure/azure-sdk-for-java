@@ -4,7 +4,7 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotations.HeaderCollection;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
@@ -44,7 +44,7 @@ final class HttpResponseHeaderDecoder {
                 try {
                     return Mono.just(deserializeHeaders(httpResponse.headers(), serializer, decodeData));
                 } catch (IOException e) {
-                    return Mono.error(new HttpRequestException("HTTP response has malformed headers", httpResponse, e));
+                    return Mono.error(new HttpResponseException("HTTP response has malformed headers", httpResponse, e));
                 }
             });
         }

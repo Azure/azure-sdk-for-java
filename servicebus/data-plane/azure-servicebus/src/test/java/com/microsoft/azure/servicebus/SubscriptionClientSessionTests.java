@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus;
 public class SubscriptionClientSessionTests extends ClientSessionTests {
     @Override
     public String getEntityNamePrefix() {
-       return "SubscriptionClientSessionTests";
+        return "SubscriptionClientSessionTests";
     }
 
     @Override

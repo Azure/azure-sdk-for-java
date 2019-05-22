@@ -35,7 +35,7 @@ public class AsyncCredentialsPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return credentials.authorizationHeaderValueAsync(context.httpRequest())
             .flatMap(token -> {
-                context.httpRequest().headers().set("Authorization", token);
+                context.httpRequest().headers().put("Authorization", token);
                 return next.process();
             });
     }

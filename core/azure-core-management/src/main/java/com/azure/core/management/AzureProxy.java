@@ -192,14 +192,17 @@ public final class AzureProxy extends RestProxy {
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, HttpPipelinePolicy credentialsPolicy) {
         // Order in which policies applied will be the order in which they appear in the array
         //
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(getDefaultUserAgentString(swaggerInterface)));
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+
+        return HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     /**

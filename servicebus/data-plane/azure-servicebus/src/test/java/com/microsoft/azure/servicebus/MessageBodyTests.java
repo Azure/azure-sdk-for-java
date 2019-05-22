@@ -13,61 +13,61 @@ import org.junit.Test;
 public class MessageBodyTests {
 
     @Test
-    public void NullBinaryDataTest() {
+    public void nullBinaryDataTest() {
         try {
             MessageBody.fromBinaryData(null);
             Assert.fail("MessageBody created with null binary data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void NullSequenceTest() {
+    public void nullSequenceTest() {
         try {
             MessageBody.fromSequenceData(null);
             Assert.fail("MessageBody created with null sequence data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void NullValueDataTest() {
+    public void nullValueDataTest() {
         try {
             MessageBody.fromValueData(null);
             Assert.fail("MessageBody created with null value data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void MultipleDataSectionsTest() {
+    public void multipleDataSectionsTest() {
         try {
             ArrayList<byte[]> dataList = new ArrayList<>();
             dataList.add(new byte[0]);
             dataList.add(new byte[0]);
             MessageBody.fromBinaryData(dataList);
             Assert.fail("MessageBody created with null binary data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ZeroDataSectionsTest() {
+    public void zeroDataSectionsTest() {
         try {
             ArrayList<byte[]> dataList = new ArrayList<>();
             MessageBody.fromBinaryData(dataList);
             Assert.fail("MessageBody created with null binary data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void MultipleSequenceSectionsTest() {
+    public void multipleSequenceSectionsTest() {
         try {
             ArrayList<List<Object>> sequenceList = new ArrayList<>();
             ArrayList<Object> sequence1 = new ArrayList<>();
@@ -78,24 +78,24 @@ public class MessageBodyTests {
             sequenceList.add(sequence2);
             MessageBody.fromSequenceData(sequenceList);
             Assert.fail("MessageBody created with null binary data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ZeroSequenceSectionsTest() {
+    public void zeroSequenceSectionsTest() {
         try {
             ArrayList<List<Object>> sequenceList = new ArrayList<>();
             MessageBody.fromSequenceData(sequenceList);
             Assert.fail("MessageBody created with null binary data.");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ValueMessageBodyTest() {
+    public void valueMessageBodyTest() {
         String value = "ValueBody";
         MessageBody body = MessageBody.fromValueData(value);
         Assert.assertEquals("Message body type didn't match.", MessageBodyType.VALUE, body.getBodyType());
@@ -105,7 +105,7 @@ public class MessageBodyTests {
     }
 
     @Test
-    public void SequenceMessageBodyTest() {
+    public void sequenceMessageBodyTest() {
         String str1 = "hello";
         String str2 = "howdy";
         ArrayList<List<Object>> sequenceList = new ArrayList<>();
@@ -126,9 +126,9 @@ public class MessageBodyTests {
     }
 
     @Test
-    public void BinaryMessageBodyTest() {
+    public void binaryMessageBodyTest() {
         byte[] binaryData = new byte[1024];
-        Arrays.fill(binaryData, (byte)32);
+        Arrays.fill(binaryData, (byte) 32);
         ArrayList<byte[]> binaryDataList = new ArrayList<>();
         binaryDataList.add(binaryData);
         MessageBody body = MessageBody.fromBinaryData(binaryDataList);

@@ -58,7 +58,7 @@ public final class TokenCredentials implements ICredentials {
         return new TokenCredentialsPolicy(this, next);
     }
 
-    private final class TokenCredentialsPolicy implements RequestPolicy {
+    private static final class TokenCredentialsPolicy implements RequestPolicy {
 
         private final TokenCredentials factory;
 

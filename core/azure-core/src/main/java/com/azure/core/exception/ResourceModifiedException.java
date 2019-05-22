@@ -7,10 +7,8 @@ import com.azure.core.http.HttpResponse;
 
 /**
  * The exception thrown for invalid resource modification with status code of 4XX, typically 409 Conflict.
- *
- * @see HttpRequestException
  */
-public class ResourceModifiedException extends HttpRequestException {
+public class ResourceModifiedException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the ResourceModifiedException class.

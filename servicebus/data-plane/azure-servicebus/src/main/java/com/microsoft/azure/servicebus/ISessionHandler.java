@@ -17,7 +17,7 @@ public interface ISessionHandler {
      * @param message The received {@link Message}.
      * @return CompletableFuture for the message handler.
      */
-    public CompletableFuture<Void> onMessageAsync(IMessageSession session, IMessage message);
+    CompletableFuture<Void> onMessageAsync(IMessageSession session, IMessage message);
 
     /**
      * Called just before a session is closed by the session pump
@@ -25,7 +25,7 @@ public interface ISessionHandler {
      * @param session session being closed
      * @return a future that executes the action
      */
-    public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session);
+    CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session);
 
     /**
      * Receiving the exceptions that passed by pump during message processing.
@@ -33,5 +33,5 @@ public interface ISessionHandler {
      * @param exception Exception received in pump.
      * @param phase     Exception phase.
      */
-    public void notifyException(Throwable exception, ExceptionPhase phase);
+    void notifyException(Throwable exception, ExceptionPhase phase);
 }

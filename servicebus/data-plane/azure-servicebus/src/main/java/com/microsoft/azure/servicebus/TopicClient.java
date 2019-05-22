@@ -39,13 +39,11 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
         }
     }
     
-    public TopicClient(String namespace, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException
-    {
+    public TopicClient(String namespace, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         this(Util.convertNamespaceToEndPointURI(namespace), topicPath, clientSettings);
     }
     
-    public TopicClient(URI namespaceEndpointURI, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException
-    {
+    public TopicClient(URI namespaceEndpointURI, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         this();
         this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, topicPath, MessagingEntityType.TOPIC, clientSettings);
         this.browser = new MessageBrowser((MessageSender) sender);

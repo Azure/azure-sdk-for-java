@@ -4,7 +4,11 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
+import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -161,9 +165,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                  delay.
                  */
                 if (!((this.factory.retryTestScenario == RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS
-                        && this.factory.tryNumber > 4) ||
-                        (this.factory.retryTestScenario ==
-                                RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
+                        && this.factory.tryNumber > 4)
+                        || (this.factory.retryTestScenario
+                                == RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
                                 && this.factory.tryNumber > 2))) {
                     expectedHost = RETRY_TEST_SECONDARY_HOST;
                 }
@@ -335,8 +339,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         default:
                             throw new IllegalArgumentException("Retries continued on non retryable error.");
                     }
+                default:
+                    throw new IllegalArgumentException("Invalid retry test scenario.");
             }
-            return Single.error(new IllegalArgumentException("Invalid scenario"));
         }
 
         /*

@@ -18,7 +18,7 @@ import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -394,7 +394,7 @@ public abstract class AzureProxyToRestProxyTests {
             createService(Service9.class)
                     .putWithUnexpectedResponse("I'm the body!");
             fail("Expected RestException would be thrown.");
-        } catch (HttpRequestException e) {
+        } catch (HttpResponseException e) {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
@@ -720,7 +720,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus300WithExpectedResponse300();
     }
 
-    @Test(expected = HttpRequestException.class)
+    @Test(expected = HttpResponseException.class)
     public void service18GetStatus400() {
         createService(Service18.class)
                 .getStatus400();
@@ -732,7 +732,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus400WithExpectedResponse400();
     }
 
-    @Test(expected = HttpRequestException.class)
+    @Test(expected = HttpResponseException.class)
     public void service18GetStatus500() {
         createService(Service18.class)
                 .getStatus500();
@@ -745,7 +745,9 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     private <T> T createService(Class<T> serviceClass) {
-        HttpPipeline pipeline = new HttpPipeline(createHttpClient());
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(createHttpClient())
+            .build();
         //
         return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }

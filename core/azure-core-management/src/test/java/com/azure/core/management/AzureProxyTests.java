@@ -10,7 +10,7 @@ import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.ResumeOperation;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -491,7 +491,7 @@ public class AzureProxyTests {
                             @Override
                             public void accept(Throwable throwable) {
                                 assertEquals("Status code 294, (empty body)", throwable.getMessage());
-                                assertEquals(HttpRequestException.class, throwable.getClass());
+                                assertEquals(HttpResponseException.class, throwable.getClass());
                             }
                         });
 
@@ -843,14 +843,16 @@ public class AzureProxyTests {
         try {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
-        } catch (HttpRequestException e) {
+        } catch (HttpResponseException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        HttpPipeline pipeline = new HttpPipeline(httpClient);
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .build();
 
         return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }

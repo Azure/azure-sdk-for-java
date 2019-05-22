@@ -10,14 +10,11 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.impl.IOHandler;
 
-public class CustomIOHandler extends IOHandler
-{
+public class CustomIOHandler extends IOHandler {
     @Override
-    public void onConnectionLocalOpen(Event event)
-    {
+    public void onConnectionLocalOpen(Event event) {
         Connection connection = event.getConnection();
-        if (connection.getRemoteState() != EndpointState.UNINITIALIZED)
-        {
+        if (connection.getRemoteState() != EndpointState.UNINITIALIZED) {
             return;
         }
 
@@ -28,10 +25,8 @@ public class CustomIOHandler extends IOHandler
     }
 
     @Override
-    public void onTransportClosed(Event event)
-    {
-        if(event.getTransport() != null)
-        {
+    public void onTransportClosed(Event event) {
+        if (event.getTransport() != null) {
             event.getTransport().unbind();
         }
     }

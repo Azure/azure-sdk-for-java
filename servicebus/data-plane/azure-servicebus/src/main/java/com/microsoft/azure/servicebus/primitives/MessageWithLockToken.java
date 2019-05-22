@@ -11,8 +11,7 @@ public class MessageWithLockToken {
     private final Message message;
     private final UUID lockToken;
 
-    public MessageWithLockToken(Message message, UUID lockToken)
-    {
+    public MessageWithLockToken(Message message, UUID lockToken) {
         this.message = message;
         this.lockToken = lockToken;
     }
