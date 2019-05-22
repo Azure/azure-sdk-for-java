@@ -7,6 +7,7 @@ import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.TransportType;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,7 +23,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ProxySelectorTests extends TestBase {
-//    @Test
+    @Ignore
+    @Test
     public void proxySelectorConnectFailedInvokeTest() throws Exception {
         // set up proxy selector with a bad address in order to check that the connectFailed() method is invoked
         int noProxyPort = 8888;
