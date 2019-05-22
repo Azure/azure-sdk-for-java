@@ -32,14 +32,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
-      <version>1.6.7</version>
-    </dependency>
-    <dependency>
-      <groupId>com.auth0</groupId>
-      <artifactId>java-jwt</artifactId>
-      <version>3.8.0</version>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>7.1</version>
     </dependency>
   </dependencies>
 
