@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TextOperationResult {
     /**
-     * Status of the text operation. Possible values include: 'Not Started',
+     * Status of the text operation. Possible values include: 'NotStarted',
      * 'Running', 'Failed', 'Succeeded'.
      */
     @JsonProperty(value = "status")
@@ -28,7 +28,7 @@ public class TextOperationResult {
     private TextRecognitionResult recognitionResult;
 
     /**
-     * Get status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
+     * Get status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'.
      *
      * @return the status value
      */
@@ -37,7 +37,7 @@ public class TextOperationResult {
     }
 
     /**
-     * Set status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
+     * Set status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'.
      *
      * @param status the status value to set
      * @return the TextOperationResult object itself.

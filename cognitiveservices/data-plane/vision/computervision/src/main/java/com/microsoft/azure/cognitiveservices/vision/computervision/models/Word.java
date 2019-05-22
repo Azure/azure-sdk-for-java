@@ -19,7 +19,7 @@ public class Word {
      * Bounding box of a recognized word.
      */
     @JsonProperty(value = "boundingBox", required = true)
-    private List<Integer> boundingBox;
+    private List<Double> boundingBox;
 
     /**
      * The text content of the word.
@@ -38,7 +38,7 @@ public class Word {
      *
      * @return the boundingBox value
      */
-    public List<Integer> boundingBox() {
+    public List<Double> boundingBox() {
         return this.boundingBox;
     }
 
@@ -48,7 +48,7 @@ public class Word {
      * @param boundingBox the boundingBox value to set
      * @return the Word object itself.
      */
-    public Word withBoundingBox(List<Integer> boundingBox) {
+    public Word withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }

@@ -19,7 +19,7 @@ public class Line {
      * Bounding box of a recognized line.
      */
     @JsonProperty(value = "boundingBox")
-    private List<Integer> boundingBox;
+    private List<Double> boundingBox;
 
     /**
      * The text content of the line.
@@ -38,7 +38,7 @@ public class Line {
      *
      * @return the boundingBox value
      */
-    public List<Integer> boundingBox() {
+    public List<Double> boundingBox() {
         return this.boundingBox;
     }
 
@@ -48,7 +48,7 @@ public class Line {
      * @param boundingBox the boundingBox value to set
      * @return the Line object itself.
      */
-    public Line withBoundingBox(List<Integer> boundingBox) {
+    public Line withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }
