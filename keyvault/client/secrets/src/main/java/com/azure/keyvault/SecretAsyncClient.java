@@ -24,8 +24,6 @@ import java.util.function.Function;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.exception.ServerException;
-
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -37,7 +35,7 @@ import com.azure.core.exception.ServerException;
  * SecretAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
  *   .credentials(keyVaultCredentials)
- *  .build()
+ *   .build()
  * </pre>
  *
  * @see SecretAsyncClientBuilder
@@ -153,7 +151,7 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<Response<Secret>> getSecret(String name, String version) {
         String secretVersion = "";
-        if(version != null){
+        if (version != null) {
             secretVersion = version;
         }
         return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);

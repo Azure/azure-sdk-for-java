@@ -33,10 +33,10 @@ import java.util.function.Function;
  *
  * <p><strong>Samples to construct the client</strong></p>
  * <pre>
- *    SecretClient secretClient = SecretClient.builder()
- *                                .endpoint("https://myvault.vault.azure.net/")
- *                                .credentials(keyVaultCredentials)
- *                                .build()
+ * SecretClient.builder()
+ *   .endpoint("https://myvault.vault.azure.net/")
+ *   .credentials(keyVaultCredentials)
+ *   .build()
  * </pre>
  *
  * @see SecretClientBuilder
@@ -149,7 +149,7 @@ public final class SecretClient extends ServiceClient {
      */
     public Response<Secret> getSecret(String name, String version) {
         String secretVersion = "";
-        if(version != null){
+        if (version != null) {
             secretVersion = version;
         }
         return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
