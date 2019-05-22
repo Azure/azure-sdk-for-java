@@ -328,7 +328,7 @@
 
   <!-- The checked field is always not null. -->
   <Match>
-    <Class name="com.azure.core.management.AzureProxy"/>
+    <Class name="com.azure.core.management.implementation.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
