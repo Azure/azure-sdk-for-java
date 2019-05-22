@@ -11,16 +11,7 @@ public final class ClientConstants {
     public static final int AMQPS_PORT = 5671;
     public static final int HTTPS_PORT = 443;
     public static final int MAX_PARTITION_KEY_LENGTH = 128;
-    public static final Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":server-busy");
-    public static final Symbol ARGUMENT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-error");
-    public static final Symbol ARGUMENT_OUT_OF_RANGE_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-out-of-range");
-    public static final Symbol ENTITY_DISABLED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-disabled");
-    public static final Symbol PARTITION_NOT_OWNED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":partition-not-owned");
-    public static final Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":store-lock-lost");
-    public static final Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
-    public static final Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
-    public static final Symbol PROTON_IO_ERROR = Symbol.getSymbol(AmqpConstants.PROTON + ":io");
-    public static final Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
+
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
@@ -30,7 +21,6 @@ public final class ClientConstants {
     public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(5); // renew every 5 minutes, which expires 20 minutes
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
-    public static final boolean DEFAULT_IS_TRANSIENT = true;
     public static final int REACTOR_IO_POLL_TIMEOUT = 20;
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
     public static final int MGMT_CHANNEL_MIN_RETRY_IN_MILLIS = 5;
@@ -38,8 +28,16 @@ public final class ClientConstants {
     public static final String DEFAULT_RETRY = "Default";
     public static final String PRODUCT_NAME = "MSJavaClient";
     public static final String CURRENT_JAVACLIENT_VERSION = "2.3.1";
-    public static final String PLATFORM_INFO = getPlatformInfo();
+    public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
+
+    /**
+     * Gets the USER AGENT string as defined in:
+     * $/core/azure-core/src/main/java/com/azure/core/http/policy/UserAgentPolicy.java
+     * TODO (conniey): Extract logic from UserAgentPolicy into something we can use here.
+     */
+    public static final String USER_AGENT = String.format("azsdk-java-eventhubs/%s %s;%s",
+        CURRENT_JAVACLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
     public static final String CBS_ADDRESS = "$cbs";
     public static final String PUT_TOKEN_OPERATION = "operation";
     public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
@@ -72,7 +70,6 @@ public final class ClientConstants {
     public static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
     public static final Symbol LAST_ENQUEUED_OFFSET = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
-    public static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
@@ -94,16 +91,8 @@ public final class ClientConstants {
     private ClientConstants() {
     }
 
-    private static String getPlatformInfo() {
-        final StringBuilder platformInfo = new StringBuilder();
-        platformInfo.append("arch:");
-        platformInfo.append(System.getProperty("os.arch"));
-        platformInfo.append(";os:");
-        platformInfo.append(System.getProperty("os.name"));
-        platformInfo.append(";os version:");
-        platformInfo.append(System.getProperty("os.version"));
-
-        return platformInfo.toString();
+    private static String getOSInformation() {
+        return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
     }
 
     private static String getFrameworkInfo() {

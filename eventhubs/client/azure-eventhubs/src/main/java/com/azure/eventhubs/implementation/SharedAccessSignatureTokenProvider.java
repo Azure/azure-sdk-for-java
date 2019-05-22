@@ -43,15 +43,15 @@ public class SharedAccessSignatureTokenProvider {
             final String resource,
             final Duration tokenTimeToLive)
             throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        if (ImplUtils.isNullOrWhiteSpace(keyName)) {
+        if (ImplUtils.isNullOrEmpty(keyName)) {
             throw new IllegalArgumentException("keyName cannot be empty");
         }
 
-        if (ImplUtils.isNullOrWhiteSpace(sharedAccessKey)) {
+        if (ImplUtils.isNullOrEmpty(sharedAccessKey)) {
             throw new IllegalArgumentException("sharedAccessKey cannot be empty");
         }
 
-        if (ImplUtils.isNullOrWhiteSpace(resource)) {
+        if (ImplUtils.isNullOrEmpty(resource)) {
             throw new IllegalArgumentException("resource cannot be empty");
         }
 

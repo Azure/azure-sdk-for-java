@@ -4,7 +4,6 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.ClientConstants;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -57,44 +56,7 @@ public class EventSender implements AutoCloseable {
     }
 
     /**
-     * Sends the {@code events} to the Event Hubs service. If {@link EventData#partitionKey()} is specified, the events
-     * are grouped by that key and sent to the service in batches.
-     *
-     * @param events Events to send to the service.
-     * @return A {@link Mono} that completes when all events are pushed to the service.
-     */
-    public Mono<Void> send(EventData... events) {
-        Objects.requireNonNull(events);
-
-        if (events.length == 0) {
-            return Mono.empty();
-        }
-
-        return send(Flux.just(events));
-    }
-
-    /**
-     * Sends the {@code events} to the specified Event Hubs {@code partitionId}. The value of
-     * {@link EventData#partitionKey()} is ignored. Events always go to the specified {@code partitionId}.
-     *
-     * @param partitionId Event Hubs partition to send the events to.
-     * @param events Events to send to the service.
-     * @return A {@link Mono} that completes when all events are pushed to the service.
-     */
-    public Mono<Void> send(String partitionId, EventData... events) {
-        Objects.requireNonNull(partitionId);
-        Objects.requireNonNull(events);
-
-        if (events.length == 0) {
-            return Mono.empty();
-        }
-
-        return send(partitionId, Flux.just(events));
-    }
-
-    /**
-     * Sends the {@code events} to the Event Hubs service. If {@link EventData#partitionKey()} is specified, the events
-     * are grouped by that key and sent to the service in batches.
+     * Sends the {@code events} to the Event Hubs service.
      *
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -106,23 +68,21 @@ public class EventSender implements AutoCloseable {
     }
 
     /**
-     * Sends the {@code events} to the specified Event Hubs {@code partitionId}. The value of
-     * {@link EventData#partitionKey()} is ignored. Events always go to the specified {@code partitionId}.
+     * Sends the {@code events} to the specified Event Hubs {@code partitionId}.
      *
      * @param partitionId Event Hubs partition to send the events to.
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(String partitionId, Iterable<EventData> events) {
+    public Mono<Void> send(Iterable<EventData> events, String partitionId) {
         Objects.requireNonNull(partitionId);
         Objects.requireNonNull(events);
 
-        return send(partitionId, Flux.fromIterable(events));
+        return send(Flux.fromIterable(events), partitionId);
     }
 
     /**
-     * Sends the {@code events} to the Event Hubs service. If {@link EventData#partitionKey()} is specified, the events
-     * are grouped by that key and sent to the service in batches.
+     * Sends the {@code events} to the Event Hubs service.
      *
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -134,15 +94,15 @@ public class EventSender implements AutoCloseable {
     }
 
     /**
-     * Sends the {@code events} to the specified Event Hubs {@code partitionId}. The value of
-     * {@link EventData#partitionKey()} is ignored. Events always go to the specified {@code partitionId}.
+     * Sends the {@code events} to the specified Event Hubs {@code partitionId}.
+     * Events always go to the specified {@code partitionId}.
      *
      * @param partitionId Event Hubs partition to send the events to.
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      * @throws NullPointerException if {@code partitionId} or {@code events} are null.
      */
-    public Mono<Void> send(String partitionId, Publisher<EventData> events) {
+    public Mono<Void> send(Publisher<EventData> events, String partitionId) {
         Objects.requireNonNull(partitionId);
         Objects.requireNonNull(events);
 
@@ -152,30 +112,8 @@ public class EventSender implements AutoCloseable {
     private Mono<Void> sendInternal(String partitionId, Flux<EventData> events) {
         final Flux<EventDataBatch> batches = Flux.defer(() -> events)
             .windowTimeout(WINDOW_SIZE, WINDOW_DURATION)
-            .flatMap(flux -> flux.map(event -> {
-                // If the user has specified that they want all events to go to a particular partition, we overwrite
-                // any partitionKey on that event. This is probably non-null due to user error.
-                if (!ImplUtils.isNullOrEmpty(partitionId) && !ImplUtils.isNullOrEmpty(event.partitionKey())) {
-                    logger.asInformational().log(
-                        "EventData has partitionKey '%s' set and user has specified partitionId '%s'. Event will be"
-                            + " sent to the given partitionId.",
-                        event.partitionKey(), partitionId);
-
-                    event.partitionKey(null);
-                }
-
-                return event;
-            }).groupBy(event -> {
-                // It is OK to group by this because when partitionId is not null, partitionKey is always empty.
-                return event.partitionKey() != null ? event.partitionKey() : EMPTY_PARTITION_KEY;
-            })).flatMap(group -> {
-                EventDataCollector collector;
-
-                if (!ImplUtils.isNullOrEmpty(partitionId) || EMPTY_PARTITION_KEY.equals(group.key())) {
-                    collector = new EventDataCollector(maxMessageSize);
-                } else {
-                    collector = new EventDataCollector(maxMessageSize, group.key());
-                }
+            .flatMap(group -> {
+                EventDataCollector collector = new EventDataCollector(maxMessageSize);
 
                 return group.collect(collector);
             }).flatMap(Flux::fromIterable);
@@ -196,8 +134,8 @@ public class EventSender implements AutoCloseable {
     //TODO (conniey): Add implementation to push through proton-j link.
     private Mono<Void> sendBatch(String partitionId, EventDataBatch batch) {
         number.incrementAndGet();
-        final int totals = totalEvents.addAndGet(batch.size());
-        logger.asWarning().log(String.format("[%s], size: %s, total: %s", batch.partitionKey(), batch.size(), totals));
+        final int totals = totalEvents.addAndGet(batch.getSize());
+        logger.asWarning().log(String.format("[%s], size: %s, total: %s", batch.getPartitionKey(), batch.getSize(), totals));
 
         return Mono.empty();
     }
@@ -210,6 +148,7 @@ public class EventSender implements AutoCloseable {
 
     }
 
+    //TODO (conniey): Remove collector for now.
     /*
      * Collects {@link EventData} into {@link EventDataBatch} to send to Event Hubs.
      */

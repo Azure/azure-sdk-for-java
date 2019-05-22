@@ -28,10 +28,6 @@ public class EventSenderTest {
             final String partition = partitions[index];
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
 
-            if (!ImplUtils.isNullOrEmpty(partition)) {
-                data.partitionKey(partition);
-            }
-
             return Flux.just(data);
         });
 
