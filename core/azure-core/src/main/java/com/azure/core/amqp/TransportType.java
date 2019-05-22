@@ -6,7 +6,7 @@ package com.azure.core.amqp;
 import java.util.Locale;
 
 /**
- * All TransportType switches available for communicating to EventHubs service.
+ * All TransportType switches available for AMQP protocol.
  */
 public enum TransportType {
     /**
