@@ -5,7 +5,7 @@ package com.azure.core.implementation;
 
 import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
-import com.azure.core.credentials.ServiceClientCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -14,9 +14,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.CredentialsPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -540,8 +540,8 @@ public class RestProxy implements InvocationHandler {
      * @param credentials the credentials to use to apply authentication to the pipeline
      * @return the default HttpPipeline
      */
-    public static HttpPipeline createDefaultPipeline(ServiceClientCredentials credentials) {
-        return createDefaultPipeline(new CredentialsPolicy(credentials));
+    public static HttpPipeline createDefaultPipeline(TokenCredential credentials) {
+        return createDefaultPipeline(new TokenCredentialPolicy(credentials));
     }
 
     /**
