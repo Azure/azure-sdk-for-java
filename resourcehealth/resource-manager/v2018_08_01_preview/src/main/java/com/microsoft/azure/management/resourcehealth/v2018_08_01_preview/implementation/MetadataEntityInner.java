@@ -32,6 +32,12 @@ public class MetadataEntityInner extends ProxyResource {
     private List<String> dependsOn;
 
     /**
+     * The flag to know if metadata entity can be used in alert condition.
+     */
+    @JsonProperty(value = "properties.isAlertable")
+    private Boolean isAlertable;
+
+    /**
      * The list of supported values.
      */
     @JsonProperty(value = "properties.supportedValues")
@@ -74,6 +80,26 @@ public class MetadataEntityInner extends ProxyResource {
      */
     public MetadataEntityInner withDependsOn(List<String> dependsOn) {
         this.dependsOn = dependsOn;
+        return this;
+    }
+
+    /**
+     * Get the flag to know if metadata entity can be used in alert condition.
+     *
+     * @return the isAlertable value
+     */
+    public Boolean isAlertable() {
+        return this.isAlertable;
+    }
+
+    /**
+     * Set the flag to know if metadata entity can be used in alert condition.
+     *
+     * @param isAlertable the isAlertable value to set
+     * @return the MetadataEntityInner object itself.
+     */
+    public MetadataEntityInner withIsAlertable(Boolean isAlertable) {
+        this.isAlertable = isAlertable;
         return this;
     }
 

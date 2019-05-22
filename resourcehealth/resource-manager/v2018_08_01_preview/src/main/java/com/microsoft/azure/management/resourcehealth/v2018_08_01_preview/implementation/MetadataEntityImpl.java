@@ -41,6 +41,11 @@ class MetadataEntityImpl extends WrapperImpl<MetadataEntityInner> implements Met
     }
 
     @Override
+    public Boolean isAlertable() {
+        return this.inner().isAlertable();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
     }

@@ -34,6 +34,11 @@ public interface MetadataEntity extends HasInner<MetadataEntityInner>, HasManage
     String id();
 
     /**
+     * @return the isAlertable value.
+     */
+    Boolean isAlertable();
+
+    /**
      * @return the name value.
      */
     String name();
