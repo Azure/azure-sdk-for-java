@@ -10,6 +10,10 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+
 /**
  * Defines a position of an {@link EventData} in the event hub partition.
  * The position can be an Offset, Sequence Number, or EnqueuedTime.
@@ -130,11 +134,11 @@ public final class EventPosition {
 
         // order of preference
         if (this.offset != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.OFFSET_ANNOTATION_NAME, isInclusiveFlag, this.offset);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, this.offset);
         }
 
         if (this.sequenceNumber != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME, isInclusiveFlag, this.sequenceNumber);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, this.sequenceNumber);
         }
 
         if (this.enqueuedDateTime != null) {
@@ -147,7 +151,7 @@ public final class EventPosition {
                     "Receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, isInclusiveFlag, ms);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
         }
 
         throw new IllegalArgumentException("No starting position was set.");

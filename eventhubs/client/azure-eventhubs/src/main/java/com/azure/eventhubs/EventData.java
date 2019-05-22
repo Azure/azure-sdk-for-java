@@ -5,13 +5,13 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.eventhubs.implementation.AmqpConstants;
-import com.azure.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.ByteBuffer;
@@ -19,15 +19,17 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
-import static com.azure.eventhubs.implementation.AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.eventhubs.implementation.AmqpConstants.OFFSET_ANNOTATION_NAME;
-import static com.azure.eventhubs.implementation.AmqpConstants.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.eventhubs.implementation.AmqpConstants.PUBLISHER_ANNOTATION_NAME;
-import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.PUBLISHER_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
@@ -48,8 +50,19 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
  * </p>
  */
 public class EventData implements Comparable<EventData> {
-    private final Map<String, Object> properties = new HashMap<>();
-    private transient ByteBuffer data;
+    /*
+     * These are properties owned by the service and set when a message is received.
+     */
+    static final Set<String> RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(new HashSet<String>() {{
+            add(OFFSET_ANNOTATION_NAME.getValue());
+            add(PARTITION_KEY_ANNOTATION_NAME.getValue());
+            add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+            add(PUBLISHER_ANNOTATION_NAME.getValue());
+        }});
+
+    private final Map<String, Object> properties;
+    private final ByteBuffer data;
 
     private SystemProperties systemProperties = new SystemProperties(Collections.emptyMap());
 
@@ -59,11 +72,7 @@ public class EventData implements Comparable<EventData> {
      * @param data The data to set for this event.
      */
     public EventData(byte[] data) {
-        if (data == null) {
-            throw new IllegalArgumentException("data cannot be null");
-        }
-
-        this.data = ByteBuffer.wrap(data);
+        this(ByteBuffer.wrap(data));
     }
 
     /**
@@ -77,6 +86,54 @@ public class EventData implements Comparable<EventData> {
         }
 
         this.data = data;
+        this.properties = new HashMap<>();
+    }
+
+    /*
+     * Creates an event from a message
+     */
+    EventData(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException("'message' cannot be null");
+        }
+
+        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
+        final HashMap<String, Object> receiveProperties = new HashMap<>();
+
+        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
+            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
+        }
+
+        if (message.getProperties() != null) {
+            addMapEntry(receiveProperties, MessageConstant.MESSAGE_ID, message.getMessageId());
+            addMapEntry(receiveProperties, MessageConstant.USER_ID, message.getUserId());
+            addMapEntry(receiveProperties, MessageConstant.TO, message.getAddress());
+            addMapEntry(receiveProperties, MessageConstant.SUBJECT, message.getSubject());
+            addMapEntry(receiveProperties, MessageConstant.REPLY_TO, message.getReplyTo());
+            addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
+            addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
+            addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
+            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPRITY_TIME, message.getExpiryTime());
+            addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
+            addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
+            addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
+            addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
+        }
+
+        this.systemProperties = new SystemProperties(receiveProperties);
+        this.properties = message.getApplicationProperties() == null
+            ? new HashMap<>()
+            : message.getApplicationProperties().getValue();
+
+        final Section bodySection = message.getBody();
+        if (bodySection instanceof Data) {
+            Data bodyData = (Data) bodySection;
+            this.data = bodyData.getValue().asByteBuffer();
+        } else {
+            this.data = null;
+        }
+
+        message.clear();
     }
 
     /**
@@ -154,6 +211,9 @@ public class EventData implements Comparable<EventData> {
         return message;
     }
 
+    /*
+     * Sets partition key on AMQP message.
+     */
     private void setPartitionKey(Message message, String partitionKey) {
         if (partitionKey == null) {
             return;
@@ -166,6 +226,9 @@ public class EventData implements Comparable<EventData> {
         message.setMessageAnnotations(messageAnnotations);
     }
 
+    /*
+     * Sets application properties on the AMQP message.
+     */
     private void setApplicationProperties(Message message) {
         if (properties() == null || properties().isEmpty()) {
             return;
@@ -175,13 +238,16 @@ public class EventData implements Comparable<EventData> {
         message.setApplicationProperties(applicationProperties);
     }
 
+    /*
+     * Sets AMQP protocol header values on the AMQP message.
+     */
     private void setSystemProperties(Message message) {
         if (systemProperties() == null || systemProperties().isEmpty()) {
             return;
         }
 
         systemProperties().forEach((key, value) -> {
-            if (EventDataUtil.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
+            if (RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                 return;
             }
 
@@ -241,6 +307,14 @@ public class EventData implements Comparable<EventData> {
         });
     }
 
+    private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
+        if (content == null) {
+            return;
+        }
+
+        map.put(key.getValue(), content);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -286,20 +360,13 @@ public class EventData implements Comparable<EventData> {
             super(Collections.unmodifiableMap(map));
         }
 
-        SystemProperties(final long sequenceNumber, final Instant enqueuedTimeUtc, final String offset, final String partitionKey) {
-            this.put(SEQUENCE_NUMBER_ANNOTATION_NAME, sequenceNumber);
-            this.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME, new Date(enqueuedTimeUtc.toEpochMilli()));
-            this.put(OFFSET_ANNOTATION_NAME, offset);
-            this.put(PARTITION_KEY_ANNOTATION_NAME, partitionKey);
-        }
-
         /**
          * Gets the offset within the Event Hubs stream.
          *
          * @return The offset within the Event Hubs stream.
          */
         public String offset() {
-            return this.getSystemProperty(OFFSET_ANNOTATION_NAME);
+            return this.getSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
         }
 
         /**
@@ -309,7 +376,7 @@ public class EventData implements Comparable<EventData> {
          * @return A partition key for this Event Data.
          */
         public String partitionKey() {
-            return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME);
+            return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
         }
 
         /**
@@ -318,7 +385,7 @@ public class EventData implements Comparable<EventData> {
          * @return The time this was enqueued in the service.
          */
         public Instant enqueuedTime() {
-            final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME);
+            final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             return enqueuedTimeValue != null ? enqueuedTimeValue.toInstant() : null;
         }
 
@@ -329,10 +396,10 @@ public class EventData implements Comparable<EventData> {
          * @return Sequence number for this event.
          */
         public long sequenceNumber() {
-            final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME);
+            final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
             if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME));
+                throw new IllegalStateException(String.format(Locale.US, "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
             }
 
             return sequenceNumber;
@@ -344,7 +411,7 @@ public class EventData implements Comparable<EventData> {
          * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
          */
         public String publisher() {
-            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME);
+            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")

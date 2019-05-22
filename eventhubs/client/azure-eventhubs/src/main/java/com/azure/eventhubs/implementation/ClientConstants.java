@@ -8,11 +8,10 @@ import org.apache.qpid.proton.amqp.Symbol;
 import java.time.Duration;
 
 public final class ClientConstants {
-    public static final int AMQPS_PORT = 5671;
+    public static final String NOT_APPLICABLE = "n/a";
     public static final int HTTPS_PORT = 443;
     public static final int MAX_PARTITION_KEY_LENGTH = 128;
 
-    public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
     public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
@@ -20,7 +19,6 @@ public final class ClientConstants {
     public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(5); // renew every 5 minutes, which expires 20 minutes
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
-    public static final int REACTOR_IO_POLL_TIMEOUT = 20;
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
     public static final int MGMT_CHANNEL_MIN_RETRY_IN_MILLIS = 5;
     public static final String NO_RETRY = "NoRetry";
@@ -37,15 +35,6 @@ public final class ClientConstants {
      */
     public static final String USER_AGENT = String.format("azsdk-java-eventhubs/%s %s;%s",
         CURRENT_JAVACLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
-    public static final String CBS_ADDRESS = "$cbs";
-    public static final String PUT_TOKEN_OPERATION = "operation";
-    public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
-    public static final String PUT_TOKEN_TYPE = "type";
-    public static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
-    public static final String PUT_TOKEN_AUDIENCE = "name";
-    public static final String PUT_TOKEN_EXPIRY = "expiration";
-    public static final String PUT_TOKEN_STATUS_CODE = "status-code";
-    public static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
     public static final String MANAGEMENT_ADDRESS = "$management";
     public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";

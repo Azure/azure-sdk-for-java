@@ -3,6 +3,8 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -49,7 +51,9 @@ public class EventSenderTest {
         EventSender sender = new EventSender();
 
         StepVerifier.create(sender.send(map, options))
-            .verifyError(PayloadSizeExceededException.class);
+            .verifyErrorMatches(error -> {
+                return error instanceof AmqpException && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED;
+            });
     }
 
     private static final String CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"

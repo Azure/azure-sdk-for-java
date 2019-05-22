@@ -4,8 +4,9 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.eventhubs.implementation.AmqpConstants;
-import com.azure.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -43,7 +44,7 @@ final class EventDataBatch {
         return events.size();
     }
 
-    boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
+    boolean tryAdd(final EventData eventData) {
 
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");
@@ -53,7 +54,7 @@ final class EventDataBatch {
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
-            throw new PayloadSizeExceededException(String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
+            throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
         }
 
         if (this.currentSize + size > this.maxMessageSize) {
@@ -111,7 +112,7 @@ final class EventDataBatch {
 
         if (event.systemProperties() != null) {
             event.systemProperties().forEach((key, value) -> {
-                if (EventDataUtil.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
+                if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                     return;
                 }
 

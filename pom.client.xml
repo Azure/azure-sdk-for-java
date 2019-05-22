@@ -1101,6 +1101,7 @@
     <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
     <module>./core</module>
+    <module>./eventhubs/client</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./keyvault/client</module>

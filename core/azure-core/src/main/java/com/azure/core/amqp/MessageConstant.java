@@ -73,7 +73,27 @@ public enum MessageConstant {
     /**
      * This is a client-specific id that is used so that client can send replies to this message to a specific group.
      */
-    REPLY_TO_GROUP_ID("reply-to-group-id");
+    REPLY_TO_GROUP_ID("reply-to-group-id"),
+    /**
+     * The offset of a message within a given partition.
+     */
+    OFFSET_ANNOTATION_NAME("x-opt-offset"),
+    /**
+     * The date and time, in UTC, that a message was enqueued.
+     */
+    ENQUEUED_TIME_UTC_ANNOTATION_NAME("x-opt-enqueued-time"),
+    /**
+     * The identifier associated with a given partition.
+     */
+    PARTITION_KEY_ANNOTATION_NAME("x-opt-partition-key"),
+    /**
+     * The sequence number assigned to a message.
+     */
+    SEQUENCE_NUMBER_ANNOTATION_NAME("x-opt-sequence-number"),
+    /**
+     * The name of the entity that published a message.
+     */
+    PUBLISHER_ANNOTATION_NAME("x-opt-publisher");
 
     private static final Map<String, MessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

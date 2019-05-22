@@ -3,6 +3,8 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -11,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -178,7 +181,8 @@ public class EventSender {
                 }
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
-                    throw new PayloadSizeExceededException(String.format("EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
+                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
+                        "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, batchLabel);

@@ -3,18 +3,56 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.exception.AzureException;
+import com.azure.eventhubs.implementation.ReactorConnection;
+import com.azure.eventhubs.implementation.ReactorProvider;
+import com.azure.eventhubs.implementation.StringUtil;
+import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
-// Each time a build method is called, a new receiver or sender is created.
-class EventHubClient implements AutoCloseable {
+import java.io.Closeable;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.Period;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    EventHubClient() {
+/**
+ * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
+ * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
+ * Event Hub.
+ */
+public class EventHubClient implements Closeable {
+    private final String connectionId;
+    private final Mono<AmqpConnection> connectionMono;
+    private final String host;
+    private final AtomicBoolean hasConnection = new AtomicBoolean(false);
+
+    //TODO (conniey): Can we remove this and replace with an TokenProvider?
+    private final ConnectionStringBuilder connectionStringBuilder;
+    //TODO (conniey): Replace with configured values in EventHubClientBuilder.
+    private final Duration timeout = Duration.ofSeconds(45);
+
+    EventHubClient(ConnectionStringBuilder connectionStringBuilder, Scheduler scheduler, ReactorProvider provider, TokenProvider tokenProvider) {
+        Objects.requireNonNull(connectionStringBuilder, "'connectionStringBuilder' is null");
+        Objects.requireNonNull(connectionStringBuilder.endpoint(), "'connectionStringBuilder.endpoint()' is null.");
+
+        this.connectionStringBuilder = connectionStringBuilder;
+        this.host = connectionStringBuilder.endpoint().getHost();
+        this.connectionId = StringUtil.getRandomString("MF");
+        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, scheduler, provider))
+            .doOnSubscribe(c -> hasConnection.set(true))
+            .cache();
     }
 
     /**
      * Creates a builder that can configure options for the {@link EventHubClient} before creating an instance of it.
      *
-     * @return A new {@link EventHubClientBuilder} to create an EventHubClient from.
+     * @return A new {@link EventHubClientBuilder} to createReactor an EventHubClient from.
      */
     public static EventHubClientBuilder builder() {
         return new EventHubClientBuilder();
@@ -26,7 +64,12 @@ class EventHubClient implements AutoCloseable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     public Mono<EventHubProperties> getHubProperties() {
-        return Mono.empty();
+        return connectionMono.flatMap(connection -> {
+            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), "conniey-test");
+            return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
+        }).then(Mono.fromCallable(() -> {
+            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
+        }));
     }
 
     /**
@@ -95,10 +138,20 @@ class EventHubClient implements AutoCloseable {
     }
 
     /**
-     * {@inheritDoc}
+     * Closes and disposes of connection to service. Any {@link EventReceiver EventReceivers} and
+     * {@link EventSender EventSenders} created with this instance will have their connections closed.
      */
     @Override
     public void close() {
-
+        if (hasConnection.getAndSet(false)) {
+            try {
+                final AmqpConnection connection = connectionMono.block(timeout);
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (IOException exception) {
+                throw new AzureException("Unable to close connection to service", exception);
+            }
+        }
     }
 }

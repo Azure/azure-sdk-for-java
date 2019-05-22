@@ -3,13 +3,19 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.TransportType;
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.eventhubs.implementation.ReactorProvider;
+import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import reactor.core.scheduler.Scheduler;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
 /**
- * Builder to create an {@link EventHubClient}.
+ * Builder to createReactor an {@link EventHubClient}.
  */
 public class EventHubClientBuilder {
     private ConnectionStringBuilder credentials;
@@ -100,7 +106,16 @@ public class EventHubClientBuilder {
      * @return A new {@link EventHubClient} instance.
      */
     public EventHubClient build() {
-        return new EventHubClient();
+        final ReactorProvider provider = new ReactorProvider();
+        final SharedAccessSignatureTokenProvider tokenProvider;
+
+        try {
+            tokenProvider = new SharedAccessSignatureTokenProvider("", "");
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new AzureException("Could not create token provider.");
+        }
+
+        return new EventHubClient(credentials, scheduler, provider, tokenProvider);
     }
 
     //TODO (conniey): Remove placeholder when the client is updated.
