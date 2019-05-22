@@ -1,7 +1,5 @@
 jobs:
   - job: 'LiveTest'
-    # Increase timeout so Service Bus tests do not timeout
-    timeoutInMinutes: 150
 
     strategy:
       matrix:
