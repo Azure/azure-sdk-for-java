@@ -6,6 +6,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
+import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -17,9 +18,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Page;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -72,10 +77,12 @@ public final class ConfigurationAsyncClientBuilder {
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     ConfigurationAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        configuration = Configuration.NONE;
         policies = new ArrayList<>();
 
         headers = new HttpHeaders()
@@ -102,13 +109,25 @@ public final class ConfigurationAsyncClientBuilder {
      * has not been set.
      */
     public ConfigurationAsyncClient build() {
-        Objects.requireNonNull(serviceEndpoint);
-
-        if (pipeline != null) {
-            return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
+        ConfigurationClientCredentials configCredentials = null;
+        if (!ImplUtils.isNullOrEmpty(connectionString)) {
+            try {
+                configCredentials = new ConfigurationClientCredentials(connectionString);
+            } catch (Exception ex) {
+                // Configuration in environment was invalid, continue on as normal
+            }
         }
 
-        if (credentials == null) {
+        URL buildServiceEndpoint = userConfigElseEnvConfig(serviceEndpoint, configCredentials.baseUri());
+        Objects.requireNonNull(buildServiceEndpoint);
+
+        if (pipeline != null) {
+            return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
+        }
+
+        ConfigurationClientCredentials buildCredentials = userConfigElseEnvConfig(credentials, configCredentials);
+        if (buildCredentials == null) {
             throw new IllegalStateException("'credentials' is required.");
         }
 
@@ -119,7 +138,7 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(buildCredentials));
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
@@ -131,7 +150,7 @@ public final class ConfigurationAsyncClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+        return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
     }
 
     /**
@@ -213,6 +232,23 @@ public final class ConfigurationAsyncClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * Use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated ConfigurationAsyncClientBuilder object.
+     */
+    public ConfigurationAsyncClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    private static <T> T userConfigElseEnvConfig(T userConfig, T environmentConfig) {
+        return (userConfig == null) ? environmentConfig : userConfig;
     }
 }
 

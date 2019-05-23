@@ -3,11 +3,12 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.configuration.BaseConfigurations;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.configuration.BaseConfigurations;
+import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,13 +24,17 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
 
+    // From the design guidelines, the platform info format is:
+    // <language runtime>; <os name> <os version>
+    private static final String PLATFORM_INFO_FORMAT = "%s; %s %s";
+
     private final String userAgent;
 
     /**
      * Creates a {@link UserAgentPolicy} with a default user agent string.
      */
     public UserAgentPolicy() {
-        this(getUserAgentOrDefault());
+        this(null);
     }
 
     /**
@@ -42,7 +47,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         if (userAgent != null) {
             this.userAgent = userAgent;
         } else {
-            this.userAgent = getUserAgentOrDefault();
+            this.userAgent = DEFAULT_USER_AGENT_HEADER;
         }
     }
 
@@ -53,14 +58,19 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkVersion Version of the client library.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion) {
-        String platformInfo = System.getProperty("java.version") + "; " + getOSInformation();
-        this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, platformInfo);
+        String applicationId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_USER_AGENT);
+
+        if (ImplUtils.isNullOrEmpty(applicationId)) {
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+        } else {
+            this.userAgent = String.join(" ", applicationId, String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo()));
+        }
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.httpRequest().headers().value("User-Agent");
-        if (header == null || getUserAgentOrDefault().equals(header)) {
+        if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;
@@ -69,11 +79,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 
-    private static String getOSInformation() {
-        return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
-    }
+    private static String getPlatformInfo() {
+        String javaVersion = ConfigurationManager.getConfiguration().get("java.version");
+        String osName = ConfigurationManager.getConfiguration().get("os.name");
+        String osVersion = ConfigurationManager.getConfiguration().get("os.version");
 
-    private static String getUserAgentOrDefault() {
-        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_USER_AGENT, DEFAULT_USER_AGENT_HEADER);
+        return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }
 }
