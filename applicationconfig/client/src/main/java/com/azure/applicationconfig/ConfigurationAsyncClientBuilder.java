@@ -109,12 +109,7 @@ public final class ConfigurationAsyncClientBuilder {
      */
     public ConfigurationAsyncClient build() {
         ConfigurationClientCredentials buildCredentials = getBuildCredentials();
-        URL buildServiceEndpoint = null;
-        if (serviceEndpoint != null) {
-            buildServiceEndpoint = serviceEndpoint;
-        } else if (buildCredentials != null) {
-            buildServiceEndpoint = buildCredentials.baseUri();
-        }
+        URL buildServiceEndpoint = getBuildServiceEndpoint(buildCredentials);
 
         Objects.requireNonNull(buildServiceEndpoint);
 
@@ -253,6 +248,16 @@ public final class ConfigurationAsyncClientBuilder {
         try {
             return new ConfigurationClientCredentials(connectionString);
         } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private URL getBuildServiceEndpoint(ConfigurationClientCredentials buildCredentials) {
+        if (serviceEndpoint != null) {
+            return serviceEndpoint;
+        } else if (buildCredentials != null) {
+            return buildCredentials.baseUri();
+        } else {
             return null;
         }
     }
