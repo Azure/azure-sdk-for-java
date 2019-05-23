@@ -135,7 +135,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
         // trace exceptions from the final attempt, or ReceiverDisconnectedException.
         return retryResult.handleAsync((r, e) -> {
             if (e == null) {
-                // IEventProcessor.onOpen is called from the base PartitionPump and must have returned in order for execution to reach here, 
+                // IEventProcessor.onOpen is called from the base PartitionPump and must have returned in order for execution to reach here,
                 // meaning it is safe to set the handler and start calling IEventProcessor.onEvents.
                 this.partitionReceiver.setReceiveHandler(this, this.hostContext.getEventProcessorOptions().getInvokeProcessorAfterReceiveTimeout());
             } else {

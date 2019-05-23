@@ -28,7 +28,7 @@ public class TrackPropertyCondition {
     private TrackPropertyCompareOperation operation;
 
     /**
-     * Track proprty value.
+     * Track property value.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -74,7 +74,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Get track proprty value.
+     * Get track property value.
      *
      * @return the value value
      */
@@ -83,7 +83,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Set track proprty value.
+     * Set track property value.
      *
      * @param value the value value to set
      * @return the TrackPropertyCondition object itself.

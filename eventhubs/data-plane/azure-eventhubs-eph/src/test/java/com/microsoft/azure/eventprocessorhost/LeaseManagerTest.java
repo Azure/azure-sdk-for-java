@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class LeaseManagerTest extends TestBase {
     private ILeaseManager[] leaseManagers;
@@ -55,7 +58,7 @@ public class LeaseManagerTest extends TestBase {
 
         ArrayList<String> partitionIds = new ArrayList<String>();
         for (int i = 0; i < partitionCount; i++) {
-        	partitionIds.add(String.valueOf(i));
+            partitionIds.add(String.valueOf(i));
         }
         TestBase.logInfo("Creating leases for all partitions");
         this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds).get(); // throws on failure
@@ -63,39 +66,39 @@ public class LeaseManagerTest extends TestBase {
         CompleteLease[] leases = new CompleteLease[partitionCount];
         TestBase.logInfo("Getting leases for all partitions");
         for (int i = 0; i < partitionIds.size(); i++) {
-        	leases[i] = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
-        	assertNotNull("getLease returned null", leases[i]);
+            leases[i] = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
+            assertNotNull("getLease returned null", leases[i]);
         }
-        
+
         TestBase.logInfo("Acquiring leases for all partitions");
         for (int i = 0; i < partitionCount; i++) {
-        	if (useAzureStorage) {
-        		TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
-        	}
+            if (useAzureStorage) {
+                TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
+            }
             boolret = this.leaseManagers[0].acquireLease(leases[i]).get();
             assertTrue("failed to acquire lease for " + i, boolret);
             if (useAzureStorage) {
-            	TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
+                TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
             }
         }
 
         Thread.sleep(5000);
-        
+
         TestBase.logInfo("Getting state for all leases");
         List<BaseLease> states = this.leaseManagers[0].getAllLeases().get(); // throws on failure
         for (BaseLease s : states) {
-        	TestBase.logInfo("Partition " + s.getPartitionId() + " owned by " + s.getOwner() + " isowned: " + s.getIsOwned());
+            TestBase.logInfo("Partition " + s.getPartitionId() + " owned by " + s.getOwner() + " isowned: " + s.getIsOwned());
         }
 
         TestBase.logInfo("Renewing leases for all partitions");
         for (int i = 0; i < partitionCount; i++) {
-        	if (useAzureStorage) {
-        		TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
-        	}
+            if (useAzureStorage) {
+                TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
+            }
             boolret = this.leaseManagers[0].renewLease(leases[i]).get();
             assertTrue("failed to renew lease for " + i, boolret);
             if (useAzureStorage) {
-            	TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
+                TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
             }
         }
 
@@ -131,12 +134,12 @@ public class LeaseManagerTest extends TestBase {
 
         TestBase.logInfo("Releasing leases for all partitions");
         for (int i = 0; i < partitionCount; i++) {
-        	if (useAzureStorage) {
-        		TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
-        	}
+            if (useAzureStorage) {
+                TestBase.logInfo("Partition " + i + " state before: " + leases[i].getStateDebug());
+            }
             this.leaseManagers[0].releaseLease(leases[i]).get();
             if (useAzureStorage) {
-            	TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
+                TestBase.logInfo("Partition " + i + " state after: " + leases[i].getStateDebug());
             }
         }
 
@@ -191,7 +194,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed acquiring lease for 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr1Lease).getToken());
         }
 
         int x = 0;
@@ -205,7 +208,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed acquiring expired lease for 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr2Lease).getToken());
         }
 
         TestBase.logInfo("First manager trying to renew lease 0");
@@ -220,7 +223,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr1Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger getting lease 0");
@@ -231,7 +234,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr2Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger releasing lease 0");
@@ -255,17 +258,17 @@ public class LeaseManagerTest extends TestBase {
         containerName.append(UUID.randomUUID().toString());
         return containerName.toString();
     }
-    
+
     private BaseLease getOneState(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException {
-    	List<BaseLease> states = leaseMgr.getAllLeases().get();
-    	BaseLease returnState = null;
-    	for (BaseLease s : states) {
-    		if (s.getPartitionId().compareTo(partitionId) == 0) {
-    			returnState = s;
-    			break;
-    		}
-    	}
-    	return returnState;
+        List<BaseLease> states = leaseMgr.getAllLeases().get();
+        BaseLease returnState = null;
+        for (BaseLease s : states) {
+            if (s.getPartitionId().compareTo(partitionId) == 0) {
+                returnState = s;
+                break;
+            }
+        }
+        return returnState;
     }
 
     private void setupOneManager(boolean useAzureStorage, int index, String suffix, String containerName) throws Exception {
@@ -276,7 +279,7 @@ public class LeaseManagerTest extends TestBase {
             leaseMgr = new InMemoryLeaseManager();
             checkpointMgr = new InMemoryCheckpointManager();
         } else {
-        	TestBase.logInfo("Container name: " + containerName);
+            TestBase.logInfo("Container name: " + containerName);
             String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
             AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName);
             leaseMgr = azMgr;
@@ -284,8 +287,8 @@ public class LeaseManagerTest extends TestBase {
         }
 
         // Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.syntacticallyCorrectDummyEventHubPath + suffix,
-                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.syntacticallyCorrectDummyConnectionString + suffix, checkpointMgr, leaseMgr);
+        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix,
+                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix, checkpointMgr, leaseMgr);
 
         try {
             if (!useAzureStorage) {
@@ -295,7 +298,7 @@ public class LeaseManagerTest extends TestBase {
                 ((AzureStorageCheckpointLeaseManager) leaseMgr).initialize(host.getHostContext());
             }
         } catch (Exception e) {
-        	TestBase.logError("Manager initializion failed");
+            TestBase.logError("Manager initializion failed");
             throw e;
         }
 

@@ -29,7 +29,7 @@ public class ProxySelectorTest extends ApiTestBase {
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws Exception {
         // doesn't start proxy server and verifies that the connectFailed callback is invoked.
-        int proxyPort = 8899;
+        final int proxyPort = 8899;
         final CompletableFuture<Void> connectFailedTask = new CompletableFuture<>();
         final ProxySelector defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
@@ -53,9 +53,11 @@ public class ProxySelectorTest extends ApiTestBase {
 
             try {
                 EventHubClient.createSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
-                Assert.assertTrue(false); // shouldn't reach here
+                Assert.fail();
             } catch (EventHubException ex) {
-                Assert.assertEquals("connection aborted", ex.getMessage());
+                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+                // This is a transient error from ExceptionUtil.java: line 67.
+                Assert.assertTrue(ex.getIsTransient());
             }
 
             connectFailedTask.get(2, TimeUnit.SECONDS);

@@ -53,19 +53,19 @@
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault</artifactId>
     </dependency>
-    
+
     <!-- Other Microsoft Azure Dependencies -->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
     </dependency>
-    
+
     <!-- Other Microsoft Dependencies -->
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
     </dependency>
- 
+
     <!-- Other Dependencies -->
     <dependency>
     	<groupId>com.google.guava</groupId>
@@ -79,8 +79,8 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
     </dependency>
-    
-    
+
+
     <!-- TEST DEPENDENCIES -->
     <!-- Other Microsoft Azure Dependencies -->
     <dependency>
@@ -113,7 +113,7 @@
     	<scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>

@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.concurrency;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -17,8 +23,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 public class ConcurrentReceiversTest extends ApiTestBase {
@@ -42,9 +48,9 @@ public class ConcurrentReceiversTest extends ApiTestBase {
     }
 
     @AfterClass()
-    public static void cleanup() {
+    public static void cleanup() throws EventHubException {
         if (sender != null) {
-            sender.close();
+            sender.closeSync();
         }
     }
 
@@ -84,15 +90,15 @@ public class ConcurrentReceiversTest extends ApiTestBase {
     }
 
     @After
-    public void cleanupTest() {
+    public void cleanupTest() throws EventHubException {
         for (int i = 0; i < partitionCount; i++) {
             if (receivers[i] != null) {
-                receivers[i].close();
+                receivers[i].closeSync();
             }
         }
 
         if (ehClient != null) {
-            ehClient.close();
+            ehClient.closeSync();
         }
     }
 

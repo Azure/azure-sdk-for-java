@@ -17,22 +17,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes the settings to be used when encoding the input video into a
  * desired output bitrate layer with the H.264 video codec.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.H264Layer")
 public class H264Layer extends VideoLayer {
     /**
-     * Which profile of the H.264 standard should be used when encoding this
-     * layer. Default is Auto. Possible values include: 'Auto', 'Baseline',
-     * 'Main', 'High', 'High422', 'High444'.
+     * We currently support Baseline, Main, High, High422, High444. Default is
+     * Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High',
+     * 'High422', 'High444'.
      */
     @JsonProperty(value = "profile")
     private H264VideoProfile profile;
 
     /**
-     * Which level of the H.264 standard should be used when encoding this
-     * layer. The value can be Auto, or a number that matches the H.264
-     * profile. If not specified, the default is Auto, which lets the encoder
-     * choose the Level that is appropriate for this layer.
+     * We currently support Level up to 6.2. The value can be Auto, or a number
+     * that matches the H.264 profile. If not specified, the default is Auto,
+     * which lets the encoder choose the Level that is appropriate for this
+     * layer.
      */
     @JsonProperty(value = "level")
     private String level;
@@ -62,7 +62,7 @@ public class H264Layer extends VideoLayer {
     private EntropyMode entropyMode;
 
     /**
-     * Get which profile of the H.264 standard should be used when encoding this layer. Default is Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High', 'High422', 'High444'.
+     * Get we currently support Baseline, Main, High, High422, High444. Default is Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High', 'High422', 'High444'.
      *
      * @return the profile value
      */
@@ -71,7 +71,7 @@ public class H264Layer extends VideoLayer {
     }
 
     /**
-     * Set which profile of the H.264 standard should be used when encoding this layer. Default is Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High', 'High422', 'High444'.
+     * Set we currently support Baseline, Main, High, High422, High444. Default is Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High', 'High422', 'High444'.
      *
      * @param profile the profile value to set
      * @return the H264Layer object itself.
@@ -82,7 +82,7 @@ public class H264Layer extends VideoLayer {
     }
 
     /**
-     * Get which level of the H.264 standard should be used when encoding this layer. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.
+     * Get we currently support Level up to 6.2. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.
      *
      * @return the level value
      */
@@ -91,7 +91,7 @@ public class H264Layer extends VideoLayer {
     }
 
     /**
-     * Set which level of the H.264 standard should be used when encoding this layer. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.
+     * Set we currently support Level up to 6.2. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.
      *
      * @param level the level value to set
      * @return the H264Layer object itself.

@@ -12,6 +12,7 @@ import java.util.Set;
 public final class AmqpConstants {
 
     public static final String APACHE = "apache.org";
+    public static final String PROTON = "proton";
     public static final String VENDOR = "com.microsoft";
     public static final String AMQP_ANNOTATION_FORMAT = "amqp.annotation.%s >%s '%s'";
     public static final String OFFSET_ANNOTATION_NAME = "x-opt-offset";

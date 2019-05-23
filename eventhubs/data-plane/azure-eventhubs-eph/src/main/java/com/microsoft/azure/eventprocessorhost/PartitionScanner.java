@@ -312,8 +312,8 @@ class PartitionScanner extends Closable {
 
         return allSteals;
     }
-    
-    private class AcquisitionHolder {
+
+    private static class AcquisitionHolder {
         private CompleteLease acquiredLease;
 
         void setAcquiredLease(CompleteLease l) {

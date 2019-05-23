@@ -18,7 +18,7 @@ public class PerTestSettings {
     PrefabGeneralErrorHandler outGeneralErrorHandler;
     PrefabProcessorFactory outProcessorFactory;
     EventProcessorHost outHost;
-    
+
     // Properties which are inputs to test setup. Constructor sets up defaults, except for hostName.
     private String inDefaultHostName;
     EventProcessorOptions inOptions; // can be null
@@ -27,7 +27,7 @@ public class PerTestSettings {
     boolean inSkipIfNoEventHubConnectionString; // Requires valid connection string even though event hub may not exist.
     boolean inTelltaleOnTimeout; // Generates an empty telltale string, which causes PrefabEventProcessor to trigger telltale on timeout.
     boolean inHasSenders;
-    
+
     PerTestSettings(String defaultHostName) {
         this.inDefaultHostName = defaultHostName;
         this.inOptions = EventProcessorOptions.getDefaultOptions();
@@ -145,9 +145,9 @@ public class PerTestSettings {
             this.storageConnection = storageConnection;
             this.flags |= STORAGE_CONNECTION_OVERRIDE;
         }
-        
+
         void dummyStorageConnection() {
-        	setStorageConnection("DefaultEndpointsProtocol=https;AccountName=doesnotexist;AccountKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgYnV0IGl0IGRvZXMgaGF2ZSA2MCBjaGFyYWN0ZXJzLjEyMzQ1Njc4OTAK;EndpointSuffix=core.windows.net");
+            setStorageConnection("DefaultEndpointsProtocol=https;AccountName=doesnotexist;AccountKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgYnV0IGl0IGRvZXMgaGF2ZSA2MCBjaGFyYWN0ZXJzLjEyMzQ1Njc4OTAK;EndpointSuffix=core.windows.net");
         }
 
         void setDefaultStorageContainerName(String defaultStorageContainerName) {

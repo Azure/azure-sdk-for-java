@@ -13,9 +13,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 public class WebSocketsSendLargeMessageTest extends ApiTestBase {
     private static SendLargeMessageTest sendLargeMessageTest;
 
@@ -33,17 +30,17 @@ public class WebSocketsSendLargeMessageTest extends ApiTestBase {
     }
 
     @Test()
-    public void sendMsgLargerThan64k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan64k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan64k();
     }
 
     @Test(expected = PayloadSizeExceededException.class)
-    public void sendMsgLargerThan1024K() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan1024K() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan1024K();
     }
 
     @Test()
-    public void sendMsgLargerThan128k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan128k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan128k();
     }
 }

@@ -48,13 +48,7 @@ public class BatchClient {
                 .withBaseUrl(credentials.baseUrl())
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new ResponseBuilder.Factory() {
-                    private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
-                    @Override
-                    public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
-                        return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
-                    }
-                })
+                .withResponseBuilderFactory(new ResponseBuilderFactory())
                 .build();
 
         this.protocolLayer = new BatchServiceClientImpl(restClient).withBatchUrl(credentials.baseUrl());
@@ -207,6 +201,15 @@ public class BatchClient {
     public BatchClient withCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
         this.customBehaviors = customBehaviors;
         return this;
+    }
+
+    private static class ResponseBuilderFactory implements ResponseBuilder.Factory {
+        private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
+
+        @Override
+        public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
+            return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
+        }
     }
 }
 

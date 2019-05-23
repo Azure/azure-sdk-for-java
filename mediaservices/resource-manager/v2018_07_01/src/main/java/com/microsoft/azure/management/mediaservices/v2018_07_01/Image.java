@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Describes the basic properties for generating thumbnails from the input
  * video.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.Image")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JpgImage", value = JpgImage.class),
@@ -32,7 +32,7 @@ public class Image extends Video {
      * tells the encoder to select the best thumbnail from the first few
      * seconds of the video.
      */
-    @JsonProperty(value = "start")
+    @JsonProperty(value = "start", required = true)
     private String start;
 
     /**

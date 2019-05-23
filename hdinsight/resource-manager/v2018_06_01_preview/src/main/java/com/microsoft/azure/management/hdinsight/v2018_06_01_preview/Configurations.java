@@ -8,18 +8,26 @@
 
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview;
 
-import rx.Completable;
 import rx.Observable;
+import rx.Completable;
 import java.util.Map;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation.ConfigurationsInner;
-import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Configurations.
  */
-public interface Configurations extends HasInner<ConfigurationsInner> {
+public interface Configurations {
     /**
-     * Configures the configuration on the specified cluster.
+     * Gets all configuration information for an HDI cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ClusterConfigurations> listAsync(String resourceGroupName, String clusterName);
+
+    /**
+     * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings in cluster endpoint instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
@@ -31,7 +39,7 @@ public interface Configurations extends HasInner<ConfigurationsInner> {
     Completable updateAsync(String resourceGroupName, String clusterName, String configurationName, Map<String, String> parameters);
 
     /**
-     * The configuration object for the specified cluster.
+     * The configuration object for the specified cluster. This API is not recommended and might be removed in the future. Please consider using List configurations API instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.

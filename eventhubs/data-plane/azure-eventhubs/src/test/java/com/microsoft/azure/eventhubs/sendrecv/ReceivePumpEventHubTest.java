@@ -3,10 +3,20 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -17,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class ReceivePumpEventHubTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
 
     static EventHubClient ehClient;
 
@@ -32,13 +42,14 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanup() throws EventHubException {
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Before
     public void initializeTest() throws EventHubException {
-        receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
+        receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
     }
 
     @Test(expected = TimeoutException.class)
@@ -101,8 +112,9 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     @After
     public void cleanupTest() throws EventHubException {
-        if (receiver != null)
+        if (receiver != null) {
             receiver.closeSync();
+        }
     }
 
     public static final class InvokeOnReceiveEventValidator implements PartitionReceiveHandler {

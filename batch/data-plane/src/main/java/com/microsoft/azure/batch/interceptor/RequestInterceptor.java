@@ -15,13 +15,7 @@ public class RequestInterceptor extends BatchClientBehavior {
      * Initializes a new instance of RequestInterceptor.
      */
     public RequestInterceptor() {
-        this.handler = new BatchRequestInterceptHandler() {
-
-            @Override
-            public void modify(Object request) {
-                // DO NOTHING
-            }
-        };
+        this.handler = new NoOpInterceptHandler();
     }
 
     /**
@@ -51,5 +45,12 @@ public class RequestInterceptor extends BatchClientBehavior {
     public RequestInterceptor withHandler(BatchRequestInterceptHandler handler) {
         this.handler = handler;
         return this;
+    }
+
+    private static class NoOpInterceptHandler implements BatchRequestInterceptHandler {
+        @Override
+        public void modify(Object request) {
+            // DO NOTHING
+        }
     }
 }

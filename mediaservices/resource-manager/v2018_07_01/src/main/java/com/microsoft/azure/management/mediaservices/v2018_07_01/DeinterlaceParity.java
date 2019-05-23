@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for DeinterlaceParity.
  */
-public enum DeinterlaceParity {
-    /** Automatically detect the order of fields. */
-    AUTO("Auto"),
+public final class DeinterlaceParity extends ExpandableStringEnum<DeinterlaceParity> {
+    /** Static value Auto for DeinterlaceParity. */
+    public static final DeinterlaceParity AUTO = fromString("Auto");
 
-    /** Apply top field first processing of input video. */
-    TOP_FIELD_FIRST("TopFieldFirst"),
+    /** Static value TopFieldFirst for DeinterlaceParity. */
+    public static final DeinterlaceParity TOP_FIELD_FIRST = fromString("TopFieldFirst");
 
-    /** Apply bottom field first processing of input video. */
-    BOTTOM_FIELD_FIRST("BottomFieldFirst");
+    /** Static value BottomFieldFirst for DeinterlaceParity. */
+    public static final DeinterlaceParity BOTTOM_FIELD_FIRST = fromString("BottomFieldFirst");
 
-    /** The actual serialized value for a DeinterlaceParity instance. */
-    private String value;
-
-    DeinterlaceParity(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a DeinterlaceParity from its string representation.
+     * @param name a name to look for
+     * @return the corresponding DeinterlaceParity
+     */
+    @JsonCreator
+    public static DeinterlaceParity fromString(String name) {
+        return fromString(name, DeinterlaceParity.class);
     }
 
     /**
-     * Parses a serialized value to a DeinterlaceParity instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed DeinterlaceParity object, or null if unable to parse.
+     * @return known DeinterlaceParity values
      */
-    @JsonCreator
-    public static DeinterlaceParity fromString(String value) {
-        DeinterlaceParity[] items = DeinterlaceParity.values();
-        for (DeinterlaceParity item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<DeinterlaceParity> values() {
+        return values(DeinterlaceParity.class);
     }
 }

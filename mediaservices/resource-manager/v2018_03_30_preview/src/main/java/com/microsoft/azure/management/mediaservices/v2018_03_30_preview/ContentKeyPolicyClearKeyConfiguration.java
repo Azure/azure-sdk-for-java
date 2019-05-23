@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Represents a configuration for non-DRM keys.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration")
 public class ContentKeyPolicyClearKeyConfiguration extends ContentKeyPolicyConfiguration {
 }

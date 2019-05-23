@@ -1,23 +1,15 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.HttpPipeline
+import org.junit.Assume
+
+import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
     def setup() {
@@ -36,6 +28,7 @@ class ServiceAPITest extends APISpec {
     }
 
     def cleanup() {
+        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
         RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
         primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withStaticWebsite(new StaticWebsite().withEnabled(false))
@@ -106,7 +99,7 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions().withDetails(new ContainerListingDetails().withMetadata(true))
+                new ListContainersOptions().withDetails(new ContainerListDetails().withMetadata(true))
                         .withPrefix("aaa" + containerPrefix), null).blockingGet().body().containerItems()
                 .get(0).metadata() == metadata
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
@@ -312,6 +305,63 @@ class ServiceAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
+    def "Get UserDelegationKey"() {
+        setup:
+        def start = OffsetDateTime.now()
+        def expiry = start.plusDays(1)
+
+        def response = getOAuthServiceURL().getUserDelegationKey(start, expiry, Context.NONE).blockingGet()
+
+        expect:
+        response.statusCode() == 200
+        response.body() != null
+        response.body().signedOid() != null
+        response.body().signedTid() != null
+        response.body().signedStart() != null
+        response.body().signedExpiry() != null
+        response.body().signedService() != null
+        response.body().signedVersion() != null
+        response.body().value() != null
+    }
+
+    def "Get UserDelegationKey min"() {
+        setup:
+        def expiry = OffsetDateTime.now().plusDays(1)
+
+        def response = getOAuthServiceURL().getUserDelegationKey(null, expiry).blockingGet()
+
+        expect:
+        response.statusCode() == 200
+    }
+
+    def "Get UserDelegationKey error"() {
+        when:
+        getOAuthServiceURL().getUserDelegationKey(null, null).blockingGet()
+
+        then:
+        thrown(exception)
+
+        where:
+        start                | expiry                            || exception
+        null                 | null                              || IllegalArgumentException
+        OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
+    }
+
+    def "Get UserDelegationKey context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetUserDelegationKeyHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getUserDelegationKey(null, OffsetDateTime.now(), defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
@@ -402,5 +452,21 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(RuntimeException)
+    }
+
+
+    // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
+    def "Invalid account name"() {
+        setup:
+        def badURL = new URL("http://fake.blobfake.core.windows.net")
+        def po = new PipelineOptions().withRequestRetryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
+        def sURL = new ServiceURL(badURL, StorageURL.createPipeline(primaryCreds, po))
+
+        when:
+        sURL.getProperties().blockingGet()
+
+        then:
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof UnknownHostException
     }
 }

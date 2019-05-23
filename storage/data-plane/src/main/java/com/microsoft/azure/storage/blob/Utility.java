@@ -1,37 +1,34 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
+import com.microsoft.azure.storage.blob.models.UserDelegationKey;
 import io.reactivex.Single;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Locale;
 
 final class Utility {
 
-    static final DateTimeFormatter RFC1123GMTDateFormatter =
+    static final DateTimeFormatter RFC_1123_GMT_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ROOT).withZone(ZoneId.of("GMT"));
 
-    static final DateTimeFormatter ISO8601UTCDateFormatter =
+    static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
     /**
      * Stores a reference to the UTC time zone.
@@ -242,12 +239,71 @@ final class Utility {
         }
     }
 
-    static <T> Single<T> addErrorWrappingToSingle(Single<T> s) {
+    static <T> Single<T> postProcessResponse(Single<T> s) {
+        s = addErrorWrappingToSingle(s);
+        s = scrubEtagHeaderInResponse(s);
+        return s;
+    }
+
+    /*
+    We need to convert the generated StorageErrorException to StorageException, which has a cleaner interface and
+    methods to conveniently access important values.
+     */
+    private static <T> Single<T> addErrorWrappingToSingle(Single<T> s) {
         return s.onErrorResumeNext(e -> {
             if (e instanceof StorageErrorException) {
                 return Single.error(new StorageException((StorageErrorException) e));
             }
             return Single.error(e);
         });
+    }
+
+    /*
+    The service is inconsistent in whether or not the etag header value has quotes. This method will check if the
+    response returns an etag value, and if it does, remove any quotes that may be present to give the user a more
+    predictable format to work with.
+     */
+    private static <T> Single<T> scrubEtagHeaderInResponse(Single<T> s) {
+        return s.map(response -> {
+            try {
+                Object headers = response.getClass().getMethod("headers").invoke(response);
+                Method etagGetterMethod = headers.getClass().getMethod("eTag");
+                String etag = (String) etagGetterMethod.invoke(headers);
+                // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
+                if (etag == null) {
+                    return response;
+                }
+                etag = etag.replace("\"", ""); // Etag headers without the quotes will be unaffected.
+                headers.getClass().getMethod("withETag", String.class).invoke(headers, etag);
+            } catch (NoSuchMethodException e) {
+                // Response did not return an eTag value. No change necessary.
+            }
+            return response;
+        });
+    }
+
+    /**
+     * Computes a signature for the specified string using the HMAC-SHA256 algorithm.
+     *
+     * @param delegate
+     *         Key used to sign
+     * @param stringToSign
+     *         The UTF-8-encoded string to sign.
+     *
+     * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
+     *
+     * @throws InvalidKeyException
+     *         If the accountKey is not a valid Base64-encoded string.
+     */
+    static String delegateComputeHmac256(final UserDelegationKey delegate, String stringToSign) throws InvalidKeyException {
+        try {
+            byte[] key = Base64.getDecoder().decode(delegate.value());
+            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+            hmacSha256.init(new SecretKeySpec(key, "HmacSHA256"));
+            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
+            return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
+        } catch (final NoSuchAlgorithmException e) {
+            throw new Error(e);
+        }
     }
 }

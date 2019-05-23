@@ -30,20 +30,13 @@ jobs:
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: $(pomFile)
-          goals: 'javadoc:jar source:jar package'
-          options: '$(DefaultOptions) $(ProfileFlag) -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          goals: 'package'
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-
-      - powershell: |
-          # use sources files as a marker to find POM files so we can copy them to the output. The sources.jar file is generally
-          # in a target folder next to the pom.xml file so $_.Directory.Parent should get us the folder that contains the POM.
-          dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $_.Name.Replace("-sources.jar",".pom")) }
-          dir -r -i *.jar | % { copy $_ $(Build.ArtifactStagingDirectory) }
-        displayName: 'Copy JAR and POM files to artifact staging'
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifacts $(ArtifactName)'
@@ -62,7 +55,7 @@ jobs:
           versionSpec: '3.6'
 
       - script: |
-          pip install setuptools wheel 
+          pip install setuptools wheel
           pip install doc-warden
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
@@ -179,7 +172,7 @@ jobs:
         inputs:
           scriptPath: '$(Build.BinariesDirectory)/sdk-tools/scripts/python/verify_agent_os.py'
           arguments: $(OSName)
-          
+
       - task: Maven@3
         displayName: 'Start Jetty'
         inputs:

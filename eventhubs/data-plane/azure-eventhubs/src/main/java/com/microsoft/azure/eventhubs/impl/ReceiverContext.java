@@ -10,6 +10,7 @@ import java.util.Locale;
 public class ReceiverContext extends ErrorContext {
     static final boolean EPOCH_RECEIVER_TYPE = true;
     static final boolean NON_EPOCH_RECEIVER_TYPE = !ReceiverContext.EPOCH_RECEIVER_TYPE;
+    private static final long serialVersionUID = 2581371351997722504L;
 
     final String receivePath;
     final String referenceId;

@@ -14,7 +14,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
         <property name="optional" value="true"/>
     </module>
-    
+
     <module name="Header">
         <property name="header" value="// Copyright (c) Microsoft Corporation. All rights reserved.\n// Licensed under the MIT License."/>
         <property name="fileExtensions" value="java"/>
@@ -46,7 +46,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- IMPORT CHECKS -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport"/>
-        <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
+        <module name="IllegalImport">
+            <property name="regexp" value="true"/>
+            <property name="illegalPkgs" value="(com\.)?sun\.\w*"/>
+        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
@@ -250,5 +253,25 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="PackageName">
             <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
         </module>
+      
+        <!-- Javadoc checks                                   -->
+        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+        </module>
+
+        <!-- CUSTOM CHECKS -->
+        <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
+        1) They cannot have public or protected constructors
+        2) They must implement a public static method named builder
+        -->
+        <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
+
+        <!--CUSTOM CHECKS-->
+        <!--Checks for the public API that should
+         1) not return classes in the implementation package
+         2) no class of implementation package as method's parameters -->
+        <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
+
     </module>
 </module>

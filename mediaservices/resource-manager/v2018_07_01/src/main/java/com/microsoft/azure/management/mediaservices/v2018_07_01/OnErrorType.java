@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for OnErrorType.
  */
-public enum OnErrorType {
-    /** Tells the service that if this TransformOutput fails, then any other incomplete TransformOutputs can be stopped. */
-    STOP_PROCESSING_JOB("StopProcessingJob"),
+public final class OnErrorType extends ExpandableStringEnum<OnErrorType> {
+    /** Static value StopProcessingJob for OnErrorType. */
+    public static final OnErrorType STOP_PROCESSING_JOB = fromString("StopProcessingJob");
 
-    /** Tells the service that if this TransformOutput fails, then allow any other TransformOutput to continue. */
-    CONTINUE_JOB("ContinueJob");
+    /** Static value ContinueJob for OnErrorType. */
+    public static final OnErrorType CONTINUE_JOB = fromString("ContinueJob");
 
-    /** The actual serialized value for a OnErrorType instance. */
-    private String value;
-
-    OnErrorType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a OnErrorType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding OnErrorType
+     */
+    @JsonCreator
+    public static OnErrorType fromString(String name) {
+        return fromString(name, OnErrorType.class);
     }
 
     /**
-     * Parses a serialized value to a OnErrorType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed OnErrorType object, or null if unable to parse.
+     * @return known OnErrorType values
      */
-    @JsonCreator
-    public static OnErrorType fromString(String value) {
-        OnErrorType[] items = OnErrorType.values();
-        for (OnErrorType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<OnErrorType> values() {
+        return values(OnErrorType.class);
     }
 }

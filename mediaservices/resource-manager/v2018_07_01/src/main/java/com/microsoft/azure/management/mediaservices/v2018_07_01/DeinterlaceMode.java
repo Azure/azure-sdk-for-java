@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for DeinterlaceMode.
  */
-public enum DeinterlaceMode {
-    /** Disables de-interlacing of the source video. */
-    OFF("Off"),
+public final class DeinterlaceMode extends ExpandableStringEnum<DeinterlaceMode> {
+    /** Static value Off for DeinterlaceMode. */
+    public static final DeinterlaceMode OFF = fromString("Off");
 
-    /** Apply automatic pixel adaptive de-interlacing on each frame in the input video. */
-    AUTO_PIXEL_ADAPTIVE("AutoPixelAdaptive");
+    /** Static value AutoPixelAdaptive for DeinterlaceMode. */
+    public static final DeinterlaceMode AUTO_PIXEL_ADAPTIVE = fromString("AutoPixelAdaptive");
 
-    /** The actual serialized value for a DeinterlaceMode instance. */
-    private String value;
-
-    DeinterlaceMode(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a DeinterlaceMode from its string representation.
+     * @param name a name to look for
+     * @return the corresponding DeinterlaceMode
+     */
+    @JsonCreator
+    public static DeinterlaceMode fromString(String name) {
+        return fromString(name, DeinterlaceMode.class);
     }
 
     /**
-     * Parses a serialized value to a DeinterlaceMode instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed DeinterlaceMode object, or null if unable to parse.
+     * @return known DeinterlaceMode values
      */
-    @JsonCreator
-    public static DeinterlaceMode fromString(String value) {
-        DeinterlaceMode[] items = DeinterlaceMode.values();
-        for (DeinterlaceMode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<DeinterlaceMode> values() {
+        return values(DeinterlaceMode.class);
     }
 }
