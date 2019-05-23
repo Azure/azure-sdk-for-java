@@ -28,7 +28,6 @@ public class CookiePolicy implements HttpPipelinePolicy {
     private final CookieHandler cookies = new CookieManager();
 
     /**
-     * {@inheritDoc}
      * @throws IOException If an I/O error occurs when putting a cookie.
      */
     @Override
