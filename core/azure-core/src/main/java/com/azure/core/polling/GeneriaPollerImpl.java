@@ -2,6 +2,7 @@ package com.azure.core.polling;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+import java.util.Base64;
 
 public class GeneriaPollerImpl extends GenerialPoller {
 
@@ -13,7 +14,7 @@ public class GeneriaPollerImpl extends GenerialPoller {
     static Poller deserializePoller(String serializedPollReqData) {
         Poller poller = null;
         try {
-            byte b[] = Base64.decode(serializedPollReqData.getBytes());
+            byte b[] = Base64.getDecoder().decode(serializedPollReqData.getBytes());
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             PollRequestData pollRequestData = (PollRequestData) si.readObject();

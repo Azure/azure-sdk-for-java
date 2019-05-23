@@ -9,6 +9,9 @@ public class PollRequestData implements Serializable {
     /**This is the max time after that poller will giveup and not poll anymore**/
     private int timeoutInMilliSeconds;
 
+    /**Indicate if this operation could be cancelled. Not all the Azure Service Operation could be cancelled.**/
+    private boolean operationAllowedToCancel;
+
     private PollType pollType;
 
     SerializableSupplier<PollResponse> serviceSupplier;
@@ -24,12 +27,13 @@ public class PollRequestData implements Serializable {
 
     public PollRequestData(int timeoutInMilliSeconds, SerializableSupplier<PollResponse> serviceSupplier
                                                     , PollerCallback callbackWhenDone
-                                                    , PollerCallback callbackToCancelOperation){
+                                                    , PollerCallback callbackToCancelOperation
+                                                    , boolean operationAllowedToCancel){
         this.timeoutInMilliSeconds = timeoutInMilliSeconds;
         this.callbackWhenDone = callbackWhenDone;
         this.callbackToCancelOperation = callbackToCancelOperation;
         this.serviceSupplier = serviceSupplier;
-
+        this.operationAllowedToCancel = operationAllowedToCancel;
     }
     enum PollType implements Serializable{
         FIXED_INTERVAL, EXPONENTIAL;
@@ -52,5 +56,9 @@ public class PollRequestData implements Serializable {
     }
     public boolean isPollingStopped(){
         return this.stopPolling;
+    }
+
+    public boolean operationAllowedToCancel(){
+        return operationAllowedToCancel;
     }
 }

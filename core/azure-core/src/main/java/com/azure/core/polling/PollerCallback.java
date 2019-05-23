@@ -6,6 +6,6 @@ public interface PollerCallback extends Serializable {
 
     public void execute(PollResponse response);
 
-    /** @Return boolean: Indicate if successfully able to cancel operation**/
+    /** This function will be called when Service Operation needs to be cancelled.**/
     public PollResponse cancel();
 }

@@ -2,6 +2,7 @@ package com.azure.core.polling;
 
 import java.io.ObjectOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 public abstract class GenerialPoller implements Poller{
 
@@ -21,15 +22,18 @@ public abstract class GenerialPoller implements Poller{
 
     @Override
     public boolean isDone() {
-        return false;
+        //First time we will not have poll response data.
+        if (pollRequestData == null)
+            return false;
+        return !pollResponse.isOperationInProgress();
     }
 
     @Override
     public PollResponse cancelOperation() throws PollingException {
-
+        if (!pollRequestData.operationAllowedToCancel()) {
+            throw new OperationNotSupportedException();
+        }
         return pollRequestData.callbackToCancelOperation().cancel();
-
-
     }
 
     //TODO : Make sure we do not pool every cpu cycle. Polling must be throttle by parameter defined in PollingType i.e interval or expeonential polling
@@ -43,9 +47,8 @@ public abstract class GenerialPoller implements Poller{
     public PollResponse pollUntilDone() {
         boolean done = false;
         pollRequestData.setStopPolling(false);
-        while (!done && !pollRequestData.isPollingStopped()) {
+        while (!isDone() && !pollRequestData.isPollingStopped()) {
             pollResponse =pollRequestData.serviceSupplier().get();
-            done = pollResponse.isOperationComplete();
         }
         if (pollRequestData.callbackWhenDone() != null) {
             try {
@@ -69,7 +72,7 @@ public abstract class GenerialPoller implements Poller{
             ObjectOutputStream objOutStream = new ObjectOutputStream(bArrOutStream);
             objOutStream.writeObject(poller.getPollRequestData());
             objOutStream.flush();
-            serializedObject = new String(Base64.encode(bArrOutStream.toByteArray()));
+            serializedObject = new String(Base64.getEncoder().encode(bArrOutStream.toByteArray()));
         } catch (Exception ex) {
 
         }
