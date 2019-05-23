@@ -1,8 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse;
+import com.microsoft.azure.storage.blob.models.BlockListType;
+import com.microsoft.azure.storage.blob.models.BlockLookupList;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
@@ -14,7 +24,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a block blob. It may be obtained by direct construction or via the create method on a
@@ -154,11 +164,11 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobUploadResponse> upload(Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
                 data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -229,7 +239,7 @@ public final class BlockBlobURL extends BlobURL {
             LeaseAccessConditions leaseAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
                 context, base64BlockID, length, data, null, null, null, leaseAccessConditions));
     }
 
@@ -256,7 +266,8 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null, null, null);
+        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
+                null, null, null);
     }
 
     /**
@@ -279,6 +290,8 @@ public final class BlockBlobURL extends BlobURL {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
+     * @param sourceModifiedAccessConditions
+     *         {@link SourceModifiedAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -294,14 +307,14 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            Context context) {
-        sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
+            SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+        sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(context,
-                        base64BlockID, 0, sourceURL, sourceRange.toString(), sourceContentMD5,
-                        null, null, leaseAccessConditions));
+                        base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5,
+                        null, null, leaseAccessConditions, sourceModifiedAccessConditions));
     }
 
     /**
@@ -349,7 +362,7 @@ public final class BlockBlobURL extends BlobURL {
             LeaseAccessConditions leaseAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
                 context, listType, null, null, null, leaseAccessConditions));
     }
 
@@ -411,11 +424,11 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 context, new BlockLookupList().withLatest(base64BlockIDs), null,
                 metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));

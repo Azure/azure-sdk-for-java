@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -25,7 +26,7 @@ public final class RequestIDFactory implements RequestPolicyFactory {
         return new RequestIDPolicy(next, options);
     }
 
-    private final class RequestIDPolicy implements RequestPolicy {
+    private static final class RequestIDPolicy implements RequestPolicy {
         private final RequestPolicy nextPolicy;
 
         private final RequestPolicyOptions options;

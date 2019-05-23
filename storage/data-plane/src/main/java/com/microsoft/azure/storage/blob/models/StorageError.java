@@ -14,10 +14,36 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement(localName = "StorageError")
 public final class StorageError {
     /**
+     * The code property.
+     */
+    @JsonProperty(value = "Code")
+    private String code;
+
+    /**
      * The message property.
      */
     @JsonProperty(value = "Message")
     private String message;
+
+    /**
+     * Get the code value.
+     *
+     * @return the code value.
+     */
+    public String code() {
+        return this.code;
+    }
+
+    /**
+     * Set the code value.
+     *
+     * @param code the code value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError withCode(String code) {
+        this.code = code;
+        return this;
+    }
 
     /**
      * Get the message value.

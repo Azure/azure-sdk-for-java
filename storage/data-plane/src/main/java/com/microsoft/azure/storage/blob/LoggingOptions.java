@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 /**
@@ -10,11 +11,15 @@ public final class LoggingOptions {
     /**
      * Default logging options. {@code MinDurationToLogSlowRequestsInMs} is set to 3000;
      */
-    public static final LoggingOptions DEFAULT = new LoggingOptions(3000);
+    public static final long defaultMinDurationToLogSlowRequests = 3000;
 
     private final long minDurationToLogSlowRequestsInMs;
 
     private final boolean disableDefaultLogging;
+
+    public LoggingOptions() {
+        this(defaultMinDurationToLogSlowRequests);
+    }
 
     /**
      * Creates a new {@link LoggingOptions} object.

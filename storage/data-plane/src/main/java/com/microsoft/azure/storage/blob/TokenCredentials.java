@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -57,7 +58,7 @@ public final class TokenCredentials implements ICredentials {
         return new TokenCredentialsPolicy(this, next);
     }
 
-    private final class TokenCredentialsPolicy implements RequestPolicy {
+    private static final class TokenCredentialsPolicy implements RequestPolicy {
 
         private final TokenCredentials factory;
 

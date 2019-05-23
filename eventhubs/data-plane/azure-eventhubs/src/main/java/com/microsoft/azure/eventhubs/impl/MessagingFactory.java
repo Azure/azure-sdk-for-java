@@ -10,6 +10,7 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -72,7 +73,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                      final RetryPolicy retryPolicy,
                      final ScheduledExecutorService executor,
                      final ReactorFactory reactorFactory) {
-        super("MessagingFactory".concat(StringUtil.getRandomString()), null, executor);
+        super(StringUtil.getRandomString("MF"), null, executor);
 
         this.hostName = builder.getEndpoint().getHost();
         this.reactorFactory = reactorFactory;
@@ -80,7 +81,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         this.retryPolicy = retryPolicy;
         this.registeredLinks = new LinkedList<>();
         this.reactorLock = new Object();
-        this.connectionHandler = ConnectionHandler.create(builder.getTransportType(), this);
+        this.connectionHandler = ConnectionHandler.create(builder.getTransportType(), this, this.getClientId());
         this.cbsChannelCreateLock = new Object();
         this.mgmtChannelCreateLock = new Object();
         this.tokenProvider = builder.getSharedAccessSignature() == null
@@ -168,7 +169,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private void startReactor(final ReactorHandler reactorHandler) throws IOException {
-        final Reactor newReactor = this.reactorFactory.create(reactorHandler, this.connectionHandler.getMaxFrameSize());
+        final Reactor newReactor = this.reactorFactory.create(reactorHandler, this.connectionHandler.getMaxFrameSize(), this.getClientId());
         synchronized (this.reactorLock) {
             this.reactor = newReactor;
             this.reactorDispatcher = new ReactorDispatcher(newReactor);
@@ -183,7 +184,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public CBSChannel getCBSChannel() {
         synchronized (this.cbsChannelCreateLock) {
             if (this.cbsChannel == null) {
-                this.cbsChannel = new CBSChannel(this, this);
+                this.cbsChannel = new CBSChannel(this, this, this.getClientId());
             }
         }
 
@@ -193,7 +194,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public ManagementChannel getManagementChannel() {
         synchronized (this.mgmtChannelCreateLock) {
             if (this.mgmtChannel == null) {
-                this.mgmtChannel = new ManagementChannel(this, this);
+                this.mgmtChannel = new ManagementChannel(this, this, this.getClientId());
             }
         }
 
@@ -203,9 +204,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     @Override
     public Session getSession(final String path, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError) {
         if (this.getIsClosingOrClosed()) {
-
             onRemoteSessionOpenError.accept(null, new OperationCancelledException("underlying messagingFactory instance is closed"));
             return null;
+        }
+
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(
+                    String.format(Locale.US, "messagingFactory[%s], hostName[%s], getting a session.",
+                            getClientId(), getHostName()));
         }
 
         if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
@@ -216,7 +222,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
 
         final Session session = this.connection.session();
-        BaseHandler.setHandler(session, new SessionHandler(path, onRemoteSessionOpen, onRemoteSessionOpenError, this.operationTimeout));
+        BaseHandler.setHandler(session, new SessionHandler(path, onRemoteSessionOpen, onRemoteSessionOpenError, this.operationTimeout, this.getClientId()));
         session.open();
 
         return session;
@@ -251,7 +257,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     @Override
     public void onConnectionError(ErrorCondition error) {
         if (TRACE_LOGGER.isWarnEnabled()) {
-            TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], error[%s]",
+            TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError messagingFactory[%s], hostname[%s], error[%s]",
                     this.getClientId(),
                     this.hostName,
                     error != null ? error.getDescription() : "n/a"));
@@ -259,7 +265,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         if (!this.open.isDone()) {
             if (TRACE_LOGGER.isWarnEnabled()) {
-                TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], open hasn't complete, stopping the reactor",
+                TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError messagingFactory[%s], hostname[%s], open hasn't complete, stopping the reactor",
                         this.getClientId(),
                         this.hostName));
             }
@@ -272,9 +278,9 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final List<Link> closedLinks = new LinkedList<>();
 
             for (Link link : oldRegisteredLinksCopy) {
-                if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
+                if (link.getLocalState() != EndpointState.CLOSED) {
                     if (TRACE_LOGGER.isWarnEnabled()) {
-                        TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], closing link [%s]",
+                        TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError messagingFactory[%s], hostname[%s], closing link [%s]",
                                 this.getClientId(),
                                 this.hostName, link.getName()));
                     }
@@ -289,7 +295,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             // in connection recreation we depend on currentConnection state to evaluate need for recreation
             if (oldConnection.getLocalState() != EndpointState.CLOSED) {
                 if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], closing current connection",
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError messagingFactory[%s], hostname[%s], closing current connection",
                             this.getClientId(),
                             this.hostName));
                 }
@@ -303,7 +309,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
             for (Link link : closedLinks) {
                 final Handler handler = BaseHandler.getHandler(link);
-                if (handler != null && handler instanceof BaseLinkHandler) {
+                if (handler instanceof BaseLinkHandler) {
                     final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
                     linkHandler.processOnClose(link, error);
                 }
@@ -349,17 +355,26 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             // below .close() calls (local closes).
             // But, we still need to change the states of these to Closed - so that subsequent retries - will
             // treat the links and connection as closed and re-establish them and continue running on new Reactor instance.
-            if (oldConnection.getLocalState() != EndpointState.CLOSED && oldConnection.getRemoteState() != EndpointState.CLOSED) {
+            ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("messagingfactory.onreactorerror"), cause.getMessage());
+            if (oldConnection.getLocalState() != EndpointState.CLOSED) {
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onReactorError: messagingFactory[%s], hostname[%s], closing current connection",
+                            this.getClientId(),
+                            this.hostName));
+                }
+
+                oldConnection.setCondition(errorCondition);
                 oldConnection.close();
             }
 
             for (final Link link : oldRegisteredLinksCopy) {
-                if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
+                if (link.getLocalState() != EndpointState.CLOSED) {
+                    link.setCondition(errorCondition);
                     link.close();
                 }
 
                 final Handler handler = BaseHandler.getHandler(link);
-                if (handler != null && handler instanceof BaseLinkHandler) {
+                if (handler instanceof BaseLinkHandler) {
                     final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
                     linkHandler.processOnClose(link, cause);
                 }
@@ -415,8 +430,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
     public static class ReactorFactory {
 
-        public Reactor create(final ReactorHandler reactorHandler, final int maxFrameSize) throws IOException {
-            return ProtonUtil.reactor(reactorHandler, maxFrameSize);
+        public Reactor create(final ReactorHandler reactorHandler, final int maxFrameSize, final String name) throws IOException {
+            return ProtonUtil.reactor(reactorHandler, maxFrameSize, name);
         }
     }
 
@@ -611,6 +626,10 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private class ReactorHandlerWithConnection extends ReactorHandler {
+        ReactorHandlerWithConnection() {
+            super(getClientId());
+        }
+
         @Override
         public void onReactorInit(Event e) {
             super.onReactorInit(e);

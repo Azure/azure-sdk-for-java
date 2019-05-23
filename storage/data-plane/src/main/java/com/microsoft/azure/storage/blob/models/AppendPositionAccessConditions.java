@@ -9,7 +9,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * Additional parameters for appendBlock operation.
+ * Additional parameters for a set of operations, such as:
+ * AppendBlob_appendBlock, AppendBlob_appendBlockFromUrl.
  */
 @JacksonXmlRootElement(localName = "append-position-access-conditions")
 public final class AppendPositionAccessConditions {

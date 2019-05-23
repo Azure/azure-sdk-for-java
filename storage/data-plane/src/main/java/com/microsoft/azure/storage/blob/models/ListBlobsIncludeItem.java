@@ -12,21 +12,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum ListBlobsIncludeItem {
     /**
-     * Enum value snapshots.
-     */
-    SNAPSHOTS("snapshots"),
-
-    /**
-     * Enum value metadata.
-     */
-    METADATA("metadata"),
-
-    /**
-     * Enum value uncommittedblobs.
-     */
-    UNCOMMITTEDBLOBS("uncommittedblobs"),
-
-    /**
      * Enum value copy.
      */
     COPY("copy"),
@@ -34,7 +19,22 @@ public enum ListBlobsIncludeItem {
     /**
      * Enum value deleted.
      */
-    DELETED("deleted");
+    DELETED("deleted"),
+
+    /**
+     * Enum value metadata.
+     */
+    METADATA("metadata"),
+
+    /**
+     * Enum value snapshots.
+     */
+    SNAPSHOTS("snapshots"),
+
+    /**
+     * Enum value uncommittedblobs.
+     */
+    UNCOMMITTEDBLOBS("uncommittedblobs");
 
     /**
      * The actual serialized value for a ListBlobsIncludeItem instance.

@@ -147,12 +147,20 @@ public interface EventData extends Serializable, Comparable<EventData> {
      * @see SystemProperties#getEnqueuedTime
      */
     SystemProperties getSystemProperties();
+    void setSystemProperties(SystemProperties props);
 
     class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
         public SystemProperties(final HashMap<String, Object> map) {
             super(Collections.unmodifiableMap(map));
+        }
+
+        public SystemProperties(final long sequenceNumber, final Instant enqueuedTimeUtc, final String offset, final String partitionKey) {
+            this.put(AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME, sequenceNumber);
+            this.put(AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, new Date(enqueuedTimeUtc.toEpochMilli()));
+            this.put(AmqpConstants.OFFSET_ANNOTATION_NAME, offset);
+            this.put(AmqpConstants.PARTITION_KEY_ANNOTATION_NAME, partitionKey);
         }
 
         public String getOffset() {

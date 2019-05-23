@@ -4,17 +4,27 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.engine.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 public class RequestResponseOpener implements Operation<RequestResponseChannel> {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseOpener.class);
+
     private final SessionProvider sessionProvider;
+    private final String clientId;
     private final String sessionName;
     private final String linkName;
     private final String endpointAddress;
     private final AmqpConnection eventDispatcher;
 
-    public RequestResponseOpener(final SessionProvider sessionProvider, final String sessionName, final String linkName,
+    private boolean isOpened;
+
+    public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
                                  final String endpointAddress, final AmqpConnection eventDispatcher) {
         this.sessionProvider = sessionProvider;
+        this.clientId = clientId;
         this.sessionName = sessionName;
         this.linkName = linkName;
         this.endpointAddress = endpointAddress;
@@ -22,7 +32,10 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     }
 
     @Override
-    public void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
+    public synchronized void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
+        if (this.isOpened) {
+            return;
+        }
 
         final Session session = this.sessionProvider.getSession(
             this.sessionName,
@@ -51,11 +64,23 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.registerForConnectionError(requestResponseChannel.getReceiveLink());
 
                         operationCallback.onComplete(requestResponseChannel);
+
+                        isOpened = true;
+
+                        if (TRACE_LOGGER.isInfoEnabled()) {
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s]",
+                                    clientId, sessionName, linkName, endpointAddress));
+                        }
                     }
 
                     @Override
                     public void onError(Exception error) {
                         operationCallback.onError(error);
+
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onOpen error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
+                                    clientId, sessionName, linkName, endpointAddress, error));
+                        }
                     }
                 },
                 new OperationResult<Void, Exception>() {
@@ -63,12 +88,26 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                     public void onComplete(Void result) {
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
+
+                        isOpened = false;
+
+                        if (TRACE_LOGGER.isInfoEnabled()) {
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s]",
+                                    clientId, sessionName, linkName, endpointAddress));
+                        }
                     }
 
                     @Override
                     public void onError(Exception error) {
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
+
+                        isOpened = false;
+
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
+                                    clientId, sessionName, linkName, endpointAddress, error));
+                        }
                     }
                 });
     }

@@ -11,6 +11,7 @@ import org.apache.qpid.proton.message.Message;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 final class EventDataBatchImpl implements EventDataBatch {
 
@@ -45,7 +46,7 @@ final class EventDataBatchImpl implements EventDataBatch {
         try {
             size = getSize(eventDataImpl, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
-            throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
+            throw new PayloadSizeExceededException(String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
         }
 
         if (this.currentSize + size > this.maxMessageSize) {

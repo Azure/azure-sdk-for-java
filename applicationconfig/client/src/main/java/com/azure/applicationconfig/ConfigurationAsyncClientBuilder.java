@@ -6,18 +6,18 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
-import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpHeaders;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.AddDatePolicy;
-import com.azure.common.http.policy.AddHeadersPolicy;
-import com.azure.common.http.policy.AsyncCredentialsPolicy;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpLoggingPolicy;
-import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RequestIdPolicy;
-import com.azure.common.http.policy.RetryPolicy;
-import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +26,31 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Provides configuration options for instances of {@link ConfigurationAsyncClient}.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient},
+ * calling {@link ConfigurationAsyncClientBuilder#build() build} constructs an instance of the client.
+ *
+ * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
+ * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
+ * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
+ *
+ * <pre>
+ * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+ *     .credentials(new ConfigurationClientCredentials(connectionString))
+ *     .build();
+ * </pre>
+ *
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
+ * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
+ * {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline) this}, additionally set the service endpoint with
+ * {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String) this}. Using a pipeline requires additional setup but
+ * allows for finer control on how the ConfigurationAsyncClient it built.</p>
+ *
+ * <pre>
+ * ConfigurationAsyncClient.builder()
+ *     .pipeline(new HttpPipeline(policies))
+ *     .serviceEndpoint(serviceEndpoint)
+ *     .build();
+ * </pre>
  *
  * @see ConfigurationAsyncClient
  * @see ConfigurationClientCredentials
@@ -55,10 +79,10 @@ public final class ConfigurationAsyncClientBuilder {
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
-        headers = new HttpHeaders();
-        headers.set(ECHO_REQUEST_ID_HEADER, "true");
-        headers.set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE);
-        headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     /**
@@ -96,17 +120,18 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy());
-        policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(credentials));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
-
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
 
         return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
     }

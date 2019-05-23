@@ -1,8 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpHeader;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -16,7 +22,12 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * SharedKeyCredentials are a means of signing and authenticating storage requests. The key can be obtained from the
@@ -92,11 +103,6 @@ public final class SharedKeyCredentials implements ICredentials {
                 getAdditionalXmsHeaders(httpHeaders),
                 getCanonicalizedResource(request.url())
         );
-    }
-
-    private void appendCanonicalizedElement(final StringBuilder builder, final String element) {
-        builder.append("\n");
-        builder.append(element);
     }
 
     private String getAdditionalXmsHeaders(final HttpHeaders headers) {
@@ -220,7 +226,7 @@ public final class SharedKeyCredentials implements ICredentials {
         }
     }
 
-    private final class SharedKeyCredentialsPolicy implements RequestPolicy {
+    private static final class SharedKeyCredentialsPolicy implements RequestPolicy {
 
         private final SharedKeyCredentials factory;
 
@@ -247,7 +253,7 @@ public final class SharedKeyCredentials implements ICredentials {
         public Single<HttpResponse> sendAsync(final HttpRequest request) {
             if (request.headers().value(Constants.HeaderConstants.DATE) == null) {
                 request.headers().set(Constants.HeaderConstants.DATE,
-                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
+                        Utility.RFC_1123_GMT_DATE_FORMATTER.format(OffsetDateTime.now()));
             }
             final String stringToSign = this.factory.buildStringToSign(request);
             try {

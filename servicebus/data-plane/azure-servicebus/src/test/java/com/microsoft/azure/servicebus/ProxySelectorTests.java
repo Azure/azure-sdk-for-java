@@ -1,25 +1,31 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.TransportType;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ProxySelectorTests {
-
-
+public class ProxySelectorTests extends TestBase {
+    @Ignore
     @Test
-    public void proxySelectorConnectFailedInvokeTest() throws Exception
-    {
+    public void proxySelectorConnectFailedInvokeTest() throws Exception {
         // set up proxy selector with a bad address in order to check that the connectFailed() method is invoked
         int noProxyPort = 8888;
         final CompletableFuture<Void> connectFailedTask = new CompletableFuture<>();
@@ -46,7 +52,7 @@ public class ProxySelectorTests {
             QueueClient sendClient = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
         } catch (ServiceBusException ex) {
             Assert.assertEquals(
-               "Error{condition=amqp:connection:framing-error, description='connection aborted', info=null}",
+                "Error{condition=amqp:connection:framing-error, description='connection aborted', info=null}",
                 ex.getLocalizedMessage());
         }
 

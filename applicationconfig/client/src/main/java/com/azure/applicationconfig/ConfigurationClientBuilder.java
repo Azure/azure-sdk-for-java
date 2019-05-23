@@ -5,34 +5,35 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 
 import java.net.MalformedURLException;
 
 /**
- * Builds instances of {@link ConfigurationClient} based on the configuration options stored in the builder when
- * {@link ConfigurationClientBuilder#build() build} is called. Preparing the builder has two primary options, using
- * {@link ConfigurationClientCredentials} or using a {@link HttpPipeline} and the service endpoint.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationClient},
+ * calling {@link ConfigurationClientBuilder#build() build} constructs an instance of the client.
  *
- * <p>ConfigurationClientCredentials has the service endpoint and authorization information built into it. Use
- * {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) credentials} to configure the builder.</p>
+ * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
+ * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
+ * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
  *
  * <pre>
- * ConfigurationClient client = ConfigurationClient.builder()
+ * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
  *     .credentials(new ConfigurationClientCredentials(connectionString))
  *     .build();
  * </pre>
  *
- * <p>HttpPipeline is constructed using the authorization information but doesn't have the service endpoint built into
- * it. Use {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} and {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint}
- * to configure the builder. The HttpPipeline requires additional configuration over using ConfigurationClientCredentials
- * but it allows for finer control on how the ConfigurationClient is built.</p>
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
+ * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
+ * {@link ConfigurationClientBuilder#pipeline(HttpPipeline) this}, additionally set the service endpoint with
+ * {@link ConfigurationClientBuilder#serviceEndpoint(String) this}. Using a pipeline requires additional setup but
+ * allows for finer control on how the ConfigurationClient it built.</p>
  *
  * <pre>
- * ConfigurationClient.builder()
+ * ConfigurationAsyncClient.builder()
  *     .pipeline(new HttpPipeline(policies))
  *     .serviceEndpoint(serviceEndpoint)
  *     .build();
@@ -55,8 +56,7 @@ public final class ConfigurationClientBuilder {
      * <p>
      * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} are used to create the
-     * {@link ConfigurationClient client}. All other builder settings are ignored.
-     * </p>
+     * {@link ConfigurationClient client}. All other builder settings are ignored.</p>
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when

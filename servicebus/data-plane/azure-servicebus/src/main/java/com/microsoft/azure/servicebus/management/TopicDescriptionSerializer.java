@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
@@ -150,8 +153,9 @@ class TopicDescriptionSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry")
+            if ("entry".equals(doc.getTagName())) {
                 return parseFromEntry(doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
@@ -171,21 +175,18 @@ class TopicDescriptionSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                Element element = (Element) node;
+                switch (element.getTagName()) {
                     case "title":
                         td = new TopicDescription(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "MaxSizeInMegabytes":
                                         td.maxSizeInMB = Long.parseLong(element.getFirstChild().getNodeValue());
                                         break;
@@ -219,9 +220,13 @@ class TopicDescriptionSerializer {
                                     case "SupportOrdering":
                                         td.supportOrdering = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

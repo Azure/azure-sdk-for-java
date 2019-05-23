@@ -5,12 +5,12 @@ import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.http.HttpMethod;
-import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +51,7 @@ class PipelineSample {
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().key("hello").value("world")),
                 client.setSetting(new ConfigurationSetting().key("newSetting").value("newValue")))
-                .then(client.listSettings(new SettingSelector().key("*")).collectList())
+                .then(client.listSettings(new SettingSelector().keys("*")).collectList())
                 .block();
 
         // Cleaning up after ourselves by deleting the values.

@@ -20,7 +20,9 @@ public class RequestResponseCloser implements Operation<Void> {
         if (channelToBeClosed == null) {
             closeOperationCallback.onComplete(null);
         } else {
-            channelToBeClosed.close(new OperationResultBase<>(closeOperationCallback::onComplete, closeOperationCallback::onError));
+            channelToBeClosed.close(new OperationResultBase<>(
+                closeOperationCallback::onComplete,
+                closeOperationCallback::onError));
         }
     }
 }

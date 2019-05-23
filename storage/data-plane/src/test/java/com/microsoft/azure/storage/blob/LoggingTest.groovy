@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob
@@ -12,7 +12,6 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.junit.Assume
 import org.slf4j.LoggerFactory
 import spock.lang.Unroll
 import uk.org.lidalia.slf4jtest.TestLogger
@@ -82,7 +81,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -93,7 +92,7 @@ class LoggingTest extends APISpec {
         logCount1 * <method> means that we expect this method to be called with these parameters logCount1 number of
         times. '_' means we don't care what the value of that parameter is, so in both of these cases, we are specifying
         that log should be called with HttpPipelineLogLevel.INFO as the first argument, and the other arguments can
-        be anything. The '>>' operator allows us to specify some behavior on the mocked forceLogger when this method is
+        be anything. The '>>' operator allows us to specify some behavior on the mocked FORCE_LOGGER when this method is
         called. Because there is lots of string formatting going on, we can't match against the log string in the
         argument list, so we perform some logic to see if it looks correct and throw if it looks incorrect to actually
         validate the logging behavior.
@@ -138,7 +137,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         int logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -175,7 +174,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -214,7 +213,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -258,7 +257,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -398,7 +397,7 @@ class LoggingTest extends APISpec {
         then:
         1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
                 { HttpPipelineLogLevel level, String message, Object[] params ->
-                    if (!message.contains("OUTGOING REQUEST")) {
+                    if (!message.contains("OUTGOING REQUEST") || message.contains("urlSignature")) {
                         throw new IllegalArgumentException(message)
                     }
                 }

@@ -1,8 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
-public class QueueClientSessionTests extends ClientSessionTests{
+
+public class QueueClientSessionTests extends ClientSessionTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueClientSessionTests";
+        return "QueueClientSessionTests";
     }
 
     @Override

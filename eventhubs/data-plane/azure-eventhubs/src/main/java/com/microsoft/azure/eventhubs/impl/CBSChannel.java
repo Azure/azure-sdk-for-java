@@ -17,11 +17,12 @@ final class CBSChannel {
 
     CBSChannel(
             final SessionProvider sessionProvider,
-            final AmqpConnection connection) {
+            final AmqpConnection connection,
+            final String clientId) {
 
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-                new RequestResponseOpener(sessionProvider, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
+                new RequestResponseOpener(sessionProvider, clientId, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
                 closer);
         closer.setInnerChannel(this.innerChannel);
     }

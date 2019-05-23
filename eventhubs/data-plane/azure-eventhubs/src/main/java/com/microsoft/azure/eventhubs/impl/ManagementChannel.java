@@ -3,33 +3,34 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import com.microsoft.azure.eventhubs.OperationCancelledException;
-import com.microsoft.azure.eventhubs.TimeoutException;
 
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
 
-    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
+    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId) {
 
         final RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-            new RequestResponseOpener(
-                sessionProvider,
-                "mgmt-session",
-                "mgmt",
-                ClientConstants.MANAGEMENT_ADDRESS,
-                connection),
-            closer);
+                new RequestResponseOpener(
+                        sessionProvider,
+                        clientId,
+                        "mgmt-session",
+                        "mgmt",
+                        ClientConstants.MANAGEMENT_ADDRESS,
+                        connection),
+                closer);
         closer.setInnerChannel(this.innerChannel);
     }
 
@@ -45,22 +46,22 @@ final class ManagementChannel {
         try {
             // schedule client-timeout on the request
             dispatcher.invoke((int) timeoutInMillis,
-                new DispatchHandler() {
-                    @Override
-                    public void onEvent() {
-                        final RequestResponseChannel channel = innerChannel.unsafeGetIfOpened();
-                        final String errorMessage;
-                        if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
-                            final String remoteContainerId = channel.getSendLink().getSession().getConnection().getRemoteContainer();
-                            errorMessage = String.format("Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
-                                timeoutInMillis, StringUtil.isNullOrEmpty(remoteContainerId) ? "n/a" : remoteContainerId);
-                        } else {
-                            errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";
-                        }
+                    new DispatchHandler() {
+                        @Override
+                        public void onEvent() {
+                            final RequestResponseChannel channel = innerChannel.unsafeGetIfOpened();
+                            final String errorMessage;
+                            if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
+                                final String remoteContainerId = channel.getSendLink().getSession().getConnection().getRemoteContainer();
+                                errorMessage = String.format(Locale.US, "Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
+                                        timeoutInMillis, StringUtil.isNullOrEmpty(remoteContainerId) ? "n/a" : remoteContainerId);
+                            } else {
+                                errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";
+                            }
 
-                        resultFuture.completeExceptionally(new TimeoutException(errorMessage));
-                    }
-                });
+                            resultFuture.completeExceptionally(new TimeoutException(errorMessage));
+                        }
+                    });
         } catch (final IOException ioException) {
             resultFuture.completeExceptionally(
                 new OperationCancelledException(

@@ -1,16 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.KeyInfo;
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetUserDelegationKeyResponse;
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse;
+import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
@@ -39,6 +48,15 @@ public final class ServiceURL extends StorageURL {
         super(url, pipeline);
     }
 
+    /**
+     * Creates a {@link ContainerURL} object pointing to the specified container. This method does not create a
+     * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
+     *
+     * @param containerName
+     *     The name of the container to point to.
+     * @return
+     *     A {@link ContainerURL} object pointing to the specified container
+     */
     public ContainerURL createContainerURL(String containerName) {
         try {
             return new ContainerURL(StorageURL.appendToURLPath(new URL(super.storageClient.url()), containerName),
@@ -119,10 +137,10 @@ public final class ServiceURL extends StorageURL {
      */
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
-        options = options == null ? ListContainersOptions.DEFAULT : options;
+        options = options == null ? new ListContainersOptions() : options;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(context,
                         options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null, null));
     }
@@ -161,7 +179,7 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceGetPropertiesResponse> getProperties(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(context, null, null));
     }
 
@@ -208,9 +226,60 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
                         null));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's blob storage.
+     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     *
+     * @param start
+     *         Start time for the key's validity. Null indicates immediate start.
+     * @param expiry
+     *         Expiration of the key's validity.
+     *
+     * @return Emits the successful response.
+     */
+    public Single<ServiceGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return this.getUserDelegationKey(start, expiry, null);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's blob storage.
+     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     *
+     * @param start
+     *         Start time for the key's validity. Null indicates immediate start.
+     * @param expiry
+     *         Expiration of the key's validity.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     */
+    public Single<ServiceGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+            Context context) {
+        Utility.assertNotNull("expiry", expiry);
+        if (start != null && !start.isBefore(expiry)) {
+            throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
+        }
+
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(
+                this.storageClient.generatedServices().getUserDelegationKeyWithRestResponseAsync(
+                        context,
+                        new KeyInfo()
+                                .withStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                                .withExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                        null, null)
+        );
     }
 
     /**
@@ -251,7 +320,7 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceGetStatisticsResponse> getStatistics(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(context, null, null));
     }
 
@@ -289,7 +358,7 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceGetAccountInfoResponse> getAccountInfo(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync(context));
     }
 }

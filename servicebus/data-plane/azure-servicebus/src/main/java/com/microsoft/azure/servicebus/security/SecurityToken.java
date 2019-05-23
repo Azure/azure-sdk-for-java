@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.security;
 
 import java.time.Instant;
@@ -23,8 +26,7 @@ public class SecurityToken {
      * @param validFrom Instant from when this token is valid
      * @param validUntil Instant when this token expires
      */
-    public SecurityToken(SecurityTokenType tokenType, String tokenAudience, String tokenValue, Instant validFrom, Instant validUntil)
-    {
+    public SecurityToken(SecurityTokenType tokenType, String tokenAudience, String tokenValue, Instant validFrom, Instant validUntil) {
         this.tokenType = tokenType;
         this.tokenAudience = tokenAudience;
         this.tokenValue = tokenValue;

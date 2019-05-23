@@ -72,7 +72,7 @@ The standard way to manage Azure resources is by using [Azure Resource Manager](
 ### How do I run the unit tests? 
 
 Tests are simple JUnit tests. They can be run from the command line or any IDE that supports running JUnit tests.
-Only prerequisite to running tests is setting an environment variable named 'AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING' to the connection string
+Only prerequisite to running tests is setting an environment variable named 'AZURE_SERVICEBUS_CONNECTION_STRING' to the connection string
  of the namespace in which the tests will create entities. The tests create entities in the namespace and run tests and delete the created entities.
 And test classes also have methods to specify whether to create entities per test or once for all tests in a suite. Creating entities per test is better
 as it keeps test independent of each other.

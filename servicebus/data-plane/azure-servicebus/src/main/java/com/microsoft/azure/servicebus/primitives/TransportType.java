@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -20,23 +19,18 @@ public enum TransportType {
 
     private final String value;
 
-    TransportType(final String value)
-    {
+    TransportType(final String value) {
         this.value = value;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.value;
     }
 
-    static TransportType fromString(final String value)
-    {
-        for (TransportType transportType : values())
-        {
-            if (transportType.value.equalsIgnoreCase(value))
-            {
+    static TransportType fromString(final String value) {
+        for (TransportType transportType : values()) {
+            if (transportType.value.equalsIgnoreCase(value)) {
                 return transportType;
             }
         }

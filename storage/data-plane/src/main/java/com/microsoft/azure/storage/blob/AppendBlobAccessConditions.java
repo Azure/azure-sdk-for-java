@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions;
@@ -15,12 +16,6 @@ import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
  * information.
  */
 public final class AppendBlobAccessConditions {
-
-    /**
-     * An object representing no access conditions.
-     */
-    public static final AppendBlobAccessConditions NONE =
-            new AppendBlobAccessConditions();
 
     private AppendPositionAccessConditions appendPositionAccessConditions;
 

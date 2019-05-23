@@ -34,11 +34,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common</artifactId>
+      <artifactId>azure-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common-auth</artifactId>
+      <artifactId>azure-core-auth</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -47,7 +47,7 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-common-test</artifactId>
+      <artifactId>azure-core-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

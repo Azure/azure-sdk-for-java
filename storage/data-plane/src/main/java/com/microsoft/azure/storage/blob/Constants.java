@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 /**
@@ -157,7 +158,7 @@ final class Constants {
         /**
          * The current storage version header value.
          */
-        static final String TARGET_STORAGE_VERSION = "2018-03-28";
+        static final String TARGET_STORAGE_VERSION = "2018-11-09";
 
         /**
          * The UserAgent header.
@@ -172,7 +173,7 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.5.0";
+        static final String USER_AGENT_VERSION = "11.0.1";
 
         private HeaderConstants() {
             // Private to prevent construction.
@@ -260,6 +261,36 @@ final class Constants {
          * The SAS content type parameter.
          */
         static final String SAS_CONTENT_TYPE = "rsct";
+
+        /**
+         * The SAS signed object id parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_OBJECT_ID = "skoid";
+
+        /**
+         * The SAS signed tenant id parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_TENANT_ID = "sktid";
+
+        /**
+         * The SAS signed key-start parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_START = "skt";
+
+        /**
+         * The SAS signed key-expiry parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_EXPIRY = "ske";
+
+        /**
+         * The SAS signed service parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_SERVICE = "sks";
+
+        /**
+         * The SAS signed version parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         private UrlConstants() {
             // Private to prevent construction.

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import io.reactivex.Flowable;
@@ -19,5 +20,5 @@ public interface IProgressReceiver {
      * @param bytesTransferred
      *      The total number of bytes transferred during this transaction.
      */
-    public void reportProgress(long bytesTransferred);
+    void reportProgress(long bytesTransferred);
 }

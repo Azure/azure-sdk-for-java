@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockFromUrlResponse;
 import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockResponse;
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse;
 import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
@@ -15,7 +18,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
 
 /**
@@ -120,11 +123,11 @@ public final class AppendBlobURL extends BlobURL {
      */
     public Single<AppendBlobCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
                 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -183,15 +186,86 @@ public final class AppendBlobURL extends BlobURL {
      */
     public Single<AppendBlobAppendBlockResponse> appendBlock(Flowable<ByteBuffer> data, long length,
             AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        appendBlobAccessConditions = appendBlobAccessConditions == null ? AppendBlobAccessConditions.NONE :
-                appendBlobAccessConditions;
-        appendBlobAccessConditions = appendBlobAccessConditions == null
-                ? AppendBlobAccessConditions.NONE : appendBlobAccessConditions;
+        appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
+                : appendBlobAccessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
                 context, data, length, null, null, null, appendBlobAccessConditions.leaseAccessConditions(),
                 appendBlobAccessConditions.appendPositionAccessConditions(),
                 appendBlobAccessConditions.modifiedAccessConditions()));
+    }
+
+    /**
+     * Commits a new block of data from another blob to the end of this append blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     * <p>
+     *
+     * @param sourceURL
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *          must either be public or must be authenticated via a shared access signature. If the source blob is
+     *          public, no authentication is required to perform the operation.
+     * @param sourceRange
+     *          The source {@link BlobRange} to copy.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobURL.appendBlockFromUrl")]
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
+                 null, null);
+    }
+
+    /**
+     * Commits a new block of data from another blob to the end of this append blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     * <p>
+     *
+     * @param sourceURL
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *          must either be public or must be authenticated via a shared access signature. If the source blob is
+     *          public, no authentication is required to perform the operation.
+     * @param sourceRange
+     *          {@link BlobRange}
+     * @param sourceContentMD5
+     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *          of the received data and fail the request if it does not match the provided MD5.
+     * @param destAccessConditions
+     *          {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions
+     *          {@link SourceModifiedAccessConditions}
+     * @param context
+     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *          {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *          its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobURL.appendBlockFromUrl")]
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+            byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
+            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+
+        sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
+        destAccessConditions = destAccessConditions == null
+                ? new AppendBlobAccessConditions() : destAccessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(
+                this.storageClient.generatedAppendBlobs().appendBlockFromUrlWithRestResponseAsync(context,
+                        sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null,
+                        destAccessConditions.leaseAccessConditions(),
+                        destAccessConditions.appendPositionAccessConditions(),
+                        destAccessConditions.modifiedAccessConditions(), sourceAccessConditions));
     }
 }

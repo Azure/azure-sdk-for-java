@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -21,12 +21,12 @@ final class MessageBrowser implements IMessageBrowser {
     private MessageReceiver messageReceiver = null;
     private MessageSender messageSender = null;
 
-    public MessageBrowser(MessageReceiver messageReceiver) {
+    MessageBrowser(MessageReceiver messageReceiver) {
         this.messageReceiver = messageReceiver;
         this.isReceiveSideBrowser = true;
     }
 
-    public MessageBrowser(MessageSender messageSender) {
+    MessageBrowser(MessageSender messageSender) {
         this.messageSender = messageSender;
         this.isReceiveSideBrowser = false;
     }
@@ -58,8 +58,7 @@ final class MessageBrowser implements IMessageBrowser {
 
     @Override
     public CompletableFuture<IMessage> peekAsync(long fromSequenceNumber) {
-        return this.peekBatchAsync(fromSequenceNumber, 1).thenApplyAsync((c) ->
-        {
+        return this.peekBatchAsync(fromSequenceNumber, 1).thenApplyAsync((c) -> {
             IMessage message = null;
             Iterator<IMessage> iterator = c.iterator();
             if (iterator.hasNext()) {
@@ -87,8 +86,7 @@ final class MessageBrowser implements IMessageBrowser {
             peekFuture = this.messageSender.getInternalSender().peekMessagesAsync(fromSequenceNumber, messageCount);
         }
 
-        return peekFuture.thenApplyAsync((peekedMessages) ->
-        {
+        return peekFuture.thenApplyAsync((peekedMessages) -> {
             ArrayList<IMessage> convertedMessages = new ArrayList<IMessage>();
             if (peekedMessages != null) {
                 TRACE_LOGGER.debug("Browsing messages from sequence number '{}' returned '{}' messages", fromSequenceNumber, peekedMessages.size());

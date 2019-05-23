@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
-public abstract class Tests {
+public abstract class Tests extends TestBase {
     public abstract String getEntityNamePrefix();
     
     public abstract boolean isEntityQueue();

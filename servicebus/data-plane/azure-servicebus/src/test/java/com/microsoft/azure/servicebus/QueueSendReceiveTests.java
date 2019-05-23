@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.management.QueueDescription;
@@ -10,11 +13,10 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-public class QueueSendReceiveTests extends SendReceiveTests
-{
+public class QueueSendReceiveTests extends SendReceiveTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSendReceiveTests";
+        return "QueueSendReceiveTests";
     }
 
     @Override
@@ -42,9 +44,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned())
-        {
-        	message.setPartitionKey(messageId);
+        if (this.isEntityPartitioned()) {
+            message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
 
@@ -67,9 +68,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned())
-        {
-        	message.setPartitionKey(messageId);
+        if (this.isEntityPartitioned()) {
+            message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
 
@@ -197,8 +197,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             Assert.assertTrue(caught);
 
             this.factory.endTransactionAsync(transaction, false);
-        }
-        finally {
+        } finally {
             managementClient.deleteQueueAsync(partitionedEntityName);
         }
     }
@@ -216,9 +215,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
-        if(this.isEntityPartitioned())
-        {
-        	message2.setPartitionKey(receivedMessage.getPartitionKey());
+        if (this.isEntityPartitioned()) {
+            message2.setPartitionKey(receivedMessage.getPartitionKey());
         }
         this.sender.send(message2, transaction);
         this.factory.endTransactionAsync(transaction, true).get();
@@ -308,8 +306,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             // Cleanup
             receivedMessage1 = destination1Receiver.receive();
             destination1Receiver.complete(receivedMessage1.getLockToken());
-        }
-        finally {
+        } finally {
             intermediateSender.close();
             intermediateReceiver.close();
             destination1Sender.close();
@@ -361,8 +358,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
 
             message = destinationReceiver.receive(Duration.ofSeconds(5));
             Assert.assertNull(message);
-        }
-        finally {
+        } finally {
             destination1ViaSender.close();
             destinationReceiver.close();
 

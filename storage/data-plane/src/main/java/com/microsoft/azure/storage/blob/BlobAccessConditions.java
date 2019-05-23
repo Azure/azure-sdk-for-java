@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
@@ -12,9 +13,6 @@ import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
  * information on those particular access conditions.
  */
 public final class BlobAccessConditions {
-
-    public static final BlobAccessConditions NONE =
-            new BlobAccessConditions();
 
     private ModifiedAccessConditions modifiedAccessConditions;
 

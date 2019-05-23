@@ -1,8 +1,30 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.management.*;
-import com.microsoft.azure.servicebus.primitives.*;
-import com.microsoft.azure.servicebus.rules.*;
+import com.microsoft.azure.servicebus.management.AccessRights;
+import com.microsoft.azure.servicebus.management.AuthorizationRule;
+import com.microsoft.azure.servicebus.management.EntityNameHelper;
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.NamespaceInfo;
+import com.microsoft.azure.servicebus.management.NamespaceType;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.QueueRuntimeInfo;
+import com.microsoft.azure.servicebus.management.SharedAccessAuthorizationRule;
+import com.microsoft.azure.servicebus.management.SubscriptionDescription;
+import com.microsoft.azure.servicebus.management.SubscriptionRuntimeInfo;
+import com.microsoft.azure.servicebus.management.TopicDescription;
+import com.microsoft.azure.servicebus.management.TopicRuntimeInfo;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityAlreadyExistsException;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import com.microsoft.azure.servicebus.rules.CorrelationFilter;
+import com.microsoft.azure.servicebus.rules.FalseFilter;
+import com.microsoft.azure.servicebus.rules.RuleDescription;
+import com.microsoft.azure.servicebus.rules.SqlFilter;
+import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +39,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ManagementTests {
+public class ManagementTests extends TestBase {
 
     private ManagementClientAsync managementClientAsync;
 
@@ -243,7 +265,7 @@ public class ManagementTests {
         Assert.assertEquals(rule1, rules.get(1));
         Assert.assertEquals(rule2, rules.get(2));
 
-        ((CorrelationFilter)(rule2.getFilter())).setCorrelationId("correlationIdModified");
+        ((CorrelationFilter) (rule2.getFilter())).setCorrelationId("correlationIdModified");
         RuleDescription updatedRule2 = this.managementClientAsync.updateRuleAsync(topicName, subscriptionName, rule2).get();
         Assert.assertEquals(rule2, updatedRule2);
 
@@ -369,39 +391,39 @@ public class ManagementTests {
     public void messagingEntityNotFoundExceptionTest() throws ServiceBusException, InterruptedException, ExecutionException {
         try {
             Utils.completeFuture(this.managementClientAsync.getQueueAsync("NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.getTopicAsync("NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.getSubscriptionAsync("NonExistingTopic", "NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.updateQueueAsync(new QueueDescription("NonExistingPath")));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.updateTopicAsync(new TopicDescription("NonExistingPath")));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.updateSubscriptionAsync(new SubscriptionDescription("NonExistingTopic", "NonExistingPath")));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.deleteQueueAsync("NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.deleteTopicAsync("NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.deleteSubscriptionAsync("nonExistingTopic", "NonExistingPath"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         String queueName = UUID.randomUUID().toString().substring(0, 8);
         String topicName = UUID.randomUUID().toString().substring(0, 8);
@@ -411,15 +433,15 @@ public class ManagementTests {
 
         try {
             Utils.completeFuture(this.managementClientAsync.getQueueAsync(topicName));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.getTopicAsync(queueName));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.getSubscriptionAsync(topicName, "NonExistingSubscription"));
-        } catch (MessagingEntityNotFoundException e) {}
+        } catch (MessagingEntityNotFoundException e) { }
 
         this.managementClientAsync.deleteQueueAsync(queueName).get();
         this.managementClientAsync.deleteTopicAsync(topicName).get();
@@ -436,15 +458,15 @@ public class ManagementTests {
 
         try {
             Utils.completeFuture(this.managementClientAsync.createQueueAsync(queueName));
-        } catch (MessagingEntityAlreadyExistsException e) {}
+        } catch (MessagingEntityAlreadyExistsException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.createTopicAsync(topicName));
-        } catch (MessagingEntityAlreadyExistsException e) {}
+        } catch (MessagingEntityAlreadyExistsException e) { }
 
         try {
             Utils.completeFuture(this.managementClientAsync.createSubscriptionAsync(topicName, subscriptionName));
-        } catch (MessagingEntityAlreadyExistsException e) {}
+        } catch (MessagingEntityAlreadyExistsException e) { }
 
         this.managementClientAsync.deleteQueueAsync(queueName).get();
         this.managementClientAsync.deleteSubscriptionAsync(topicName, subscriptionName).get();

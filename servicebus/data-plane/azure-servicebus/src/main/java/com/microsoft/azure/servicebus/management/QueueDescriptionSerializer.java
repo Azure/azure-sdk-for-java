@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
@@ -176,8 +179,9 @@ class QueueDescriptionSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry")
-            return parseFromEntry(doc);
+            if ("entry".equals(doc.getTagName())) {
+                return parseFromEntry(doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
@@ -197,21 +201,18 @@ class QueueDescriptionSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                Element element = (Element) node;
+                switch (element.getTagName()) {
                     case "title":
                         qd = new QueueDescription(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "MaxSizeInMegabytes":
                                         qd.maxSizeInMB = Long.parseLong(element.getFirstChild().getNodeValue());
                                         break;
@@ -266,9 +267,13 @@ class QueueDescriptionSerializer {
                                     case "AuthorizationRules":
                                         qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }
@@ -289,7 +294,7 @@ class QueueDescriptionSerializer {
 
     private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
         try {
-            URL url = new URL(forwardTo);
+            new URL(forwardTo);
             return forwardTo;
         } catch (MalformedURLException e) {
             return baseAddress.resolve(forwardTo).toString();

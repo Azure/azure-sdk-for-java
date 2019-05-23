@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -13,12 +13,12 @@ public interface IQueueClient extends IMessageSender, IMessageAndSessionPump, IM
      *
      * @return The receive mode.
      */
-    public ReceiveMode getReceiveMode();
+    ReceiveMode getReceiveMode();
 
     /**
      * Gets the name of the queue.
      *
      * @return The name of the queue.
      */
-    public String getQueueName();
+    String getQueueName();
 }

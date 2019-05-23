@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 /**
@@ -8,8 +11,7 @@ public class QueueRuntimeInfo extends EntityRuntimeInfo {
     private long messageCount;
     private long sizeInBytes;
 
-    QueueRuntimeInfo(String path)
-    {
+    QueueRuntimeInfo(String path) {
         this.path = path;
     }
 

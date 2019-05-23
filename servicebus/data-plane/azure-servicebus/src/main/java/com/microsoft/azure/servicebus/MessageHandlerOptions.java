@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
@@ -86,7 +86,9 @@ public final class MessageHandlerOptions {
      * Gets the time to wait for receiving a message. Defaults to 1 minute.
      * @return The wait duration for receive calls.
      */
-    public Duration getMessageWaitDuration() { return this.messageWaitDuration; }
+    public Duration getMessageWaitDuration() {
+        return this.messageWaitDuration;
+    }
 
     @Override
     public String toString() {

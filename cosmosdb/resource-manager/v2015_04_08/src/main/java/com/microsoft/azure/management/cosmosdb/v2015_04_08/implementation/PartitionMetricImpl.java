@@ -17,14 +17,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MetricName;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.UnitType;
 
 class PartitionMetricImpl extends WrapperImpl<PartitionMetricInner> implements PartitionMetric {
-    private final DocumentDBManager manager;
-    PartitionMetricImpl(PartitionMetricInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    PartitionMetricImpl(PartitionMetricInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

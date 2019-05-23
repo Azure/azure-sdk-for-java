@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.primitives;
 
 /**
@@ -10,30 +9,25 @@ package com.microsoft.azure.servicebus.primitives;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  * @since 1.0
  */
-public class ServerBusyException extends ServiceBusException 
-{
-	private static final long serialVersionUID = 1L;
+public class ServerBusyException extends ServiceBusException {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default constructor for the exception
-	 */
-	public ServerBusyException()
-	{
-		super(true);
-	}
+    /**
+     * Default constructor for the exception
+     */
+    public ServerBusyException() {
+        super(true);
+    }
 
-	public ServerBusyException(final String message)
-	{
-		super(true, message);
-	}
+    public ServerBusyException(final String message) {
+        super(true, message);
+    }
 
-	ServerBusyException(final Throwable cause)
-	{
-		super(true, cause);
-	}
+    ServerBusyException(final Throwable cause) {
+        super(true, cause);
+    }
 
-	ServerBusyException(final String message, final Throwable cause)
-	{
-		super(true, message, cause);
-	}
+    ServerBusyException(final String message, final Throwable cause) {
+        super(true, message, cause);
+    }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 /**
@@ -8,8 +11,7 @@ public class SubscriptionRuntimeInfo extends EntityRuntimeInfo {
     private String subscriptionName;
     private long messageCount;
 
-    SubscriptionRuntimeInfo(String topicPath, String subscriptionName)
-    {
+    SubscriptionRuntimeInfo(String topicPath, String subscriptionName) {
         this.topicPath = topicPath;
         this.subscriptionName = subscriptionName;
         this.path = EntityNameHelper.formatSubscriptionPath(topicPath, subscriptionName);

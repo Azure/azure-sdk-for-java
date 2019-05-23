@@ -13,6 +13,8 @@ jobs:
           pomFilePath: './storage/data-plane/pom.xml'
         AzureAppConfiguration:
           pomFilePath: './applicationconfig/client/pom.xml'
+        AzureServiceBus:
+          pomFilePath: './servicebus/data-plane/pom.xml'
 
     pool:
       vmImage: 'vs2017-win2016'
@@ -49,7 +51,8 @@ jobs:
           BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
           BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
           AZCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
-
+          MICROSOFT_AD_TENANT_ID: $(microsoft-active-directory-tenant-id)
+          AZURE_SERVICEBUS_CONNECTION_STRING: $(java-servicebus-test-connection-string)
       - task: PublishTestResults@2
         condition: succeededOrFailed()
         inputs:

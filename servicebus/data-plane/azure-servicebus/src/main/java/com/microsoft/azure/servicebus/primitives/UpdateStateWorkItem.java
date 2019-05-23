@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.primitives;
 
@@ -11,12 +11,12 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 class UpdateStateWorkItem extends WorkItem<Void> {
     final DeliveryState deliveryState;
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, Duration timeout) {
+    UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, Duration timeout) {
         super(completableFuture, new TimeoutTracker(timeout, true));
         this.deliveryState = expectedOutcome;
     }
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, final TimeoutTracker tracker) {
+    UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, final TimeoutTracker tracker) {
         super(completableFuture, tracker);
         this.deliveryState = expectedOutcome;
     }

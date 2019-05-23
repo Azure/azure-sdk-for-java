@@ -1,8 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.AccessTier;
+import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobBreakLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobChangeLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse;
+import com.microsoft.azure.storage.blob.models.BlobDeleteResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobRenewLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetHTTPHeadersResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetMetadataResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetTierResponse;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobUndeleteResponse;
+import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
@@ -11,7 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a blob of any type: block, append, or page. It may be obtained by direct construction or via the
@@ -161,10 +184,10 @@ public class BlobURL extends StorageURL {
     public Single<BlobStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
-                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
-        destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+                ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
@@ -174,7 +197,7 @@ public class BlobURL extends StorageURL {
                 .withSourceIfMatch(sourceModifiedAccessConditions.ifMatch())
                 .withSourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
                 context, sourceURL, null, metadata, null, sourceConditions,
                 destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions()));
     }
@@ -224,7 +247,7 @@ public class BlobURL extends StorageURL {
             LeaseAccessConditions leaseAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
                 context, copyId, null, null, leaseAccessConditions));
     }
 
@@ -276,10 +299,10 @@ public class BlobURL extends StorageURL {
     public Single<BlobCopyFromURLResponse> syncCopyFromURL(URL copySource, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
-                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
-        destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+                ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
@@ -289,7 +312,7 @@ public class BlobURL extends StorageURL {
                 .withSourceIfMatch(sourceModifiedAccessConditions.ifMatch())
                 .withSourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().copyFromURLWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().copyFromURLWithRestResponseAsync(
                 context, copySource, null, metadata, null, sourceConditions,
                 destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions()));
     }
@@ -339,15 +362,15 @@ public class BlobURL extends StorageURL {
     public Single<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, Context context) {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
-        range = range == null ? BlobRange.DEFAULT : range;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        range = range == null ? new BlobRange() : range;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
                 .withOffset(range.offset())
                 .withCount(range.count())
                 .withETag(accessConditions.modifiedAccessConditions().ifMatch());
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
-                context, null, null, range.toString(), getMD5, null,
+        return postProcessResponse(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
+                context, null, null, range.toHeaderValue(), getMD5, null,
                 accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()))
                 // Convert the autorest response to a DownloadResponse, which enable reliable download.
@@ -356,12 +379,12 @@ public class BlobURL extends StorageURL {
                     info.withETag(response.headers().eTag());
                     return new DownloadResponse(response, info,
                             // In the event of a stream failure, make a new request to pick up where we left off.
-                            newInfo ->
-                                    this.download(new BlobRange().withOffset(newInfo.offset())
-                                                    .withCount(newInfo.count()),
-                                            new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
-                                            context == null ? Context.NONE : context));
+                        newInfo ->
+                            this.download(new BlobRange().withOffset(newInfo.offset())
+                                            .withCount(newInfo.count()),
+                                    new BlobAccessConditions().withModifiedAccessConditions(
+                                            new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
+                                    context == null ? Context.NONE : context));
                 });
     }
 
@@ -403,10 +426,10 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobDeleteResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
             BlobAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
                 context, null, null, deleteBlobSnapshotOptions, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -444,10 +467,10 @@ public class BlobURL extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
                 context, null, null, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -491,10 +514,10 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers,
             BlobAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
                 context, null, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -537,11 +560,11 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
             Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
                 context, null, metadata, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -581,11 +604,11 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
             Context context) {
-        metadata = metadata == null ? Metadata.NONE : metadata;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
                 context, null, metadata, null, accessConditions.modifiedAccessConditions(),
                 accessConditions.leaseAccessConditions()));
     }
@@ -640,7 +663,7 @@ public class BlobURL extends StorageURL {
         Utility.assertNotNull("tier", tier);
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(context, tier,
+        return postProcessResponse(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(context, tier,
                 null, null, leaseAccessConditions));
     }
 
@@ -678,7 +701,7 @@ public class BlobURL extends StorageURL {
     public Single<BlobUndeleteResponse> undelete(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(context, null,
+        return postProcessResponse(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(context, null,
                 null));
     }
 
@@ -737,7 +760,7 @@ public class BlobURL extends StorageURL {
         }
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(context,
                 null, duration, proposedID, null, modifiedAccessConditions));
     }
 
@@ -783,7 +806,7 @@ public class BlobURL extends StorageURL {
             Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -829,7 +852,7 @@ public class BlobURL extends StorageURL {
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -881,7 +904,7 @@ public class BlobURL extends StorageURL {
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(context,
                 null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
@@ -931,7 +954,7 @@ public class BlobURL extends StorageURL {
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(context,
+        return postProcessResponse(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(context,
                 leaseId, proposedID, null, null, modifiedAccessConditions));
     }
 
@@ -967,7 +990,7 @@ public class BlobURL extends StorageURL {
     public Single<BlobGetAccountInfoResponse> getAccountInfo(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedBlobs().getAccountInfoWithRestResponseAsync(context));
     }
 }

@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
@@ -49,26 +50,6 @@ public class ConfigurationSetting {
      * Creates an instance of the configuration setting.
      */
     public ConfigurationSetting() {
-    }
-
-    /**
-     * Creates a configuration setting and sets the values from the passed in parameter to this setting.
-     *
-     * @param other The configuration setting to copy values from.
-     */
-    public ConfigurationSetting(ConfigurationSetting other) {
-        this.key(other.key)
-            .label(other.label)
-            .etag(other.etag)
-            .value(other.value)
-            .contentType(other.contentType);
-
-        if (other.tags() != null) {
-            other.tags(new HashMap<>(other.tags()));
-        }
-
-        this.locked = other.isLocked();
-        this.lastModified = other.lastModified();
     }
 
     /**
@@ -212,5 +193,56 @@ public class ConfigurationSetting {
     public ConfigurationSetting tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)",
+            this.key,
+            this.label,
+            this.value,
+            this.etag);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof ConfigurationSetting)) {
+            return false;
+        }
+
+        ConfigurationSetting other = (ConfigurationSetting) o;
+
+        if (!Objects.equals(this.key, other.key)
+            || !Objects.equals(this.label, other.label)
+            || !Objects.equals(this.value, other.value)
+            || !Objects.equals(this.etag, other.etag)
+            || !Objects.equals(this.lastModified, other.lastModified)
+            || !Objects.equals(this.locked, other.locked)
+            || !Objects.equals(this.contentType, other.contentType)
+            || ImplUtils.isNullOrEmpty(this.tags) != ImplUtils.isNullOrEmpty(other.tags)) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(this.tags)) {
+            return Objects.equals(this.tags, other.tags);
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.key,
+                this.label,
+                this.value,
+                this.etag,
+                this.lastModified,
+                this.locked,
+                this.contentType,
+                this.tags);
     }
 }

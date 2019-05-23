@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
@@ -26,8 +29,9 @@ public class SubscriptionRuntimeInfoSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry")
+            if ("entry".equals(doc.getTagName())) {
                 return parseFromEntry(topicPath, doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
@@ -47,21 +51,18 @@ public class SubscriptionRuntimeInfoSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                Element element = (Element) node;
+                switch (element.getTagName()) {
                     case "title":
                         runtimeInfo = new SubscriptionRuntimeInfo(topicPath, element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "AccessedAt":
                                         runtimeInfo.setAccessedAt(Instant.parse(element.getFirstChild().getNodeValue()));
                                         break;
@@ -98,13 +99,19 @@ public class SubscriptionRuntimeInfoSerializer {
                                                     case "TransferDeadLetterMessageCount":
                                                         runtimeInfo.getMessageCountDetails().setTransferDeadLetterMessageCount(Long.parseLong(element.getFirstChild().getNodeValue()));
                                                         break;
+                                                    default:
+                                                        break;
                                                 }
                                             }
                                         }
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

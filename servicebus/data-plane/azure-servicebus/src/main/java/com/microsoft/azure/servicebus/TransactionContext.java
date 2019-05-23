@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
@@ -5,6 +8,8 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Represents an active servicebus transaction.
@@ -29,11 +34,13 @@ public class TransactionContext {
      * Represents the service-side transactionID
      * @return transaction ID
      */
-    public ByteBuffer getTransactionId() { return this.txnId; }
+    public ByteBuffer getTransactionId() {
+        return this.txnId;
+    }
 
     @Override
     public String toString() {
-        return new String(txnId.array(), txnId.position(), txnId.limit());
+        return new String(txnId.array(), txnId.position(), txnId.limit(), UTF_8);
     }
 
     /**
@@ -100,12 +107,11 @@ public class TransactionContext {
         }
     }
 
-    void registerHandler(ITransactionHandler handler)
-    {
+    void registerHandler(ITransactionHandler handler) {
         this.txnHandler = handler;
     }
 
     interface ITransactionHandler {
-        public void onTransactionCompleted(boolean commit);
+        void onTransactionCompleted(boolean commit);
     }
 }

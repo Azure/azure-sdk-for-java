@@ -5,22 +5,26 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.ConfigurationSettingPage;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.common.annotations.BodyParam;
-import com.azure.common.annotations.DELETE;
-import com.azure.common.annotations.ExpectedResponses;
-import com.azure.common.annotations.GET;
-import com.azure.common.annotations.HeaderParam;
-import com.azure.common.annotations.Host;
-import com.azure.common.annotations.HostParam;
-import com.azure.common.annotations.PUT;
-import com.azure.common.annotations.PathParam;
-import com.azure.common.annotations.QueryParam;
-import com.azure.common.annotations.ReturnValueWireType;
-import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.PagedResponse;
-import com.azure.common.http.rest.Response;
-import com.azure.common.implementation.http.ContentType;
+import com.azure.core.annotations.BodyParam;
+import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.ExpectedResponses;
+import com.azure.core.annotations.GET;
+import com.azure.core.annotations.HeaderParam;
+import com.azure.core.annotations.Host;
+import com.azure.core.annotations.HostParam;
+import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.PathParam;
+import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.ReturnValueWireType;
+import com.azure.core.annotations.Service;
+import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.http.ContentType;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -30,57 +34,73 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
+@Service("AppConfig")
 interface ConfigurationService {
     @GET("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                                      @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
-                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+                                                     Context context);
 
     @PUT("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                    @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
-                                                    @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+                                                @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
+                                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+                                                Context context);
 
     @DELETE("kv/{key}")
     @ExpectedResponses({200, 204})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> delete(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                    @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+                                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+                                                Context context);
 
     @PUT("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                          @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+                                                      @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+                                                      Context context);
 
     @DELETE("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+                                                        @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+                                                        Context context);
 
     @GET("kv")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
     Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
-                                                            @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime);
+                                                            @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
+                                                            Context context);
 
     @GET("{nextUrl}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
-    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                            Context context);
 
     @GET("revisions")
     @ExpectedResponses({200, 206})
-    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
-    Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(@HostParam("url") String url,
-                                                                    @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("$select") String fields,
-                                                                    @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(@HostParam("url") String url, @QueryParam("key") String key,
+                                                                    @QueryParam("label") String label, @QueryParam("$select") String fields,
+                                                                    @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range,
+                                                                    Context context);
 }

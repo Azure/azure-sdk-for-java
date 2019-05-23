@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-
 import java.time.Duration;
 import java.time.Instant;
 

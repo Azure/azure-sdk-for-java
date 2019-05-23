@@ -5,9 +5,9 @@ import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.models.ComplexConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.models.ComplexConfiguration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,7 +69,7 @@ public class ConfigurationSets {
 
         // For your services, you can select settings with "beta" or "production" label, depending on what you want your
         // services to communicate with. The sample below fetches all of the "beta" settings.
-        SettingSelector selector = new SettingSelector().label(BETA);
+        SettingSelector selector = new SettingSelector().labels(BETA);
 
         client.listSettings(selector).toStream().forEach(setting -> {
             System.out.println("Key: " + setting.key());
@@ -88,7 +88,7 @@ public class ConfigurationSets {
         // For the BETA and PRODUCTION sets, we fetch all of the settings we created in each set, and delete them.
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
-            .flatMap(set -> client.listSettings(new SettingSelector().label(set)))
+            .flatMap(set -> client.listSettings(new SettingSelector().labels(set)))
             .map(client::deleteSetting)
             .blockLast();
     }

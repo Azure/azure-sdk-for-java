@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.amqp;
 
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -6,7 +9,6 @@ import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
-import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
@@ -17,11 +19,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.*;
+
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ProxyConnectionHandler.class);
@@ -38,7 +48,9 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
         return isProxyAddressLegal(proxies);
     }
 
-    public ProxyConnectionHandler(IAmqpConnection messagingFactory) { super(messagingFactory); }
+    public ProxyConnectionHandler(IAmqpConnection messagingFactory) {
+        super(messagingFactory);
+    }
 
     @Override
     public void addTransportLayers(final Event event, final TransportInternal transport) {
@@ -126,7 +138,7 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
         return proxyAuthorizationHeader;
     }
 

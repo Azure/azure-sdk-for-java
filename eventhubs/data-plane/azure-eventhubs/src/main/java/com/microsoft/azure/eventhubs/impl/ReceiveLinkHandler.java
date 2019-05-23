@@ -12,18 +12,18 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
-// ServiceBus <-> ProtonReactor interaction 
-// handles all recvLink - reactor events
 public final class ReceiveLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
     private final AmqpReceiver amqpReceiver;
+    private final String receiverName;
     private final Object firstResponse;
     private boolean isFirstResponse;
 
-    public ReceiveLinkHandler(final AmqpReceiver receiver) {
-        super(receiver);
+    public ReceiveLinkHandler(final AmqpReceiver receiver, final String receiverName) {
+        super(receiver, receiverName);
 
         this.amqpReceiver = receiver;
+        this.receiverName = receiverName;
         this.firstResponse = new Object();
         this.isFirstResponse = true;
     }
@@ -32,11 +32,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
     public void onLinkLocalOpen(Event evt) {
         Link link = evt.getLink();
         if (link instanceof Receiver) {
-            Receiver receiver = (Receiver) link;
-
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(
-                        String.format("onLinkLocalOpen linkName[%s], localSource[%s]", receiver.getName(), receiver.getSource()));
+                TRACE_LOGGER.info(String.format(Locale.US, "onLinkLocalOpen receiverName[%s], linkName[%s], localSource[%s]",
+                        this.receiverName, link.getName(), link.getSource()));
             }
         }
     }
@@ -45,11 +43,10 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
     public void onLinkRemoteOpen(Event event) {
         Link link = event.getLink();
         if (link instanceof Receiver) {
-            Receiver receiver = (Receiver) link;
             if (link.getRemoteSource() != null) {
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteSource[%s]",
-                            receiver.getName(), link.getRemoteSource()));
+                    TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteOpen receiverName[%s], linkName[%s], remoteSource[%s]",
+                            this.receiverName, link.getName(), link.getRemoteSource()));
                 }
 
                 synchronized (this.firstResponse) {
@@ -58,9 +55,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                 }
             } else {
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info(
-                            String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[null], "
-                                    + "remoteSource[null], action[waitingForError]", receiver.getName()));
+                    TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteOpen receiverName[%s], linkName[%s], action[waitingForError]",
+                            this.receiverName, link.getName()));
                 }
             }
         }
@@ -90,9 +86,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                 if (TRACE_LOGGER.isWarnEnabled()) {
                     TRACE_LOGGER.warn(
                             receiveLink != null
-                                    ? String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
+                                    ? String.format(Locale.US, "onDelivery receiverName[%s], linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
                                             + "remoteCondition[%s], delivery.isSettled[%s]",
-                                    receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isSettled())
+                                    this.receiverName, receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isSettled())
                                     : String.format(Locale.US, "delivery.isSettled[%s]", delivery.isSettled()));
                 }
             } else {
@@ -102,9 +98,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
 
         if (TRACE_LOGGER.isTraceEnabled() && receiveLink != null) {
             TRACE_LOGGER.trace(
-                    String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
-                                    + "remoteCondition[%s], delivery.isPartial[%s]",
-                            receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial()));
+                    String.format(Locale.US, "onDelivery receiverName[%s], linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
+                                   + "remoteCondition[%s], delivery.isPartial[%s]",
+                            this.receiverName, receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial()));
         }
     }
 }

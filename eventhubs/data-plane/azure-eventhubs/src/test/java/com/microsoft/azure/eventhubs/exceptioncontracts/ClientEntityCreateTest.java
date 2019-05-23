@@ -15,7 +15,6 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -102,7 +101,6 @@ public class ClientEntityCreateTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Test hangs.")
     @Test()
     public void createReceiverFailsOnTransientErrorAndThenSucceedsOnRetry() throws Exception {
         final TestObject testObject = new TestObject();
@@ -171,7 +169,9 @@ public class ClientEntityCreateTest extends ApiTestBase {
 
                     testObject.isRetried = true;
                 } catch (Exception ignore) {
-                    System.out.println("this testcase depends on sendPath & tokenAudience in MessageReceiver class for faultinjection...");
+                    if (logger.isInfoEnabled()) {
+                        logger.info("this testcase depends on sendPath & tokenAudience in MessageReceiver class for FaultInjection...");
+                    }
                 }
             }
         };

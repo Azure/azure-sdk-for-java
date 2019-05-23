@@ -4,19 +4,18 @@
 package com.azure.applicationconfig.models;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
  *
  * <ul>
  *     <li>
- *         Providing {@link SettingSelector#label() label} will filter
- *         {@link ConfigurationSetting ConfigurationSettings} that match that label name in conjunction with the key
- *         that is passed in to the service request.
+ *         Providing {@link SettingSelector#labels() labels} will filter
+ *         {@link ConfigurationSetting ConfigurationSettings} that match any label name in conjunction with the keys
+ *         that are passed in to the service request.
  *     </li>
  *     <li>
  *         Providing {@link SettingSelector#acceptDateTime() acceptDateTime} will return the representation of matching
@@ -31,10 +30,11 @@ import java.util.Arrays;
  * @see ConfigurationAsyncClient
  */
 public class SettingSelector {
-    private String key;
-    private String label;
+    private String[] keys;
+    private String[] labels;
     private SettingFields[] fields;
     private String acceptDatetime;
+    private Range range;
 
     /**
      * Creates a setting selector that will populate responses with all of the
@@ -45,45 +45,46 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
+     * Gets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
      *
      * <p>
      * Examples:
      * <ol>
-     *     <li>If key = "*", settings with any key are returned.</li>
-     *     <li>If key = "abc1234", settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
-     *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
+     *     <li>If keys = "*", settings with any key are returned.</li>
+     *     <li>If keys = "abc1234", settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If keys = "abc*", settings with a key starting with "abc" are returned.</li>
+     *     <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
      * </ol>
      *
-     * @return The expression to filter ConfigurationSetting keys on.
+     * @return The expressions to filter ConfigurationSetting keys on.
      */
-    public String key() {
-        return key;
+    public String[] keys() {
+        return keys == null ? new String[0] : ImplUtils.clone(keys);
     }
 
     /**
-     * Sets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
+     * Sets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
      *
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code key = "*"}, settings with any key are returned.</li>
-     *     <li>If {@code key = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     *     <li>If {@code keys = "*"}, settings with any key are returned.</li>
+     *     <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     *     <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     *     <li>If {@code keys = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param key The expression to filter ConfigurationSetting keys on.
+     * @param keys The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
-    public SettingSelector key(String key) {
-        this.key = key;
+    public SettingSelector keys(String... keys) {
+        this.keys = keys;
         return this;
     }
 
     /**
-     * Gets the label used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
+     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
      *
      * If the value is {@code null} or an empty string, all ConfigurationSettings with
      * {@link ConfigurationSetting#NO_LABEL} are returned.
@@ -91,19 +92,20 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code label = "\0"}, settings without any label are returned.</li>
-     *     <li>If {@code label = ""}, settings without any label are returned.</li>
-     *     <li>If {@code label = null}, settings without any label are returned.</li>
-     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     *     <li>If {@code labels = "\0"}, settings without any label are returned.</li>
+     *     <li>If {@code labels = ""}, settings without any label are returned.</li>
+     *     <li>If {@code labels = null}, settings without any label are returned.</li>
+     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @return label The label used to filter GET requests from the service.
+     * @return labels The labels used to filter GET requests from the service.
      */
-    public String label() {
-        return label;
+    public String[] labels() {
+        return labels == null ? new String[0] : ImplUtils.clone(labels);
     }
 
     /**
@@ -112,19 +114,20 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code label = "\0"}, settings without any label are returned. (This is the default label.)</li>
-     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     *     <li>If {@code labels = "\0"}, settings without any label are returned. (This is the default label.)</li>
+     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
+     * @param labels The ConfigurationSetting labels to match. If the provided value is {@code null} or {@code ""}, all
      * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector label(String label) {
-        this.label = label;
+    public SettingSelector labels(String... labels) {
+        this.labels = labels;
         return this;
     }
 
@@ -158,9 +161,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] fields() {
-        return fields == null
-            ? new SettingFields[0]
-            : Arrays.copyOf(fields, fields.length);
+        return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
     }
 
     /**
@@ -174,5 +175,41 @@ public class SettingSelector {
     public SettingSelector fields(SettingFields... fields) {
         this.fields = fields;
         return this;
+    }
+
+    /**
+     * Gets the {@link Range} used to select a specific range of revisions with {@code listSettingRevisions}.
+     * If {@code null}, the service returns all revisions.
+     * @return The {@link Range} used to select a range of revisions.
+     */
+    public Range range() {
+        return range;
+    }
+
+    /**
+     * Sets the {@link Range} used to select a specific range of revisions. If null, the service returns all revisions.
+     * @param range The range of revisions to select.
+     * @return The updated SettingSelector object.
+     */
+    public SettingSelector range(Range range) {
+        this.range = range;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        String fields;
+        if (ImplUtils.isNullOrEmpty(this.fields)) {
+            fields = "ALL_FIELDS";
+        } else {
+            fields = ImplUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+        }
+
+        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
+            ImplUtils.arrayToString(this.keys, key -> key),
+            ImplUtils.arrayToString(this.labels, label -> label),
+            this.acceptDatetime,
+            fields,
+            this.range);
     }
 }

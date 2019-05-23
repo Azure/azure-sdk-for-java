@@ -7,7 +7,7 @@ package com.microsoft.azure.storage.blob;
  * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
  */
-public final class HTTPGetterInfo {
+final class HTTPGetterInfo {
     private long offset = 0;
 
     private Long count = null;

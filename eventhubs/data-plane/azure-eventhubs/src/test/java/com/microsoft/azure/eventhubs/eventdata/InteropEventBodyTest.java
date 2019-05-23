@@ -68,6 +68,10 @@ public class InteropEventBodyTest extends ApiTestBase {
             partitionMsgSender.closeSync();
         }
 
+        if (partitionSender != null) {
+            partitionSender.closeSync();
+        }
+
         if (receiver != null) {
             receiver.closeSync();
         }

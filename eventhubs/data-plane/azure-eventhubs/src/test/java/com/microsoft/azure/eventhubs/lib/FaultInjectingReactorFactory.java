@@ -24,7 +24,7 @@ public class FaultInjectingReactorFactory extends MessagingFactory.ReactorFactor
     }
 
     @Override
-    public Reactor create(final ReactorHandler reactorHandler, final int maxFrameSize) throws IOException {
+    public Reactor create(final ReactorHandler reactorHandler, final int maxFrameSize, final String name) throws IOException {
         final Reactor reactor = Proton.reactor(reactorHandler);
 
         switch (this.faultType) {
@@ -43,6 +43,10 @@ public class FaultInjectingReactorFactory extends MessagingFactory.ReactorFactor
     }
 
     public static final class NetworkOutageSimulator extends CustomIOHandler {
+
+        public NetworkOutageSimulator() {
+            super("NetworkOutageSimulator");
+        }
 
         @Override
         public void onUnhandled(final Event event) {

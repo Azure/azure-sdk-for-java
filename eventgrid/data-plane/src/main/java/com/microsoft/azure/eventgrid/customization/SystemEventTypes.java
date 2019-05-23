@@ -9,15 +9,33 @@ import com.microsoft.azure.management.apigeneration.Beta;
 public class SystemEventTypes {
     // Keep this sorted by the name of the service publishing the events.
 
+    // AppConfiguration events.
+    /**
+     * indicate an event of KeyValueDeleted in AppConfiguration.
+     */
+    public final static String APP_CONFIGURATION_KEY_VALUE_DELETED_EVENT = "Microsoft.AppConfiguration.KeyValueDeleted";
+    /**
+     * indicate an event of KeyValueModified in AppConfiguration.
+     */
+    public final static String APP_CONFIGURATION_KEY_VALUE_MODIFIED_EVENT = "Microsoft.AppConfiguration.KeyValueModified";
+
     // ContainerRegistry events.
     /**
      * indicate an event of pushing an image to container registry.
      */
     public final static String CONTAINER_REGISTRY_IMAGE_PUSHED_EVENT = "Microsoft.ContainerRegistry.ImagePushed";
     /**
-     * indicate an event of deleting an image to container registry.
+     * indicate an event of deleting an image from container registry.
      */
     public final static String CONTAINER_REGISTRY_IMAGE_DELETED_EVENT = "Microsoft.ContainerRegistry.ImageDeleted";
+    /**
+     * indicate an event of chart deletion in container registry.
+     */
+    public final static String CONTAINER_REGISTRY_CHART_DELETED_EVENT = "Microsoft.ContainerRegistry.ChartDeleted";
+    /**
+     * indicate an event of chart pushed in container registry.
+     */
+    public final static String CONTAINER_REGISTRY_CHART_PUSHED_EVENT = "Microsoft.ContainerRegistry.ChartPushed";
 
     // Device events.
     /**
@@ -36,6 +54,10 @@ public class SystemEventTypes {
      * indicate an event of disconnecting an IoT hub device.
      */
     public final static String IOT_HUB_DEVICE_DISCONNECTED_EVENT = "Microsoft.Devices.DeviceDisconnected";
+    /**
+     * indicate an event of telemetry from an IoT hub device.
+     */
+    public final static String IOT_HUB_DEVICE_TELEMETRY_EVENT = "Microsoft.Devices.DeviceTelemetry";
 
     // EventGrid events.
     /**
@@ -53,11 +75,143 @@ public class SystemEventTypes {
      */
     public final static String EVENT_HUB_CAPTURE_FILE_CREATED_EVENT = "Microsoft.EventHub.CaptureFileCreated";
 
+    // Maps Events.
+    /**
+     * Maps GeoFence Entered Event.
+     */
+    public final static String MAPS_GEOFENCE_ENTERED = "Microsoft.Maps.GeofenceEntered";
+
+    /**
+     * Maps GeoFence Exited Event.
+     */
+    public final static String MAPS_GEOFENCE_EXITED = "Microsoft.Maps.GeofenceExited";
+
+    /**
+     * Maps GeoFence Result Event.
+     */
+    public final static String MAPS_GEOFENCE_RESULT = "Microsoft.Maps.GeofenceResult";
+
     // Media Services events.
     /**
-     * indicate an event of change of media service job state.
+     * Media Services Job Canceled Event.
+     */
+    public final static String MEDIA_JOB_CANCELED_EVENT = "Microsoft.Media.JobCanceled";
+
+    /**
+     * Media Services Job Canceling Event.
+     */
+    public final static String MEDIA_JOB_CANCELING_EVENT = "Microsoft.Media.JobCanceling";
+
+    /**
+     * Media Services Job Errored event.
+     */
+    public final static String MEDIA_JOB_ERRORED_EVENT = "Microsoft.Media.JobErrored";
+
+    /**
+     * Media Services Job Finished event.
+     */
+    public final static String MEDIA_JOB_FINISHED_EVENT = "Microsoft.Media.JobFinished";
+
+    /**
+     * Media Services Job Ouput Canceled event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_CANCELED_EVENT = "Microsoft.Media.JobOutputCanceled";
+
+    /**
+     * Media Services Job Output Canceling event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_CANCELING_EVENT = "Microsoft.Media.JobOutputCanceling";
+
+    /**
+     * Media Services Job Output Errored event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_ERRORED_EVENT = "Microsoft.Media.JobOutputErrored";
+
+    /**
+     * Media Services Job Output Finished event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_FINISHED_EVENT = "Microsoft.Media.JobOutputFinished";
+
+    /**
+     * Media Services Job Output Processing event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_PROCESSING_EVENT = "Microsoft.Media.JobOutputProcessing";
+
+    /**
+     * Media Services Job Output Progress event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_PROGRESS_EVENT = "Microsoft.Media.JobOutputProgress";
+
+    /**
+     * Media Services Job Output Scheduled event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_SCHEDULED_EVENT = "Microsoft.Media.JobOutputScheduled";
+
+    /**
+     * Media Services Job Output State Change event.
+     */
+    public final static String MEDIA_JOB_OUTPUT_STATE_CHANGE_EVENT = "Microsoft.Media.JobOutputStateChange";
+
+    /**
+     * Media Services Job Processing event.
+     */
+    public final static String MEDIA_JOB_PROCESSING_EVENT = "Microsoft.Media.JobProcessing";
+
+    /**
+     * Media Services Job Scheduled event.
+     */
+    public final static String MEDIA_JOB_SCHEDULED_EVENT = "Microsoft.Media.JobScheduled";
+
+    /**
+     * Media Services Job State Change event.
      */
     public final static String MEDIA_JOB_STATE_CHANGE_EVENT = "Microsoft.Media.JobStateChange";
+
+    /**
+     * Media Services Live Event Connection Rejected event.
+     */
+    public final static String MEDIA_LIVE_EVENT_CONNECTION_REJECTED_EVENT = "Microsoft.Media.LiveEventConnectionRejected";
+
+    /**
+     * Media Services Live Event Encoder Connected event.
+     */
+    public final static String MEDIA_LIVE_EVENT_ENCODER_CONNECTED_EVENT = "Microsoft.Media.LiveEventEncoderConnected";
+
+    /**
+     * Media Services Live Event Encoder Disconnected event.
+     */
+    public final static String MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED_EVENT = "Microsoft.Media.LiveEventEncoderDisconnected";
+
+    /**
+     * Media Services Live Event Incoming Data Chunk Dropped event.
+     */
+    public final static String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED_EVENT = "Microsoft.Media.LiveEventIncomingDataChunkDropped";
+
+    /**
+     * Media Services Live Event Incoming Stream Received event.
+     */
+    public final static String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED_EVENT = "Microsoft.Media.LiveEventIncomingStreamReceived";
+
+    /**
+     * Media Services Live Event Incoming Streams OutofSync event.
+     */
+    public final static String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC_EVENT = "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
+
+    /**
+     * Media Services Live Event Incoming Video Streams OutOfSync event.
+     */
+    public final static String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC_EVENT = "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
+
+    /**
+     * Media Services Live Event Ingest Heartbeat event.
+     */
+    public final static String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT_EVENT = "Microsoft.Media.LiveEventIngestHeartbeat";
+
+    /**
+     * Media Services Live Event Track Discontinuity Detected event.
+     */
+    public final static String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED_EVENT = "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
+
 
     // Resource Manager (Azure Subscription/Resource Group) events
     /**

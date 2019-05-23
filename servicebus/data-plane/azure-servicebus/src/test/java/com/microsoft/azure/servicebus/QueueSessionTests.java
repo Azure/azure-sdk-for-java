@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
@@ -10,11 +13,10 @@ import java.util.concurrent.ExecutionException;
 
 import static com.microsoft.azure.servicebus.TestCommons.SHORT_WAIT_TIME;
 
-public class QueueSessionTests extends SessionTests
-{
+public class QueueSessionTests extends SessionTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSessionTests";
+        return "QueueSessionTests";
     }
 
     @Override

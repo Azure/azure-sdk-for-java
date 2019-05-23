@@ -76,6 +76,14 @@ public final class AppendBlobAppendBlockHeaders {
     private Integer blobCommittedBlockCount;
 
     /**
+     * The value of this header is set to true if the contents of the request
+     * are successfully encrypted using the specified algorithm, and false
+     * otherwise.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean isServerEncrypted;
+
+    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -246,6 +254,26 @@ public final class AppendBlobAppendBlockHeaders {
      */
     public AppendBlobAppendBlockHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
+        return this;
+    }
+
+    /**
+     * Get the isServerEncrypted value.
+     *
+     * @return the isServerEncrypted value.
+     */
+    public Boolean isServerEncrypted() {
+        return this.isServerEncrypted;
+    }
+
+    /**
+     * Set the isServerEncrypted value.
+     *
+     * @param isServerEncrypted the isServerEncrypted value to set.
+     * @return the AppendBlobAppendBlockHeaders object itself.
+     */
+    public AppendBlobAppendBlockHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 }

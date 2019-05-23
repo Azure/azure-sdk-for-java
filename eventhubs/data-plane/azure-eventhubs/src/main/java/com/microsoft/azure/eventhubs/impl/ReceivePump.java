@@ -8,6 +8,7 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
@@ -55,8 +56,8 @@ public class ReceivePump implements Runnable {
         } catch (final Exception exception) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error(
-                        String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
-                                        + "encountered unrecoverable error and exited with exception %s.",
+                        String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                                + "encountered unrecoverable error and exited with exception %s.",
                                 this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), exception.toString()));
             }
 
@@ -71,7 +72,7 @@ public class ReceivePump implements Runnable {
                     .handleAsync(this.processAndReschedule, this.executor);
         } else {
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("Stopping receive pump for eventHub (%s), consumerGroup (%s), partition (%s) as %s",
+                TRACE_LOGGER.info(String.format(Locale.US, "Stopping receive pump for eventHub (%s), consumerGroup (%s), partition (%s) as %s",
                         this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(),
                         this.stopPumpRaised.get() ? "per the request." : "pump ran into errors."));
             }
@@ -111,7 +112,7 @@ public class ReceivePump implements Runnable {
         this.isPumpHealthy = false;
         if (TRACE_LOGGER.isErrorEnabled()) {
             TRACE_LOGGER.error(
-                    String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                    String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
                                     + "exiting after user-code exception %s",
                             this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), userCodeException.toString()));
         }
@@ -120,7 +121,7 @@ public class ReceivePump implements Runnable {
 
         if (userCodeException instanceof InterruptedException) {
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("Interrupting receive pump for eventHub (%s), consumerGroup (%s),  partition (%s)",
+                TRACE_LOGGER.info(String.format(Locale.US, "Interrupting receive pump for eventHub (%s), consumerGroup (%s),  partition (%s)",
                         this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId()));
             }
 

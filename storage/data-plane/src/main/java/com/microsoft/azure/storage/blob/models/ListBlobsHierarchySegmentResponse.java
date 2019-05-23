@@ -28,25 +28,25 @@ public final class ListBlobsHierarchySegmentResponse {
     /**
      * The prefix property.
      */
-    @JsonProperty(value = "Prefix", required = true)
+    @JsonProperty(value = "Prefix")
     private String prefix;
 
     /**
      * The marker property.
      */
-    @JsonProperty(value = "Marker", required = true)
+    @JsonProperty(value = "Marker")
     private String marker;
 
     /**
      * The maxResults property.
      */
-    @JsonProperty(value = "MaxResults", required = true)
-    private int maxResults;
+    @JsonProperty(value = "MaxResults")
+    private Integer maxResults;
 
     /**
      * The delimiter property.
      */
-    @JsonProperty(value = "Delimiter", required = true)
+    @JsonProperty(value = "Delimiter")
     private String delimiter;
 
     /**
@@ -58,7 +58,7 @@ public final class ListBlobsHierarchySegmentResponse {
     /**
      * The nextMarker property.
      */
-    @JsonProperty(value = "NextMarker", required = true)
+    @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
     /**
@@ -146,7 +146,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int maxResults() {
+    public Integer maxResults() {
         return this.maxResults;
     }
 
@@ -156,7 +156,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withMaxResults(int maxResults) {
+    public ListBlobsHierarchySegmentResponse withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }

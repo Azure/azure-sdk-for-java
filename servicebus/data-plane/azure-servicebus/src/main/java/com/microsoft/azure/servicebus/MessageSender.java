@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -74,8 +74,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info("Creating MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
                 }
-                factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(this.namespaceEndpointURI, this.clientSettings).thenAcceptAsync((f) ->
-                {
+                factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(this.namespaceEndpointURI, this.clientSettings).thenAcceptAsync((f) -> {
                     this.messagingFactory = f;
                     if (TRACE_LOGGER.isInfoEnabled()) {
                         TRACE_LOGGER.info("Created MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
@@ -85,8 +84,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
                 factoryFuture = CompletableFuture.completedFuture(null);
             }
 
-            return factoryFuture.thenComposeAsync((v) ->
-            {
+            return factoryFuture.thenComposeAsync((v) -> {
                 TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
                 CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath, this.entityType);
                 CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
@@ -112,7 +110,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
         }
     }
 
-    final CoreMessageSender getInternalSender() {
+    CoreMessageSender getInternalSender() {
         return this.internalSender;
     }
 
@@ -166,8 +164,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     protected CompletableFuture<Void> onClose() {
         if (this.isInitialized) {
             TRACE_LOGGER.info("Closing message sender to entity '{}'", this.entityPath);
-            return this.internalSender.closeAsync().thenComposeAsync((v) ->
-            {
+            return this.internalSender.closeAsync().thenComposeAsync((v) -> {
                 TRACE_LOGGER.info("Closed message sender to entity '{}'", this.entityPath);
                 if (MessageSender.this.ownsMessagingFactory) {
                     if (TRACE_LOGGER.isInfoEnabled()) {

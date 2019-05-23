@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.rules;
 
@@ -197,7 +197,7 @@ public class CorrelationFilter extends Filter {
             return false;
         }
 
-        CorrelationFilter other = (CorrelationFilter)o;
+        CorrelationFilter other = (CorrelationFilter) o;
 
         if ((this.correlationId == null ? other.correlationId == null : this.correlationId.equals(other.correlationId))
                 && (this.messageId == null ? other.messageId == null : this.messageId.equals(other.messageId))

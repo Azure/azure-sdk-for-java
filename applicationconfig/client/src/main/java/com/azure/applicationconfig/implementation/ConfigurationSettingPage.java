@@ -3,7 +3,7 @@
 package com.azure.applicationconfig.implementation;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.common.http.rest.Page;
+import com.azure.core.http.rest.Page;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

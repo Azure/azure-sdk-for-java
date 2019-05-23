@@ -3,20 +3,22 @@
 
 package com.microsoft.azure.eventhubs.lib.mock;
 
-import com.microsoft.azure.eventhubs.lib.TestBase;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.reactor.Acceptor;
 import org.apache.qpid.proton.reactor.Reactor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.logging.Level;
 
 /**
  * Mock Server (Singleton) designed to test AMQP related features in the Java client.
  */
 public final class MockServer implements Closeable {
+    private final Logger logger = LoggerFactory.getLogger(MockServer.class);
+
     private static final String HOST_NAME = "127.0.0.1";
     private static final int PORT = 5671;
 
@@ -29,8 +31,8 @@ public final class MockServer implements Closeable {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (TestBase.TEST_LOGGER.isLoggable(Level.FINE)) {
-                    TestBase.TEST_LOGGER.log(Level.FINE, "starting reactor instance.");
+                if (logger.isTraceEnabled()) {
+                    logger.trace("starting reactor instance.");
                 }
 
                 reactor.run();
@@ -42,8 +44,7 @@ public final class MockServer implements Closeable {
     }
 
     public static MockServer create(BaseHandler handler) throws IOException {
-        MockServer server = new MockServer(handler);
-        return server;
+        return new MockServer(handler);
     }
 
     @Override

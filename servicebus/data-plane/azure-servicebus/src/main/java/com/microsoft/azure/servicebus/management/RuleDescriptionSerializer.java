@@ -1,11 +1,25 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.microsoft.azure.servicebus.rules.*;
+import com.microsoft.azure.servicebus.rules.CorrelationFilter;
+import com.microsoft.azure.servicebus.rules.FalseFilter;
+import com.microsoft.azure.servicebus.rules.Filter;
+import com.microsoft.azure.servicebus.rules.RuleAction;
+import com.microsoft.azure.servicebus.rules.RuleDescription;
+import com.microsoft.azure.servicebus.rules.SqlFilter;
+import com.microsoft.azure.servicebus.rules.SqlRuleAction;
+import com.microsoft.azure.servicebus.rules.TrueFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +36,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 class RuleDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RuleDescriptionSerializer.class);
@@ -81,13 +97,13 @@ class RuleDescriptionSerializer {
 
     private static Element serializeFilter(Document doc, Filter filter) throws ServiceBusException {
         if (filter instanceof TrueFilter) {
-            return serializeSqlFilter(doc, (SqlFilter)filter, "TrueFilter");
+            return serializeSqlFilter(doc, (SqlFilter) filter, "TrueFilter");
         } else if (filter instanceof FalseFilter) {
-            return serializeSqlFilter(doc, (SqlFilter)filter, "FalseFilter");
+            return serializeSqlFilter(doc, (SqlFilter) filter, "FalseFilter");
         } else if (filter instanceof SqlFilter) {
-            return serializeSqlFilter(doc, (SqlFilter)filter, "SqlFilter");
+            return serializeSqlFilter(doc, (SqlFilter) filter, "SqlFilter");
         } else if (filter instanceof CorrelationFilter) {
-            return serializeCorrelationFilter(doc, (CorrelationFilter)filter);
+            return serializeCorrelationFilter(doc, (CorrelationFilter) filter);
         }
 
         return null;
@@ -105,8 +121,8 @@ class RuleDescriptionSerializer {
 
     private static Element serializeCorrelationFilter(Document doc, CorrelationFilter filter) throws ServiceBusException {
         if (filter.getProperties() != null) {
-            throw new ServiceBusException(false, new UnsupportedOperationException("Correlation rules with custom properties " +
-                    "is not yet implemented with ManagementClient"));
+            throw new ServiceBusException(false, new UnsupportedOperationException("Correlation rules with custom properties "
+                + "is not yet implemented with ManagementClient"));
         }
 
         Element filterElement = doc.createElementNS(ManagementClientConstants.SB_NS, "Filter");
@@ -210,11 +226,12 @@ class RuleDescriptionSerializer {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
+            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes(UTF_8)));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName() == "entry")
+            if ("entry".equals(doc.getTagName())) {
                 return parseFromEntry(doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
@@ -234,21 +251,18 @@ class RuleDescriptionSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                Element element = (Element) node;
+                switch (element.getTagName()) {
                     case "title":
                         rd = new RuleDescription(element.getFirstChild().getNodeValue());
                         break;
                     case "content":
                         NodeList qdNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < qdNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < qdNodes.getLength(); j++) {
                             node = qdNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "Name":
                                         rd.setName(element.getFirstChild().getNodeValue());
                                         break;
@@ -258,9 +272,13 @@ class RuleDescriptionSerializer {
                                     case "Action":
                                         rd.setAction(parseActionFromElement(element));
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }
@@ -307,6 +325,8 @@ class RuleDescriptionSerializer {
                 switch (element.getTagName()) {
                     case "SqlExpression":
                         return new SqlFilter(element.getFirstChild().getNodeValue());
+                    default:
+                        break;
                 }
             }
         }
@@ -345,6 +365,8 @@ class RuleDescriptionSerializer {
                         break;
                     case "ContentType":
                         filter.setContentType(element.getFirstChild().getNodeValue());
+                        break;
+                    default:
                         break;
                     // todo: parse properties
                 }
@@ -386,6 +408,8 @@ class RuleDescriptionSerializer {
                 switch (element.getTagName()) {
                     case "SqlExpression":
                         return new SqlRuleAction(element.getFirstChild().getNodeValue());
+                    default:
+                        break;
                 }
             }
         }

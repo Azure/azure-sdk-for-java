@@ -14,9 +14,6 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
-import org.junit.Assume
-import org.reactivestreams.Publisher
-import org.reactivestreams.Subscriber
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -29,6 +26,7 @@ class TransferManagerTest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
+
         /*
         We just print something out in between each test to keep Travis from being idle for too long. The tests seem
         to run slower on Travis, and without this keep-alive, it may exceed the 10 minutes of no output and error the
@@ -40,26 +38,29 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file"() {
         setup:
+        def file = getRandomFile(fileSize)
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
-                bu, (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
+                bu, (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10), null,
                 new TransferManagerUploadToBlockBlobOptions(null, null, null, null, 20)).blockingGet()
 
         then:
         responseType.isInstance(response.response()) // Ensure we did the correct type of operation.
         validateBasicHeaders(response)
-        compareDataToFile(bu.download(null, null, false, null).blockingGet().body(null), file)
+        compareDataToFile(bu.download(new BlobRange().withCount(fileSize), null, false, null)
+                .blockingGet().body(null), file)
 
         cleanup:
         channel.close()
 
         where:
-        file                                                  || responseType
-        getRandomFile(10)                                     || BlockBlobUploadResponse // Single shot
-        getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1) || BlockBlobCommitBlockListResponse // Multi part
+        fileSize                               || responseType
+        0                                      || BlockBlobUploadResponse // Empty file
+        10                                     || BlockBlobUploadResponse // Single shot
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1 || BlockBlobCommitBlockListResponse // Multi part
     }
 
     def compareDataToFile(Flowable<ByteBuffer> data, File file) {
@@ -81,7 +82,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload file illegal arguments null"() {
         when:
-        TransferManager.uploadFileToBlockBlob(file, url, 5, null).blockingGet()
+        TransferManager.uploadFileToBlockBlob(file, url, 5, null, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -98,8 +99,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath())
 
         when:
-        TransferManager.uploadFileToBlockBlob(channel, bu,
-                blockLength, null).blockingGet()
+        TransferManager.uploadFileToBlockBlob(channel, bu, blockLength, null, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -114,6 +114,82 @@ class TransferManagerTest extends APISpec {
         10                                     | BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 // Too many blocks.
     }
 
+    @Unroll
+    def "Upload file headers"() {
+        setup:
+        // We have to use the defaultData here so we can calculate the MD5 on the uploadBlob case.
+        File file = File.createTempFile("testUpload", ".txt")
+        file.deleteOnExit()
+        if (fileSize == "small") {
+            FileOutputStream fos = new FileOutputStream(file)
+            fos.write(defaultData.array())
+            fos.close()
+        } else {
+            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10)
+        }
+
+        def channel = AsynchronousFileChannel.open(file.toPath())
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+            new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
+                .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
+                .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
+                .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null))
+            .blockingGet()
+
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
+
+        then:
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+            fileSize == "small" ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5,
+            contentType == null ? "application/octet-stream" : contentType)
+        // For uploading a block blob single-shot, the service will auto calculate an MD5 hash if not present.
+        // HTTP default content type is application/octet-stream.
+
+        cleanup:
+        channel.close()
+
+        where:
+        // The MD5 is simply set on the blob for commitBlockList, not validated.
+        fileSize | cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        "small"  | null         | null               | null            | null            | null                                                         | null
+        "small"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        "large"  | null         | null               | null            | null            | null                                                         | null
+        "large"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    @Unroll
+    def "Upload file metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+            new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
+
+        then:
+        response.statusCode() == 200
+        response.headers().metadata() == metadata
+
+        cleanup:
+        channel.close()
+
+        where:
+        dataSize                                | key1  | value1 | key2   | value2
+        10                                      | null  | null   | null   | null
+        10                                      | "foo" | "bar"  | "fizz" | "buzz"
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null  | null   | null   | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | "foo" | "bar"  | "fizz" | "buzz"
+    }
 
     @Unroll
     def "Upload file AC"() {
@@ -128,7 +204,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         expect:
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
                 new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null))
                 .blockingGet().statusCode() == 201
 
@@ -164,7 +240,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         when:
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
                 new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null)).blockingGet()
 
         then:
@@ -231,7 +307,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
-        TransferManager.uploadFileToBlockBlob(channel, bu, 50, null).blockingGet()
+        TransferManager.uploadFileToBlockBlob(channel, bu, 50, null, null).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -241,6 +317,33 @@ class TransferManagerTest extends APISpec {
         channel.close()
     }
 
+    def "Upload single shot size"() {
+        setup:
+        AsynchronousFileChannel channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath())
+
+        when:
+        def response = TransferManager.uploadFileToBlockBlob(channel, bu, 50, defaultDataSize - 1, null).blockingGet()
+
+        then:
+        // The fact that we did a commit block list on such a small blob indicates that the options were respected.
+        response.response() instanceof BlockBlobCommitBlockListResponse
+    }
+
+    def "Upload single shot size fail"() {
+        when:
+        TransferManager.uploadFileToBlockBlob(AsynchronousFileChannel.open(getRandomFile(0).toPath()), bu, 50,
+                maxSingleShot, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        maxSingleShot                          | _
+        -1                                     | _
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1 | _
+    }
+
+    @Unroll
     def "Upload options fail"() {
         when:
         new TransferManagerUploadToBlockBlobOptions(null, null, null, null, -1)
@@ -263,7 +366,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
-                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
                 new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
 
         then:
@@ -301,7 +404,7 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel,
-                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
                 new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
 
         then:
@@ -333,13 +436,14 @@ class TransferManagerTest extends APISpec {
     def "Download file"() {
         setup:
         def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
 
         when:
-        def headers = TransferManager.downloadBlobToFile(outChannel, bu, null, null).blockingGet()
+        def headers = TransferManager.downloadBlobToFile(outChannel, bu, null,
+                new TransferManagerDownloadFromBlobOptions(4 * 1024 * 1024L, null, null, null, null)).blockingGet()
 
         then:
         compareFiles(channel, 0, channel.size(), outChannel)
@@ -351,10 +455,10 @@ class TransferManagerTest extends APISpec {
 
         where:
         file                                | _
+        getRandomFile(0)                    | _ // empty file
         getRandomFile(20)                   | _ // small file
         getRandomFile(16 * 1024 * 1024)     | _ // medium file in several chunks
         getRandomFile(8 * 1026 * 1024 + 10) | _ // medium file not aligned to block
-        getRandomFile(0)                    | _ // empty file
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
@@ -386,10 +490,8 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file range"() {
         setup:
-        System.out.println("Download file range")
         def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
-                .blockingGet()
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null).blockingGet()
         File outFile = getRandomFile(0)
         def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
@@ -404,12 +506,46 @@ class TransferManagerTest extends APISpec {
         channel.close()
         outChannel.close()
 
+        /*
+        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
+        send off parallel requests with invalid ranges.
+         */
         where:
-        file                           | range                                                        | dataSize
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize)                   | defaultDataSize
-        getRandomFile(defaultDataSize) | new BlobRange().withOffset(1).withCount(defaultDataSize - 1) | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize - 1)               | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(10L * 1024 * 1024 * 1024)          | defaultDataSize
+        file                           | range
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize) // Exact count
+        getRandomFile(defaultDataSize) | new BlobRange().withOffset(1).withCount(defaultDataSize - 1) // Offset and exact count
+        getRandomFile(defaultDataSize) | new BlobRange().withOffset(3).withCount(2) // Narrow range in middle
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize - 1) // Count that is less than total
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(10L * 1024 * 1024 * 1024) // Count much larger than remaining data
+    }
+
+    /*
+    This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
+     */
+
+    @Unroll
+    def "Download file range fail"() {
+        setup:
+        def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null).blockingGet()
+        File outFile = getRandomFile(0)
+        def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        when:
+        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange().withOffset(offset).withCount(count), null)
+                .blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        cleanup:
+        channel.close()
+        outChannel.close()
+
+        where:
+        file                           | offset              | count
+        getRandomFile(defaultDataSize) | defaultDataSize + 1 | null
     }
 
     def "Download file count null"() {
@@ -435,7 +571,7 @@ class TransferManagerTest extends APISpec {
         setup:
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
@@ -473,7 +609,7 @@ class TransferManagerTest extends APISpec {
         setup:
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
@@ -555,7 +691,7 @@ class TransferManagerTest extends APISpec {
         setup:
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
@@ -581,47 +717,10 @@ class TransferManagerTest extends APISpec {
     }
 
     @Unroll
-    def "Download file IA null"() {
-        when:
-        if(file != null) {
-            TransferManager.downloadBlobToFile(AsynchronousFileChannel.open(file.toPath()), blobURL, null, null).blockingGet()
-        } else {
-            TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
-        }
-        then:
-        thrown(IllegalArgumentException)
-
-        /*
-        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
-        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
-        bu property for the url.
-         */
-        where:
-        file                                                     | blobURL
-        null                                                     | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-        getRandomFile(10) | null
-    }
-
-    @Unroll
-    def "Download options fail"() {
-        when:
-        new TransferManagerDownloadFromBlobOptions(blockSize, null, null, null, parallelism
-        )
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        parallelism | blockSize
-        0           | 40
-        2           | 0
-    }
-
-    def "Download options progress receiver"() {
-        def fileSize = 8 * 1026 * 1024 + 10
+    def "Download file progress receiver"() {
         def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath(),
                 StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
@@ -658,6 +757,30 @@ class TransferManagerTest extends APISpec {
 
         cleanup:
         channel.close()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
+    @Unroll
+    def "Download file IA null"() {
+        when:
+        TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        /*
+        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
+        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
+        bu property for the url.
+         */
+        where:
+        file                                                     | blobURL
+        null                                                     | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+        AsynchronousFileChannel.open(getRandomFile(10).toPath()) | null
     }
 
     @Unroll
@@ -683,8 +806,8 @@ class TransferManagerTest extends APISpec {
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10
         500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5
+        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
         10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7
-        100 * 1024 * 1024 | 10 * 1024 * 1024  | 4        || 10
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -939,5 +1062,36 @@ class TransferManagerTest extends APISpec {
         def e = thrown(StorageException)
         e.statusCode() == 500
     }
-}
 
+    // Test that, when we are downloading a small file, we only make a single Download call and no HEAD request
+    def "Download file single shot optimization"() {
+        setup:
+        /*
+        A spy allows us to put constraints on method invoations for a real object instead of a mock object.
+         */
+        def spyBu = Spy(BlobURL, constructorArgs: [bu.toURL(), StorageURL.createPipeline(primaryCreds)])
+
+        when:
+        TransferManager.downloadBlobToFile(AsynchronousFileChannel.open(getRandomFile(0).toPath()), spyBu,
+                new BlobRange().withOffset(0).withCount(5L), null)
+
+        then:
+        0 * spyBu.getProperties(*_)
+        1 * spyBu.download(*_)
+    }
+
+    @Unroll
+    def "Download options fail"() {
+        when:
+        new TransferManagerDownloadFromBlobOptions(blockSize, null, null, null, parallelism
+        )
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        parallelism | blockSize
+        0           | 40
+        2           | 0
+    }
+}

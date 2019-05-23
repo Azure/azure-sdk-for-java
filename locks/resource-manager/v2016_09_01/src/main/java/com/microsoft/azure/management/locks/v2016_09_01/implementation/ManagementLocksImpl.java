@@ -167,6 +167,24 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
     }
 
     @Override
+    public Observable<ManagementLockObject> listByScopeAsync(final String scope) {
+        ManagementLocksInner client = this.inner();
+        return client.listByScopeAsync(scope)
+        .flatMapIterable(new Func1<Page<ManagementLockObjectInner>, Iterable<ManagementLockObjectInner>>() {
+            @Override
+            public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ManagementLockObjectInner, ManagementLockObject>() {
+            @Override
+            public ManagementLockObject call(ManagementLockObjectInner inner) {
+                return new ManagementLockObjectImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public PagedList<ManagementLockObject> list() {
         ManagementLocksInner client = this.inner();
         return converter.convert(client.list());

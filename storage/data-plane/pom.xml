@@ -6,29 +6,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-client-sdk-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../pom.client.xml</relativePath>
+  <parent>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-client-sdk-parent</artifactId>
+      <version>1.0.0</version>
+      <relativePath>../../pom.client.xml</relativePath>
     </parent>
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>10.5.0</version>
+    <version>11.0.1</version>
 
     <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <distributionManagement>
-        <site>
-            <id>azure-java-build-docs</id>
-            <url>${site.url}/site/${project.artifactId}</url>
-        </site>
+      <site>
+        <id>azure-java-build-docs</id>
+        <url>${site.url}/site/${project.artifactId}</url>
+      </site>
     </distributionManagement>
 
-    <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+    <scm>
+      <url>https://github.com/Azure/azure-sdk-for-java</url>
+    </scm>
 
     <pluginRepositories>
         <pluginRepository>
@@ -45,36 +47,26 @@
     </pluginRepositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
             <artifactId>client-runtime</artifactId>
         </dependency>
 
         <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>adal4j</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Adding latest Netty as a temporary override of netty lib in v2 runtime.
-        The old version prevents tests from running in Java 11. Issue is raised to have netty updated in v2 runtime
-         Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3107 -->
-        <dependency>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-all</artifactId>
-          <version>${netty-all.version}</version>
-        </dependency>
-
-        <dependency>
-          <groupId>com.corundumstudio.socketio</groupId>
-          <artifactId>netty-socketio</artifactId>
-          <version>${netty-socketio.version}</version>
         </dependency>
 
         <dependency>
@@ -94,8 +86,6 @@
             <artifactId>slf4j-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-
 
     </dependencies>
 

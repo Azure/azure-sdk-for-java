@@ -283,16 +283,21 @@ class PartitionManager extends Closable {
         TRACE_LOGGER.debug(this.hostContext.withHost("Starting lease scan"));
         long start = System.currentTimeMillis();
 
-        (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
+        try {
+            (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
                 .whenCompleteAsync((didSteal, e) -> {
                     TRACE_LOGGER.debug(this.hostContext.withHost("Scanning took " + (System.currentTimeMillis() - start)));
+
+                    if ((e != null) && !(e instanceof ClosingException)) {
+                        TRACE_LOGGER.warn(this.hostContext.withHost("Lease scanner got exception"), e);
+                    }
 
                     onPartitionCheckCompleteTestHook();
 
                     // Schedule the next scan unless we are shutting down.
                     if (!this.getIsClosingOrClosed()) {
                         int seconds = didSteal ? this.hostContext.getPartitionManagerOptions().getFastScanIntervalInSeconds()
-                                : this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
+                            : this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
                         if (isFirst) {
                             seconds = this.hostContext.getPartitionManagerOptions().getStartupScanDelayInSeconds();
                         }
@@ -301,9 +306,19 @@ class PartitionManager extends Closable {
                         }
                         TRACE_LOGGER.debug(this.hostContext.withHost("Scheduling lease scanner in " + seconds));
                     } else {
-                        TRACE_LOGGER.debug(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
+                        TRACE_LOGGER.warn(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
                     }
                 }, this.hostContext.getExecutor());
+        } catch (Exception e) {
+            TRACE_LOGGER.error(this.hostContext.withHost("Lease scanner threw directly"), e);
+            if (!this.getIsClosingOrClosed()) {
+                int seconds = this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
+                synchronized (this.scanFutureSynchronizer) {
+                    this.scanFuture = this.hostContext.getExecutor().schedule(() -> scan(false), seconds, TimeUnit.SECONDS);
+                }
+                TRACE_LOGGER.debug(this.hostContext.withHost("Forced schedule of lease scanner in " + seconds));
+            }
+        }
 
         return null;
     }

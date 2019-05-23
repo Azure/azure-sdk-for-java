@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import java.time.Duration;
+import java.util.Locale;
 
 public class SasTokenTestBase extends ApiTestBase {
 
@@ -24,7 +25,7 @@ public class SasTokenTestBase extends ApiTestBase {
                 .setSharedAccessSignature(
                         SharedAccessSignatureTokenProvider.generateSharedAccessSignature(originalConnectionString.getSasKeyName(),
                                 originalConnectionString.getSasKey(),
-                                String.format("amqp://%s/%s", originalConnectionString.getEndpoint().getHost(), originalConnectionString.getEventHubName()),
+                                String.format(Locale.US, "amqp://%s/%s", originalConnectionString.getEndpoint().getHost(), originalConnectionString.getEventHubName()),
                                 Duration.ofDays(1))
                 )
                 .toString();

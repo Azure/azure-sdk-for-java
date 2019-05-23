@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus;
 
@@ -14,7 +14,7 @@ import com.microsoft.azure.servicebus.primitives.ClientEntity;
  */
 abstract class InitializableEntity extends ClientEntity {
 
-    //TODO Init and close semantics are primitive now. Fix them with support for other states like Initializing, Closing, and concurrency.
+    //TODO: Init and close semantics are primitive now. Fix them with support for other states like Initializing, Closing, and concurrency.
     protected InitializableEntity(String clientId) {
         super(clientId);
     }

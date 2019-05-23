@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.IMessage;
@@ -33,8 +36,7 @@ public class SubscriptionDescription {
      * @param subscriptionName - Name of the subscription
      *                         Max length is 50 chars. Cannot have restricted characters: '@','?','#','*','/'
      */
-    public SubscriptionDescription(String topicPath, String subscriptionName)
-    {
+    public SubscriptionDescription(String topicPath, String subscriptionName) {
         this.setTopicPath(topicPath);
         this.setSubscriptionName(subscriptionName);
     }
@@ -84,8 +86,7 @@ public class SubscriptionDescription {
      * so that no other receiver receives the same message.
      * @return The duration of a peek lock. Default value is 60 seconds.
      */
-    public Duration getLockDuration()
-    {
+    public Duration getLockDuration() {
         return this.lockDuration;
     }
 
@@ -94,8 +95,10 @@ public class SubscriptionDescription {
      * so that no other receiver receives the same message.
      * @param lockDuration - The duration of a peek lock. Max value is 5 minutes.
      */
-    public void setLockDuration(Duration lockDuration)
-    {
+    public void setLockDuration(Duration lockDuration) {
+        if (lockDuration == null) {
+            throw new IllegalArgumentException("Value cannot be null");
+        }
         this.lockDuration = lockDuration;
         if (this.lockDuration.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.lockDuration = ManagementClientConstants.MAX_DURATION;
@@ -134,10 +137,9 @@ public class SubscriptionDescription {
      * See {@link #getDefaultMessageTimeToLive()}
      */
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        if (defaultMessageTimeToLive != null &&
-                (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0 ||
-                        defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0))
-        {
+        if (defaultMessageTimeToLive == null
+            || (defaultMessageTimeToLive.compareTo(ManagementClientConstants.MIN_ALLOWED_TTL) < 0
+                || defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_ALLOWED_TTL) > 0)) {
             throw new IllegalArgumentException(
                     String.format("The value must be between %s and %s.",
                             ManagementClientConstants.MAX_ALLOWED_TTL,
@@ -160,9 +162,8 @@ public class SubscriptionDescription {
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        if (autoDeleteOnIdle != null &&
-                autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0)
-        {
+        if (autoDeleteOnIdle == null
+            || autoDeleteOnIdle.compareTo(ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION) < 0) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_AUTODELETE_DURATION));
@@ -224,8 +225,7 @@ public class SubscriptionDescription {
      * @param maxDeliveryCount - Minimum value is 1.
      */
     public void setMaxDeliveryCount(int maxDeliveryCount) {
-        if (maxDeliveryCount < ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT)
-        {
+        if (maxDeliveryCount < ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT) {
             throw new IllegalArgumentException(
                     String.format("The value must be greater than %s.",
                             ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT));
