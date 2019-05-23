@@ -24,6 +24,8 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -247,7 +249,7 @@ public final class ConfigurationAsyncClientBuilder {
 
         try {
             return new ConfigurationClientCredentials(connectionString);
-        } catch (Exception ex) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
             return null;
         }
     }
