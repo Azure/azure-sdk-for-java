@@ -43,7 +43,6 @@ public abstract class GenerialPoller implements Poller{
     public PollResponse pollUntilDone() {
         boolean done = false;
         pollRequestData.setStopPolling(false);
-        PollResponse pollResponse = null;
         while (!done && !pollRequestData.isPollingStopped()) {
             pollResponse =pollRequestData.serviceSupplier().get();
             done = pollResponse.isOperationComplete();
@@ -70,7 +69,7 @@ public abstract class GenerialPoller implements Poller{
             ObjectOutputStream objOutStream = new ObjectOutputStream(bArrOutStream);
             objOutStream.writeObject(poller.getPollRequestData());
             objOutStream.flush();
-            serializedObject = bArrOutStream.toString();
+            serializedObject = new String(Base64.encode(bArrOutStream.toByteArray()));
         } catch (Exception ex) {
 
         }

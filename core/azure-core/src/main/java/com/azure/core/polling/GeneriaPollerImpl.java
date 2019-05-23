@@ -13,7 +13,7 @@ public class GeneriaPollerImpl extends GenerialPoller {
     static Poller deserializePoller(String serializedPollReqData) {
         Poller poller = null;
         try {
-            byte b[] = serializedPollReqData.getBytes();
+            byte b[] = Base64.decode(serializedPollReqData.getBytes());
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             PollRequestData pollRequestData = (PollRequestData) si.readObject();
