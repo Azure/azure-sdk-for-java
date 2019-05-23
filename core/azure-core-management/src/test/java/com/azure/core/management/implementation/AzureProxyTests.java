@@ -10,7 +10,7 @@ import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.ResumeOperation;
-import com.azure.core.annotations.ServiceName;
+import com.azure.core.annotations.Service;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -55,7 +55,7 @@ public class AzureProxyTests {
     }
 
     @Host("https://mock.azure.com")
-    @ServiceName("MockResourceService")
+    @Service("MockResourceService")
     private interface MockResourceService {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
         @ExpectedResponses({200})

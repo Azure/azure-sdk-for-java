@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.annotations.ExpectedResponses;
 import com.azure.core.annotations.GET;
 import com.azure.core.annotations.Host;
-import com.azure.core.annotations.ServiceName;
+import com.azure.core.annotations.Service;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class SwaggerInterfaceParserTests {
     }
 
     @Host("https://management.azure.com")
-    @ServiceName("myService")
+    @Service("myService")
     interface TestInterface3 {
     }
 
@@ -45,11 +45,11 @@ public class SwaggerInterfaceParserTests {
     public void hostWithHostAnnotation() {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class, null);
         assertEquals("https://management.azure.com", interfaceParser.host());
-        assertEquals("myService", interfaceParser.serviceName());
+        assertEquals("myService", interfaceParser.service());
     }
 
     @Host("https://azure.com")
-    @ServiceName("myService")
+    @Service("myService")
     interface TestInterface4 {
         @GET("my/url/path")
         @ExpectedResponses({200})

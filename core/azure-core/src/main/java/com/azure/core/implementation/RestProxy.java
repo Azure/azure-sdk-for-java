@@ -172,7 +172,7 @@ public class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        return TracerProxy.start(String.format(DEFAULT_SPAN_NAME_TEMPLATE, interfaceParser.serviceName(), method.getName()), context);
+        return TracerProxy.start(String.format(DEFAULT_SPAN_NAME_TEMPLATE, interfaceParser.service(), method.getName()), context);
     }
 
     /**

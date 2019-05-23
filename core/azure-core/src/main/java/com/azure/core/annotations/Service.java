@@ -14,7 +14,7 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 @Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ServiceName {
+public @interface Service {
     /**
      * Name of the service.
      * @return the service name given to the interface.

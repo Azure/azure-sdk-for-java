@@ -415,4 +415,10 @@
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.core.configuration.Configuration"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
 </FindBugsFilter>

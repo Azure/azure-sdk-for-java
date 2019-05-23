@@ -16,7 +16,7 @@ import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
-import com.azure.core.annotations.ServiceName;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@ServiceName("AppConfig")
+@Service("AppConfig")
 interface ConfigurationService {
     @GET("kv/{key}")
     @ExpectedResponses({200})
