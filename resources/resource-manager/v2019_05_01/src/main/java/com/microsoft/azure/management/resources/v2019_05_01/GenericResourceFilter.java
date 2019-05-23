@@ -23,14 +23,14 @@ public class GenericResourceFilter {
     /**
      * The tag name.
      */
-    @JsonProperty(value = "tagName")
-    private String tagName;
+    @JsonProperty(value = "tagname")
+    private String tagname;
 
     /**
      * The tag value.
      */
-    @JsonProperty(value = "tagValue")
-    private String tagValue;
+    @JsonProperty(value = "tagvalue")
+    private String tagvalue;
 
     /**
      * Get the resource type.
@@ -55,40 +55,40 @@ public class GenericResourceFilter {
     /**
      * Get the tag name.
      *
-     * @return the tagName value
+     * @return the tagname value
      */
-    public String tagName() {
-        return this.tagName;
+    public String tagname() {
+        return this.tagname;
     }
 
     /**
      * Set the tag name.
      *
-     * @param tagName the tagName value to set
+     * @param tagname the tagname value to set
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter withTagName(String tagName) {
-        this.tagName = tagName;
+    public GenericResourceFilter withTagname(String tagname) {
+        this.tagname = tagname;
         return this;
     }
 
     /**
      * Get the tag value.
      *
-     * @return the tagValue value
+     * @return the tagvalue value
      */
-    public String tagValue() {
-        return this.tagValue;
+    public String tagvalue() {
+        return this.tagvalue;
     }
 
     /**
      * Set the tag value.
      *
-     * @param tagValue the tagValue value to set
+     * @param tagvalue the tagvalue value to set
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter withTagValue(String tagValue) {
-        this.tagValue = tagValue;
+    public GenericResourceFilter withTagvalue(String tagvalue) {
+        this.tagvalue = tagvalue;
         return this;
     }
 
