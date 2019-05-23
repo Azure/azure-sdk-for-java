@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -20,9 +19,13 @@ import reactor.core.publisher.Mono;
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
 
-    // From the design guidelines, the user agent header format is:
+    // From the design guidelines, the default user agent header format is:
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
-    private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
+    private static final String DEFAULT_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
+
+    // From the design guidelines, the custom user agent header format is:
+    // <application_id> azsdk-java-<client_lib>/<sdk_version> <platform_info>
+    private static final String CUSTOM_USER_AGENT_FORMAT = "%s " + DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
 
     // From the design guidelines, the platform info format is:
     // <language runtime>; <os name> <os version>
@@ -58,12 +61,23 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkVersion Version of the client library.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion) {
-        String applicationId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_USER_AGENT);
+        this(sdkName, sdkVersion, null);
+    }
 
+    /**
+     * Creates a UserAgentPolicy with the {@code sdkName}, {@code sdkVersion}, and a potential {@code applicationId}
+     * in the User-Agent header value.
+     *
+     * @param sdkName Name of the client library.
+     * @param sdkVersion Version of the client library.
+     * @param applicationId Optional application ID supplied by the consumer of the library. This will be prepended to
+     *                      User-Agent string as specified by specification.
+     */
+    public UserAgentPolicy(String sdkName, String sdkVersion, String applicationId) {
         if (ImplUtils.isNullOrEmpty(applicationId)) {
-            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+            this.userAgent = String.format(DEFAULT_USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
         } else {
-            this.userAgent = String.join(" ", applicationId, String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo()));
+            this.userAgent = String.format(CUSTOM_USER_AGENT_FORMAT, applicationId, sdkName, sdkVersion, getPlatformInfo());
         }
     }
 

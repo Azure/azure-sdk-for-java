@@ -44,7 +44,7 @@ public class JacksonAdapter implements SerializerAdapter {
     /*
      * The lazily-created serializer for this ServiceClient.
      */
-    private static SerializerAdapter serializerAdapter  = null;
+    private static SerializerAdapter serializerAdapter;
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -78,7 +78,7 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @return the default serializer
      */
-    public static SerializerAdapter createDefaultSerializerAdapter() {
+    public static synchronized SerializerAdapter createDefaultSerializerAdapter() {
         if (serializerAdapter == null) {
             serializerAdapter = new JacksonAdapter();
         }

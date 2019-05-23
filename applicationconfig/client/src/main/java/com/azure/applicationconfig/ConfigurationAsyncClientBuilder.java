@@ -6,6 +6,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
+import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -18,13 +19,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.rest.Page;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -109,24 +108,20 @@ public final class ConfigurationAsyncClientBuilder {
      * has not been set.
      */
     public ConfigurationAsyncClient build() {
-        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
-        ConfigurationClientCredentials configCredentials = null;
-        if (!ImplUtils.isNullOrEmpty(connectionString)) {
-            try {
-                configCredentials = new ConfigurationClientCredentials(connectionString);
-            } catch (Exception ex) {
-                // Configuration in environment was invalid, continue on as normal
-            }
+        ConfigurationClientCredentials buildCredentials = getBuildCredentials();
+        URL buildServiceEndpoint = null;
+        if (serviceEndpoint != null) {
+            buildServiceEndpoint = serviceEndpoint;
+        } else if (buildCredentials != null) {
+            buildServiceEndpoint = buildCredentials.baseUri();
         }
 
-        URL buildServiceEndpoint = userConfigElseEnvConfig(serviceEndpoint, configCredentials.baseUri());
         Objects.requireNonNull(buildServiceEndpoint);
 
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
         }
 
-        ConfigurationClientCredentials buildCredentials = userConfigElseEnvConfig(credentials, configCredentials);
         if (buildCredentials == null) {
             throw new IllegalStateException("'credentials' is required.");
         }
@@ -134,15 +129,17 @@ public final class ConfigurationAsyncClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, configuration.get(BaseConfigurations.AZURE_USER_AGENT)));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
         policies.add(new ConfigurationCredentialsPolicy(buildCredentials));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
-
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = HttpPipeline.builder()
@@ -247,8 +244,17 @@ public final class ConfigurationAsyncClientBuilder {
         return this;
     }
 
-    private static <T> T userConfigElseEnvConfig(T userConfig, T environmentConfig) {
-        return (userConfig == null) ? environmentConfig : userConfig;
+    private ConfigurationClientCredentials getBuildCredentials() {
+        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
+        if (ImplUtils.isNullOrEmpty(connectionString)) {
+            return credentials;
+        }
+
+        try {
+            return new ConfigurationClientCredentials(connectionString);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
 
