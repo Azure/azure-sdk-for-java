@@ -26,7 +26,7 @@ public class SecretObject {
     /**
      * The type of the secret object which determines how the value of the
      * secret object has to be
-     * interpreted. Possible values include: 'Opaque'.
+     * interpreted. Possible values include: 'Opaque', 'Vaultsecret'.
      */
     @JsonProperty(value = "type")
     private SecretObjectType type;
@@ -57,7 +57,7 @@ public class SecretObject {
 
     /**
      * Get the type of the secret object which determines how the value of the secret object has to be
-     interpreted. Possible values include: 'Opaque'.
+     interpreted. Possible values include: 'Opaque', 'Vaultsecret'.
      *
      * @return the type value
      */
@@ -67,7 +67,7 @@ public class SecretObject {
 
     /**
      * Set the type of the secret object which determines how the value of the secret object has to be
-     interpreted. Possible values include: 'Opaque'.
+     interpreted. Possible values include: 'Opaque', 'Vaultsecret'.
      *
      * @param type the type value to set
      * @return the SecretObject object itself.

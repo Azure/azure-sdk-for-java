@@ -25,6 +25,9 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
     /** Static value arm for Architecture. */
     public static final Architecture ARM = fromString("arm");
 
+    /** Static value arm64 for Architecture. */
+    public static final Architecture ARM64 = fromString("arm64");
+
     /**
      * Creates or finds a Architecture from its string representation.
      * @param name a name to look for
