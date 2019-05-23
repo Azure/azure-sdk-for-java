@@ -4,8 +4,10 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotations.Host;
+import com.azure.core.annotations.Service;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -16,8 +18,8 @@ import java.util.Map;
  * interface.
  */
 public class SwaggerInterfaceParser {
-    private final SerializerAdapter serializer;
     private final String host;
+    private final String service;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
     /**
@@ -38,9 +40,7 @@ public class SwaggerInterfaceParser {
      * @param host The host of URLs that this Swagger interface targets.
      */
     public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
-        this.serializer = serializer;
-
-        if (host != null && !host.isEmpty()) {
+        if (!ImplUtils.isNullOrEmpty(host)) {
             this.host = host;
         } else {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
@@ -49,6 +49,13 @@ public class SwaggerInterfaceParser {
             } else {
                 throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
             }
+        }
+
+        Service serviceAnnotation = swaggerInterface.getAnnotation(Service.class);
+        if (serviceAnnotation != null && !serviceAnnotation.value().isEmpty()) {
+            service = serviceAnnotation.value();
+        } else {
+            throw new MissingRequiredAnnotationException(Service.class, swaggerInterface);
         }
     }
 
@@ -75,5 +82,9 @@ public class SwaggerInterfaceParser {
      */
     String host() {
         return host;
+    }
+
+    String service() {
+        return service;
     }
 }
