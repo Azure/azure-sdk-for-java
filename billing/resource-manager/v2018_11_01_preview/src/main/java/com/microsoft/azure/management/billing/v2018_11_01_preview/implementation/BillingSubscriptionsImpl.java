@@ -17,6 +17,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionSummary;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferBillingSubscriptionResult;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferBillingSubscriptionRequestProperties;
 
 class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> implements BillingSubscriptions {
     private final BillingManager manager;
@@ -71,9 +72,9 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
+    public Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, TransferBillingSubscriptionRequestProperties parameters) {
         BillingSubscriptionsInner client = this.inner();
-        return client.transferAsync(billingAccountName, invoiceSectionName, billingSubscriptionName)
+        return client.transferAsync(billingAccountName, invoiceSectionName, billingSubscriptionName, parameters)
         .map(new Func1<TransferBillingSubscriptionResultInner, TransferBillingSubscriptionResult>() {
             @Override
             public TransferBillingSubscriptionResult call(TransferBillingSubscriptionResultInner inner) {

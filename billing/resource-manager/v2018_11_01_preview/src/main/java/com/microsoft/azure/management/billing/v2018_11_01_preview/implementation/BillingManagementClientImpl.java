@@ -159,6 +159,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The BillingAccountsValidateAddressInner object to access its operations.
+     */
+    private BillingAccountsValidateAddressInner billingAccountsValidateAddress;
+
+    /**
+     * Gets the BillingAccountsValidateAddressInner object to access its operations.
+     * @return the BillingAccountsValidateAddressInner object.
+     */
+    public BillingAccountsValidateAddressInner billingAccountsValidateAddress() {
+        return this.billingAccountsValidateAddress;
+    }
+
+    /**
      * The AvailableBalancesInner object to access its operations.
      */
     private AvailableBalancesInner availableBalances;
@@ -442,6 +455,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.billingAccounts = new BillingAccountsInner(restClient().retrofit(), this);
         this.paymentMethods = new PaymentMethodsInner(restClient().retrofit(), this);
+        this.billingAccountsValidateAddress = new BillingAccountsValidateAddressInner(restClient().retrofit(), this);
         this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);

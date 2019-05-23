@@ -53,10 +53,11 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
+     * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
+    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, TransferBillingSubscriptionRequestProperties parameters);
 
     /**
      * Lists billing subscriptions by billing account name.

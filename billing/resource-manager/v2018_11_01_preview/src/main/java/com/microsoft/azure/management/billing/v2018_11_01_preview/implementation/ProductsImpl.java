@@ -17,6 +17,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductSummary;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.UpdateAutoRenewOperationSummary;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferProductRequestProperties;
 
 class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     private final BillingManager manager;
@@ -59,9 +60,9 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     }
 
     @Override
-    public Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName) {
+    public Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName, TransferProductRequestProperties parameters) {
         ProductsInner client = this.inner();
-        return client.transferAsync(billingAccountName, invoiceSectionName, productName)
+        return client.transferAsync(billingAccountName, invoiceSectionName, productName, parameters)
         .map(new Func1<ProductSummaryInner, ProductSummary>() {
             @Override
             public ProductSummary call(ProductSummaryInner inner) {
