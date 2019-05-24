@@ -8,8 +8,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
-  <name>Microsoft Azure SDK for Java</name>
-  <description>Parent POM for Microsoft Azure SDK for Java</description>
+  <name>Microsoft Azure SDK for Java - All Modules</name>
+  <description>Aggregated POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>
     <name>Microsoft Corporation</name>
@@ -61,9 +61,6 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
-    <client-pom>true</client-pom>
-    <data-pom>true</data-pom>
-    <management-pom>true</management-pom>
   </properties>
 
   <build>
@@ -107,76 +104,7 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- This plugin scans reports spotbugs in the code -->
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>${sdk-build-tools.version}</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-          <!-- TODO soon - enable this failure mode -->
-          <failOnError>false</failOnError>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- This plugin exports spotbugs reports in html form -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <version>${xml-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>${project.build.directory}/spotbugs</dir>
-              <includes><include>spotbugsXml.xml</include></includes>
-              <outputDir>${project.build.directory}/spotbugs</outputDir>
-              <stylesheet>fancy-hist.xsl</stylesheet>
-              <fileMappers>
-                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                  <targetExtension>.html</targetExtension>
-                </fileMapper>
-              </fileMappers>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs</artifactId>
-            <version>${spotbugs.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-
+      
       <!-- Configure the jar plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -246,210 +174,9 @@
         <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
     </plugins>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <configuration>
-            <source>8</source>
-            <doctitle>Azure SDK for Java Reference Documentation</doctitle>
-            <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
-            <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
-            <groups>
-              <group>
-                <title>Azure Batch</title>
-                <packages>com.microsoft.azure.batch*</packages>
-              </group>
-              <group>
-                <title>Azure Event Hubs</title>
-                <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
-              </group>
-              <group>
-                <title>Azure Key Vault</title>
-                <packages>com.microsoft.azure.keyvault*</packages>
-              </group>
-              <group>
-                <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
-              </group>
-              <group>
-                <title>Azure Service Bus</title>
-                <packages>com.microsoft.azure.servicebus*</packages>
-              </group>
-              <group>
-                <title>Azure Storage</title>
-                <packages>com.microsoft.azure.storage*</packages>
-              </group>
-            </groups>
-            <links>
-              <link>https://docs.oracle.com/javase/8/docs/api/</link>
-              <link>https://projectreactor.io/docs/core/release/api/</link>
-              <link>https://netty.io/4.1/api/</link>
-              <link>http://reactivex.io/RxJava/javadoc/</link>
-            </links>
-            <isOffline>false</isOffline>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>${sdk-build-tools.version}</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <effort>Max</effort>
-            <threshold>Low</threshold>
-            <xmlOutput>true</xmlOutput>
-            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-            <!-- TODO soon - enable this failure mode -->
-            <failOnError>false</failOnError>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.0.0</version>
-        <reportSets>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <configLocation>checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>checkstyle/java.header</headerLocation>
-          <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <id>non-aggregate</id>
-            <reports>
-              <report>checkstyle</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>checkstyle-aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
-        <reportSets>
-          <reportSet>
-            <id>non-aggregate</id>
-            <reports>
-              <report>spotbugs</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>spotbugs</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc.version}</version>
-        <reportSets>
-          <reportSet>
-            <id>non-aggregate</id>
-            <reports>
-              <report>javadoc</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.0.0</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>index</report>
-              <report>summary</report>
-              <report>dependency-info</report>
-              <report>dependency-management</report>
-              <report>dependency-convergence</report>
-              <report>ci-management</report>
-              <report>dependencies</report>
-              <report>issue-management</report>
-              <report>licenses</report>
-              <report>scm</report>
-              <report>plugins</report>
-              <report>plugin-management</report>
-              <report>team</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
-
   <profiles>
-
     <!--
      By default we build against our baseline, Java 8, but we also want to ensure compatibility
      against the latest Java LTS release, currently Java 11. We therefore have two profiles:
@@ -527,19 +254,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>non-shipping-modules</id>
-      <activation>
-        <property>
-          <name>include-non-shipping-modules</name>
-        </property>
-      </activation>
-      <modules>
-        <module>./eng/spotbugs-aggregate-report</module>
-        <module>./eng/code-quality-reports</module>
-      </modules>
     </profile>
 
     <profile>

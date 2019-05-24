@@ -10,7 +10,7 @@
   <artifactId>azure-management-sdk-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Microsoft Azure SDK for Java</name>
+  <name>Microsoft Azure SDK for Java - Management Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>

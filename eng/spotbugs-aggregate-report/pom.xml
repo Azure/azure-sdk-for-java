@@ -26,14 +26,74 @@
       <id>azure-java-build-docs</id>
       <url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/</url>
     </site>
-  </distributionManagement>  
+  </distributionManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-client-source</id>
+            <phase>${client.phase}</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>..\..\applicationconfig\client\src\main\java</source>
+                <source>..\..\core\azure-core\src\main\java</source>
+                <source>..\..\core\azure-core-auth\src\main\jasva</source>
+                <source>..\..\core\azure-core-management\src\main\java</source>
+                <source>..\..\core\azure-core-test\src\main\java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-data-source</id>
+            <phase>${data.phase}</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>..\..\batch\data-plane\src\main\java</source>
+                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
+                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
+                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
+                <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+                dependency in eventhubs code. This issue is under investigation. -->
+                <!--source>..\..\storage\data-plane\src\main\java</source-->
+                <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
+                <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
+                <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
+                <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
+                <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
+                <source>..\..\servicebus\data-plane\azure-servicebus\src\main\java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>client-modules</id>
       <activation>
         <property>
-          <name>client-pom</name>
+          <name>!data-plane</name>
         </property>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <dependencies>
         <dependency>
@@ -67,39 +127,17 @@
           <version>${azure-app-configuration.version}</version>
         </dependency>
       </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>add-source</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>..\..\applicationconfig\client\src\main\java</source>
-                    <source>..\..\core\azure-core\src\main\java</source>
-                    <source>..\..\core\azure-core-auth\src\main\java</source>
-                    <source>..\..\core\azure-core-management\src\main\java</source>
-                    <source>..\..\core\azure-core-test\src\main\java</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <client.phase>generate-sources</client.phase>
+        <data.phase>none</data.phase>
+      </properties>
     </profile>
 
     <profile>
       <id>data-modules</id>
       <activation>
         <property>
-          <name>data-pom</name>
+          <name>data-plane</name>
         </property>
       </activation>
       <dependencies>
@@ -162,40 +200,10 @@
           <version>${azure-servicebus.version}</version>
         </dependency>
       </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>add-source</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>..\..\batch\data-plane\src\main\java</source>
-                    <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
-                    <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
-                    <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
-                    <!-- Storage is excluded from Spotbugs report as it collides with the storage library
-                    dependency in eventhubs code. This issue is under investigation. -->
-                    <!--source>..\..\storage\data-plane\src\main\java</source-->
-                    <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
-                    <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
-                    <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
-                    <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
-                    <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
-                    <source>..\..\servicebus\data-plane\azure-servicebus\src\main\java</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile> 
+      <properties>
+        <client.phase>none</client.phase>
+        <data.phase>generate-sources</data.phase>
+      </properties>
+    </profile>
   </profiles>
 </project>

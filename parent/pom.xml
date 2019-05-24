@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
-  <name>Microsoft Azure SDK for Java</name>
+  <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>

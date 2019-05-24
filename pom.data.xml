@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
-  <name>Microsoft Azure SDK for Java</name>
+  <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>
@@ -61,7 +61,7 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
-    <data-pom>true</data-pom>
+    <build.context>azure-data-sdk-parent</build.context>
   </properties>
 
   <build>
@@ -515,7 +515,7 @@
     </profile>
 
     <profile>
-      <id>non-shipping-modules</id>
+      <id>non-shippping-modules</id>
       <activation>
         <property>
           <name>include-non-shipping-modules</name>
