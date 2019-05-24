@@ -3,28 +3,16 @@
 
 package com.azure.keyvault;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.RestProxy;
-import com.azure.keyvault.implementation.SecretBasePage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -41,25 +29,11 @@ import java.util.function.Function;
  *
  * @see SecretClientBuilder
  */
-public final class SecretClient extends ServiceClient {
-    static final String API_VERSION = "7.0";
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    private String endpoint;
-    private final SecretService service;
+public final class SecretClient {
+    private SecretAsyncClient client;
 
-    /**
-     * Creates a SecretClient that uses {@code pipeline} to service requests
-     *
-     * @param endpoint URL for the Azure KeyVault service.
-     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
-     */
-    SecretClient(URL endpoint, HttpPipeline pipeline) {
-        super(pipeline);
-        Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        this.endpoint = endpoint.toString();
-        this.service = RestProxy.create(SecretService.class, this);
+    SecretClient(SecretAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -96,14 +70,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Response<Secret> setSecret(Secret secret) {
-        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .value(secret.value())
-            .tags(secret.tags())
-            .contentType(secret.contentType())
-            .secretAttributes(new SecretRequestAttributes(secret));
-
-        return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.setSecret(secret).block();
     }
 
     /**
@@ -124,9 +91,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Response<Secret> setSecret(String name, String value) {
-        SecretRequestParameters parameters = new SecretRequestParameters()
-                                            .value(value);
-        return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.setSecret(name, value).block();
     }
 
     /**
@@ -148,11 +113,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Response<Secret> getSecret(String name, String version) {
-        String secretVersion = "";
-        if (version != null) {
-            secretVersion = version;
-        }
-        return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getSecret(name, version).block();
     }
 
     /**
@@ -174,9 +135,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Response<Secret> getSecret(SecretBase secretBase) {
-        Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
-        return secretBase.version() == null ? service.getSecret(endpoint, secretBase.name(), "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block()
-            : service.getSecret(endpoint, secretBase.name(), secretBase.version(), API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getSecret(secretBase).block();
     }
 
     /**
@@ -222,13 +181,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
     public Response<SecretBase> updateSecret(SecretBase secret) {
-        Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
-        SecretRequestParameters parameters = new SecretRequestParameters()
-                .tags(secret.tags())
-                .contentType(secret.contentType())
-                .secretAttributes(new SecretRequestAttributes(secret));
-
-        return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.updateSecret(secret).block();
     }
 
     /**
@@ -249,7 +202,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Response<DeletedSecret> deleteSecret(String name) {
-        return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.deleteSecret(name).block();
     }
 
     /**
@@ -271,7 +224,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Response<DeletedSecret> getDeletedSecret(String name) {
-        return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getDeletedSecret(name).block();
     }
 
     /**
@@ -292,7 +245,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link VoidResponse}.
      */
     public VoidResponse purgeDeletedSecret(String name) {
-        return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.purgeDeletedSecret(name).block();
     }
 
     /**
@@ -314,7 +267,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
      */
     public Response<Secret> recoverDeletedSecret(String name) {
-        return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.recoverDeletedSecret(name).block();
     }
 
     /**
@@ -334,9 +287,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
     public Response<byte[]> backupSecret(String name) {
-        return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
-                            base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value()))).block();
+        return client.backupSecret(name).block();
     }
 
     /**
@@ -357,8 +308,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
      */
     public Response<Secret> restoreSecret(byte[] backup) {
-        SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
-        return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.restoreSecret(backup).block();
     }
 
     /**
@@ -376,8 +326,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
     public List<SecretBase> listSecrets() {
-        return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
+        return client.listSecrets().collectList().block();
     }
 
     /**
@@ -395,8 +344,7 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public List<DeletedSecret> listDeletedSecrets() {
-        return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
+        return client.listDeletedSecrets().collectList().block();
     }
 
     /**
@@ -417,45 +365,6 @@ public final class SecretClient extends ServiceClient {
      * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
     public List<SecretBase> listSecretVersions(String name) {
-        return  service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
-    }
-    /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecrets()}.
-     *
-     * @param nextPageLink The {@link SecretBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase} from the next page of results.
-     */
-    private Flux<SecretBase> listSecretsNext(String nextPageLink) {
-        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
-    }
-
-    private Publisher<SecretBase> extractAndFetchSecrets(PagedResponse<SecretBase> page) {
-        return extractAndFetch(page, this::listSecretsNext);
-    }
-
-    /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listDeletedSecrets()}.
-     *
-     * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase} from the next page of results.
-     */
-    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
-    }
-
-    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
-        return extractAndFetch(page, this::listDeletedSecretsNext);
-    }
-
-    //TODO: Extract this in azure-core ImplUtils and use from there
-    private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
+        return client.listSecretVersions(name).collectList().block();
     }
 }

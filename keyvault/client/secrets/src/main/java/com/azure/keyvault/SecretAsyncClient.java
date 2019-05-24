@@ -4,12 +4,16 @@
 package com.azure.keyvault;
 
 import com.azure.core.ServiceClient;
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.keyvault.implementation.SecretBasePage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
@@ -21,9 +25,6 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 import java.util.function.Function;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.HttpRequestException;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -41,11 +42,14 @@ import com.azure.core.exception.HttpRequestException;
  * @see SecretAsyncClientBuilder
  */
 public final class SecretAsyncClient extends ServiceClient {
-    static final String API_VERSION = "7.0";
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    private String endpoint;
+    private static final String API_VERSION = "7.0";
+    private static final String ACCEPT_LANGUAGE = "en-US";
+    private static final int DEFAULT_MAX_PAGE_RESULTS = 25;
+    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+
+    private final ServiceLogger logger = new ServiceLogger(SecretAsyncClient.class);
+
+    private final String endpoint;
     private final SecretService service;
 
     /**
