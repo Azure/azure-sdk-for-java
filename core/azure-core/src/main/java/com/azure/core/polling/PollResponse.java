@@ -1,5 +1,7 @@
 package com.azure.core.polling;
 
+import com.azure.core.exception.HttpResponseException;
+
 import java.io.Serializable;
 
 public interface PollResponse extends Serializable {
@@ -21,8 +23,6 @@ public interface PollResponse extends Serializable {
      * done or did not fail, then return null.
      * @return The error of the operation, or null if the operation isn't done or didn't fail.
      */
-    public HttpResponseException error() {
-        return error;
-    }
+    public HttpResponseException error();
 
 }
