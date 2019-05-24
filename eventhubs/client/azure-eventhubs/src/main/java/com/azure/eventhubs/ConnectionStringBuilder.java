@@ -45,7 +45,8 @@ import java.util.regex.Pattern;
 public final class ConnectionStringBuilder {
     private static final String END_POINT_FORMAT = "sb://%s.%s";
     private static final String HOST_NAME_FORMAT = "sb://%s";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
+    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
+    private static final String VERTICAL_LINE = "|";
 
     private static final String HOST_NAME_CONFIG_NAME = "Hostname";    // Hostname is a key that is used in IoTHub.
     private static final String ENDPOINT_CONFIG_NAME = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
@@ -56,15 +57,24 @@ public final class ConnectionStringBuilder {
     private static final String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
     private static final String SHARED_ACCESS_SIGNATURE_CONFIG_NAME = "SharedAccessSignature";
 
-    private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOST_NAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|"
-        + SHARED_ACCESS_KEY_NAME_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|"
-        + SHARED_ACCESS_SIGNATURE_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + ")";
-
-    private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX
-            + KEY_VALUE_SEPARATOR;
+    private static final String ALL_KEY_ENUMERATE_REGEX = new StringBuilder()
+        .append("(")
+        .append(HOST_NAME_CONFIG_NAME).append(VERTICAL_LINE)
+        .append(ENDPOINT_CONFIG_NAME).append(VERTICAL_LINE)
+        .append(SHARED_ACCESS_KEY_NAME_CONFIG_NAME).append(VERTICAL_LINE)
+        .append(SHARED_ACCESS_KEY_CONFIG_NAME).append(VERTICAL_LINE)
+        .append(SHARED_ACCESS_SIGNATURE_CONFIG_NAME).append(VERTICAL_LINE)
+        .append(ENTITY_PATH_CONFIG_NAME)
+        .append(")")
+        .toString();
+    private static final String KEYS_WITH_DELIMITERS_REGEX = new StringBuilder().append(KEY_VALUE_PAIR_DELIMITER)
+        .append(ALL_KEY_ENUMERATE_REGEX)
+        .append(KEY_VALUE_SEPARATOR)
+        .toString();
 
     private URI endpoint;
     private String eventHubName;
+    private String namespaceName;
     private String sharedAccessKeyName;
     private String sharedAccessKey;
     private String sharedAccessSignature;
@@ -81,8 +91,7 @@ public final class ConnectionStringBuilder {
      *      <li>Optionally, users can set an operation timeout instead of using the default value.</li>
      * </ul>
      */
-    public ConnectionStringBuilder() {
-    }
+    public ConnectionStringBuilder() { }
 
     /**
      * ConnectionString format:
@@ -113,6 +122,7 @@ public final class ConnectionStringBuilder {
      * @return the {@link ConnectionStringBuilder} being set.
      */
     public ConnectionStringBuilder endpoint(URI endpoint) {
+        this.namespaceName = parseNamespaceFromEndpoint(endpoint);
         this.endpoint = endpoint;
         return this;
     }
@@ -129,6 +139,7 @@ public final class ConnectionStringBuilder {
      * @return the {@link ConnectionStringBuilder} being set.
      */
     public ConnectionStringBuilder endpoint(String namespaceName, String domainName) {
+        this.namespaceName = namespaceName;
         try {
             this.endpoint = new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName, domainName));
         } catch (URISyntaxException exception) {
@@ -140,13 +151,23 @@ public final class ConnectionStringBuilder {
     }
 
     /**
+     * Get the namespace name from the connection string.
+     *
+     * @return namespace name
+     */
+    public String namespaceName() {
+        return this.namespaceName;
+    }
+
+    /**
      * Set a namespace name which will be used to connect to an EventHubs instance. This method adds
-     * "servicebus.windows.net" as the default domain name.
+     * "servicebus.windows.net/" as the default domain name.
      *
      * @param namespaceName the name of the namespace to connect to.
      * @return the {@link ConnectionStringBuilder} being set.
      */
     public ConnectionStringBuilder namespaceName(String namespaceName) {
+        this.namespaceName = namespaceName;
         return this.endpoint(namespaceName, DEFAULT_DOMAIN_NAME);
     }
 
@@ -308,6 +329,7 @@ public final class ConnectionStringBuilder {
 
                 try {
                     this.endpoint = new URI(values[valueIndex]);
+                    this.namespaceName = parseNamespaceFromEndpoint(this.endpoint);
                 } catch (URISyntaxException exception) {
                     throw new IllegalArgumentException(
                             String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", ENDPOINT_CONFIG_NAME),
@@ -322,6 +344,7 @@ public final class ConnectionStringBuilder {
 
                 try {
                     this.endpoint = new URI(String.format(Locale.US, HOST_NAME_FORMAT, values[valueIndex]));
+                    this.namespaceName = parseNamespaceFromEndpoint(this.endpoint);
                 } catch (URISyntaxException exception) {
                     throw new IllegalArgumentException(
                             String.format(Locale.US, "%s should be a fully quantified host name address", HOST_NAME_CONFIG_NAME),
@@ -340,5 +363,10 @@ public final class ConnectionStringBuilder {
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));
             }
         }
+    }
+
+    private String parseNamespaceFromEndpoint(URI endpoint) {
+        String host = endpoint.getHost();
+        return host.substring(0, host.indexOf("."));
     }
 }
