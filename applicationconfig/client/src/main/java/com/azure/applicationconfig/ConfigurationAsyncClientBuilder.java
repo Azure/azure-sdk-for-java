@@ -17,6 +17,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -120,10 +121,11 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
         policies.add(new ConfigurationCredentialsPolicy(credentials));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
-
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = HttpPipeline.builder()

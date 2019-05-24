@@ -4,12 +4,14 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Context;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -140,15 +142,16 @@ public final class ImplUtils {
     /*
      * Extracts and combines the generic items from all the pages linked together.
      * @param page The paged response from server holding generic items.
+     * @param context Metadata that is passed into the function that fetches the items from the next page.
      * @param content The function which fetches items from the next page.
      * @param <T> The type of the item being returned in the paged response.
      * @return The publisher holding all the generic items combined.
      */
-    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
+    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context, BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink, context));
     }
 }

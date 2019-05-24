@@ -17,6 +17,7 @@ import com.azure.core.annotations.POST;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -49,6 +50,7 @@ public abstract class AzureProxyToRestProxyTests {
     protected abstract HttpClient createHttpClient();
 
     @Host("http://httpbin.org")
+    @Service("Service1")
     private interface Service1 {
         @GET("bytes/100")
         @ExpectedResponses({200})
@@ -89,6 +91,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://{hostName}.org")
+    @Service("Service2")
     private interface Service2 {
         @GET("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
@@ -117,6 +120,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service3")
     private interface Service3 {
         @GET("bytes/2")
         @ExpectedResponses({200})
@@ -140,6 +144,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service5")
     private interface Service5 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -236,6 +241,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service6")
     private interface Service6 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -284,6 +290,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service7")
     private interface Service7 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -324,6 +331,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service8")
     private interface Service8 {
         @POST("post")
         @ExpectedResponses({200})
@@ -352,6 +360,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service9")
     private interface Service9 {
         @PUT("put")
         @ExpectedResponses({200})
@@ -418,6 +427,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service10")
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -467,6 +477,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service11")
     private interface Service11 {
         @DELETE("delete")
         @ExpectedResponses({200})
@@ -495,6 +506,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service12")
     private interface Service12 {
         @PATCH("patch")
         @ExpectedResponses({200})
@@ -523,6 +535,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service13")
     private interface Service13 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -563,6 +576,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("https://httpbin.org")
+    @Service("Service14")
     private interface Service14 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -588,6 +602,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("https://httpbin.org")
+    @Service("Service15")
     private interface Service15 {
         @GET("anything")
         @ExpectedResponses({200})
@@ -607,6 +622,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://httpbin.org")
+    @Service("Service16")
     private interface Service16 {
         @PUT("put")
         @ExpectedResponses({200})
@@ -639,6 +655,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("http://{hostPart1}{hostPart2}.org")
+    @Service("Service17")
     private interface Service17 {
         @GET("get")
         @ExpectedResponses({200})
@@ -666,6 +683,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Host("https://httpbin.org")
+    @Service("Service18")
     private interface Service18 {
         @GET("status/200")
         void getStatus200();

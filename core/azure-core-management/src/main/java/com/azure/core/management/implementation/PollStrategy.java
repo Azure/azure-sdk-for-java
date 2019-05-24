@@ -4,14 +4,14 @@
 package com.azure.core.management.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.management.OperationState;
-import com.azure.core.util.Context;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.SerializerEncoding;
+import com.azure.core.management.OperationState;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -164,13 +164,13 @@ abstract class PollStrategy {
         })).flatMap(response -> updateFromAsync(response)));
     }
 
-    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
+    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType, Context context) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
             operationStatus = new OperationStatus<>(this, httpRequest);
         } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType, context);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (HttpResponseException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
@@ -179,9 +179,9 @@ abstract class PollStrategy {
         return Mono.just(operationStatus);
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, Context context) {
         return sendPollRequestWithDelay()
-                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
+                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType, context))
                 .repeat()
                 .takeUntil(operationStatus -> isDone());
     }
