@@ -8,6 +8,7 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -83,7 +84,6 @@ public final class ConfigurationAsyncClientBuilder {
     ConfigurationAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
-        configuration = Configuration.NONE;
         policies = new ArrayList<>();
 
         headers = new HttpHeaders()
@@ -110,8 +110,9 @@ public final class ConfigurationAsyncClientBuilder {
      * has not been set.
      */
     public ConfigurationAsyncClient build() {
-        ConfigurationClientCredentials buildCredentials = getBuildCredentials();
-        URL buildServiceEndpoint = getBuildServiceEndpoint(buildCredentials);
+        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
+        URL buildServiceEndpoint = getBuildServiceEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildServiceEndpoint);
 
@@ -119,6 +120,7 @@ public final class ConfigurationAsyncClientBuilder {
             return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
         }
 
+        ConfigurationClientCredentials buildCredentials = (credentials == null) ? configurationCredentials : credentials;
         if (buildCredentials == null) {
             throw new IllegalStateException("'credentials' is required.");
         }
@@ -231,7 +233,8 @@ public final class ConfigurationAsyncClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * Use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
      * @return The updated ConfigurationAsyncClientBuilder object.
@@ -241,7 +244,7 @@ public final class ConfigurationAsyncClientBuilder {
         return this;
     }
 
-    private ConfigurationClientCredentials getBuildCredentials() {
+    private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
         String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             return credentials;

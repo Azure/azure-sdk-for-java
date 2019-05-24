@@ -6,15 +6,14 @@ package com.azure.core.configuration;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
  */
 public class Configuration implements Cloneable {
-
     /**
      * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
      */
@@ -25,7 +24,8 @@ public class Configuration implements Cloneable {
 
     private final ServiceLogger logger = new ServiceLogger(Configuration.class);
 
-    private Map<String, String> configurations = new HashMap<>();
+    private ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
+    private boolean loadedBaseConfigurations = false;
 
     /**
      * Constructs an empty configuration.
@@ -33,8 +33,8 @@ public class Configuration implements Cloneable {
     public Configuration() {
     }
 
-    private Configuration(Map<String, String> configurations) {
-        this.configurations = new HashMap<>(configurations);
+    private Configuration(ConcurrentMap<String, String> configurations) {
+        this.configurations = new ConcurrentHashMap<>(configurations);
     }
 
     /**
@@ -89,6 +89,8 @@ public class Configuration implements Cloneable {
      * variable, in that order, if found, otherwise null.
      */
     private String getOrLoad(String name) {
+        loadBaseConfigurations();
+
         if (configurations.containsKey(name)) {
             return configurations.get(name);
         }
@@ -154,12 +156,7 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
-            if (!configurations.containsKey(config)) {
-                load(config);
-            }
-        }
-
+        loadBaseConfigurations();
         return new Configuration(configurations);
     }
 
@@ -220,5 +217,19 @@ public class Configuration implements Cloneable {
         }
 
         return false;
+    }
+
+    private void loadBaseConfigurations() {
+        if (loadedBaseConfigurations) {
+            return;
+        }
+
+        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
+            if (!configurations.containsKey(config)) {
+                load(config);
+            }
+        }
+
+        loadedBaseConfigurations = true;
     }
 }
