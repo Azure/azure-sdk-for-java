@@ -4,20 +4,20 @@
 trigger:
   branches:
     include:
-    - master
+      - master
   paths:
     exclude:
-    - eng/
-    - sdk/
+      - eng/
+      - sdk/
 
 pr:
   branches:
     include:
-    - master
+      - master
   paths:
     exclude:
-    - eng/
-    - sdk/
+      - eng/
+      - sdk/
 
 variables:
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
