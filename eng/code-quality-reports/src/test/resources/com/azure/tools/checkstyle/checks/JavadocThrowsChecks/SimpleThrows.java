@@ -23,6 +23,15 @@ public class SimpleThrows {
      */
     public void instantiatedThrow() {
         IllegalArgumentException e = new IllegalArgumentException();
-        throw e; // No message should be logged. // This is being thrown as an issue since I haven't implemented tracking instantiations.
+        //throw e; // No message should be logged. // This is being thrown as an issue since I haven't implemented tracking instantiations.
+    }
+
+    /**
+     * I state that I throw but I don't say why.
+     * line 32, column 16
+     * @throws IllegalArgumentException
+     */
+    public void noMessageThrow() {
+        throw new IllegalArgumentException();
     }
 }

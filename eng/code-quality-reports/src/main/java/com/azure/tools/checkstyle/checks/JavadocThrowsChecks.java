@@ -8,6 +8,7 @@ import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     private static final int[] TOKENS = new int[] {
         TokenTypes.BLOCK_COMMENT_BEGIN,
         TokenTypes.METHOD_DEF,
+        TokenTypes.LITERAL_THROWS,
         TokenTypes.LITERAL_THROW,
         TokenTypes.LITERAL_CATCH,
     };
@@ -65,6 +67,12 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 setMethodIdentifierAndCheckStatus(token);
                 break;
 
+            case TokenTypes.LITERAL_THROWS:
+                if (currentMethodNeedsChecking) {
+                    verifyCheckedThrowJavadoc(token);
+                }
+                break;
+
             case TokenTypes.LITERAL_THROW:
                 if (currentMethodNeedsChecking) {
                     verifyThrowJavadoc(token);
@@ -73,7 +81,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         }
     }
 
-    /**
+    /*
      * Gets the current method identifier and determines if it needs to be checked.
      * @param methodDefToken Method definition token.
      */
@@ -82,7 +90,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         currentMethodNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstract(methodDefToken.findFirstToken(TokenTypes.MODIFIERS));
     }
 
-    /**
+    /*
      * Determines if the modifiers contains either public or protected and isn't abstract.
      * @param modifiersToken Modifiers token.
      * @return True if the method if public or protected and isn't abstract.
@@ -105,7 +113,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         return false;
     }
 
-    /**
+    /*
      * Checks if the comment is on a method, if so it searches for the documented Javadoc @throws statements.
      * @param blockCommentToken Block comment token.
      */
@@ -140,7 +148,19 @@ public class JavadocThrowsChecks extends AbstractCheck {
         methodJavadocThrowsMapping.put(currentMethodIdentifier, javadocThrows);
     }
 
-    /**
+    /*
+     * Verifies that the checked exceptions, those in the throws statement, are documented.
+     * @param throwsToken Throws token.
+     */
+    private void verifyCheckedThrowJavadoc(DetailAST throwsToken) {
+        TokenUtil.forEachChild(throwsToken, TokenTypes.IDENT, (throwTypeToken) -> {
+            if (!methodJavadocThrowsMapping.get(currentMethodIdentifier).contains(throwTypeToken.getText())) {
+                log(throwTypeToken, MISSING_THROWS_TAG_MESSAGE);
+            }
+        });
+    }
+
+    /*
      * Checks if the throw statement has documentation in the Javadoc.
      * @param throwToken Throw statement token.
      */
