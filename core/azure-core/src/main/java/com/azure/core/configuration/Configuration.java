@@ -157,7 +157,10 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
         loadBaseConfigurations();
-        return new Configuration(configurations);
+        Configuration clone = new Configuration(configurations);
+        clone.loadedBaseConfigurations = true;
+
+        return clone;
     }
 
     /**
