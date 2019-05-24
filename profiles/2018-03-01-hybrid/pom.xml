@@ -7,10 +7,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.profile_2018_03_01_hybrid</groupId>
   <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-arm-parent</artifactId>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-management-sdk-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../../pom.management.xml</relativePath>
   </parent>
   <artifactId>azure-profile-parent</artifactId>
   <version>1.0.0-beta</version>
@@ -51,13 +51,13 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>${runtime.version}</version>
+        <version>${client-runtime.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-client-runtime</artifactId>
-        <version>${runtime.version}</version>
+        <version>${client-runtime.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>

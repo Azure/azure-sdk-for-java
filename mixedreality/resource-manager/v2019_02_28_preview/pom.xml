@@ -9,10 +9,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure.mixedreality.v2019_02_28_preview</groupId>
     <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-arm-parent</artifactId>
-        <version>0.0.3-beta</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-management-sdk-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../../pom.management.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-mixedreality</artifactId>
     <version>1.0.0-beta</version>

@@ -9,10 +9,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure.locks.v2016_09_01</groupId>
     <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-arm-parent</artifactId>
-        <version>0.0.3-beta</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-management-sdk-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../../pom.management.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-locks</artifactId>
     <version>1.0.0-beta-2</version>

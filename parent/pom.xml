@@ -1,0 +1,640 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-sdk-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>
+
+  <name>Microsoft Azure SDK for Java</name>
+  <description>Parent POM for Microsoft Azure SDK for Java</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+
+  <parent>
+    <groupId>com.microsoft.maven</groupId>
+    <artifactId>java-8-parent</artifactId>
+    <version>8.0.2</version>
+  </parent>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>${issues.url}</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection></developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
+
+    <!-- Dependency Versions -->
+    <jackson.version>2.9.6</jackson.version>
+    <client-runtime.version>1.6.5</client-runtime.version>
+    <commons-codec.version>1.10</commons-codec.version>
+    <spotbugs.version>3.1.11</spotbugs.version>
+    <proton-j-version>0.31.0</proton-j-version>
+    <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
+    <log4j-api.version>2.11.1</log4j-api.version>
+    <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
+    <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
+    <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
+    <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
+    <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
+    <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
+    <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
+    <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
+    <netty.version>4.1.33.Final</netty.version>
+    <async-http-client.version>2.5.2</async-http-client.version>
+    <rxjava.version>1.2.4</rxjava.version>
+    <guava.version>20.0</guava.version>
+    <azure-annotations.version>1.7.0</azure-annotations.version>
+    <jgit.version>4.5.0.201609210915-r</jgit.version>
+    <commons-net.version>3.3</commons-net.version>
+    <fluentsdk.version>1.14.0</fluentsdk.version>
+
+    <!-- Test Dependency Versions -->
+    <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
+    <adal4j.version>1.6.3</adal4j.version>
+    <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
+    <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
+    <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
+    <azure-mgmt-resources-test.version>1.3.1-SNAPSHOT</azure-mgmt-resources-test.version>
+    <azure-mgmt-graph-rbac.version>1.3.0</azure-mgmt-graph-rbac.version>
+    <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
+    <azure-storage.version>8.0.0</azure-storage.version>
+    <spock-core.version>1.1-groovy-2.4</spock-core.version>
+    <cglib-nodep.version>3.2.7</cglib-nodep.version>
+    <slf4j-test.version>1.2.0</slf4j-test.version>
+    <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
+    <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
+    <jetty-http.version>9.4.8.v20171121</jetty-http.version>
+    <jetty-server.version>9.4.8.v20171121</jetty-server.version>
+    <junit.version>4.12</junit.version>
+
+    <!-- Maven Tool Versions -->
+    <maven-build-tools.version>1.0.2</maven-build-tools.version>
+    <sdk-build-tools.version>1.0.0</sdk-build-tools.version>
+    <maven-javadoc.version>3.0.1</maven-javadoc.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>
+    <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
+    <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
+    <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+    <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+    <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
+    <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
+    <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+    <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+    <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
+    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+    <commons-io.version>2.4</commons-io.version>
+    <checkstyle.version>8.18</checkstyle.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Other Microsoft Azure Dependencies -->
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-client-runtime</artifactId>
+        <version>${client-runtime.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <version>${client-runtime.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>adal4j</artifactId>
+        <version>${adal4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>${azure-core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-auth</artifactId>
+        <version>${azure-core-auth.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-annotations</artifactId>
+        <version>${azure-annotations.version}</version>
+      </dependency>
+
+      <!-- Other Microsoft Dependencies -->
+      <dependency>
+        <groupId>com.microsoft.rest</groupId>
+        <artifactId>client-runtime</artifactId>
+        <version>${client-runtime.version}</version>
+      </dependency>
+
+      <!-- Jackson Dependencies -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <artifactId>jackson-dataformat-xml</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- Proton J and Extension Dependencies -->
+      <dependency>
+        <groupId>org.apache.qpid</groupId>
+        <artifactId>proton-j</artifactId>
+        <version>${proton-j-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>qpid-proton-j-extensions</artifactId>
+        <version>${qpid-proton-j-extensions-version}</version>
+      </dependency>
+
+      <!-- Other Dependencies -->
+
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.rest.v2</groupId>
+        <artifactId>client-runtime</artifactId>
+        <version>${client-runtime.version.v2}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j-log4j12.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty</artifactId>
+        <version>${reactor-netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-buffer</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.asynchttpclient</groupId>
+        <artifactId>async-http-client</artifactId>
+        <version>${async-http-client.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.reactivex</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>${rxjava.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jgit</groupId>
+        <artifactId>org.eclipse.jgit</artifactId>
+        <version>${jgit.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-net</groupId>
+        <artifactId>commons-net</artifactId>
+        <version>${commons-net.version}</version>
+      </dependency>
+
+      <!-- Test dependencies -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-test</artifactId>
+        <version>${azure-core-test.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-storage</artifactId>
+        <version>${azure-mgmt-storage.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-graph-rbac</artifactId>
+        <version>${azure-mgmt-graph-rbac.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-resources</artifactId>
+        <version>${azure-mgmt-resources-test.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-client-authentication</artifactId>
+        <version>${client-runtime.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <version>${client-runtime.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15on</artifactId>
+        <version>${bcprov-jdk15on.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-keyvault</artifactId>
+        <version>${azure-mgmt-keyvault.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-resources</artifactId>
+        <version>${azure-mgmt-resources.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-storage</artifactId>
+        <version>${azure-storage.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <scope>test</scope>
+        <version>${spock-core.version}</version>
+      </dependency>
+
+     <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>${cglib-nodep.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-test</artifactId>
+        <version>${reactor-test.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>uk.org.lidalia</groupId>
+        <artifactId>slf4j-test</artifactId>
+        <version>${slf4j-test.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock-standalone</artifactId>
+        <version>${wiremock-standalone.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-http</artifactId>
+        <version>${jetty-http.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${jetty-server.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- This plugin adds sample code as tests for easier editing in IDEs -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>compile-samples-source</id>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>add-test-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>src/samples/java</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- This plugin is used to copy resources of your project. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+
+        <!-- This plugin is used to run unit tests during the test phase of maven build lifecycle. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <includes>
+              <include>**/Test*.java</include>
+              <include>**/*Test.java</include>
+              <include>**/*Tests.java</include>
+              <include>**/*TestCase.java</include>
+            </includes>
+            <systemPropertyVariables>
+              <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+              <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+            </systemPropertyVariables>
+            <environmentVariables>
+              <test.mode>${testMode}</test.mode>
+              <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
+              <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+              <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+              <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
+            </environmentVariables>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin is used to prepare and perform a release for the project with Maven.
+              It has no influence on Maven build itself. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+        </plugin>
+
+        <!-- This plugin used to remove files generated at build-time. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+          <configuration>
+            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+            <filesets>
+              <fileset>
+                <directory>target</directory>
+                <followSymlinks>false</followSymlinks>
+                <includes>
+                  <include>**</include>
+                </includes>
+                <excludes>
+                  <exclude>test-classes/session-records/</exclude>
+                </excludes>
+              </fileset>
+            </filesets>
+          </configuration>
+        </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+            It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>${lifecycle-mapping.version}</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.googlecode.addjars-maven-plugin</groupId>
+                    <artifactId>addjars-maven-plugin</artifactId>
+                    <versionRange>[1.0.5,)</versionRange>
+                    <goals>
+                      <goal>add-jars</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin is used to run integration tests. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven-failsafe-plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- This plugin is used for rapid playback testing. -->
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>${jetty-maven-plugin.version}</version>
+          <configuration>
+            <scanIntervalSeconds>0</scanIntervalSeconds>
+            <stopPort>11079</stopPort>
+            <stopKey>STOP</stopKey>
+            <waitForChild>false</waitForChild>
+            <jettyXml>./jetty.xml</jettyXml>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin provides the capability to build jars. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
+
+        <!-- This plugin is used to generate project's site and reports -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <configuration>
+            <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin is used to generate reports information about the project. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

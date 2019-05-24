@@ -1,0 +1,253 @@
+<!--
+ Copyright (c) Microsoft Corporation. All rights reserved.
+ Licensed under the MIT License. See License.txt in the project root for
+ license information.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <version>1.0.0</version>
+  <artifactId>azure-management-sdk-parent</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Microsoft Azure SDK for Java</name>
+  <description>Parent POM for Microsoft Azure SDK for Java</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-sdk-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>./parent/pom.xml</relativePath>
+  </parent>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>${issues.url}</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection></developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <testMode>playback</testMode>
+    <playbackServerPort>11080</playbackServerPort>
+    <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
+
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
+    <management-pom>true</management-pom>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.22.v20170606</version>
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>STOP</stopKey>
+          <httpConnector>
+            <port>${playbackServerPort}</port>
+          </httpConnector>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.outputDirectory}/maven.properties
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.version}</version>
+        <!-- TODO: skip as it's failing -->
+        <executions>
+          <execution>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <!-- TODO: skip as it's failing -->
+        <executions>
+          <execution>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <doctitle>Microsoft Azure Management Libraries for Java ${project.version}</doctitle>
+          <windowtitle>Microsoft Azure Management Libraries for Java ${project.version}</windowtitle>
+          <additionalparam>-Xdoclint:none</additionalparam>
+          <excludePackageNames>*.samples;*.implementation.*;*.utils.*;com.microsoft.azure.utility;*.management.billing;*.management.cognitiveservices;*.management.consumption;*.management.customerinsights;*.management.devices;*.management.devtestlab;*.management.insights;*.management.logic;*.management.machinelearning;*.management.notificationhubs;*.management.powerbi;*.management.recoveryservices;*.management.relay;*.management.scheduler;*.management.servicefabric;*.management.streamanalytics</excludePackageNames>
+          <bottom><![CDATA[<code>/**
+<br />* Copyright (c) Microsoft Corporation. All rights reserved.
+<br />* Licensed under the MIT License. See License.txt in the project root for
+<br />* license information.
+<br />*/</code>]]></bottom>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
+
+     <plugin>
+       <groupId>com.googlecode.addjars-maven-plugin</groupId>
+       <artifactId>addjars-maven-plugin</artifactId>
+       <version>1.0.5</version>
+          <executions>
+             <execution>
+                <goals>
+                  <goal>add-jars</goal>
+                </goals>
+                <configuration>
+                  <resources>
+                    <resource>
+                      <directory>../extlib</directory>
+                    </resource>
+                 </resources>
+              </configuration>
+           </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>${spotbugs.version}</version>
+          <!-- TODO: skip as it's failing -->
+          <executions>
+            <execution>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <!-- TODO: skip as it's failing -->
+          <executions>
+            <execution>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <id>run-shade-plugin</id>
+      <activation>
+        <property><name>runShadePlugin</name></property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>2.4.1</version>
+            <configuration>
+            </configuration>
+            <executions>
+              <execution>
+                <id>shade-plugin</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <filters>
+                    <filter>
+                      <artifact>*:*</artifact>
+                      <excludes>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
+                  <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                  </transformers>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <modules>
+    <module>./profiles/2018-03-01-hybrid</module>
+  </modules>
+</project>

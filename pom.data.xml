@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-sdk-all</artifactId>
+  <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
@@ -61,14 +61,12 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
-    <client-pom>true</client-pom>
     <data-pom>true</data-pom>
-    <management-pom>true</management-pom>
   </properties>
 
   <build>
     <plugins>
-      <!-- This plugin scans checkstyle issues in the code -->
+      <!-- This plugin scans checkstyle issues in these code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -274,18 +272,6 @@
                 <packages>com.microsoft.azure.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
-              </group>
-              <group>
                 <title>Azure Service Bus</title>
                 <packages>com.microsoft.azure.servicebus*</packages>
               </group>
@@ -328,7 +314,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
   </build>
 
   <reporting>
@@ -556,8 +541,10 @@
   </profiles>
 
   <modules>
-    <module>./pom.client.xml</module>
-    <module>./pom.data.xml</module>
-    <module>./pom.management.xml</module>
+    <module>./batch/data-plane</module>
+    <module>./eventhubs/data-plane</module>
+    <module>./keyvault/data-plane</module>
+    <module>./servicebus/data-plane</module>
+    <module>./storage/data-plane</module>
   </modules>
 </project>
