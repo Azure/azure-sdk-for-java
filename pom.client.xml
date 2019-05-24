@@ -257,7 +257,12 @@
             <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
+            <excludePackageNames>
+              com.microsoft.azure.template:
+              *.impl.*:
+              *.implementation.*:
+              com.azure.tracing.opencensus*
+            </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
@@ -540,5 +545,6 @@
   <modules>
     <module>./applicationconfig/client</module>
     <module>./core</module>
+    <module>./tracing</module>
   </modules>
 </project>

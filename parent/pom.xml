@@ -116,6 +116,7 @@
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
+    <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
     <guava.version>20.0</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
@@ -304,6 +305,12 @@
         <version>${async-http-client.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>io.opencensus</groupId>
+        <artifactId>opencensus-api</artifactId>
+        <version>${opencensus.version}</version>
+      </dependency>
+      
       <dependency>
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
