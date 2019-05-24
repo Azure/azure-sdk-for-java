@@ -2,12 +2,13 @@ package com.azure.core.polling;
 
 
 import com.azure.core.exception.HttpResponseException;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.util.Base64;
 
 /**
- * Example Use case1
+ * Example Use case1 :
  *        // Lambda Runnable
  *         Runnable callWhenDone = () -> {
  *             System.out.println(Thread.currentThread().getName() + " is running. Callback when done.");
@@ -36,13 +37,15 @@ public class Poller implements Serializable{
 
     private static final long serialversionUID =139448132L;
 
-    /**This is the max time after that poller will giveup and not poll anymore**/
     private int timeoutInMilliSeconds;
 
-    /**Indicate if this operation could be cancelled. Not all the Azure Service Operation could be cancelled.**/
-    private boolean operationAllowedToCancel;
+    private int pollIntervalInMillis;
 
-    private PollType pollType;
+    /*This will ensure that poll interval grow exponentially by factor specified here.
+    * This should always be more than 1.*/
+    private float poolIntervalGrowthFactor =1.0f;
+
+    private boolean operationAllowedToCancel;
 
     private SerializableSupplier<PollResponse> serviceSupplier;
 
@@ -52,16 +55,31 @@ public class Poller implements Serializable{
     /* We will call this to cancel the operation*/
     private Runnable callbackToCancelOperation;
 
-    /**If consumer do not want to poll. This will not stop the Service Operation.**/
+    /*If consumer do not want to poll. This will not stop the Service Operation.*/
     private boolean stopPolling;
 
+    /**
+     * @param timeoutInMilliSeconds This is the max time after that poller will giveup and not poll anymore.
+     * @param pollIntervalInMillis  This will ensure that poll happens only once in pollIntervalInMillis
+     * @param poolIntervalGrowthFactor  This will ensure that poll interval grow exponentially by factor specified here.
+     *                                  This should always be more than 1.
+     * @param serviceSupplier
+     * @param callbackWhenDone
+     * @param callbackToCancelOperation
+     * @param operationAllowedToCancel Indicate if this operation could be cancelled.
+     *                                 Not all the Azure Service Operation could be cancelled.
+     * **/
     public Poller(int timeoutInMilliSeconds
+                            , int pollIntervalInMillis
+                            , float poolIntervalGrowthFactor
                             , SerializableSupplier<PollResponse> serviceSupplier
                             , Runnable callbackWhenDone
                             , Runnable callbackToCancelOperation
                             , boolean operationAllowedToCancel ){
 
         this.timeoutInMilliSeconds = timeoutInMilliSeconds;
+        this.poolIntervalGrowthFactor =poolIntervalGrowthFactor;
+        this.pollIntervalInMillis = pollIntervalInMillis;
         this.callbackWhenDone = callbackWhenDone;
         this.callbackToCancelOperation = callbackToCancelOperation;
         this.serviceSupplier = serviceSupplier;
@@ -82,26 +100,32 @@ public class Poller implements Serializable{
 
     //TODO : Make sure we do not pool every cpu cycle. Polling must be throttle by parameter defined in PollingType i.e interval or expeonential polling
     /**This will poll once. If you had stopped polling erlier, we will enable polling again.**/
-    public PollResponse pollOnce() {
-        setStopPolling(false);
-        return serviceSupplier.get();
+    public Mono<PollResponse> pollOnce() {
+
+        return Mono.defer(() -> {
+            setStopPolling(false);
+            return Mono.just(serviceSupplier.get());
+        });
     }
 
     /**This will keep polling until it is done.**/
-    public PollResponse pollUntilDone() {
+    public Mono<PollResponse> pollUntilDone() {
 
-        setStopPolling(false);
-        while (!isDone() && !isPollingStopped()) {
-            pollResponse =serviceSupplier.get();
-        }
-        if (callbackWhenDone != null) {
-            try {
-                new Thread(callbackWhenDone).start();
-            }catch (Exception ex){
-                //TODO handle Exception
+        return Mono.defer(() -> {
+            setStopPolling(false);
+            while (!isDone() && !isPollingStopped()) {
+                pollResponse = serviceSupplier.get();
             }
-        }
-        return pollResponse;
+            if (callbackWhenDone != null) {
+                try {
+                    new Thread(callbackWhenDone).start();
+                } catch (Exception ex) {
+                    //TODO handle Exception
+                    Mono.error(ex);
+                }
+            }
+            return Mono.just(pollResponse);
+        });
     }
 
     /**This will stop polling**/
@@ -148,9 +172,5 @@ public class Poller implements Serializable{
         }
         return poller;
     }
-    enum PollType implements Serializable {
-        FIXED_INTERVAL, EXPONENTIAL;
-        private static final long serialversionUID =119448131L;
-    }
- 
+
 }
