@@ -2,7 +2,22 @@
 # "pomFile" : "pom.client.xml".   This is the project object model file for Maven.
 
 trigger:
-  - master
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - eng/
+    - sdk/
+
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - eng/
+    - sdk/
 
 variables:
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
