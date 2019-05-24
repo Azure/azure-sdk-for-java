@@ -107,7 +107,10 @@ public final class SecretAsyncClient extends ServiceClient {
             .contentType(secret.contentType())
             .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Setting secret - {}", secret.name()))
+            .doOnSuccess(response -> logger.asInformational().log("Set secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to set secret - {}", secret.name(), error));
     }
 
     /**
@@ -130,7 +133,10 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<Response<Secret>> setSecret(String name, String value) {
         SecretRequestParameters parameters = new SecretRequestParameters().value(value);
-        return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Setting secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Set secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to set secret - {}", name, error));
     }
 
     /**
@@ -158,7 +164,10 @@ public final class SecretAsyncClient extends ServiceClient {
         if (version != null) {
             secretVersion = version;
         }
-        return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Retrieving secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve secret - {}", name, error));
     }
 
     /**
@@ -239,7 +248,10 @@ public final class SecretAsyncClient extends ServiceClient {
                 .contentType(secret.contentType())
                 .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Updating secret - {}", secret.name()))
+            .doOnSuccess(response -> logger.asInformational().log("Updated secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to update secret - {}", secret.name(), error));
     }
 
     /**
@@ -261,7 +273,10 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Mono<Response<DeletedSecret>> deleteSecret(String name) {
-        return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Deleting secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Deleted secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to delete secret - {}", name, error));
     }
 
     /**
@@ -283,7 +298,10 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
-        return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Retrieving deleted secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved deleted secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve deleted secret - {}", name, error));
     }
 
     /**
@@ -305,7 +323,10 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Mono} containing a {@link VoidResponse}.
      */
     public Mono<VoidResponse> purgeDeletedSecret(String name) {
-        return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Purging deleted secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Purged deleted secret - {}", name))
+            .doOnError(error -> logger.asWarning().log("Failed to purge deleted secret - {}", name, error));
     }
 
     /**
@@ -327,7 +348,10 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
      */
     public Mono<Response<Secret>> recoverDeletedSecret(String name) {
-        return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Recovering deleted secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Recovered deleted secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to recover deleted secret - {}", name, error));
     }
 
     /**
@@ -349,7 +373,10 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<Response<byte[]>> backupSecret(String name) {
         return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
+            .doOnRequest(ignored -> logger.asInformational().log("Backing up secret - {}", name))
+            .doOnSuccess(response -> logger.asInformational().log("Backed up secret - {}", name))
+            .doOnError(error -> logger.asWarning().log("Failed to back up secret - {}", name, error))
+            .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
                 base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
     }
 
@@ -371,7 +398,10 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<Response<Secret>> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
-        return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Attempting to restore secret"))
+            .doOnSuccess(response -> logger.asInformational().log("Restored secret - {}", response.value().name()))
+            .doOnError(error -> logger.asWarning().log("Failed to restore secret", error));
     }
 
     /**
@@ -390,7 +420,11 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing {@link SecretBase secret} of all the secrets in the vault.
      */
     public Flux<SecretBase> listSecrets() {
-        return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
+        return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Listing secrets"))
+            .doOnSuccess(response -> logger.asInformational().log("Listed secrets"))
+            .doOnError(error -> logger.asWarning().log("Failed to list secrets", error))
+            .flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -408,7 +442,11 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecrets() {
-        return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
+        return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.asInformational().log("Listing deleted secrets"))
+            .doOnSuccess(response -> logger.asInformational().log("Listed deleted secrets"))
+            .doOnError(error -> logger.asWarning().log("Failed to list deleted secrets", error))
+            .flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     /**
@@ -431,7 +469,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing {@link SecretBase secret} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
     public Flux<SecretBase> listSecretVersions(String name) {
-        return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
+        return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -442,7 +481,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link SecretBase secret} from the next page of results.
      */
     private Flux<SecretBase> listSecretsNext(String nextPageLink) {
-        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
+        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchSecrets);
     }
 
     private Publisher<SecretBase> extractAndFetchSecrets(PagedResponse<SecretBase> page) {
@@ -457,7 +497,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link SecretBase secret} from the next page of results.
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
+        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
