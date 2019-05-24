@@ -33,26 +33,21 @@ public final class BaseConfigurations {
     public static final String NO_PROXY = "NO_PROXY";
 
     /**
-     * User agent to use for HTTP requests.
-     */
-    public static final String AZURE_USER_AGENT = "AZURE_USER_AGENT";
-
-    /**
-     * Minimum logging level to log.
+     * Minimum severity for a message to be logged.
      *
      * Logging is disabled by default.
      */
     public static final String AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
     /**
-     * Whether logging happens.
+     * Disables telemetry.
      */
-    public static final String AZURE_LOGGING_ENABLED = "AZURE_LOGGING_ENABLED";
+    public static final String AZURE_TELEMETRY_DISABLED = "AZURE_TELEMETRY_DISABLED";
 
     /**
-     * Whether tracing happens.
+     * Disables tracing.
      */
-    public static final String AZURE_TRACING_ENABLED = "AZURE_TRACING_ENABLED";
+    public static final String AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
@@ -61,9 +56,8 @@ public final class BaseConfigurations {
         HTTP_PROXY,
         HTTPS_PROXY,
         NO_PROXY,
-        AZURE_USER_AGENT,
         AZURE_LOG_LEVEL,
-        AZURE_LOGGING_ENABLED,
-        AZURE_TRACING_ENABLED
+        AZURE_TELEMETRY_DISABLED,
+        AZURE_TRACING_DISABLED
     };
 }
