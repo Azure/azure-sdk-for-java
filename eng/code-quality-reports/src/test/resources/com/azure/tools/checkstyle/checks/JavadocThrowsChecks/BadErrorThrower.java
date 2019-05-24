@@ -1,24 +1,8 @@
 package com.azure.common.mgmt;
 
 public abstract class BadErrorThrower {
-    /**
-     * I don't list my throw.
-     */
-    public void simpleThrow() {
-        throw new IllegalArgumentException();
-    }
 
-    /**
-     * @throws IllegalArgumentException I documented my throw!
-     */
-    protected void simpleThrowDocumented() {
-        throw new IllegalArgumentException();
-    }
 
-    public void instantiatedThrow() {
-        IllegalArgumentException e = new IllegalArgumentException();
-        throw e;
-    }
 
     /**
      * I don't list my throw.
