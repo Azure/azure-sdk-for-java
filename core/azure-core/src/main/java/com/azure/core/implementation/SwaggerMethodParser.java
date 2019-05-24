@@ -20,6 +20,7 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -80,8 +81,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *                host value in an HTTP request, it must be processed through the possible host
      *                substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, SerializerAdapter serializer, String rawHost) {
-        this.serializer = serializer;
+    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();

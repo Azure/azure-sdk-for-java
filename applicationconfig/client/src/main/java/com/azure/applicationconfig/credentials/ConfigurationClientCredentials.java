@@ -4,9 +4,9 @@ package com.azure.applicationconfig.credentials;
 
 import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
-import com.azure.core.credentials.AsyncServiceClientCredentials;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
+import io.netty.buffer.ByteBuf;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -15,10 +15,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -29,12 +35,16 @@ import java.util.stream.Collectors;
  * @see ConfigurationCredentialsPolicy
  * @see ConfigurationAsyncClientBuilder
  */
-public class ConfigurationClientCredentials implements AsyncServiceClientCredentials {
-    // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value.
+public class ConfigurationClientCredentials {
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
     private static final String[] SIGNED_HEADERS = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER };
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
+    private static final String ENDPOINT = "endpoint=";
+    private static final String ID = "id=";
+    private static final String SECRET = "secret=";
 
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
@@ -61,14 +71,26 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     }
 
     /**
-     * Gets the "Authentication" header value used authenticate the {@code request} with the configuration service.
-     *
-     * @param request HTTP request to send to the configuration service.
-     * @return The "Authentication" header value.
+     * Gets a list of headers to add to a request to authenticate it to the Azure APp Configuration service.
+     * @param url the request url
+     * @param httpMethod the request HTTP method
+     * @param contents the body content of the request
+     * @return a flux of headers to add for authorization
      */
-    @Override
-    public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
-        return Mono.just(headerProvider.getAuthenticationHeaderValue(request));
+    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuf> contents) {
+        return contents
+            .collect(() -> {
+                try {
+                    return MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw Exceptions.propagate(e);
+                }
+            }, (messageDigest, byteBuffer) -> {
+                    if (messageDigest != null) {
+                        messageDigest.update(byteBuffer.nioBuffer());
+                    }
+                })
+            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));
     }
 
     private static class AuthorizationHeaderProvider {
@@ -83,31 +105,44 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
             sha256HMAC.init(new SecretKeySpec(credentials.secret(), "HmacSHA256"));
         }
 
-        private String getAuthenticationHeaderValue(final HttpRequest request) {
-            final String stringToSign = getStringToSign(request);
+        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod, final MessageDigest messageDigest) {
+            final Map<String, String> headers = new HashMap<>();
+            final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-            final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-            return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
-                    credentials.id(),
-                    signedHeadersValue,
-                    signature);
-        }
+            // All three of these headers are used by ConfigurationClientCredentials to generate the
+            // Authentication header value. So, we need to ensure that they exist.
+            headers.put(HOST_HEADER, url.getHost());
+            headers.put(CONTENT_HASH_HEADER, contentHash);
 
-        private String getStringToSign(final HttpRequest request) {
-            String pathAndQuery = request.url().getPath();
-            if (request.url().getQuery() != null) {
-                pathAndQuery += '?' + request.url().getQuery();
+            if (headers.get(DATE_HEADER) == null) {
+                String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+                headers.put(DATE_HEADER, utcNow);
             }
 
-            final HttpHeaders httpHeaders = request.headers();
+            addSignatureHeader(url, httpMethod, headers);
+            return headers;
+        }
+
+        private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+            String pathAndQuery = url.getPath();
+            if (url.getQuery() != null) {
+                pathAndQuery += '?' + url.getQuery();
+            }
+
             final String signed = Arrays.stream(SIGNED_HEADERS)
-                    .map(httpHeaders::value)
-                    .collect(Collectors.joining(";"));
+                .map(httpHeaders::get)
+                .collect(Collectors.joining(";"));
 
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
             // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
-            return request.httpMethod().toString().toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
+            String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
+
+            final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            httpHeaders.put(AUTHORIZATION_HEADER, String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
+                credentials.id(),
+                signedHeadersValue,
+                signature));
         }
     }
 
@@ -162,7 +197,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
             if (this.baseUri == null || this.id == null || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
-                        + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
+                    + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }
         }
     }
