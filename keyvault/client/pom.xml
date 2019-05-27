@@ -33,6 +33,7 @@
   </scm>
 
   <modules>
-    <module>./secrets</module>
+    <!--module>./secrets</module-->
+    <module>./certificates</module>
   </modules>
 </project>
