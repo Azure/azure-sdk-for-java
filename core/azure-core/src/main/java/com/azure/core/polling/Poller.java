@@ -114,6 +114,7 @@ public class Poller implements Serializable{
         return Mono.defer(() -> {
             setStopPolling(false);
             while (!isDone() && !isPollingStopped()) {
+                System.out.println("Poller.pollUntilDone Invoking Azure Service , checking Operation status");
                 pollResponse = serviceSupplier.get();
             }
             if (callbackWhenDone != null) {
@@ -160,10 +161,10 @@ public class Poller implements Serializable{
     }
 
     /**This will deserialize the string data into poller**/
-    static Poller deserializePoller(String serializedPollReqData) {
+    static Poller deserializePoller(String serializedPoller) {
         Poller poller = null;
         try {
-            byte b[] = Base64.getDecoder().decode(serializedPollReqData.getBytes());
+            byte b[] = Base64.getDecoder().decode(serializedPoller.getBytes());
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             poller = (Poller) si.readObject();
@@ -172,5 +173,4 @@ public class Poller implements Serializable{
         }
         return poller;
     }
-
 }
