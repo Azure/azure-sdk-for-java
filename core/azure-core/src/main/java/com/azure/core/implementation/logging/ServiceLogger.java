@@ -8,6 +8,8 @@ import com.azure.core.configuration.BaseConfigurations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
 /**
  * This helper class that wraps a {@link Logger} and contains convenience methods for logging.
  */
@@ -17,6 +19,8 @@ public class ServiceLogger implements ServiceLoggerAPI {
     private final Logger logger;
 
     private int level = DEFAULT_LOG_LEVEL;
+
+    private int configurationLevel;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -35,39 +39,30 @@ public class ServiceLogger implements ServiceLoggerAPI {
     }
 
     /**
-     * Sets the logger to the trace logging level.
-     * @return Updated ServiceLogger if trace is enabled, otherwise a no-op logger.
-     */
-    @Override
-    public ServiceLoggerAPI asTrace() {
-        return asLevel(TRACE_LEVEL);
-    }
-
-    /**
-     * Sets the logger to the debug logging level.
+     * Sets the logger to the verbose logging level.
      * @return Updated ServiceLogger if debug is enabled, otherwise a no-op logger.
      */
     @Override
-    public ServiceLoggerAPI asDebug() {
-        return asLevel(DEBUG_LEVEL);
+    public ServiceLoggerAPI asVerbose() {
+        return asLevel(VERBOSE_LEVEL);
     }
 
     /**
-     * Sets the logger to the info logging level.
+     * Sets the logger to the infomational logging level.
      * @return Updated ServiceLogger if info is enabled, otherwise a no-op logger.
      */
     @Override
     public ServiceLoggerAPI asInformational() {
-        return asLevel(INFO_LEVEL);
+        return asLevel(INFORMATIONAL_LEVEL);
     }
 
     /**
-     * Sets the logger to the warn logging level.
+     * Sets the logger to the warning logging level.
      * @return Updated ServiceLogger if warn is enabled, otherwise a no-op logger.
      */
     @Override
     public ServiceLoggerAPI asWarning() {
-        return asLevel(WARN_LEVEL);
+        return asLevel(WARNING_LEVEL);
     }
 
     /**
@@ -94,23 +89,25 @@ public class ServiceLogger implements ServiceLoggerAPI {
         level = DEFAULT_LOG_LEVEL;
     }
 
-    /**
+    /*
      * Performs the logging.
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(String format, Object... args) {
+        // If the logging level is less granular than verbose remove the potential throwable from the args.
+        if (configurationLevel > VERBOSE_LEVEL) {
+            args = attemptToRemoveThrowable(args);
+        }
+
         switch (level) {
-            case TRACE_LEVEL:
-                logger.trace(format, args);
-                break;
-            case DEBUG_LEVEL:
+            case VERBOSE_LEVEL:
                 logger.debug(format, args);
                 break;
-            case INFO_LEVEL:
+            case INFORMATIONAL_LEVEL:
                 logger.info(format, args);
                 break;
-            case WARN_LEVEL:
+            case WARNING_LEVEL:
                 logger.warn(format, args);
                 break;
             case ERROR_LEVEL:
@@ -122,7 +119,7 @@ public class ServiceLogger implements ServiceLoggerAPI {
         }
     }
 
-    /**
+    /*
      * Helper method to set the logging level.
      * @param level Logging level
      * @return Updated ServiceLogger if the level is enabled, otherwise a no-op logger.
@@ -136,24 +133,24 @@ public class ServiceLogger implements ServiceLoggerAPI {
         return NOOP_LOGGER;
     }
 
-    /**
+    /*
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
      * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
      */
     private boolean canLogAtLevel(int level) {
-        if (level < minimumLoggingLevel()) {
+        // Check the configuration level every time the logger is called in case it has changed.
+        configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        if (level < configurationLevel) {
             return false;
         }
 
         switch (level) {
-            case TRACE_LEVEL:
-                return logger != null && logger.isTraceEnabled();
-            case DEBUG_LEVEL:
+            case VERBOSE_LEVEL:
                 return logger != null && logger.isDebugEnabled();
-            case INFO_LEVEL:
+            case INFORMATIONAL_LEVEL:
                 return logger != null && logger.isInfoEnabled();
-            case WARN_LEVEL:
+            case WARNING_LEVEL:
                 return logger != null && logger.isWarnEnabled();
             case ERROR_LEVEL:
                 return logger != null && logger.isErrorEnabled();
@@ -162,7 +159,21 @@ public class ServiceLogger implements ServiceLoggerAPI {
         }
     }
 
-    private int minimumLoggingLevel() {
-        return ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+    /*
+     * Removes the last element from the arguments if it is a throwable.
+     * @param args Arguments
+     * @return The arguments with the last element removed if it was a throwable, otherwise the unmodified arguments.
+     */
+    private Object[] attemptToRemoveThrowable(Object... args) {
+        if (args.length == 0) {
+            return args;
+        }
+
+        Object potentialThrowable = args[args.length - 1];
+        if (potentialThrowable instanceof Throwable) {
+            return Arrays.copyOf(args, args.length - 1);
+        }
+
+        return args;
     }
 }
