@@ -1058,7 +1058,7 @@ public class JsonWebKeyVariant {
             return false;
         }
 
-        // MUST have ( T || ( N && E ) )
+        // MUST have ( T || ( n && E ) )
         boolean tokenParameters = t != null;
         boolean publicParameters = (n != null && e != null);
 

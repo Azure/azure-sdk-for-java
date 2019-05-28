@@ -23,7 +23,7 @@ class KeyRestoreRequestParameters {
      */
     public byte[] keyBackup() {
         if (this.keyBackup == null) {
-            return null;
+            return new byte[0];
         }
         return this.keyBackup.decodedBytes();
     }

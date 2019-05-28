@@ -204,7 +204,8 @@ public final class KeyAsyncClientBuilder {
     }
 
     private AsyncTokenCredentials getAsyncTokenCredentials() {
-        return new AsyncTokenCredentials("Bearer", credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, endpoint)));
+        AsyncTokenCredentials asyncTokenCredentials = credentials != null ? new AsyncTokenCredentials("Bearer", credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, endpoint))) : null;
+        return asyncTokenCredentials;
     }
 
     private class AsyncTokenCredentials implements AsyncServiceClientCredentials {

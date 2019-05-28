@@ -43,17 +43,6 @@ public final class DeletedKey extends KeyBase {
     }
 
     /**
-     * Set the recoveryId identifier.
-     *
-     * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedKey object itself.
-     */
-    public DeletedKey recoveryId(String recoveryId) {
-        this.recoveryId = recoveryId;
-        return this;
-    }
-
-    /**
      * Get the scheduled purge UTC time.
      *
      * @return the scheduledPurgeDate UTC time.
@@ -85,7 +74,7 @@ public final class DeletedKey extends KeyBase {
      * value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void deletedDate(Long deletedDate) {
+    private void unpackDeletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 
@@ -97,4 +86,14 @@ public final class DeletedKey extends KeyBase {
     private void unpackKeyMaterial(Map<String, Object> key) {
         keyMaterial = createKeyMaterialFromJson(key);
     }
+
+    /**
+     * Get the key value.
+     *
+     * @return the key value
+     */
+    public JsonWebKey keyMaterial() {
+        return this.keyMaterial;
+    }
+
 }

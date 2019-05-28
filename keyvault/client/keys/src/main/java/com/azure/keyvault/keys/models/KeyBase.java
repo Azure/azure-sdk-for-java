@@ -319,22 +319,22 @@ public class KeyBase {
     JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
         final Base64 base64 = new Base64(-1, null, true);
         JsonWebKey outputKey = new JsonWebKey()
-                .ecPublicKeyYComponent(base64.decode((String) key.get("y")))
-                .ecPublicKeyXComponent(base64.decode((String) key.get("x")))
-                .curve(new JsonWebKeyCurveName((String) key.get("crv")))
+                .y(base64.decode((String) key.get("y")))
+                .x(base64.decode((String) key.get("x")))
+                .crv(new JsonWebKeyCurveName((String) key.get("crv")))
                 .keyOps(getKeyOperations((List<String>) key.get("key_ops")))
-                .keyHsm(base64.decode((String) key.get("key_hsm")))
-                .symmetricKey(base64.decode((String) key.get("k")))
-                .rsaSecretPrimeBounded(base64.decode((String) key.get("q")))
-                .rsaSecretPrime(base64.decode((String) key.get("p")))
-                .rsaPrivateKeyParameterQi(base64.decode((String) key.get("qi")))
-                .rsaPrivateKeyParameterDq(base64.decode((String) key.get("dq")))
-                .rsaPrivateKeyParameterDp(base64.decode((String) key.get("dp")))
-                .rsaPrivateExponent(base64.decode((String) key.get("d")))
-                .rsaExponent(base64.decode((String) key.get("e")))
-                .rsaModulus(base64.decode((String) key.get("n")))
-                .keyType(new JsonWebKeyType((String) key.get("kty")))
-                .keyId((String) key.get("kid"));
+                .t(base64.decode((String) key.get("key_hsm")))
+                .k(base64.decode((String) key.get("k")))
+                .q(base64.decode((String) key.get("q")))
+                .p(base64.decode((String) key.get("p")))
+                .qi(base64.decode((String) key.get("qi")))
+                .dq(base64.decode((String) key.get("dq")))
+                .dp(base64.decode((String) key.get("dp")))
+                .d(base64.decode((String) key.get("d")))
+                .e(base64.decode((String) key.get("e")))
+                .n(base64.decode((String) key.get("n")))
+                .kty(new JsonWebKeyType((String) key.get("kty")))
+                .kid((String) key.get("kid"));
         keyOperations(getKeyOperations((List<String>) key.get("key_ops")));
         unpackId((String) key.get("kid"));
         return outputKey;

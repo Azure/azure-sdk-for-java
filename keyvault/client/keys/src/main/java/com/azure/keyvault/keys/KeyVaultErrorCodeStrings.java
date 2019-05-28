@@ -35,15 +35,14 @@ class KeyVaultErrorCodeStrings {
         return errorStrings.getProperty(propertyName);
     }
 
-    private static void loadProperties() {
-        if (errorStrings != null) {
-            return;
-        }
-        try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
-            errorStrings = new Properties();
-            errorStrings.load(fileInputStream);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    private synchronized static void loadProperties() {
+        if (errorStrings == null) {
+            try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+                errorStrings = new Properties();
+                errorStrings.load(fileInputStream);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
