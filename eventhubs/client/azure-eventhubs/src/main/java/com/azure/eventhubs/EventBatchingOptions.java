@@ -8,6 +8,9 @@ public class EventBatchingOptions {
     private int maximumSizeInBytes;
     private String batchLabel;
 
+    /**
+     * Creates an instance with the maximum message size set to the maximum amount allowed by the protocol.
+     */
     public EventBatchingOptions() {
         this.maximumSizeInBytes = EventSender.MAX_MESSAGE_LENGTH_BYTES;
     }

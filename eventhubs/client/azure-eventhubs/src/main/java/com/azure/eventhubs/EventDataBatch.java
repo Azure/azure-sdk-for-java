@@ -10,16 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+/*
+ * A helper class for aggregating EventData into a single AMPQ message, taking into account the max size limit.
+ */
 final class EventDataBatch {
     private final int maxMessageSize;
     private final String partitionKey;
     private final List<EventData> events;
     private final byte[] eventBytes;
     private int currentSize = 0;
-
-    EventDataBatch(final int maxMessageSize) {
-        this(maxMessageSize, null);
-    }
 
     EventDataBatch(final int maxMessageSize, final String partitionKey) {
         this.maxMessageSize = maxMessageSize;

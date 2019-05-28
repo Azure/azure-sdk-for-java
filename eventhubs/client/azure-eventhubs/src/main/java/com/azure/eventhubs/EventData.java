@@ -48,8 +48,6 @@ import static com.azure.eventhubs.implementation.AmqpConstants.SEQUENCE_NUMBER_A
  * </p>
  */
 public class EventData implements Comparable<EventData> {
-    private static final int BODY_DATA_NULL = -1;
-
     private final Map<String, Object> properties = new HashMap<>();
     private transient ByteBuffer data;
 
