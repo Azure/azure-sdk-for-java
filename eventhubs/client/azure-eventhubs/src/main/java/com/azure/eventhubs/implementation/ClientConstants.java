@@ -12,7 +12,6 @@ public final class ClientConstants {
     public static final int HTTPS_PORT = 443;
     public static final int MAX_PARTITION_KEY_LENGTH = 128;
 
-    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);

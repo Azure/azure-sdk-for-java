@@ -11,15 +11,17 @@ import java.util.List;
 import java.util.Locale;
 
 final class EventDataBatch {
-
     private final int maxMessageSize;
     private final String partitionKey;
     private final List<EventData> events;
     private final byte[] eventBytes;
     private int currentSize = 0;
 
-    EventDataBatch(final int maxMessageSize, final String partitionKey) {
+    EventDataBatch(final int maxMessageSize) {
+        this(maxMessageSize, null);
+    }
 
+    EventDataBatch(final int maxMessageSize, final String partitionKey) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.events = new LinkedList<>();
