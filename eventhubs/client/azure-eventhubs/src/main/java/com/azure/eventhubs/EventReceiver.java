@@ -14,35 +14,34 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * This is a logical representation of receiving from a EventHub partition.
  *
  * <p>
- * A {@link EventReceiver#receive()} is tied to a ConsumerGroup + Event Hubs PartitionId combination.
+ * A {@link EventReceiver#receive()} is tied to a Event Hub PartitionId + consumer group combination.
  *
  * <ul>
- *      <li>If the {@link EventReceiver} is created where {@link EventReceiverOptions#epoch()} has a value, then Event
- *      Hubs service will guarantee only 1 active receiver exists per ConsumerGroup + PartitionId combo.  This is the
- *      recommended approach to create a {@link EventReceiver}.</li>
- *      <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.</li>
+ *      <li>If the {@link EventReceiver} is created where {@link ReceiverOptions#exclusiveReceiverPriority()} has a
+ *      value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
+ *      combination. This is the recommended approach to create a {@link EventReceiver}.</li>
+ *      <li>Multiple receivers per partitionId and consumer group combination can be created using non-epoch receivers.</li>
  * </ul>
  *
- * @see EventHubClient#createReceiver(String, EventPosition)
- * @see EventHubClient#createReceiver(String, EventPosition, EventReceiverOptions)
+ * @see EventHubClient#createReceiver(String)
+ * @see EventHubClient#createReceiver(String, ReceiverOptions)
  */
-public class EventReceiver implements AutoCloseable {
-
-    private PartitionInformation partitionInformation;
+public class EventReceiver {
+    private PartitionProperties partitionInformation;
 
     /**
      * Gets the most recent information about a partition by the current receiver.
      *
-     * @return If {@link EventReceiverOptions}
+     * @return If {@link ReceiverOptions}
      */
-    public PartitionInformation partitionInformation() {
+    public PartitionProperties partitionInformation() {
         return partitionInformation;
     }
 
     /**
      * Begin receiving events until there are no longer any events emitted specified by
-     * {@link EventHubClientBuilder#timeout(Duration)}, are no longer any subscribers, or
-     * {@link EventReceiver#close()} is called.
+     * {@link ReceiverOptions#defaultMaximumReceiveWaitTime(Duration)}, are no longer any subscribers, or the parent
+     * {@link EventHubClient#close() EventHubClient.close()} is called.
      *
      * @return A stream of events for this receiver.
      */
@@ -57,12 +56,5 @@ public class EventReceiver implements AutoCloseable {
 
     private Flux<EventData> receiveFromPartition() {
         return Flux.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() {
     }
 }

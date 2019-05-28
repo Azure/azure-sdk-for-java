@@ -8,30 +8,33 @@ import java.time.Instant;
 /**
  * Contains runtime information about an Event Hub partition.
  */
-public final class PartitionInformation {
+public final class PartitionProperties {
     private final String eventHubPath;
-    private final String partitionId;
-    private final long beginSequenceNumber;
+    private final String id;
+    private final long beginningSequenceNumber;
     private final long lastEnqueuedSequenceNumber;
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTimeUtc;
     private final boolean isEmpty;
+    private Instant propertyRetrievalTimeUtc;
 
-    PartitionInformation(
+    PartitionProperties(
             final String eventHubPath,
-            final String partitionId,
-            final long beginSequenceNumber,
+            final String id,
+            final long beginningSequenceNumber,
             final long lastEnqueuedSequenceNumber,
             final String lastEnqueuedOffset,
             final Instant lastEnqueuedTimeUtc,
-            final boolean isEmpty) {
+            final boolean isEmpty,
+            final Instant propertyRetrievalTimeUtc) {
         this.eventHubPath = eventHubPath;
-        this.partitionId = partitionId;
-        this.beginSequenceNumber = beginSequenceNumber;
+        this.id = id;
+        this.beginningSequenceNumber = beginningSequenceNumber;
         this.lastEnqueuedSequenceNumber = lastEnqueuedSequenceNumber;
         this.lastEnqueuedOffset = lastEnqueuedOffset;
         this.lastEnqueuedTimeUtc = lastEnqueuedTimeUtc;
         this.isEmpty = isEmpty;
+        this.propertyRetrievalTimeUtc = propertyRetrievalTimeUtc;
     }
 
     /**
@@ -48,8 +51,8 @@ public final class PartitionInformation {
      *
      * @return The identifier of the partition within the Event Hub.
      */
-    public String partitionId() {
-        return this.partitionId;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -57,14 +60,14 @@ public final class PartitionInformation {
      *
      * @return The starting sequence number of the partition's message stream.
      */
-    public long beginSequenceNumber() {
-        return this.beginSequenceNumber;
+    public long beginningSequenceNumber() {
+        return this.beginningSequenceNumber;
     }
 
     /**
      * Gets the last sequence number of the partition's message stream.
      *
-     * @return the last sequence number of the partition's message stream.
+     * @return the last sequence number of the partition's messaPropertyRetrievalTimeUtcge stream.
      */
     public long lastEnqueuedSequenceNumber() {
         return this.lastEnqueuedSequenceNumber;
@@ -90,9 +93,19 @@ public final class PartitionInformation {
 
     /**
      * Indicates whether or not there are events in the partition.
+     *
      * @return true if there are no events, and false otherwise.
      */
     public boolean isEmpty() {
         return this.isEmpty;
+    }
+
+    /**
+     * The instant, in UTC, that the partition information was retrieved from the Event Hub.
+     *
+     * @return Instant, in UTC, that the partition information was retrieved.
+     */
+    public Instant propertyRetrievalTimeUtc() {
+        return this.propertyRetrievalTimeUtc;
     }
 }

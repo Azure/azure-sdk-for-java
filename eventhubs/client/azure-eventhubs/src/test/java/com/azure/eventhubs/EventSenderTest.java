@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.implementation.util.ImplUtils;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -20,21 +19,37 @@ public class EventSenderTest {
     };
 
     @Test
-    public void sendBatches() {
+    public void sendBatch() {
         int maxMessageSize = 16 * 1024;
 
-        final Flux<EventData> map = Flux.range(0, 200).flatMap(number -> {
-            final int index = number % partitions.length;
-            final String partition = partitions[index];
+        final Flux<EventData> map = Flux.range(0, 4).flatMap(number -> {
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
-
             return Flux.just(data);
         });
 
-        EventSender sender = new EventSender(maxMessageSize);
+        EventBatchingOptions options = new EventBatchingOptions()
+            .maximumSizeInBytes(maxMessageSize);
+        EventSender sender = new EventSender();
 
-        StepVerifier.create(sender.send(map))
+        StepVerifier.create(sender.send(map, options))
             .verifyComplete();
+    }
+
+    @Test
+    public void sendBatchTooManyEvents() {
+        int maxMessageSize = 16 * 1024;
+
+        final Flux<EventData> map = Flux.range(0, 20).flatMap(number -> {
+            final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
+            return Flux.just(data);
+        });
+
+        EventBatchingOptions options = new EventBatchingOptions()
+            .maximumSizeInBytes(maxMessageSize);
+        EventSender sender = new EventSender();
+
+        StepVerifier.create(sender.send(map, options))
+            .verifyError(PayloadSizeExceededException.class);
     }
 
     private static final String CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"

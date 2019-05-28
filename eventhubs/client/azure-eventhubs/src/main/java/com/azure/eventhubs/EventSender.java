@@ -4,12 +4,10 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.eventhubs.implementation.ClientConstants;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,36 +25,44 @@ import java.util.stream.Collector;
  *
  * @see EventHubClient#createSender()
  */
-public class EventSender implements AutoCloseable {
-    private static final String EMPTY_PARTITION_KEY = "";
-    private static final Duration WINDOW_DURATION = Duration.ofMillis(1000);
-    private static final int WINDOW_SIZE = 100;
+public class EventSender {
+    /**
+     * The default maximum allowable size, in bytes, for a batch to be sent.
+     */
+    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+
+    private static final SenderOptions DEFAULT_OPTIONS = new SenderOptions();
+    private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
-    private final int maxMessageSize;
 
     //TODO (conniey): Remove this after I verify it all works.
     private final AtomicInteger number = new AtomicInteger(0);
     private final AtomicInteger totalEvents = new AtomicInteger(0);
+    private final SenderOptions senderOptions;
 
     /**
      * Creates a new instance of the EventSender.
      */
     EventSender() {
-        this(ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+        this(DEFAULT_OPTIONS);
     }
 
     /**
-     * Creates a new instance of this object with batches that are {@code maxMessageSize}.
+     * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
      *
-     * @param maxMessageSize Message size for each batch.
+     * @code partitionId}.
      */
-    EventSender(int maxMessageSize) {
-        this.maxMessageSize = maxMessageSize;
+    EventSender(SenderOptions options) {
+        Objects.requireNonNull(options);
+
+        this.senderOptions = options;
     }
 
     /**
-     * Sends the {@code events} to the Event Hubs service.
+     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
+     * size is the max amount allowed on the link.
      *
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -68,21 +74,24 @@ public class EventSender implements AutoCloseable {
     }
 
     /**
-     * Sends the {@code events} to the specified Event Hubs {@code partitionId}.
+     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
+     * size is the max amount allowed on the link.
      *
-     * @param partitionId Event Hubs partition to send the events to.
      * @param events Events to send to the service.
+     * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events, String partitionId) {
-        Objects.requireNonNull(partitionId);
+    public Mono<Void> send(Iterable<EventData> events, EventBatchingOptions options) {
         Objects.requireNonNull(events);
 
-        return send(Flux.fromIterable(events), partitionId);
+        return send(Flux.fromIterable(events), options);
     }
 
     /**
-     * Sends the {@code events} to the Event Hubs service.
+     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
+     * size is the max amount allowed on the link.
      *
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -90,35 +99,31 @@ public class EventSender implements AutoCloseable {
     public Mono<Void> send(Publisher<EventData> events) {
         Objects.requireNonNull(events);
 
-        return sendInternal(null, Flux.defer(() -> events));
+        return sendInternal(Flux.from(events), DEFAULT_BATCHING_OPTIONS);
     }
 
     /**
-     * Sends the {@code events} to the specified Event Hubs {@code partitionId}.
-     * Events always go to the specified {@code partitionId}.
+     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
+     * size is the max amount allowed on the link.
      *
-     * @param partitionId Event Hubs partition to send the events to.
      * @param events Events to send to the service.
+     * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
-     * @throws NullPointerException if {@code partitionId} or {@code events} are null.
      */
-    public Mono<Void> send(Publisher<EventData> events, String partitionId) {
-        Objects.requireNonNull(partitionId);
+    public Mono<Void> send(Publisher<EventData> events, EventBatchingOptions options) {
         Objects.requireNonNull(events);
+        Objects.requireNonNull(options);
 
-        return sendInternal(partitionId, Flux.defer(() -> events));
+        return sendInternal(Flux.from(events), options);
     }
 
-    private Mono<Void> sendInternal(String partitionId, Flux<EventData> events) {
-        final Flux<EventDataBatch> batches = Flux.defer(() -> events)
-            .windowTimeout(WINDOW_SIZE, WINDOW_DURATION)
-            .flatMap(group -> {
-                EventDataCollector collector = new EventDataCollector(maxMessageSize);
+    private Mono<Void> sendInternal(Flux<EventData> events, EventBatchingOptions options) {
+        final String partitionId = senderOptions.partitionId();
 
-                return group.collect(collector);
-            }).flatMap(Flux::fromIterable);
-
-        return sendBatch(partitionId, batches);
+        //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
+        return events.collect(new EventDataCollector(options, 1))
+            .flatMap(list -> sendBatch(partitionId, Flux.fromIterable(list)));
     }
 
     private Mono<Void> sendBatch(String partitionId, Flux<EventDataBatch> eventBatches) {
@@ -140,31 +145,23 @@ public class EventSender implements AutoCloseable {
         return Mono.empty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() {
-
-    }
-
-    //TODO (conniey): Remove collector for now.
     /*
-     * Collects {@link EventData} into {@link EventDataBatch} to send to Event Hubs.
+     * Collects EventData into EventDataBatch to send to Event Hubs. If maxNumberOfBatches is null then it'll collect as
+     * many batches as possible. Otherwise, if there are more events than can fit into maxNumberOfBatches, then the
+     * collector throws a PayloadSizeExceededException.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
-        private final String partitionKey;
+        private final String batchLabel;
         private final int maxMessageSize;
+        private final Integer maxNumberOfBatches;
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(int maxMessageSize) {
-            this(maxMessageSize, null);
-        }
+        EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
+            this.maxNumberOfBatches = maxNumberOfBatches;
+            this.maxMessageSize = options.maximumSizeInBytes();
+            this.batchLabel = options.batchLabel();
 
-        EventDataCollector(int maxMessageSize, String partitionKey) {
-            this.partitionKey = partitionKey;
-            this.maxMessageSize = maxMessageSize;
-            currentBatch = new EventDataBatch(maxMessageSize, partitionKey);
+            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.batchLabel());
         }
 
         @Override
@@ -180,7 +177,11 @@ public class EventSender implements AutoCloseable {
                     return;
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionKey);
+                if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
+                    throw new PayloadSizeExceededException(String.format("EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
+                }
+
+                currentBatch = new EventDataBatch(maxMessageSize, batchLabel);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

@@ -3,15 +3,28 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.MessageConstant;
+import com.azure.eventhubs.implementation.AmqpConstants;
+import com.azure.eventhubs.implementation.EventDataUtil;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
+/*
+ * A helper class for aggregating EventData into a single AMPQ message, taking into account the max size limit.
+ */
 final class EventDataBatch {
-
     private final int maxMessageSize;
     private final String partitionKey;
     private final List<EventData> events;
@@ -19,7 +32,6 @@ final class EventDataBatch {
     private int currentSize = 0;
 
     EventDataBatch(final int maxMessageSize, final String partitionKey) {
-
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.events = new LinkedList<>();
@@ -27,11 +39,11 @@ final class EventDataBatch {
         this.eventBytes = new byte[maxMessageSize];
     }
 
-    public int getSize() {
+    int getSize() {
         return events.size();
     }
 
-    public boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
+    boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
 
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");
@@ -68,8 +80,9 @@ final class EventDataBatch {
     }
 
     private int getSize(final EventData eventData, final boolean isFirst) {
+        Objects.requireNonNull(eventData);
 
-        final Message amqpMessage = eventData.createAmqpMessage(partitionKey);
+        final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
@@ -83,5 +96,93 @@ final class EventDataBatch {
         }
 
         return eventSize;
+    }
+
+    /*
+     * Creates the AMQP message represented by the event data
+     */
+    private static Message createAmqpMessage(EventData event, String partitionKey) {
+        final Message message = Proton.message();
+
+        if (event.properties() != null && !event.properties().isEmpty()) {
+            final ApplicationProperties applicationProperties = new ApplicationProperties(event.properties());
+            message.setApplicationProperties(applicationProperties);
+        }
+
+        if (event.systemProperties() != null) {
+            event.systemProperties().forEach((key, value) -> {
+                if (EventDataUtil.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
+                    return;
+                }
+
+                final MessageConstant constant = MessageConstant.fromString(key);
+
+                if (constant != null) {
+                    switch (constant) {
+                        case MESSAGE_ID:
+                            message.setMessageId(value);
+                            break;
+                        case USER_ID:
+                            message.setUserId((byte[]) value);
+                            break;
+                        case TO:
+                            message.setAddress((String) value);
+                            break;
+                        case SUBJECT:
+                            message.setSubject((String) value);
+                            break;
+                        case REPLY_TO:
+                            message.setReplyTo((String) value);
+                            break;
+                        case CORRELATION_ID:
+                            message.setCorrelationId(value);
+                            break;
+                        case CONTENT_TYPE:
+                            message.setContentType((String) value);
+                            break;
+                        case CONTENT_ENCODING:
+                            message.setContentEncoding((String) value);
+                            break;
+                        case ABSOLUTE_EXPRITY_TIME:
+                            message.setExpiryTime((long) value);
+                            break;
+                        case CREATION_TIME:
+                            message.setCreationTime((long) value);
+                            break;
+                        case GROUP_ID:
+                            message.setGroupId((String) value);
+                            break;
+                        case GROUP_SEQUENCE:
+                            message.setGroupSequence((long) value);
+                            break;
+                        case REPLY_TO_GROUP_ID:
+                            message.setReplyToGroupId((String) value);
+                            break;
+                        default:
+                            throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
+                    }
+                } else {
+                    final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
+                        ? new MessageAnnotations(new HashMap<>())
+                        : message.getMessageAnnotations();
+                    messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
+                    message.setMessageAnnotations(messageAnnotations);
+                }
+            });
+        }
+
+        if (partitionKey != null) {
+            final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
+                ? new MessageAnnotations(new HashMap<>())
+                : message.getMessageAnnotations();
+            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+            message.setMessageAnnotations(messageAnnotations);
+        }
+
+        if (event.data() != null) {
+            message.setBody(new Data(Binary.create(event.data())));
+        }
+
+        return message;
     }
 }

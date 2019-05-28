@@ -12,7 +12,6 @@ public final class ClientConstants {
     public static final int HTTPS_PORT = 443;
     public static final int MAX_PARTITION_KEY_LENGTH = 128;
 
-    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
@@ -72,21 +71,9 @@ public final class ClientConstants {
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
-    public static final int MAX_RECEIVER_NAME_LENGTH = 64;
 
     public static final String COMMUNICATION_EXCEPTION_GENERIC_MESSAGE = "A communication error has occurred. "
         + "This may be due to an incorrect host name in your connection string or a problem with your network connection.";
-
-    /**
-     * This is a constant defined to represent the start of a partition stream in EventHub.
-     */
-    public static final String START_OF_STREAM = "-1";
-    /**
-     * This is a constant defined to represent the current end of a partition stream in EventHub.
-     * This can be used as an offset argument in receiver creation to start receiving from the latest
-     * event, instead of a specific offset or point in time.
-     */
-    public static final String END_OF_STREAM = "@latest";
 
     private ClientConstants() {
     }
@@ -97,14 +84,9 @@ public final class ClientConstants {
 
     private static String getFrameworkInfo() {
         final Package javaRuntimeClassPkg = Runtime.class.getPackage();
-        final StringBuilder frameworkInfo = new StringBuilder();
-        frameworkInfo.append("jre:");
-        frameworkInfo.append(javaRuntimeClassPkg.getImplementationVersion());
-        frameworkInfo.append(";vendor:");
-        frameworkInfo.append(javaRuntimeClassPkg.getImplementationVendor());
-        frameworkInfo.append(";jvm");
-        frameworkInfo.append(System.getProperty("java.vm.version"));
 
-        return frameworkInfo.toString();
+        return "jre:" + javaRuntimeClassPkg.getImplementationVersion()
+            + ";vendor:" + javaRuntimeClassPkg.getImplementationVendor()
+            + ";jvm" + System.getProperty("java.vm.version");
     }
 }
