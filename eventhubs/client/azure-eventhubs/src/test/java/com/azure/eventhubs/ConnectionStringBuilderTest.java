@@ -2,12 +2,17 @@ package com.azure.eventhubs;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+@RunWith(Theories.class)
 public class ConnectionStringBuilderTest {
 
     private static final String END_POINT_FORMAT = "sb://%s.%s";
@@ -36,14 +41,15 @@ public class ConnectionStringBuilderTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void nullConnStrBuilder() {
-        new ConnectionStringBuilder(null);
+    @DataPoints
+    public static String[] connStrs() {
+        return new String[]{null, "", "wrongConnStr"};
     }
 
+    @Theory
     @Test(expected = IllegalArgumentException.class)
-    public void emptyConnStrBuilder() {
-        new ConnectionStringBuilder("");
+    public void invalidConnStrBuilder(String connStr) {
+        new ConnectionStringBuilder(connStr);
     }
 
     @Test
@@ -66,12 +72,6 @@ public class ConnectionStringBuilderTest {
             .sasKeyName(firstConnStrBuilder.sasKeyName())
             .eventHubName(firstConnStrBuilder.eventHubName());
         validateConnStr.accept(new ConnectionStringBuilder(secondConnStrBuilder.toString()));
-
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void wrongConnStrBuilder() {
-        new ConnectionStringBuilder("wrongConnStr");
     }
 
     @Test

@@ -46,7 +46,6 @@ public final class ConnectionStringBuilder {
     private static final String END_POINT_FORMAT = "sb://%s.%s";
     private static final String HOST_NAME_FORMAT = "sb://%s";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
-    private static final String VERTICAL_LINE = "|";
 
     private static final String HOST_NAME_CONFIG_NAME = "Hostname";    // Hostname is a key that is used in IoTHub.
     private static final String ENDPOINT_CONFIG_NAME = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
@@ -57,20 +56,12 @@ public final class ConnectionStringBuilder {
     private static final String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
     private static final String SHARED_ACCESS_SIGNATURE_CONFIG_NAME = "SharedAccessSignature";
 
-    private static final String ALL_KEY_ENUMERATE_REGEX = new StringBuilder()
-        .append("(")
-        .append(HOST_NAME_CONFIG_NAME).append(VERTICAL_LINE)
-        .append(ENDPOINT_CONFIG_NAME).append(VERTICAL_LINE)
-        .append(SHARED_ACCESS_KEY_NAME_CONFIG_NAME).append(VERTICAL_LINE)
-        .append(SHARED_ACCESS_KEY_CONFIG_NAME).append(VERTICAL_LINE)
-        .append(SHARED_ACCESS_SIGNATURE_CONFIG_NAME).append(VERTICAL_LINE)
-        .append(ENTITY_PATH_CONFIG_NAME)
-        .append(")")
-        .toString();
-    private static final String KEYS_WITH_DELIMITERS_REGEX = new StringBuilder().append(KEY_VALUE_PAIR_DELIMITER)
-        .append(ALL_KEY_ENUMERATE_REGEX)
-        .append(KEY_VALUE_SEPARATOR)
-        .toString();
+    private static final String ALL_KEY_ENUMERATE_REGEX = "("
+        + String.join("|"
+            , HOST_NAME_CONFIG_NAME, ENDPOINT_CONFIG_NAME, SHARED_ACCESS_KEY_NAME_CONFIG_NAME
+            , SHARED_ACCESS_KEY_CONFIG_NAME, SHARED_ACCESS_SIGNATURE_CONFIG_NAME, ENTITY_PATH_CONFIG_NAME)
+        + ")";
+    private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX + KEY_VALUE_SEPARATOR;
 
     private URI endpoint;
     private String eventHubName;
