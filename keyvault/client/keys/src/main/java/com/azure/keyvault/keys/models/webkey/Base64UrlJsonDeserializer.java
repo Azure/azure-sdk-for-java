@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.webkey;
-
-import java.io.IOException;
-
-import org.apache.commons.codec.binary.Base64;
+package com.azure.keyvault.keys.models.webkey;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import org.apache.commons.codec.binary.Base64;
+
+import java.io.IOException;
 
 /**
  * The base64 URL JSON deserializer.

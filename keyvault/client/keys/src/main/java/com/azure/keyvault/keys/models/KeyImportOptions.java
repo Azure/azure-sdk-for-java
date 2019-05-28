@@ -3,7 +3,7 @@
 
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.keys.models.webkey.JsonWebKey;
 
 public class KeyImportOptions extends KeyBase {
 

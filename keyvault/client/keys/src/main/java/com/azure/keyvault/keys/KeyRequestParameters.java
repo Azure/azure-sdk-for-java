@@ -3,9 +3,9 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.keyvault.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
+import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

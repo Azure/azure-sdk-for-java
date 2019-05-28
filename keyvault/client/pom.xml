@@ -47,6 +47,5 @@
 
   <modules>
     <module>keys</module>
-    <module>webkey</module>
   </modules>
 </project>

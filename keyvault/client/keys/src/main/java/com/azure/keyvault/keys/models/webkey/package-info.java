@@ -4,4 +4,4 @@
 /**
  * This package contains the classes for key vault JSON web key. 
  */
-package com.microsoft.azure.keyvault.webkey;
+package com.azure.keyvault.keys.models.webkey;
