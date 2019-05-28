@@ -27,7 +27,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubClient#createReceiver(String, ReceiverOptions)
  */
 public class EventReceiver {
-
     private PartitionProperties partitionInformation;
 
     /**
@@ -41,8 +40,8 @@ public class EventReceiver {
 
     /**
      * Begin receiving events until there are no longer any events emitted specified by
-     * {@link EventHubClientBuilder#timeout(Duration)}, are no longer any subscribers, or
-     * {@link EventReceiver#close()} is called.
+     * {@link ReceiverOptions#defaultMaximumReceiveWaitTime(Duration)}, are no longer any subscribers, or the parent
+     * {@link EventHubClient#close() EventHubClient.close()} is called.
      *
      * @return A stream of events for this receiver.
      */
