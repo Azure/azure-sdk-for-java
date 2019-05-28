@@ -25,7 +25,7 @@ import java.util.stream.Collector;
  *
  * @see EventHubClient#createSender()
  */
-public class EventSender implements AutoCloseable {
+public class EventSender {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
@@ -143,14 +143,6 @@ public class EventSender implements AutoCloseable {
         logger.asWarning().log(String.format("[%s], size: %s, total: %s", batch.getPartitionKey(), batch.getSize(), totals));
 
         return Mono.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() {
-
     }
 
     /*

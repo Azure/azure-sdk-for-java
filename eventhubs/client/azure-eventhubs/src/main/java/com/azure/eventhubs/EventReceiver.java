@@ -26,7 +26,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubClient#createReceiver(String)
  * @see EventHubClient#createReceiver(String, ReceiverOptions)
  */
-public class EventReceiver implements AutoCloseable {
+public class EventReceiver {
 
     private PartitionProperties partitionInformation;
 
@@ -57,12 +57,5 @@ public class EventReceiver implements AutoCloseable {
 
     private Flux<EventData> receiveFromPartition() {
         return Flux.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() {
     }
 }
