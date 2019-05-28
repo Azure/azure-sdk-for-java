@@ -5,28 +5,30 @@ import com.azure.core.exception.HttpResponseException;
 import java.io.Serializable;
 
 /** The life cycle of an operation cdepicted below
- * NOT-STARTED  --> IN-PROGRESS
+ * NOT-STARTED ---> IN-PROGRESS
  *                              ------> Successfully Complete
  *                              ------> Cancelled
  *                              ------> Failed
  **/
-public interface PollResponse extends Serializable {
+public final class PollResponse{
 
-    /**@return  true if operation successfully completes.**/
-    boolean isOperationSuccessfullyComplete();
+    private OperationStatus status;
 
-    /**@return  true if operation is cancelled.**/
-    boolean isOperationCancelled();
+    public enum OperationStatus{
+        SUCCESSFULLY_COMPLETED,
+        IN_PROGRESS,
+        FAILED,
+        CANCELLED,
+        STARTED
+    }
 
-    /**@return  true if operation failed.**/
-    boolean isOperationFailed();
-
-    /**@return  true if operation is in progress.**/
-    boolean isOperationInProgress();
-
-    /**@return  true if operation is started.**/
-    boolean isOperationStarted();
-
+    public PollResponse( OperationStatus status){
+        this.status=status;
+    }
+    /**@return  OperationStatus**/
+    OperationStatus status(){
+        return status;
+    }
 
     /** An operation will be done if it is
      *          a. Successfully Complete
@@ -34,15 +36,9 @@ public interface PollResponse extends Serializable {
      *          c. Failed
      @return  true if operation is done.
      **/
-    default boolean isDone(){
-        return isOperationSuccessfullyComplete() || isOperationFailed() || isOperationCancelled();
+    public boolean isDone(){
+        return status == OperationStatus.SUCCESSFULLY_COMPLETED
+            || status == OperationStatus.FAILED
+            || status == OperationStatus.CANCELLED;
     }
-
-    /**
-     * If the long running operation failed, get the error that occurred. If the operation is not
-     * done or did not fail, then return null.
-     * @return The error of the operation, or null if the operation isn't done or didn't fail.
-     */
-    public HttpResponseException error();
-
 }
