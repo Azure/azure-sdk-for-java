@@ -8,7 +8,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AsyncCredentialsPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;

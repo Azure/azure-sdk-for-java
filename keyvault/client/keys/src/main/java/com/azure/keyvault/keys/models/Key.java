@@ -6,8 +6,6 @@ package com.azure.keyvault.keys.models;
 import com.azure.keyvault.webkey.JsonWebKey;
 import com.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.codec.binary.Base64;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +78,6 @@ public class Key extends KeyBase {
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        final Base64 BASE64 = new Base64(-1, null, true);
         keyMaterial = createKeyMaterialFromJson(key);
     }
 }

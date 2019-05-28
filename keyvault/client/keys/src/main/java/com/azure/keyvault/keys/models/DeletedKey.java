@@ -4,15 +4,10 @@
 package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.webkey.JsonWebKey;
-import com.azure.keyvault.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.codec.binary.Base64;
-
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 import java.util.Map;
 
 public final class DeletedKey extends KeyBase {
@@ -100,7 +95,6 @@ public final class DeletedKey extends KeyBase {
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        final Base64 BASE64 = new Base64(-1, null, true);
         keyMaterial = createKeyMaterialFromJson(key);
     }
 }

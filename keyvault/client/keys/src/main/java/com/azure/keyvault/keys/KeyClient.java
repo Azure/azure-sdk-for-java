@@ -15,8 +15,15 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.keyvault.keys.implementation.KeyBasePage;
-import com.azure.keyvault.keys.models.*;
+import com.azure.keyvault.keys.models.Key;
+import com.azure.keyvault.keys.models.KeyCreateOptions;
+import com.azure.keyvault.keys.models.DeletedKey;
+import com.azure.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.keyvault.keys.models.KeyBase;
+import com.azure.keyvault.keys.models.KeyImportOptions;
+import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.keyvault.webkey.JsonWebKey;
+import com.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.azure.keyvault.webkey.JsonWebKeyType;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -73,11 +80,11 @@ public final class KeyClient extends ServiceClient {
 
 
     /**
-     * Creates a new key and  stores it in the key vault. The create key operation can be used to create any key type in
+     * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@link JsonWebKeyType keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
-     * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM}, {@link JsonWebKeyType#OCT OCT}.</p>
+     * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM} and {@link JsonWebKeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
@@ -88,6 +95,7 @@ public final class KeyClient extends ServiceClient {
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link JsonWebKeyType JsonWebKeyType}.
+     * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
@@ -97,80 +105,120 @@ public final class KeyClient extends ServiceClient {
     }
 
     /**
-     * Creates a new RSA key and  stores it in the key vault. The create rsa key operation can be used to create any rsa key type in
+     * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
-     * <p>The {@code rsaKeyCreateConfig} is required and its fields {@link RSAKeyCreateConfig#name() name} and {@link RSAKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link RSAKeyCreateConfig#keySize() key size}, {@link RSAKeyCreateConfig#expires() expires} and {@link RSAKeyCreateConfig#notBefore() notBefore} values
-     * in {@code rsaKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link RSAKeyCreateConfig#enabled() enabled} field is
-     * set to true by Azure Key Vault, if not specified.</p>
+     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#expires() expires} and {@link KeyCreateOptions#notBefore() notBefore} values
+     * are optional. If not specified, no values are set for the fields. The {@link KeyCreateOptions#enabled() enabled} field
+     * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RSAKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA},
+     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
+     * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM} and {@link JsonWebKeyType#OCT OCT}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the created key.</p>
+     * <pre>
+     * KeyCreateOptions KeyCreateOptions = new KeyCreateOptions("keyName", JsonWebKeyType.RSA)
+     *    .notBefore(OffsetDateTime.now().plusDays(1))
+     *    .expires(OffsetDateTime.now().plusYears(1));
+     *
+     * Key key = keyClient.createKey(keyCreateOptions).value();
+     * System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id());
+     * </pre>
+     *
+     * @param keyCreateOptions The key options object containing information about the key being created.
+     * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
+     * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
+     */
+    public Response<Key> createKey(KeyCreateOptions keyCreateOptions) {
+        Objects.requireNonNull(keyCreateOptions, "The key options parameter cannot be null.");
+        KeyRequestParameters parameters = new KeyRequestParameters()
+                .kty(keyCreateOptions.keyType())
+                .keyOps(keyCreateOptions.keyOperations())
+                .keyAttributes(new KeyRequestAttributes(keyCreateOptions));
+        return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+    }
+
+    /**
+     * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa key type in
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
+     *
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be optionally specified. The {@link RsaKeyCreateOptions#expires() expires}
+     * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. If not specified, no values are set for the fields. The {@link RsaKeyCreateOptions#enabled() enabled} field
+     * is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA} and
      * {@link JsonWebKeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
      * <pre>
-     * RSAKeyCreateConfig rsaKeyCreateConfig = new RSAKeyCreateConfig("keyName", JsonWebKeyType.RSA)
+     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", JsonWebKeyType.RSA)
      *    .keySize(2048)
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * Key rsaKey = keyClient.createRSAKey(rsaKeyCreateConfig).value();
+     * Key rsaKey = keyClient.createRSAKey(rsaKeyCreateOptions).value();
      * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
      * </pre>
      *
-     * @param rsaKeyCreateConfig The key configuration object containing information about the rsa key being created.
-     * @throws NullPointerException if {@code rsaKeyCreateConfig} is {@code null}.
+     * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
+     * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
-    public Response<Key> createRSAKey(RSAKeyCreateConfig rsaKeyCreateConfig) {
+    public Response<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
+        Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(rsaKeyCreateConfig.keyType())
-            .keySize(rsaKeyCreateConfig.keySize())
-            .keyOps(rsaKeyCreateConfig.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(rsaKeyCreateConfig));
-        return service.createKey(endpoint, rsaKeyCreateConfig.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+            .kty(rsaKeyCreateOptions.keyType())
+            .keySize(rsaKeyCreateOptions.keySize())
+            .keyOps(rsaKeyCreateOptions.keyOperations())
+            .keyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
+        return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
-     * Creates a new EC key and  stores it in the key vault. The create ec key operation can be used to create any ec key type in
+     * Creates a new Ec key and  stores it in the key vault. The create Ec key operation can be used to create any Ec key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
-     * <p>The {@code ecKeyCreateConfig} is required and its fields {@link ECKeyCreateConfig#name() name} and {@link ECKeyCreateConfig#keyType() key type} cannot
-     * be null. The {@link ECKeyCreateConfig#curve() key curve}, {@link ECKeyCreateConfig#expires() expires} and {@link ECKeyCreateConfig#notBefore() notBefore} values
-     * in {@code ecKeyCreateConfig} are optional. If not specified, no values are set for the fields. The {@link ECKeyCreateConfig#enabled() enabled} field is
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be optionally specified. If not specified,
+     * default value of {@link JsonWebKeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
+     * are optional. If not specified, no values are set for the fields. The {@link EcKeyCreateOptions#enabled() enabled} field is
      * set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link ECKeyCreateConfig#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
+     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC} and
      * {@link JsonWebKeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
      * <pre>
-     * ECKeyCreateConfig ecKeyCreateConfig = new ECKeyCreateConfig("keyName", JsonWebKeyType.EC)
+     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", JsonWebKeyType.EC)
      *    .curve(JsonWebKeyCurveName.P_384)
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * Key ecKey = keyClient.createECKey(ecKeyCreateConfig).value();
+     * Key ecKey = keyClient.createECKey(ecKeyCreateOptions).value();
      * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
      * </pre>
      *
-     * @param ecKeyCreateConfig The key configuration object containing information about the rsa key being created.
-     * @throws NullPointerException if {@code rsaKeyCreateConfig} is {@code null}.
+     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
+     * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
-    public Response<Key> createECKey(ECKeyCreateConfig ecKeyCreateConfig) {
+    public Response<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
+        Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(ecKeyCreateConfig.keyType())
-            .curve(ecKeyCreateConfig.curve())
-            .keyOps(ecKeyCreateConfig.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(ecKeyCreateConfig));
-        return service.createKey(endpoint, ecKeyCreateConfig.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+            .kty(ecKeyCreateOptions.keyType())
+            .curve(ecKeyCreateOptions.curve())
+            .keyOps(ecKeyCreateOptions.keyOperations())
+            .keyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
+        return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
@@ -189,7 +237,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
-    public Response<Key> importKey(String name, JsonWebKey keyMaterial){
+    public Response<Key> importKey(String name, JsonWebKey keyMaterial) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
@@ -198,34 +246,34 @@ public final class KeyClient extends ServiceClient {
      * Imports an externally created key and stores it in key vault. The import key operation may be used to import any key type
      * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportConfig} is required and its fields {@link KeyImportConfig#name() name} and {@link KeyImportConfig#keyMaterial() key material} cannot
-     * be null. The {@link KeyImportConfig#expires() expires} and {@link KeyImportConfig#notBefore() notBefore} values in {@code keyImportConfig} are optional. If not
-     * specified, no values are set for the fields. The {@link KeyImportConfig#enabled() enabled} field is set to true and the {@link KeyImportConfig#hsm() hsm} field is
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link KeyImportOptions#keyMaterial() key material} cannot
+     * be null. The {@link KeyImportOptions#expires() expires} and {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not
+     * specified, no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the {@link KeyImportOptions#hsm() hsm} field is
      * set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
      * <pre>
-     * KeyImportConfig keyImportConfig = new KeyImportConfig("keyName", jsonWebKeyToImport)
+     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
      *   .hsm(true)
      *   .expires(OffsetDateTime.now().plusDays(60));
      *
-     * Key importedKey = keyClient.importKey(keyImportConfig).value();
+     * Key importedKey = keyClient.importKey(keyImportOptions).value();
      * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
      * </pre>
      *
-     * @param keyImportConfig The key import configuration object containing information about the json web key being imported.
-     * @throws NullPointerException if {@code keyImportConfig} is {@code null}.
+     * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
+     * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
-    public Response<Key> importKey(KeyImportConfig keyImportConfig) {
-        Objects.requireNonNull(keyImportConfig, "The key import configuration parameter cannot be null.");
+    public Response<Key> importKey(KeyImportOptions keyImportOptions) {
+        Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
-                .key(keyImportConfig.keyMaterial())
-                .hsm(keyImportConfig.hsm())
-                .keyAttributes(new KeyRequestAttributes(keyImportConfig));
-        return service.importKey(endpoint, keyImportConfig.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+                .key(keyImportOptions.keyMaterial())
+                .hsm(keyImportOptions.hsm())
+                .keyAttributes(new KeyRequestAttributes(keyImportOptions));
+        return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
@@ -248,7 +296,7 @@ public final class KeyClient extends ServiceClient {
      */
     public Response<Key> getKey(String name, String version) {
         String keyVersion = "";
-        if(version != null){
+        if (version != null) {
             keyVersion = version;
         }
         return service.getKey(endpoint, name, keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
@@ -421,14 +469,13 @@ public final class KeyClient extends ServiceClient {
 
     /**
      * Requests a backup of the specified key be downloaded to the client. The Key Backup operation exports a key from Azure Key
-     * Vault in a protected form. Note that this operation does NOT return key material in a form that can be used outside the Azure Key
+     * Vault in a protected form. Note that this operation does not return key material in a form that can be used outside the Azure Key
      * Vault system, the returned key material is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent
-     * of this operation is to allow a client to generate a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it
+     * of this operation is to allow a client to generate a key in one Azure Key Vault instance, backup the key, and then restore it
      * into another Azure Key Vault instance. The backup operation may be used to export, in protected form, any key type from Azure
-     * Key Vault. Individual versions of a key cannot be backed up. BACKUP / RESTORE can be performed within geographical boundaries only;
-     * meaning that a BACKUP from one geographical area cannot be restored to another geographical area. For example, a backup
+     * Key Vault. Individual versions of a key cannot be backed up. Backup / Restore can be performed within geographical boundaries only;
+     * meaning that a backup from one geographical area cannot be restored to another geographical area. For example, a backup
      * from the US geographical area cannot be restored in an EU geographical area. This operation requires the {@code key/backup} permission.
-     *
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the key from the key vault and prints out the length of the key's backup byte array returned in the response</p>
@@ -450,11 +497,11 @@ public final class KeyClient extends ServiceClient {
 
     /**
      * Restores a backed up key to a vault. Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier,
-     * attributes and access control policies. The RESTORE operation may be used to import a previously backed up key. Individual versions of a
+     * attributes and access control policies. The restore operation may be used to import a previously backed up key. Individual versions of a
      * key cannot be restored. The key is restored in its entirety with the same key name as it had when it was backed up. If the key name is not
-     * available in the target Key Vault, the RESTORE operation will be rejected. While the key name is retained during restore, the final key identifier
-     * will change if the key is restored to a different vault. Restore will restore all versions and preserve version identifiers. The RESTORE operation is subject
-     * to security constraints: The target Key Vault must be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have RESTORE permission in
+     * available in the target Key Vault, the restore operation will be rejected. While the key name is retained during restore, the final key identifier
+     * will change if the key is restored to a different vault. Restore will restore all versions and preserve version identifiers. The restore operation is subject
+     * to security constraints: The target Key Vault must be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have restore permission in
      * the target Key Vault. This operation requires the {@code keys/restore} permission.
      *
      * <p><strong>Code Samples</strong></p>

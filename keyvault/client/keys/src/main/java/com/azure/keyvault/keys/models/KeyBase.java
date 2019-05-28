@@ -308,35 +308,35 @@ public class KeyBase {
         }
     }
 
-    List<JsonWebKeyOperation> getKeyOperations(List<String> jsonWebKeyOps){
+    List<JsonWebKeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
         List<JsonWebKeyOperation> output = new ArrayList<>();
-        for(String keyOp : jsonWebKeyOps){
+        for (String keyOp : jsonWebKeyOps) {
             output.add(new JsonWebKeyOperation(keyOp));
         }
         return output;
     }
 
-    JsonWebKey createKeyMaterialFromJson(Map<String, Object> key){
-        final Base64 BASE64 = new Base64(-1, null, true);
+    JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
+        final Base64 base64 = new Base64(-1, null, true);
         JsonWebKey outputKey = new JsonWebKey()
-                .ecPublicKeyYComponent(BASE64.decode((String)key.get("y")))
-                .ecPublicKeyXComponent(BASE64.decode((String)key.get("x")))
-                .curve(new JsonWebKeyCurveName((String)key.get("crv")))
-                .keyOps(getKeyOperations((List<String>)key.get("key_ops")))
-                .keyHsm(BASE64.decode((String)key.get("key_hsm")))
-                .symmetricKey(BASE64.decode((String)key.get("k")))
-                .rsaSecretPrimeBounded(BASE64.decode((String)key.get("q")))
-                .rsaSecretPrime(BASE64.decode((String)key.get("p")))
-                .rsaPrivateKeyParameterQi(BASE64.decode((String)key.get("qi")))
-                .rsaPrivateKeyParameterDq(BASE64.decode((String)key.get("dq")))
-                .rsaPrivateKeyParameterDp(BASE64.decode((String)key.get("dp")))
-                .rsaPrivateExponent(BASE64.decode((String)key.get("d")))
-                .rsaExponent(BASE64.decode((String)key.get("e")))
-                .rsaModulus(BASE64.decode((String)key.get("n")))
-                .keyType(new JsonWebKeyType((String)key.get("kty")))
-                .keyId((String)key.get("kid"));
-        keyOperations(getKeyOperations((List<String>)key.get("key_ops")));
-        unpackId((String)key.get("kid"));
+                .ecPublicKeyYComponent(base64.decode((String) key.get("y")))
+                .ecPublicKeyXComponent(base64.decode((String) key.get("x")))
+                .curve(new JsonWebKeyCurveName((String) key.get("crv")))
+                .keyOps(getKeyOperations((List<String>) key.get("key_ops")))
+                .keyHsm(base64.decode((String) key.get("key_hsm")))
+                .symmetricKey(base64.decode((String) key.get("k")))
+                .rsaSecretPrimeBounded(base64.decode((String) key.get("q")))
+                .rsaSecretPrime(base64.decode((String) key.get("p")))
+                .rsaPrivateKeyParameterQi(base64.decode((String) key.get("qi")))
+                .rsaPrivateKeyParameterDq(base64.decode((String) key.get("dq")))
+                .rsaPrivateKeyParameterDp(base64.decode((String) key.get("dp")))
+                .rsaPrivateExponent(base64.decode((String) key.get("d")))
+                .rsaExponent(base64.decode((String) key.get("e")))
+                .rsaModulus(base64.decode((String) key.get("n")))
+                .keyType(new JsonWebKeyType((String) key.get("kty")))
+                .keyId((String) key.get("kid"));
+        keyOperations(getKeyOperations((List<String>) key.get("key_ops")));
+        unpackId((String) key.get("kid"));
         return outputKey;
     }
 }

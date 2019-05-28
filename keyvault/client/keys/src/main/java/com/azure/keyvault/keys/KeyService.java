@@ -3,7 +3,19 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.core.annotations.*;
+import com.azure.core.annotations.PATCH;
+import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.POST;
+import com.azure.core.annotations.Host;
+import com.azure.core.annotations.GET;
+import com.azure.core.annotations.ExpectedResponses;
+import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.annotations.HostParam;
+import com.azure.core.annotations.HeaderParam;
+import com.azure.core.annotations.BodyParam;
+import com.azure.core.annotations.PathParam;
+import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;

@@ -10,13 +10,20 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-public class RSAKeyCreateConfig extends KeyBase {
-    private Integer keySize;
-    private JsonWebKeyType keyType;
+public class RsaKeyCreateOptions extends KeyCreateOptions {
 
-    public RSAKeyCreateConfig(String name, JsonWebKeyType keyType) {
+    /**
+     * The Rsa key size.
+     */
+    private Integer keySize;
+
+    /**
+     * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
+     * @param name The name of the key.
+     */
+    public RsaKeyCreateOptions(String name) {
         super.name = name;
-        this.keyType = keyType;
+        this.keyType = JsonWebKeyType.RSA;
     }
 
     /**
@@ -32,9 +39,9 @@ public class RSAKeyCreateConfig extends KeyBase {
      * Set the keySize value.
      *
      * @param keySize The keySize value to set
-     * @return the KeyRequestParameters object itself.
+     * @return the RsaKeyCreateOptions object itself.
      */
-    public RSAKeyCreateConfig keySize(Integer keySize) {
+    public RsaKeyCreateOptions keySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -53,10 +60,10 @@ public class RSAKeyCreateConfig extends KeyBase {
      * Set the key operations value.
      *
      * @param keyOperations The key operations value to set
-     * @return the RSAKeyCreateConfig object itself.
+     * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RSAKeyCreateConfig keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public RsaKeyCreateOptions keyOperations(List<JsonWebKeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
     }
@@ -74,23 +81,22 @@ public class RSAKeyCreateConfig extends KeyBase {
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
      * @param notBefore The notBefore UTC time to set
-     * @return the RSAKeyCreateConfig object itself.
+     * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RSAKeyCreateConfig notBefore(OffsetDateTime notBefore) {
+    public RsaKeyCreateOptions notBefore(OffsetDateTime notBefore) {
         super.notBefore(notBefore);
         return this;
     }
-
 
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires The expiry time to set for the key.
-     * @return the RSAKeyCreateConfig object itself.
+     * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RSAKeyCreateConfig expires(OffsetDateTime expires) {
+    public RsaKeyCreateOptions expires(OffsetDateTime expires) {
         super.expires(expires);
         return this;
     }
@@ -99,11 +105,41 @@ public class RSAKeyCreateConfig extends KeyBase {
      * Set the tags to be associated with the key.
      *
      * @param tags The tags to set
-     * @return the RSAKeyCreateConfig object itself.
+     * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RSAKeyCreateConfig tags(Map<String, String> tags) {
+    public RsaKeyCreateOptions tags(Map<String, String> tags) {
         super.tags(tags);
         return this;
+    }
+
+    /**
+     * Set the enabled value.
+     *
+     * @param enabled The enabled value to set
+     * @return the RsaKeyCreateOptions object itself.
+     */
+    public RsaKeyCreateOptions enabled(Boolean enabled) {
+        super.enabled(enabled);
+        return this;
+    }
+
+    /**
+     * Set whether the key being created is of hsm type or not.
+     * @param hsm The hsm value to set.
+     * @return the RsaKeyCreateOptions object itself.
+     */
+    public RsaKeyCreateOptions hsm(Boolean hsm) {
+        this.hsm = hsm;
+        this.keyType = hsm ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA;
+        return this;
+    }
+
+    /**
+     * Get the hsm value of the key being created.
+     * @return the hsm value.
+     */
+    public Boolean hsm() {
+        return this.hsm;
     }
 }
