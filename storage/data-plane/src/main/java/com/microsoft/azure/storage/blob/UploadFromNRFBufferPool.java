@@ -76,17 +76,15 @@ final class UploadFromNRFBufferPool {
                 result = Flowable.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
-            }
-            else {
+            } else {
                 /*
                 We are still filling the current buffer, so we have no data to return. We will return the buffer once it
                 is filled
                  */
                 result = Flowable.empty();
             }
-        }
-        // We will overflow the current buffer and require another one.
-        else {
+        } else {
+            // We will overflow the current buffer and require another one.
             // Adjust the window of buf so that we fill up currentBuf without going out of bounds.
             int oldLimit = buf.limit();
             buf.limit(buf.position() + this.currentBuf.remaining());
@@ -116,15 +114,14 @@ final class UploadFromNRFBufferPool {
         if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
             result = ByteBuffer.allocate(this.buffSize);
             this.numBuffs++;
-        }
-        else {
+        } else {
             try {
                 // If empty, this will wait for an upload to finish and return a buffer.
                 result = this.buffers.take();
 
             } catch (InterruptedException e) {
-                throw new IllegalStateException("UploadFromStream thread interrupted." + " Thread:" +
-                        Thread.currentThread().getId());
+                throw new IllegalStateException("UploadFromStream thread interrupted." + " Thread:"
+                        + Thread.currentThread().getId());
             }
         }
         return result;
@@ -152,8 +149,7 @@ final class UploadFromNRFBufferPool {
 
         try {
             this.buffers.put(b);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new IllegalStateException("UploadFromStream thread interrupted.");
         }
     }

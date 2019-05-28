@@ -42,7 +42,7 @@ public class SubscriptionClientTests extends ClientTests {
     @Test
     public void testGetAddRemoveRules() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
-        SubscriptionClient subscriptionClient = (SubscriptionClient)this.receiveClient;
+        SubscriptionClient subscriptionClient = (SubscriptionClient) this.receiveClient;
         subscriptionClient.removeRule(SubscriptionClient.DEFAULT_RULE_NAME);
 
         RuleDescription[] rules = subscriptionClient.getRules().toArray(new RuleDescription[0]);
@@ -74,9 +74,9 @@ public class SubscriptionClientTests extends ClientTests {
         RuleDescription returnedRule = rules[0];
         Assert.assertEquals("Returned rule name doesn't match", sqlRule.getName(), returnedRule.getName());
         Assert.assertTrue(returnedRule.getFilter() instanceof SqlFilter);
-        Assert.assertEquals(sqlFilter.getSqlExpression(), ((SqlFilter)returnedRule.getFilter()).getSqlExpression());
+        Assert.assertEquals(sqlFilter.getSqlExpression(), ((SqlFilter) returnedRule.getFilter()).getSqlExpression());
         Assert.assertTrue(returnedRule.getAction() instanceof SqlRuleAction);
-        Assert.assertEquals(action.getSqlExpression(), ((SqlRuleAction)returnedRule.getAction()).getSqlExpression());
+        Assert.assertEquals(action.getSqlExpression(), ((SqlRuleAction) returnedRule.getAction()).getSqlExpression());
         subscriptionClient.removeRule(sqlRule.getName());
 
         // Correlation Filter rule
@@ -99,7 +99,7 @@ public class SubscriptionClientTests extends ClientTests {
         returnedRule = rules[0];
         Assert.assertEquals("Returned rule name doesn't match", correlationRule.getName(), returnedRule.getName());
         Assert.assertTrue(returnedRule.getAction() instanceof SqlRuleAction);
-        Assert.assertEquals(action.getSqlExpression(), ((SqlRuleAction)returnedRule.getAction()).getSqlExpression());
+        Assert.assertEquals(action.getSqlExpression(), ((SqlRuleAction) returnedRule.getAction()).getSqlExpression());
         Assert.assertTrue(returnedRule.getFilter() instanceof CorrelationFilter);
         CorrelationFilter returnedFilter = (CorrelationFilter) returnedRule.getFilter();
         Assert.assertEquals(correlationFilter.getCorrelationId(), returnedFilter.getCorrelationId());
@@ -119,7 +119,7 @@ public class SubscriptionClientTests extends ClientTests {
     @Test
     public void testGetRulesForMultipleRules() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
-        SubscriptionClient subscriptionClient = (SubscriptionClient)this.receiveClient;
+        SubscriptionClient subscriptionClient = (SubscriptionClient) this.receiveClient;
         RuleDescription trueFilterRule = new RuleDescription("getRules1", TrueFilter.DEFAULT);
         subscriptionClient.addRule(trueFilterRule);
 
@@ -147,6 +147,6 @@ public class SubscriptionClientTests extends ClientTests {
     @Test
     public void testSubscriptionNameSplitting() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.RECEIVEANDDELETE);
-        Assert.assertEquals("Wrong subscription name returned.", TestUtils.FIRST_SUBSCRIPTION_NAME, ((SubscriptionClient)this.receiveClient).getSubscriptionName());
+        Assert.assertEquals("Wrong subscription name returned.", TestUtils.FIRST_SUBSCRIPTION_NAME, ((SubscriptionClient) this.receiveClient).getSubscriptionName());
     }
 }

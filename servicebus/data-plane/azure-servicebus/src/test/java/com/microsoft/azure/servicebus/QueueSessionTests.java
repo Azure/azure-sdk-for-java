@@ -16,7 +16,7 @@ import static com.microsoft.azure.servicebus.TestCommons.SHORT_WAIT_TIME;
 public class QueueSessionTests extends SessionTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSessionTests";
+        return "QueueSessionTests";
     }
 
     @Override

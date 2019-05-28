@@ -19,8 +19,7 @@ import com.microsoft.azure.servicebus.primitives.SASUtil;
  * @since 1.2.0
  *
  */
-public class SharedAccessSignatureTokenProvider extends TokenProvider
-{
+public class SharedAccessSignatureTokenProvider extends TokenProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SharedAccessSignatureTokenProvider.class);
     
     private String sasKeyName;
@@ -35,8 +34,7 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
      * @param sasKey SAS key
      * @param tokenValidityInSeconds validity of the token to be generated
      */
-    public SharedAccessSignatureTokenProvider(String sasKeyName, String sasKey, int tokenValidityInSeconds)
-    {
+    public SharedAccessSignatureTokenProvider(String sasKeyName, String sasKey, int tokenValidityInSeconds) {
         if (sasKeyName == null || sasKeyName.isEmpty()) {
             throw new IllegalArgumentException("sasKeyName cannot be empty");
         }
@@ -64,21 +62,17 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
      * @param sasToken SAS token already generated
      * @param sasTokenValidUntil Instant when the SAS token expires.
      */
-    public SharedAccessSignatureTokenProvider(String sasToken, Instant sasTokenValidUntil)
-    {
+    public SharedAccessSignatureTokenProvider(String sasToken, Instant sasTokenValidUntil) {
         this.sasToken = sasToken;
-        this.sasTokenValidUntil= sasTokenValidUntil;
+        this.sasTokenValidUntil = sasTokenValidUntil;
     }
     
     @Override
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
-        if(this.sasToken != null)
-        {
+        if (this.sasToken != null) {
             SecurityToken securityToken = new SecurityToken(SecurityTokenType.SAS, audience, this.sasToken, Instant.now(), this.sasTokenValidUntil);
             return CompletableFuture.completedFuture(securityToken);
-        }
-        else
-        {
+        } else {
             CompletableFuture<SecurityToken> tokenGeneratingFuture = new CompletableFuture<>();
             MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {
                 try {

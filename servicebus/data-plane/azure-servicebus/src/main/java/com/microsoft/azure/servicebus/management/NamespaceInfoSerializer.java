@@ -29,8 +29,9 @@ class NamespaceInfoSerializer {
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
             doc.normalize();
-            if (doc.getTagName().equals("entry"))
+            if ("entry".equals(doc.getTagName())) {
                 return parseFromEntry(doc);
+            }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error("Exception while parsing response.", e);
@@ -50,18 +51,15 @@ class NamespaceInfoSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
-                switch(element.getTagName())
-                {
+                Element element = (Element) node;
+                switch (element.getTagName()) {
                     case "content":
                         NodeList nsInfoNodes = element.getFirstChild().getChildNodes();
-                        for (int j = 0; j < nsInfoNodes.getLength(); j++)
-                        {
+                        for (int j = 0; j < nsInfoNodes.getLength(); j++) {
                             node = nsInfoNodes.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
-                                switch (element.getTagName())
-                                {
+                                switch (element.getTagName()) {
                                     case "CreatedTime":
                                         namespaceInfo.setCreatedAt(Instant.parse(element.getFirstChild().getNodeValue()));
                                         break;
@@ -76,8 +74,7 @@ class NamespaceInfoSerializer {
                                         break;
                                     case "NamespaceType":
                                         String namespaceType = element.getFirstChild().getNodeValue();
-                                        switch (namespaceType)
-                                        {
+                                        switch (namespaceType) {
                                             case "Mixed":
                                                 namespaceInfo.setNamespaceType(NamespaceType.Mixed);
                                                 break;
@@ -96,9 +93,13 @@ class NamespaceInfoSerializer {
                                             namespaceInfo.setNamespaceSku(NamespaceSku.Unknown);
                                         }
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

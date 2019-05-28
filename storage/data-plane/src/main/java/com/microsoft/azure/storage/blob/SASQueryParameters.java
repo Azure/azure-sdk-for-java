@@ -576,11 +576,11 @@ public final class SASQueryParameters {
                     break;
                 case Constants.UrlConstants.SAS_START_TIME:
                     tryAppendQueryParameter(sb, param,
-                            this.startTime == null ? null : Utility.ISO8601UTCDateFormatter.format(this.startTime));
+                            this.startTime == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime));
                     break;
                 case Constants.UrlConstants.SAS_EXPIRY_TIME:
                     tryAppendQueryParameter(sb, param,
-                            this.expiryTime == null ? null : Utility.ISO8601UTCDateFormatter.format(this.expiryTime));
+                            this.expiryTime == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime));
                     break;
                 case Constants.UrlConstants.SAS_IP_RANGE:
                     tryAppendQueryParameter(sb, param, this.ipRange);
@@ -596,11 +596,11 @@ public final class SASQueryParameters {
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_START:
                     tryAppendQueryParameter(sb, param,
-                            this.keyStart == null ? null : Utility.ISO8601UTCDateFormatter.format(this.keyStart));
+                            this.keyStart == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.keyStart));
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY:
                     tryAppendQueryParameter(sb, param,
-                            this.keyExpiry == null ? null : Utility.ISO8601UTCDateFormatter.format(this.keyExpiry));
+                            this.keyExpiry == null ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.keyExpiry));
                     break;
                 case Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE:
                     tryAppendQueryParameter(sb, param, this.keyService);
@@ -632,6 +632,8 @@ public final class SASQueryParameters {
                 case Constants.UrlConstants.SAS_CONTENT_TYPE:
                     tryAppendQueryParameter(sb, param, this.contentType);
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid URL constant.");
             }
         }
         return sb.toString();

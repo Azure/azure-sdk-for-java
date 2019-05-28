@@ -11,13 +11,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AsyncCredentialsPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,10 +79,10 @@ public final class ConfigurationAsyncClientBuilder {
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
-        headers = new HttpHeaders();
-        headers.set(ECHO_REQUEST_ID_HEADER, "true");
-        headers.set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE);
-        headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     /**
@@ -120,17 +120,18 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy());
-        policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(credentials));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
-
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
 
         return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
     }

@@ -43,148 +43,120 @@ import com.microsoft.azure.servicebus.security.SecurityConstants;
 import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.servicebus.security.TokenProvider;
 
-public class Util
-{
-    private static final long EPOCHINDOTNETTICKS = 621355968000000000l;
+public class Util {
+    private static final long EPOCHINDOTNETTICKS = 621355968000000000L;
     private static final int GUIDSIZE = 16;
 
-    private Util()
-    {
+    private Util() {
     }
 
-    static int sizeof(Object obj)
-    {
-        if(obj == null)
-        {
+    static int sizeof(Object obj) {
+        if (obj == null) {
             return 0;
         }
 
-        if (obj instanceof String)
-        {
+        if (obj instanceof String) {
             return obj.toString().length() << 1;
         }
 
-        if (obj instanceof Symbol)
-        {
+        if (obj instanceof Symbol) {
             return ((Symbol) obj).length() << 1;
         }
 
-        if (obj instanceof Byte || obj instanceof UnsignedByte)
-        {
+        if (obj instanceof Byte || obj instanceof UnsignedByte) {
             return Byte.BYTES;
         }
 
-        if (obj instanceof Integer || obj instanceof UnsignedInteger)
-        {
+        if (obj instanceof Integer || obj instanceof UnsignedInteger) {
             return Integer.BYTES;
         }
 
-        if (obj instanceof Long || obj instanceof UnsignedLong || obj instanceof Date)
-        {
+        if (obj instanceof Long || obj instanceof UnsignedLong || obj instanceof Date) {
             return Long.BYTES;
         }
 
-        if (obj instanceof Short || obj instanceof UnsignedShort)
-        {
+        if (obj instanceof Short || obj instanceof UnsignedShort) {
             return Short.BYTES;
         }
 
-        if (obj instanceof Boolean)
-        {
+        if (obj instanceof Boolean) {
             return 1;
         }
 
-        if (obj instanceof Character)
-        {
+        if (obj instanceof Character) {
             return 4;
         }
 
-        if (obj instanceof Float)
-        {
+        if (obj instanceof Float) {
             return Float.BYTES;
         }
 
-        if (obj instanceof Double)
-        {
+        if (obj instanceof Double) {
             return Double.BYTES;
         }
 
-        if (obj instanceof UUID)
-        {
+        if (obj instanceof UUID) {
             // UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe..we can treat it as a string of 36 chars = 72 bytes.
             //return 72;
             return 16;
         }
 
-        if(obj instanceof Decimal32)
-        {
+        if (obj instanceof Decimal32) {
             return 4;
         }
 
-        if(obj instanceof Decimal64)
-        {
+        if (obj instanceof Decimal64) {
             return 8;
         }
 
-        if(obj instanceof Decimal128)
-        {
+        if (obj instanceof Decimal128) {
             return 16;
         }
 
-        if (obj instanceof Binary)
-        {
-            return ((Binary)obj).getLength();
+        if (obj instanceof Binary) {
+            return ((Binary) obj).getLength();
         }
 
-        if (obj instanceof Declare)
-        {
+        if (obj instanceof Declare) {
             // Empty declare command takes up 7 bytes.
             return 7;
         }
 
-        if (obj instanceof Discharge)
-        {
+        if (obj instanceof Discharge) {
             Discharge discharge = (Discharge) obj;
             return 12 + discharge.getTxnId().getLength();
         }
 
-        if (obj instanceof Map)
-        {
+        if (obj instanceof Map) {
             // Size and Count each take a max of 4 bytes
             int size = 8;
             Map map = (Map) obj;
-            for(Object value: map.keySet())
-            {
+            for (Object value : map.keySet()) {
                 size += Util.sizeof(value);
             }
 
-            for(Object value: map.values())
-            {
+            for (Object value : map.values()) {
                 size += Util.sizeof(value);
             }
 
             return size;
         }
 
-        if (obj instanceof Iterable)
-        {
+        if (obj instanceof Iterable) {
             // Size and Count each take a max of 4 bytes
             int size = 8;
-            for(Object innerObject : (Iterable)obj)
-            {
+            for (Object innerObject : (Iterable) obj) {
                 size += Util.sizeof(innerObject);
             }
 
             return size;
         }
 
-        if(obj.getClass().isArray())
-        {
+        if (obj.getClass().isArray()) {
             // Size and Count each take a max of 4 bytes
             int size = 8;
             int length = Array.getLength(obj);
-            for(int i=0; i<length; i++)
-            {
+            for (int i = 0; i < length; i++) {
                 size += Util.sizeof(Array.get(obj, i));
             }
 
@@ -195,34 +167,28 @@ public class Util
     }
 
     // .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
-    public static Instant convertDotNetTicksToInstant(long dotNetTicks)
-    {
+    public static Instant convertDotNetTicksToInstant(long dotNetTicks) {
         long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
-        long millisecondsFromEpoch = ticksFromEpoch/10000;
-        long fractionTicks = ticksFromEpoch%10000;
-        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks*100);
+        long millisecondsFromEpoch = ticksFromEpoch / 10000;
+        long fractionTicks = ticksFromEpoch % 10000;
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
     }
 
-    public static long convertInstantToDotNetTicks(Instant instant)
-    {
-        return (instant.getEpochSecond()* 10000000) + (instant.getNano()/100) + EPOCHINDOTNETTICKS ;
+    public static long convertInstantToDotNetTicks(Instant instant) {
+        return (instant.getEpochSecond() * 10000000) + (instant.getNano() / 100) + EPOCHINDOTNETTICKS;
     }
 
     //.Net GUID bytes are ordered in a different way.
     // First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order, 7th and 8th bytes are also in reverse order
-    public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes)
-    {
-        if(dotNetBytes == null || dotNetBytes.length != GUIDSIZE)
-        {
-            return new UUID(0l, 0l);
+    public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
+        if (dotNetBytes == null || dotNetBytes.length != GUIDSIZE) {
+            return new UUID(0L, 0L);
         }
 
         byte[] reOrderedBytes = new byte[GUIDSIZE];
-        for(int i=0; i<GUIDSIZE; i++)
-        {
+        for (int i = 0; i < GUIDSIZE; i++) {
             int indexInReorderedBytes;
-            switch(i)
-            {
+            switch (i) {
                 case 0:
                     indexInReorderedBytes = 3;
                     break;
@@ -260,10 +226,8 @@ public class Util
         return new UUID(mostSignificantBits, leastSignificantBits);
     }
 
-    public static byte[] convertUUIDToDotNetBytes(UUID uniqueId)
-    {
-        if(uniqueId == null || uniqueId.equals(ClientConstants.ZEROLOCKTOKEN))
-        {
+    public static byte[] convertUUIDToDotNetBytes(UUID uniqueId) {
+        if (uniqueId == null || uniqueId.equals(ClientConstants.ZEROLOCKTOKEN)) {
             return new byte[GUIDSIZE];
         }
 
@@ -273,11 +237,9 @@ public class Util
         byte[] javaBytes = buffer.array();
 
         byte[] dotNetBytes = new byte[GUIDSIZE];
-        for(int i=0; i<GUIDSIZE; i++)
-        {
+        for (int i = 0; i < GUIDSIZE; i++) {
             int indexInReorderedBytes;
-            switch(i)
-            {
+            switch (i) {
                 case 0:
                     indexInReorderedBytes = 3;
                     break;
@@ -312,39 +274,28 @@ public class Util
         return dotNetBytes;
     }
 
-    private static int getPayloadSize(Message msg)
-    {
-        if (msg == null || msg.getBody() == null)
-        {
+    private static int getPayloadSize(Message msg) {
+        if (msg == null || msg.getBody() == null) {
             return 0;
         }
 
         Section bodySection = msg.getBody();
-        if(bodySection instanceof AmqpValue)
-        {
-            return Util.sizeof(((AmqpValue)bodySection).getValue());
-        }
-        else if(bodySection instanceof AmqpSequence)
-        {
-            return Util.sizeof(((AmqpSequence)bodySection).getValue());
-        }
-        else if (bodySection instanceof Data)
-        {
+        if (bodySection instanceof AmqpValue) {
+            return Util.sizeof(((AmqpValue) bodySection).getValue());
+        } else if (bodySection instanceof AmqpSequence) {
+            return Util.sizeof(((AmqpSequence) bodySection).getValue());
+        } else if (bodySection instanceof Data) {
             Data payloadSection = (Data) bodySection;
             Binary payloadBytes = payloadSection.getValue();
             return Util.sizeof(payloadBytes);
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
 
     // Remove this.. Too many cases, too many types...
-    public static int getDataSerializedSize(Message amqpMessage)
-    {
-        if (amqpMessage == null)
-        {
+    public static int getDataSerializedSize(Message amqpMessage) {
+        if (amqpMessage == null) {
             return 0;
         }
 
@@ -357,57 +308,47 @@ public class Util
         int annotationsSize = 0;
         int applicationPropertiesSize = 0;
 
-        if (messageAnnotations != null)
-        {
+        if (messageAnnotations != null) {
             annotationsSize += Util.sizeof(messageAnnotations.getValue());
         }
 
-        if (applicationProperties != null)
-        {
+        if (applicationProperties != null) {
             applicationPropertiesSize += Util.sizeof(applicationProperties.getValue());
         }
 
         return annotationsSize + applicationPropertiesSize + payloadSize;
     }
 
-    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException
-    {
+    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException {
         int payloadSize = Util.getDataSerializedSize(message);
         int allocationSize = Math.min(payloadSize + ClientConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         byte[] encodedBytes = new byte[allocationSize];
         int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, allocationSize);
-        return new Pair<byte[], Integer>(encodedBytes, encodedSize);
+        return new Pair<>(encodedBytes, encodedSize);
     }
 
-    static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException
-    {
+    static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException {
         // May be we should reduce memory allocations. Use a pool of byte arrays or something
         byte[] encodedBytes = new byte[maxMessageSize];
         int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, maxMessageSize);
-        return new Pair<byte[], Integer>(encodedBytes, encodedSize);
+        return new Pair<>(encodedBytes, encodedSize);
     }
 
-    static int encodeMessageToCustomArray(Message message, byte[] encodedBytes, int offset, int length) throws PayloadSizeExceededException
-    {
-        try
-        {
+    static int encodeMessageToCustomArray(Message message, byte[] encodedBytes, int offset, int length) throws PayloadSizeExceededException {
+        try {
             return message.encode(encodedBytes, offset, length);
-        }
-        catch(BufferOverflowException exception)
-        {
+        } catch (BufferOverflowException exception) {
             throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s KB", length / 1024), exception);
         }
     }
 
     // Pass little less than client timeout to the server so client doesn't time out before server times out
-    public static Duration adjustServerTimeout(Duration clientTimeout)
-    {
+    public static Duration adjustServerTimeout(Duration clientTimeout) {
         return clientTimeout.minusMillis(100);
     }
 
     // This is not super stable for some reason
-    static Message readMessageFromDelivery(Receiver receiveLink, Delivery delivery)
-    {
+    static Message readMessageFromDelivery(Receiver receiveLink, Delivery delivery) {
         int msgSize = delivery.pending();
         byte[] buffer = new byte[msgSize];
         
@@ -418,14 +359,10 @@ public class Util
         return message;
     }
 
-    public static URI convertNamespaceToEndPointURI(String namespaceName)
-    {
-        try
-        {
+    public static URI convertNamespaceToEndPointURI(String namespaceName) {
+        try {
             return new URI(String.format(Locale.US, ClientConstants.END_POINT_FORMAT, namespaceName));
-        }
-        catch(URISyntaxException exception)
-        {
+        } catch (URISyntaxException exception) {
             throw new IllegalConnectionStringFormatException(
                     String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
                     exception);
@@ -433,46 +370,33 @@ public class Util
     }
 
     @SuppressWarnings("deprecation")
-    public static ClientSettings getClientSettingsFromConnectionStringBuilder(ConnectionStringBuilder builder)
-    {
+    public static ClientSettings getClientSettingsFromConnectionStringBuilder(ConnectionStringBuilder builder) {
         TokenProvider tokenProvider;
-        if(builder.getSharedAccessSignatureToken() == null)
-        {
+        if (builder.getSharedAccessSignatureToken() == null) {
             tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey(), SecurityConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
-        }
-        else
-        {
+        } else {
             tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignatureToken(), Instant.MAX); // Max validity as we will not generate another token
         }
         
         return new ClientSettings(tokenProvider, builder.getRetryPolicy(), builder.getOperationTimeout(), builder.getTransportType());
     }
 
-    static int getTokenRenewIntervalInSeconds(int tokenValidityInSeconds)
-    {
-        if(tokenValidityInSeconds >= 300)
-        {
+    static int getTokenRenewIntervalInSeconds(int tokenValidityInSeconds) {
+        if (tokenValidityInSeconds >= 300) {
             return tokenValidityInSeconds - 30;
-        }
-        else if(tokenValidityInSeconds >= 60)
-        {
+        } else if (tokenValidityInSeconds >= 60) {
             return tokenValidityInSeconds - 10;
-        }
-        else
-        {
+        } else {
             return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;
         }
     }
     
-    static int getMaxMessageSizeFromLink(Link link)
-    {
+    static int getMaxMessageSizeFromLink(Link link) {
         UnsignedLong maxMessageSize = link.getRemoteMaxMessageSize();
-        if(maxMessageSize != null)
-        {
+        if (maxMessageSize != null) {
             int maxMessageSizeAsInt = maxMessageSize.intValue();
             // A value of 0 means no limit. Treating no limit as 1024 KB thus putting a cap on max message size
-            if(maxMessageSizeAsInt > 0)
-            {
+            if (maxMessageSizeAsInt > 0) {
                 return maxMessageSizeAsInt;
             }
         }

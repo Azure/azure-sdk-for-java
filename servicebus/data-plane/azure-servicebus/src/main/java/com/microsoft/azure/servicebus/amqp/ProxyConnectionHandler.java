@@ -9,7 +9,6 @@ import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
-import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
@@ -20,7 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.*;
+
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +48,9 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
         return isProxyAddressLegal(proxies);
     }
 
-    public ProxyConnectionHandler(IAmqpConnection messagingFactory) { super(messagingFactory); }
+    public ProxyConnectionHandler(IAmqpConnection messagingFactory) {
+        super(messagingFactory);
+    }
 
     @Override
     public void addTransportLayers(final Event event, final TransportInternal transport) {

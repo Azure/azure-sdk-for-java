@@ -253,7 +253,7 @@ public final class SharedKeyCredentials implements ICredentials {
         public Single<HttpResponse> sendAsync(final HttpRequest request) {
             if (request.headers().value(Constants.HeaderConstants.DATE) == null) {
                 request.headers().set(Constants.HeaderConstants.DATE,
-                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
+                        Utility.RFC_1123_GMT_DATE_FORMATTER.format(OffsetDateTime.now()));
             }
             final String stringToSign = this.factory.buildStringToSign(request);
             try {

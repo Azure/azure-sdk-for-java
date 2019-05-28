@@ -5,9 +5,8 @@ package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.engine.Delivery;
 
-public interface IAmqpSender extends IAmqpLink
-{
-    void onFlow(final int creditIssued);
+public interface IAmqpSender extends IAmqpLink {
+    void onFlow(int creditIssued);
 
-    void onSendComplete(final Delivery delivery);
+    void onSendComplete(Delivery delivery);
 }

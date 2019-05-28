@@ -34,10 +34,10 @@ class ManagementLockObjectImpl extends CreatableUpdatableImpl<ManagementLockObje
         this.manager = manager;
         // Set resource name
         this.lockName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.lockName = IdParsingUtils.getValueFromIdByName(inner.id(), "locks");
-        //
+        // set other parameters for create and update
     }
 
     @Override

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ConnectionStringBuilderTests {
     @Test
-    public void ConnectionStringBuilderTest() {
+    public void connectionStringBuilderTest() {
         String connectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessSignatureToken=SharedAccessSignature sr=amqp%3A%2F%2test.servicebus.windows.net%2topic";
         ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
 

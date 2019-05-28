@@ -13,22 +13,22 @@ public class HttpHeadersTests {
     public void testSet() {
         final HttpHeaders headers = new HttpHeaders();
 
-        headers.set("a", "b");
+        headers.put("a", "b");
         assertEquals("b", headers.value("a"));
 
-        headers.set("a", "c");
+        headers.put("a", "c");
         assertEquals("c", headers.value("a"));
 
-        headers.set("a", null);
+        headers.put("a", null);
         assertNull(headers.value("a"));
 
-        headers.set("A", "");
+        headers.put("A", "");
         assertEquals("", headers.value("a"));
 
-        headers.set("A", "b");
+        headers.put("A", "b");
         assertEquals("b", headers.value("A"));
 
-        headers.set("a", null);
+        headers.put("a", null);
         assertNull(headers.value("a"));
     }
 }

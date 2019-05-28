@@ -4,7 +4,7 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotations.ReturnValueWireType;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
@@ -81,9 +81,9 @@ final class HttpResponseBodyDecoder {
                                         SerializerEncoding.fromHeaders(httpResponse.headers()));
                                 return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
                             } catch (MalformedValueException e) {
-                                return Mono.error(new HttpRequestException("HTTP response has a malformed body.", httpResponse, e));
+                                return Mono.error(new HttpResponseException("HTTP response has a malformed body.", httpResponse, e));
                             } catch (IOException e) {
-                                return Mono.error(new HttpRequestException("Deserialization Failed.", httpResponse, e));
+                                return Mono.error(new HttpResponseException("Deserialization Failed.", httpResponse, e));
                             }
                         });
             }
@@ -361,7 +361,7 @@ final class HttpResponseBodyDecoder {
                 try {
                     // TODO: anuchan - unwrap OperationStatus a different way
                     // Check for OperationStatus<?>
-                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.azure.core.management.OperationStatus"))) {
+                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.azure.core.management.implementation.OperationStatus"))) {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
@@ -374,7 +374,7 @@ final class HttpResponseBodyDecoder {
 
             try {
                 // TODO: anuchan - unwrap OperationStatus a different way
-                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.azure.core.management.OperationStatus"))) {
+                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.azure.core.management.implementation.OperationStatus"))) {
                     // Get Type of 'T' from OperationStatus<T>
                     token = TypeUtil.getTypeArgument(token);
                 }

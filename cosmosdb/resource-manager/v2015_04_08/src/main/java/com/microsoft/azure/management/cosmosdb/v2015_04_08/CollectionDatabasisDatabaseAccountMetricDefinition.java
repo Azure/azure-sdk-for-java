@@ -11,13 +11,13 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.MetricDefinitionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
 import java.util.List;
 
 /**
  * Type representing CollectionDatabasisDatabaseAccountMetricDefinition.
  */
-public interface CollectionDatabasisDatabaseAccountMetricDefinition extends HasInner<MetricDefinitionInner>, HasManager<DocumentDBManager> {
+public interface CollectionDatabasisDatabaseAccountMetricDefinition extends HasInner<MetricDefinitionInner>, HasManager<CosmosDBManager> {
     /**
      * @return the metricAvailabilities value.
      */

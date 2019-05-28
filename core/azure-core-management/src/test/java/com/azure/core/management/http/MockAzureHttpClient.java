@@ -12,11 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.management.AsyncOperationResource;
-import com.azure.core.management.AzureAsyncOperationPollStrategy;
 import com.azure.core.management.HttpBinJSON;
-import com.azure.core.management.LocationPollStrategy;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.OperationState;
+import com.azure.core.management.implementation.AzureAsyncOperationPollStrategy;
+import com.azure.core.management.implementation.LocationPollStrategy;
 import com.azure.core.test.http.MockHttpResponse;
 import reactor.core.publisher.Mono;
 
@@ -303,11 +303,11 @@ public class MockAzureHttpClient implements HttpClient {
 
     public static HttpHeaders responseHeaders() {
         return new HttpHeaders()
-                .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-                .set("Via", "1.1 vegur")
-                .set("Connection", "keep-alive")
-                .set("X-Processed-Time", "1.0")
-                .set("Access-Control-Allow-Credentials", "true")
-                .set("Content-Type", "application/json");
+                .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+                .put("Via", "1.1 vegur")
+                .put("Connection", "keep-alive")
+                .put("X-Processed-Time", "1.0")
+                .put("Access-Control-Allow-Credentials", "true")
+                .put("Content-Type", "application/json");
     }
 }

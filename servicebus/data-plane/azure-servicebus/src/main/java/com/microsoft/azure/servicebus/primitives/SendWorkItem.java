@@ -8,8 +8,7 @@ import com.microsoft.azure.servicebus.TransactionContext;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
-class SendWorkItem<T> extends WorkItem<T>
-{
+class SendWorkItem<T> extends WorkItem<T> {
     private byte[] amqpMessage;
     private int messageFormat;
     private int encodedMessageSize;
@@ -17,20 +16,17 @@ class SendWorkItem<T> extends WorkItem<T>
     private String deliveryTag;
     private TransactionContext transaction;
 
-    public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, Duration timeout)
-    {
+    SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, Duration timeout) {
         super(completableFuture, timeout);
         this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag, transaction);
     }
 
-    public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, TimeoutTracker timeout)
-    {
+    SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, TimeoutTracker timeout) {
         super(completableFuture, timeout);
         this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag, transaction);
     }
 
-    private void initialize(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction)
-    {
+    private void initialize(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction) {
         this.amqpMessage = amqpMessage;
         this.messageFormat = messageFormat;
         this.encodedMessageSize = encodedMessageSize;
@@ -38,42 +34,39 @@ class SendWorkItem<T> extends WorkItem<T>
         this.transaction = transaction;
     }
 
-    public byte[] getMessage()
-    {
+    public byte[] getMessage() {
         return this.amqpMessage;
     }
 
-    public int getEncodedMessageSize()
-    {
+    public int getEncodedMessageSize() {
         return this.encodedMessageSize;
     }
 
-    public int getMessageFormat()
-    {
+    public int getMessageFormat() {
         return this.messageFormat;
     }
 
-    public void setWaitingForAck()
-    {
+    public void setWaitingForAck() {
         this.waitingForAck = true;
     }
 
-    public boolean isWaitingForAck()
-    {
+    public boolean isWaitingForAck() {
         return this.waitingForAck;
     }
 
-    public String getDeliveryTag()
-    {
+    public String getDeliveryTag() {
         return this.deliveryTag;
     }
 
-    public void setDeliveryTag(String deliveryTag)
-    {
+    public void setDeliveryTag(String deliveryTag) {
         this.deliveryTag = deliveryTag;
     }
 
-    public TransactionContext getTransaction() { return this.transaction; }
+    public TransactionContext getTransaction() {
+        return this.transaction;
+    }
 
-    public void setTransaction(TransactionContext txnId) { this.transaction = txnId; }
+    public void setTransaction(TransactionContext txnId) {
+        this.transaction = txnId;
+    }
 }

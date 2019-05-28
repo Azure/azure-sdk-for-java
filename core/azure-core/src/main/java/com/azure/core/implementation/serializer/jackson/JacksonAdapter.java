@@ -41,6 +41,11 @@ public class JacksonAdapter implements SerializerAdapter {
 
     private final XmlMapper xmlMapper;
 
+    /*
+     * The lazily-created serializer for this ServiceClient.
+     */
+    private static SerializerAdapter serializerAdapter;
+
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
@@ -66,6 +71,18 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     protected ObjectMapper simpleMapper() {
         return simpleMapper;
+    }
+
+    /**
+     * maintain singleton instance of the default serializer adapter.
+     *
+     * @return the default serializer
+     */
+    public static synchronized SerializerAdapter createDefaultSerializerAdapter() {
+        if (serializerAdapter == null) {
+            serializerAdapter = new JacksonAdapter();
+        }
+        return serializerAdapter;
     }
 
     /**

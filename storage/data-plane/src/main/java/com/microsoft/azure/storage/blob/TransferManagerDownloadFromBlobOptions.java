@@ -61,8 +61,8 @@ public final class TransferManagerDownloadFromBlobOptions {
         }
 
         this.accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        this.reliableDownloadOptionsPerBlock = reliableDownloadOptions == null ?
-                new ReliableDownloadOptions() : reliableDownloadOptions;
+        this.reliableDownloadOptionsPerBlock = reliableDownloadOptions == null
+                ? new ReliableDownloadOptions() : reliableDownloadOptions;
     }
 
     /**
