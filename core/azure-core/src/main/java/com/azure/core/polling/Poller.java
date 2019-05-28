@@ -9,12 +9,12 @@ public class Poller<T>{
 
     private static final long serialversionUID =139448132L;
 
-    T response =null;
-    private Supplier<T> serviceSupplier;
+
+    private Supplier<PollResponse<T>> serviceSupplier;
     private PollerOptions pollerOptions;
 
     /*This will save last poll response.*/
-    private PollResponse pollResponse;
+    private PollResponse<T> pollResponse;
     private Runnable callbackToCancelOperation;
 
     /*If consumer do not want to poll. This will not stop the Service Operation.*/
@@ -26,7 +26,7 @@ public class Poller<T>{
      * @param callbackToCancelOperation
      * **/
     public Poller(PollerOptions pollerOptions
-                            , Supplier<T> serviceSupplier
+                            , Supplier<PollResponse<T>> serviceSupplier
                             , Runnable callbackToCancelOperation ){
 
         this.pollerOptions = pollerOptions;
@@ -48,7 +48,8 @@ public class Poller<T>{
     public Mono<T> pollOnce() {
         return Mono.defer(() -> {
             setStopPolling(false);
-            return Mono.just(serviceSupplier.get());
+            pollResponse = serviceSupplier.get();
+            return Mono.just(pollResponse.getResult());
         });
     }
 
@@ -58,9 +59,9 @@ public class Poller<T>{
             setStopPolling(false);
             while (!isDone() && !pollingStopped()) {
                 System.out.println("Poller.pollUntilDone Invoking Azure Service , checking Operation status");
-                response = serviceSupplier.get();
+                pollResponse = serviceSupplier.get();
             }
-            return Mono.just(response);
+            return Mono.just(pollResponse.getResult());
        });
     }
 

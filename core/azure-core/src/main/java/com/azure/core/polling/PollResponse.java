@@ -1,6 +1,7 @@
 package com.azure.core.polling;
 
 import com.azure.core.exception.HttpResponseException;
+import com.microsoft.azure.eventhubs.impl.Operation;
 
 import java.io.Serializable;
 
@@ -10,10 +11,10 @@ import java.io.Serializable;
  *                              ------> Cancelled
  *                              ------> Failed
  **/
-public final class PollResponse{
+public final class PollResponse<T>{
 
     private OperationStatus status;
-
+    private T result;
     public enum OperationStatus{
         SUCCESSFULLY_COMPLETED,
         IN_PROGRESS,
@@ -22,14 +23,18 @@ public final class PollResponse{
         STARTED
     }
 
-    public PollResponse( OperationStatus status){
+    public PollResponse( OperationStatus status, T result){
         this.status=status;
+        this.result = result;
     }
     /**@return  OperationStatus**/
-    OperationStatus status(){
+    public OperationStatus status(){
         return status;
     }
 
+    public void setStatus(OperationStatus status){
+        this.status =status;
+    }
     /** An operation will be done if it is
      *          a. Successfully Complete
      *          b. Cancelled
@@ -40,5 +45,9 @@ public final class PollResponse{
         return status == OperationStatus.SUCCESSFULLY_COMPLETED
             || status == OperationStatus.FAILED
             || status == OperationStatus.CANCELLED;
+    }
+
+    public T getResult(){
+        return result;
     }
 }

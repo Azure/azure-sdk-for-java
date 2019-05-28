@@ -6,51 +6,49 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
-public class PollerTests {
+    public class PollerTests {
 
-/*
+
     @Test
     public void basicManualPollOnceTest() throws Exception {
+        MyCustomServiceResponse myCustomPollResponse = new MyCustomServiceResponse("service data");
+        PollResponse<MyCustomServiceResponse> myPollResponse = new PollResponse<MyCustomServiceResponse>(PollResponse.OperationStatus.IN_PROGRESS,myCustomPollResponse);
+        Supplier<PollResponse> serviceSupplier = () -> myPollResponse;
 
-        PollResponse myPollResponse = new MyPollResponse(true,false,false,false,false);
-        SerializableSupplier<PollResponse> serviceSupplier = () -> myPollResponse;
-
-        int timeoutInMilliSeconds = 1000*60*5;
-        int pollIntervalInMillis = 10;
-        float poolIntervalGrowthFactor =1.0f;
-        boolean operationAllowedToCancel =true;
         // Lambda Runnable
-        Runnable callbackWhenDone = () -> {
-            System.out.println(Thread.currentThread().getName() + " is running. Callback when done.");
-        };
-
         Runnable callbackToCancelOperation = () -> {
             System.out.println(Thread.currentThread().getName() + " is running. Callback to cancel.");
         };
-        Poller poller =  new Poller(timeoutInMilliSeconds,pollIntervalInMillis,poolIntervalGrowthFactor , serviceSupplier,callbackWhenDone,callbackToCancelOperation,operationAllowedToCancel); // 5 minutes
+        int timeoutInMilliSeconds = 1000*60*5;
+        int pollIntervalInMillis = 10;
+        float poolIntervalGrowthFactor =1.0f;
 
-        Mono<PollResponse> pollResponseMono = poller.pollOnce();
+        PollerOptions pollerOptions =  new PollerOptions(timeoutInMilliSeconds,pollIntervalInMillis,poolIntervalGrowthFactor);
+        Poller<MyCustomServiceResponse> poller =  new Poller( pollerOptions, serviceSupplier,callbackToCancelOperation); // 5 minutes
+
+        Mono<MyCustomServiceResponse> pollResponseMono = poller.pollOnce();
 
         pollResponseMono.subscribe(
-                pollResponse ->  Assert.assertFalse(pollResponse.isOperationSuccessfullyComplete())  ,
-                error ->  System.out.println("Error : "+error.getMessage()),
+             pollResponse -> Assert.assertTrue(poller.status() == PollResponse.OperationStatus.IN_PROGRESS),
+             error ->  System.out.println("Error : "+error.getMessage()),
                 () ->  System.out.println("Mono consumed: Operation is not complete yet.")
         );
 
         System.out.println("Test: Manually making operation successfully complete.");
-        ((MyPollResponse)myPollResponse).setOperationSuccessfullyComplete(true);
+        myPollResponse.setStatus(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
         pollResponseMono = poller.pollOnce();
         pollResponseMono.subscribe(
-            pollResponse ->  Assert.assertTrue(pollResponse.isOperationSuccessfullyComplete())  ,
+            pollResponse ->  Assert.assertTrue(poller.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)  ,
             error ->  System.out.println("Error : "+error.getMessage()),
             () ->  System.out.println("Mono consumed: Operation is now complete.")
         );
 
     }// basicPollOnceTest
 
-
+/*
     @Test
     public void basicPollUntilDone_completeInNSecondsTest() throws Exception {
 
@@ -92,7 +90,7 @@ public class PollerTests {
         );
 
     }// basicPollOnceTest
-*/
+/*
     @Test
     public void basicPollUntilDone_cancelInNSecondsTest() throws Exception {
 
@@ -136,66 +134,20 @@ public class PollerTests {
 
     }// basicPollOnceTest
 
-    class MyPollResponse implements  PollResponse {
-        boolean operationSuccessfullyComplete;
-        boolean operationInProgress;
-        boolean operationCancelled;
-        boolean operationFailed;
-        boolean operationStarted;
+ */
+
+    class MyCustomServiceResponse  {
+        String response ;
         HttpResponseException error;
-        public MyPollResponse(  boolean operationStarted
-                                , boolean operationFailed
-                                , boolean operationSuccessfullyComplete
-                                , boolean operationInProgress
-                                , boolean operationCancelled){
-            this.operationSuccessfullyComplete=operationSuccessfullyComplete;
-            this.operationInProgress=operationInProgress;
-            this.operationCancelled=operationCancelled;;
-            this.operationFailed=operationFailed;
-            this.operationStarted=operationStarted;
+        public MyCustomServiceResponse(  String respone){
+            this.response=respone;
         }
 
-        public void setOperationSuccessfullyComplete (boolean b){
-            operationSuccessfullyComplete =b;
-        }
-
-        public void setOperationCancelled (HttpResponseException err){
-            this.operationCancelled =true;
-            this.error = err;
+        public String getResponse(){
+            return response;
         }
 
 
-        public void setOperationInProgress (boolean b){
-            operationInProgress =b;
-        }
-        @Override
-        public boolean isOperationSuccessfullyComplete() {
-            return operationSuccessfullyComplete;
-        }
 
-        @Override
-        public boolean isOperationCancelled() {
-            return operationCancelled;
-        }
-
-        @Override
-        public boolean isOperationFailed() {
-            return operationFailed;
-        }
-
-
-        @Override
-        public boolean isOperationStarted() {
-            return operationStarted;
-        }
-        @Override
-        public boolean isOperationInProgress() {
-            return operationInProgress;
-        }
-
-        @Override
-        public HttpResponseException error() {
-            return error;
-        }
     }
 }
