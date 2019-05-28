@@ -97,30 +97,46 @@ public class JavadocThrowsChecks extends AbstractCheck {
      */
     private void setMethodIdentifierAndCheckStatus(DetailAST methodDefToken) {
         currentMethodIdentifier = methodDefToken.findFirstToken(TokenTypes.IDENT).getText() + methodDefToken.getLineNo();
-        currentMethodNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstract(methodDefToken.findFirstToken(TokenTypes.MODIFIERS));
+        currentMethodNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstractOrOverride(methodDefToken.findFirstToken(TokenTypes.MODIFIERS));
     }
 
     /*
-     * Determines if the modifiers contains either public or protected and isn't abstract.
+     * Determines if the modifiers contains either public or protected and isn't abstract or an override.
      * @param modifiersToken Modifiers token.
      * @return True if the method if public or protected and isn't abstract.
      */
-    private boolean visibilityIsPublicOrProtectedAndNotAbstract(DetailAST modifiersToken) {
+    private boolean visibilityIsPublicOrProtectedAndNotAbstractOrOverride(DetailAST modifiersToken) {
         if (modifiersToken == null) {
             return false;
         }
 
-        for (DetailAST modifier = modifiersToken.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
-            if (modifier.getType() == TokenTypes.ABSTRACT) {
-                return false;
-            }
+        // Don't need to check abstract methods as they won't have implementation.
+        if (modifiersToken.findFirstToken(TokenTypes.ABSTRACT) != null) {
+            return false;
+        }
 
-            if (modifier.getType() == TokenTypes.LITERAL_PUBLIC || modifier.getType() == TokenTypes.LITERAL_PROTECTED) {
-                return true;
+        // Don't need to check override methods that don't have JavaDocs.
+        if (modifiersToken.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN) == null) {
+            if (TokenUtil.findFirstTokenByPredicate(modifiersToken, JavadocThrowsChecks::isOverrideAnnotation).isPresent()) {
+                return false;
             }
         }
 
+        // Check public or protect methods.
+        if (modifiersToken.findFirstToken(TokenTypes.LITERAL_PUBLIC) != null
+            || modifiersToken.findFirstToken(TokenTypes.LITERAL_PROTECTED) != null) {
+            return true;
+        }
+
         return false;
+    }
+
+    private static boolean isOverrideAnnotation(DetailAST modifierToken) {
+        if (modifierToken.getType() != TokenTypes.ANNOTATION) {
+            return false;
+        }
+
+        return "Override".equals(modifierToken.findFirstToken(TokenTypes.IDENT).getText());
     }
 
     /*
@@ -164,6 +180,12 @@ public class JavadocThrowsChecks extends AbstractCheck {
      */
     private void addExceptionMapping(DetailAST definitionToken) {
         DetailAST typeToken = definitionToken.findFirstToken(TokenTypes.TYPE).getFirstChild();
+
+        // Lambdas don't list a type, quit out.
+        if (typeToken == null) {
+            return;
+        }
+
         String identifier = currentMethodIdentifier + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
         HashSet<String> types = methodExeptionMapping.getOrDefault(identifier, new HashSet<>());
 
@@ -189,8 +211,14 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param throwsToken Throws token.
      */
     private void verifyCheckedThrowJavadoc(DetailAST throwsToken) {
+        HashSet<String> methodJavadocThrows = methodJavadocThrowsMapping.get(currentMethodIdentifier);
+        if (methodJavadocThrows == null) {
+            log(throwsToken, MISSING_THROWS_TAG_MESSAGE);
+            return;
+        }
+
         TokenUtil.forEachChild(throwsToken, TokenTypes.IDENT, (throwTypeToken) -> {
-            if (!methodJavadocThrowsMapping.get(currentMethodIdentifier).contains(throwTypeToken.getText())) {
+            if (!methodJavadocThrows.contains(throwTypeToken.getText())) {
                 log(throwTypeToken, MISSING_THROWS_TAG_MESSAGE);
             }
         });
@@ -210,12 +238,15 @@ public class JavadocThrowsChecks extends AbstractCheck {
 
         DetailAST throwExprToken = throwToken.findFirstToken(TokenTypes.EXPR);
 
-        // Check if the throw is constructing the exception or throwing an instantiated exception.
+        // Check if the throw is constructing the exception, method call, or throwing an instantiated exception.
         DetailAST literalNewToken = throwExprToken.findFirstToken(TokenTypes.LITERAL_NEW);
+        DetailAST methodCallToken = throwExprToken.findFirstToken(TokenTypes.METHOD_CALL);
         if (literalNewToken != null) {
             if (!methodJavadocThrows.contains(literalNewToken.findFirstToken(TokenTypes.IDENT).getText())) {
                 log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             }
+        } else if (methodCallToken != null) {
+            // Do nothing for now.
         } else {
             String throwIdent = throwExprToken.findFirstToken(TokenTypes.IDENT).getText();
             HashSet<String> types = methodExeptionMapping.get(currentMethodIdentifier + throwIdent);
