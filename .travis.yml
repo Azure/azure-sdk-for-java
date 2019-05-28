@@ -8,4 +8,4 @@ before_script:
 - sleep 5
 script:
 - |-
-  for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`; do cd $i; mvn compile; if [ $? != 0 ]; then cd -; exit -1; else cd -; fi; done
+  for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`; do cd $i; mvn compile -Dgpg.skip; if [ $? != 0 ]; then cd -; exit -1; else cd -; fi; done
