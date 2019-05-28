@@ -22,7 +22,7 @@ public final class BaseConfigurations {
     /**
      * URI of the proxy for HTTPS connections.
      *
-     * No proxy is configured by default..
+     * No proxy is configured by default.
      */
     public static final String HTTPS_PROXY = "HTTPS_PROXY";
 
