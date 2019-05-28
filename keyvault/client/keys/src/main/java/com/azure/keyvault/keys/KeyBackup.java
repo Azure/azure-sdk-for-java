@@ -27,5 +27,4 @@ class KeyBackup {
         }
         return this.value.decodedBytes();
     }
-
 }

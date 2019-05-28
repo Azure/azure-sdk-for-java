@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

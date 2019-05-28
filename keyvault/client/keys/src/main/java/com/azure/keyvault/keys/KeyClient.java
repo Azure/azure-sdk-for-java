@@ -34,7 +34,6 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link Key keys} in the Azure Key Vault. The client

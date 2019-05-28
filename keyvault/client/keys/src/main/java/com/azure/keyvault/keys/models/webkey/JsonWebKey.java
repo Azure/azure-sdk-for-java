@@ -18,13 +18,33 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.*;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.KeyPairGenerator;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.*;
-import java.util.*;
+import java.security.spec.EllipticCurve;
+import java.security.spec.ECPoint;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.Provider;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
