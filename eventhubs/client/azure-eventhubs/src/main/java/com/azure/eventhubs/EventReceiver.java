@@ -14,13 +14,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * This is a logical representation of receiving from a EventHub partition.
  *
  * <p>
- * A {@link EventReceiver#receive()} is tied to a ConsumerGroup + Event Hubs PartitionId combination.
+ * A {@link EventReceiver#receive()} is tied to a Event Hub PartitionId + consumer group combination.
  *
  * <ul>
- *      <li>If the {@link EventReceiver} is created where {@link ReceiverOptions#epoch()} has a value, then Event
- *      Hubs service will guarantee only 1 active receiver exists per ConsumerGroup + PartitionId combo.  This is the
- *      recommended approach to create a {@link EventReceiver}.</li>
- *      <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.</li>
+ *      <li>If the {@link EventReceiver} is created where {@link ReceiverOptions#exclusiveReceiverPriority()} has a
+ *      value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
+ *      combination. This is the recommended approach to create a {@link EventReceiver}.</li>
+ *      <li>Multiple receivers per partitionId and consumer group combination can be created using non-epoch receivers.</li>
  * </ul>
  *
  * @see EventHubClient#createReceiver(String)

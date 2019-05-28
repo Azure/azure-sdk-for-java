@@ -30,7 +30,7 @@ public class ReceiverOptions {
 
     private String identifier;
     private String consumerGroup;
-    private Long epoch;
+    private Long priority;
     private RetryPolicy retryPolicy;
     private boolean keepUpdated;
     private Duration receiveTimeout;
@@ -87,15 +87,24 @@ public class ReceiverOptions {
     }
 
     /**
-     * Sets the epoch value on this receiver. When specified, this becomes an Epoch {@link EventReceiver}.
-     * An Epoch receiver guarantees that only one {@link EventReceiver} can listen to each
-     * "partition + consumer group" combination.
+     * Sets the exclusiveReceiverPriority value on this receiver. When populated, the priority indicates that a receiver is intended to be
+     * the only reader of events for the requested partition and an associated consumer group.
+     * To do so, this receiver will attempt to assert ownership over the partition; in the case where more than one
+     * exclusive receiver attempts to assert ownership for the same partition/consumer group pair, the one having a
+     * larger {@link ReceiverOptions#exclusiveReceiverPriority()} value will "win".
      *
-     * @param epoch The Epoch value for this receiver.
+     * <p>
+     * When an exclusive receiver is used, those receivers which are not exclusive or which have a lower priority will
+     * either not be allowed to be created, if they already exist, will encounter an exception during the next attempted
+     * operation.
+     * </p>
+     *
+     * @param priority The priority associated with an exclusive receiver; for a non-exclusive receiver, this value
+     * should be {@code null}.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions epoch(long epoch) {
-        this.epoch = epoch;
+    public ReceiverOptions exclusiveReceiverPriority(Long priority) {
+        this.priority = priority;
         return this;
     }
 
@@ -211,13 +220,14 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets the epoch for this receiver. If {@link Optional#isPresent()} is {@code false}, then this is not an epoch
-     * receiver. Otherwise, it is and there can only be one receiver per (partition + consumer group) combination.
+     * Gets the priority for this receiver. If {@link Optional#isPresent()} is {@code false}, then this is not an
+     * exclusive receiver. Otherwise, it is and there can only be one receiver per (partition + consumer group)
+     * combination.
      *
-     * @return An optional epoch for this receiver.
+     * @return An optional priority for this receiver.
      */
-    Optional<Long> epoch() {
-        return Optional.ofNullable(epoch);
+    Optional<Long> exclusiveReceiverPriority() {
+        return Optional.ofNullable(priority);
     }
 
     /**
