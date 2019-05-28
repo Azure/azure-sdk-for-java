@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.keyvault.keys.implementation.KeyBasePage;
 import com.azure.keyvault.keys.models.Key;
@@ -28,6 +29,7 @@ import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.Context;
 
 import java.net.URL;
 import java.util.Objects;
@@ -553,7 +555,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing {@link KeyBase key} of all the keys in the vault.
      */
     public Flux<KeyBase> listKeys() {
-        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchKeys);
+        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
     }
 
     /**
@@ -572,7 +574,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
     public Flux<DeletedKey> listDeletedKeys() {
-        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedKeys);
+        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, Context.NONE));
     }
 
     /**
@@ -595,7 +597,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
      */
     public Flux<KeyBase> listKeyVersions(String name) {
-        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchKeys);
+        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
     }
 
     /**
@@ -605,12 +607,12 @@ public final class KeyAsyncClient extends ServiceClient {
      * @param nextPageLink The {@link KeyBasePage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link KeyBase key} from the next page of results.
      */
-    private Flux<KeyBase> listKeysNext(String nextPageLink) {
-        return service.getKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchKeys);
+    private Flux<KeyBase> listKeysNext(String nextPageLink, Context context) {
+        return service.getKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, context));
     }
 
-    private Publisher<KeyBase> extractAndFetchKeys(PagedResponse<KeyBase> page) {
-        return extractAndFetch(page, this::listKeysNext);
+    private Publisher<KeyBase> extractAndFetchKeys(PagedResponse<KeyBase> page, Context context) {
+        return ImplUtils.extractAndFetch(page, context, this::listKeysNext);
     }
 
     /**
@@ -620,21 +622,12 @@ public final class KeyAsyncClient extends ServiceClient {
      * @param nextPageLink The {@link DeletedKeyPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link KeyBase key} from the next page of results.
      */
-    private Flux<DeletedKey> listDeletedKeysNext(String nextPageLink) {
-        return service.getDeletedKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedKeys);
+    private Flux<DeletedKey> listDeletedKeysNext(String nextPageLink, Context context) {
+        return service.getDeletedKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, context));
     }
 
-    private Publisher<DeletedKey> extractAndFetchDeletedKeys(PagedResponse<DeletedKey> page) {
-        return extractAndFetch(page, this::listDeletedKeysNext);
-    }
-
-    //TODO: Extract this in azure-core ImplUtils and use from there
-    private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
+    private Publisher<DeletedKey> extractAndFetchDeletedKeys(PagedResponse<DeletedKey> page, Context context) {
+        return ImplUtils.extractAndFetch(page, context, this::listDeletedKeysNext);
     }
 }
 

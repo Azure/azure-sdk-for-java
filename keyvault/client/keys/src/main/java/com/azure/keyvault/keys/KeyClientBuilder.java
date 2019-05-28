@@ -3,15 +3,14 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.core.credentials.ServiceClientCredentials;
-import com.azure.core.credentials.TokenCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.CredentialsPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -25,7 +24,7 @@ import java.util.Objects;
  * calling {@link KeyClientBuilder#build() build} constructs an instance of the client.
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder keyClientBuilder} to build {@link KeyClient}
- * are {@link String endpoint} and {@link ServiceClientCredentials credentials}. </p>
+ * are {@link String endpoint} and {@link TokenCredential credentials}. </p>
  * <pre>
  * KeyClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
@@ -59,7 +58,7 @@ import java.util.Objects;
  * */
 public final class KeyClientBuilder {
     private final List<HttpPipelinePolicy> policies;
-    private ServiceClientCredentials credentials;
+    private TokenCredential credentials;
     private HttpPipeline pipeline;
     private URL endpoint;
     private HttpClient httpClient;
@@ -81,11 +80,11 @@ public final class KeyClientBuilder {
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link KeyClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link KeyClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link KeyClientBuilder#credentials(ServiceClientCredentials) key vault credentials and
+     * then {@link KeyClientBuilder#credentials(TokenCredential) key vault credentials and
      * {@link KeyClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link KeyClient client}.}</p>
      *
      * @return A KeyClient with the options set from the builder.
-     * @throws IllegalStateException If {@link KeyClientBuilder#credentials(ServiceClientCredentials)} or
+     * @throws IllegalStateException If {@link KeyClientBuilder#credentials(TokenCredential)} or
      * {@link KeyClientBuilder#endpoint(String)} have not been set.
      */
     public KeyClient build() {
@@ -106,13 +105,14 @@ public final class KeyClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(userAgent));
         policies.add(retryPolicy);
-        policies.add(new CredentialsPolicy(getTokenCredentials()));
+        policies.add(new TokenCredentialPolicy(credentials));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
 
         return new KeyClient(endpoint, pipeline);
     }
@@ -140,7 +140,7 @@ public final class KeyClientBuilder {
      * @return the updated Builder object.
      * @throws NullPointerException if {@code credentials} is {@code null}.
      */
-    public KeyClientBuilder credentials(ServiceClientCredentials credentials) {
+    public KeyClientBuilder credentials(TokenCredential credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         return this;
@@ -201,15 +201,5 @@ public final class KeyClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
-    }
-
-    private TokenCredentials getTokenCredentials() {
-        String token = "";
-        try {
-            token = credentials.authorizationHeaderValue(endpoint.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new TokenCredentials("Bearer", token);
     }
 }

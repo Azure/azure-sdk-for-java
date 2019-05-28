@@ -3,18 +3,15 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.core.credentials.AsyncServiceClientCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.AsyncCredentialsPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,7 +24,7 @@ import java.util.Objects;
  * calling {@link KeyAsyncClientBuilder#build() build} constructs an instance of the client.
  *
  * <p> The minimal configuration options required by {@link KeyAsyncClientBuilder secretClientBuilder} to build {@link KeyAsyncClient}
- * are {@link String endpoint} and {@link AsyncServiceClientCredentials credentials}. </p>
+ * are {@link String endpoint} and {@link TokenCredential credentials}. </p>
  * <pre>
  * KeyAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
@@ -61,7 +58,7 @@ import java.util.Objects;
  */
 public final class KeyAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
-    private AsyncServiceClientCredentials credentials;
+    private TokenCredential credentials;
     private HttpPipeline pipeline;
     private URL endpoint;
     private HttpClient httpClient;
@@ -81,11 +78,11 @@ public final class KeyAsyncClientBuilder {
      * <p>If {@link KeyAsyncClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link KeyAsyncClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link KeyAsyncClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link KeyAsyncClientBuilder#credentials(AsyncServiceClientCredentials) key vault credentials and
+     * then {@link KeyAsyncClientBuilder#credentials(TokenCredential) key vault credentials and
      * {@link KeyAsyncClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link KeyAsyncClient client}.}</p>
      *
      * @return A KeyAsyncClient with the options set from the builder.
-     * @throws IllegalStateException If {@link KeyAsyncClientBuilder#credentials(AsyncServiceClientCredentials)} or
+     * @throws IllegalStateException If {@link KeyAsyncClientBuilder#credentials(TokenCredential)} or
      * {@link KeyAsyncClientBuilder#endpoint(String)} have not been set.
      */
     public KeyAsyncClient build() {
@@ -106,13 +103,14 @@ public final class KeyAsyncClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION));
         policies.add(retryPolicy);
-        policies.add(new AsyncCredentialsPolicy(getAsyncTokenCredentials()));
+        policies.add(new TokenCredentialPolicy(credentials));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
 
         return new KeyAsyncClient(endpoint, pipeline);
     }
@@ -140,7 +138,7 @@ public final class KeyAsyncClientBuilder {
      * @return the updated Builder object.
      * @throws NullPointerException if {@code credentials} is {@code null}.
      */
-    public KeyAsyncClientBuilder credentials(AsyncServiceClientCredentials credentials) {
+    public KeyAsyncClientBuilder credentials(TokenCredential credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         return this;
@@ -201,29 +199,5 @@ public final class KeyAsyncClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
-    }
-
-    private AsyncTokenCredentials getAsyncTokenCredentials() {
-        AsyncTokenCredentials asyncTokenCredentials = credentials != null ? new AsyncTokenCredentials("Bearer", credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, endpoint))) : null;
-        return asyncTokenCredentials;
-    }
-
-    private class AsyncTokenCredentials implements AsyncServiceClientCredentials {
-
-        private String scheme;
-        private Mono<String> token;
-
-        AsyncTokenCredentials(String scheme, Mono<String> token) {
-            this.scheme = scheme;
-            this.token = token;
-        }
-
-        @Override
-        public Mono<String> authorizationHeaderValueAsync(HttpRequest httpRequest) {
-            if (scheme == null) {
-                scheme = "Bearer";
-            }
-            return token.flatMap(tokenValue -> Mono.just("Bearer " + tokenValue));
-        }
     }
 }
