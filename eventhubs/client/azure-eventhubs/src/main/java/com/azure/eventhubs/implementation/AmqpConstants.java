@@ -12,10 +12,26 @@ public final class AmqpConstants {
     public static final String APACHE = "apache.org";
     public static final String PROTON = "proton";
     public static final String AMQP_ANNOTATION_FORMAT = "amqp.annotation.%s >%s '%s'";
+
+    /**
+     * The offset of a message within a given partition.
+     */
     public static final String OFFSET_ANNOTATION_NAME = "x-opt-offset";
+    /**
+     * The date and time, in UTC, that a message was enqueued.
+     */
     public static final String ENQUEUED_TIME_UTC_ANNOTATION_NAME = "x-opt-enqueued-time";
+    /**
+     * The identifier associated with a given partition.
+     */
     public static final String PARTITION_KEY_ANNOTATION_NAME = "x-opt-partition-key";
+    /**
+     * The sequence number assigned to a message.
+     */
     public static final String SEQUENCE_NUMBER_ANNOTATION_NAME = "x-opt-sequence-number";
+    /**
+     * The name of the entity that published a message.
+     */
     public static final String PUBLISHER_ANNOTATION_NAME = "x-opt-publisher";
     public static final Symbol PARTITION_KEY = Symbol.getSymbol(PARTITION_KEY_ANNOTATION_NAME);
     public static final Symbol OFFSET = Symbol.getSymbol(OFFSET_ANNOTATION_NAME);
