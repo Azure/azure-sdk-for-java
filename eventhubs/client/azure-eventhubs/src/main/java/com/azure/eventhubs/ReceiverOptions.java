@@ -4,9 +4,11 @@
 package com.azure.eventhubs;
 
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,6 +21,13 @@ public class ReceiverOptions {
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
+    // The maximum length, in characters, for the identifier assigned to a receiver.
+    private static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
+    // The minimum value allowed for the prefetch count of the receiver.
+    private static final int MINIMUM_PREFETCH_COUNT = 1;
+    private static final int DEFAULT_PREFETCH_COUNT = 500;
+    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
     private String identifier;
     private String consumerGroup;
     private Long epoch;
@@ -27,12 +36,15 @@ public class ReceiverOptions {
     private Duration receiveTimeout;
     private Scheduler scheduler;
     private EventPosition beginReceivingAt;
+    private int prefetchCount;
 
     /**
-     * Creates a new instance with the consumer group set to {@link #DEFAULT_CONSUMER_GROUP_NAME}.
+     * Creates a new instance with a position at the beginning of the partition stream, consumer group set to
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME},and the default prefetch amount.
      */
     public ReceiverOptions() {
         this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
+        this.prefetchCount = DEFAULT_PREFETCH_COUNT;
         this.beginReceivingAt = EventPosition.firstAvailableEvent();
     }
 
@@ -43,6 +55,7 @@ public class ReceiverOptions {
      * @return The updated ReceiverOptions object.
      */
     public ReceiverOptions identifier(String identifier) {
+        validateIdentifier(identifier);
         this.identifier = identifier;
         return this;
     }
@@ -105,8 +118,30 @@ public class ReceiverOptions {
      * @param duration The timeout when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions receiveTimeout(Duration duration) {
+    public ReceiverOptions defaultMaximumReceiveWaitTime(Duration duration) {
         this.receiveTimeout = duration;
+        return this;
+    }
+
+    /**
+     * Sets the count used by the receiver to control the number of events this receiver will actively receive and queue
+     * locally without regard to whether a receive operation is currently active.
+     *
+     * @param prefetchCount The amount of events to queue locally.
+     * @return The updated ReceiverOptions object.
+     */
+    public ReceiverOptions prefetchCount(int prefetchCount) {
+        if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT));
+        }
+
+        if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT));
+        }
+
+        this.prefetchCount = prefetchCount;
         return this;
     }
 
@@ -214,5 +249,23 @@ public class ReceiverOptions {
      */
     Scheduler scheduler() {
         return scheduler;
+    }
+
+    /**
+     * Gets the count used by the receiver to control the number of events this receiver will actively receive and queue
+     * locally without regard to whether a receive operation is currently active.
+     *
+     * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
+     * operation is active.
+     */
+    int prefetchCount() {
+        return prefetchCount;
+    }
+
+    private void validateIdentifier(String identifier) {
+        if (ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
+        }
     }
 }
