@@ -11,13 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 
-public class ReactorHandler extends BaseHandler
-{
+public class ReactorHandler extends BaseHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReactorHandler.class);
 
     @Override
-    public void onReactorInit(Event e)
-    {
+    public void onReactorInit(Event e) {
         TRACE_LOGGER.debug("reactor.onReactorInit");
 
         final Reactor reactor = e.getReactor();
@@ -25,8 +23,7 @@ public class ReactorHandler extends BaseHandler
     }
 
     @Override
-    public void onReactorFinal(Event e)
-    {
+    public void onReactorFinal(Event e) {
         TRACE_LOGGER.debug("reactor.onReactorFinal");
     }
 }

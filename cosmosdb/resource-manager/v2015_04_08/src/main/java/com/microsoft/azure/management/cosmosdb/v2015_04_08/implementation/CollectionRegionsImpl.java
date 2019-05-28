@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CollectionDatabasisDatabaseAccountMetricModel;
 
 class CollectionRegionsImpl extends WrapperImpl<CollectionRegionsInner> implements CollectionRegions {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    CollectionRegionsImpl(DocumentDBManager manager) {
+    CollectionRegionsImpl(CosmosDBManager manager) {
         super(manager.inner().collectionRegions());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

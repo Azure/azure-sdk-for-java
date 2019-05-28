@@ -25,10 +25,10 @@ import java.util.Locale;
 
 final class Utility {
 
-    static final DateTimeFormatter RFC1123GMTDateFormatter =
+    static final DateTimeFormatter RFC_1123_GMT_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ROOT).withZone(ZoneId.of("GMT"));
 
-    static final DateTimeFormatter ISO8601UTCDateFormatter =
+    static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
     /**
      * Stores a reference to the UTC time zone.

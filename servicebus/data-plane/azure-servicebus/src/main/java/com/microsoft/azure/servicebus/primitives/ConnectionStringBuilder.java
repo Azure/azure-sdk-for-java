@@ -3,11 +3,13 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
-import java.net.*;
-import java.time.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import java.util.regex.*;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class can be used to construct a connection string which can establish communication with ServiceBus entities.
@@ -37,26 +39,25 @@ import java.util.regex.*;
  * @since 1.0
  */
 
-public class ConnectionStringBuilder
-{
-    private final static String END_POINT_RAW_FORMAT = "amqps://%s";
+public class ConnectionStringBuilder {
+    private static final String END_POINT_RAW_FORMAT = "amqps://%s";
 
-    private final static String HOSTNAME_CONFIG_NAME = "Hostname";
-    private final static String ENDPOINT_CONFIG_NAME = "Endpoint";
-    private final static String SHARED_ACCESS_KEY_NAME_CONFIG_NAME = "SharedAccessKeyName";
-    private final static String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
-    private final static String ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignature";
-    private final static String SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignatureToken";
-    private final static String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
-    private final static String ENTITY_PATH_CONFIG_NAME = "EntityPath";
-    private final static String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
-    private final static String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
-    private final static String KEY_VALUE_SEPARATOR = "=";
-    private final static String KEY_VALUE_PAIR_DELIMITER = ";";
+    private static final String HOSTNAME_CONFIG_NAME = "Hostname";
+    private static final String ENDPOINT_CONFIG_NAME = "Endpoint";
+    private static final String SHARED_ACCESS_KEY_NAME_CONFIG_NAME = "SharedAccessKeyName";
+    private static final String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
+    private static final String ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignature";
+    private static final String SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignatureToken";
+    private static final String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
+    private static final String ENTITY_PATH_CONFIG_NAME = "EntityPath";
+    private static final String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
+    private static final String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
+    private static final String KEY_VALUE_SEPARATOR = "=";
+    private static final String KEY_VALUE_PAIR_DELIMITER = ";";
 
-    private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOSTNAME_CONFIG_NAME + "|" +  ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NAME_CONFIG_NAME
-            + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|"  + SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
-            + "|" + RETRY_POLICY_CONFIG_NAME + "|" + ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + TRANSPORT_TYPE_CONFIG_NAME + "|" +")";
+    private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOSTNAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NAME_CONFIG_NAME
+            + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
+            + "|" + RETRY_POLICY_CONFIG_NAME + "|" + ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + TRANSPORT_TYPE_CONFIG_NAME + "|" + ")";
 
     private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX    + KEY_VALUE_SEPARATOR;
 
@@ -75,13 +76,11 @@ public class ConnectionStringBuilder
      * Default operation timeout if timeout is not specified in the connection string. 30 seconds.
      */
     public static final Duration DefaultOperationTimeout = Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS);
-
     private ConnectionStringBuilder(
             final URI endpointAddress,
             final String entityPath,
             final Duration operationTimeout,
-            final RetryPolicy retryPolicy)
-    {
+            final RetryPolicy retryPolicy) {
         this.endpoint = endpointAddress;
         this.operationTimeout = operationTimeout;
         this.retryPolicy = retryPolicy;
@@ -94,8 +93,7 @@ public class ConnectionStringBuilder
             final String sharedAccessKeyName,
             final String sharedAccessKey,
             final Duration operationTimeout,
-            final RetryPolicy retryPolicy)
-    {
+            final RetryPolicy retryPolicy) {
         this(endpointAddress, entityPath, operationTimeout, retryPolicy);
         this.sharedAccessKey = sharedAccessKey;
         this.sharedAccessKeyName = sharedAccessKeyName;
@@ -106,8 +104,7 @@ public class ConnectionStringBuilder
             final String entityPath, 
             final String sharedAccessSingatureToken,
             final Duration operationTimeout, 
-            final RetryPolicy retryPolicy)
-    {
+            final RetryPolicy retryPolicy) {
         this(endpointAddress, entityPath, operationTimeout, retryPolicy);
         this.sharedAccessSingatureToken = sharedAccessSingatureToken;
     }
@@ -118,8 +115,7 @@ public class ConnectionStringBuilder
             final String sharedAccessKeyName,
             final String sharedAccessKey,
             final Duration operationTimeout,
-            final RetryPolicy retryPolicy)
-    {
+            final RetryPolicy retryPolicy) {
         this(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessKeyName, sharedAccessKey, operationTimeout, retryPolicy);
     }
 
@@ -128,8 +124,7 @@ public class ConnectionStringBuilder
             final String entityPath,
             final String sharedAccessSingatureToken,
             final Duration operationTimeout,
-            final RetryPolicy retryPolicy)
-    {
+            final RetryPolicy retryPolicy) {
         this(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessSingatureToken, operationTimeout, retryPolicy);        
     }
 
@@ -144,8 +139,7 @@ public class ConnectionStringBuilder
             final String namespaceName,
             final String entityPath,
             final String sharedAccessKeyName,
-            final String sharedAccessKey)
-    {
+            final String sharedAccessKey) {
         this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
@@ -158,8 +152,7 @@ public class ConnectionStringBuilder
     public ConnectionStringBuilder(
             final String namespaceName,
             final String entityPath,
-            final String sharedAccessSingature)
-    {
+            final String sharedAccessSingature) {
         this(namespaceName, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
@@ -175,8 +168,7 @@ public class ConnectionStringBuilder
             final URI endpointAddress,
             final String entityPath,
             final String sharedAccessKeyName,
-            final String sharedAccessKey)
-    {
+            final String sharedAccessKey) {
         this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
@@ -189,8 +181,7 @@ public class ConnectionStringBuilder
     public ConnectionStringBuilder(
             final URI endpointAddress,
             final String entityPath,
-            final String sharedAccessSingature)
-    {
+            final String sharedAccessSingature) {
         this(endpointAddress, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
@@ -202,8 +193,7 @@ public class ConnectionStringBuilder
      * @param connectionString ServiceBus ConnectionString
      * @throws IllegalConnectionStringFormatException when the format of the ConnectionString is not valid
      */
-    public ConnectionStringBuilder(String connectionString)
-    {
+    public ConnectionStringBuilder(String connectionString) {
         this.parseConnectionString(connectionString);
     }
 
@@ -215,8 +205,7 @@ public class ConnectionStringBuilder
      * @param namespaceConnectionString connections string of the ServiceBus namespace. This doesn't include the entity path.
      * @param entityPath path to the entity within the namespace
      */
-    public ConnectionStringBuilder(String namespaceConnectionString, String entityPath)
-    {
+    public ConnectionStringBuilder(String namespaceConnectionString, String entityPath) {
         this(namespaceConnectionString);
         this.entityPath = entityPath;
     }
@@ -225,8 +214,7 @@ public class ConnectionStringBuilder
      * Get the endpoint which can be used to connect to the ServiceBus Namespace
      * @return Endpoint representing the service bus namespace
      */
-    public URI getEndpoint()
-    {
+    public URI getEndpoint() {
         return this.endpoint;
     }
 
@@ -234,8 +222,7 @@ public class ConnectionStringBuilder
      * Get the shared access policy key value from the connection string or null.
      * @return Shared Access Signature key value
      */
-    public String getSasKey()
-    {
+    public String getSasKey() {
         return this.sharedAccessKey;
     }
 
@@ -243,8 +230,7 @@ public class ConnectionStringBuilder
      * Get the shared access policy owner name from the connection string or null.
      * @return Shared Access Signature key name
      */
-    public String getSasKeyName()
-    {
+    public String getSasKeyName() {
         return this.sharedAccessKeyName;
     }
 
@@ -252,8 +238,7 @@ public class ConnectionStringBuilder
      * Returns the shared access signature token from the connection string or null.
      * @return Shared Access Signature Token
      */
-    public String getSharedAccessSignatureToken()
-    {
+    public String getSharedAccessSignatureToken() {
         return this.sharedAccessSingatureToken;
     }
 
@@ -261,8 +246,7 @@ public class ConnectionStringBuilder
      * Get the entity path value from the connection string
      * @return Entity Path
      */
-    public String getEntityPath()
-    {
+    public String getEntityPath() {
         return this.entityPath;
     }
 
@@ -271,8 +255,7 @@ public class ConnectionStringBuilder
      * This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
      * @return operationTimeout
      */
-    public Duration getOperationTimeout()
-    {
+    public Duration getOperationTimeout() {
         return (this.operationTimeout == null ? ConnectionStringBuilder.DefaultOperationTimeout : this.operationTimeout);
     }
 
@@ -281,8 +264,7 @@ public class ConnectionStringBuilder
      * <p>ConnectionString with operationTimeout is not inter-operable between java and clients in other platforms.
      * @param operationTimeout Operation Timeout
      */
-    public void setOperationTimeout(final Duration operationTimeout)
-    {
+    public void setOperationTimeout(final Duration operationTimeout) {
         this.operationTimeout = operationTimeout;
     }
 
@@ -290,8 +272,7 @@ public class ConnectionStringBuilder
      * Get the retry policy instance that was created as part of this builder's creation.
      * @return RetryPolicy applied for any operation performed using this ConnectionString
      */
-    public RetryPolicy getRetryPolicy()
-    {
+    public RetryPolicy getRetryPolicy() {
         return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
     }
 
@@ -300,8 +281,7 @@ public class ConnectionStringBuilder
      * <p>RetryPolicy is not Serialized as part of {@link ConnectionStringBuilder#toString()} and is not interoperable with ServiceBus clients in other platforms.
      * @param retryPolicy RetryPolicy applied for any operation performed using this ConnectionString
      */
-    public void setRetryPolicy(final RetryPolicy retryPolicy)
-    {
+    public void setRetryPolicy(final RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
     }
 
@@ -312,8 +292,7 @@ public class ConnectionStringBuilder
      *
      * @return transportType
      */
-    public TransportType getTransportType()
-    {
+    public TransportType getTransportType() {
         return (this.transportType == null ? TransportType.AMQP : transportType);
     }
 
@@ -323,8 +302,7 @@ public class ConnectionStringBuilder
      * @param transportType Transport Type
      * @return the {@link ConnectionStringBuilder} instance being set.
      */
-    public ConnectionStringBuilder setTransportType(final TransportType transportType)
-    {
+    public ConnectionStringBuilder setTransportType(final TransportType transportType) {
         this.transportType = transportType;
         return this;
     }
@@ -334,55 +312,45 @@ public class ConnectionStringBuilder
      * @return connection string
      */
     @Override
-    public String toString()
-    {
-        if (StringUtil.isNullOrWhiteSpace(this.connectionString))
-        {
+    public String toString() {
+        if (StringUtil.isNullOrWhiteSpace(this.connectionString)) {
             StringBuilder connectionStringBuilder = new StringBuilder();
-            if (this.endpoint != null)
-            {
+            if (this.endpoint != null) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENDPOINT_CONFIG_NAME, KEY_VALUE_SEPARATOR,
                         this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
             }
 
-            if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
-            {
+            if (!StringUtil.isNullOrWhiteSpace(this.entityPath)) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.entityPath, KEY_VALUE_PAIR_DELIMITER));
             }
 
-            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName))
-            {
+            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_NAME_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.sharedAccessKeyName, KEY_VALUE_PAIR_DELIMITER));
             }
 
-            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
-            {
+            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey)) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SHARED_ACCESS_KEY_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.sharedAccessKey));
             }
 
-            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSingatureToken))
-            {
+            if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSingatureToken)) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", sharedAccessSignatureTokenKeyName,
                         KEY_VALUE_SEPARATOR, this.sharedAccessSingatureToken));
             }
 
-            if (this.operationTimeout != null)
-            {
+            if (this.operationTimeout != null) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, OPERATION_TIMEOUT_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.operationTimeout.toString()));
             }
 
-            if (this.retryPolicy != null)
-            {
+            if (this.retryPolicy != null) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, RETRY_POLICY_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.retryPolicy.toString()));
             }
 
-            if (this.transportType != null)
-            {
+            if (this.transportType != null) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, TRANSPORT_TYPE_CONFIG_NAME,
                         KEY_VALUE_SEPARATOR, this.transportType.toString()));
             }
@@ -393,11 +361,9 @@ public class ConnectionStringBuilder
         return this.connectionString;
     }
 
-    private void parseConnectionString(String connectionString)
-    {
+    private void parseConnectionString(String connectionString) {
         // TODO: Trace and throw
-        if (StringUtil.isNullOrWhiteSpace(connectionString))
-        {
+        if (StringUtil.isNullOrWhiteSpace(connectionString)) {
             throw new IllegalConnectionStringFormatException(String.format("connectionString cannot be empty"));
         }
 
@@ -407,129 +373,92 @@ public class ConnectionStringBuilder
         String[] values = keyValuePattern.split(connection);
         Matcher keys = keyValuePattern.matcher(connection);
 
-        if (values == null || values.length <= 1 || keys.groupCount() == 0)
-        {
+        if (values == null || values.length <= 1 || keys.groupCount() == 0) {
             throw new IllegalConnectionStringFormatException("Connection String cannot be parsed.");
         }
 
-        if (!StringUtil.isNullOrWhiteSpace((values[0])))
-        {
+        if (!StringUtil.isNullOrWhiteSpace((values[0]))) {
             throw new IllegalConnectionStringFormatException(
                     String.format(Locale.US, "Cannot parse part of ConnectionString: %s", values[0]));
         }
 
         int valueIndex = 0;
-        while (keys.find())
-        {
+        while (keys.find()) {
             valueIndex++;
 
             String key = keys.group();
             key = key.substring(1, key.length() - 1);
 
-            if (values.length < valueIndex + 1)
-            {
+            if (values.length < valueIndex + 1) {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Value for the connection string parameter name: %s, not found", key));
             }
 
-            if (key.equalsIgnoreCase(ENDPOINT_CONFIG_NAME))
-            {
-                if (this.endpoint != null)
-                {
+            if (key.equalsIgnoreCase(ENDPOINT_CONFIG_NAME)) {
+                if (this.endpoint != null) {
                     // we have parsed the endpoint once, which means we have multiple config which is not allowed
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOSTNAME_CONFIG_NAME));
                 }
 
-                try
-                {
+                try {
                     this.endpoint = new URI(values[valueIndex]);
-                }
-                catch(URISyntaxException exception)
-                {
+                } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", ENDPOINT_CONFIG_NAME),
                             exception);
                 }
-            }
-            else if (key.equalsIgnoreCase(HOSTNAME_CONFIG_NAME))
-            {
-                if (this.endpoint != null)
-                {
+            } else if (key.equalsIgnoreCase(HOSTNAME_CONFIG_NAME)) {
+                if (this.endpoint != null) {
                     // we have parsed the endpoint once, which means we have multiple config which is not allowed
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOSTNAME_CONFIG_NAME));
                 }
 
-                try
-                {
+                try {
                     this.endpoint = new URI(String.format(Locale.US, END_POINT_RAW_FORMAT, values[valueIndex]));
-                }
-                catch(URISyntaxException exception)
-                {
+                } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "%s should be a fully quantified host name address", HOSTNAME_CONFIG_NAME),
                             exception);
                 }
-            }
-            else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME)) {
                 this.sharedAccessKeyName = values[valueIndex];
-            }
-            else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME)) {
                 this.sharedAccessKey = values[valueIndex];
-            }
-            else if(key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
-            }
-            else if(key.equalsIgnoreCase(ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
-            }
-            else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME)) {
                 this.entityPath = values[valueIndex];
-            }
-            else if (key.equalsIgnoreCase(OPERATION_TIMEOUT_CONFIG_NAME))
-            {
-                try
-                {
+            } else if (key.equalsIgnoreCase(OPERATION_TIMEOUT_CONFIG_NAME)) {
+                try {
                     this.operationTimeout = Duration.parse(values[valueIndex]);
-                }
-                catch(DateTimeParseException exception)
-                {
+                } catch (DateTimeParseException exception) {
                     throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
                 }
-            }
-            else if (key.equalsIgnoreCase(RETRY_POLICY_CONFIG_NAME))
-            {
+            } else if (key.equalsIgnoreCase(RETRY_POLICY_CONFIG_NAME)) {
                 this.retryPolicy = values[valueIndex].equals(ClientConstants.DEFAULT_RETRY)
                         ? RetryPolicy.getDefault()
-                                : (values[valueIndex].equals(ClientConstants.NO_RETRY) ? RetryPolicy.getNoRetry() : null);
+                            : (values[valueIndex].equals(ClientConstants.NO_RETRY) ? RetryPolicy.getNoRetry() : null);
 
-                        if (this.retryPolicy == null)
-                            throw new IllegalConnectionStringFormatException(
-                                    String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
-                                            RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
-            }
-            else if (key.equalsIgnoreCase(TRANSPORT_TYPE_CONFIG_NAME))
-            {
-                try
-                {
+                if (this.retryPolicy == null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
+                            RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
+                }
+            } else if (key.equalsIgnoreCase(TRANSPORT_TYPE_CONFIG_NAME)) {
+                try {
                     this.transportType = TransportType.fromString(values[valueIndex]);
-                } catch (IllegalArgumentException exception)
-                {
+                } catch (IllegalArgumentException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format("Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
                             exception);
                 }
-            }
-            else
-            {
+            } else {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));
             }
@@ -537,17 +466,14 @@ public class ConnectionStringBuilder
     }
 
     // Generates a string that is logged in traces. Excludes secrets
-    public String toLoggableString()
-    {
+    public String toLoggableString() {
         StringBuilder connectionStringBuilder = new StringBuilder();
-        if (this.endpoint != null)
-        {
+        if (this.endpoint != null) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENDPOINT_CONFIG_NAME, KEY_VALUE_SEPARATOR,
                     this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
-        {
+        if (!StringUtil.isNullOrWhiteSpace(this.entityPath)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.entityPath, KEY_VALUE_PAIR_DELIMITER));
         }

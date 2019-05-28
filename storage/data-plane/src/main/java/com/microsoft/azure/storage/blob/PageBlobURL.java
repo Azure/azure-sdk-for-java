@@ -65,8 +65,8 @@ public final class PageBlobURL extends BlobURL {
 
     private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.start() < 0 || pageRange.end() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to " +
-                    "0 if specified.");
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                    + "0 if specified.");
         }
         if (pageRange.start() % PageBlobURL.PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
@@ -239,8 +239,8 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
-                pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
+                : pageBlobAccessConditions;
 
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -329,7 +329,7 @@ public final class PageBlobURL extends BlobURL {
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
-        if(range == null) {
+        if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("range cannot be null.");
@@ -399,8 +399,8 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
-                pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
+                : pageBlobAccessConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

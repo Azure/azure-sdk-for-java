@@ -20,7 +20,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      *
      * @return The receive mode.
      */
-    public ReceiveMode getReceiveMode();
+    ReceiveMode getReceiveMode();
 
     /**
      * Adds a rule to the current subscription to filter the messages reaching from topic to the subscription.
@@ -29,7 +29,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if add rule failed
      */
-    public void addRule(RuleDescription ruleDescription) throws InterruptedException, ServiceBusException;
+    void addRule(RuleDescription ruleDescription) throws InterruptedException, ServiceBusException;
 
     /**
      * Asynchronously adds a rule to the current subscription to filter the messages reaching from topic to the subscription.
@@ -37,7 +37,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @param ruleDescription The rule description that provides the rule to add.
      * @return a CompletableFuture representing the pending rule add operation.
      */
-    public CompletableFuture<Void> addRuleAsync(RuleDescription ruleDescription);
+    CompletableFuture<Void> addRuleAsync(RuleDescription ruleDescription);
 
     /**
      * Adds a rule with specified name and {@link Filter} to the current subscription to filter the messages reaching from topic to the subscription.
@@ -47,7 +47,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if add rule failed
      */
-    public void addRule(String ruleName, Filter filter) throws InterruptedException, ServiceBusException;
+    void addRule(String ruleName, Filter filter) throws InterruptedException, ServiceBusException;
 
     /**
      * Asynchronously adds a rule with specified name and {@link Filter} to the current subscription to filter the messages reaching from topic to the subscription.
@@ -56,7 +56,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @param filter   The {@link Filter} to add.
      * @return a CompletableFuture representing the pending rule add operation.
      */
-    public CompletableFuture<Void> addRuleAsync(String ruleName, Filter filter);
+    CompletableFuture<Void> addRuleAsync(String ruleName, Filter filter);
 
     /**
      * Asynchronously removes the rule on the subscription identified by ruleName
@@ -64,7 +64,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @param ruleName he name of rule.
      * @return a CompletableFuture representing the pending rule remove operation.
      */
-    public CompletableFuture<Void> removeRuleAsync(String ruleName);
+    CompletableFuture<Void> removeRuleAsync(String ruleName);
 
     /**
      * Removes the rule on the subscription identified by ruleName
@@ -73,7 +73,7 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if remove rule failed
      */
-    public void removeRule(String ruleName) throws InterruptedException, ServiceBusException;
+    void removeRule(String ruleName) throws InterruptedException, ServiceBusException;
 
     /**
      * Get all rules associated with the subscription.
@@ -82,25 +82,25 @@ public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSe
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if get rules failed
      */
-    public Collection<RuleDescription> getRules() throws ServiceBusException, InterruptedException;
+    Collection<RuleDescription> getRules() throws ServiceBusException, InterruptedException;
 
     /**
      * Get all rules associated with the subscription.
      *
      * @return a CompletableFuture representing the pending get rules operation.
      */
-    public CompletableFuture<Collection<RuleDescription>> getRulesAsync();
+    CompletableFuture<Collection<RuleDescription>> getRulesAsync();
 
     /**
      * Gets the name of the topic, for this subscription.
      *
      * @return the name of the topic
      */
-    public String getTopicName();
+    String getTopicName();
 
     /**
      * Gets the subscription name.
      * @return The subscription name.
      */
-    public String getSubscriptionName();
+    String getSubscriptionName();
 }

@@ -16,7 +16,7 @@ public interface IMessageHandler {
      * @param message The received {@link Message}.
      * @return CompletableFuture for the message handler.
      */
-    public CompletableFuture<Void> onMessageAsync(IMessage message);
+    CompletableFuture<Void> onMessageAsync(IMessage message);
 
     /**
      * Receiving the exceptions that passed by pump during message processing.
@@ -24,5 +24,5 @@ public interface IMessageHandler {
      * @param exception Exception received in pump.
      * @param phase     Exception phase.
      */
-    public void notifyException(Throwable exception, ExceptionPhase phase);
+    void notifyException(Throwable exception, ExceptionPhase phase);
 }

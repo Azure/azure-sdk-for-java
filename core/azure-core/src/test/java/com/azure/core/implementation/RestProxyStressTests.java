@@ -12,7 +12,7 @@ import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -98,8 +98,7 @@ public class RestProxyStressTests {
             tempFolderPath = "temp";
         }
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         List<HttpPipelinePolicy> polices = new ArrayList<HttpPipelinePolicy>();
         polices.add(new AddDatePolicy());
@@ -115,7 +114,9 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-                new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
+            HttpPipeline.builder()
+                .policies(polices.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         RestProxyStressTests.tempFolderPath = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -496,8 +497,7 @@ public class RestProxyStressTests {
     public void testHighParallelism() {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         //
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -510,7 +510,9 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-                new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
+            HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.
@@ -519,8 +521,8 @@ public class RestProxyStressTests {
                 .flatMap(integer ->
                         innerService.createContainer(integer.toString(), sas)
                                 .onErrorResume(throwable -> {
-                                    if (throwable instanceof HttpRequestException) {
-                                        HttpRequestException restException = (HttpRequestException) throwable;
+                                    if (throwable instanceof HttpResponseException) {
+                                        HttpResponseException restException = (HttpResponseException) throwable;
                                         if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
                                             return Mono.empty();
                                         }

@@ -4,7 +4,11 @@
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -149,6 +153,8 @@ public class AuthorizationRuleSerializer {
                         }
                         rule.setRights(rights);
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -170,13 +176,11 @@ public class AuthorizationRuleSerializer {
         }
 
         HashMap<String, AuthorizationRule> cnt = new HashMap<>();
-        for (AuthorizationRule rule : first)
-        {
+        for (AuthorizationRule rule : first) {
             cnt.put(rule.getKeyName(), rule);
         }
 
-        for (AuthorizationRule otherRule : second)
-        {
+        for (AuthorizationRule otherRule : second) {
             AuthorizationRule firstRule = cnt.get(otherRule.getKeyName());
             if (firstRule == null || !firstRule.equals(otherRule)) {
                 return false;

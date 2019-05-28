@@ -26,8 +26,8 @@ public abstract class StorageURL {
             throw new IllegalArgumentException("url cannot be null.");
         }
         if (pipeline == null) {
-            throw new IllegalArgumentException("Pipeline cannot be null. Create a pipeline by calling" +
-                    " StorageURL.createPipeline.");
+            throw new IllegalArgumentException("Pipeline cannot be null. Create a pipeline by calling"
+                    + " StorageURL.createPipeline.");
         }
 
         this.storageClient = new GeneratedStorageClient(pipeline)

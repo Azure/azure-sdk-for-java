@@ -75,12 +75,11 @@ public final class TransferManager {
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
         if (maxSingleShotSize != null) {
             Utility.assertInBounds("maxSingleShotSize", maxSingleShotSize, 0, BlockBlobURL.MAX_UPLOAD_BLOB_BYTES);
-        }
-        else {
+        } else {
             maxSingleShotSize = BlockBlobURL.MAX_UPLOAD_BLOB_BYTES;
         }
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                new TransferManagerUploadToBlockBlobOptions() : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -279,9 +278,9 @@ public final class TransferManager {
                     We need to double check that the total size is zero in the case that the customer has attempted an
                     invalid range on a non-zero length blob.
                      */
-                    if (throwable instanceof StorageException &&
-                            ((StorageException) throwable).errorCode() == StorageErrorCode.INVALID_RANGE &&
-                            extractTotalBlobLength(((StorageException) throwable).response()
+                    if (throwable instanceof StorageException
+                            && ((StorageException) throwable).errorCode() == StorageErrorCode.INVALID_RANGE
+                            && extractTotalBlobLength(((StorageException) throwable).response()
                                     .headers().value("Content-Range")) == 0) {
                         return blobURL.download(new BlobRange().withOffset(0).withCount(0L), o.accessConditions(),
                                 false, null)
@@ -291,8 +290,8 @@ public final class TransferManager {
                                     (200 is for full blob; 206 is partial).
                                      */
                                     if (response.statusCode() != 200) {
-                                        throw new IllegalStateException("Blob was modified mid download. It was " +
-                                                "originally 0 bytes and is now larger.");
+                                        throw new IllegalStateException("Blob was modified mid download. It was "
+                                            + "originally 0 bytes and is now larger.");
                                     }
                                     return new DownloadHelper(0L, o.accessConditions(), response);
                                 });
@@ -407,8 +406,8 @@ public final class TransferManager {
         Utility.assertNotNull("source", source);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
 
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                new TransferManagerUploadToBlockBlobOptions() : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -427,11 +426,11 @@ public final class TransferManager {
                 return Flowable.just(buffer);
             }
             List<ByteBuffer> smallerChunks = new ArrayList<>();
-            for (int i=0; i < Math.ceil(buffer.remaining() / (double)blockSize); i++) {
+            for (int i = 0; i < Math.ceil(buffer.remaining() / (double) blockSize); i++) {
                 // Note that duplicate does not duplicate data. It simply creates a duplicate view of the data.
                 ByteBuffer duplicate = buffer.duplicate();
                 duplicate.position(i * blockSize);
-                duplicate.limit(Math.min(duplicate.limit(), (i+1) * blockSize));
+                duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
                 smallerChunks.add(duplicate);
             }
             return Flowable.fromIterable(smallerChunks);

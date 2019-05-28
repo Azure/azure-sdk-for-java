@@ -3,11 +3,10 @@
 
 package com.azure.core.http;
 
-import com.azure.core.util.Context;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +17,16 @@ public final class HttpPipeline {
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
 
+
+    /**
+     * Creates a builder that can configure options for the HttpPipeline before creating an instance of it.
+     *
+     * @return A new {@link HttpPipelineBuilder} to create a HttpPipeline from.
+     */
+    public static HttpPipelineBuilder builder() {
+        return new HttpPipelineBuilder();
+    }
+
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
@@ -27,66 +36,28 @@ public final class HttpPipeline {
      *                                  be made hence changing the original array after the creation of pipeline
      *                                  will not  mutate the pipeline
      */
-    public HttpPipeline(HttpClient httpClient, HttpPipelinePolicy... pipelinePolicies) {
+    HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient);
         Objects.requireNonNull(pipelinePolicies);
-        this.pipelinePolicies = Arrays.copyOf(pipelinePolicies, pipelinePolicies.length);
         this.httpClient = httpClient;
-    }
-
-    /**
-     * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
-     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
-     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
-     * receive response from wire.
-     *
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *                                  be made hence changing the original array after the creation of pipeline
-     *                                  will not  mutate the pipeline
-     */
-    public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
-        this(HttpClient.createDefault(), pipelinePolicies);
-    }
-
-    /**
-     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
-     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
-     * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
-     *                         will be made so changing the original list after the creation of pipeline
-     *                         will not mutate the pipeline
-     */
-    public HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
-        Objects.requireNonNull(httpClient);
-        Objects.requireNonNull(pipelinePolicies);
         this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
-        this.httpClient = httpClient;
     }
 
     /**
-     * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
-     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
-     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
-     * receive response from wire.
-     *
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
-     *                         will be made so changing the original list after the creation of pipeline
-     *                         will not mutate the pipeline
+     * Get the policy at the passed index in the pipeline.
+     * @param index index of the the policy to retrieve.
+     * @return the policy stored at that index.
      */
-    public HttpPipeline(List<HttpPipelinePolicy> pipelinePolicies) {
-        this(HttpClient.createDefault(), pipelinePolicies);
+    public HttpPipelinePolicy getPolicy(final int index) {
+        return this.pipelinePolicies[index];
     }
 
     /**
-     * Get the policies in the pipeline.
-     *
-     * @return policies in the pipeline
+     * Get the count of policies in the pipeline.
+     * @return count of policies.
      */
-    public HttpPipelinePolicy[] pipelinePolicies() {
-        return Arrays.copyOf(this.pipelinePolicies, this.pipelinePolicies.length);
+    public int getPolicyCount() {
+        return this.pipelinePolicies.length;
     }
 
     /**
@@ -99,34 +70,23 @@ public final class HttpPipeline {
     }
 
     /**
-     * Creates a new context local to the provided http request.
-     *
-     * @param httpRequest the request for a context needs to be created
-     * @return the request context
-     */
-    public HttpPipelineCallContext newContext(HttpRequest httpRequest) {
-        return new HttpPipelineCallContext(httpRequest);
-    }
-
-    /**
-     * Creates a new context local to the provided http request.
-     *
-     * @param httpRequest the request for a context needs to be created
-     * @param data the data to associate with the context
-     * @return the request context
-     */
-    public HttpPipelineCallContext newContext(HttpRequest httpRequest, Context data) {
-        return new HttpPipelineCallContext(httpRequest, data);
-    }
-
-    /**
      * Wraps the request in a context and send it through pipeline.
      *
      * @param request the request
      * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
      */
     public Mono<HttpResponse> send(HttpRequest request) {
-        return this.send(this.newContext(request));
+        return this.send(new HttpPipelineCallContext(request));
+    }
+
+    /**
+     * Wraps the request in a context with additional metadata and sends it through the pipeline.
+     * @param request the request
+     * @param data additional metadata to pass along in the request
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     */
+    public Mono<HttpResponse> send(HttpRequest request, Context data) {
+        return this.send(new HttpPipelineCallContext(request, data));
     }
 
     /**
