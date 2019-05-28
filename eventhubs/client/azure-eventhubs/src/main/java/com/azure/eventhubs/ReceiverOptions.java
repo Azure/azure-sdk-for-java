@@ -19,29 +19,46 @@ public class ReceiverOptions {
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
-    private String name;
+    private String identifier;
     private String consumerGroup;
     private Long epoch;
     private RetryPolicy retryPolicy;
     private boolean keepUpdated;
     private Duration receiveTimeout;
     private Scheduler scheduler;
+    private EventPosition beginReceivingAt;
 
     /**
      * Creates a new instance with the consumer group set to {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      */
     public ReceiverOptions() {
-        consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
+        this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
+        this.beginReceivingAt = EventPosition.firstAvailableEvent();
     }
 
     /**
-     * Sets the name of the receiver.
+     * Sets an optional text-based identifier label to assign to an event receiver.
      *
-     * @param name The receiver name.
+     * @param identifier The receiver name.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions name(String name) {
-        this.name = name;
+    public ReceiverOptions identifier(String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    /**
+     * The position within the partition where the receiver should begin reading events.
+     *
+     * <p>
+     * If not specified, the receiver will begin receiving all events that are contained in the partition, starting with
+     * the first event that was enqueued and will continue receiving until there are no more events observed.
+     *
+     * @param position Position within the partition where the receiver should begin reading events.
+     * @return The updated ReceiverOptions object.
+     */
+    public ReceiverOptions beginReceivingAt(EventPosition position) {
+        this.beginReceivingAt = position;
         return this;
     }
 
@@ -120,12 +137,23 @@ public class ReceiverOptions {
     }
 
     /**
-     * Gets the name of the receiver.
+     * Gets the optional text-based identifier label to assign to an event receiver.
+     * The identifier is used for informational purposes only.  If not specified, the receiver will have no assigned
+     * identifier label.
      *
-     * @return The name of the receiver.
+     * @return The identifier of the receiver.
      */
-    String name() {
-        return name;
+    String identifier() {
+        return identifier;
+    }
+
+    /**
+     * Gets the position within the partition where the receiver should begin reading events.
+     *
+     * @return The position within the partition where the receiver should begin reading events.
+     */
+    EventPosition beginReceivingAt() {
+        return this.beginReceivingAt;
     }
 
     /**

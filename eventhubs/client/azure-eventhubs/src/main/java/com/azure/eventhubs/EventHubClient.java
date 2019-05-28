@@ -21,6 +21,35 @@ class EventHubClient implements AutoCloseable {
     }
 
     /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    public Mono<EventHubProperties> getHubProperties() {
+        return Mono.empty();
+    }
+
+    /**
+     * Retrieves the set of identifiers for the partitions of an Event Hub.
+     *
+     * @return The set of identifiers for the partitions of an Event Hub.
+     */
+    public Mono<String[]> getPartitionIds() {
+        return getHubProperties().map(EventHubProperties::partitionIds);
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return Mono.empty();
+    }
+
+    /**
      * Creates a sender that transmits events to Event Hub. Event data is automatically routed to an available
      * partition.
      *
@@ -63,18 +92,6 @@ class EventHubClient implements AutoCloseable {
      */
     public EventReceiver createReceiver(String partitionId, ReceiverOptions options) {
         return new EventReceiver();
-    }
-
-    /**
-     * Retrieves the set of identifiers for the partitions of an Event Hub.
-     * @return The set of identifiers for the partitions of an Event Hub.
-     */
-    public Mono<String[]> getPartitionIds() {
-        return getPartitionProperties().map(EventHubProperties::partitionIds);
-    }
-
-    public Mono<EventHubProperties> getPartitionProperties() {
-        return Mono.empty();
     }
 
     /**

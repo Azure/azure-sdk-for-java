@@ -26,8 +26,10 @@ import java.util.stream.Collector;
  * @see EventHubClient#createSender()
  */
 public class EventSender implements AutoCloseable {
-    // The maximum allowable size, in bytes, for a batch to be sent.
-    static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+    /**
+     * The default maximum allowable size, in bytes, for a batch to be sent.
+     */
+    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final SenderOptions DEFAULT_OPTIONS = new SenderOptions();
     private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();

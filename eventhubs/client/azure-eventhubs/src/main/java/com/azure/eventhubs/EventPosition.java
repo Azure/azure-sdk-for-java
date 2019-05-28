@@ -8,25 +8,32 @@ import com.azure.eventhubs.implementation.AmqpConstants;
 
 import java.time.Instant;
 import java.util.Locale;
-
-import static com.azure.eventhubs.implementation.ClientConstants.END_OF_STREAM;
-import static com.azure.eventhubs.implementation.ClientConstants.START_OF_STREAM;
+import java.util.Objects;
 
 /**
  * Defines a position of an {@link EventData} in the event hub partition.
  * The position can be an Offset, Sequence Number, or EnqueuedTime.
  */
 public final class EventPosition {
+    /**
+     * This is a constant defined to represent the start of a partition stream in EventHub.
+     */
+    private static final String START_OF_STREAM = "-1";
+    /**
+     * This is a constant defined to represent the current end of a partition stream in EventHub.
+     * This can be used as an offset argument in receiver creation to start receiving from the latest
+     * event, instead of a specific offset or point in time.
+     */
+    private static final String END_OF_STREAM = "@latest";
 
     private final ServiceLogger logger = new ServiceLogger(EventPosition.class);
-    private final String offset;
-    private final Long sequenceNumber;
-    private final Instant dateTime;
+    private final boolean isInclusive;
+    private String offset;
+    private Long sequenceNumber;
+    private Instant enqueuedDateTime;
 
-    private EventPosition(String offset, Long sequenceNumber, Instant dateTime) {
-        this.offset = offset;
-        this.sequenceNumber = sequenceNumber;
-        this.dateTime = dateTime;
+    private EventPosition(boolean isInclusive) {
+        this.isInclusive = isInclusive;
     }
 
     /**
@@ -35,72 +42,107 @@ public final class EventPosition {
      *
      * @return An {@link EventPosition} set to the start of an Event Hubs stream.
      */
-    public static EventPosition fromStartOfStream() {
-        return new EventPosition(START_OF_STREAM, null, null);
+    public static EventPosition firstAvailableEvent() {
+        return fromOffset(START_OF_STREAM, true);
     }
 
     /**
-     * Returns the position for the end of a stream. Provide this position in receiver creation
-     * to start receiving from the next available event in the partition after the receiver is created.
+     * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
+     * receiving from the next event to be enqueued in the partition after an {@link EventReceiver} is created with this
+     * position.
      *
-     * @return An {@link EventPosition} set to the end of an Event Hubs stream.
+     * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
-    public static EventPosition fromEndOfSream() {
-        return new EventPosition(END_OF_STREAM, null, null);
+    public static EventPosition newEventsOnly() {
+        return fromOffset(END_OF_STREAM, false);
     }
 
     /**
-     * Creates a position at the given {@link Instant}.
+     * Creates a position at the given {@link Instant}. Corresponds to a specific instance within a partition to begin
+     * looking for an event. The event enqueued after the requested {@code enqueuedDateTime} becomes the current
+     * position.
      *
-     * @param dateTime is the enqueued time of the event.
+     * @param enqueuedDateTime The instant, in UTC, from which the next available event should be chosen.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromEnqueuedTime(Instant dateTime) {
-        return new EventPosition(null, null, dateTime);
+    public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
+        EventPosition position = new EventPosition(false);
+        position.enqueuedDateTime = enqueuedDateTime;
+        return position;
     }
 
     /**
-     * Creates a position at the given offset.
+     * Corresponds to the event in the partition at the provided offset, inclusive of that event.
      *
-     * @param offset is the byte offset of the event.
+     * @param offset The offset of the event within that partition.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(String offset) {
-        return new EventPosition(offset, null, null);
+        return fromOffset(offset, true);
     }
 
     /**
-     * Creates a position at the given sequence number. The specified event will not be included.
-     * Instead, the next event is returned.
+     * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the
+     * event with the same offset is returned. Otherwise, the next event is received.
+     *
+     * @param offset The offset of an event with respect to its relative position in the partition
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromOffset(String offset, boolean isInclusive) {
+        Objects.requireNonNull(offset);
+
+        EventPosition position = new EventPosition(isInclusive);
+        position.offset = offset;
+        return position;
+    }
+
+    /**
+     * Creates a position at the given sequence number. The specified event will not be included. Instead, the next
+     * event is returned.
      *
      * @param sequenceNumber is the sequence number of the event.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber) {
-        return new EventPosition(null, sequenceNumber, null);
+        return fromSequenceNumber(sequenceNumber, false);
+    }
+
+    /**
+     * Creates a position at the given sequence number. If {@code isInclusive} is true, the event with the same sequence
+     * number is returned. Otherwise, the next event in the sequence is received.
+     *
+     * @param sequenceNumber is the sequence number of the event.
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
+        EventPosition position = new EventPosition(isInclusive);
+        position.sequenceNumber = sequenceNumber;
+        return position;
     }
 
     String getExpression() {
+        final String isInclusiveFlag = isInclusive ? "=" : "";
+
         // order of preference
         if (this.offset != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.OFFSET_ANNOTATION_NAME, "=", this.offset);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.OFFSET_ANNOTATION_NAME, isInclusiveFlag, this.offset);
         }
 
         if (this.sequenceNumber != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME, "=", this.sequenceNumber);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME, isInclusiveFlag, this.sequenceNumber);
         }
 
-        if (this.dateTime != null) {
+        if (this.enqueuedDateTime != null) {
             String ms;
             try {
-                ms = Long.toString(this.dateTime.toEpochMilli());
+                ms = Long.toString(this.enqueuedDateTime.toEpochMilli());
             } catch (ArithmeticException ex) {
                 ms = Long.toString(Long.MAX_VALUE);
                 logger.asWarning().log(
                     "Receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, "", ms);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, isInclusiveFlag, ms);
         }
 
         throw new IllegalArgumentException("No starting position was set.");
@@ -108,8 +150,9 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s]",
-            this.offset, this.sequenceNumber,
-            (this.dateTime != null) ? this.dateTime.toEpochMilli() : "null");
+        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
+            offset, sequenceNumber,
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
+            isInclusive);
     }
 }

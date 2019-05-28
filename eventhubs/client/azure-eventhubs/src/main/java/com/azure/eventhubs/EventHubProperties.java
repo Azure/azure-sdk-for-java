@@ -55,4 +55,13 @@ public final class EventHubProperties {
     public String[] partitionIds() {
         return partitionIds;
     }
+
+    /**
+     * Gets the date and time, in UTC, that the information was retrieved from the Event Hub.
+     *
+     * @return The instant, in UTC, that the information was retrieved from Event Hub.
+     */
+    public Instant propertyRetrievalTimeUtc() {
+        return propertyRetrievalTimeUtc;
+    }
 }
