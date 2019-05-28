@@ -109,8 +109,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#expires() expires} and {@link KeyCreateOptions#notBefore() notBefore} values
-     * are optional. If not specified, no values are set for the fields. The {@link KeyCreateOptions#enabled() enabled} field
-     * is set to true by Azure Key Vault, if not specified.</p>
+     * are optional. The {@link KeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
      * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM} and {@link JsonWebKeyType#OCT OCT}.</p>
@@ -147,7 +146,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be optionally specified. The {@link RsaKeyCreateOptions#expires() expires}
-     * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. If not specified, no values are set for the fields. The {@link RsaKeyCreateOptions#enabled() enabled} field
+     * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA} and
@@ -188,8 +187,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be optionally specified. If not specified,
      * default value of {@link JsonWebKeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
-     * are optional. If not specified, no values are set for the fields. The {@link EcKeyCreateOptions#enabled() enabled} field is
-     * set to true by Azure Key Vault, if not specified.</p>
+     * are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC} and
      * {@link JsonWebKeyType#EC_HSM EC-HSM}.</p>
@@ -297,7 +295,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} or {@code version} are empty strings.
+     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     public Mono<Response<Key>> getKey(String name, String version) {
@@ -332,9 +330,9 @@ public final class KeyAsyncClient extends ServiceClient {
 
 
     /**
-     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. If {@link KeyBase#version() version} is not set
-     * then the latest version of the key is returned. The get key operation is applicable to all key types and If the requested key is symmetric,
-     * then no key material is released in the response. This operation requires the {@code keys/get} permission.
+     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
+     * to all key types and If the requested key is symmetric, then no key material is released in the response. This operation
+     * requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
      * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
@@ -347,7 +345,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     public Mono<Response<Key>> getKey(KeyBase keyBase) {
