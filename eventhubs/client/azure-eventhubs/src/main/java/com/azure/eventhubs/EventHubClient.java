@@ -3,6 +3,8 @@
 
 package com.azure.eventhubs;
 
+import reactor.core.publisher.Mono;
+
 // Each time a build method is called, a new receiver or sender is created.
 class EventHubClient implements AutoCloseable {
 
@@ -61,6 +63,18 @@ class EventHubClient implements AutoCloseable {
      */
     public EventReceiver createReceiver(String partitionId, ReceiverOptions options) {
         return new EventReceiver();
+    }
+
+    /**
+     * Retrieves the set of identifiers for the partitions of an Event Hub.
+     * @return The set of identifiers for the partitions of an Event Hub.
+     */
+    public Mono<String[]> getPartitionIds() {
+        return getPartitionProperties().map(EventHubProperties::partitionIds);
+    }
+
+    public Mono<EventHubProperties> getPartitionProperties() {
+        return Mono.empty();
     }
 
     /**

@@ -28,14 +28,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class EventReceiver implements AutoCloseable {
 
-    private PartitionInformation partitionInformation;
+    private PartitionProperties partitionInformation;
 
     /**
      * Gets the most recent information about a partition by the current receiver.
      *
      * @return If {@link ReceiverOptions}
      */
-    public PartitionInformation partitionInformation() {
+    public PartitionProperties partitionInformation() {
         return partitionInformation;
     }
 

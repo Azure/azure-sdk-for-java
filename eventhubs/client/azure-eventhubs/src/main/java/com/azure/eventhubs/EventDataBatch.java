@@ -28,11 +28,11 @@ final class EventDataBatch {
         this.eventBytes = new byte[maxMessageSize];
     }
 
-    public int getSize() {
+    int getSize() {
         return events.size();
     }
 
-    public boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
+    boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
 
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");

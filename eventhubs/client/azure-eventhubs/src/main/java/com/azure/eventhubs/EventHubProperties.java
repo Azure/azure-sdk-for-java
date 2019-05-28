@@ -7,27 +7,26 @@ import java.time.Instant;
 import java.util.Arrays;
 
 /**
- * Holds information about Event Hubs which can come handy while performing data-plane operations
- * like {@link EventHubClient#createReceiver(String, EventPosition)} and
- * {@link EventHubClient#createReceiver(String, EventPosition, ReceiverOptions)}.
+ * Holds information about Event Hubs which can come handy while performing data-plane operations like
+ * {@link EventHubClient#createReceiver(String)} and {@link EventHubClient#createReceiver(String, ReceiverOptions)}.
  */
-public final class EventHubInformation {
+public final class EventHubProperties {
     private final String path;
     private final Instant createdAt;
-    private final int partitionCount;
     private final String[] partitionIds;
+    private Instant propertyRetrievalTimeUtc;
 
-    EventHubInformation(
+    EventHubProperties(
             final String path,
-            final Instant createdAt,
-            final int partitionCount,
-            final String[] partitionIds) {
+            final Instant createdAtUtc,
+            final String[] partitionIds,
+            final Instant propertyRetrievalTimeUtc) {
         this.path = path;
-        this.createdAt = createdAt;
-        this.partitionCount = partitionCount;
+        this.createdAt = createdAtUtc;
         this.partitionIds = partitionIds != null
             ? Arrays.copyOf(partitionIds, partitionIds.length)
             : new String[0];
+        this.propertyRetrievalTimeUtc = propertyRetrievalTimeUtc;
     }
 
     /**
@@ -44,17 +43,8 @@ public final class EventHubInformation {
      *
      * @return The time at which the Event Hub was created.
      */
-    public Instant createdAt() {
+    public Instant createdAtUtc() {
         return createdAt;
-    }
-
-    /**
-     * Gets the number of partitions in the Event Hub.
-     *
-     * @return The number of partitions in the Event Hub.
-     */
-    public int partitionCount() {
-        return partitionCount;
     }
 
     /**
