@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.implementation.util.ImplUtils;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -23,17 +22,17 @@ public class EventSenderTest {
     public void sendBatches() {
         int maxMessageSize = 16 * 1024;
 
-        final Flux<EventData> map = Flux.range(0, 200).flatMap(number -> {
-            final int index = number % partitions.length;
-            final String partition = partitions[index];
+        final Flux<EventData> map = Flux.range(0, 4).flatMap(number -> {
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
 
             return Flux.just(data);
         });
 
-        EventSender sender = new EventSender(maxMessageSize);
+        EventBatchingOptions options = new EventBatchingOptions()
+            .maximumSizeInBytes(maxMessageSize);
+        EventSender sender = new EventSender();
 
-        StepVerifier.create(sender.send(map))
+        StepVerifier.create(sender.send(map, options))
             .verifyComplete();
     }
 
