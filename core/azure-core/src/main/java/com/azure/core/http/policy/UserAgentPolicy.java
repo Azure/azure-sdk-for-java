@@ -22,6 +22,9 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
 
+    // When the AZURE_TELEMETRY_DISABLED configuration is true remove the <platform_info> portion of the user agent.
+    private static final String DISABLED_TELEMETRY_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s";
+
     // From the design guidelines, the platform info format is:
     // <language runtime>; <os name> <os version>
     private static final String PLATFORM_INFO_FORMAT = "%s; %s %s";
@@ -54,9 +57,14 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
+     * @param telemetryDisabled Flag to turn off telemetry.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion) {
-        this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+    public UserAgentPolicy(String sdkName, String sdkVersion, boolean telemetryDisabled) {
+        if (telemetryDisabled) {
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion);
+        } else {
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+        }
     }
 
     @Override
