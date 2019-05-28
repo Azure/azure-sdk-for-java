@@ -5,8 +5,8 @@ public class TryCatchThrows {
     public void invalidCatchAndThrow() {
         try {
             int i = 1;
-        } catch (IllegalAccessError e) { // line 8, column 18
-            throw e;
+        } catch (IllegalAccessError e) {
+            throw e; // line 9, column 19
         }
     }
 
@@ -16,8 +16,8 @@ public class TryCatchThrows {
     public void invalidCatchAndThrowUnion() {
         try {
             int i = 1;
-        } catch (IllegalArgumentException | IllegalAccessError e) { //line 19, columns 18 and 45
-            throw e;
+        } catch (IllegalArgumentException | IllegalAccessError e) {
+            throw e; //line 20, columns 19
         }
     }
 
@@ -29,8 +29,21 @@ public class TryCatchThrows {
     public void invalidCatchAndThrowUnion() {
         try {
             int i = 1;
-        } catch (IllegalArgumentException | IllegalAccessError e) { //line 32, columns 18
-            throw e;
+        } catch (IllegalArgumentException | IllegalAccessError e) {
+            throw e; //line 33, columns 19
+        }
+    }
+
+    /**
+     * I sort of documented my exceptions.
+     *
+     * @throws IllegalAccessError One of my throws
+     */
+    public void anotherInvalidCatchAndThrowUnion() {
+        try {
+            int i = 1;
+        } catch (IllegalArgumentException | IllegalAccessError e) {
+            throw e; //line 46, columns 19
         }
     }
 

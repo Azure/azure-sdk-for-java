@@ -22,10 +22,12 @@ public class JavadocThrowsChecks extends AbstractCheck {
         TokenTypes.METHOD_DEF,
         TokenTypes.LITERAL_THROWS,
         TokenTypes.LITERAL_THROW,
-        TokenTypes.LITERAL_CATCH,
+        TokenTypes.VARIABLE_DEF,
+        TokenTypes.PARAMETER_DEF,
     };
 
     private Map<String, HashSet<String>> methodJavadocThrowsMapping;
+    private Map<String, HashSet<String>> methodExeptionMapping;
     private String currentMethodIdentifier;
     private boolean currentMethodNeedsChecking;
 
@@ -52,6 +54,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     @Override
     public void beginTree(DetailAST rootToken) {
         methodJavadocThrowsMapping = new HashMap<>();
+        methodExeptionMapping = new HashMap<>();
         currentMethodNeedsChecking = false;
         currentMethodIdentifier = "";
     }
@@ -76,6 +79,13 @@ public class JavadocThrowsChecks extends AbstractCheck {
             case TokenTypes.LITERAL_THROW:
                 if (currentMethodNeedsChecking) {
                     verifyThrowJavadoc(token);
+                }
+                break;
+
+            case TokenTypes.PARAMETER_DEF:
+            case TokenTypes.VARIABLE_DEF:
+                if (currentMethodNeedsChecking) {
+                    addExceptionMapping(token);
                 }
                 break;
         }
@@ -149,6 +159,32 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     /*
+     * Checks if parameter and variable definitions are exception definitions, if so adds them to the mapping.
+     * @param definitionToken Definition token.
+     */
+    private void addExceptionMapping(DetailAST definitionToken) {
+        DetailAST typeToken = definitionToken.findFirstToken(TokenTypes.TYPE).getFirstChild();
+        String identifier = currentMethodIdentifier + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
+        HashSet<String> types = methodExeptionMapping.getOrDefault(identifier, new HashSet<>());
+
+        if (typeToken.getType() == TokenTypes.BOR) {
+            TokenUtil.forEachChild(typeToken, TokenTypes.IDENT, (identToken) -> {
+                String type = identToken.getText();
+                if (isExceptionOrErrorType(type)) {
+                    types.add(type);
+                }
+            });
+        } else {
+            String type = typeToken.getText();
+            if (isExceptionOrErrorType(type)) {
+                types.add(type);
+            }
+        }
+
+        methodExeptionMapping.put(identifier, types);
+    }
+
+    /*
      * Verifies that the checked exceptions, those in the throws statement, are documented.
      * @param throwsToken Throws token.
      */
@@ -172,38 +208,27 @@ public class JavadocThrowsChecks extends AbstractCheck {
             return;
         }
 
-        String throwType;
-        DetailAST throwExpression = throwToken.findFirstToken(TokenTypes.EXPR);
+        DetailAST throwExprToken = throwToken.findFirstToken(TokenTypes.EXPR);
 
         // Check if the throw is constructing the exception or throwing an instantiated exception.
-        DetailAST literalNewToken = throwExpression.findFirstToken(TokenTypes.LITERAL_NEW);
+        DetailAST literalNewToken = throwExprToken.findFirstToken(TokenTypes.LITERAL_NEW);
         if (literalNewToken != null) {
-            throwType = literalNewToken.findFirstToken(TokenTypes.IDENT).getText();
-        } else {
-            // Determine what is being thrown.
-            String searchingFor;
-            DetailAST thrownIdent = throwExpression.findFirstToken(TokenTypes.IDENT);
-            if (thrownIdent != null) {
-                searchingFor = thrownIdent.getText();
-            } else {
-                // More complex throw clause
-                searchingFor = "";
+            if (!methodJavadocThrows.contains(literalNewToken.findFirstToken(TokenTypes.IDENT).getText())) {
+                log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             }
+        } else {
+            String throwIdent = throwExprToken.findFirstToken(TokenTypes.IDENT).getText();
+            HashSet<String> types = methodExeptionMapping.get(currentMethodIdentifier + throwIdent);
 
-            log(throwToken, searchingFor);
-            throwType = findInstantiatedThrow(searchingFor);
-        }
-
-        if ("RuntimeException".equals(throwType)) {
-            return;
-        }
-
-        if (!methodJavadocThrows.contains(throwType)) {
-            log(throwToken, MISSING_THROWS_TAG_MESSAGE);
+            for (String type : types) {
+                if (!methodJavadocThrows.contains(type)) {
+                    log(throwExprToken, MISSING_THROWS_TAG_MESSAGE);
+                }
+            }
         }
     }
 
-    private String findInstantiatedThrow(String variableName) {
-        return "";
+    private boolean isExceptionOrErrorType(String type) {
+        return type.endsWith("Exception") || type.endsWith("Error");
     }
 }

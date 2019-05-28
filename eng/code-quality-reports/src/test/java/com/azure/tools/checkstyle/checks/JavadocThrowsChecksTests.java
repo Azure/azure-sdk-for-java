@@ -41,11 +41,11 @@ public class JavadocThrowsChecksTests extends AbstractModuleTestSupport {
     @Test
     public void tryCatchThrows() throws Exception {
         String[] expected = {
-            expectedThrowsMessage(8, 18),
-            expectedThrowsMessage(19, 18),
-            expectedThrowsMessage(19, 45),
+            expectedThrowsMessage(9, 19),
+            expectedThrowsMessage(20, 19),
             expectedDescriptionMessage(27),
-            expectedThrowsMessage(32, 18)
+            expectedThrowsMessage(33, 19),
+            expectedThrowsMessage(46, 19)
         };
 
         verify(checker, getPath("TryCatchThrows.java"), expected);
