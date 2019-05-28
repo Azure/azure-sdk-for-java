@@ -93,12 +93,18 @@ public final class PartitionProperties {
 
     /**
      * Indicates whether or not there are events in the partition.
+     *
      * @return true if there are no events, and false otherwise.
      */
     public boolean isEmpty() {
         return this.isEmpty;
     }
 
+    /**
+     * The instant, in UTC, that the partition information was retrieved from the Event Hub.
+     *
+     * @return Instant, in UTC, that the partition information was retrieved.
+     */
     public Instant propertyRetrievalTimeUtc() {
         return this.propertyRetrievalTimeUtc;
     }

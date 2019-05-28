@@ -19,6 +19,7 @@ public final class EventPosition {
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */
     private static final String START_OF_STREAM = "-1";
+
     /**
      * This is a constant defined to represent the current end of a partition stream in EventHub.
      * This can be used as an offset argument in receiver creation to start receiving from the latest
@@ -85,7 +86,9 @@ public final class EventPosition {
      * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the
      * event with the same offset is returned. Otherwise, the next event is received.
      *
-     * @param offset The offset of an event with respect to its relative position in the partition
+     * @param offset The offset of an event with respect to its relative position in the
+     * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will be
+     * received.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
@@ -112,6 +115,8 @@ public final class EventPosition {
      * number is returned. Otherwise, the next event in the sequence is received.
      *
      * @param sequenceNumber is the sequence number of the event.
+     * @param isInclusive If true, the event with the {@code sequenceNumber} is included; otherwise, the next event will
+     * be received.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {

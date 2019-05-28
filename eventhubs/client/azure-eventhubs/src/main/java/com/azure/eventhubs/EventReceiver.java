@@ -23,8 +23,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *      <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.</li>
  * </ul>
  *
- * @see EventHubClient#createReceiver(String, EventPosition)
- * @see EventHubClient#createReceiver(String, EventPosition, ReceiverOptions)
+ * @see EventHubClient#createReceiver(String)
+ * @see EventHubClient#createReceiver(String, ReceiverOptions)
  */
 public class EventReceiver implements AutoCloseable {
 
