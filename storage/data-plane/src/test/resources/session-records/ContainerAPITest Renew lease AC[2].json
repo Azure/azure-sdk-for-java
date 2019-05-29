@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27732c9f9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E4670B8F1B7B\"",
+      "Last-Modified" : "Wed, 29 May 2019 18:54:14 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b5f148f1-a01e-00fc-4d4f-160ee9000000",
+      "Date" : "Wed, 29 May 2019 18:54:13 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27732c9f9?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E4670B8F1B7B\"",
+      "x-ms-lease-id" : "f3125746-d4f7-4d1b-9093-aa1e7e4ea16b",
+      "Last-Modified" : "Wed, 29 May 2019 18:54:14 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b5f148fb-a01e-00fc-564f-160ee9000000",
+      "Date" : "Wed, 29 May 2019 18:54:13 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27732c9f9?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E4670B8F1B7B\"",
+      "x-ms-lease-id" : "f3125746-d4f7-4d1b-9093-aa1e7e4ea16b",
+      "Last-Modified" : "Wed, 29 May 2019 18:54:14 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "b5f14902-a01e-00fc-5d4f-160ee9000000",
+      "Date" : "Wed, 29 May 2019 18:54:13 GMT"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc27732c9f9" ]
+}

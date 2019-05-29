@@ -1,0 +1,70 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186953fd9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E46700D141F3\"",
+      "Last-Modified" : "Wed, 29 May 2019 18:53:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b5f12f71-a01e-00fc-114f-160ee9000000",
+      "Date" : "Wed, 29 May 2019 18:53:55 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186953fd9?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E46700D141F3\"",
+      "x-ms-lease-id" : "f7283580-9e22-4da0-a000-5a952c96513d",
+      "Last-Modified" : "Wed, 29 May 2019 18:53:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b5f12f78-a01e-00fc-174f-160ee9000000",
+      "Date" : "Wed, 29 May 2019 18:53:56 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186953fd9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "x-ms-lease-status" : "locked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "leased",
+      "Last-Modified" : "Wed, 29 May 2019 18:53:56 GMT",
+      "retry-after" : "0",
+      "body" : "",
+      "StatusCode" : "200",
+      "Date" : "Wed, 29 May 2019 18:53:56 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "ETag" : "\"0x8D6E46700D141F3\"",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-lease-duration" : "infinite",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "b5f12f81-a01e-00fc-204f-160ee9000000"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc186953fd9" ]
+}
