@@ -18,18 +18,19 @@ public class JavadocThrowsChecks extends AbstractCheck {
     private static final String MISSING_DESCRIPTION_MESSAGE = "@throws tag requires a description explaining when the error is thrown.";
     private static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
     private static final int[] TOKENS = new int[] {
-        TokenTypes.BLOCK_COMMENT_BEGIN,
+        TokenTypes.CTOR_DEF,
         TokenTypes.METHOD_DEF,
+        TokenTypes.BLOCK_COMMENT_BEGIN,
         TokenTypes.LITERAL_THROWS,
         TokenTypes.LITERAL_THROW,
-        TokenTypes.VARIABLE_DEF,
         TokenTypes.PARAMETER_DEF,
+        TokenTypes.VARIABLE_DEF,
     };
 
-    private Map<String, HashSet<String>> methodJavadocThrowsMapping;
-    private Map<String, HashSet<String>> methodExeptionMapping;
-    private String currentMethodIdentifier;
-    private boolean currentMethodNeedsChecking;
+    private Map<String, HashSet<String>> javadocThrowsMapping;
+    private Map<String, HashSet<String>> exceptionMapping;
+    private String currentScopeIdentifier;
+    private boolean currentScopeNeedsChecking;
 
     @Override
     public int[] getDefaultTokens() {
@@ -53,38 +54,39 @@ public class JavadocThrowsChecks extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST rootToken) {
-        methodJavadocThrowsMapping = new HashMap<>();
-        methodExeptionMapping = new HashMap<>();
-        currentMethodNeedsChecking = false;
-        currentMethodIdentifier = "";
+        javadocThrowsMapping = new HashMap<>();
+        exceptionMapping = new HashMap<>();
+        currentScopeNeedsChecking = false;
+        currentScopeIdentifier = "";
     }
 
     @Override
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
+            case TokenTypes.CTOR_DEF:
+            case TokenTypes.METHOD_DEF:
+                setIdentifierAndCheckStatus(token);
+                break;
+
             case TokenTypes.BLOCK_COMMENT_BEGIN:
                 findJavadocThrows(token);
                 break;
 
-            case TokenTypes.METHOD_DEF:
-                setMethodIdentifierAndCheckStatus(token);
-                break;
-
             case TokenTypes.LITERAL_THROWS:
-                if (currentMethodNeedsChecking) {
+                if (currentScopeNeedsChecking) {
                     verifyCheckedThrowJavadoc(token);
                 }
                 break;
 
             case TokenTypes.LITERAL_THROW:
-                if (currentMethodNeedsChecking) {
-                    verifyThrowJavadoc(token);
+                if (currentScopeNeedsChecking) {
+                    verifyUncheckedThrowJavadoc(token);
                 }
                 break;
 
             case TokenTypes.PARAMETER_DEF:
             case TokenTypes.VARIABLE_DEF:
-                if (currentMethodNeedsChecking) {
+                if (currentScopeNeedsChecking) {
                     addExceptionMapping(token);
                 }
                 break;
@@ -93,11 +95,11 @@ public class JavadocThrowsChecks extends AbstractCheck {
 
     /*
      * Gets the current method identifier and determines if it needs to be checked.
-     * @param methodDefToken Method definition token.
+     * @param scopeDefToken Method definition token.
      */
-    private void setMethodIdentifierAndCheckStatus(DetailAST methodDefToken) {
-        currentMethodIdentifier = methodDefToken.findFirstToken(TokenTypes.IDENT).getText() + methodDefToken.getLineNo();
-        currentMethodNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstractOrOverride(methodDefToken.findFirstToken(TokenTypes.MODIFIERS));
+    private void setIdentifierAndCheckStatus(DetailAST scopeDefToken) {
+        currentScopeIdentifier = scopeDefToken.findFirstToken(TokenTypes.IDENT).getText() + scopeDefToken.getLineNo();
+        currentScopeNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstractOrOverride(scopeDefToken.findFirstToken(TokenTypes.MODIFIERS));
     }
 
     /*
@@ -117,21 +119,17 @@ public class JavadocThrowsChecks extends AbstractCheck {
 
         // Don't need to check override methods that don't have JavaDocs.
         if (modifiersToken.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN) == null) {
-            if (TokenUtil.findFirstTokenByPredicate(modifiersToken, JavadocThrowsChecks::isOverrideAnnotation).isPresent()) {
+            if (TokenUtil.findFirstTokenByPredicate(modifiersToken, this::isOverrideAnnotation).isPresent()) {
                 return false;
             }
         }
 
         // Check public or protect methods.
-        if (modifiersToken.findFirstToken(TokenTypes.LITERAL_PUBLIC) != null
-            || modifiersToken.findFirstToken(TokenTypes.LITERAL_PROTECTED) != null) {
-            return true;
-        }
-
-        return false;
+        return modifiersToken.findFirstToken(TokenTypes.LITERAL_PUBLIC) != null
+            || modifiersToken.findFirstToken(TokenTypes.LITERAL_PROTECTED) != null;
     }
 
-    private static boolean isOverrideAnnotation(DetailAST modifierToken) {
+    private boolean isOverrideAnnotation(DetailAST modifierToken) {
         if (modifierToken.getType() != TokenTypes.ANNOTATION) {
             return false;
         }
@@ -144,18 +142,24 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param blockCommentToken Block comment token.
      */
     private void findJavadocThrows(DetailAST blockCommentToken) {
-        if (!BlockCommentPosition.isOnMethod(blockCommentToken)) {
+        if (!BlockCommentPosition.isOnMethod(blockCommentToken) && !BlockCommentPosition.isOnConstructor(blockCommentToken)) {
             return;
         }
 
         // Turn the DetailAST into a Javadoc DetailNode.
-        DetailNode javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
+        DetailNode javadocNode = null;
+        try {
+            javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
+        } catch (IllegalArgumentException ex) {
+            // Exceptions are thrown if the JavaDoc has invalid formatting.
+        }
+
         if (javadocNode == null) {
             return;
         }
 
         // Append the line number to differentiate overloads.
-        HashSet<String> javadocThrows = methodJavadocThrowsMapping.getOrDefault(currentMethodIdentifier, new HashSet<>());
+        HashSet<String> javadocThrows = javadocThrowsMapping.getOrDefault(currentScopeIdentifier, new HashSet<>());
 
         // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
         for (DetailNode node : javadocNode.getChildren()) {
@@ -171,7 +175,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
         }
 
-        methodJavadocThrowsMapping.put(currentMethodIdentifier, javadocThrows);
+        javadocThrowsMapping.put(currentScopeIdentifier, javadocThrows);
     }
 
     /*
@@ -186,24 +190,23 @@ public class JavadocThrowsChecks extends AbstractCheck {
             return;
         }
 
-        String identifier = currentMethodIdentifier + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
-        HashSet<String> types = methodExeptionMapping.getOrDefault(identifier, new HashSet<>());
+        String identifier = currentScopeIdentifier + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
+        HashSet<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
 
         if (typeToken.getType() == TokenTypes.BOR) {
-            TokenUtil.forEachChild(typeToken, TokenTypes.IDENT, (identToken) -> {
-                String type = identToken.getText();
-                if (isExceptionOrErrorType(type)) {
-                    types.add(type);
-                }
-            });
+            TokenUtil.forEachChild(typeToken, TokenTypes.IDENT, (identityToken) -> tryToAddType(identityToken, types));
         } else {
-            String type = typeToken.getText();
-            if (isExceptionOrErrorType(type)) {
-                types.add(type);
-            }
+            tryToAddType(typeToken, types);
         }
 
-        methodExeptionMapping.put(identifier, types);
+        exceptionMapping.put(identifier, types);
+    }
+
+    private void tryToAddType(DetailAST typeToken, HashSet<String> types) {
+        String type = typeToken.getText();
+        if (type.endsWith("Exception") || type.endsWith("Error")) {
+            types.add(type);
+        }
     }
 
     /*
@@ -211,7 +214,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param throwsToken Throws token.
      */
     private void verifyCheckedThrowJavadoc(DetailAST throwsToken) {
-        HashSet<String> methodJavadocThrows = methodJavadocThrowsMapping.get(currentMethodIdentifier);
+        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwsToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -228,9 +231,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * Checks if the throw statement has documentation in the Javadoc.
      * @param throwToken Throw statement token.
      */
-    private void verifyThrowJavadoc(DetailAST throwToken) {
+    private void verifyUncheckedThrowJavadoc(DetailAST throwToken) {
         // Early out check for method that don't have Javadocs, they cannot have @throws documented.
-        HashSet<String> methodJavadocThrows = methodJavadocThrowsMapping.get(currentMethodIdentifier);
+        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -241,15 +244,25 @@ public class JavadocThrowsChecks extends AbstractCheck {
         // Check if the throw is constructing the exception, method call, or throwing an instantiated exception.
         DetailAST literalNewToken = throwExprToken.findFirstToken(TokenTypes.LITERAL_NEW);
         DetailAST methodCallToken = throwExprToken.findFirstToken(TokenTypes.METHOD_CALL);
-        if (literalNewToken != null) {
+        DetailAST typecastToken = throwExprToken.findFirstToken(TokenTypes.TYPECAST);
+
+        if (typecastToken != null) {
+            // Throwing a casted variable.
+            String throwType = typecastToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT).getText();
+            if (!methodJavadocThrows.contains(throwType)) {
+                log(throwExprToken, MISSING_THROWS_TAG_MESSAGE);
+            }
+        } else if (literalNewToken != null) {
+            // Throwing a constructed exception.
             if (!methodJavadocThrows.contains(literalNewToken.findFirstToken(TokenTypes.IDENT).getText())) {
                 log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             }
         } else if (methodCallToken != null) {
-            // Do nothing for now.
+            // Throwing a method call.
         } else {
+            // Throwing an un-casted variable.
             String throwIdent = throwExprToken.findFirstToken(TokenTypes.IDENT).getText();
-            HashSet<String> types = methodExeptionMapping.get(currentMethodIdentifier + throwIdent);
+            HashSet<String> types = exceptionMapping.get(currentScopeIdentifier + throwIdent);
 
             for (String type : types) {
                 if (!methodJavadocThrows.contains(type)) {
@@ -257,9 +270,5 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 }
             }
         }
-    }
-
-    private boolean isExceptionOrErrorType(String type) {
-        return type.endsWith("Exception") || type.endsWith("Error");
     }
 }

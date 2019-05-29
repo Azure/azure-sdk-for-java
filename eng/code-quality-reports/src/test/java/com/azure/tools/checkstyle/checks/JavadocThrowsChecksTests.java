@@ -68,6 +68,16 @@ public class JavadocThrowsChecksTests extends AbstractModuleTestSupport {
         verify(checker, getPath("ScopeExemptThrows.java"), expected);
     }
 
+    @Test
+    public void constructorThrows() throws Exception {
+        String[] expected = {
+            expectedThrowsMessage(5, 39),
+            expectedThrowsMessage(13, 9)
+        };
+
+        verify(checker, getPath("ConstructorThrows.java"), expected);
+    }
+
     private String expectedDescriptionMessage(int line) {
         return String.format("%d: %s", line, MISSING_DESCRIPTION_MESSAGE);
     }

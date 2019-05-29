@@ -28,6 +28,7 @@ public class Context {
      *
      * @param key the key
      * @param value the value
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
         if (key == null) {
