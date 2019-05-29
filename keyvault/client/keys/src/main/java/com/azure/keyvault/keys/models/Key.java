@@ -4,7 +4,7 @@
 package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -67,7 +67,7 @@ public class Key extends KeyBase {
      * @return the Key object itself.
      */
     @Override
-    public Key keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public Key keyOperations(List<KeyOperation> keyOperations) {
         super.keyOperations(keyOperations);
         return this;
     }

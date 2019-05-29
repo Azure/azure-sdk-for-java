@@ -25,13 +25,15 @@ import com.azure.keyvault.keys.models.KeyBase;
 import com.azure.keyvault.keys.models.KeyImportOptions;
 import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyCurveName;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,23 +86,23 @@ public final class KeyClient extends ServiceClient {
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
-     * <p>The {@link JsonWebKeyType keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
-     * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM} and {@link JsonWebKeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC},
+     * {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link KeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
      * <pre>
-     * Key retKey = keyClient.createKey("keyName", JsonWebKeyType.EC).value();
+     * Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
      * System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
      * </pre>
      *
      * @param name The name of the key being created.
-     * @param keyType The type of key to create. For valid values, see {@link JsonWebKeyType JsonWebKeyType}.
+     * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
-    public Response<Key> createKey(String name, JsonWebKeyType keyType) {
+    public Response<Key> createKey(String name, KeyType keyType) {
         KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
@@ -112,13 +114,13 @@ public final class KeyClient extends ServiceClient {
      * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#expires() expires} and {@link KeyCreateOptions#notBefore() notBefore} values
      * are optional. The {@link KeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC},
-     * {@link JsonWebKeyType#EC_HSM EC-HSM}, {@link JsonWebKeyType#RSA RSA}, {@link JsonWebKeyType#RSA_HSM RSA-HSM} and {@link JsonWebKeyType#OCT OCT}.</p>
+     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC},
+     * {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link KeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the created key.</p>
      * <pre>
-     * KeyCreateOptions KeyCreateOptions = new KeyCreateOptions("keyName", JsonWebKeyType.RSA)
+     * KeyCreateOptions KeyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
@@ -149,13 +151,13 @@ public final class KeyClient extends ServiceClient {
      * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#RSA RSA} and
-     * {@link JsonWebKeyType#RSA_HSM RSA-HSM}.</p>
+     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#RSA RSA} and
+     * {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
      * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", JsonWebKeyType.RSA)
+     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
      *    .keySize(2048)
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
@@ -185,18 +187,18 @@ public final class KeyClient extends ServiceClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be optionally specified. If not specified,
-     * default value of {@link JsonWebKeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
+     * default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
      * are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link JsonWebKeyType#EC EC} and
-     * {@link JsonWebKeyType#EC_HSM EC-HSM}.</p>
+     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC} and
+     * {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
      * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", JsonWebKeyType.EC)
-     *    .curve(JsonWebKeyCurveName.P_384)
+     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
+     *    .curve(KeyCurveName.P_384)
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
@@ -351,8 +353,6 @@ public final class KeyClient extends ServiceClient {
      * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
      * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
      *
-     * <p>The {@code key} is required and its fields {@link KeyBase#name() name} and {@link KeyBase#version() version} cannot be null.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the key, changes its expiry time and the updates the key in the key vault.</p>
      * <pre>
@@ -365,7 +365,7 @@ public final class KeyClient extends ServiceClient {
      * @param key The {@link KeyBase base key} object with updated properties.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Response<Key> updateKey(KeyBase key) {
@@ -374,6 +374,37 @@ public final class KeyClient extends ServiceClient {
             .tags(key.tags())
             .keyOps(key.keyOperations())
             .keyAttributes(new KeyRequestAttributes(key));
+
+        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+    }
+
+    /**
+     * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
+     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
+     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the key, changes its expiry time and key operations and the updates the key in the key vault.</p>
+     * <pre>
+     * Key key = keyClient.getKey("keyName").value();
+     * key.expires(OffsetDateTime.now().plusDays(60));
+     * KeyBase updatedKeyBase = keyClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).value();
+     * Key updatedKey = keyClient.getKey(updatedKeyBase.name()).value();
+     * </pre>
+     *
+     * @param key The {@link KeyBase base key} object with updated properties.
+     * @param keyOperations The updated key operations to associate with the key.
+     * @throws NullPointerException if {@code key} is {@code null}.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
+     */
+    public Response<Key> updateKey(KeyBase key, KeyOperation ... keyOperations) {
+        Objects.requireNonNull(key, "The key input parameter cannot be null.");
+        KeyRequestParameters parameters = new KeyRequestParameters()
+                .tags(key.tags())
+                .keyOps(Arrays.asList(keyOperations))
+                .keyAttributes(new KeyRequestAttributes(key));
 
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }

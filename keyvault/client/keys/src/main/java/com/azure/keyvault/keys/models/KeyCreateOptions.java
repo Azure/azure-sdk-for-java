@@ -3,15 +3,15 @@
 
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 public class KeyCreateOptions extends KeyBase {
-    JsonWebKeyType keyType;
+    KeyType keyType;
     boolean hsm;
 
     KeyCreateOptions() {
@@ -23,9 +23,9 @@ public class KeyCreateOptions extends KeyBase {
      * @param name The name of the key to create.
      * @param keyType The type of the key to create.
      */
-    public KeyCreateOptions(String name, JsonWebKeyType keyType) {
+    public KeyCreateOptions(String name, KeyType keyType) {
         super.name = name;
-        this.keyType = JsonWebKeyType.EC;
+        this.keyType = keyType;
     }
 
     /**
@@ -33,7 +33,7 @@ public class KeyCreateOptions extends KeyBase {
      *
      * @return the key operations.
      */
-    public List<JsonWebKeyOperation> keyOperations() {
+    public List<KeyOperation> keyOperations() {
         return this.keyOperations;
     }
 
@@ -44,7 +44,7 @@ public class KeyCreateOptions extends KeyBase {
      * @return the KeyCreateOptions object itself.
      */
     @Override
-    public KeyCreateOptions keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public KeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
     }
@@ -54,7 +54,7 @@ public class KeyCreateOptions extends KeyBase {
      *
      * @return the key type.
      */
-    public JsonWebKeyType keyType() {
+    public KeyType keyType() {
         return this.keyType;
     }
 

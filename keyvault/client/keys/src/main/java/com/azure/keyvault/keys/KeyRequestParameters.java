@@ -3,9 +3,9 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyCurveName;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.Map;
 
 class KeyRequestParameters {
     /**
-     * The type of key to create. For valid values, see JsonWebKeyType.
+     * The type of key to create. For valid values, see KeyType.
      * Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty", required = true)
-    private JsonWebKeyType kty;
+    private KeyType kty;
 
     /**
      * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -29,7 +29,7 @@ class KeyRequestParameters {
      * The keyOps property.
      */
     @JsonProperty(value = "key_ops")
-    private List<JsonWebKeyOperation> keyOps;
+    private List<KeyOperation> keyOps;
 
     /**
      * The keyAttributes property.
@@ -44,18 +44,18 @@ class KeyRequestParameters {
     private Map<String, String> tags;
 
     /**
-     * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible
      * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
      */
     @JsonProperty(value = "crv")
-    private JsonWebKeyCurveName curve;
+    private KeyCurveName curve;
 
     /**
      * Get the keyType value.
      *
      * @return the keyType value
      */
-    public JsonWebKeyType kty() {
+    public KeyType kty() {
         return this.kty;
     }
 
@@ -65,7 +65,7 @@ class KeyRequestParameters {
      * @param kty the keyType value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters kty(JsonWebKeyType kty) {
+    public KeyRequestParameters kty(KeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -95,7 +95,7 @@ class KeyRequestParameters {
      *
      * @return the keyOps value
      */
-    public List<JsonWebKeyOperation> keyOps() {
+    public List<KeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -105,7 +105,7 @@ class KeyRequestParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters keyOps(List<JsonWebKeyOperation> keyOps) {
+    public KeyRequestParameters keyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -155,7 +155,7 @@ class KeyRequestParameters {
      *
      * @return the curve value
      */
-    public JsonWebKeyCurveName curve() {
+    public KeyCurveName curve() {
         return this.curve;
     }
 
@@ -165,7 +165,7 @@ class KeyRequestParameters {
      * @param curve the curve value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters curve(JsonWebKeyCurveName curve) {
+    public KeyRequestParameters curve(KeyCurveName curve) {
         this.curve = curve;
         return this;
     }

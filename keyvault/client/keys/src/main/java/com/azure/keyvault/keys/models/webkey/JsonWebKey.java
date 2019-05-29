@@ -40,11 +40,7 @@ import java.security.spec.ECParameterSpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.Provider;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -63,13 +59,13 @@ public class JsonWebKey {
      * 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty")
-    private JsonWebKeyType kty;
+    private KeyType kty;
 
     /**
      * The keyOps property.
      */
     @JsonProperty(value = "key_ops")
-    private List<JsonWebKeyOperation> keyOps;
+    private List<KeyOperation> keyOps;
 
     /**
      * RSA modulus.
@@ -132,11 +128,11 @@ public class JsonWebKey {
     private byte[] t;
 
     /**
-     * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible
      * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
      */
     @JsonProperty(value = "crv")
-    private JsonWebKeyCurveName crv;
+    private KeyCurveName crv;
 
     /**
      * X component of an EC public key.
@@ -177,7 +173,7 @@ public class JsonWebKey {
      * @return the kty value
      */
     @JsonProperty("kty")
-    public JsonWebKeyType kty() {
+    public KeyType kty() {
         return this.kty;
     }
 
@@ -187,7 +183,7 @@ public class JsonWebKey {
      * @param kty The key type
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey kty(JsonWebKeyType kty) {
+    public JsonWebKey kty(KeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -198,7 +194,7 @@ public class JsonWebKey {
      * @return the keyOps value
      */
     @JsonProperty("key_ops")
-    public List<JsonWebKeyOperation> keyOps() {
+    public List<KeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -208,7 +204,7 @@ public class JsonWebKey {
      * @param keyOps The keyOps value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey keyOps(List<JsonWebKeyOperation> keyOps) {
+    public JsonWebKey keyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -463,7 +459,7 @@ public class JsonWebKey {
      * @return the crv value
      */
     @JsonProperty("crv")
-    public JsonWebKeyCurveName crv() {
+    public KeyCurveName crv() {
         return this.crv;
     }
 
@@ -473,7 +469,7 @@ public class JsonWebKey {
      * @param crv The crv value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey crv(JsonWebKeyCurveName crv) {
+    public JsonWebKey crv(KeyCurveName crv) {
         this.crv = crv;
         return this;
     }
@@ -610,7 +606,7 @@ public class JsonWebKey {
      * Verifies if the key is an RSA key.
      */
     private void checkRSACompatible() {
-        if (!JsonWebKeyType.RSA.equals(kty) && !JsonWebKeyType.RSA_HSM.equals(kty)) {
+        if (!KeyType.RSA.equals(kty) && !KeyType.RSA_HSM.equals(kty)) {
             throw new UnsupportedOperationException("Not an RSA key");
         }
     }
@@ -650,7 +646,7 @@ public class JsonWebKey {
 
         if (privateKey != null) {
 
-            key = new JsonWebKey().kty(JsonWebKeyType.RSA).n(toByteArray(privateKey.getModulus()))
+            key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(privateKey.getModulus()))
                     .e(toByteArray(privateKey.getPublicExponent()))
                     .d(toByteArray(privateKey.getPrivateExponent())).p(toByteArray(privateKey.getPrimeP()))
                     .q(toByteArray(privateKey.getPrimeQ())).dp(toByteArray(privateKey.getPrimeExponentP()))
@@ -660,7 +656,7 @@ public class JsonWebKey {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-            key = new JsonWebKey().kty(JsonWebKeyType.RSA).n(toByteArray(publicKey.getModulus()))
+            key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(publicKey.getModulus()))
                     .e(toByteArray(publicKey.getPublicExponent())).d(null).p(null).q(null).dp(null)
                     .dq(null).qi(null);
         }
@@ -744,7 +740,7 @@ public class JsonWebKey {
             provider = Security.getProvider("SunEC");
         }
 
-        if (!JsonWebKeyType.EC.equals(kty) && !JsonWebKeyType.EC_HSM.equals(kty)) {
+        if (!KeyType.EC.equals(kty) && !KeyType.EC_HSM.equals(kty)) {
             throw new IllegalArgumentException("Not an EC key.");
         }
 
@@ -790,28 +786,28 @@ public class JsonWebKey {
         ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
 
         if (apriv != null) {
-            return new JsonWebKey().kty(JsonWebKeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
                     .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .d(apriv.getS().toByteArray()).kty(JsonWebKeyType.EC);
+                    .d(apriv.getS().toByteArray()).kty(KeyType.EC);
         } else {
-            return new JsonWebKey().kty(JsonWebKeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
                     .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .kty(JsonWebKeyType.EC);
+                    .kty(KeyType.EC);
         }
     }
 
     // Matches the curve of the keyPair to supported curves.
-    private static JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) {
+    private static KeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) {
 
         try {
             ECPublicKey key = (ECPublicKey) keyPair.getPublic();
             ECParameterSpec spec = key.getParams();
             EllipticCurve crv = spec.getCurve();
 
-            List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384,
-                    JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
+            List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384,
+                    KeyCurveName.P_521, KeyCurveName.P_256K);
 
-            for (JsonWebKeyCurveName curve : curveList) {
+            for (KeyCurveName curve : curveList) {
                 ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
                 kpg.initialize(gps);
@@ -846,7 +842,7 @@ public class JsonWebKey {
             return null;
         }
 
-        return new JsonWebKey().k(secretKey.getEncoded()).kty(JsonWebKeyType.OCT);
+        return new JsonWebKey().k(secretKey.getEncoded()).kty(KeyType.OCT);
     }
 
     /**
@@ -955,11 +951,11 @@ public class JsonWebKey {
      */
     public boolean hasPrivateKey() {
 
-        if (JsonWebKeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(kty)) {
             return k != null;
-        } else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (KeyType.RSA.equals(kty) || KeyType.RSA_HSM.equals(kty)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
-        } else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.EC.equals(kty) || KeyType.EC_HSM.equals(kty)) {
             return (d != null);
         }
 
@@ -978,7 +974,7 @@ public class JsonWebKey {
         }
 
         if (keyOps != null) {
-            final Set<JsonWebKeyOperation> set = new HashSet<JsonWebKeyOperation>(JsonWebKeyOperation.ALL_OPERATIONS);
+            final Set<KeyOperation> set = new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
             for (int i = 0; i < keyOps.size(); i++) {
                 if (!set.contains(keyOps.get(i))) {
                     return false;
@@ -986,15 +982,15 @@ public class JsonWebKey {
             }
         }
 
-        if (JsonWebKeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(kty)) {
             return isValidOctet();
-        } else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (KeyType.RSA.equals(kty)) {
             return isValidRsa();
-        } else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (KeyType.RSA_HSM.equals(kty)) {
             return isValidRsaHsm();
-        } else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (KeyType.EC.equals(kty)) {
             return isValidEc();
-        } else if (JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.EC_HSM.equals(kty)) {
             return isValidEcHsm();
         }
 
@@ -1113,15 +1109,15 @@ public class JsonWebKey {
             hashCode += kid.hashCode();
         }
 
-        if (JsonWebKeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(kty)) {
             hashCode += hashCode(k);
-        } else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (KeyType.RSA.equals(kty)) {
             hashCode += hashCode(n);
-        } else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (KeyType.EC.equals(kty)) {
             hashCode += hashCode(x);
             hashCode += hashCode(y);
             hashCode += crv.hashCode();
-        } else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.RSA_HSM.equals(kty) || KeyType.EC_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }
 
@@ -1141,8 +1137,8 @@ public class JsonWebKey {
         return hashCode;
     }
 
-    private static final Map<JsonWebKeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap
-            .<JsonWebKeyCurveName, String>builder().put(JsonWebKeyCurveName.P_256, "secp256r1")
-            .put(JsonWebKeyCurveName.P_384, "secp384r1").put(JsonWebKeyCurveName.P_521, "secp521r1")
-            .put(JsonWebKeyCurveName.P_256K, "secp256k1").build();
+    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap
+            .<KeyCurveName, String>builder().put(KeyCurveName.P_256, "secp256r1")
+            .put(KeyCurveName.P_384, "secp384r1").put(KeyCurveName.P_521, "secp521r1")
+            .put(KeyCurveName.P_256K, "secp256k1").build();
 }

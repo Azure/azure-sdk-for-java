@@ -4,9 +4,9 @@
 package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyCurveName;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
@@ -88,7 +88,7 @@ public class KeyBase {
     /**
      * The key operations.
      */
-    List<JsonWebKeyOperation> keyOperations;
+    List<KeyOperation> keyOperations;
 
 
     /**
@@ -226,7 +226,7 @@ public class KeyBase {
      *
      * @return the key operations
      */
-    public List<JsonWebKeyOperation> keyOperations() {
+    public List<KeyOperation> keyOperations() {
         return this.keyOperations;
     }
 
@@ -236,7 +236,7 @@ public class KeyBase {
      * @param keyOperations The key operations to set.
      * @return the Key object itself.
      */
-    public KeyBase keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public KeyBase keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
     }
@@ -308,10 +308,10 @@ public class KeyBase {
         }
     }
 
-    List<JsonWebKeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
-        List<JsonWebKeyOperation> output = new ArrayList<>();
+    List<KeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
+        List<KeyOperation> output = new ArrayList<>();
         for (String keyOp : jsonWebKeyOps) {
-            output.add(new JsonWebKeyOperation(keyOp));
+            output.add(KeyOperation.fromString(keyOp));
         }
         return output;
     }
@@ -321,7 +321,7 @@ public class KeyBase {
         JsonWebKey outputKey = new JsonWebKey()
                 .y(base64.decode((String) key.get("y")))
                 .x(base64.decode((String) key.get("x")))
-                .crv(new JsonWebKeyCurveName((String) key.get("crv")))
+                .crv(KeyCurveName.fromString((String) key.get("crv")))
                 .keyOps(getKeyOperations((List<String>) key.get("key_ops")))
                 .t(base64.decode((String) key.get("key_hsm")))
                 .k(base64.decode((String) key.get("k")))
@@ -333,7 +333,7 @@ public class KeyBase {
                 .d(base64.decode((String) key.get("d")))
                 .e(base64.decode((String) key.get("e")))
                 .n(base64.decode((String) key.get("n")))
-                .kty(new JsonWebKeyType((String) key.get("kty")))
+                .kty(KeyType.fromString((String) key.get("kty")))
                 .kid((String) key.get("kid"));
         keyOperations(getKeyOperations((List<String>) key.get("key_ops")));
         unpackId((String) key.get("kid"));

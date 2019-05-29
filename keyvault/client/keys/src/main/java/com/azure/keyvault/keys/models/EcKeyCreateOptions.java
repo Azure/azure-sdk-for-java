@@ -3,9 +3,9 @@
 
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyCurveName;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyCurveName;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,7 +16,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     /**
      * The Ec key curve.
      */
-    private JsonWebKeyCurveName curve;
+    private KeyCurveName curve;
 
     /**
      * Creates a EcKeyCreateOptions with {@code name} as name of the Ec key.
@@ -24,7 +24,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      */
     public EcKeyCreateOptions(String name) {
         super.name = name;
-        this.keyType = JsonWebKeyType.EC;
+        this.keyType = KeyType.EC;
     }
 
     /**
@@ -32,7 +32,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the curve.
      */
-    public JsonWebKeyCurveName curve() {
+    public KeyCurveName curve() {
         return this.curve;
     }
 
@@ -42,7 +42,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param curve The curve to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public EcKeyCreateOptions curve(JsonWebKeyCurveName curve) {
+    public EcKeyCreateOptions curve(KeyCurveName curve) {
         this.curve = curve;
         return this;
     }
@@ -52,7 +52,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the key operations.
      */
-    public List<JsonWebKeyOperation> keyOperations() {
+    public List<KeyOperation> keyOperations() {
         return this.keyOperations;
     }
 
@@ -63,7 +63,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public EcKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
     }
@@ -73,7 +73,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the key type.
      */
-    public JsonWebKeyType keyType() {
+    public KeyType keyType() {
         return this.keyType;
     }
 
@@ -131,7 +131,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      */
     public EcKeyCreateOptions hsm(Boolean hsm) {
         this.hsm = hsm;
-        this.keyType = hsm ? JsonWebKeyType.EC_HSM : JsonWebKeyType.EC;
+        this.keyType = hsm ? KeyType.EC_HSM : KeyType.EC;
         return this;
     }
 

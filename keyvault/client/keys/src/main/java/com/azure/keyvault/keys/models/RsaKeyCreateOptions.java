@@ -3,8 +3,8 @@
 
 package com.azure.keyvault.keys.models;
 
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyOperation;
-import com.azure.keyvault.keys.models.webkey.JsonWebKeyType;
+import com.azure.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      */
     public RsaKeyCreateOptions(String name) {
         super.name = name;
-        this.keyType = JsonWebKeyType.RSA;
+        this.keyType = KeyType.RSA;
     }
 
     /**
@@ -51,7 +51,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the key operations.
      */
-    public List<JsonWebKeyOperation> keyOperations() {
+    public List<KeyOperation> keyOperations() {
         return this.keyOperations;
     }
 
@@ -63,7 +63,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions keyOperations(List<JsonWebKeyOperation> keyOperations) {
+    public RsaKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
     }
@@ -73,7 +73,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the key type.
      */
-    public JsonWebKeyType keyType() {
+    public KeyType keyType() {
         return this.keyType;
     }
 
@@ -131,7 +131,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      */
     public RsaKeyCreateOptions hsm(Boolean hsm) {
         this.hsm = hsm;
-        this.keyType = hsm ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA;
+        this.keyType = hsm ? KeyType.RSA_HSM : KeyType.RSA;
         return this;
     }
 
