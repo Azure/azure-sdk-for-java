@@ -69,8 +69,6 @@
   <build>
     <plugins>
       <plugin>
-        <g
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
         <version>${properties-maven-plugin.version}</version>
