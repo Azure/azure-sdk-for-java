@@ -50,7 +50,7 @@ import com.microsoft.azure.cosmosdb.SpatialType;
 import rx.Observable;
 
 public class CollectionCrudTest extends TestSuiteBase {
-    private static final int TIMEOUT = 30000;
+    private static final int TIMEOUT = 50000;
     private static final int SETUP_TIMEOUT = 20000;
     private static final int SHUTDOWN_TIMEOUT = 20000;
     private final String databaseId = DatabaseForTest.generateId();
