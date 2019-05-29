@@ -69,22 +69,11 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.2.22.v20170606</version>
-        <configuration>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
-          <httpConnector>
-            <port>${playbackServerPort}</port>
-          </httpConnector>
-        </configuration>
-      </plugin>
+        <g
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>${properties-maven-plugin.version}</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -124,7 +113,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
@@ -137,7 +126,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${maven-javadoc.version}</version>
         <configuration>
           <doctitle>Microsoft Azure Management Libraries for Java ${project.version}</doctitle>
           <windowtitle>Microsoft Azure Management Libraries for Java ${project.version}</windowtitle>
@@ -154,29 +143,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
+        <version>${maven-release-plugin.version}</version>
       </plugin>
-
-     <plugin>
-       <groupId>com.googlecode.addjars-maven-plugin</groupId>
-       <artifactId>addjars-maven-plugin</artifactId>
-       <version>1.0.5</version>
-          <executions>
-             <execution>
-                <goals>
-                  <goal>add-jars</goal>
-                </goals>
-                <configuration>
-                  <resources>
-                    <resource>
-                      <directory>../extlib</directory>
-                    </resource>
-                 </resources>
-              </configuration>
-           </execution>
-        </executions>
-      </plugin>
-
     </plugins>
     <pluginManagement>
       <plugins>
@@ -215,7 +183,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>2.4.1</version>
+            <version>${maven-shade-plugin.version}</version>
             <configuration>
             </configuration>
             <executions>
