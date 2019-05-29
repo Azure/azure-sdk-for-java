@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
-
 class KeyVaultErrorCodeStrings {
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
     private static Properties errorStrings;
@@ -35,15 +34,14 @@ class KeyVaultErrorCodeStrings {
         return errorStrings.getProperty(propertyName);
     }
 
-    private static void loadProperties() {
-        if (errorStrings != null) {
-            return;
-        }
-        try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
-            errorStrings = new Properties();
-            errorStrings.load(fileInputStream);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    private static synchronized void loadProperties() {
+        if (errorStrings == null) {
+            try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+                errorStrings = new Properties();
+                errorStrings.load(fileInputStream);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

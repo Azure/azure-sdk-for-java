@@ -13,6 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.Context;
 import com.azure.keyvault.implementation.SecretBasePage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
@@ -24,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -74,9 +75,9 @@ public final class SecretClient extends ServiceClient {
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, a new version of the secret
      * is created in the key vault. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required and its fields {@link Secret#name() name} and {@link Secret#value() value} cannot be null. The {@link Secret#expires() expires},
-     * {@link Secret#contentType() contentType} and {@link Secret#notBefore() notBefore} values in {@code secret} are optional. If not specified, no values are set
-     * for the fields. The {@link Secret#enabled() enabled} field is set to true by key vault, if not specified.</p>
+     * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType} and
+     * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled} field is
+     * set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret which expires in 60 days in the key vault. Prints out the details of the
@@ -156,9 +157,8 @@ public final class SecretClient extends ServiceClient {
     }
 
     /**
-     * Get the secret which represents {@link SecretBase secretBase} from the key vault. Returns the latest version of the secret,
-     * if {@link SecretBase#version() version} is not set. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code secrets/get} permission.
+     * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable to any
+     * secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
@@ -377,7 +377,7 @@ public final class SecretClient extends ServiceClient {
      */
     public List<SecretBase> listSecrets() {
         return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
+            .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE)).collectList().block();
     }
 
     /**
@@ -396,7 +396,7 @@ public final class SecretClient extends ServiceClient {
      */
     public List<DeletedSecret> listDeletedSecrets() {
         return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
+            .flatMapMany(r -> extractAndFetchDeletedSecrets(r, Context.NONE)).collectList().block();
     }
 
     /**
@@ -418,21 +418,22 @@ public final class SecretClient extends ServiceClient {
      */
     public List<SecretBase> listSecretVersions(String name) {
         return  service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
+            .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE)).collectList().block();
     }
+
     /**
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listSecrets()}.
      *
      * @param nextPageLink The {@link SecretBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase} from the next page of results.
+     * @return A stream of {@link SecretBase secret} from the next page of results.
      */
-    private Flux<SecretBase> listSecretsNext(String nextPageLink) {
-        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
+    private Flux<SecretBase> listSecretsNext(String nextPageLink, Context context) {
+        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchSecrets(r, context));
     }
 
-    private Publisher<SecretBase> extractAndFetchSecrets(PagedResponse<SecretBase> page) {
-        return extractAndFetch(page, this::listSecretsNext);
+    private Publisher<SecretBase> extractAndFetchSecrets(PagedResponse<SecretBase> page, Context context) {
+        return ImplUtils.extractAndFetch(page, context, this::listSecretsNext);
     }
 
     /**
@@ -440,22 +441,13 @@ public final class SecretClient extends ServiceClient {
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
      * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase} from the next page of results.
+     * @return A stream of {@link SecretBase secret} from the next page of results.
      */
-    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
+    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink, Context context) {
+        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedSecrets(r, context));
     }
 
-    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
-        return extractAndFetch(page, this::listDeletedSecretsNext);
-    }
-
-    //TODO: Extract this in azure-core ImplUtils and use from there
-    private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
+    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page, Context context) {
+        return ImplUtils.extractAndFetch(page, context, this::listDeletedSecretsNext);
     }
 }
