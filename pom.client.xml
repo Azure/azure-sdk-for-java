@@ -221,7 +221,7 @@
       <!-- Copy the pom file to output -->
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
+        <version>${maven-antrun-plugin.version}</version>
         <executions>
           <execution>
             <id>copy</id>
@@ -337,7 +337,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${maven-checkstyle-plugin.version}</version>
         <configuration>
           <configLocation>checkstyle/checkstyle.xml</configLocation>
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>

@@ -142,6 +142,7 @@
     <jetty-http.version>9.4.8.v20171121</jetty-http.version>
     <jetty-server.version>9.4.8.v20171121</jetty-server.version>
     <junit.version>4.12</junit.version>
+    <commons-io.version>2.4</commons-io.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.2</maven-build-tools.version>
@@ -161,7 +162,8 @@
     <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-    <commons-io.version>2.4</commons-io.version>
+    <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+    <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.18</checkstyle.version>
   </properties>
 
