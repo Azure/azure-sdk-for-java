@@ -84,7 +84,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withETag(String eTag) {
+    public PageBlobUpdateSequenceNumberHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -113,7 +113,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobUpdateSequenceNumberHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -139,7 +139,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobUpdateSequenceNumberHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -161,7 +161,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withRequestId(String requestId) {
+    public PageBlobUpdateSequenceNumberHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -185,7 +185,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param version the version value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withVersion(String version) {
+    public PageBlobUpdateSequenceNumberHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -210,7 +210,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobUpdateSequenceNumberHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -234,7 +234,7 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withErrorCode(String errorCode) {
+    public PageBlobUpdateSequenceNumberHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

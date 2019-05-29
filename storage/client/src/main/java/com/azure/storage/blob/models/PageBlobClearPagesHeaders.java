@@ -92,7 +92,7 @@ public final class PageBlobClearPagesHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withETag(String eTag) {
+    public PageBlobClearPagesHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -121,7 +121,7 @@ public final class PageBlobClearPagesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobClearPagesHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -149,7 +149,7 @@ public final class PageBlobClearPagesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withContentMD5(byte[] contentMD5) {
+    public PageBlobClearPagesHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -171,7 +171,7 @@ public final class PageBlobClearPagesHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobClearPagesHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -193,7 +193,7 @@ public final class PageBlobClearPagesHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withRequestId(String requestId) {
+    public PageBlobClearPagesHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -217,7 +217,7 @@ public final class PageBlobClearPagesHeaders {
      * @param version the version value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withVersion(String version) {
+    public PageBlobClearPagesHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -242,7 +242,7 @@ public final class PageBlobClearPagesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobClearPagesHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -266,7 +266,7 @@ public final class PageBlobClearPagesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withErrorCode(String errorCode) {
+    public PageBlobClearPagesHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

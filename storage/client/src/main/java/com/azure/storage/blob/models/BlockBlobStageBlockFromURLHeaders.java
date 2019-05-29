@@ -86,7 +86,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withContentMD5(byte[] contentMD5) {
+    public BlockBlobStageBlockFromURLHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -108,7 +108,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withRequestId(String requestId) {
+    public BlockBlobStageBlockFromURLHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -132,7 +132,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param version the version value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withVersion(String version) {
+    public BlockBlobStageBlockFromURLHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -157,7 +157,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobStageBlockFromURLHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -185,7 +185,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobStageBlockFromURLHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -209,7 +209,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobStageBlockFromURLHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -229,7 +229,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders withErrorCode(String errorCode) {
+    public BlockBlobStageBlockFromURLHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -41,7 +41,7 @@ public final class KeyInfo {
      * @param start the start value to set.
      * @return the KeyInfo object itself.
      */
-    public KeyInfo withStart(String start) {
+    public KeyInfo start(String start) {
         this.start = start;
         return this;
     }
@@ -63,7 +63,7 @@ public final class KeyInfo {
      * @param expiry the expiry value to set.
      * @return the KeyInfo object itself.
      */
-    public KeyInfo withExpiry(String expiry) {
+    public KeyInfo expiry(String expiry) {
         this.expiry = expiry;
         return this;
     }

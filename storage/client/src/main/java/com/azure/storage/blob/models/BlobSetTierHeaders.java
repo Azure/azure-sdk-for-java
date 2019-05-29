@@ -50,7 +50,7 @@ public final class BlobSetTierHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders withRequestId(String requestId) {
+    public BlobSetTierHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -74,7 +74,7 @@ public final class BlobSetTierHeaders {
      * @param version the version value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders withVersion(String version) {
+    public BlobSetTierHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -94,7 +94,7 @@ public final class BlobSetTierHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders withErrorCode(String errorCode) {
+    public BlobSetTierHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

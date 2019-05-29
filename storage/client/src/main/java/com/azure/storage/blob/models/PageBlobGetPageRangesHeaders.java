@@ -88,7 +88,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobGetPageRangesHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -116,7 +116,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withETag(String eTag) {
+    public PageBlobGetPageRangesHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -136,7 +136,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param blobContentLength the blobContentLength value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withBlobContentLength(Long blobContentLength) {
+    public PageBlobGetPageRangesHeaders blobContentLength(Long blobContentLength) {
         this.blobContentLength = blobContentLength;
         return this;
     }
@@ -158,7 +158,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withRequestId(String requestId) {
+    public PageBlobGetPageRangesHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -182,7 +182,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param version the version value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withVersion(String version) {
+    public PageBlobGetPageRangesHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -207,7 +207,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobGetPageRangesHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -231,7 +231,7 @@ public final class PageBlobGetPageRangesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobGetPageRangesHeaders object itself.
      */
-    public PageBlobGetPageRangesHeaders withErrorCode(String errorCode) {
+    public PageBlobGetPageRangesHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -17,9 +17,9 @@ public final class PageBlobsClearPagesResponse extends ResponseBase<PageBlobClea
      *
      * @param request the request which resulted in this PageBlobsClearPagesResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public PageBlobsClearPagesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PageBlobClearPagesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

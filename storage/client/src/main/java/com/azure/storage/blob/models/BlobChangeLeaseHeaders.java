@@ -83,7 +83,7 @@ public final class BlobChangeLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withETag(String eTag) {
+    public BlobChangeLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -112,7 +112,7 @@ public final class BlobChangeLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobChangeLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -138,7 +138,7 @@ public final class BlobChangeLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withRequestId(String requestId) {
+    public BlobChangeLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -158,7 +158,7 @@ public final class BlobChangeLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withLeaseId(String leaseId) {
+    public BlobChangeLeaseHeaders leaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -182,7 +182,7 @@ public final class BlobChangeLeaseHeaders {
      * @param version the version value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withVersion(String version) {
+    public BlobChangeLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -207,7 +207,7 @@ public final class BlobChangeLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobChangeLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -231,7 +231,7 @@ public final class BlobChangeLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders withErrorCode(String errorCode) {
+    public BlobChangeLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

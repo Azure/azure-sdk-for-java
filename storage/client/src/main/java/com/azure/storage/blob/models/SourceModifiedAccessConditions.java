@@ -62,7 +62,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfModifiedSince the sourceIfModifiedSince value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions withSourceIfModifiedSince(OffsetDateTime sourceIfModifiedSince) {
+    public SourceModifiedAccessConditions sourceIfModifiedSince(OffsetDateTime sourceIfModifiedSince) {
         if (sourceIfModifiedSince == null) {
             this.sourceIfModifiedSince = null;
         } else {
@@ -93,7 +93,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfUnmodifiedSince the sourceIfUnmodifiedSince value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions withSourceIfUnmodifiedSince(OffsetDateTime sourceIfUnmodifiedSince) {
+    public SourceModifiedAccessConditions sourceIfUnmodifiedSince(OffsetDateTime sourceIfUnmodifiedSince) {
         if (sourceIfUnmodifiedSince == null) {
             this.sourceIfUnmodifiedSince = null;
         } else {
@@ -119,7 +119,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfMatch the sourceIfMatch value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions withSourceIfMatch(String sourceIfMatch) {
+    public SourceModifiedAccessConditions sourceIfMatch(String sourceIfMatch) {
         this.sourceIfMatch = sourceIfMatch;
         return this;
     }
@@ -141,7 +141,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfNoneMatch the sourceIfNoneMatch value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions withSourceIfNoneMatch(String sourceIfNoneMatch) {
+    public SourceModifiedAccessConditions sourceIfNoneMatch(String sourceIfNoneMatch) {
         this.sourceIfNoneMatch = sourceIfNoneMatch;
         return this;
     }

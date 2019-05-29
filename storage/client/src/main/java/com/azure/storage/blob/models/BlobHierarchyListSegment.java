@@ -41,7 +41,7 @@ public final class BlobHierarchyListSegment {
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment withBlobPrefixes(List<BlobPrefix> blobPrefixes) {
+    public BlobHierarchyListSegment blobPrefixes(List<BlobPrefix> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
     }
@@ -61,7 +61,7 @@ public final class BlobHierarchyListSegment {
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment withBlobItems(List<BlobItem> blobItems) {
+    public BlobHierarchyListSegment blobItems(List<BlobItem> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

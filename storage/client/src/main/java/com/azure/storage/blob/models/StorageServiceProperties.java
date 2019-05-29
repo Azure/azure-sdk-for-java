@@ -85,7 +85,7 @@ public final class StorageServiceProperties {
      * @param logging the logging value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withLogging(Logging logging) {
+    public StorageServiceProperties logging(Logging logging) {
         this.logging = logging;
         return this;
     }
@@ -105,7 +105,7 @@ public final class StorageServiceProperties {
      * @param hourMetrics the hourMetrics value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withHourMetrics(Metrics hourMetrics) {
+    public StorageServiceProperties hourMetrics(Metrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -125,7 +125,7 @@ public final class StorageServiceProperties {
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withMinuteMetrics(Metrics minuteMetrics) {
+    public StorageServiceProperties minuteMetrics(Metrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -148,7 +148,7 @@ public final class StorageServiceProperties {
      * @param cors the cors value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withCors(List<CorsRule> cors) {
+    public StorageServiceProperties cors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }
@@ -174,7 +174,7 @@ public final class StorageServiceProperties {
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withDefaultServiceVersion(String defaultServiceVersion) {
+    public StorageServiceProperties defaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
         return this;
     }
@@ -196,7 +196,7 @@ public final class StorageServiceProperties {
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withDeleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
+    public StorageServiceProperties deleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
         return this;
     }
@@ -216,7 +216,7 @@ public final class StorageServiceProperties {
      * @param staticWebsite the staticWebsite value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties withStaticWebsite(StaticWebsite staticWebsite) {
+    public StorageServiceProperties staticWebsite(StaticWebsite staticWebsite) {
         this.staticWebsite = staticWebsite;
         return this;
     }

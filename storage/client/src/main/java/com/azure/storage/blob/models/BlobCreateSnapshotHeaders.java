@@ -109,7 +109,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param snapshot the snapshot value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withSnapshot(String snapshot) {
+    public BlobCreateSnapshotHeaders snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -133,7 +133,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withETag(String eTag) {
+    public BlobCreateSnapshotHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -162,7 +162,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobCreateSnapshotHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -188,7 +188,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withRequestId(String requestId) {
+    public BlobCreateSnapshotHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -212,7 +212,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param version the version value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withVersion(String version) {
+    public BlobCreateSnapshotHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -236,7 +236,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param versionId the versionId value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withVersionId(String versionId) {
+    public BlobCreateSnapshotHeaders versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -261,7 +261,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobCreateSnapshotHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -293,7 +293,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlobCreateSnapshotHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -317,7 +317,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public BlobCreateSnapshotHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -337,7 +337,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders withErrorCode(String errorCode) {
+    public BlobCreateSnapshotHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

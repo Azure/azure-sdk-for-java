@@ -43,7 +43,7 @@ public final class BlobMetadata {
      * @param additionalProperties the additionalProperties value to set.
      * @return the BlobMetadata object itself.
      */
-    public BlobMetadata withAdditionalProperties(Map<String, String> additionalProperties) {
+    public BlobMetadata additionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -63,7 +63,7 @@ public final class BlobMetadata {
      * @param encrypted the encrypted value to set.
      * @return the BlobMetadata object itself.
      */
-    public BlobMetadata withEncrypted(String encrypted) {
+    public BlobMetadata encrypted(String encrypted) {
         this.encrypted = encrypted;
         return this;
     }

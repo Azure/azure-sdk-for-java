@@ -35,7 +35,7 @@ public final class BlobFlatListSegment {
      * @param blobItems the blobItems value to set.
      * @return the BlobFlatListSegment object itself.
      */
-    public BlobFlatListSegment withBlobItems(List<BlobItem> blobItems) {
+    public BlobFlatListSegment blobItems(List<BlobItem> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

@@ -59,7 +59,7 @@ public final class ServiceGetUserDelegationKeyHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceGetUserDelegationKeyHeaders object itself.
      */
-    public ServiceGetUserDelegationKeyHeaders withRequestId(String requestId) {
+    public ServiceGetUserDelegationKeyHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ServiceGetUserDelegationKeyHeaders {
      * @param version the version value to set.
      * @return the ServiceGetUserDelegationKeyHeaders object itself.
      */
-    public ServiceGetUserDelegationKeyHeaders withVersion(String version) {
+    public ServiceGetUserDelegationKeyHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ServiceGetUserDelegationKeyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ServiceGetUserDelegationKeyHeaders object itself.
      */
-    public ServiceGetUserDelegationKeyHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ServiceGetUserDelegationKeyHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -132,7 +132,7 @@ public final class ServiceGetUserDelegationKeyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceGetUserDelegationKeyHeaders object itself.
      */
-    public ServiceGetUserDelegationKeyHeaders withErrorCode(String errorCode) {
+    public ServiceGetUserDelegationKeyHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

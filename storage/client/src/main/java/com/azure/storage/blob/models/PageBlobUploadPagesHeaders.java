@@ -108,7 +108,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withETag(String eTag) {
+    public PageBlobUploadPagesHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -137,7 +137,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobUploadPagesHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -165,7 +165,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withContentMD5(byte[] contentMD5) {
+    public PageBlobUploadPagesHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -187,7 +187,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobUploadPagesHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -209,7 +209,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withRequestId(String requestId) {
+    public PageBlobUploadPagesHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -233,7 +233,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param version the version value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withVersion(String version) {
+    public PageBlobUploadPagesHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -258,7 +258,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobUploadPagesHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -286,7 +286,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobUploadPagesHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -310,7 +310,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public PageBlobUploadPagesHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -330,7 +330,7 @@ public final class PageBlobUploadPagesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withErrorCode(String errorCode) {
+    public PageBlobUploadPagesHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

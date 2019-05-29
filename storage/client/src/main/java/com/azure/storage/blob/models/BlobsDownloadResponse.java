@@ -20,9 +20,9 @@ public final class BlobsDownloadResponse extends ResponseBase<BlobDownloadHeader
      *
      * @param request the request which resulted in this BlobsDownloadResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the content stream.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlobsDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, BlobDownloadHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

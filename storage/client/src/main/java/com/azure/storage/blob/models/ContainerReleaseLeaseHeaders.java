@@ -77,7 +77,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withETag(String eTag) {
+    public ContainerReleaseLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,7 +106,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public ContainerReleaseLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -132,7 +132,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withRequestId(String requestId) {
+    public ContainerReleaseLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -156,7 +156,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param version the version value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withVersion(String version) {
+    public ContainerReleaseLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -181,7 +181,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerReleaseLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -205,7 +205,7 @@ public final class ContainerReleaseLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerReleaseLeaseHeaders object itself.
      */
-    public ContainerReleaseLeaseHeaders withErrorCode(String errorCode) {
+    public ContainerReleaseLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

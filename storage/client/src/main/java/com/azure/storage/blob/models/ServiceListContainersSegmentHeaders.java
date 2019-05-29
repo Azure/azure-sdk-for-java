@@ -50,7 +50,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders withRequestId(String requestId) {
+    public ServiceListContainersSegmentHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param version the version value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders withVersion(String version) {
+    public ServiceListContainersSegmentHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -94,7 +94,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders withErrorCode(String errorCode) {
+    public ServiceListContainersSegmentHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

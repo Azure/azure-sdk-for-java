@@ -39,7 +39,7 @@ public final class StorageError {
      * @param code the code value to set.
      * @return the StorageError object itself.
      */
-    public StorageError withCode(String code) {
+    public StorageError code(String code) {
         this.code = code;
         return this;
     }
@@ -59,7 +59,7 @@ public final class StorageError {
      * @param message the message value to set.
      * @return the StorageError object itself.
      */
-    public StorageError withMessage(String message) {
+    public StorageError message(String message) {
         this.message = message;
         return this;
     }

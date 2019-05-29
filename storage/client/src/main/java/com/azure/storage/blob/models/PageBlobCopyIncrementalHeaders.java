@@ -92,7 +92,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withETag(String eTag) {
+    public PageBlobCopyIncrementalHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -121,7 +121,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobCopyIncrementalHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -147,7 +147,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withRequestId(String requestId) {
+    public PageBlobCopyIncrementalHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -171,7 +171,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param version the version value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withVersion(String version) {
+    public PageBlobCopyIncrementalHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -196,7 +196,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobCopyIncrementalHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -224,7 +224,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param copyId the copyId value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withCopyId(String copyId) {
+    public PageBlobCopyIncrementalHeaders copyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -248,7 +248,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withCopyStatus(CopyStatusType copyStatus) {
+    public PageBlobCopyIncrementalHeaders copyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -268,7 +268,7 @@ public final class PageBlobCopyIncrementalHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobCopyIncrementalHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withErrorCode(String errorCode) {
+    public PageBlobCopyIncrementalHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

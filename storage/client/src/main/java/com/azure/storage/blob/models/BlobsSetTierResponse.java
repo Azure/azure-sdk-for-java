@@ -17,9 +17,9 @@ public final class BlobsSetTierResponse extends ResponseBase<BlobSetTierHeaders,
      *
      * @param request the request which resulted in this BlobsSetTierResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlobsSetTierResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobSetTierHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

@@ -17,9 +17,9 @@ public final class BlobsAcquireLeaseResponse extends ResponseBase<BlobAcquireLea
      *
      * @param request the request which resulted in this BlobsAcquireLeaseResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlobsAcquireLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobAcquireLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

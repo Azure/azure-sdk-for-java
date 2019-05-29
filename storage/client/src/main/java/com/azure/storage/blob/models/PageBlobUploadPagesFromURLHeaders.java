@@ -100,7 +100,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withETag(String eTag) {
+    public PageBlobUploadPagesFromURLHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -129,7 +129,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobUploadPagesFromURLHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -157,7 +157,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withContentMD5(byte[] contentMD5) {
+    public PageBlobUploadPagesFromURLHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -179,7 +179,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobUploadPagesFromURLHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -201,7 +201,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withRequestId(String requestId) {
+    public PageBlobUploadPagesFromURLHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -225,7 +225,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param version the version value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withVersion(String version) {
+    public PageBlobUploadPagesFromURLHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -250,7 +250,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobUploadPagesFromURLHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -278,7 +278,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobUploadPagesFromURLHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -298,7 +298,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders withErrorCode(String errorCode) {
+    public PageBlobUploadPagesFromURLHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

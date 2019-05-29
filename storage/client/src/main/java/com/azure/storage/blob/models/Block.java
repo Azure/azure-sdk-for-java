@@ -40,7 +40,7 @@ public final class Block {
      * @param name the name value to set.
      * @return the Block object itself.
      */
-    public Block withName(String name) {
+    public Block name(String name) {
         this.name = name;
         return this;
     }
@@ -60,7 +60,7 @@ public final class Block {
      * @param size the size value to set.
      * @return the Block object itself.
      */
-    public Block withSize(int size) {
+    public Block size(int size) {
         this.size = size;
         return this;
     }

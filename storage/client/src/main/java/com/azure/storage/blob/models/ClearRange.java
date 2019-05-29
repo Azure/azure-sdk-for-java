@@ -39,7 +39,7 @@ public final class ClearRange {
      * @param start the start value to set.
      * @return the ClearRange object itself.
      */
-    public ClearRange withStart(long start) {
+    public ClearRange start(long start) {
         this.start = start;
         return this;
     }
@@ -59,7 +59,7 @@ public final class ClearRange {
      * @param end the end value to set.
      * @return the ClearRange object itself.
      */
-    public ClearRange withEnd(long end) {
+    public ClearRange end(long end) {
         this.end = end;
         return this;
     }

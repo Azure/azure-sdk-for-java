@@ -80,7 +80,7 @@ public final class CorsRule {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule withAllowedOrigins(String allowedOrigins) {
+    public CorsRule allowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }
@@ -102,7 +102,7 @@ public final class CorsRule {
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule withAllowedMethods(String allowedMethods) {
+    public CorsRule allowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
     }
@@ -124,7 +124,7 @@ public final class CorsRule {
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule withAllowedHeaders(String allowedHeaders) {
+    public CorsRule allowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
     }
@@ -148,7 +148,7 @@ public final class CorsRule {
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule withExposedHeaders(String exposedHeaders) {
+    public CorsRule exposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
     }
@@ -170,7 +170,7 @@ public final class CorsRule {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule withMaxAgeInSeconds(int maxAgeInSeconds) {
+    public CorsRule maxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }

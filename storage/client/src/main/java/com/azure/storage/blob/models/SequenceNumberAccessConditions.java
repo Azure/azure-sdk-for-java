@@ -54,7 +54,7 @@ public final class SequenceNumberAccessConditions {
      * ifSequenceNumberLessThanOrEqualTo value to set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions withIfSequenceNumberLessThanOrEqualTo(Long ifSequenceNumberLessThanOrEqualTo) {
+    public SequenceNumberAccessConditions ifSequenceNumberLessThanOrEqualTo(Long ifSequenceNumberLessThanOrEqualTo) {
         this.ifSequenceNumberLessThanOrEqualTo = ifSequenceNumberLessThanOrEqualTo;
         return this;
     }
@@ -79,7 +79,7 @@ public final class SequenceNumberAccessConditions {
      * set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions withIfSequenceNumberLessThan(Long ifSequenceNumberLessThan) {
+    public SequenceNumberAccessConditions ifSequenceNumberLessThan(Long ifSequenceNumberLessThan) {
         this.ifSequenceNumberLessThan = ifSequenceNumberLessThan;
         return this;
     }
@@ -101,7 +101,7 @@ public final class SequenceNumberAccessConditions {
      * @param ifSequenceNumberEqualTo the ifSequenceNumberEqualTo value to set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions withIfSequenceNumberEqualTo(Long ifSequenceNumberEqualTo) {
+    public SequenceNumberAccessConditions ifSequenceNumberEqualTo(Long ifSequenceNumberEqualTo) {
         this.ifSequenceNumberEqualTo = ifSequenceNumberEqualTo;
         return this;
     }

@@ -17,9 +17,9 @@ public final class ServicesSetPropertiesResponse extends ResponseBase<ServiceSet
      *
      * @param request the request which resulted in this ServicesSetPropertiesResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public ServicesSetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ServiceSetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

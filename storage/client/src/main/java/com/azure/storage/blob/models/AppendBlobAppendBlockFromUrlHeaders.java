@@ -100,7 +100,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param eTag the eTag value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withETag(String eTag) {
+    public AppendBlobAppendBlockFromUrlHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -129,7 +129,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param lastModified the lastModified value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withLastModified(OffsetDateTime lastModified) {
+    public AppendBlobAppendBlockFromUrlHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -157,7 +157,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withContentMD5(byte[] contentMD5) {
+    public AppendBlobAppendBlockFromUrlHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -179,7 +179,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param requestId the requestId value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withRequestId(String requestId) {
+    public AppendBlobAppendBlockFromUrlHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param version the version value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withVersion(String version) {
+    public AppendBlobAppendBlockFromUrlHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -228,7 +228,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public AppendBlobAppendBlockFromUrlHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -256,7 +256,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param blobAppendOffset the blobAppendOffset value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withBlobAppendOffset(String blobAppendOffset) {
+    public AppendBlobAppendBlockFromUrlHeaders blobAppendOffset(String blobAppendOffset) {
         this.blobAppendOffset = blobAppendOffset;
         return this;
     }
@@ -278,7 +278,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
+    public AppendBlobAppendBlockFromUrlHeaders blobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }
@@ -298,7 +298,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param errorCode the errorCode value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders withErrorCode(String errorCode) {
+    public AppendBlobAppendBlockFromUrlHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -57,7 +57,7 @@ public final class Logging {
      * @param version the version value to set.
      * @return the Logging object itself.
      */
-    public Logging withVersion(String version) {
+    public Logging version(String version) {
         this.version = version;
         return this;
     }
@@ -79,7 +79,7 @@ public final class Logging {
      * @param delete the delete value to set.
      * @return the Logging object itself.
      */
-    public Logging withDelete(boolean delete) {
+    public Logging delete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -101,7 +101,7 @@ public final class Logging {
      * @param read the read value to set.
      * @return the Logging object itself.
      */
-    public Logging withRead(boolean read) {
+    public Logging read(boolean read) {
         this.read = read;
         return this;
     }
@@ -123,7 +123,7 @@ public final class Logging {
      * @param write the write value to set.
      * @return the Logging object itself.
      */
-    public Logging withWrite(boolean write) {
+    public Logging write(boolean write) {
         this.write = write;
         return this;
     }
@@ -143,7 +143,7 @@ public final class Logging {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Logging object itself.
      */
-    public Logging withRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public Logging retentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

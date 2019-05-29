@@ -110,7 +110,7 @@ public final class AppendBlobCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withETag(String eTag) {
+    public AppendBlobCreateHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -139,7 +139,7 @@ public final class AppendBlobCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withLastModified(OffsetDateTime lastModified) {
+    public AppendBlobCreateHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -167,7 +167,7 @@ public final class AppendBlobCreateHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withContentMD5(byte[] contentMD5) {
+    public AppendBlobCreateHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -189,7 +189,7 @@ public final class AppendBlobCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withRequestId(String requestId) {
+    public AppendBlobCreateHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -213,7 +213,7 @@ public final class AppendBlobCreateHeaders {
      * @param version the version value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withVersion(String version) {
+    public AppendBlobCreateHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -237,7 +237,7 @@ public final class AppendBlobCreateHeaders {
      * @param versionId the versionId value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withVersionId(String versionId) {
+    public AppendBlobCreateHeaders versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -262,7 +262,7 @@ public final class AppendBlobCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public AppendBlobCreateHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -290,7 +290,7 @@ public final class AppendBlobCreateHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public AppendBlobCreateHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -314,7 +314,7 @@ public final class AppendBlobCreateHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public AppendBlobCreateHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -334,7 +334,7 @@ public final class AppendBlobCreateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the AppendBlobCreateHeaders object itself.
      */
-    public AppendBlobCreateHeaders withErrorCode(String errorCode) {
+    public AppendBlobCreateHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

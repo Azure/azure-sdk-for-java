@@ -53,7 +53,7 @@ public final class Metrics {
      * @param version the version value to set.
      * @return the Metrics object itself.
      */
-    public Metrics withVersion(String version) {
+    public Metrics version(String version) {
         this.version = version;
         return this;
     }
@@ -75,7 +75,7 @@ public final class Metrics {
      * @param enabled the enabled value to set.
      * @return the Metrics object itself.
      */
-    public Metrics withEnabled(boolean enabled) {
+    public Metrics enabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -97,7 +97,7 @@ public final class Metrics {
      * @param includeAPIs the includeAPIs value to set.
      * @return the Metrics object itself.
      */
-    public Metrics withIncludeAPIs(Boolean includeAPIs) {
+    public Metrics includeAPIs(Boolean includeAPIs) {
         this.includeAPIs = includeAPIs;
         return this;
     }
@@ -117,7 +117,7 @@ public final class Metrics {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Metrics object itself.
      */
-    public Metrics withRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public Metrics retentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

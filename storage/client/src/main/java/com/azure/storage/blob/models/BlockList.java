@@ -66,7 +66,7 @@ public final class BlockList {
      * @param committedBlocks the committedBlocks value to set.
      * @return the BlockList object itself.
      */
-    public BlockList withCommittedBlocks(List<Block> committedBlocks) {
+    public BlockList committedBlocks(List<Block> committedBlocks) {
         this.committedBlocks = new CommittedBlocksWrapper(committedBlocks);
         return this;
     }
@@ -89,7 +89,7 @@ public final class BlockList {
      * @param uncommittedBlocks the uncommittedBlocks value to set.
      * @return the BlockList object itself.
      */
-    public BlockList withUncommittedBlocks(List<Block> uncommittedBlocks) {
+    public BlockList uncommittedBlocks(List<Block> uncommittedBlocks) {
         this.uncommittedBlocks = new UncommittedBlocksWrapper(uncommittedBlocks);
         return this;
     }

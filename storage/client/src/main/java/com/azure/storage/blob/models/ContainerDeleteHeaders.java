@@ -59,7 +59,7 @@ public final class ContainerDeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders withRequestId(String requestId) {
+    public ContainerDeleteHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ContainerDeleteHeaders {
      * @param version the version value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders withVersion(String version) {
+    public ContainerDeleteHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ContainerDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerDeleteHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -132,7 +132,7 @@ public final class ContainerDeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders withErrorCode(String errorCode) {
+    public ContainerDeleteHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

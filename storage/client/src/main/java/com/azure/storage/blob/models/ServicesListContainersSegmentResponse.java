@@ -17,9 +17,9 @@ public final class ServicesListContainersSegmentResponse extends ResponseBase<Se
      *
      * @param request the request which resulted in this ServicesListContainersSegmentResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public ServicesListContainersSegmentResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, ListContainersSegmentResponse value, ServiceListContainersSegmentHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

@@ -17,9 +17,9 @@ public final class ContainersSetMetadataResponse extends ResponseBase<ContainerS
      *
      * @param request the request which resulted in this ContainersSetMetadataResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public ContainersSetMetadataResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerSetMetadataHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

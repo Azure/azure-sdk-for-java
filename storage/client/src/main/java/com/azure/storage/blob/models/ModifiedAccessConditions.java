@@ -60,7 +60,7 @@ public final class ModifiedAccessConditions {
      * @param ifModifiedSince the ifModifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions withIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public ModifiedAccessConditions ifModifiedSince(OffsetDateTime ifModifiedSince) {
         if (ifModifiedSince == null) {
             this.ifModifiedSince = null;
         } else {
@@ -91,7 +91,7 @@ public final class ModifiedAccessConditions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions withIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public ModifiedAccessConditions ifUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         if (ifUnmodifiedSince == null) {
             this.ifUnmodifiedSince = null;
         } else {
@@ -117,7 +117,7 @@ public final class ModifiedAccessConditions {
      * @param ifMatch the ifMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions withIfMatch(String ifMatch) {
+    public ModifiedAccessConditions ifMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }
@@ -139,7 +139,7 @@ public final class ModifiedAccessConditions {
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions withIfNoneMatch(String ifNoneMatch) {
+    public ModifiedAccessConditions ifNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }

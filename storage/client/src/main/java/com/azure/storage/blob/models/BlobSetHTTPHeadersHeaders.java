@@ -84,7 +84,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withETag(String eTag) {
+    public BlobSetHTTPHeadersHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -113,7 +113,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobSetHTTPHeadersHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -139,7 +139,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public BlobSetHTTPHeadersHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -161,7 +161,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withRequestId(String requestId) {
+    public BlobSetHTTPHeadersHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -185,7 +185,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param version the version value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withVersion(String version) {
+    public BlobSetHTTPHeadersHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -210,7 +210,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobSetHTTPHeadersHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -234,7 +234,7 @@ public final class BlobSetHTTPHeadersHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobSetHTTPHeadersHeaders object itself.
      */
-    public BlobSetHTTPHeadersHeaders withErrorCode(String errorCode) {
+    public BlobSetHTTPHeadersHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

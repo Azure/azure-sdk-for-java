@@ -63,7 +63,7 @@ public final class BlobItem {
      * @param name the name value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withName(String name) {
+    public BlobItem name(String name) {
         this.name = name;
         return this;
     }
@@ -83,7 +83,7 @@ public final class BlobItem {
      * @param deleted the deleted value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withDeleted(boolean deleted) {
+    public BlobItem deleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -103,7 +103,7 @@ public final class BlobItem {
      * @param snapshot the snapshot value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withSnapshot(String snapshot) {
+    public BlobItem snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -123,7 +123,7 @@ public final class BlobItem {
      * @param versionId the versionId value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withVersionId(String versionId) {
+    public BlobItem versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -143,7 +143,7 @@ public final class BlobItem {
      * @param properties the properties value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withProperties(BlobProperties properties) {
+    public BlobItem properties(BlobProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -163,7 +163,7 @@ public final class BlobItem {
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem withMetadata(BlobMetadata metadata) {
+    public BlobItem metadata(BlobMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

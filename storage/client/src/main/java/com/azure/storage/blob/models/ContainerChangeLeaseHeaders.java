@@ -83,7 +83,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withETag(String eTag) {
+    public ContainerChangeLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -112,7 +112,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public ContainerChangeLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -136,7 +136,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withLeaseId(String leaseId) {
+    public ContainerChangeLeaseHeaders leaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -158,7 +158,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withRequestId(String requestId) {
+    public ContainerChangeLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -182,7 +182,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param version the version value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withVersion(String version) {
+    public ContainerChangeLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -207,7 +207,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerChangeLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -231,7 +231,7 @@ public final class ContainerChangeLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerChangeLeaseHeaders object itself.
      */
-    public ContainerChangeLeaseHeaders withErrorCode(String errorCode) {
+    public ContainerChangeLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

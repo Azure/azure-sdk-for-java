@@ -84,7 +84,7 @@ public final class PageBlobResizeHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withETag(String eTag) {
+    public PageBlobResizeHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -113,7 +113,7 @@ public final class PageBlobResizeHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobResizeHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -139,7 +139,7 @@ public final class PageBlobResizeHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobResizeHeaders blobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -161,7 +161,7 @@ public final class PageBlobResizeHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withRequestId(String requestId) {
+    public PageBlobResizeHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -185,7 +185,7 @@ public final class PageBlobResizeHeaders {
      * @param version the version value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withVersion(String version) {
+    public PageBlobResizeHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -210,7 +210,7 @@ public final class PageBlobResizeHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobResizeHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -234,7 +234,7 @@ public final class PageBlobResizeHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders withErrorCode(String errorCode) {
+    public PageBlobResizeHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

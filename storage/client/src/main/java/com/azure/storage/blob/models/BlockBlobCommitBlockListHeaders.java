@@ -110,7 +110,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withETag(String eTag) {
+    public BlockBlobCommitBlockListHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -139,7 +139,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlockBlobCommitBlockListHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -167,7 +167,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withContentMD5(byte[] contentMD5) {
+    public BlockBlobCommitBlockListHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -189,7 +189,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withRequestId(String requestId) {
+    public BlockBlobCommitBlockListHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -213,7 +213,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param version the version value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withVersion(String version) {
+    public BlockBlobCommitBlockListHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -237,7 +237,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param versionId the versionId value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withVersionId(String versionId) {
+    public BlockBlobCommitBlockListHeaders versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -262,7 +262,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobCommitBlockListHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -290,7 +290,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobCommitBlockListHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -314,7 +314,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobCommitBlockListHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -334,7 +334,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withErrorCode(String errorCode) {
+    public BlockBlobCommitBlockListHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

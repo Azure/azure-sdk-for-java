@@ -84,7 +84,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param blobPublicAccess the blobPublicAccess value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withBlobPublicAccess(PublicAccessType blobPublicAccess) {
+    public ContainerGetAccessPolicyHeaders blobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withETag(String eTag) {
+    public ContainerGetAccessPolicyHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -137,7 +137,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withLastModified(OffsetDateTime lastModified) {
+    public ContainerGetAccessPolicyHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -163,7 +163,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withRequestId(String requestId) {
+    public ContainerGetAccessPolicyHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -187,7 +187,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param version the version value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withVersion(String version) {
+    public ContainerGetAccessPolicyHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -212,7 +212,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerGetAccessPolicyHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -236,7 +236,7 @@ public final class ContainerGetAccessPolicyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerGetAccessPolicyHeaders object itself.
      */
-    public ContainerGetAccessPolicyHeaders withErrorCode(String errorCode) {
+    public ContainerGetAccessPolicyHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

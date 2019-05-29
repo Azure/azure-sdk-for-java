@@ -17,9 +17,9 @@ public final class BlobsGetAccountInfoResponse extends ResponseBase<BlobGetAccou
      *
      * @param request the request which resulted in this BlobsGetAccountInfoResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlobsGetAccountInfoResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobGetAccountInfoHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

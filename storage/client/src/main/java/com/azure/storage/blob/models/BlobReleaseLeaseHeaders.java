@@ -77,7 +77,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withETag(String eTag) {
+    public BlobReleaseLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,7 +106,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobReleaseLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -132,7 +132,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withRequestId(String requestId) {
+    public BlobReleaseLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -156,7 +156,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param version the version value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withVersion(String version) {
+    public BlobReleaseLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -181,7 +181,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobReleaseLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -205,7 +205,7 @@ public final class BlobReleaseLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobReleaseLeaseHeaders object itself.
      */
-    public BlobReleaseLeaseHeaders withErrorCode(String errorCode) {
+    public BlobReleaseLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

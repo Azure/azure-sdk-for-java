@@ -95,7 +95,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlockBlobGetBlockListHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -123,7 +123,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withETag(String eTag) {
+    public BlockBlobGetBlockListHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -145,7 +145,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param contentType the contentType value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withContentType(String contentType) {
+    public BlockBlobGetBlockListHeaders contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -165,7 +165,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param blobContentLength the blobContentLength value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withBlobContentLength(Long blobContentLength) {
+    public BlockBlobGetBlockListHeaders blobContentLength(Long blobContentLength) {
         this.blobContentLength = blobContentLength;
         return this;
     }
@@ -187,7 +187,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withRequestId(String requestId) {
+    public BlockBlobGetBlockListHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -211,7 +211,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param version the version value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withVersion(String version) {
+    public BlockBlobGetBlockListHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -236,7 +236,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobGetBlockListHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -260,7 +260,7 @@ public final class BlockBlobGetBlockListHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobGetBlockListHeaders object itself.
      */
-    public BlockBlobGetBlockListHeaders withErrorCode(String errorCode) {
+    public BlockBlobGetBlockListHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

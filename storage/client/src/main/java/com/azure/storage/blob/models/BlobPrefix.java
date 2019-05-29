@@ -33,7 +33,7 @@ public final class BlobPrefix {
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */
-    public BlobPrefix withName(String name) {
+    public BlobPrefix name(String name) {
         this.name = name;
         return this;
     }

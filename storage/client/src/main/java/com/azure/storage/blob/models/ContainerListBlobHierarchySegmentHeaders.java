@@ -66,7 +66,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param contentType the contentType value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders withContentType(String contentType) {
+    public ContainerListBlobHierarchySegmentHeaders contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders withRequestId(String requestId) {
+    public ContainerListBlobHierarchySegmentHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -112,7 +112,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param version the version value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders withVersion(String version) {
+    public ContainerListBlobHierarchySegmentHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -137,7 +137,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerListBlobHierarchySegmentHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -161,7 +161,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders withErrorCode(String errorCode) {
+    public ContainerListBlobHierarchySegmentHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

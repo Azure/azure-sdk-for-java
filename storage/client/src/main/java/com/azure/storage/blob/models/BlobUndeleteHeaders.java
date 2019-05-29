@@ -59,7 +59,7 @@ public final class BlobUndeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders withRequestId(String requestId) {
+    public BlobUndeleteHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class BlobUndeleteHeaders {
      * @param version the version value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders withVersion(String version) {
+    public BlobUndeleteHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ public final class BlobUndeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobUndeleteHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -132,7 +132,7 @@ public final class BlobUndeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders withErrorCode(String errorCode) {
+    public BlobUndeleteHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

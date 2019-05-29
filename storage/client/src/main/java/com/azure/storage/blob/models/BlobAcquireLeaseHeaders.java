@@ -83,7 +83,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withETag(String eTag) {
+    public BlobAcquireLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -112,7 +112,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobAcquireLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -136,7 +136,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withLeaseId(String leaseId) {
+    public BlobAcquireLeaseHeaders leaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -158,7 +158,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withRequestId(String requestId) {
+    public BlobAcquireLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -182,7 +182,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param version the version value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withVersion(String version) {
+    public BlobAcquireLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -207,7 +207,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobAcquireLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -231,7 +231,7 @@ public final class BlobAcquireLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobAcquireLeaseHeaders object itself.
      */
-    public BlobAcquireLeaseHeaders withErrorCode(String errorCode) {
+    public BlobAcquireLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

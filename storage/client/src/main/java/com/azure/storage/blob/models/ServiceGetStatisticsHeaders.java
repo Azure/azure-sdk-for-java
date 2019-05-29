@@ -59,7 +59,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders withRequestId(String requestId) {
+    public ServiceGetStatisticsHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param version the version value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders withVersion(String version) {
+    public ServiceGetStatisticsHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ServiceGetStatisticsHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -132,7 +132,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders withErrorCode(String errorCode) {
+    public ServiceGetStatisticsHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

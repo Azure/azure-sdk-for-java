@@ -36,7 +36,7 @@ public final class LeaseAccessConditions {
      * @param leaseId the leaseId value to set.
      * @return the LeaseAccessConditions object itself.
      */
-    public LeaseAccessConditions withLeaseId(String leaseId) {
+    public LeaseAccessConditions leaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }

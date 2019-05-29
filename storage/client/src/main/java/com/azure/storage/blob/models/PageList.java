@@ -41,7 +41,7 @@ public final class PageList {
      * @param pageRange the pageRange value to set.
      * @return the PageList object itself.
      */
-    public PageList withPageRange(List<PageRange> pageRange) {
+    public PageList pageRange(List<PageRange> pageRange) {
         this.pageRange = pageRange;
         return this;
     }
@@ -61,7 +61,7 @@ public final class PageList {
      * @param clearRange the clearRange value to set.
      * @return the PageList object itself.
      */
-    public PageList withClearRange(List<ClearRange> clearRange) {
+    public PageList clearRange(List<ClearRange> clearRange) {
         this.clearRange = clearRange;
         return this;
     }

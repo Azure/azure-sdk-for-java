@@ -88,7 +88,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobGetPageRangesDiffHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -116,7 +116,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withETag(String eTag) {
+    public PageBlobGetPageRangesDiffHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -136,7 +136,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param blobContentLength the blobContentLength value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withBlobContentLength(Long blobContentLength) {
+    public PageBlobGetPageRangesDiffHeaders blobContentLength(Long blobContentLength) {
         this.blobContentLength = blobContentLength;
         return this;
     }
@@ -158,7 +158,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withRequestId(String requestId) {
+    public PageBlobGetPageRangesDiffHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -182,7 +182,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param version the version value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withVersion(String version) {
+    public PageBlobGetPageRangesDiffHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -207,7 +207,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobGetPageRangesDiffHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -231,7 +231,7 @@ public final class PageBlobGetPageRangesDiffHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobGetPageRangesDiffHeaders withErrorCode(String errorCode) {
+    public PageBlobGetPageRangesDiffHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -100,7 +100,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withETag(String eTag) {
+    public BlobStartCopyFromURLHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -129,7 +129,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlobStartCopyFromURLHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -155,7 +155,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withRequestId(String requestId) {
+    public BlobStartCopyFromURLHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -179,7 +179,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param version the version value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withVersion(String version) {
+    public BlobStartCopyFromURLHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -203,7 +203,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param versionId the versionId value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withVersionId(String versionId) {
+    public BlobStartCopyFromURLHeaders versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -228,7 +228,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobStartCopyFromURLHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -256,7 +256,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param copyId the copyId value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withCopyId(String copyId) {
+    public BlobStartCopyFromURLHeaders copyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -280,7 +280,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withCopyStatus(CopyStatusType copyStatus) {
+    public BlobStartCopyFromURLHeaders copyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -300,7 +300,7 @@ public final class BlobStartCopyFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobStartCopyFromURLHeaders object itself.
      */
-    public BlobStartCopyFromURLHeaders withErrorCode(String errorCode) {
+    public BlobStartCopyFromURLHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

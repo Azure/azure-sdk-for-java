@@ -17,9 +17,9 @@ public final class ServicesGetAccountInfoResponse extends ResponseBase<ServiceGe
      *
      * @param request the request which resulted in this ServicesGetAccountInfoResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public ServicesGetAccountInfoResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ServiceGetAccountInfoHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

@@ -59,7 +59,7 @@ public final class AppendPositionAccessConditions {
      * @param maxSize the maxSize value to set.
      * @return the AppendPositionAccessConditions object itself.
      */
-    public AppendPositionAccessConditions withMaxSize(Long maxSize) {
+    public AppendPositionAccessConditions maxSize(Long maxSize) {
         this.maxSize = maxSize;
         return this;
     }
@@ -89,7 +89,7 @@ public final class AppendPositionAccessConditions {
      * @param appendPosition the appendPosition value to set.
      * @return the AppendPositionAccessConditions object itself.
      */
-    public AppendPositionAccessConditions withAppendPosition(Long appendPosition) {
+    public AppendPositionAccessConditions appendPosition(Long appendPosition) {
         this.appendPosition = appendPosition;
         return this;
     }

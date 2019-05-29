@@ -59,7 +59,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders withRequestId(String requestId) {
+    public BlobAbortCopyFromURLHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param version the version value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders withVersion(String version) {
+    public BlobAbortCopyFromURLHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlobAbortCopyFromURLHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -132,7 +132,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders withErrorCode(String errorCode) {
+    public BlobAbortCopyFromURLHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

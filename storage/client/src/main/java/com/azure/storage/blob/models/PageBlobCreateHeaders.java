@@ -110,7 +110,7 @@ public final class PageBlobCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withETag(String eTag) {
+    public PageBlobCreateHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -139,7 +139,7 @@ public final class PageBlobCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobCreateHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -167,7 +167,7 @@ public final class PageBlobCreateHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withContentMD5(byte[] contentMD5) {
+    public PageBlobCreateHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -189,7 +189,7 @@ public final class PageBlobCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withRequestId(String requestId) {
+    public PageBlobCreateHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -213,7 +213,7 @@ public final class PageBlobCreateHeaders {
      * @param version the version value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withVersion(String version) {
+    public PageBlobCreateHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -237,7 +237,7 @@ public final class PageBlobCreateHeaders {
      * @param versionId the versionId value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withVersionId(String versionId) {
+    public PageBlobCreateHeaders versionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -262,7 +262,7 @@ public final class PageBlobCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobCreateHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -290,7 +290,7 @@ public final class PageBlobCreateHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobCreateHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -314,7 +314,7 @@ public final class PageBlobCreateHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public PageBlobCreateHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -334,7 +334,7 @@ public final class PageBlobCreateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobCreateHeaders object itself.
      */
-    public PageBlobCreateHeaders withErrorCode(String errorCode) {
+    public PageBlobCreateHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

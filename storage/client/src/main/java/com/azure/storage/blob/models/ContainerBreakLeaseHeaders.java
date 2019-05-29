@@ -83,7 +83,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withETag(String eTag) {
+    public ContainerBreakLeaseHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -112,7 +112,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withLastModified(OffsetDateTime lastModified) {
+    public ContainerBreakLeaseHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -138,7 +138,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param leaseTime the leaseTime value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withLeaseTime(Integer leaseTime) {
+    public ContainerBreakLeaseHeaders leaseTime(Integer leaseTime) {
         this.leaseTime = leaseTime;
         return this;
     }
@@ -160,7 +160,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withRequestId(String requestId) {
+    public ContainerBreakLeaseHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -184,7 +184,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param version the version value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withVersion(String version) {
+    public ContainerBreakLeaseHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -209,7 +209,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerBreakLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -233,7 +233,7 @@ public final class ContainerBreakLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerBreakLeaseHeaders object itself.
      */
-    public ContainerBreakLeaseHeaders withErrorCode(String errorCode) {
+    public ContainerBreakLeaseHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

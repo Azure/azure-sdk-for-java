@@ -46,7 +46,7 @@ public final class AccessPolicy {
      * @param start the start value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy withStart(OffsetDateTime start) {
+    public AccessPolicy start(OffsetDateTime start) {
         this.start = start;
         return this;
     }
@@ -66,7 +66,7 @@ public final class AccessPolicy {
      * @param expiry the expiry value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy withExpiry(OffsetDateTime expiry) {
+    public AccessPolicy expiry(OffsetDateTime expiry) {
         this.expiry = expiry;
         return this;
     }
@@ -86,7 +86,7 @@ public final class AccessPolicy {
      * @param permission the permission value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy withPermission(String permission) {
+    public AccessPolicy permission(String permission) {
         this.permission = permission;
         return this;
     }

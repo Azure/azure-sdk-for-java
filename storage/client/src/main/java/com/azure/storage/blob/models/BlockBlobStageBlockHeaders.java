@@ -86,7 +86,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withContentMD5(byte[] contentMD5) {
+    public BlockBlobStageBlockHeaders contentMD5(byte[] contentMD5) {
         this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
         return this;
     }
@@ -108,7 +108,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withRequestId(String requestId) {
+    public BlockBlobStageBlockHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -132,7 +132,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param version the version value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withVersion(String version) {
+    public BlockBlobStageBlockHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -157,7 +157,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobStageBlockHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -185,7 +185,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobStageBlockHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -209,7 +209,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withEncryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobStageBlockHeaders encryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -229,7 +229,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders withErrorCode(String errorCode) {
+    public BlockBlobStageBlockHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

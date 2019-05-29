@@ -72,7 +72,7 @@ public final class UserDelegationKey {
      * @param signedOid the signedOid value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedOid(String signedOid) {
+    public UserDelegationKey signedOid(String signedOid) {
         this.signedOid = signedOid;
         return this;
     }
@@ -94,7 +94,7 @@ public final class UserDelegationKey {
      * @param signedTid the signedTid value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedTid(String signedTid) {
+    public UserDelegationKey signedTid(String signedTid) {
         this.signedTid = signedTid;
         return this;
     }
@@ -114,7 +114,7 @@ public final class UserDelegationKey {
      * @param signedStart the signedStart value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedStart(OffsetDateTime signedStart) {
+    public UserDelegationKey signedStart(OffsetDateTime signedStart) {
         this.signedStart = signedStart;
         return this;
     }
@@ -134,7 +134,7 @@ public final class UserDelegationKey {
      * @param signedExpiry the signedExpiry value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedExpiry(OffsetDateTime signedExpiry) {
+    public UserDelegationKey signedExpiry(OffsetDateTime signedExpiry) {
         this.signedExpiry = signedExpiry;
         return this;
     }
@@ -156,7 +156,7 @@ public final class UserDelegationKey {
      * @param signedService the signedService value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedService(String signedService) {
+    public UserDelegationKey signedService(String signedService) {
         this.signedService = signedService;
         return this;
     }
@@ -178,7 +178,7 @@ public final class UserDelegationKey {
      * @param signedVersion the signedVersion value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withSignedVersion(String signedVersion) {
+    public UserDelegationKey signedVersion(String signedVersion) {
         this.signedVersion = signedVersion;
         return this;
     }
@@ -198,7 +198,7 @@ public final class UserDelegationKey {
      * @param value the value value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey withValue(String value) {
+    public UserDelegationKey value(String value) {
         this.value = value;
         return this;
     }

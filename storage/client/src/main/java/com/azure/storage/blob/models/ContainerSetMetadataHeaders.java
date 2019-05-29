@@ -77,7 +77,7 @@ public final class ContainerSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withETag(String eTag) {
+    public ContainerSetMetadataHeaders eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,7 +106,7 @@ public final class ContainerSetMetadataHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withLastModified(OffsetDateTime lastModified) {
+    public ContainerSetMetadataHeaders lastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -132,7 +132,7 @@ public final class ContainerSetMetadataHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withRequestId(String requestId) {
+    public ContainerSetMetadataHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -156,7 +156,7 @@ public final class ContainerSetMetadataHeaders {
      * @param version the version value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withVersion(String version) {
+    public ContainerSetMetadataHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -181,7 +181,7 @@ public final class ContainerSetMetadataHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerSetMetadataHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -205,7 +205,7 @@ public final class ContainerSetMetadataHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerSetMetadataHeaders object itself.
      */
-    public ContainerSetMetadataHeaders withErrorCode(String errorCode) {
+    public ContainerSetMetadataHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

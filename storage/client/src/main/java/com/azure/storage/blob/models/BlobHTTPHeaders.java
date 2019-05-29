@@ -74,7 +74,7 @@ public final class BlobHTTPHeaders {
      * @param blobCacheControl the blobCacheControl value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobCacheControl(String blobCacheControl) {
+    public BlobHTTPHeaders blobCacheControl(String blobCacheControl) {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -98,7 +98,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentType the blobContentType value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobContentType(String blobContentType) {
+    public BlobHTTPHeaders blobContentType(String blobContentType) {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -122,7 +122,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentMD5 the blobContentMD5 value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobContentMD5(byte[] blobContentMD5) {
+    public BlobHTTPHeaders blobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = Arrays.copyOf(blobContentMD5, blobContentMD5.length);
         return this;
     }
@@ -146,7 +146,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentEncoding the blobContentEncoding value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobContentEncoding(String blobContentEncoding) {
+    public BlobHTTPHeaders blobContentEncoding(String blobContentEncoding) {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -170,7 +170,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentLanguage the blobContentLanguage value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobContentLanguage(String blobContentLanguage) {
+    public BlobHTTPHeaders blobContentLanguage(String blobContentLanguage) {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -192,7 +192,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentDisposition the blobContentDisposition value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders withBlobContentDisposition(String blobContentDisposition) {
+    public BlobHTTPHeaders blobContentDisposition(String blobContentDisposition) {
         this.blobContentDisposition = blobContentDisposition;
         return this;
     }

@@ -17,9 +17,9 @@ public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlob
      *
      * @param request the request which resulted in this BlockBlobsGetBlockListResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlockBlobsGetBlockListResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BlockList value, BlockBlobGetBlockListHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

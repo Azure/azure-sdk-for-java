@@ -47,7 +47,7 @@ public final class StaticWebsite {
      * @param enabled the enabled value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite withEnabled(boolean enabled) {
+    public StaticWebsite enabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -69,7 +69,7 @@ public final class StaticWebsite {
      * @param indexDocument the indexDocument value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite withIndexDocument(String indexDocument) {
+    public StaticWebsite indexDocument(String indexDocument) {
         this.indexDocument = indexDocument;
         return this;
     }
@@ -91,7 +91,7 @@ public final class StaticWebsite {
      * @param errorDocument404Path the errorDocument404Path value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite withErrorDocument404Path(String errorDocument404Path) {
+    public StaticWebsite errorDocument404Path(String errorDocument404Path) {
         this.errorDocument404Path = errorDocument404Path;
         return this;
     }

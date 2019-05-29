@@ -17,9 +17,9 @@ public final class ContainersReleaseLeaseResponse extends ResponseBase<Container
      *
      * @param request the request which resulted in this ContainersReleaseLeaseResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public ContainersReleaseLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerReleaseLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);

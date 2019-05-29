@@ -66,7 +66,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
      * @param contentType the contentType value to set.
      * @return the ContainerListBlobFlatSegmentHeaders object itself.
      */
-    public ContainerListBlobFlatSegmentHeaders withContentType(String contentType) {
+    public ContainerListBlobFlatSegmentHeaders contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerListBlobFlatSegmentHeaders object itself.
      */
-    public ContainerListBlobFlatSegmentHeaders withRequestId(String requestId) {
+    public ContainerListBlobFlatSegmentHeaders requestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -112,7 +112,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
      * @param version the version value to set.
      * @return the ContainerListBlobFlatSegmentHeaders object itself.
      */
-    public ContainerListBlobFlatSegmentHeaders withVersion(String version) {
+    public ContainerListBlobFlatSegmentHeaders version(String version) {
         this.version = version;
         return this;
     }
@@ -137,7 +137,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerListBlobFlatSegmentHeaders object itself.
      */
-    public ContainerListBlobFlatSegmentHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public ContainerListBlobFlatSegmentHeaders dateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -161,7 +161,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerListBlobFlatSegmentHeaders object itself.
      */
-    public ContainerListBlobFlatSegmentHeaders withErrorCode(String errorCode) {
+    public ContainerListBlobFlatSegmentHeaders errorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

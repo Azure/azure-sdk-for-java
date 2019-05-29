@@ -76,7 +76,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withServiceEndpoint(String serviceEndpoint) {
+    public ListBlobsHierarchySegmentResponse serviceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param containerName the containerName value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withContainerName(String containerName) {
+    public ListBlobsHierarchySegmentResponse containerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -116,7 +116,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withPrefix(String prefix) {
+    public ListBlobsHierarchySegmentResponse prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -136,7 +136,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param marker the marker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withMarker(String marker) {
+    public ListBlobsHierarchySegmentResponse marker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -156,7 +156,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withMaxResults(int maxResults) {
+    public ListBlobsHierarchySegmentResponse maxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -176,7 +176,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withDelimiter(String delimiter) {
+    public ListBlobsHierarchySegmentResponse delimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -196,7 +196,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param segment the segment value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withSegment(BlobHierarchyListSegment segment) {
+    public ListBlobsHierarchySegmentResponse segment(BlobHierarchyListSegment segment) {
         this.segment = segment;
         return this;
     }
@@ -216,7 +216,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse withNextMarker(String nextMarker) {
+    public ListBlobsHierarchySegmentResponse nextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

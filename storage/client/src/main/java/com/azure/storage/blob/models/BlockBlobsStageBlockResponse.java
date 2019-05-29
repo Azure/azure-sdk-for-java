@@ -17,9 +17,9 @@ public final class BlockBlobsStageBlockResponse extends ResponseBase<BlockBlobSt
      *
      * @param request the request which resulted in this BlockBlobsStageBlockResponse.
      * @param statusCode the status code of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
+     * @param headers the deserialized headers of the HTTP response.
      */
     public BlockBlobsStageBlockResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlockBlobStageBlockHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
