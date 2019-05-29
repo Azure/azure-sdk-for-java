@@ -88,7 +88,7 @@ public class TestSuiteBase {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
-    protected static final int TIMEOUT = 16000;
+    protected static final int TIMEOUT = 30000;
     protected static final int FEED_TIMEOUT = 24000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 12000;
