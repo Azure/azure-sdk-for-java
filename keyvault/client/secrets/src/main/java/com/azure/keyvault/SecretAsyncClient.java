@@ -81,7 +81,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the call asynchronously and
-     * prints out the newly created secret details when the callback happens.</p>
+     * prints out the newly created secret details when a response is received.</p>
      * <pre>
      * Secret secret = new Secret("secretName", "secretValue")
      *   .notBefore(OffsetDateTime.now().plusDays(1))
@@ -114,7 +114,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Subscribes to the call asynchronously and prints out the newly
-     * created secret details when the callback happens.</p>
+     * created secret details when a response is received.</p>
      * <pre>
      * secretAsyncClient.setSecret("secretName", "secretValue").subscribe(secretResponse -&gt;
      *   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
@@ -123,7 +123,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
      * @throws ResourceModifiedException if invalid {@code name} or {@code value} are specified.
-     * @throws HttpRequestException if {@code name} or {@code value} are empty strings.
+     * @throws HttpRequestException if {@code name} or {@code value} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     public Mono<Response<Secret>> setSecret(String name, String value) {
@@ -137,7 +137,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
-     * returned secret details when the callback happens.</p>
+     * returned secret details when a response is received.</p>
      * <pre>
      * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
      * secretAsyncClient.getSecret("secretName", secretVersion).subscribe(secretResponse -&gt;
@@ -148,7 +148,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name}  name} or {@code version} are empty strings.
+     * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Mono<Response<Secret>> getSecret(String name, String version) {
@@ -174,7 +174,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the secret being requested.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     public Mono<Response<Secret>> getSecret(SecretBase secretBase) {
@@ -188,7 +188,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
-     * returned secret details when the callback happens.</p>
+     * returned secret details when a response is received.</p>
      * <pre>
      * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt;
      *   System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(),
@@ -211,7 +211,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * returned secret details when the callback happens.</p>
+     * returned secret details when a response is received.</p>
      * <pre>
      * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt; {
      *     Secret secret = secretResponse.value();
@@ -226,7 +226,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} are empty strings.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
     public Mono<Response<SecretBase>> updateSecret(SecretBase secret) {
@@ -246,7 +246,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * deleted secret details when the callback happens.</p>
+     * deleted secret details when a response is received.</p>
      * <pre>
      * secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse -&gt;
      *   System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
@@ -267,7 +267,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * deleted secret details when the callback happens.</p>
+     * deleted secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * secretAsyncClient.getDeletedSecret("secretName").subscribe(deletedSecretResponse -&gt;
@@ -289,7 +289,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * status code from the server response when the callback happens.</p>
+     * status code from the server response when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * secretAsyncClient.purgeDeletedSecret("deletedSecretName").subscribe(purgeResponse -&gt;
@@ -311,7 +311,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * recovered secret details when the callback happens.</p>
+     * recovered secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
      * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse -&gt;
@@ -355,7 +355,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously and prints out the
-     * restored secret details when the callback happens.</p>
+     * restored secret details when a response is received.</p>
      * <pre>
      * //Pass the Secret Backup Byte array to the restore operation.
      * secretAsyncClient.restoreSecret(secretBackupByteArray).subscribe(secretResponse -&gt;
@@ -396,7 +396,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault. Subscribes to the call asynchronously and prints out the
-     * recovery id of each deleted secret when the callback happens.</p>
+     * recovery id of each deleted secret when a response is received.</p>
      * <pre>
      * secretAsyncClient.listDeletedSecrets().subscribe(deletedSecret -&gt;
      *   System.out.printf("Deleted secret's recovery Id %s \n", deletedSecret.recoveryId()));
