@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.storage.blob
 
+import com.microsoft.azure.management.resources.core.TestBase
 import com.microsoft.azure.storage.APISpec
 import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpMethod
@@ -12,12 +13,9 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.slf4j.LoggerFactory
+import org.junit.Assume
 import spock.lang.Unroll
-import uk.org.lidalia.slf4jtest.TestLogger
 import uk.org.lidalia.slf4jtest.TestLoggerFactory
-
-import java.util.logging.Logger
 
 class LoggingTest extends APISpec {
     /*
@@ -286,6 +284,7 @@ class LoggingTest extends APISpec {
      */
     def "Pipeline integration test"() {
         setup:
+        Assume.assumeTrue("The tests only run in live mode.", getTestModeType() == TestBase.TestMode.RECORD)
         def logger = getMockLogger(HttpPipelineLogLevel.INFO)
         def po = new PipelineOptions()
         po.withLogger(logger)

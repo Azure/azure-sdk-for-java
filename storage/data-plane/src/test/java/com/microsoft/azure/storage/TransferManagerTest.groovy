@@ -14,6 +14,7 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -21,6 +22,7 @@ import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 
+@Ignore
 class TransferManagerTest extends APISpec {
     BlockBlobURL bu
 

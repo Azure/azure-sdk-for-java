@@ -5,14 +5,15 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.interceptor.TestResourceNamer
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
+import java.lang.reflect.Field
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {
@@ -23,7 +24,7 @@ class AppendBlobAPITest extends APISpec {
         bu.create(null, null, null, null).blockingGet()
     }
 
-    def "Create defaults"() {
+    def "AppendBlobAPITest Create defaults"() {
         when:
         AppendBlobCreateResponse createResponse =
                 bu.create(null, null, null, null).blockingGet()
@@ -35,12 +36,12 @@ class AppendBlobAPITest extends APISpec {
         createResponse.headers().isServerEncrypted()
     }
 
-    def "Create min"() {
+    def "AppendBlobAPITest Create min"() {
         expect:
         bu.create().blockingGet().statusCode() == 201
     }
 
-    def "Create error"() {
+    def "AppendBlobAPITest Create error"() {
         when:
         bu.create(null, null, new BlobAccessConditions().withModifiedAccessConditions(new ModifiedAccessConditions()
                 .withIfMatch("garbage")), null).blockingGet()
@@ -50,7 +51,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Create headers"() {
+    def "AppendBlobAPITest Create headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobCacheControl(cacheControl)
                 .withBlobContentDisposition(contentDisposition)
@@ -75,7 +76,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Create metadata"() {
+    def "AppendBlobAPITest Create metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null) {
@@ -99,7 +100,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Create AC"() {
+    def "AppendBlobAPITest Create AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -123,7 +124,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Create AC fail"() {
+    def "AppendBlobAPITest Create AC fail"() {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
@@ -147,7 +148,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Create context"() {
+    def "AppendBlobAPITest Create context"() {
         setup:
         def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobCreateHeaders)))
 
@@ -160,7 +161,7 @@ class AppendBlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-    def "Append block defaults"() {
+    def "AppendBlobAPITest Append block defaults"() {
         setup:
         AppendBlobAppendBlockHeaders headers =
                 bu.appendBlock(defaultFlowable, defaultDataSize,
@@ -176,13 +177,22 @@ class AppendBlobAPITest extends APISpec {
         bu.getProperties(null, null).blockingGet().headers().blobCommittedBlockCount() == 1
     }
 
-    def "Append block min"() {
+    def "AppendBlobAPITest Append block min"() {
         expect:
         bu.appendBlock(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
+    def "AppendBlobAPITest Append block IA"() {
+        when:
+        bu.appendBlock(null, defaultDataSize, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        IllegalArgumentException.isInstance(e)
+    }
+
     @Unroll
-    def "Append block IA"() {
+    def "AppendBlobAPITest Append block IA Netty fail"() {
         when:
         bu.appendBlock(data, dataSize, null, null).blockingGet()
 
@@ -192,12 +202,11 @@ class AppendBlobAPITest extends APISpec {
 
         where:
         data            | dataSize            | exceptionType
-        null            | defaultDataSize     | IllegalArgumentException
         defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
         defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
-    def "Append block empty body"() {
+    def "AppendBlobAPITest Append block empty body"() {
         when:
         bu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null, null).blockingGet()
 
@@ -205,7 +214,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Append block null body"() {
+    def "AppendBlobAPITest Append block null body"() {
         when:
         bu.appendBlock(Flowable.just(null), 0, null, null).blockingGet()
 
@@ -214,7 +223,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block AC"() {
+    def "AppendBlobAPITest Append block AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -242,7 +251,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block AC fail"() {
+    def "AppendBlobAPITest Append block AC fail"() {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
@@ -272,7 +281,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | null       | 1
     }
 
-    def "Append block error"() {
+    def "AppendBlobAPITest Append block error"() {
         setup:
         bu = cu.createAppendBlobURL(generateBlobName())
 
@@ -283,7 +292,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Append block context"() {
+    def "AppendBlobAPITest Append block context"() {
         setup:
         def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockHeaders)))
 
@@ -296,7 +305,7 @@ class AppendBlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-    def "Append block from URL min"() {
+    def "AppendBlobAPITest Append block from URL min"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
         def data = getRandomData(1024)
@@ -315,10 +324,10 @@ class AppendBlobAPITest extends APISpec {
         validateBasicHeaders(response.headers())
     }
 
-    def "Append block from URL range"() {
+    def "AppendBlobAPITest Append block from URL range"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
-        def data = getRandomData(4 * 1024).array()
+        def data = ByteBuffer.wrap(new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(4 * 1024)).array()
         bu.appendBlock(Flowable.just(ByteBuffer.wrap(data)), data.length).blockingGet()
 
         def destURL = cu.createAppendBlobURL(generateBlobName())
@@ -332,7 +341,7 @@ class AppendBlobAPITest extends APISpec {
         body.array() == Arrays.copyOfRange(data, 2 * 1024, 3 * 1024)
     }
 
-    def "Append block from URL MD5"() {
+    def "AppendBlobAPITest Append block from URL MD5"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
         def data = getRandomData(1024).array()
@@ -349,7 +358,7 @@ class AppendBlobAPITest extends APISpec {
         notThrown(StorageException)
     }
 
-    def "Append block from URL MD5 fail"() {
+    def "AppendBlobAPITest Append block from URL MD5 fail"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
         def data = getRandomData(1024).array()
@@ -366,7 +375,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Append block from URL context"() {
+    def "AppendBlobAPITest Append block from URL context"() {
         setup:
         def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockFromUrlHeaders)))
 
@@ -381,7 +390,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block from URL destination AC"() {
+    def "AppendBlobAPITest Append block from URL destination AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
@@ -413,7 +422,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block from URL AC destination fail"() {
+    def "AppendBlobAPITest Append block from URL AC destination fail"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
@@ -448,7 +457,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block from URL source AC"() {
+    def "AppendBlobAPITest Append block from URL source AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
 
@@ -476,7 +485,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append block from URL AC source fail"() {
+    def "AppendBlobAPITest Append block from URL AC source fail"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
 

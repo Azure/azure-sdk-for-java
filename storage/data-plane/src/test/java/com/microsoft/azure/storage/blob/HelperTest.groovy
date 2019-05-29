@@ -9,12 +9,14 @@ import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.azure.storage.blob.models.UserDelegationKey
 import com.microsoft.rest.v2.util.FlowableUtil
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@Ignore
 class HelperTest extends APISpec {
 
     def "responseError"() {

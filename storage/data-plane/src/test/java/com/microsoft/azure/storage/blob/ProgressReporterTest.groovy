@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.storage.blob;
+package com.microsoft.azure.storage.blob
 
+import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.storage.APISpec
 import io.reactivex.Flowable
+import org.junit.Assume
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
@@ -36,6 +38,7 @@ class ProgressReporterTest extends APISpec {
 
     def "Report progress sequential network test"() {
         setup:
+        Assume.assumeTrue("The tests only run in live mode.", getTestModeType() == TestBase.TestMode.RECORD)
         def mockReceiver = Mock(IProgressReceiver)
 
         def buffer = getRandomData(1 * 1024 * 1024)

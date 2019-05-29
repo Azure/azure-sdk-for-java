@@ -3,17 +3,19 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.management.resources.core.TestBase
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.interceptor.TestResourceNamer
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.security.MessageDigest
-import java.sql.Blob
 
 class PageBlobAPITest extends APISpec {
     PageBlobURL bu
@@ -192,7 +194,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page IA"() {
         when:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 2 - 1), data,
-                null, null).blockingGet()
+            null, null).blockingGet()
 
         then:
         def e = thrown(Exception)
@@ -317,7 +319,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
 
-        def data = getRandomData(PageBlobURL.PAGE_BYTES * 4).array()
+        def data = ByteBuffer.wrap(new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(PageBlobURL.PAGE_BYTES * 4)).array()
 
         def sourceURL = cu.createPageBlobURL(generateBlobName())
         sourceURL.create(PageBlobURL.PAGE_BYTES * 4).blockingGet()
