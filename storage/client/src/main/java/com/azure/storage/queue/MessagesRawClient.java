@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.VoidResponse;
@@ -18,22 +20,22 @@ public final class MessagesRawClient {
     }
 
     public MessageIdRawClient getMessageIdRawClient(String messageId) {
-        return null;
+        return new MessageIdRawClient(client.getMessageIdAsyncRawClient(messageId));
     }
 
     public List<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
-        return client.enqueue(queueMessage, (int) timeout.getSeconds(), context).collectList().block();
+        return client.enqueue(queueMessage, timeout, context).collectList().block();
     }
 
     public List<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {
-        return client.dequeue(numberOfMessages, (int) timeout.getSeconds(), context).collectList().block();
+        return client.dequeue(numberOfMessages, timeout, context).collectList().block();
     }
 
     public List<PeekedMessageItem> peek(int numberOfMessages, Duration timeout, Context context) {
-        return client.peek(numberOfMessages, (int) timeout.getSeconds(), context).collectList().block();
+        return client.peek(numberOfMessages, timeout, context).collectList().block();
     }
 
     public VoidResponse clear(Duration timeout, Context context) {
-        return client.clear((int) timeout.getSeconds(), context).block();
+        return client.clear(timeout, context).block();
     }
 }

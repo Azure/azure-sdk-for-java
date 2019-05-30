@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
@@ -13,15 +15,19 @@ import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 final class MessageIdAsyncRawClient {
+    private final String messageId;
     private final AzureQueueStorageImpl generateClient;
 
-    MessageIdAsyncRawClient(AzureQueueStorageImpl generateClient) {
+    MessageIdAsyncRawClient(String messageId, AzureQueueStorageImpl generateClient) {
+        this.messageId = messageId;
         this.generateClient = generateClient;
     }
 
-    MessageIdAsyncRawClient(URL endpoint, HttpPipeline httpPipeline) {
+    MessageIdAsyncRawClient(URL endpoint, HttpPipeline httpPipeline, String messageId) {
+        this.messageId = messageId;
         this.generateClient = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
@@ -29,8 +35,9 @@ final class MessageIdAsyncRawClient {
         return update(queueMessage, popReceipt, visibilityTimeout, null, context);
     }
 
-    Mono<Response<UpdatedMessage>> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Integer timeout, Context context) {
-        return generateClient.messageIds().updateWithRestResponseAsync(queueMessage, popReceipt, visibilityTimeout, timeout, null, context)
+    Mono<Response<UpdatedMessage>> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return generateClient.messageIds().updateWithRestResponseAsync(queueMessage, popReceipt, visibilityTimeout, timeoutInSeconds, null, context)
             .map(this::getUpdatedMessageResponse);
     }
 
@@ -38,8 +45,9 @@ final class MessageIdAsyncRawClient {
         return delete(popReceipt, null, context);
     }
 
-    Mono<VoidResponse> delete(String popReceipt, Integer timeout, Context context) {
-        return generateClient.messageIds().deleteWithRestResponseAsync(popReceipt, timeout, null, context)
+    Mono<VoidResponse> delete(String popReceipt, Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return generateClient.messageIds().deleteWithRestResponseAsync(popReceipt, timeoutInSeconds, null, context)
             .map(VoidResponse::new);
     }
 

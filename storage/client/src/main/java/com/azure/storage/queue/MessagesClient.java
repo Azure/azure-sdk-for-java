@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.util.Context;
@@ -24,7 +26,7 @@ public final class MessagesClient {
     }
 
     public MessageIdClient getMassageIdClient(String messageId) {
-        return null;
+        return new MessageIdClient(client.getMessageIdRawClient(messageId));
     }
 
     public List<EnqueuedMessage> enqueue(QueueMessage queueMessage) {

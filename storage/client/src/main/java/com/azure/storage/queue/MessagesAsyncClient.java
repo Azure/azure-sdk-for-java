@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.util.Context;
@@ -19,6 +21,14 @@ public final class MessagesAsyncClient {
         return new MessagesAsyncClientBuilder();
     }
 
+    public MessagesAsyncRawClient getRawClient() {
+        return client;
+    }
+
+    public MessageIdAsyncClient getMessageIdAsyncClient(String messageId) {
+        return new MessageIdAsyncClient(client.getMessageIdAsyncRawClient(messageId));
+    }
+
     public Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage) {
         return client.enqueue(queueMessage, null, Context.NONE);
     }
@@ -28,7 +38,7 @@ public final class MessagesAsyncClient {
     }
 
     public Flux<PeekedMessageItem> peek(int numberOfMessages) {
-        return client.peek(numberOfMessages, Context.NONE);
+        return client.peek(numberOfMessages, null, Context.NONE);
     }
 
     public Mono<Void> clear() {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
@@ -16,10 +18,10 @@ final class MessageIdRawClient {
     }
 
     public Response<UpdatedMessage> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
-        return client.update(queueMessage, popReceipt, visibilityTimeout, (int) timeout.getSeconds(), context).block();
+        return client.update(queueMessage, popReceipt, visibilityTimeout, timeout, context).block();
     }
 
     public VoidResponse delete(String popReceipt, Duration timeout, Context context) {
-        return client.delete(popReceipt, (int) timeout.getSeconds(), context).block();
+        return client.delete(popReceipt, timeout, context).block();
     }
 }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
@@ -22,26 +24,26 @@ final class QueueRawClient {
     }
 
     public VoidResponse create(Duration timeout, Context context) {
-        return client.create((int) timeout.getSeconds(), context).block();
+        return client.create(timeout, context).block();
     }
 
     public VoidResponse delete(Duration timeout, Context context) {
-        return client.delete((int) timeout.getSeconds(), context).block();
+        return client.delete(timeout, context).block();
     }
 
     public Response<QueueProperties> getProperties(Duration timeout, Context context) {
-        return client.getProperties((int) timeout.getSeconds(), context).block();
+        return client.getProperties(timeout, context).block();
     }
 
     public VoidResponse setMetadata(Map<String, String> metadata, Duration timeout, Context context) {
-        return client.setMetadata(metadata, (int) timeout.getSeconds(), context).block();
+        return client.setMetadata(metadata, timeout, context).block();
     }
 
     public List<SignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
-        return client.getAccessPolicy((int) timeout.getSeconds(), context).collectList().block();
+        return client.getAccessPolicy(timeout, context).collectList().block();
     }
 
     public VoidResponse setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout, Context context) {
-        return client.setAccessPolicy(permissions, (int) timeout.getSeconds(), context).block();
+        return client.setAccessPolicy(permissions, timeout, context).block();
     }
 }

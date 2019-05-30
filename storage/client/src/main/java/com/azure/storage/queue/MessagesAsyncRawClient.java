@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
@@ -12,28 +14,30 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 final class MessagesAsyncRawClient {
-    private final AzureQueueStorageImpl generateClient;
+    private final AzureQueueStorageImpl client;
 
     MessagesAsyncRawClient(AzureQueueStorageImpl generateClient) {
-        this.generateClient = generateClient;
+        this.client = generateClient;
     }
 
     MessagesAsyncRawClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.generateClient = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
+        this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
-    public MessageIdAsyncRawClient getMessageIdClient(String messageId) {
-        return null;
+    public MessageIdAsyncRawClient getMessageIdAsyncRawClient(String messageId) {
+        return new MessageIdAsyncRawClient(messageId, client);
     }
 
     public Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Context context) {
         return enqueue(queueMessage, null, context);
     }
 
-    Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Integer timeout, Context context) {
-        return generateClient.messages().enqueueWithRestResponseAsync(queueMessage, null, null, timeout, null, context)
+    Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return client.messages().enqueueWithRestResponseAsync(queueMessage, null, null, timeoutInSeconds, null, context)
             .flatMapMany(response -> Flux.fromIterable(response.value()));
     }
 
@@ -41,8 +45,9 @@ final class MessagesAsyncRawClient {
         return dequeue(numberOfMessages, null, context);
     }
 
-    Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Integer timeout, Context context) {
-        return generateClient.messages().dequeueWithRestResponseAsync(numberOfMessages, null, timeout, null, context)
+    Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, timeoutInSeconds, null, context)
             .flatMapMany(response -> Flux.fromIterable(response.value()));
     }
 
@@ -50,8 +55,9 @@ final class MessagesAsyncRawClient {
         return peek(numberOfMessages, null, context);
     }
 
-    Flux<PeekedMessageItem> peek(int numberOfMessages, Integer timeout, Context context) {
-        return generateClient.messages().peekWithRestResponseAsync(numberOfMessages, timeout, null, context)
+    Flux<PeekedMessageItem> peek(int numberOfMessages, Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return client.messages().peekWithRestResponseAsync(numberOfMessages, timeoutInSeconds, null, context)
             .flatMapMany(response -> Flux.fromIterable(response.value()));
     }
 
@@ -59,8 +65,9 @@ final class MessagesAsyncRawClient {
         return clear(null, context);
     }
 
-    Mono<VoidResponse> clear(Integer timeout, Context context) {
-        return generateClient.messages().clearWithRestResponseAsync(timeout, null, context)
+    Mono<VoidResponse> clear(Duration timeout, Context context) {
+        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
+        return client.messages().clearWithRestResponseAsync(timeoutInSeconds, null, context)
             .map(VoidResponse::new);
     }
 }

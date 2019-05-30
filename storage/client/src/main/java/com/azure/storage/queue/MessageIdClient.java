@@ -1,10 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.UpdatedMessage;
-
-import java.time.Duration;
 
 public final class MessageIdClient {
     private final MessageIdRawClient client;
@@ -22,10 +22,10 @@ public final class MessageIdClient {
     }
 
     public UpdatedMessage update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout) {
-        return client.update(queueMessage, popReceipt, visibilityTimeout, Duration.ZERO, Context.NONE).value();
+        return client.update(queueMessage, popReceipt, visibilityTimeout, null, Context.NONE).value();
     }
 
     public void delete(String popReceipt) {
-        client.delete(popReceipt, Duration.ZERO, Context.NONE);
+        client.delete(popReceipt, null, Context.NONE);
     }
 }
