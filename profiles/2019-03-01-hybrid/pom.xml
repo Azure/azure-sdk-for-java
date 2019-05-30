@@ -117,7 +117,7 @@
     <module>../../locks/resource-manager/v2016_09_01</module>
     <module>../../compute/resource-manager/v2017_12_01</module> ??????? release this
     <module>../../compute/resource-manager/v2017_03_30</module>
-    <!--<module>../../monitor/resource-manager/v2017_03_30</module>--> ??????? release this
+    <module>../../monitor/resource-manager/v2017_03_30</module>
     <module>../../network/resource-manager/v2017_10_01</module>
     <module>../../dns/resource-manager/v2016_04_01</module>
     <module>../../storage/resource-manager/v2017_10_01</module>
