@@ -5,9 +5,9 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
-  <version>1.0.0</version>
-  <artifactId>azure-management-sdk-parent</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <version>1.1.0</version>
+  <artifactId>azure-arm-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK for Java - Management Plane Libraries</name>
