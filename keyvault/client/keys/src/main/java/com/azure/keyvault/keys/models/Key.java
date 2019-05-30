@@ -24,7 +24,6 @@ public class Key extends KeyBase {
         return this.keyMaterial;
     }
 
-
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
@@ -57,18 +56,6 @@ public class Key extends KeyBase {
      */
     public Key tags(Map<String, String> tags) {
         super.tags(tags);
-        return this;
-    }
-
-    /**
-     * Set the keyOps value.
-     *
-     * @param keyOperations The key operations to set.
-     * @return the Key object itself.
-     */
-    @Override
-    public Key keyOperations(List<KeyOperation> keyOperations) {
-        super.keyOperations(keyOperations);
         return this;
     }
 

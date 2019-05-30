@@ -4,6 +4,7 @@
 package com.azure.keyvault.keys;
 
 import com.azure.keyvault.keys.models.KeyBase;
+import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -25,6 +26,21 @@ class KeyRequestAttributes {
             this.expires = keyBase.expires().toEpochSecond();
         }
         this.enabled = keyBase.enabled();
+    }
+
+    /**
+     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.notBefore, KeyCreateOptions.expires and KeyCreateOptions.enabled fields
+     * from {@code keyOptions}
+     * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
+     */
+    KeyRequestAttributes(KeyCreateOptions keyOptions) {
+        if (keyOptions.notBefore() != null) {
+            this.notBefore = keyOptions.notBefore().toEpochSecond();
+        }
+        if (keyOptions.expires() != null) {
+            this.expires = keyOptions.expires().toEpochSecond();
+        }
+        this.enabled = keyOptions.enabled();
     }
 
     /**

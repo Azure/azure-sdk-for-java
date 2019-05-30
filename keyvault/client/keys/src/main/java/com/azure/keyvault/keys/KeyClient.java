@@ -162,7 +162,7 @@ public final class KeyClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * Key rsaKey = keyClient.createRSAKey(rsaKeyCreateOptions).value();
+     * Key rsaKey = keyClient.createRsaKey(rsaKeyCreateOptions).value();
      * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
      * </pre>
      *
@@ -202,7 +202,7 @@ public final class KeyClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * Key ecKey = keyClient.createECKey(ecKeyCreateOptions).value();
+     * Key ecKey = keyClient.createEcKey(ecKeyCreateOptions).value();
      * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
      * </pre>
      *
@@ -372,7 +372,6 @@ public final class KeyClient extends ServiceClient {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .tags(key.tags())
-            .keyOps(key.keyOperations())
             .keyAttributes(new KeyRequestAttributes(key));
 
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();

@@ -7,7 +7,14 @@ import com.azure.keyvault.keys.models.webkey.JsonWebKey;
 
 public class KeyImportOptions extends KeyBase {
 
+    /**
+     * The Key Material.
+     */
     private JsonWebKey keyMaterial;
+
+    /**
+     * The hsm indicator for the key.
+     */
     private Boolean hsm;
 
     /**

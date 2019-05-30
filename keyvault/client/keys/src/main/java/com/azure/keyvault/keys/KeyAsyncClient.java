@@ -164,7 +164,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createRSAKey(rsaKeyCreateOptions).subscribe(keyResponse -&gt;
+     * keyAsyncClient.createRsaKey(rsaKeyCreateOptions).subscribe(keyResponse -&gt;
      *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
@@ -204,7 +204,7 @@ public final class KeyAsyncClient extends ServiceClient {
      *    .notBefore(OffsetDateTime.now().plusDays(1))
      *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createECKey(ecKeyCreateOptions).subscribe(keyResponse -&gt;
+     * keyAsyncClient.createEcKey(ecKeyCreateOptions).subscribe(keyResponse -&gt;
      *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
      * </pre>
      *
@@ -385,7 +385,6 @@ public final class KeyAsyncClient extends ServiceClient {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())
-                .keyOps(key.keyOperations())
                 .keyAttributes(new KeyRequestAttributes(key));
 
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);

@@ -19,6 +19,11 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     private KeyCurveName curve;
 
     /**
+     * The hsm indicator for the key.
+     */
+    private boolean hsm;
+
+    /**
      * Creates a EcKeyCreateOptions with {@code name} as name of the Ec key.
      * @param name The name of the Ec key.
      */
@@ -48,15 +53,6 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Get the key operations.
-     *
-     * @return the key operations.
-     */
-    public List<KeyOperation> keyOperations() {
-        return this.keyOperations;
-    }
-
-    /**
      * Set the key operations value.
      *
      * @param keyOperations The key operations value to set
@@ -66,15 +62,6 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     public EcKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
-    }
-
-    /**
-     * Get the key type.
-     *
-     * @return the key type.
-     */
-    public KeyType keyType() {
-        return this.keyType;
     }
 
     /**

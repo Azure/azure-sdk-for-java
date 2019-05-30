@@ -86,12 +86,6 @@ public class KeyBase {
     private Boolean managed;
 
     /**
-     * The key operations.
-     */
-    List<KeyOperation> keyOperations;
-
-
-    /**
      * Get the recoveryLevel value.
      *
      * @return the recoveryLevel value
@@ -222,26 +216,6 @@ public class KeyBase {
     }
 
     /**
-     * Get the key operations.
-     *
-     * @return the key operations
-     */
-    public List<KeyOperation> keyOperations() {
-        return this.keyOperations;
-    }
-
-    /**
-     * Set the keyOps value.
-     *
-     * @param keyOperations The key operations to set.
-     * @return the Key object itself.
-     */
-    public KeyBase keyOperations(List<KeyOperation> keyOperations) {
-        this.keyOperations = keyOperations;
-        return this;
-    }
-
-    /**
      * Get the managed value.
      *
      * @return the managed value
@@ -335,7 +309,6 @@ public class KeyBase {
                 .n(base64.decode((String) key.get("n")))
                 .kty(KeyType.fromString((String) key.get("kty")))
                 .kid((String) key.get("kid"));
-        keyOperations(getKeyOperations((List<String>) key.get("key_ops")));
         unpackId((String) key.get("kid"));
         return outputKey;
     }

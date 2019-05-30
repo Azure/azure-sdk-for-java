@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableMap;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -882,19 +880,19 @@ public class JsonWebKey {
             return false;
         }
 
-        if (!Objects.equal(kid, jwk.kid)) {
+        if (!objectEquals(kid, jwk.kid)) {
             return false;
         }
 
-        if (!Objects.equal(kty, jwk.kty)) {
+        if (!objectEquals(kty, jwk.kty)) {
             return false;
         }
 
-        if (!Objects.equal(keyOps, jwk.keyOps)) {
+        if (!objectEquals(keyOps, jwk.keyOps)) {
             return false;
         }
 
-        if (!Objects.equal(crv, jwk.crv)) {
+        if (!objectEquals(crv, jwk.crv)) {
             return false;
         }
 
@@ -1137,8 +1135,24 @@ public class JsonWebKey {
         return hashCode;
     }
 
-    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap
-            .<KeyCurveName, String>builder().put(KeyCurveName.P_256, "secp256r1")
-            .put(KeyCurveName.P_384, "secp384r1").put(KeyCurveName.P_521, "secp521r1")
-            .put(KeyCurveName.P_256K, "secp256k1").build();
+    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = setupCurveToSpecMap();
+
+    private static Map<KeyCurveName, String> setupCurveToSpecMap(){
+        Map<KeyCurveName, String>  curveToSpecMap = new HashMap<>();
+        curveToSpecMap.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpecMap.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpecMap.put(KeyCurveName.P_521, "secp521r1");
+        curveToSpecMap.put(KeyCurveName.P_256K, "secp256k1");
+        return curveToSpecMap;
+    }
+
+    private boolean objectEquals(Object a, Object b) {
+        if (a == null && b == null) {
+            return true;
+        } else if (a != null && b != null) {
+            return a.equals(b);
+        } else {
+            return false;
+        }
+    }
 }

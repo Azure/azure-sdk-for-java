@@ -5,14 +5,48 @@ package com.azure.keyvault.keys.models;
 
 import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-public class KeyCreateOptions extends KeyBase {
+public class KeyCreateOptions {
+
+    /**
+     * Determines whether the object is enabled.
+     */
+    private Boolean enabled;
+
+    /**
+     * Not before date in UTC.
+     */
+    private OffsetDateTime notBefore;
+
+    /**
+     * Expiry date in UTC.
+     */
+    private OffsetDateTime expires;
+
+    /**
+     * Application specific metadata in the form of key-value pairs.
+     */
+    private Map<String, String> tags;
+
+    /**
+     * The type of the key.
+     */
     KeyType keyType;
-    boolean hsm;
+
+    /**
+     * The key operations.
+     */
+    List<KeyOperation> keyOperations;
+
+    /**
+     * The key name.
+     */
+    String name;
 
     KeyCreateOptions() {
 
@@ -24,7 +58,7 @@ public class KeyCreateOptions extends KeyBase {
      * @param keyType The type of the key to create.
      */
     public KeyCreateOptions(String name, KeyType keyType) {
-        super.name = name;
+        this.name = name;
         this.keyType = keyType;
     }
 
@@ -43,7 +77,6 @@ public class KeyCreateOptions extends KeyBase {
      * @param keyOperations The key operations value to set
      * @return the KeyCreateOptions object itself.
      */
-    @Override
     public KeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
@@ -64,10 +97,18 @@ public class KeyCreateOptions extends KeyBase {
      * @param notBefore The notBefore UTC time to set
      * @return the KeyCreateOptions object itself.
      */
-    @Override
     public KeyCreateOptions notBefore(OffsetDateTime notBefore) {
-        super.notBefore(notBefore);
+        this.notBefore = notBefore;
         return this;
+    }
+
+    /**
+     * Get the notBefore UTC time.
+     *
+     * @return the notBefore UTC time.
+     */
+    public OffsetDateTime notBefore() {
+        return notBefore;
     }
 
     /**
@@ -76,10 +117,18 @@ public class KeyCreateOptions extends KeyBase {
      * @param expires The expiry time to set for the key.
      * @return the KeyCreateOptions object itself.
      */
-    @Override
     public KeyCreateOptions expires(OffsetDateTime expires) {
-        super.expires(expires);
+        this.expires = expires;
         return this;
+    }
+
+    /**
+     * Get the Key Expiry time in UTC.
+     *
+     * @return the expires UTC time.
+     */
+    public OffsetDateTime expires() {
+        return this.expires;
     }
 
     /**
@@ -88,10 +137,18 @@ public class KeyCreateOptions extends KeyBase {
      * @param tags The tags to set
      * @return the KeyCreateOptions object itself.
      */
-    @Override
     public KeyCreateOptions tags(Map<String, String> tags) {
-        super.tags(tags);
+        this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get the tags associated with the key.
+     *
+     * @return the value of the tags.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
@@ -101,7 +158,26 @@ public class KeyCreateOptions extends KeyBase {
      * @return the KeyCreateOptions object itself.
      */
     public KeyCreateOptions enabled(Boolean enabled) {
-        super.enabled(enabled);
+        this.enabled = enabled;
         return this;
     }
+
+    /**
+     * Get the enabled value.
+     *
+     * @return the enabled value
+     */
+    public Boolean enabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Get the key name.
+     *
+     * @return the name of the key.
+     */
+    public String name() {
+        return this.name;
+    }
+
 }

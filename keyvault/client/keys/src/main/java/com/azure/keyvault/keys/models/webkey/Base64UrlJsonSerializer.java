@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The base64 URL JSON serializer.
  */
-public class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
+class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
 
     static final Base64 BASE64 = new Base64(-1, null, true);
 

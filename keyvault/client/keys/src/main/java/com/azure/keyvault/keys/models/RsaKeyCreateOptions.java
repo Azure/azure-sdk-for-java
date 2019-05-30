@@ -18,6 +18,11 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     private Integer keySize;
 
     /**
+     * The hsm indicator for the key.
+     */
+    private boolean hsm;
+
+    /**
      * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
      * @param name The name of the key.
      */
@@ -47,16 +52,6 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Get the key operations.
-     *
-     * @return the key operations.
-     */
-    public List<KeyOperation> keyOperations() {
-        return this.keyOperations;
-    }
-
-
-    /**
      * Set the key operations value.
      *
      * @param keyOperations The key operations value to set
@@ -66,15 +61,6 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     public RsaKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
         this.keyOperations = keyOperations;
         return this;
-    }
-
-    /**
-     * Get the key type.
-     *
-     * @return the key type.
-     */
-    public KeyType keyType() {
-        return this.keyType;
     }
 
     /**
