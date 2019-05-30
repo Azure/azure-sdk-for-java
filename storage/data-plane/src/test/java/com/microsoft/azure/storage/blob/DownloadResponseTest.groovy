@@ -7,8 +7,10 @@ import com.microsoft.azure.storage.APISpec
 import com.microsoft.azure.storage.blob.models.StorageErrorException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import spock.lang.Ignore
 import spock.lang.Unroll
 
+@Ignore
 class DownloadResponseTest extends APISpec {
     BlockBlobURL bu
 

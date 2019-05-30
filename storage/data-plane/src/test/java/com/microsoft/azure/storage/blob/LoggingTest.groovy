@@ -12,13 +12,11 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.slf4j.LoggerFactory
+import spock.lang.Ignore
 import spock.lang.Unroll
-import uk.org.lidalia.slf4jtest.TestLogger
 import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
-import java.util.logging.Logger
-
+@Ignore
 class LoggingTest extends APISpec {
     /*
     This method returns a mock of an HttpPipelineLogger. We always want to return the same value for a given run. A mock
