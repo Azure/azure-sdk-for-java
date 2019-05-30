@@ -13,44 +13,44 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "UserDelegationKey")
 public final class UserDelegationKey {
-    /**
+    /*
      * The Azure Active Directory object ID in GUID format.
      */
     @JsonProperty(value = "SignedOid", required = true)
     private String signedOid;
 
-    /**
-     * The Azure Active Directory tenant ID in GUID format.
+    /*
+     * The Azure Active Directory tenant ID in GUID format
      */
     @JsonProperty(value = "SignedTid", required = true)
     private String signedTid;
 
-    /**
-     * The date-time the key is active.
+    /*
+     * The date-time the key is active
      */
     @JsonProperty(value = "SignedStart", required = true)
     private OffsetDateTime signedStart;
 
-    /**
-     * The date-time the key expires.
+    /*
+     * The date-time the key expires
      */
     @JsonProperty(value = "SignedExpiry", required = true)
     private OffsetDateTime signedExpiry;
 
-    /**
-     * Abbreviation of the Azure Storage service that accepts the key.
+    /*
+     * Abbreviation of the Azure Storage service that accepts the key
      */
     @JsonProperty(value = "SignedService", required = true)
     private String signedService;
 
-    /**
-     * The service version that created the key.
+    /*
+     * The service version that created the key
      */
     @JsonProperty(value = "SignedVersion", required = true)
     private String signedVersion;
 
-    /**
-     * The key as a base64 string.
+    /*
+     * The key as a base64 string
      */
     @JsonProperty(value = "Value", required = true)
     private String value;

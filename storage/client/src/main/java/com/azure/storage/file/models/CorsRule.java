@@ -16,7 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "CorsRule")
 public final class CorsRule {
-    /**
+    /*
      * The origin domains that are permitted to make a request against the
      * storage service via CORS. The origin domain is the domain from which the
      * request originates. Note that the origin must be an exact case-sensitive
@@ -27,28 +27,28 @@ public final class CorsRule {
     @JsonProperty(value = "AllowedOrigins", required = true)
     private String allowedOrigins;
 
-    /**
+    /*
      * The methods (HTTP request verbs) that the origin domain may use for a
-     * CORS request. (comma separated).
+     * CORS request. (comma separated)
      */
     @JsonProperty(value = "AllowedMethods", required = true)
     private String allowedMethods;
 
-    /**
+    /*
      * The request headers that the origin domain may specify on the CORS
      * request.
      */
     @JsonProperty(value = "AllowedHeaders", required = true)
     private String allowedHeaders;
 
-    /**
+    /*
      * The response headers that may be sent in the response to the CORS
      * request and exposed by the browser to the request issuer.
      */
     @JsonProperty(value = "ExposedHeaders", required = true)
     private String exposedHeaders;
 
-    /**
+    /*
      * The maximum amount time that a browser should cache the preflight
      * OPTIONS request.
      */

@@ -13,55 +13,55 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 public final class ListFilesAndDirectoriesSegmentResponse {
-    /**
+    /*
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
-    /**
+    /*
      * The shareName property.
      */
     @JacksonXmlProperty(localName = "ShareName", isAttribute = true)
     private String shareName;
 
-    /**
+    /*
      * The shareSnapshot property.
      */
     @JacksonXmlProperty(localName = "ShareSnapshot", isAttribute = true)
     private String shareSnapshot;
 
-    /**
+    /*
      * The directoryPath property.
      */
     @JacksonXmlProperty(localName = "DirectoryPath", isAttribute = true)
     private String directoryPath;
 
-    /**
+    /*
      * The prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
-    /**
+    /*
      * The marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
-    /**
+    /*
      * The maxResults property.
      */
     @JsonProperty(value = "MaxResults")
     private Integer maxResults;
 
-    /**
+    /*
      * The segment property.
      */
     @JsonProperty(value = "Entries", required = true)
     private FilesAndDirectoriesListSegment segment;
 
-    /**
+    /*
      * The nextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)

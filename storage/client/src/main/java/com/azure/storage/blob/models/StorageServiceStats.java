@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "StorageServiceStats")
 public final class StorageServiceStats {
-    /**
+    /*
      * The geoReplication property.
      */
     @JsonProperty(value = "GeoReplication")

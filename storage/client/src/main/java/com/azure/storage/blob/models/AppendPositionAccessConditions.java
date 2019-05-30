@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "append-position-access-conditions")
 public final class AppendPositionAccessConditions {
-    /**
+    /*
      * Optional conditional header. The max length in bytes permitted for the
      * append blob. If the Append Block operation would cause the blob to
      * exceed that limit or if the blob size is already greater than the value
@@ -24,7 +24,7 @@ public final class AppendPositionAccessConditions {
     @JsonProperty(value = "maxSize")
     private Long maxSize;
 
-    /**
+    /*
      * Optional conditional header, used only for the Append Block operation. A
      * number indicating the byte offset to compare. Append Block will succeed
      * only if the append position is equal to this number. If it is not, the

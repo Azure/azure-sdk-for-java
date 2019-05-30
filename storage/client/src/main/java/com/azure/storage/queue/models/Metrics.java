@@ -12,26 +12,26 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Metrics")
 public final class Metrics {
-    /**
+    /*
      * The version of Storage Analytics to configure.
      */
     @JsonProperty(value = "Version")
     private String version;
 
-    /**
+    /*
      * Indicates whether metrics are enabled for the Queue service.
      */
     @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
-    /**
+    /*
      * Indicates whether metrics should generate summary statistics for called
      * API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeAPIs;
 
-    /**
+    /*
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy")

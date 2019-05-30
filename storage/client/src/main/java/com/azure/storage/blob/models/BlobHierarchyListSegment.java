@@ -14,13 +14,13 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "Blobs")
 public final class BlobHierarchyListSegment {
-    /**
+    /*
      * The blobPrefixes property.
      */
     @JsonProperty("BlobPrefix")
     private List<BlobPrefix> blobPrefixes = new ArrayList<>();
 
-    /**
+    /*
      * The blobItems property.
      */
     @JsonProperty("Blob")

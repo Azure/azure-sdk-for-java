@@ -14,13 +14,13 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "Entries")
 public final class FilesAndDirectoriesListSegment {
-    /**
+    /*
      * The directoryItems property.
      */
     @JsonProperty("Directory")
     private List<DirectoryItem> directoryItems = new ArrayList<>();
 
-    /**
+    /*
      * The fileItems property.
      */
     @JsonProperty("File")

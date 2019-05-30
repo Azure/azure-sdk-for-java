@@ -16,25 +16,25 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 public final class ListSharesResponse {
-    /**
+    /*
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
-    /**
+    /*
      * The prefix property.
      */
     @JsonProperty(value = "Prefix")
     private String prefix;
 
-    /**
+    /*
      * The marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
-    /**
+    /*
      * The maxResults property.
      */
     @JsonProperty(value = "MaxResults")
@@ -50,13 +50,13 @@ public final class ListSharesResponse {
         }
     }
 
-    /**
+    /*
      * The shareItems property.
      */
     @JsonProperty(value = "Shares")
     private SharesWrapper shareItems;
 
-    /**
+    /*
      * The nextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)

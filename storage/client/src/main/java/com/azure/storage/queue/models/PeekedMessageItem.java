@@ -15,31 +15,31 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 public final class PeekedMessageItem {
-    /**
+    /*
      * The Id of the Message.
      */
     @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
-    /**
+    /*
      * The time the Message was inserted into the Queue.
      */
     @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
-    /**
+    /*
      * The time that the Message will expire and be automatically deleted.
      */
     @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
-    /**
+    /*
      * The number of times the message has been dequeued.
      */
     @JsonProperty(value = "DequeueCount", required = true)
     private long dequeueCount;
 
-    /**
+    /*
      * The content of the Message.
      */
     @JsonProperty(value = "MessageText", required = true)

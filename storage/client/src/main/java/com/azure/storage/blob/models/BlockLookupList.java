@@ -14,19 +14,19 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "BlockList")
 public final class BlockLookupList {
-    /**
+    /*
      * The committed property.
      */
     @JsonProperty("Committed")
     private List<String> committed = new ArrayList<>();
 
-    /**
+    /*
      * The uncommitted property.
      */
     @JsonProperty("Uncommitted")
     private List<String> uncommitted = new ArrayList<>();
 
-    /**
+    /*
      * The latest property.
      */
     @JsonProperty("Latest")

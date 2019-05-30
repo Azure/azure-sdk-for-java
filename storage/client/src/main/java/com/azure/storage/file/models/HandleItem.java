@@ -14,51 +14,51 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "Handle")
 public final class HandleItem {
-    /**
-     * XSMB service handle ID.
+    /*
+     * XSMB service handle ID
      */
     @JsonProperty(value = "HandleId", required = true)
     private String handleId;
 
-    /**
-     * File or directory name including full path starting from share root.
+    /*
+     * File or directory name including full path starting from share root
      */
     @JsonProperty(value = "Path", required = true)
     private String path;
 
-    /**
+    /*
      * FileId uniquely identifies the file or directory.
      */
     @JsonProperty(value = "FileId", required = true)
     private String fileId;
 
-    /**
+    /*
      * ParentId uniquely identifies the parent directory of the object.
      */
     @JsonProperty(value = "ParentId")
     private String parentId;
 
-    /**
-     * SMB session ID in context of which the file handle was opened.
+    /*
+     * SMB session ID in context of which the file handle was opened
      */
     @JsonProperty(value = "SessionId", required = true)
     private String sessionId;
 
-    /**
-     * Client IP that opened the handle.
+    /*
+     * Client IP that opened the handle
      */
     @JsonProperty(value = "ClientIp", required = true)
     private String clientIp;
 
-    /**
+    /*
      * Time when the session that previously opened the handle has last been
-     * reconnected. (UTC).
+     * reconnected. (UTC)
      */
     @JsonProperty(value = "OpenTime", required = true)
     private DateTimeRfc1123 openTime;
 
-    /**
-     * Time handle was last connected to (UTC).
+    /*
+     * Time handle was last connected to (UTC)
      */
     @JsonProperty(value = "LastReconnectTime")
     private DateTimeRfc1123 lastReconnectTime;

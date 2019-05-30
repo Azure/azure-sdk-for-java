@@ -14,39 +14,39 @@ import java.util.Arrays;
  */
 @JacksonXmlRootElement(localName = "file-HTTP-headers")
 public final class FileHTTPHeaders {
-    /**
+    /*
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
      */
     @JsonProperty(value = "fileContentType")
     private String fileContentType;
 
-    /**
+    /*
      * Specifies which content encodings have been applied to the file.
      */
     @JsonProperty(value = "fileContentEncoding")
     private String fileContentEncoding;
 
-    /**
+    /*
      * Specifies the natural languages used by this resource.
      */
     @JsonProperty(value = "fileContentLanguage")
     private String fileContentLanguage;
 
-    /**
+    /*
      * Sets the file's cache control. The File service stores this value but
      * does not use or modify it.
      */
     @JsonProperty(value = "fileCacheControl")
     private String fileCacheControl;
 
-    /**
+    /*
      * Sets the file's MD5 hash.
      */
     @JsonProperty(value = "fileContentMD5")
     private byte[] fileContentMD5;
 
-    /**
+    /*
      * Sets the file's Content-Disposition header.
      */
     @JsonProperty(value = "fileContentDisposition")

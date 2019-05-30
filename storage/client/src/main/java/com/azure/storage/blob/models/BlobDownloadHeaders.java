@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Blob-Download-Headers")
 public final class BlobDownloadHeaders {
-    /**
+    /*
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
      * properties, changes the last-modified time of the blob.
@@ -25,33 +25,33 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
-    /**
+    /*
      * The metadata property.
      */
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> metadata;
 
-    /**
+    /*
      * The number of bytes present in the response body.
      */
     @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
-    /**
+    /*
      * The media type of the body of the response. For Download Blob this is
-     * 'application/octet-stream'.
+     * 'application/octet-stream'
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
-    /**
+    /*
      * Indicates the range of bytes returned in the event that the client
      * requested a subset of the blob by setting the 'Range' request header.
      */
     @JsonProperty(value = "Content-Range")
     private String contentRange;
 
-    /**
+    /*
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
      * value will be in quotes.
@@ -59,7 +59,7 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "ETag")
     private String eTag;
 
-    /**
+    /*
      * If the blob has an MD5 hash and this operation is to read the full blob,
      * this response header is returned so that the client can check for
      * message content integrity.
@@ -67,20 +67,20 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
-    /**
+    /*
      * This header returns the value that was specified for the
-     * Content-Encoding request header.
+     * Content-Encoding request header
      */
     @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
-    /**
+    /*
      * This header is returned if it was previously specified for the blob.
      */
     @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
-    /**
+    /*
      * This header returns the value that was specified for the
      * 'x-ms-blob-content-disposition' header. The Content-Disposition response
      * header field conveys additional information about how to process the
@@ -92,28 +92,28 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
-    /**
+    /*
      * This header returns the value that was specified for the
      * Content-Language request header.
      */
     @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
-    /**
+    /*
      * The current sequence number for a page blob. This header is not returned
-     * for block blobs or append blobs.
+     * for block blobs or append blobs
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long blobSequenceNumber;
 
-    /**
+    /*
      * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
-     * 'AppendBlob'.
+     * 'AppendBlob'
      */
     @JsonProperty(value = "x-ms-blob-type")
     private BlobType blobType;
 
-    /**
+    /*
      * Conclusion time of the last attempted Copy Blob operation where this
      * blob was the destination blob. This value can specify the time of a
      * completed, aborted, or failed copy attempt. This header does not appear
@@ -125,17 +125,17 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-copy-completion-time")
     private DateTimeRfc1123 copyCompletionTime;
 
-    /**
+    /*
      * Only appears when x-ms-copy-status is failed or pending. Describes the
      * cause of the last fatal or non-fatal copy operation failure. This header
      * does not appear if this blob has never been the destination in a Copy
      * Blob operation, or if this blob has been modified after a concluded Copy
-     * Blob operation using Set Blob Properties, Put Blob, or Put Block List.
+     * Blob operation using Set Blob Properties, Put Blob, or Put Block List
      */
     @JsonProperty(value = "x-ms-copy-status-description")
     private String copyStatusDescription;
 
-    /**
+    /*
      * String identifier for this copy operation. Use with Get Blob Properties
      * to check the status of this copy operation, or pass to Abort Copy Blob
      * to abort a pending copy.
@@ -143,19 +143,19 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-copy-id")
     private String copyId;
 
-    /**
+    /*
      * Contains the number of bytes copied and the total bytes in the source in
      * the last attempted Copy Blob operation where this blob was the
      * destination blob. Can show between 0 and Content-Length bytes copied.
      * This header does not appear if this blob has never been the destination
      * in a Copy Blob operation, or if this blob has been modified after a
      * concluded Copy Blob operation using Set Blob Properties, Put Blob, or
-     * Put Block List.
+     * Put Block List
      */
     @JsonProperty(value = "x-ms-copy-progress")
     private String copyProgress;
 
-    /**
+    /*
      * URL up to 2 KB in length that specifies the source blob or file used in
      * the last attempted Copy Blob operation where this blob was the
      * destination blob. This header does not appear if this blob has never
@@ -166,42 +166,42 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-copy-source")
     private String copySource;
 
-    /**
+    /*
      * State of the copy operation identified by x-ms-copy-id. Possible values
-     * include: 'pending', 'success', 'aborted', 'failed'.
+     * include: 'pending', 'success', 'aborted', 'failed'
      */
     @JsonProperty(value = "x-ms-copy-status")
     private CopyStatusType copyStatus;
 
-    /**
+    /*
      * When a blob is leased, specifies whether the lease is of infinite or
-     * fixed duration. Possible values include: 'infinite', 'fixed'.
+     * fixed duration. Possible values include: 'infinite', 'fixed'
      */
     @JsonProperty(value = "x-ms-lease-duration")
     private LeaseDurationType leaseDuration;
 
-    /**
+    /*
      * Lease state of the blob. Possible values include: 'available', 'leased',
-     * 'expired', 'breaking', 'broken'.
+     * 'expired', 'breaking', 'broken'
      */
     @JsonProperty(value = "x-ms-lease-state")
     private LeaseStateType leaseState;
 
-    /**
+    /*
      * The current lease status of the blob. Possible values include: 'locked',
-     * 'unlocked'.
+     * 'unlocked'
      */
     @JsonProperty(value = "x-ms-lease-status")
     private LeaseStatusType leaseStatus;
 
-    /**
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String requestId;
 
-    /**
+    /*
      * Indicates the version of the Blob service used to execute the request.
      * This header is returned for requests made against version 2009-09-19 and
      * above.
@@ -209,27 +209,27 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-version")
     private String version;
 
-    /**
+    /*
      * Indicates that the service supports requests for partial blob content.
      */
     @JsonProperty(value = "Accept-Ranges")
     private String acceptRanges;
 
-    /**
+    /*
      * UTC date/time value generated by the service that indicates the time at
-     * which the response was initiated.
+     * which the response was initiated
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
-    /**
+    /*
      * The number of committed blocks present in the blob. This header is
      * returned only for append blobs.
      */
     @JsonProperty(value = "x-ms-blob-committed-block-count")
     private Integer blobCommittedBlockCount;
 
-    /**
+    /*
      * The value of this header is set to true if the blob data and application
      * metadata are completely encrypted using the specified algorithm.
      * Otherwise, the value is set to false (when the blob is unencrypted, or
@@ -238,7 +238,7 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-server-encrypted")
     private Boolean isServerEncrypted;
 
-    /**
+    /*
      * The SHA-256 hash of the encryption key used to encrypt the blob. This
      * header is only returned when the blob was encrypted with a
      * customer-provided key.
@@ -246,17 +246,17 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
 
-    /**
+    /*
      * If the blob has a MD5 hash, and if request contains range header (Range
      * or x-ms-range), this response header is returned with the value of the
      * whole blob's MD5 value. This value may or may not be equal to the value
      * returned in Content-MD5 header, with the latter calculated from the
-     * requested range.
+     * requested range
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
 
-    /**
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")

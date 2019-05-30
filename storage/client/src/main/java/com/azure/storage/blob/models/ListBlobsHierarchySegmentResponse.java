@@ -13,49 +13,49 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 public final class ListBlobsHierarchySegmentResponse {
-    /**
+    /*
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
-    /**
+    /*
      * The containerName property.
      */
     @JacksonXmlProperty(localName = "ContainerName", isAttribute = true)
     private String containerName;
 
-    /**
+    /*
      * The prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
-    /**
+    /*
      * The marker property.
      */
     @JsonProperty(value = "Marker", required = true)
     private String marker;
 
-    /**
+    /*
      * The maxResults property.
      */
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    /**
+    /*
      * The delimiter property.
      */
     @JsonProperty(value = "Delimiter", required = true)
     private String delimiter;
 
-    /**
+    /*
      * The segment property.
      */
     @JsonProperty(value = "Blobs", required = true)
     private BlobHierarchyListSegment segment;
 
-    /**
+    /*
      * The nextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)

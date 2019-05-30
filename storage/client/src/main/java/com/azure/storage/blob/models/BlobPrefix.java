@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "BlobPrefix")
 public final class BlobPrefix {
-    /**
+    /*
      * The name property.
      */
     @JsonProperty(value = "Name", required = true)

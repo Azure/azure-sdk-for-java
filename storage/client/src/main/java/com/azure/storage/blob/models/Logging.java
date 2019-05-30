@@ -12,31 +12,31 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Logging")
 public final class Logging {
-    /**
+    /*
      * The version of Storage Analytics to configure.
      */
     @JsonProperty(value = "Version", required = true)
     private String version;
 
-    /**
+    /*
      * Indicates whether all delete requests should be logged.
      */
     @JsonProperty(value = "Delete", required = true)
     private boolean delete;
 
-    /**
+    /*
      * Indicates whether all read requests should be logged.
      */
     @JsonProperty(value = "Read", required = true)
     private boolean read;
 
-    /**
+    /*
      * Indicates whether all write requests should be logged.
      */
     @JsonProperty(value = "Write", required = true)
     private boolean write;
 
-    /**
+    /*
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy", required = true)

@@ -16,25 +16,25 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 public final class ListContainersSegmentResponse {
-    /**
+    /*
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
-    /**
+    /*
      * The prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
-    /**
+    /*
      * The marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
-    /**
+    /*
      * The maxResults property.
      */
     @JsonProperty(value = "MaxResults", required = true)
@@ -50,13 +50,13 @@ public final class ListContainersSegmentResponse {
         }
     }
 
-    /**
+    /*
      * The containerItems property.
      */
     @JsonProperty(value = "Containers", required = true)
     private ContainersWrapper containerItems;
 
-    /**
+    /*
      * The nextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)

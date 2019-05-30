@@ -15,44 +15,44 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 public final class DequeuedMessageItem {
-    /**
+    /*
      * The Id of the Message.
      */
     @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
-    /**
+    /*
      * The time the Message was inserted into the Queue.
      */
     @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
-    /**
+    /*
      * The time that the Message will expire and be automatically deleted.
      */
     @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
-    /**
+    /*
      * This value is required to delete the Message. If deletion fails using
      * this popreceipt then the message has been dequeued by another client.
      */
     @JsonProperty(value = "PopReceipt", required = true)
     private String popReceipt;
 
-    /**
+    /*
      * The time that the message will again become visible in the Queue.
      */
     @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
-    /**
+    /*
      * The number of times the message has been dequeued.
      */
     @JsonProperty(value = "DequeueCount", required = true)
     private long dequeueCount;
 
-    /**
+    /*
      * The content of the Message.
      */
     @JsonProperty(value = "MessageText", required = true)

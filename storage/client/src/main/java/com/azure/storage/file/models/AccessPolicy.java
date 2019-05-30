@@ -13,19 +13,19 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "AccessPolicy")
 public final class AccessPolicy {
-    /**
+    /*
      * The date-time the policy is active.
      */
     @JsonProperty(value = "Start")
     private OffsetDateTime start;
 
-    /**
+    /*
      * The date-time the policy expires.
      */
     @JsonProperty(value = "Expiry")
     private OffsetDateTime expiry;
 
-    /**
+    /*
      * The permissions for the ACL policy.
      */
     @JsonProperty(value = "Permission")

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "FileProperty")
 public final class FileProperty {
-    /**
+    /*
      * Content length of the file. This value may not be up-to-date since an
      * SMB client may have modified the file locally. The value of
      * Content-Length may not reflect that fact until the handle is closed or

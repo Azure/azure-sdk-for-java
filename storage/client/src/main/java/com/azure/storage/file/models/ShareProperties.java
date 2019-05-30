@@ -14,19 +14,19 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "ShareProperties")
 public final class ShareProperties {
-    /**
+    /*
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
-    /**
+    /*
      * The etag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String etag;
 
-    /**
+    /*
      * The quota property.
      */
     @JsonProperty(value = "Quota", required = true)

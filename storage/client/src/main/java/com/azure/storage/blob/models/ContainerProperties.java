@@ -14,50 +14,50 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "ContainerProperties")
 public final class ContainerProperties {
-    /**
+    /*
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
-    /**
+    /*
      * The etag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String etag;
 
-    /**
-     * Possible values include: 'locked', 'unlocked'.
+    /*
+     * Possible values include: 'locked', 'unlocked'
      */
     @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
-    /**
+    /*
      * Possible values include: 'available', 'leased', 'expired', 'breaking',
-     * 'broken'.
+     * 'broken'
      */
     @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
-    /**
-     * Possible values include: 'infinite', 'fixed'.
+    /*
+     * Possible values include: 'infinite', 'fixed'
      */
     @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
-    /**
-     * Possible values include: 'container', 'blob'.
+    /*
+     * Possible values include: 'container', 'blob'
      */
     @JsonProperty(value = "PublicAccess")
     private PublicAccessType publicAccess;
 
-    /**
+    /*
      * The hasImmutabilityPolicy property.
      */
     @JsonProperty(value = "HasImmutabilityPolicy")
     private Boolean hasImmutabilityPolicy;
 
-    /**
+    /*
      * The hasLegalHold property.
      */
     @JsonProperty(value = "HasLegalHold")

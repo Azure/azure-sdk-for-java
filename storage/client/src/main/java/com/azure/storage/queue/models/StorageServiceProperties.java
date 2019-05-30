@@ -16,22 +16,22 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class StorageServiceProperties {
-    /**
-     * Azure Analytics Logging settings.
+    /*
+     * Azure Analytics Logging settings
      */
     @JsonProperty(value = "Logging")
     private Logging logging;
 
-    /**
+    /*
      * A summary of request statistics grouped by API in hourly aggregates for
-     * queues.
+     * queues
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
-    /**
+    /*
      * a summary of request statistics grouped by API in minute aggregates for
-     * queues.
+     * queues
      */
     @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
@@ -46,7 +46,7 @@ public final class StorageServiceProperties {
         }
     }
 
-    /**
+    /*
      * The set of CORS rules.
      */
     @JsonProperty(value = "Cors")

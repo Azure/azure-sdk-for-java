@@ -12,20 +12,20 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "StaticWebsite")
 public final class StaticWebsite {
-    /**
-     * Indicates whether this account is hosting a static website.
+    /*
+     * Indicates whether this account is hosting a static website
      */
     @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
-    /**
-     * The default name of the index page under each directory.
+    /*
+     * The default name of the index page under each directory
      */
     @JsonProperty(value = "IndexDocument")
     private String indexDocument;
 
-    /**
-     * The absolute path of the custom 404 page.
+    /*
+     * The absolute path of the custom 404 page
      */
     @JsonProperty(value = "ErrorDocument404Path")
     private String errorDocument404Path;

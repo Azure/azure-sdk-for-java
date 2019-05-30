@@ -14,13 +14,13 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "PageList")
 public final class PageList {
-    /**
+    /*
      * The pageRange property.
      */
     @JsonProperty("PageRange")
     private List<PageRange> pageRange = new ArrayList<>();
 
-    /**
+    /*
      * The clearRange property.
      */
     @JsonProperty("ClearRange")

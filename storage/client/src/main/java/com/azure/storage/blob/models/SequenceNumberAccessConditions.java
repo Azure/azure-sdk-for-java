@@ -13,21 +13,21 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "sequence-number-access-conditions")
 public final class SequenceNumberAccessConditions {
-    /**
+    /*
      * Specify this header value to operate only on a blob if it has a sequence
      * number less than or equal to the specified.
      */
     @JsonProperty(value = "ifSequenceNumberLessThanOrEqualTo")
     private Long ifSequenceNumberLessThanOrEqualTo;
 
-    /**
+    /*
      * Specify this header value to operate only on a blob if it has a sequence
      * number less than the specified.
      */
     @JsonProperty(value = "ifSequenceNumberLessThan")
     private Long ifSequenceNumberLessThan;
 
-    /**
+    /*
      * Specify this header value to operate only on a blob if it has the
      * specified sequence number.
      */

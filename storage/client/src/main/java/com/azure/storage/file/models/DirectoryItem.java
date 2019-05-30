@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Directory")
 public final class DirectoryItem {
-    /**
+    /*
      * The name property.
      */
     @JsonProperty(value = "Name", required = true)

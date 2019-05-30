@@ -12,15 +12,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 public final class RetentionPolicy {
-    /**
-     * Indicates whether a retention policy is enabled for the storage service.
+    /*
+     * Indicates whether a retention policy is enabled for the storage service
      */
     @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
-    /**
+    /*
      * Indicates the number of days that metrics or logging or soft-deleted
-     * data should be retained. All data older than this value will be deleted.
+     * data should be retained. All data older than this value will be deleted
      */
     @JsonProperty(value = "Days")
     private Integer days;

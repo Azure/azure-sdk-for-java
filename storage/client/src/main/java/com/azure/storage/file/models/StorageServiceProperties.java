@@ -16,14 +16,14 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class StorageServiceProperties {
-    /**
+    /*
      * A summary of request statistics grouped by API in hourly aggregates for
      * files.
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
-    /**
+    /*
      * A summary of request statistics grouped by API in minute aggregates for
      * files.
      */
@@ -40,7 +40,7 @@ public final class StorageServiceProperties {
         }
     }
 
-    /**
+    /*
      * The set of CORS rules.
      */
     @JsonProperty(value = "Cors")

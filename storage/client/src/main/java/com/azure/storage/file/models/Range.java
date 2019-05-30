@@ -12,13 +12,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Range")
 public final class Range {
-    /**
+    /*
      * Start of the range.
      */
     @JsonProperty(value = "Start", required = true)
     private long start;
 
-    /**
+    /*
      * End of the range.
      */
     @JsonProperty(value = "End", required = true)

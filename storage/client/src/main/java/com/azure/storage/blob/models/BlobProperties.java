@@ -15,190 +15,190 @@ import java.util.Arrays;
  */
 @JacksonXmlRootElement(localName = "Properties")
 public final class BlobProperties {
-    /**
+    /*
      * The creationTime property.
      */
     @JsonProperty(value = "Creation-Time")
     private DateTimeRfc1123 creationTime;
 
-    /**
+    /*
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
-    /**
+    /*
      * The etag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String etag;
 
-    /**
-     * Size in bytes.
+    /*
+     * Size in bytes
      */
     @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
-    /**
+    /*
      * The contentType property.
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
-    /**
+    /*
      * The contentEncoding property.
      */
     @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
-    /**
+    /*
      * The contentLanguage property.
      */
     @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
-    /**
+    /*
      * The contentMD5 property.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
-    /**
+    /*
      * The contentDisposition property.
      */
     @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
-    /**
+    /*
      * The cacheControl property.
      */
     @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
-    /**
+    /*
      * The blobSequenceNumber property.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long blobSequenceNumber;
 
-    /**
-     * Possible values include: 'BlockBlob', 'PageBlob', 'AppendBlob'.
+    /*
+     * Possible values include: 'BlockBlob', 'PageBlob', 'AppendBlob'
      */
     @JsonProperty(value = "BlobType")
     private BlobType blobType;
 
-    /**
-     * Possible values include: 'locked', 'unlocked'.
+    /*
+     * Possible values include: 'locked', 'unlocked'
      */
     @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
-    /**
+    /*
      * Possible values include: 'available', 'leased', 'expired', 'breaking',
-     * 'broken'.
+     * 'broken'
      */
     @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
-    /**
-     * Possible values include: 'infinite', 'fixed'.
+    /*
+     * Possible values include: 'infinite', 'fixed'
      */
     @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
-    /**
+    /*
      * The copyId property.
      */
     @JsonProperty(value = "CopyId")
     private String copyId;
 
-    /**
-     * Possible values include: 'pending', 'success', 'aborted', 'failed'.
+    /*
+     * Possible values include: 'pending', 'success', 'aborted', 'failed'
      */
     @JsonProperty(value = "CopyStatus")
     private CopyStatusType copyStatus;
 
-    /**
+    /*
      * The copySource property.
      */
     @JsonProperty(value = "CopySource")
     private String copySource;
 
-    /**
+    /*
      * The copyProgress property.
      */
     @JsonProperty(value = "CopyProgress")
     private String copyProgress;
 
-    /**
+    /*
      * The copyCompletionTime property.
      */
     @JsonProperty(value = "CopyCompletionTime")
     private DateTimeRfc1123 copyCompletionTime;
 
-    /**
+    /*
      * The copyStatusDescription property.
      */
     @JsonProperty(value = "CopyStatusDescription")
     private String copyStatusDescription;
 
-    /**
+    /*
      * The serverEncrypted property.
      */
     @JsonProperty(value = "ServerEncrypted")
     private Boolean serverEncrypted;
 
-    /**
+    /*
      * The incrementalCopy property.
      */
     @JsonProperty(value = "IncrementalCopy")
     private Boolean incrementalCopy;
 
-    /**
+    /*
      * The destinationSnapshot property.
      */
     @JsonProperty(value = "DestinationSnapshot")
     private String destinationSnapshot;
 
-    /**
+    /*
      * The deletedTime property.
      */
     @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
-    /**
+    /*
      * The remainingRetentionDays property.
      */
     @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
-    /**
+    /*
      * Possible values include: 'P4', 'P6', 'P10', 'P20', 'P30', 'P40', 'P50',
-     * 'Hot', 'Cool', 'Archive'.
+     * 'Hot', 'Cool', 'Archive'
      */
     @JsonProperty(value = "AccessTier")
     private AccessTier accessTier;
 
-    /**
+    /*
      * The accessTierInferred property.
      */
     @JsonProperty(value = "AccessTierInferred")
     private Boolean accessTierInferred;
 
-    /**
+    /*
      * Possible values include: 'rehydrate-pending-to-hot',
-     * 'rehydrate-pending-to-cool'.
+     * 'rehydrate-pending-to-cool'
      */
     @JsonProperty(value = "ArchiveStatus")
     private ArchiveStatus archiveStatus;
 
-    /**
+    /*
      * The customerProvidedKeySha256 property.
      */
     @JsonProperty(value = "CustomerProvidedKeySha256")
     private String customerProvidedKeySha256;
 
-    /**
+    /*
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")

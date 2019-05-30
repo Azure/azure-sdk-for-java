@@ -12,37 +12,37 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Blob")
 public final class BlobItem {
-    /**
+    /*
      * The name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /**
+    /*
      * The deleted property.
      */
     @JsonProperty(value = "Deleted", required = true)
     private boolean deleted;
 
-    /**
+    /*
      * The snapshot property.
      */
     @JsonProperty(value = "Snapshot", required = true)
     private String snapshot;
 
-    /**
+    /*
      * The versionId property.
      */
     @JsonProperty(value = "VersionId", required = true)
     private String versionId;
 
-    /**
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
     private BlobProperties properties;
 
-    /**
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")

@@ -16,19 +16,19 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class StorageServiceProperties {
-    /**
+    /*
      * The logging property.
      */
     @JsonProperty(value = "Logging")
     private Logging logging;
 
-    /**
+    /*
      * The hourMetrics property.
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
-    /**
+    /*
      * The minuteMetrics property.
      */
     @JsonProperty(value = "MinuteMetrics")
@@ -44,27 +44,27 @@ public final class StorageServiceProperties {
         }
     }
 
-    /**
+    /*
      * The set of CORS rules.
      */
     @JsonProperty(value = "Cors")
     private CorsWrapper cors;
 
-    /**
+    /*
      * The default version to use for requests to the Blob service if an
      * incoming request's version is not specified. Possible values include
-     * version 2008-10-27 and all more recent versions.
+     * version 2008-10-27 and all more recent versions
      */
     @JsonProperty(value = "DefaultServiceVersion")
     private String defaultServiceVersion;
 
-    /**
+    /*
      * The deleteRetentionPolicy property.
      */
     @JsonProperty(value = "DeleteRetentionPolicy")
     private RetentionPolicy deleteRetentionPolicy;
 
-    /**
+    /*
      * The staticWebsite property.
      */
     @JsonProperty(value = "StaticWebsite")

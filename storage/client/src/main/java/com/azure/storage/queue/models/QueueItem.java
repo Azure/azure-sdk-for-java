@@ -13,13 +13,13 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Queue")
 public final class QueueItem {
-    /**
+    /*
      * The name of the Queue.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /**
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")

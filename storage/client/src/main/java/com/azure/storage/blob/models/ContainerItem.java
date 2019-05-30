@@ -13,19 +13,19 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Container")
 public final class ContainerItem {
-    /**
+    /*
      * The name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /**
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
     private ContainerProperties properties;
 
-    /**
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")

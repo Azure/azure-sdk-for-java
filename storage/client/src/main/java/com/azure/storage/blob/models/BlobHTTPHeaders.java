@@ -13,21 +13,21 @@ import java.util.Arrays;
  */
 @JacksonXmlRootElement(localName = "blob-HTTP-headers")
 public final class BlobHTTPHeaders {
-    /**
+    /*
      * Optional. Sets the blob's cache control. If specified, this property is
      * stored with the blob and returned with a read request.
      */
     @JsonProperty(value = "blobCacheControl")
     private String blobCacheControl;
 
-    /**
+    /*
      * Optional. Sets the blob's content type. If specified, this property is
      * stored with the blob and returned with a read request.
      */
     @JsonProperty(value = "blobContentType")
     private String blobContentType;
 
-    /**
+    /*
      * Optional. An MD5 hash of the blob content. Note that this hash is not
      * validated, as the hashes for the individual blocks were validated when
      * each was uploaded.
@@ -35,21 +35,21 @@ public final class BlobHTTPHeaders {
     @JsonProperty(value = "blobContentMD5")
     private byte[] blobContentMD5;
 
-    /**
+    /*
      * Optional. Sets the blob's content encoding. If specified, this property
      * is stored with the blob and returned with a read request.
      */
     @JsonProperty(value = "blobContentEncoding")
     private String blobContentEncoding;
 
-    /**
+    /*
      * Optional. Set the blob's content language. If specified, this property
      * is stored with the blob and returned with a read request.
      */
     @JsonProperty(value = "blobContentLanguage")
     private String blobContentLanguage;
 
-    /**
+    /*
      * Optional. Sets the blob's Content-Disposition header.
      */
     @JsonProperty(value = "blobContentDisposition")

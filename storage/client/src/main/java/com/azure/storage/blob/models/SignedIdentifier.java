@@ -12,13 +12,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "SignedIdentifier")
 public final class SignedIdentifier {
-    /**
-     * a unique id.
+    /*
+     * a unique id
      */
     @JsonProperty(value = "Id", required = true)
     private String id;
 
-    /**
+    /*
      * The accessPolicy property.
      */
     @JsonProperty(value = "AccessPolicy", required = true)

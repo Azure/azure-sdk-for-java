@@ -26,13 +26,13 @@ public final class ListHandlesResponse {
         }
     }
 
-    /**
+    /*
      * The handleList property.
      */
     @JsonProperty(value = "Entries")
     private EntriesWrapper handleList;
 
-    /**
+    /*
      * The nextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)

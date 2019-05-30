@@ -14,7 +14,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "Blobs")
 public final class BlobFlatListSegment {
-    /**
+    /*
      * The blobItems property.
      */
     @JsonProperty("Blob")

@@ -26,7 +26,7 @@ public final class BlockList {
         }
     }
 
-    /**
+    /*
      * The committedBlocks property.
      */
     @JsonProperty(value = "CommittedBlocks")
@@ -42,7 +42,7 @@ public final class BlockList {
         }
     }
 
-    /**
+    /*
      * The uncommittedBlocks property.
      */
     @JsonProperty(value = "UncommittedBlocks")

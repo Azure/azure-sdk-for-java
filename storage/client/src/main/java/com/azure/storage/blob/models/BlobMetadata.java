@@ -14,13 +14,13 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Metadata")
 public final class BlobMetadata {
-    /**
-     * Unmatched properties from the message are deserialized this collection.
+    /*
+     * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "additionalProperties")
     private Map<String, String> additionalProperties;
 
-    /**
+    /*
      * The encrypted property.
      */
     @JacksonXmlProperty(localName = "Encrypted", isAttribute = true)

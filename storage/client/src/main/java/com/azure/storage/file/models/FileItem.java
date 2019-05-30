@@ -12,13 +12,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "File")
 public final class FileItem {
-    /**
+    /*
      * The name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /**
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)

@@ -12,14 +12,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Service-GetProperties-Headers")
 public final class ServiceGetPropertiesHeaders {
-    /**
+    /*
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String requestId;
 
-    /**
+    /*
      * Indicates the version of the Queue service used to execute the request.
      * This header is returned for requests made against version 2009-09-19 and
      * above.
@@ -27,7 +27,7 @@ public final class ServiceGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-version")
     private String version;
 
-    /**
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")

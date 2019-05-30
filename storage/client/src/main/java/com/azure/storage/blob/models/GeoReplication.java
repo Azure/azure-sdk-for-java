@@ -14,14 +14,14 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "GeoReplication")
 public final class GeoReplication {
-    /**
+    /*
      * The status of the secondary location. Possible values include: 'live',
-     * 'bootstrap', 'unavailable'.
+     * 'bootstrap', 'unavailable'
      */
     @JsonProperty(value = "Status", required = true)
     private GeoReplicationStatusType status;
 
-    /**
+    /*
      * A GMT date/time value, to the second. All primary writes preceding this
      * value are guaranteed to be available for read operations at the
      * secondary. Primary writes after this point in time may or may not be

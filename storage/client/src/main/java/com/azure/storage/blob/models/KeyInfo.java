@@ -12,14 +12,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "KeyInfo")
 public final class KeyInfo {
-    /**
-     * The date-time the key is active in ISO 8601 UTC time.
+    /*
+     * The date-time the key is active in ISO 8601 UTC time
      */
     @JsonProperty(value = "Start", required = true)
     private String start;
 
-    /**
-     * The date-time the key expires in ISO 8601 UTC time.
+    /*
+     * The date-time the key expires in ISO 8601 UTC time
      */
     @JsonProperty(value = "Expiry", required = true)
     private String expiry;

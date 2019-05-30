@@ -12,8 +12,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 public final class QueueMessage {
-    /**
-     * The content of the message.
+    /*
+     * The content of the message
      */
     @JsonProperty(value = "MessageText", required = true)
     private String messageText;

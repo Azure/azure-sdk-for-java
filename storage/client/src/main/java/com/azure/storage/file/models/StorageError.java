@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "StorageError")
 public final class StorageError {
-    /**
+    /*
      * The message property.
      */
     @JsonProperty(value = "Message")

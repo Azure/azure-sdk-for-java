@@ -13,13 +13,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Block")
 public final class Block {
-    /**
+    /*
      * The base64 encoded block ID.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /**
+    /*
      * The block size in bytes.
      */
     @JsonProperty(value = "Size", required = true)

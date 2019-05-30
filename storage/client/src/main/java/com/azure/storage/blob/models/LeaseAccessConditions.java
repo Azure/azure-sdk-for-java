@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "lease-access-conditions")
 public final class LeaseAccessConditions {
-    /**
+    /*
      * If specified, the operation only succeeds if the resource's lease is
      * active and matches this ID.
      */

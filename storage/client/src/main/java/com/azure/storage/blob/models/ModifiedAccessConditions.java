@@ -14,27 +14,27 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "modified-access-conditions")
 public final class ModifiedAccessConditions {
-    /**
+    /*
      * Specify this header value to operate only on a blob if it has been
      * modified since the specified date/time.
      */
     @JsonProperty(value = "ifModifiedSince")
     private DateTimeRfc1123 ifModifiedSince;
 
-    /**
+    /*
      * Specify this header value to operate only on a blob if it has not been
      * modified since the specified date/time.
      */
     @JsonProperty(value = "ifUnmodifiedSince")
     private DateTimeRfc1123 ifUnmodifiedSince;
 
-    /**
+    /*
      * Specify an ETag value to operate only on blobs with a matching value.
      */
     @JsonProperty(value = "ifMatch")
     private String ifMatch;
 
-    /**
+    /*
      * Specify an ETag value to operate only on blobs without a matching value.
      */
     @JsonProperty(value = "ifNoneMatch")
