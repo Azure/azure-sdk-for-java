@@ -6,7 +6,6 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
-import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
@@ -128,7 +127,7 @@ public final class ConfigurationAsyncClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration.get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false)));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
