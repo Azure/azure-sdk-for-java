@@ -8,48 +8,48 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 
 import java.net.MalformedURLException;
 
-public final class QueueAsyncClientBuilder {
-    private final QueueClientBuilderBase builder;
+public final class MessagesClientBuilder {
+    private final MessagesClientBuilderBase builder;
 
-    QueueAsyncClientBuilder() {
-        builder = new QueueClientBuilderBase();
+    MessagesClientBuilder() {
+        builder = new MessagesClientBuilderBase();
     }
 
-    public QueueAsyncClient build() {
-        return new QueueAsyncClient(builder.build());
+    public MessagesAsyncClient build() {
+        return new MessagesAsyncClient(builder.build());
     }
 
-    public QueueAsyncClientBuilder endpoint(String endpoint) throws MalformedURLException {
+    public MessagesClientBuilder endpoint(String endpoint) throws MalformedURLException {
         builder.endpoint(endpoint);
         return this;
     }
 
-    public QueueAsyncClientBuilder credentials(TokenCredential credentials) {
+    public MessagesClientBuilder credentials(TokenCredential credentials) {
         builder.credentials(credentials);
         return this;
     }
 
-    public QueueAsyncClientBuilder connectionString(String connectionString) {
+    public MessagesClientBuilder connectionString(String connectionString) {
         builder.connectionString(connectionString);
         return this;
     }
 
-    public QueueAsyncClientBuilder httpClient(HttpClient httpClient) {
+    public MessagesClientBuilder httpClient(HttpClient httpClient) {
         builder.httpClient(httpClient);
         return this;
     }
 
-    public QueueAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public MessagesClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         builder.addPolicy(pipelinePolicy);
         return this;
     }
 
-    public QueueAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public MessagesClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         builder.httpLogDetailLevel(logLevel);
         return this;
     }
 
-    public QueueAsyncClientBuilder configuration(Configuration configuration) {
+    public MessagesClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
         return this;
     }

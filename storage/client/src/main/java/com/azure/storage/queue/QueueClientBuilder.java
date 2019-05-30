@@ -8,48 +8,48 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 
 import java.net.MalformedURLException;
 
-public final class QueueAsyncClientBuilder {
+public final class QueueClientBuilder {
     private final QueueClientBuilderBase builder;
 
-    QueueAsyncClientBuilder() {
+    QueueClientBuilder() {
         builder = new QueueClientBuilderBase();
     }
 
-    public QueueAsyncClient build() {
-        return new QueueAsyncClient(builder.build());
+    public QueueClient build() {
+        return new QueueClient(new QueueRawClient(builder.build()));
     }
 
-    public QueueAsyncClientBuilder endpoint(String endpoint) throws MalformedURLException {
+    public QueueClientBuilder endpoint(String endpoint) throws MalformedURLException {
         builder.endpoint(endpoint);
         return this;
     }
 
-    public QueueAsyncClientBuilder credentials(TokenCredential credentials) {
+    public QueueClientBuilder credentials(TokenCredential credentials) {
         builder.credentials(credentials);
         return this;
     }
 
-    public QueueAsyncClientBuilder connectionString(String connectionString) {
+    public QueueClientBuilder connectionString(String connectionString) {
         builder.connectionString(connectionString);
         return this;
     }
 
-    public QueueAsyncClientBuilder httpClient(HttpClient httpClient) {
+    public QueueClientBuilder httpClient(HttpClient httpClient) {
         builder.httpClient(httpClient);
         return this;
     }
 
-    public QueueAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public QueueClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         builder.addPolicy(pipelinePolicy);
         return this;
     }
 
-    public QueueAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public QueueClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         builder.httpLogDetailLevel(logLevel);
         return this;
     }
 
-    public QueueAsyncClientBuilder configuration(Configuration configuration) {
+    public QueueClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
         return this;
     }

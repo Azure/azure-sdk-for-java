@@ -370,7 +370,7 @@
         <version>${spock-core.version}</version>
       </dependency>
 
-     <dependency>
+      <dependency>
         <groupId>cglib</groupId>
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib-nodep.version}</version>
@@ -512,7 +512,9 @@
           <transformationSets>
             <transformationSet>
               <dir>${project.build.directory}/spotbugs</dir>
-              <includes><include>spotbugsXml.xml</include></includes>
+              <includes>
+                <include>spotbugsXml.xml</include>
+              </includes>
               <outputDir>${project.build.directory}/spotbugs</outputDir>
               <stylesheet>fancy-hist.xsl</stylesheet>
               <fileMappers>
@@ -614,7 +616,9 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
@@ -632,7 +636,9 @@
               </group>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
+                <packages>
+                  com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*
+                </packages>
               </group>
               <group>
                 <title>Azure Core - Management</title>
@@ -1085,5 +1091,6 @@
     <module>./keyvault/data-plane</module>
     <module>./servicebus/data-plane</module>
     <module>./storage/data-plane</module>
+    <module>./storage/client</module>
   </modules>
 </project>
