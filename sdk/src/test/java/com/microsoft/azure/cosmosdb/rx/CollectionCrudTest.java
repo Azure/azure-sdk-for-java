@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -92,13 +92,13 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName, boolean isNameBased) {
         DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Observable<ResourceResponse<DocumentCollection>> createObservable = client
                 .createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .withId(collectionDefinition.getId()).build();
-        
+
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(client, database);
     }
@@ -124,17 +124,17 @@ public class CollectionCrudTest extends TestSuiteBase {
         compositePath5.setOrder(CompositePathSortOrder.Descending);
         CompositePath compositePath6 = new CompositePath();
         compositePath6.setPath("/path6");
-        
+
         ArrayList<CompositePath> compositeIndex1 = new ArrayList<CompositePath>();
         compositeIndex1.add(compositePath1);
         compositeIndex1.add(compositePath2);
         compositeIndex1.add(compositePath3);
-        
+
         ArrayList<CompositePath> compositeIndex2 = new ArrayList<CompositePath>();
         compositeIndex2.add(compositePath4);
         compositeIndex2.add(compositePath5);
         compositeIndex2.add(compositePath6);
-        
+
         Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
         compositeIndexes.add(compositeIndex1);
         compositeIndexes.add(compositeIndex2);
@@ -145,7 +145,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 SpatialType.LineString,
                 SpatialType.Polygon,
                 SpatialType.MultiPolygon
-                };
+        };
         Collection<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
         for (int index = 0; index < 2; index++) {
             Collection<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
@@ -159,12 +159,12 @@ public class CollectionCrudTest extends TestSuiteBase {
             spec.setSpatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }
-        
+
         indexingPolicy.setSpatialIndexes(spatialIndexes);
 
         collection.setId(UUID.randomUUID().toString());
         collection.setIndexingPolicy(indexingPolicy);
-        
+
         Observable<ResourceResponse<DocumentCollection>> createObservable = client
                 .createCollection(database.getSelfLink(), collection, null);
 
@@ -173,7 +173,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
                 .build();
-        
+
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(client, database);
     }
@@ -181,9 +181,9 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName, boolean isNameBased) {
         DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
-                null);
+                                                                                                    null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
 
         Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(getCollectionLink(database, collection, isNameBased), null);
@@ -197,11 +197,11 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection_NameBase(String collectionName, boolean isNameBased) {
         DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
-                null);
+                                                                                                    null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
-        
+
         Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(
                 getCollectionLink(database, collection, isNameBased), null);
 
@@ -224,12 +224,12 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName, boolean isNameBased) {
         DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
 
         Observable<ResourceResponse<DocumentCollection>> deleteObservable = client.deleteCollection(getCollectionLink(database, collection, isNameBased),
-                null);
+                                                                                                    null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .nullResource().build();
@@ -244,13 +244,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
         // sanity check
         assertThat(collection.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.Consistent);
-        
+
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.Lazy);
         collection.setIndexingPolicy(indexingMode);
         Observable<ResourceResponse<DocumentCollection>> readObservable = client.replaceCollection(collection, null);
-        
+
         // validate
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .indexingMode(IndexingMode.Lazy).build();
@@ -258,13 +258,17 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(client, database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
         AsyncDocumentClient client1 = clientBuilder.build();
         AsyncDocumentClient client2 = clientBuilder.build();
+
+        String dbId = DatabaseForTest.generateId();
+        String collectionId = "coll";
         try {
-            String dbId = database.getId();
-            String collectionId = "coll";
+            Database databaseDefinition = new Database();
+            databaseDefinition.setId(dbId);
+            createDatabase(client1, dbId);
 
             DocumentCollection collectionDefinition = new DocumentCollection();
             collectionDefinition.setId(collectionId);
@@ -280,7 +284,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             document.set("name", "New Updated Document");
             ResourceResponse<Document> upsertDocumentResponse = client1.upsertDocument(collection.getSelfLink(), document, null,
-                    true).toBlocking().single();
+                                                                                       true).toBlocking().single();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getRequestDiagnosticsString());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
@@ -303,6 +307,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
         } finally {
+            safeDeleteDatabase(client1, dbId);
             safeClose(client1);
             safeClose(client2);
         }
