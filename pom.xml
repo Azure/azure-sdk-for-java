@@ -207,6 +207,21 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- e2e integration tests, requires Cosmos DB endpoint -->
+      <id>e2e</id>
+      <properties>
+        <test.groups>e2e</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
   <build>
     <pluginManagement>
