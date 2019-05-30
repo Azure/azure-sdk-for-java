@@ -196,7 +196,6 @@ class Configuration {
         }
     }
 
-
     Duration getMaxRunningTimeDuration() {
         return maxRunningTimeDuration;
     }

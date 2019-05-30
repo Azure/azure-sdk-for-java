@@ -166,7 +166,6 @@ abstract class AsyncBenchmark<T> {
 
     protected abstract void performWorkload(Subscriber<T> subs, long i) throws Exception;
 
-
     private boolean shouldContinue(long startTimeMillis, long iterationCount) {
         Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
         int maxNumberOfOperations = configuration.getNumberOfOperations();
@@ -242,7 +241,6 @@ abstract class AsyncBenchmark<T> {
         }
 
         terminationLatch.await();
-
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
                     configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
@@ -250,7 +248,4 @@ abstract class AsyncBenchmark<T> {
         reporter.report();
         reporter.close();
     }
-
-
-
 }
