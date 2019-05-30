@@ -122,6 +122,7 @@
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
+    <opencensus.version>0.20.0</opencensus.version>
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
@@ -292,6 +293,12 @@
         <groupId>org.asynchttpclient</groupId>
         <artifactId>async-http-client</artifactId>
         <version>${async-http-client.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.opencensus</groupId>
+        <artifactId>opencensus-api</artifactId>
+        <version>${opencensus.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -616,7 +623,12 @@
             <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
+            <excludePackageNames>
+              com.microsoft.azure.template:
+              *.impl.*:
+              *.implementation.*:
+              com.azure.tracing.opencensus*
+            </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Batch</title>
@@ -723,10 +735,16 @@
               <include>**/*Tests.java</include>
               <include>**/*TestCase.java</include>
             </includes>
+            <systemPropertyVariables>
+              <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+              <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+            </systemPropertyVariables>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
               <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
               <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+              <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+              <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
             </environmentVariables>
           </configuration>
         </plugin>
@@ -1077,7 +1095,9 @@
     <module>./core</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
+    <module>./keyvault/client</module>
     <module>./servicebus/data-plane</module>
     <module>./storage/data-plane</module>
+    <module>./tracing</module>
   </modules>
 </project>

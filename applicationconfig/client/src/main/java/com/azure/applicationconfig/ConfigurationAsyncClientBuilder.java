@@ -6,21 +6,26 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
+import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AsyncCredentialsPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,6 +78,7 @@ public final class ConfigurationAsyncClientBuilder {
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     ConfigurationAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
@@ -103,13 +109,18 @@ public final class ConfigurationAsyncClientBuilder {
      * has not been set.
      */
     public ConfigurationAsyncClient build() {
-        Objects.requireNonNull(serviceEndpoint);
+        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
+        URL buildServiceEndpoint = getBuildServiceEndpoint(configurationCredentials);
+
+        Objects.requireNonNull(buildServiceEndpoint);
 
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+            return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
         }
 
-        if (credentials == null) {
+        ConfigurationClientCredentials buildCredentials = (credentials == null) ? configurationCredentials : credentials;
+        if (buildCredentials == null) {
             throw new IllegalStateException("'credentials' is required.");
         }
 
@@ -120,12 +131,13 @@ public final class ConfigurationAsyncClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy());
-        policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(buildCredentials));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(retryPolicy);
 
         policies.addAll(this.policies);
-
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = HttpPipeline.builder()
@@ -133,7 +145,7 @@ public final class ConfigurationAsyncClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+        return new ConfigurationAsyncClient(buildServiceEndpoint, pipeline);
     }
 
     /**
@@ -215,6 +227,43 @@ public final class ConfigurationAsyncClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated ConfigurationAsyncClientBuilder object.
+     */
+    public ConfigurationAsyncClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
+        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
+        if (ImplUtils.isNullOrEmpty(connectionString)) {
+            return credentials;
+        }
+
+        try {
+            return new ConfigurationClientCredentials(connectionString);
+        } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    private URL getBuildServiceEndpoint(ConfigurationClientCredentials buildCredentials) {
+        if (serviceEndpoint != null) {
+            return serviceEndpoint;
+        } else if (buildCredentials != null) {
+            return buildCredentials.baseUri();
+        } else {
+            return null;
+        }
     }
 }
 

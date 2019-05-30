@@ -31,7 +31,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.xml.parsers.DocumentBuilderFactory.*;
+import static javax.xml.parsers.DocumentBuilderFactory.newInstance;
 
 class SubscriptionDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionDescriptionSerializer.class);
@@ -189,7 +189,7 @@ class SubscriptionDescriptionSerializer {
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element)node;
+                Element element = (Element) node;
                 switch (element.getTagName()) {
                     case "title":
                         sd = new SubscriptionDescription(topicName, element.getFirstChild().getNodeValue());
@@ -248,6 +248,8 @@ class SubscriptionDescriptionSerializer {
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

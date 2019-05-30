@@ -12,9 +12,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.logging.ServiceLogger;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
+    private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTest.class);
 
     private ConfigurationClient client;
 
@@ -49,14 +48,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @Override
     protected void afterTest() {
-        logger.info("Cleaning up created key values.");
+        logger.asInformational().log("Cleaning up created key values.");
 
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys(keyPrefix + "*"))) {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+            logger.asInformational().log("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }
 
-        logger.info("Finished cleaning up values.");
+        logger.asInformational().log("Finished cleaning up values.");
     }
 
     /**
@@ -558,7 +557,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     public void deleteAllSettings() {
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+            logger.asInformational().log("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }
     }

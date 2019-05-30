@@ -5,6 +5,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -142,6 +143,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(pipeline);
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * Use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder configuration(Configuration configuration) {
+        builder.configuration(configuration);
         return this;
     }
 }
