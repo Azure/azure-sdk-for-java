@@ -6,7 +6,6 @@ package com.azure.core.management;
 import com.azure.core.AzureEnvironment;
 import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.serializer.SerializerAdapter;
 
 /**
  * The base class for generated Azure service clients.
@@ -27,11 +26,6 @@ public abstract class AzureServiceClient extends ServiceClient {
         super(httpPipeline);
 
         this.azureEnvironment = azureEnvironment;
-    }
-
-    @Override
-    protected SerializerAdapter createSerializerAdapter() {
-        return AzureProxy.createDefaultSerializer();
     }
 
     /**
