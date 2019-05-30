@@ -262,13 +262,9 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
         AsyncDocumentClient client1 = clientBuilder.build();
         AsyncDocumentClient client2 = clientBuilder.build();
-
-        String dbId = "db";
-        String collectionId = "coll";
         try {
-            Database databaseDefinition = new Database();
-            databaseDefinition.setId(dbId);
-            createDatabase(client1, dbId);
+            String dbId = database.getId();
+            String collectionId = "coll";
 
             DocumentCollection collectionDefinition = new DocumentCollection();
             collectionDefinition.setId(collectionId);
@@ -307,7 +303,6 @@ public class CollectionCrudTest extends TestSuiteBase {
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
         } finally {
-            safeDeleteDatabase(client1, dbId);
             safeClose(client1);
             safeClose(client2);
         }

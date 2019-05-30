@@ -199,7 +199,7 @@ abstract class AsyncBenchmark<T> {
         int maxNumberOfOperations = configuration.getNumberOfOperations();
         CountDownLatch terminationLatch = new CountDownLatch(1);
         AtomicInteger count = new AtomicInteger(0);
-        for (long i = 1; (maxNumberOfOperations < 0 ? true : i < maxNumberOfOperations) && terminationLatch.getCount() > 0; i++) {
+        for (long i = 0; (maxNumberOfOperations < 0 ? true : i < maxNumberOfOperations) && terminationLatch.getCount() > 0; i++) {
 
             Subscriber<T> subs = new Subscriber<T>() {
 
