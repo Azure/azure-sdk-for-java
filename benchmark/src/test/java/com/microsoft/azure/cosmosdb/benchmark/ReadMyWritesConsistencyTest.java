@@ -60,7 +60,7 @@ public class ReadMyWritesConsistencyTest {
     private final int initialCollectionThroughput = 10_000;
     private final int newCollectionThroughput = 100_000;
     private final int delayForInitiationCollectionScaleUpInSeconds = 120;
-    private final Duration defaultMaxRunningTimeInSeconds = Duration.ofMinutes(40);
+    private final Duration defaultMaxRunningTimeInSeconds = Duration.ofMinutes(45);
 
     private final String maxRunningTime =
                     System.getProperty("MAX_RUNNING_TIME", StringUtils.defaultString(Strings.emptyToNull(
