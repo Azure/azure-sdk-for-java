@@ -1096,6 +1096,7 @@
     <module>./core</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
+    <module>./keyvault/client</module>
     <module>./servicebus/data-plane</module>
     <module>./storage/data-plane</module>
     <module>./tracing</module>
