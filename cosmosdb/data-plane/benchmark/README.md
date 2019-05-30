@@ -1,4 +1,4 @@
-# Benchmark tool
+# Azure Cosmos DB client library for Java - Benchmark tool
 
 ## Build the benchmarking tool
 

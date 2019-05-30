@@ -1,4 +1,5 @@
-# Java SDK for SQL API of Azure Cosmos DB
+# Azure Cosmos DB client library for Java
+## Java SDK for SQL API of Azure Cosmos DB
 [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmosdb/2.4.3/jar)
 [![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
