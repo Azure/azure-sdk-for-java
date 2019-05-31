@@ -36,9 +36,14 @@ final class MessagesAsyncRawClient {
     }
 
     Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return client.messages().enqueueWithRestResponseAsync(queueMessage, null, null, timeoutInSeconds, null, context)
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+        if (timeout == null) {
+            return client.messages().enqueueWithRestResponseAsync(queueMessage, context)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        } else {
+            return client.messages().enqueueWithRestResponseAsync(queueMessage, context)
+                .timeout(timeout)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        }
     }
 
     public Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Context context) {
@@ -46,9 +51,14 @@ final class MessagesAsyncRawClient {
     }
 
     Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, timeoutInSeconds, null, context)
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+        if (timeout == null) {
+            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, context)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        } else {
+            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, context)
+                .timeout(timeout)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        }
     }
 
     public Flux<PeekedMessageItem> peek(int numberOfMessages, Context context) {
@@ -56,9 +66,15 @@ final class MessagesAsyncRawClient {
     }
 
     Flux<PeekedMessageItem> peek(int numberOfMessages, Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return client.messages().peekWithRestResponseAsync(numberOfMessages, timeoutInSeconds, null, context)
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+        if (timeout == null) {
+            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, context)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        } else {
+            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, context)
+                .timeout(timeout)
+                .flatMapMany(response -> Flux.fromIterable(response.value()));
+        }
+
     }
 
     public Mono<VoidResponse> clear(Context context) {
@@ -66,8 +82,13 @@ final class MessagesAsyncRawClient {
     }
 
     Mono<VoidResponse> clear(Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return client.messages().clearWithRestResponseAsync(timeoutInSeconds, null, context)
-            .map(VoidResponse::new);
+        if (timeout == null) {
+            return client.messages().clearWithRestResponseAsync(context)
+                .map(VoidResponse::new);
+        } else {
+            return client.messages().clearWithRestResponseAsync(context)
+                .timeout(timeout)
+                .map(VoidResponse::new);
+        }
     }
 }

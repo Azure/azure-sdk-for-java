@@ -18,17 +18,16 @@ import java.net.URL;
 import java.time.Duration;
 
 final class MessageIdAsyncRawClient {
-    private final String messageId;
-    private final AzureQueueStorageImpl generateClient;
+    private final AzureQueueStorageImpl client;
 
     MessageIdAsyncRawClient(String messageId, AzureQueueStorageImpl generateClient) {
-        this.messageId = messageId;
-        this.generateClient = generateClient;
+        this.client = new AzureQueueStorageImpl(generateClient.httpPipeline())
+            .withUrl(generateClient.url() + "messages/" + messageId)
+            .withVersion(generateClient.version());
     }
 
-    MessageIdAsyncRawClient(URL endpoint, HttpPipeline httpPipeline, String messageId) {
-        this.messageId = messageId;
-        this.generateClient = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
+    MessageIdAsyncRawClient(URL endpoint, HttpPipeline httpPipeline) {
+        this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
     public Mono<Response<UpdatedMessage>> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Context context) {
@@ -36,9 +35,14 @@ final class MessageIdAsyncRawClient {
     }
 
     Mono<Response<UpdatedMessage>> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return generateClient.messageIds().updateWithRestResponseAsync(queueMessage, popReceipt, visibilityTimeout, timeoutInSeconds, null, context)
-            .map(this::getUpdatedMessageResponse);
+        if (timeout == null) {
+            return client.messageIds().updateWithRestResponseAsync(queueMessage, popReceipt, visibilityTimeout, context)
+                .map(this::getUpdatedMessageResponse);
+        } else {
+            return client.messageIds().updateWithRestResponseAsync(queueMessage, popReceipt, visibilityTimeout, context)
+                .timeout(timeout)
+                .map(this::getUpdatedMessageResponse);
+        }
     }
 
     public Mono<VoidResponse> delete(String popReceipt, Context context) {
@@ -46,9 +50,14 @@ final class MessageIdAsyncRawClient {
     }
 
     Mono<VoidResponse> delete(String popReceipt, Duration timeout, Context context) {
-        Integer timeoutInSeconds = (timeout == null) ? null : (int) timeout.getSeconds();
-        return generateClient.messageIds().deleteWithRestResponseAsync(popReceipt, timeoutInSeconds, null, context)
-            .map(VoidResponse::new);
+        if (timeout == null) {
+            return client.messageIds().deleteWithRestResponseAsync(popReceipt, context)
+                .map(VoidResponse::new);
+        } else {
+            return client.messageIds().deleteWithRestResponseAsync(popReceipt, context)
+                .timeout(timeout)
+                .map(VoidResponse::new);
+        }
     }
 
     private Response<UpdatedMessage> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
