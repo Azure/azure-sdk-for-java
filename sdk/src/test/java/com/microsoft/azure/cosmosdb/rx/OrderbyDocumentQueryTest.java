@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.RetryAnalyzier;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -58,6 +59,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
 import com.microsoft.azure.cosmosdb.rx.internal.query.CompositeContinuationToken;
 import com.microsoft.azure.cosmosdb.rx.internal.query.OrderByContinuationToken;
 
+import org.testng.util.RetryAnalyzerCount;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -372,8 +374,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         	assertThat(OrderByContinuationToken.tryParse("{\"property\" : \"Not a valid Order By Token\"}", outOrderByContinuationToken)).isFalse();
         }
 	}
-    
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder",
+            retryAnalyzer = RetryAnalyzier.class)
     public void queryDocumentsWithOrderByContinuationTokensInteger(String sortOrder) throws Exception {
         // Get Actual
         String query = String.format("SELECT * FROM c ORDER BY c.propInt %s", sortOrder);

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.azure.cosmosdb.RetryAnalyzier;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -66,7 +67,8 @@ public class TopQueryTests extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzier.class
+    )
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
@@ -151,7 +153,7 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzier.class)
     public void queryDocumentsWithTopContinuationTokens() throws Exception {
         String query = "SELECT TOP 8 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
