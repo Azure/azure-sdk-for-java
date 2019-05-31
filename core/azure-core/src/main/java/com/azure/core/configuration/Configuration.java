@@ -214,8 +214,8 @@ public class Configuration implements Cloneable {
     private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
         if (!ImplUtils.isNullOrEmpty(value)) {
-            logger.asInformational().log(logMessage, name, value);
             configurations.put(name, value);
+            logger.asInformational().log(logMessage, name, value);
             return true;
         }
 
