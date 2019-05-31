@@ -28,6 +28,7 @@ public class Context {
      *
      * @param key the key
      * @param value the value
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
         if (key == null) {
@@ -51,6 +52,7 @@ public class Context {
      * @param key the key
      * @param value the value
      * @return the new {@link Context} object containing the specified pair added to the set of pairs
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
         if (key == null) {
@@ -65,6 +67,7 @@ public class Context {
      *
      * @param key the key to search for
      * @return the value of the key if it exists
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
         if (key == null) {
