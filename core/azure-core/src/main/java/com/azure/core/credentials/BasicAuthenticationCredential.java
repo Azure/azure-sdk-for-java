@@ -29,7 +29,7 @@ public class BasicAuthenticationCredential extends TokenCredential {
      * @param password basic auth password
      */
     public BasicAuthenticationCredential(String userName, String password) {
-        super("Basic");
+        scheme("Basic");
         this.userName = userName;
         this.password = password;
     }

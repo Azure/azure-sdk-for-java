@@ -41,7 +41,7 @@ public class CredentialsTests {
 
     @Test
     public void tokenCredentialTest() throws Exception {
-        TokenCredential credentials = new TokenCredential("Bearer") {
+        TokenCredential credentials = new TokenCredential() {
             @Override
             public Mono<String> getTokenAsync(String resource) {
                 return Mono.just("this_is_a_token");

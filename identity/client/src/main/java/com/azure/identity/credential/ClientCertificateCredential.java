@@ -23,9 +23,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -36,7 +33,6 @@ import java.util.regex.Pattern;
  * An AAD credential that acquires a token with a client certificate for an AAD application.
  */
 public class ClientCertificateCredential extends AadCredential<ClientCertificateCredential> {
-    private final Map<String, AuthenticationResult> tokens = new HashMap<>();
     private File clientCertificate;
     private String clientCertificatePassword;
 
@@ -70,21 +66,12 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
     }
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<AuthenticationResult> authenticateAsync(String resource) {
         validate();
         if (clientCertificate == null) {
             throw new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential");
         }
-        AuthenticationResult authenticationResult = tokens.get(resource);
-        if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Mono.just(authenticationResult.getAccessToken());
-        } else {
-            return acquireAccessToken(resource)
-                    .map(ar -> {
-                        tokens.put(resource, ar);
-                        return ar.getAccessToken();
-                    });
-        }
+        return acquireAccessToken(resource);
     }
 
     private Mono<AuthenticationResult> acquireAccessToken(String resource) {

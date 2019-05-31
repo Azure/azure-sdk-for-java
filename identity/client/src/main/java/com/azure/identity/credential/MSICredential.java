@@ -3,10 +3,11 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.TokenCredential;
 import com.azure.identity.credential.msi.MSIResourceType;
+import com.azure.identity.implementation.MSIToken;
+import com.azure.identity.implementation.RefreshableTokenCredential;
 
-public abstract class MSICredential extends TokenCredential {
+public abstract class MSICredential extends RefreshableTokenCredential<MSIToken> {
     MSICredential() {
         super();
     }
@@ -23,4 +24,14 @@ public abstract class MSICredential extends TokenCredential {
      * @return the type of the Azure resource this MSI credential is created for.
      */
     public abstract MSIResourceType resourceType();
+
+    @Override
+    protected String getTokenFromAuthResult(MSIToken authResult) {
+        return authResult.accessToken();
+    }
+
+    @Override
+    protected boolean isExpired(MSIToken authResult) {
+        return authResult.isExpired();
+    }
 }

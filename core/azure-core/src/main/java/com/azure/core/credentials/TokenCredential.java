@@ -9,21 +9,22 @@ import reactor.core.publisher.Mono;
  * The base class for credentials that can provide a token.
  */
 public abstract class TokenCredential {
-    private final String scheme;
+    private String scheme;
 
     /**
      * Creates a token credential with scheme "Bearer";
      */
     protected TokenCredential() {
-        this("Bearer");
+        this.scheme = "Bearer";
     }
 
     /**
-     * Creates a token credential with the provided scheme.
+     * Sets the token credential with the provided scheme.
      * @param scheme the scheme for the token.
      */
-    protected TokenCredential(String scheme) {
+    protected TokenCredential scheme(String scheme) {
         this.scheme = scheme;
+        return this;
     }
 
     /**

@@ -9,10 +9,6 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,8 +16,6 @@ import java.util.concurrent.Executors;
  * User account based credential.
  */
 public class UserTokenCredential extends AadCredential<UserTokenCredential> {
-    /** A mapping from resource endpoint to its cached access token. */
-    private Map<String, AuthenticationResult> tokens;
     /** The user name for the Organization Id account. */
     private String username;
     /** The password for the Organization Id account. */
@@ -32,7 +26,6 @@ public class UserTokenCredential extends AadCredential<UserTokenCredential> {
      */
     public UserTokenCredential() {
         super();
-        this.tokens = new ConcurrentHashMap<>();
     }
 
     /**
@@ -65,34 +58,17 @@ public class UserTokenCredential extends AadCredential<UserTokenCredential> {
     }
 
     @Override
-    public synchronized Mono<String> getTokenAsync(String resource) {
+    protected Mono<AuthenticationResult> refreshAsync(AuthenticationResult expiredResult, String resource) {
+        return acquireAccessTokenFromRefreshToken(resource, expiredResult.getRefreshToken(), expiredResult.isMultipleResourceRefreshToken());
+    }
+
+    @Override
+    protected synchronized Mono<AuthenticationResult> authenticateAsync(String resource) {
         validate();
         if (username == null || password == null) {
             throw new IllegalArgumentException("Non-null values must be provided for username and password properties in UserTokenCredential");
         }
-        // Find exact match for the resource
-        AuthenticationResult[] authenticationResult = new AuthenticationResult[1];
-        authenticationResult[0] = tokens.get(resource);
-        // Return if found and not expired
-        if (authenticationResult[0] != null && authenticationResult[0].getExpiresOnDate().after(new Date())) {
-            return Mono.just(authenticationResult[0].getAccessToken());
-        }
-        // If found then refresh
-        boolean shouldRefresh = authenticationResult[0] != null;
-        // If not found for the resource, but is MRRT then also refresh
-        if (authenticationResult[0] == null && !tokens.isEmpty()) {
-            authenticationResult[0] = new ArrayList<>(tokens.values()).get(0);
-            shouldRefresh = authenticationResult[0].isMultipleResourceRefreshToken();
-        }
-
-        if (shouldRefresh) {
-            return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
-                    .onErrorResume(t -> acquireNewAccessToken(resource))
-                    .doOnNext(ar -> tokens.put(resource, ar))
-                    .then(Mono.just(tokens.get(resource).getAccessToken())));
-        } else {
-            return Mono.just(tokens.get(resource).getAccessToken());
-        }
+        return acquireNewAccessToken(resource);
     }
 
     Mono<AuthenticationResult> acquireNewAccessToken(String resource) {

@@ -63,7 +63,7 @@ public class AppServiceMSICredential extends MSICredential {
     }
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<MSIToken> authenticateAsync(String resource) {
         return Mono.fromSupplier(() -> {
             HttpURLConnection connection = null;
             try {
@@ -82,8 +82,7 @@ public class AppServiceMSICredential extends MSICredential {
                 Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-                return msiToken.accessToken();
+                return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             } catch (IOException e) {
                 throw Exceptions.propagate(e);
             } finally {

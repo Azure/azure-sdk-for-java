@@ -27,14 +27,6 @@ public abstract class AzureCredential extends TokenCredential {
         super();
     }
 
-    /**
-     * Creates an AzureCredential with the given token scheme.
-     * @param scheme the token scheme
-     */
-    protected AzureCredential(String scheme) {
-        super(scheme);
-    }
-
     private static AzureCredential createDefault() {
         EnvironmentCredential provider = new EnvironmentCredential();
         return new AzureCredential() {

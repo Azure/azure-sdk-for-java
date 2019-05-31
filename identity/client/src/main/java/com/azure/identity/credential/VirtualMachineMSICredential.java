@@ -18,15 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class VirtualMachineMSICredential extends MSICredential {
     //
     private final List<Integer> retrySlots = new ArrayList<>();
-    private final Lock lock = new ReentrantLock();
-    private final ConcurrentHashMap<String, MSIToken> cache = new ConcurrentHashMap<>();
     private static final Random RANDOM = new Random();
     private final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
 
@@ -158,15 +153,15 @@ public class VirtualMachineMSICredential extends MSICredential {
     }
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<MSIToken> authenticateAsync(String resource) {
         if (this.tokenSource == VirtualMachineMSITokenSource.MSI_EXTENSION) {
             return Mono.fromCallable(() -> this.getTokenForVirtualMachineFromMSIExtension(resource));
         } else {
-            return Mono.fromCallable(() -> this.getTokenForVirtualMachineFromIMDSEndpoint(resource));
+            return Mono.fromCallable(() -> this.getTokenFromIDMSWithRetry(resource));
         }
     }
 
-    private String getTokenForVirtualMachineFromMSIExtension(String tokenAudience) throws IOException {
+    private MSIToken getTokenForVirtualMachineFromMSIExtension(String tokenAudience) throws IOException {
         URL url = new URL(String.format("http://localhost:%d/oauth2/token", this.msiPort));
         String postData = String.format("resource=%s", tokenAudience);
         if (this.objectId != null) {
@@ -197,8 +192,7 @@ public class VirtualMachineMSICredential extends MSICredential {
             Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : "";
 
-            MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-            return msiToken.accessToken();
+            return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
         } finally {
             if (wr != null) {
                 wr.close();
@@ -209,35 +203,7 @@ public class VirtualMachineMSICredential extends MSICredential {
         }
     }
 
-    private String getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
-        MSIToken token = cache.get(tokenAudience);
-        if (token != null && !token.isExpired()) {
-            return token.accessToken();
-        }
-        lock.lock();
-        try {
-            token = cache.get(tokenAudience);
-            if (token != null && !token.isExpired()) {
-                return token.accessToken();
-            }
-            try {
-                token = retrieveTokenFromIDMSWithRetry(tokenAudience);
-                if (token != null) {
-                    cache.put(tokenAudience, token);
-                }
-            } catch (IOException exception) {
-                throw new RuntimeException(exception);
-            }
-            if (token != null) {
-                return token.accessToken();
-            }
-            return null;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private MSIToken retrieveTokenFromIDMSWithRetry(String tokenAudience) throws IOException {
+    private MSIToken getTokenFromIDMSWithRetry(String tokenAudience) throws IOException {
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
 

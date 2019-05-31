@@ -9,9 +9,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.net.MalformedURLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -20,8 +17,6 @@ import java.util.function.Consumer;
  * An AAD credential that acquires a token with a client secret for an AAD application.
  */
 public class ClientSecretCredential extends AadCredential<ClientSecretCredential> {
-    /* A mapping from resource endpoint to its cached access token. */
-    private final Map<String, AuthenticationResult> tokens = new HashMap<>();
     /* The client secret value. */
     private String clientSecret;
 
@@ -43,21 +38,12 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
     }
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<AuthenticationResult> authenticateAsync(String resource) {
         validate();
         if (clientSecret == null) {
             throw new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential");
         }
-        AuthenticationResult authenticationResult = tokens.get(resource);
-        if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Mono.just(authenticationResult.getAccessToken());
-        } else {
-            return acquireAccessToken(resource)
-                    .map(ar -> {
-                        tokens.put(resource, ar);
-                        return ar.getAccessToken();
-                    });
-        }
+        return acquireAccessToken(resource);
     }
 
     private Mono<AuthenticationResult> acquireAccessToken(String resource) {
