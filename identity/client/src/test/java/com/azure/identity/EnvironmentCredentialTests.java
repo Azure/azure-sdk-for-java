@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.fail;
 
 public class EnvironmentCredentialTests {
@@ -21,7 +23,7 @@ public class EnvironmentCredentialTests {
         EnvironmentCredential credential = new EnvironmentCredential();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        String token = credential.getTokenAsync("qux")
+        String token = credential.getTokenAsync(Arrays.asList("qux.default"))
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
                 String message = t.getMessage();

@@ -9,6 +9,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,7 +45,7 @@ public class RefreshableTokenCredentialTests {
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs refresher.getTokenAsync() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getTokenAsync("resource")
+                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis > maxMillis.get()) {
@@ -89,7 +90,7 @@ public class RefreshableTokenCredentialTests {
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs refresher.getTokenAsync() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getTokenAsync("resource")
+                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis > 1000) {
@@ -134,7 +135,7 @@ public class RefreshableTokenCredentialTests {
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs refresher.getTokenAsync() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getTokenAsync("resource" + i) // a different resource every time
+                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource" + i +".default")) // a different resource every time
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis < minMillis.get()) {
@@ -185,7 +186,7 @@ public class RefreshableTokenCredentialTests {
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs refresher.getTokenAsync() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getTokenAsync("resource")
+                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (i >= 0 && millis > maxMillis.get()) {
