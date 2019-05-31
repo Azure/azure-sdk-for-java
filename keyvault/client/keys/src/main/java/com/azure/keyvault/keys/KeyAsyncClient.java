@@ -47,7 +47,7 @@ import java.util.function.Function;
  * <pre>
  * KeyAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credentials(keyVaultCredentials)
+ *   .credential(keyVaultCredential)
  *   .build()
  * </pre>
  *

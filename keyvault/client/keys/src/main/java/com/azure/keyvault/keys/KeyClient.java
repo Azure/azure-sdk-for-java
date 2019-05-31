@@ -46,7 +46,7 @@ import java.util.Objects;
  * <pre>
  * KeyClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credentials(keyVaultCredentials)
+ *   .credential(keyVaultCredential)
  *   .build()
  * </pre>
  *
