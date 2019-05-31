@@ -1,84 +1,157 @@
 package com.azure.core.polling;
 
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Supplier;
-
-public class Poller<T>{
-
-    private static final long serialversionUID =139448132L;
+import java.time.Duration;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 
-    private Supplier<PollResponse<T>> serviceSupplier;
+public class Poller<T> {
+
+    private static final long serialversionUID = 139448132L;
+
+    /*pollOperation is a Function that takes the previous PollResponse, and
+    returns a new PollResponse to represent the current state*/
+    private Function<PollResponse<T>, PollResponse<T>> pollOperation;
+
+    /*Various configuration options to create poller object.*/
     private PollerOptions pollerOptions;
 
     /*This will save last poll response.*/
     private PollResponse<T> pollResponse;
-    private Runnable callbackToCancelOperation;
 
-    /*If consumer do not want to poll. This will not stop the Service Operation.*/
-    private boolean stopPolling;
+    /*This will be called when cancel operation is triggered.*/
+    private Consumer<Poller> cancelOperation;
+
+    /* Indicate to poll automatically or not when poller is created.
+     * default value is false;*/
+    private boolean autoPolling;
 
     /**
+     * Create a Poller that is configured to auto-poll.
+     *
      * @param pollerOptions .
-     * @param serviceSupplier
-     * @param callbackToCancelOperation
-     * **/
-    public Poller(PollerOptions pollerOptions
-                            , Supplier<PollResponse<T>> serviceSupplier
-                            , Runnable callbackToCancelOperation ){
-
+     * @param pollOperation
+     **/
+    public Poller(PollerOptions pollerOptions,
+                  Function<PollResponse<T>,
+                      PollResponse<T>> pollOperation) {
         this.pollerOptions = pollerOptions;
-        this.callbackToCancelOperation = callbackToCancelOperation;
-        this.serviceSupplier = serviceSupplier;
+        this.pollOperation = pollOperation;
     }
 
-    public boolean isDone() {
-        return pollResponse != null && pollResponse.isDone() ;
+    /**
+     * @param pollerOptions
+     * @param pollOperation
+     * @param cancelOperation
+     **/
+    public Poller(PollerOptions pollerOptions,
+                  Function<PollResponse<T>,
+                      PollResponse<T>> pollOperation,
+                  Consumer<Poller> cancelOperation) {
+        this(pollerOptions, pollOperation);
+        this.cancelOperation = cancelOperation;
     }
 
-    /**This will cancel polling from Azure Service if supported by service ***/
-    public void cancelOperation() {
-       if (callbackToCancelOperation!= null) new Thread(callbackToCancelOperation).start();
+    /*public boolean isDone() {
+        return pollResponse != null && pollResponse.isDone();
+    }*/
+
+    /**
+     * This will cancel polling from Azure Service if supported by service
+     *
+     * @throws UnsupportedOperationException
+     **/
+    public void cancelOperation() throws UnsupportedOperationException {
+        if (cancelOperation == null)
+            throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
+
+        //We can not cancel an operation if it was never started
+        //or it is in its terminal state.
+        if (pollResponse == null || pollResponse.status() != PollResponse.OperationStatus.IN_PROGRESS) {
+            return;
+        }
+        cancelOperation.accept(this);
     }
 
     //TODO : Make sure we do not pool every cpu cycle. Polling must be throttle by parameter defined in PollingType i.e interval or expeonential polling
-    /**This will poll once. If you had stopped polling erlier, we will enable polling again.**/
-    public Mono<T> pollOnce() {
-        return Mono.defer(() -> {
+
+    /**
+     * This will poll once. If you had stopped polling erlier, we will enable polling again.
+     **/
+    public Flux<PollResponse<T>> poll() {
+        setStopPolling(false);
+        return sendPollRequestWithDelay()
+            //.flatMap(response -> Mono.just(response))
+            .repeat()
+            .timeout(Duration.ofMillis(this.pollerOptions.getTimeoutInMilliSeconds()))
+            .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED ||
+                pollResponse.status() == PollResponse.OperationStatus.FAILED ||
+                pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
+        /*return Flux.defer(() -> {
             setStopPolling(false);
-            pollResponse = serviceSupplier.get();
-            return Mono.just(pollResponse.getResult());
-        });
+            pollResponse=  sendPollRequestWithDelay().block(Duration.ofMillis(this.pollerOptions.getTimeoutInMilliSeconds()));
+            return Flux.just(pollResponse);
+        });*/
     }
 
-    /**This will keep polling until it is done.**/
-    public Mono<T> pollUntilDone() {
-        return Mono.defer(() -> {
-            setStopPolling(false);
-            while (!isDone() && !pollingStopped()) {
-                System.out.println("Poller.pollUntilDone Invoking Azure Service , checking Operation status");
-                pollResponse = serviceSupplier.get();
-            }
-            return Mono.just(pollResponse.getResult());
-       });
+    public Flux<PollResponse<T>> block() {
+        return Flux.just(poll().blockLast());
     }
 
-    /**This will stop polling**/
-    public void  stopPolling() {
-       setStopPolling(true);
+
+    /**
+     * Get whether or not this PollStrategy's long running operation is done.
+     *
+     * @return Whether or not this PollStrategy's long running operation is done.
+     */
+
+
+    Mono<PollResponse<T>> sendPollRequestWithDelay() {
+        return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
+            if (!isPollingStopped())
+                pollResponse = pollOperation.apply(pollResponse);
+            return Mono.just(pollResponse);
+        })));
     }
 
-    private void setStopPolling(boolean stop){
-        this.stopPolling =stop;
+    /**
+     * If this PollerOptions has a pollIntervalInMillis value, return an Mono that is delayed by the
+     * number of seconds that are in the pollIntervalInMillis value. If this PollerOptions doesn't have
+     * a pollIntervalInMillis value, then return an Single with no delay.
+     *
+     * @return A Mono with delay if this PollerOptions has a pollIntervalInMillis value.
+     */
+    Mono<Void> delayAsync() {
+        Mono<Void> result = Mono.empty();
+        if (this.pollerOptions.getPollIntervalInMillis() > 0) {
+            result = result.delaySubscription(Duration.ofMillis(
+                (long) (this.pollerOptions.getPollIntervalInMillis() * this.pollerOptions.getPollIntervalGrowthFactor())
+            ));
+        }
+        return result;
     }
 
-    public boolean pollingStopped(){
-        return this.stopPolling;
+    /**
+     * This will stop polling
+     **/
+    public void stopPolling() {
+        setStopPolling(true);
     }
-    public PollResponse.OperationStatus status (){
-        return pollResponse!=null?pollResponse.status():null;
+
+    private void setStopPolling(boolean stop) {
+        this.autoPolling = stop;
+    }
+
+    public boolean isPollingStopped() {
+        return this.autoPolling;
+    }
+
+    public PollResponse.OperationStatus getStatus() {
+        return pollResponse != null ? pollResponse.status() : null;
     }
 /*
     static String serializePoller(Poller poller) {

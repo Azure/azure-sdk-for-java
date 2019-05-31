@@ -9,11 +9,6 @@ public class PollerOptions {
      * This should always be more than 1.*/
     private float pollIntervalGrowthFactor =1.0f;
 
-    /*We will call this when we are done*/
-    private Runnable callbackWhenDone;
-
-    /* We will call this to cancel the operation*/
-    private Runnable callbackToCancelOperation;
 
     /**
      * @param timeoutInMilliSeconds This is the max time after that poller will giveup and not poll anymore.

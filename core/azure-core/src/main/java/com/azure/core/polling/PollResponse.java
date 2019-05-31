@@ -16,11 +16,11 @@ public final class PollResponse<T>{
     private OperationStatus status;
     private T result;
     public enum OperationStatus{
-        SUCCESSFULLY_COMPLETED,
+        NOT_STARTED,
         IN_PROGRESS,
+        SUCCESSFULLY_COMPLETED,
         FAILED,
-        CANCELLED,
-        STARTED
+        USER_CANCELLED
     }
 
     public PollResponse( OperationStatus status, T result){
@@ -44,7 +44,7 @@ public final class PollResponse<T>{
     public boolean isDone(){
         return status == OperationStatus.SUCCESSFULLY_COMPLETED
             || status == OperationStatus.FAILED
-            || status == OperationStatus.CANCELLED;
+            || status == OperationStatus.USER_CANCELLED;
     }
 
     public T getResult(){
