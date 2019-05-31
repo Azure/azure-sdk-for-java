@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+import com.microsoft.azure.cosmosdb.RetryAnalyzier;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -258,7 +259,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(client, database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzier.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
         AsyncDocumentClient client1 = clientBuilder.build();
         AsyncDocumentClient client2 = clientBuilder.build();
