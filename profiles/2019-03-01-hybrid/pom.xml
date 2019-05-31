@@ -6,12 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.profile_2019_03_01_hybrid</groupId>
-  <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-arm-parent</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../../pom.management.xml</relativePath>
-  </parent>
+  a
   <artifactId>azure-profile-parent</artifactId>
   <version>1.0.0-beta</version>
   <packaging>pom</packaging>
@@ -110,14 +105,16 @@
     <!-- roll up pakcages -->
     <module>./azure</module>
     <!-- multi api -->
-    <module>../../resources/resource-manager/v2016_06_01</module> ??????? release this
+    <module>../../resources/resource-manager/v2016_06_01</module>
     <module>../../resources/resource-manager/v2018_05_01</module>
     <module>../../authorization/resource-manager/v2015_07_01</module>
     <module>../../policy/resource-manager/v2016_12_01</module>
     <module>../../locks/resource-manager/v2016_09_01</module>
-    <module>../../compute/resource-manager/v2017_12_01</module> ??????? release this
+    <module>../../compute/resource-manager/v2017_12_01</module>
     <module>../../compute/resource-manager/v2017_03_30</module>
-    <module>../../monitor/resource-manager/v2017_03_30</module>
+    <module>../../monitor/resource-manager/v2015_04_01</module>
+    <module>../../monitor/resource-manager/v2017_05_01_preview</module>
+    <module>../../monitor/resource-manager/v2018_01_01</module>
     <module>../../network/resource-manager/v2017_10_01</module>
     <module>../../dns/resource-manager/v2016_04_01</module>
     <module>../../storage/resource-manager/v2017_10_01</module>
