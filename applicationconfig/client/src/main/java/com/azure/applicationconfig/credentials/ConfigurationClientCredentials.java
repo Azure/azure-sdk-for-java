@@ -4,6 +4,7 @@ package com.azure.applicationconfig.credentials;
 
 import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
+import com.azure.core.implementation.util.ImplUtils;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -168,7 +169,7 @@ public class ConfigurationClientCredentials {
         }
 
         CredentialInformation(String connectionString) {
-            if (connectionString == null || connectionString.isEmpty()) {
+            if (ImplUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException(connectionString);
             }
 

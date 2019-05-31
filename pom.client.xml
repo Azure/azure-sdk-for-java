@@ -196,6 +196,7 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+              <additionalOptions></additionalOptions>
             </configuration>
           </execution>
         </executions>
@@ -545,6 +546,7 @@
   <modules>
     <module>./applicationconfig/client</module>
     <module>./core</module>
+    <module>./keyvault/client</module>
     <module>./tracing</module>
   </modules>
 </project>
