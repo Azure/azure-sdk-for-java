@@ -19,9 +19,9 @@ public class Context {
      */
     public static final Context NONE = new Context(null, null, null);
 
-    private final Context parent;
-    private final Object key;
-    private final Object value;
+    final Context parent;
+    final Object key;
+    final Object value;
 
     /**
      * Constructs a new {@link Context} object.
@@ -38,7 +38,7 @@ public class Context {
         this.value = value;
     }
 
-    private Context(Context parent, Object key, Object value) {
+    Context(Context parent, Object key, Object value) {
         this.parent = parent;
         this.key = key;
         this.value = value;
@@ -77,4 +77,5 @@ public class Context {
         }
         return Optional.empty();
     }
+
 }
