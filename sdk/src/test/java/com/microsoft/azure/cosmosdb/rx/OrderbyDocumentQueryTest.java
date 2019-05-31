@@ -41,6 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -438,6 +439,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         return Observable.merge(result, 100).
                 map(resp -> resp.getResource())
                 .toList().toBlocking().single();
+    }
+
+    @BeforeMethod(groups = { "simple" })
+    public void beforeMethod() throws Exception {
+        // add a cool off time
+        TimeUnit.SECONDS.sleep(10);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

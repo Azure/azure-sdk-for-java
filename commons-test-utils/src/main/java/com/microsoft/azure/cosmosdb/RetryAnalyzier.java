@@ -35,11 +35,9 @@ import java.util.concurrent.TimeUnit;
 public class RetryAnalyzier extends RetryAnalyzerCount {
     private final Logger logger = LoggerFactory.getLogger(RetryAnalyzier.class);
     private final int waitBetweenRetriesInSeconds = 120;
-    private final int retryLimit;
 
     public RetryAnalyzier() {
-        this.retryLimit = Integer.parseInt(TestConfigurations.MAX_RETRY_LIMIT);
-        this.setCount(retryLimit);
+        this.setCount(Integer.parseInt(TestConfigurations.MAX_RETRY_LIMIT));
     }
 
     @Override
