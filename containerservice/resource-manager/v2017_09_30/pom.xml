@@ -9,9 +9,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure.azure-mgmt-containerservice-2017-09-30</groupId>
     <parent>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-management-sdk-parent</artifactId>
-        <version>1.0.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-parent</artifactId>
+        <version>1.1.0</version>
         <relativePath>../../../pom.management.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-containerservice</artifactId>
