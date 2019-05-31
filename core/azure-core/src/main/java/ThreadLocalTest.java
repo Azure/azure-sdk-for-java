@@ -1,8 +1,6 @@
 import com.azure.core.util.Context;
-import com.azure.core.util.ContextManager;
-import com.azure.core.util.ThreadLocalContext;
 
-import static com.azure.core.util.ThreadLocalContext.getThreadLocalContext;
+import static com.azure.core.util.Context.getThreadLocalContext;
 
 public class ThreadLocalTest {
 
@@ -15,9 +13,8 @@ public class ThreadLocalTest {
         System.out.println("Context before try block: " + getThreadLocalContext());
 
         System.out.println("NOW STARTING TRY BLOCK");
-        try (ThreadLocalContext ctx = ContextManager.newContext()) {
-            ctx.addData("Name", "Jonathan")
-               .addData("Location", "NZ");
+        try (Context ctx = new Context("Name", "Jonathan").addData("Location", "NZ")) {
+            ctx.addData("Employer", "Microsoft");
             clientLibraryMethod();
         } catch (Exception e) {
             e.printStackTrace();
