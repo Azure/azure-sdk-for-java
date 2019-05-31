@@ -7,8 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.profile_2019_03_01_hybrid</groupId>
   <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-management-sdk-parent</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-arm-parent</artifactId>
     <version>1.0.0</version>
     <relativePath>../../pom.management.xml</relativePath>
   </parent>
