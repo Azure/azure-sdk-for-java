@@ -31,8 +31,8 @@ public abstract class AzureCredential extends TokenCredential {
         EnvironmentCredential provider = new EnvironmentCredential();
         return new AzureCredential() {
             @Override
-            public Mono<String> getTokenAsync(String resource) {
-                return provider.getTokenAsync(resource);
+            public Mono<String> getTokenAsync(List<String> scopes) {
+                return provider.getTokenAsync(scopes);
             }
         };
     }

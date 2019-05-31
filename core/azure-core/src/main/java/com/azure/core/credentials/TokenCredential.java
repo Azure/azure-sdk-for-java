@@ -5,6 +5,8 @@ package com.azure.core.credentials;
 
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * The base class for credentials that can provide a token.
  */
@@ -36,8 +38,8 @@ public abstract class TokenCredential {
 
     /**
      * Asynchronously get a token for a given resource/audience.
-     * @param resource the resource/audience the token will be used for
+     * @param scopes the resource/audience the token will be used for
      * @return a Publisher that emits a single token
      */
-    public abstract Mono<String> getTokenAsync(String resource);
+    public abstract Mono<String> getTokenAsync(List<String> scopes);
 }

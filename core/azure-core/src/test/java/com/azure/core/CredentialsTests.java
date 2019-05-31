@@ -16,6 +16,7 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.util.List;
 
 public class CredentialsTests {
 
@@ -43,7 +44,7 @@ public class CredentialsTests {
     public void tokenCredentialTest() throws Exception {
         TokenCredential credentials = new TokenCredential() {
             @Override
-            public Mono<String> getTokenAsync(String resource) {
+            public Mono<String> getTokenAsync(List<String> scopes) {
                 return Mono.just("this_is_a_token");
             }
         };

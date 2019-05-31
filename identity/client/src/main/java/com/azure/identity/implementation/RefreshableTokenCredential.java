@@ -8,6 +8,7 @@ import reactor.core.publisher.FluxSink.OverflowStrategy;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,7 +37,9 @@ public abstract class RefreshableTokenCredential<T> extends TokenCredential {
         return authenticateAsync(resource);
     }
 
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<String> getTokenAsync(List<String> scopes) {
+        String scope = scopes.get(0);
+        String resource = scope.substring(0, scope.lastIndexOf('.'));
         if (isCached(resource)) {
             return Mono.just(getCachedToken(resource));
         } else {

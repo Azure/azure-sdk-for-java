@@ -5,8 +5,9 @@ import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.identity.credential.ClientSecretCredential;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * A credential provider that provides token credentials based on environment
@@ -23,7 +24,7 @@ public class EnvironmentCredential extends TokenCredential {
     }
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<String> getTokenAsync(List<String> scopes) {
         return Mono.fromSupplier(() -> {
             if (configuration.contains(BaseConfigurations.AZURE_CLIENT_ID)
                 && configuration.contains(BaseConfigurations.AZURE_CLIENT_SECRET)
@@ -36,6 +37,6 @@ public class EnvironmentCredential extends TokenCredential {
             }
             // Other environment variables
             throw new ClientAuthenticationException("Cannot create any credentials with the current environment variables", null);
-        }).flatMap(cred -> cred.getTokenAsync(resource));
+        }).flatMap(cred -> cred.getTokenAsync(scopes));
     }
 }

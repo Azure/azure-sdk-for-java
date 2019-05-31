@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 /**
  * The Pipeline policy that adds credential from ServiceClientCredentials to a request.
  */
@@ -26,7 +28,7 @@ public class TokenCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return credential.getTokenAsync(context.httpRequest().url().toString())
+        return credential.getTokenAsync(Arrays.asList(context.httpRequest().url().toString() + ".default"))
             .flatMap(token -> {
                 context.httpRequest().headers().put("Authorization", credential.scheme() + " " + token);
                 return next.process();

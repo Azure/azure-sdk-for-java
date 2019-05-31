@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,7 +85,9 @@ public abstract class AzureTokenCredentials extends TokenCredential {
     public abstract Mono<String> getToken(String resource);
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<String> getTokenAsync(List<String> scopes) {
+        String scope = scopes.get(0);
+        String resource = scope.substring(0, scope.lastIndexOf('.'));
         return getTokenFromUri(resource).map(token -> SCHEME + token);
     }
 
