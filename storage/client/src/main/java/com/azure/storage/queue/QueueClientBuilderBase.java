@@ -15,14 +15,23 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 final class QueueClientBuilderBase {
+    private static final String DEFAULT_ENDPOINTS_PROTOCOL = "DefaultEndpointsProtocol".toLowerCase();
+    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
+    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ENDPOINT_SUFFIX = "EndpointSuffix".toLowerCase();
+    private static final String ENDPOINT_FORMAT = "%s://%s.queue.%s";
+
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -47,7 +56,7 @@ final class QueueClientBuilderBase {
         policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new TokenCredentialPolicy(credentials));
+        policies.add(new TokenCredentialPolicy(credentials)); // This needs to be a different credential type.
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -74,8 +83,30 @@ final class QueueClientBuilderBase {
         return this;
     }
 
-    public QueueClientBuilderBase connectionString(String connectionString) {
-        // The connection string should contain the information needed to build the credentials and set the endpoint.
+    public QueueClientBuilderBase connectionString(String connectionString) throws MalformedURLException {
+        Objects.requireNonNull(connectionString);
+
+        Map<String, String> connectionKVPs = new HashMap<>();
+        for (String s : connectionString.split(";")) {
+            String[] kvp = s.split("=", 1);
+            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+        }
+
+        String protocol = connectionKVPs.get(DEFAULT_ENDPOINTS_PROTOCOL);
+        String accountName = connectionKVPs.get(ACCOUNT_NAME);
+        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
+
+        if (ImplUtils.isNullOrEmpty(protocol) ||
+            ImplUtils.isNullOrEmpty(accountName) ||
+            ImplUtils.isNullOrEmpty(accountKey) ||
+            ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            throw new IllegalArgumentException("Improperly formatted connection string");
+        }
+
+        this.endpoint = new URL(String.format(endpointSuffix, protocol, accountName, endpointSuffix));
+        // Use accountName and accountKey to get the SAS token using the credential class.
+
         return this;
     }
 
