@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.storage.queue.models.AccessPolicy;
@@ -21,23 +25,35 @@ import static org.junit.Assert.assertTrue;
 
 public class QueueAsyncClientTests extends QueueClientTestsBase {
     private QueueAsyncClient client;
+    private QueueAsyncClientBuilder builder;
 
     @Override
     protected void beforeTest() {
+        builder = clientSetup((connectionString, endpoint) ->
+            QueueAsyncClient.builder()
+                .endpoint(endpoint)
+                .connectionString(connectionString)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        client = buildClient(false);
+    }
+
+    private QueueAsyncClient buildClient(boolean includeMetadataHeader) {
+        if (includeMetadataHeader) {
+            HttpHeaders metadataHeaders = new HttpHeaders();
+            metadataHeaders.put("x-ms-meta-sample1", "sample1")
+                .put("x-ms-meta-sample2", "sample2");
+            builder.addPolicy(new AddHeadersPolicy(metadataHeaders));
+        }
+
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(connectionString -> QueueAsyncClient.builder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+            return client = builder.httpClient(interceptorManager.getPlaybackClient())
+                .build();
         } else {
-            client = clientSetup(connectionString -> QueueAsyncClient.builder()
-                .connectionString(connectionString)
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            return client = builder.httpClient(HttpClient.createDefault().wiretap(true))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .build());
+                .build();
         }
     }
 
@@ -57,12 +73,26 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void createQueueAlreadyExists() {
+    public void createQueueAlreadyExistsSameMetadata() {
         StepVerifier.create(client.create())
             .verifyComplete();
 
         StepVerifier.create(client.create())
             .verifyComplete();
+    }
+
+    @Override
+    public void createQueueAlreadyExistsDifferentMetadata() {
+        StepVerifier.create(client.create())
+            .verifyComplete();
+
+        QueueAsyncClient metadataClient = buildClient(true);
+        StepVerifier.create(metadataClient.create())
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof StorageErrorException);
+                StorageErrorException storageErrorException = (StorageErrorException) throwable;
+                assertEquals(409, storageErrorException.response().statusCode());
+            });
     }
 
     @Override
@@ -92,7 +122,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void setMetadata() {
+    public void setEmptyMetadata() {
         StepVerifier.create(client.create())
             .verifyComplete();
 
@@ -102,7 +132,14 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
         StepVerifier.create(client.getProperties())
             .verifyComplete();
+    }
 
+    @Override
+    public void setFilledMetadata() {
+        StepVerifier.create(client.create())
+            .verifyComplete();
+
+        Map<String, String> metadata = new HashMap<>();
         metadata.put("sample1", "sample1");
         metadata.put("sample2", "sample2");
         StepVerifier.create(client.setMetadata(metadata))
@@ -128,7 +165,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void setAccessPolicy() {
+    public void setEmptyAccessPolicy() {
         StepVerifier.create(client.create())
             .verifyComplete();
 
@@ -138,18 +175,25 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
         StepVerifier.create(client.getAccessPolicy())
             .verifyComplete();
+    }
 
+    @Override
+    public void setFilledAccessPolicy() {
+        StepVerifier.create(client.create())
+            .verifyComplete();
+
+        List<SignedIdentifier> permissions = new ArrayList<>();
         OffsetDateTime start = OffsetDateTime.of(LocalDateTime.of(1900, 1, 1, 0, 0), ZoneOffset.UTC);
         OffsetDateTime expiry = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC);
         AccessPolicy policy = new AccessPolicy()
             .start(start)
             .expiry(expiry)
             .permission("raup");
+
         SignedIdentifier twentiethCenturyRAUP = new SignedIdentifier()
             .id("myAccessPolicy")
             .accessPolicy(policy);
 
-        // Limit on the policy ID is 64 characters, add a test for that.
         permissions.add(twentiethCenturyRAUP);
         StepVerifier.create(client.setAccessPolicy(permissions))
             .verifyComplete();
@@ -162,6 +206,41 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
                 assertEquals(policy.start(), responsePolicy.start());
                 assertEquals(policy.expiry(), responsePolicy.expiry());
             })
+            .verifyComplete();
+    }
+
+    @Override
+    public void setAccessPolicyIdTooLong() {
+        StepVerifier.create(client.create())
+            .verifyComplete();
+
+        List<SignedIdentifier> permissions = new ArrayList<>();
+        OffsetDateTime start = OffsetDateTime.of(LocalDateTime.of(1900, 1, 1, 0, 0), ZoneOffset.UTC);
+        OffsetDateTime expiry = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC);
+        AccessPolicy policy = new AccessPolicy()
+            .start(start)
+            .expiry(expiry)
+            .permission("raup");
+
+        SignedIdentifier longNamedPermission = new SignedIdentifier()
+            .id("IDecidedToHaveAVeryLongAccessPolicyNameWhichEndsUpBeingLargerThanAllowedByTheService")
+            .accessPolicy(policy);
+
+        permissions.add(longNamedPermission);
+        StepVerifier.create(client.setAccessPolicy(permissions))
+            .verifyComplete();
+
+        StepVerifier.create(client.getAccessPolicy())
+            .assertNext(response -> {
+                assertEquals(longNamedPermission.id(), response.id());
+                AccessPolicy responsePolicy = response.accessPolicy();
+                assertEquals(policy.permission(), responsePolicy.permission());
+                assertEquals(policy.start(), responsePolicy.start());
+                assertEquals(policy.expiry(), responsePolicy.expiry());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getAccessPolicy())
             .verifyComplete();
     }
 }

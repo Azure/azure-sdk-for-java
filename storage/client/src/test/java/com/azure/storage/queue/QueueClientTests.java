@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.storage.queue.models.AccessPolicy;
@@ -21,23 +25,35 @@ import static org.junit.Assert.fail;
 
 public class QueueClientTests extends QueueClientTestsBase {
     private QueueClient client;
+    private QueueClientBuilder builder;
 
     @Override
     protected void beforeTest() {
+        builder = clientSetup((connectionString, endpoint) ->
+            QueueClient.builder()
+                .endpoint(endpoint)
+                .connectionString(connectionString)
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        client = buildClient(false);
+    }
+
+    private QueueClient buildClient(boolean includeMetadataHeader) {
+        if (includeMetadataHeader) {
+            HttpHeaders metadataHeaders = new HttpHeaders();
+            metadataHeaders.put("x-ms-meta-sample1", "sample1")
+                .put("x-ms-meta-sample2", "sample2");
+            builder.addPolicy(new AddHeadersPolicy(metadataHeaders));
+        }
+
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(connectionString -> QueueClient.builder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+            return client = builder.httpClient(interceptorManager.getPlaybackClient())
+                .build();
         } else {
-            client = clientSetup(connectionString -> QueueClient.builder()
-                .connectionString(connectionString)
-                .httpClient(HttpClient.createDefault().wiretap(true))
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            return client = builder.httpClient(HttpClient.createDefault().wiretap(true))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .build());
+                .build();
         }
     }
 
@@ -60,12 +76,26 @@ public class QueueClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void createQueueAlreadyExists() {
+    public void createQueueAlreadyExistsSameMetadata() {
         try {
             client.create();
             client.create();
         } catch (StorageErrorException ex) {
             fail();
+        }
+    }
+
+    @Override
+    public void createQueueAlreadyExistsDifferentMetadata() {
+        try {
+            client.create();
+
+            QueueClient metadataClient = buildClient(true);
+            metadataClient.create();
+
+            fail();
+        } catch (StorageErrorException ex) {
+            assertEquals(409, ex.response().statusCode());
         }
     }
 
@@ -101,7 +131,7 @@ public class QueueClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void setMetadata() {
+    public void setEmptyMetadata() {
         try {
             client.create();
 
@@ -110,15 +140,26 @@ public class QueueClientTests extends QueueClientTestsBase {
 
             QueueProperties queueProperties = client.getProperties();
             assertEquals(0, queueProperties.metadata().size());
+        } catch (StorageErrorException ex) {
+            fail();
+        }
+    }
 
+    @Override
+    public void setFilledMetadata() {
+        try {
+            client.create();
+
+            Map<String, String> metadata = new HashMap<>();
             metadata.put("sample1", "sample1");
             metadata.put("sample2", "sample2");
             client.setMetadata(metadata);
 
-            queueProperties = client.getProperties();
+            QueueProperties queueProperties = client.getProperties();
             assertEquals(2, queueProperties.metadata().size());
             assertEquals("sample1", queueProperties.metadata().get("sample1"));
             assertEquals("sample2", queueProperties.metadata().get("sample2"));
+
         } catch (StorageErrorException ex) {
             fail();
         }
@@ -136,7 +177,7 @@ public class QueueClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void setAccessPolicy() {
+    public void setEmptyAccessPolicy() {
         try {
             client.create();
 
@@ -145,7 +186,17 @@ public class QueueClientTests extends QueueClientTestsBase {
 
             List<SignedIdentifier> responsePermissions = client.getAccessPolicy();
             assertEquals(0, responsePermissions.size());
+        } catch (StorageErrorException ex) {
+            fail();
+        }
+    }
 
+    @Override
+    public void setFilledAccessPolicy() {
+        try {
+            client.create();
+
+            List<SignedIdentifier> permissions = new ArrayList<>();
             OffsetDateTime start = OffsetDateTime.of(LocalDateTime.of(1900, 1, 1, 0, 0), ZoneOffset.UTC);
             OffsetDateTime expiry = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC);
             AccessPolicy policy = new AccessPolicy()
@@ -158,7 +209,7 @@ public class QueueClientTests extends QueueClientTestsBase {
             permissions.add(twentiethCenturyRAUP);
             client.setAccessPolicy(permissions);
 
-            responsePermissions = client.getAccessPolicy();
+            List<SignedIdentifier> responsePermissions = client.getAccessPolicy();
             assertEquals(1, responsePermissions.size());
 
             SignedIdentifier responsePermission = responsePermissions.get(0);
@@ -169,6 +220,33 @@ public class QueueClientTests extends QueueClientTestsBase {
             assertEquals(policy.expiry(), responsePolicy.expiry());
         } catch (StorageErrorException ex) {
             fail();
+        }
+    }
+
+    @Override
+    public void setAccessPolicyIdTooLong() {
+        try {
+            client.create();
+
+            List<SignedIdentifier> permissions = new ArrayList<>();
+            OffsetDateTime start = OffsetDateTime.of(LocalDateTime.of(1900, 1, 1, 0, 0), ZoneOffset.UTC);
+            OffsetDateTime expiry = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC);
+            AccessPolicy policy = new AccessPolicy()
+                .start(start)
+                .expiry(expiry)
+                .permission("raup");
+
+            SignedIdentifier longNamedPermission = new SignedIdentifier()
+                .id("IDecidedToHaveAVeryLongAccessPolicyNameWhichEndsUpBeingLargerThanAllowedByTheService")
+                .accessPolicy(policy);
+
+            permissions.add(longNamedPermission);
+            client.setAccessPolicy(permissions);
+
+            fail();
+        } catch (StorageErrorException ex) {
+            assertEquals(409, ex.response().statusCode());
+            assertEquals(0, client.getAccessPolicy().size());
         }
     }
 }

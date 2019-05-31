@@ -8,8 +8,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
-import java.net.MalformedURLException;
-
 public final class QueueClientBuilder {
     private final QueueClientBuilderBase builder;
 
@@ -21,7 +19,7 @@ public final class QueueClientBuilder {
         return new QueueClient(new QueueRawClient(builder.build()));
     }
 
-    public QueueClientBuilder endpoint(String endpoint) throws MalformedURLException {
+    public QueueClientBuilder endpoint(String endpoint) {
         builder.endpoint(endpoint);
         return this;
     }

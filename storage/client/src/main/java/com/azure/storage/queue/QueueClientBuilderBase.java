@@ -26,11 +26,8 @@ import java.util.Map;
 import java.util.Objects;
 
 final class QueueClientBuilderBase {
-    private static final String DEFAULT_ENDPOINTS_PROTOCOL = "DefaultEndpointsProtocol".toLowerCase();
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
-    private static final String ENDPOINT_SUFFIX = "EndpointSuffix".toLowerCase();
-    private static final String ENDPOINT_FORMAT = "%s://%s.queue.%s";
 
     private final List<HttpPipelinePolicy> policies;
 
@@ -73,8 +70,14 @@ final class QueueClientBuilderBase {
         return new QueueAsyncRawClient(endpoint, pipeline);
     }
 
-    public QueueClientBuilderBase endpoint(String endpoint) throws MalformedURLException {
-        this.endpoint = new URL(endpoint);
+    public QueueClientBuilderBase endpoint(String endpoint) {
+        Objects.requireNonNull(endpoint);
+        try {
+            this.endpoint = new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+        }
+
         return this;
     }
 
@@ -83,7 +86,7 @@ final class QueueClientBuilderBase {
         return this;
     }
 
-    public QueueClientBuilderBase connectionString(String connectionString) throws MalformedURLException {
+    public QueueClientBuilderBase connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -92,19 +95,13 @@ final class QueueClientBuilderBase {
             connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
         }
 
-        String protocol = connectionKVPs.get(DEFAULT_ENDPOINTS_PROTOCOL);
         String accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
-        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
-        if (ImplUtils.isNullOrEmpty(protocol) ||
-            ImplUtils.isNullOrEmpty(accountName) ||
-            ImplUtils.isNullOrEmpty(accountKey) ||
-            ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            throw new IllegalArgumentException("Improperly formatted connection string");
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
-        this.endpoint = new URL(String.format(endpointSuffix, protocol, accountName, endpointSuffix));
         // Use accountName and accountKey to get the SAS token using the credential class.
 
         return this;
