@@ -19,6 +19,11 @@ import java.util.List;
  */
 public interface BackupRequest extends HasInner<BackupRequestInner>, HasManager<AppServiceManager> {
     /**
+     * @return the backupName value.
+     */
+    String backupName();
+
+    /**
      * @return the backupSchedule value.
      */
     BackupSchedule backupSchedule();

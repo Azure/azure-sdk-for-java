@@ -37,12 +37,6 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private String subscription;
 
     /**
-     * App Service plan administration site.
-     */
-    @JsonProperty(value = "properties.adminSiteName")
-    private String adminSiteName;
-
-    /**
      * Specification for the App Service Environment to use for the App Service
      * plan.
      */
@@ -72,6 +66,13 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private Boolean perSiteScaling;
 
     /**
+     * Maximum number of total workers allowed for this ElasticScaleEnabled App
+     * Service Plan.
+     */
+    @JsonProperty(value = "properties.maximumElasticWorkerCount")
+    private Integer maximumElasticWorkerCount;
+
+    /**
      * Number of apps assigned to this App Service plan.
      */
     @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
@@ -92,6 +93,12 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private DateTime spotExpirationTime;
 
     /**
+     * The time when the server farm free offer expires.
+     */
+    @JsonProperty(value = "properties.freeOfferExpirationTime")
+    private DateTime freeOfferExpirationTime;
+
+    /**
      * Resource group of the App Service plan.
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -105,11 +112,18 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private Boolean reserved;
 
     /**
-     * If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Obsolete: If Hyper-V container app service plan
+     * &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     @JsonProperty(value = "properties.isXenon")
     private Boolean isXenon;
+
+    /**
+     * If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    @JsonProperty(value = "properties.hyperV")
+    private Boolean hyperV;
 
     /**
      * Scaling worker count.
@@ -166,26 +180,6 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public String subscription() {
         return this.subscription;
-    }
-
-    /**
-     * Get app Service plan administration site.
-     *
-     * @return the adminSiteName value
-     */
-    public String adminSiteName() {
-        return this.adminSiteName;
-    }
-
-    /**
-     * Set app Service plan administration site.
-     *
-     * @param adminSiteName the adminSiteName value to set
-     * @return the AppServicePlanPatchResource object itself.
-     */
-    public AppServicePlanPatchResource withAdminSiteName(String adminSiteName) {
-        this.adminSiteName = adminSiteName;
-        return this;
     }
 
     /**
@@ -249,6 +243,26 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
+     *
+     * @return the maximumElasticWorkerCount value
+     */
+    public Integer maximumElasticWorkerCount() {
+        return this.maximumElasticWorkerCount;
+    }
+
+    /**
+     * Set maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
+     *
+     * @param maximumElasticWorkerCount the maximumElasticWorkerCount value to set
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
+        this.maximumElasticWorkerCount = maximumElasticWorkerCount;
+        return this;
+    }
+
+    /**
      * Get number of apps assigned to this App Service plan.
      *
      * @return the numberOfSites value
@@ -298,6 +312,26 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get the time when the server farm free offer expires.
+     *
+     * @return the freeOfferExpirationTime value
+     */
+    public DateTime freeOfferExpirationTime() {
+        return this.freeOfferExpirationTime;
+    }
+
+    /**
+     * Set the time when the server farm free offer expires.
+     *
+     * @param freeOfferExpirationTime the freeOfferExpirationTime value to set
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withFreeOfferExpirationTime(DateTime freeOfferExpirationTime) {
+        this.freeOfferExpirationTime = freeOfferExpirationTime;
+        return this;
+    }
+
+    /**
      * Get resource group of the App Service plan.
      *
      * @return the resourceGroup value
@@ -327,7 +361,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Get obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the isXenon value
      */
@@ -336,13 +370,33 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Set obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param isXenon the isXenon value to set
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withIsXenon(Boolean isXenon) {
         this.isXenon = isXenon;
+        return this;
+    }
+
+    /**
+     * Get if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @return the hyperV value
+     */
+    public Boolean hyperV() {
+        return this.hyperV;
+    }
+
+    /**
+     * Set if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @param hyperV the hyperV value to set
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withHyperV(Boolean hyperV) {
+        this.hyperV = hyperV;
         return this;
     }
 
