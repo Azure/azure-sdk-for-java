@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DatabaseForTest {
     private static Logger logger = LoggerFactory.getLogger(DatabaseForTest.class);
     public static final String SHARED_DB_ID_PREFIX = "RxJava.SDKTest.SharedDatabase";
-    private static final Duration CLEANUP_THRESHOLD_DURATION = Duration.ofHours(1);
+    private static final Duration CLEANUP_THRESHOLD_DURATION = Duration.ofHours(2);
     private static final String DELIMITER = "_";
     private static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
 

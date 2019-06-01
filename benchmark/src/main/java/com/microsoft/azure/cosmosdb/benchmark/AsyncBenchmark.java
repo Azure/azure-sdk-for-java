@@ -51,10 +51,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
@@ -196,10 +195,9 @@ abstract class AsyncBenchmark<T> {
 
         long startTime = System.currentTimeMillis();
 
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-        CountDownLatch terminationLatch = new CountDownLatch(1);
-        AtomicInteger count = new AtomicInteger(0);
-        for (long i = 0; (maxNumberOfOperations < 0 ? true : i < maxNumberOfOperations) && terminationLatch.getCount() > 0; i++) {
+        AtomicLong count = new AtomicLong(0);
+        long i;
+        for ( i = 0; shouldContinue(startTime, i); i++) {
 
             Subscriber<T> subs = new Subscriber<T>() {
 
@@ -213,8 +211,9 @@ abstract class AsyncBenchmark<T> {
                     concurrencyControlSemaphore.release();
                     AsyncBenchmark.this.onSuccess();
 
-                    if (!shouldContinue(startTime, count.incrementAndGet())) {
-                        terminationLatch.countDown();
+                    synchronized (count) {
+                        count.incrementAndGet();
+                        count.notify();
                     }
                 }
 
@@ -225,10 +224,10 @@ abstract class AsyncBenchmark<T> {
                                  e.getMessage(), Thread.currentThread().getName(), e);
                     concurrencyControlSemaphore.release();
                     AsyncBenchmark.this.onError(e);
-                    count.incrementAndGet();
 
-                    if (!shouldContinue(startTime, count.incrementAndGet())) {
-                        terminationLatch.countDown();
+                    synchronized (count) {
+                        count.incrementAndGet();
+                        count.notify();
                     }
                 }
 
@@ -240,7 +239,12 @@ abstract class AsyncBenchmark<T> {
             performWorkload(subs, i);
         }
 
-        terminationLatch.await();
+        synchronized (count) {
+            while (count.get() < i) {
+                count.wait();
+            }
+        }
+
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
                     configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));

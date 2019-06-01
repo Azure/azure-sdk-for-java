@@ -59,7 +59,7 @@ public class ReadMyWritesConsistencyTest {
     private final static Logger logger = LoggerFactory.getLogger(ReadMyWritesConsistencyTest.class);
     private final int initialCollectionThroughput = 10_000;
     private final int newCollectionThroughput = 100_000;
-    private final int delayForInitiationCollectionScaleUpInSeconds = 120;
+    private final int delayForInitiationCollectionScaleUpInSeconds = 60;
     private final Duration defaultMaxRunningTimeInSeconds = Duration.ofMinutes(45);
 
     private final String maxRunningTime =
