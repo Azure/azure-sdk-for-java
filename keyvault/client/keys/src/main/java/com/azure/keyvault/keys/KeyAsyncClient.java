@@ -282,8 +282,7 @@ public final class KeyAsyncClient extends ServiceClient {
     }
 
     /**
-     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types and
-     * If the requested key is symmetric, then no key material is released in the response. This operation requires the {@code keys/get} permission.
+     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
@@ -310,8 +309,8 @@ public final class KeyAsyncClient extends ServiceClient {
     }
 
     /**
-     * Get the public part of the latest version of the specified key from the key vault. The get key operation is applicable to all key types and
-     * If the requested key is symmetric, then no key material is released in the response. This operation requires the {@code keys/get} permission.
+     * Get the public part of the latest version of the specified key from the key vault. The get key operation is applicable to
+     * all key types and it requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
@@ -334,8 +333,7 @@ public final class KeyAsyncClient extends ServiceClient {
 
     /**
      * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
-     * to all key types and If the requested key is symmetric, then no key material is released in the response. This operation
-     * requires the {@code keys/get} permission.
+     * to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
      * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
