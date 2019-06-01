@@ -31,6 +31,12 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     private List<String> appSettingNames;
 
     /**
+     * List of external Azure storage account identifiers.
+     */
+    @JsonProperty(value = "properties.azureStorageConfigNames")
+    private List<String> azureStorageConfigNames;
+
+    /**
      * Get list of connection string names.
      *
      * @return the connectionStringNames value
@@ -67,6 +73,26 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      */
     public SlotConfigNamesResourceInner withAppSettingNames(List<String> appSettingNames) {
         this.appSettingNames = appSettingNames;
+        return this;
+    }
+
+    /**
+     * Get list of external Azure storage account identifiers.
+     *
+     * @return the azureStorageConfigNames value
+     */
+    public List<String> azureStorageConfigNames() {
+        return this.azureStorageConfigNames;
+    }
+
+    /**
+     * Set list of external Azure storage account identifiers.
+     *
+     * @param azureStorageConfigNames the azureStorageConfigNames value to set
+     * @return the SlotConfigNamesResourceInner object itself.
+     */
+    public SlotConfigNamesResourceInner withAzureStorageConfigNames(List<String> azureStorageConfigNames) {
+        this.azureStorageConfigNames = azureStorageConfigNames;
         return this;
     }
 

@@ -22,6 +22,7 @@ class ServerfarmHybridConnectionImpl extends IndexableRefreshableWrapperImpl<Ser
     ServerfarmHybridConnectionImpl(HybridConnectionInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "hybridConnectionNamespaces");

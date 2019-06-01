@@ -22,6 +22,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.StampCapacity;
 import com.microsoft.azure.management.appservice.v2018_02_01.AddressResponse;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentDiagnostics;
 import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.InboundEnvironmentEndpoint;
 import com.microsoft.azure.management.appservice.v2018_02_01.MetricDefinition;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteResourceMetricDefinition;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentResourceMetric;
@@ -31,6 +32,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SkuInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.Usage;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteCsmUsageQuota;
 import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
+import com.microsoft.azure.management.appservice.v2018_02_01.OutboundEnvironmentEndpoint;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentAppServicePlan;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentSite;
 import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
@@ -73,6 +75,10 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
         return  new HostingEnvironmentDiagnosticsImpl(inner, manager());
     }
 
+    private InboundEnvironmentEndpointImpl wrapInboundEnvironmentEndpointModel(InboundEnvironmentEndpointInner inner) {
+        return  new InboundEnvironmentEndpointImpl(inner, manager());
+    }
+
     private HostingEnvironmentResourceMetricImpl wrapHostingEnvironmentResourceMetricModel(ResourceMetricInner inner) {
         return  new HostingEnvironmentResourceMetricImpl(inner, manager());
     }
@@ -83,6 +89,10 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
 
     private OperationImpl wrapOperationModel(OperationInner inner) {
         return  new OperationImpl(inner, manager());
+    }
+
+    private OutboundEnvironmentEndpointImpl wrapOutboundEnvironmentEndpointModel(OutboundEnvironmentEndpointInner inner) {
+        return  new OutboundEnvironmentEndpointImpl(inner, manager());
     }
 
     private HostingEnvironmentAppServicePlanImpl wrapHostingEnvironmentAppServicePlanModel(AppServicePlanInner inner) {
@@ -230,12 +240,6 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     }
 
     @Override
-    public Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name) {
-        AppServiceEnvironmentsInner client = this.inner();
-        return client.syncVirtualNetworkInfoAsync(resourceGroupName, name).toCompletable();
-    }
-
-    @Override
     public Observable<StampCapacity> listCapacitiesAsync(final String resourceGroupName, final String name) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.listCapacitiesAsync(resourceGroupName, name)
@@ -291,6 +295,24 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             @Override
             public HostingEnvironmentDiagnostics call(HostingEnvironmentDiagnosticsInner inner) {
                 return wrapHostingEnvironmentDiagnosticsModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
+        AppServiceEnvironmentsInner client = this.inner();
+        return client.getInboundNetworkDependenciesEndpointsAsync(resourceGroupName, name)
+        .flatMapIterable(new Func1<Page<InboundEnvironmentEndpointInner>, Iterable<InboundEnvironmentEndpointInner>>() {
+            @Override
+            public Iterable<InboundEnvironmentEndpointInner> call(Page<InboundEnvironmentEndpointInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<InboundEnvironmentEndpointInner, InboundEnvironmentEndpoint>() {
+            @Override
+            public InboundEnvironmentEndpoint call(InboundEnvironmentEndpointInner inner) {
+                return wrapInboundEnvironmentEndpointModel(inner);
             }
         });
     }
@@ -627,6 +649,24 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             @Override
             public Operation call(OperationInner inner) {
                 return wrapOperationModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
+        AppServiceEnvironmentsInner client = this.inner();
+        return client.getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name)
+        .flatMapIterable(new Func1<Page<OutboundEnvironmentEndpointInner>, Iterable<OutboundEnvironmentEndpointInner>>() {
+            @Override
+            public Iterable<OutboundEnvironmentEndpointInner> call(Page<OutboundEnvironmentEndpointInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<OutboundEnvironmentEndpointInner, OutboundEnvironmentEndpoint>() {
+            @Override
+            public OutboundEnvironmentEndpoint call(OutboundEnvironmentEndpointInner inner) {
+                return wrapOutboundEnvironmentEndpointModel(inner);
             }
         });
     }
