@@ -71,4 +71,15 @@ public final class TestConfigurations {
                                        System.getenv().get("MAX_RETRY_LIMIT")),
                                                          "2"));
 
+    public static String DESIRED_CONSISTENCIES =
+            System.getProperty("DESIRED_CONSISTENCIES",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("DESIRED_CONSISTENCIES")),
+                                                         null));
+
+    public static String PROTOCOLS =
+            System.getProperty("PROTOCOLS",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("PROTOCOLS")),
+                                                         null));
 }
