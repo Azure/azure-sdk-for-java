@@ -694,6 +694,18 @@ public class TestSuiteBase {
         }
     }
 
+    static protected void safeCloseAsync(AsyncDocumentClient client) {
+        if (client != null) {
+            new Thread(() -> {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
     static protected void safeClose(AsyncDocumentClient client) {
         if (client != null) {
             try {

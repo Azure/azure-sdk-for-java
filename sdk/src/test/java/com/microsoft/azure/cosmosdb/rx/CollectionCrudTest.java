@@ -309,8 +309,8 @@ public class CollectionCrudTest extends TestSuiteBase {
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
         } finally {
             safeDeleteDatabase(client1, dbId);
-            safeClose(client1);
-            safeClose(client2);
+            safeCloseAsync(client1);
+            safeCloseAsync(client2);
         }
     }
 
