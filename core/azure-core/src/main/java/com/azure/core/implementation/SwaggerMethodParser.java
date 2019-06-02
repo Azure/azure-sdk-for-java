@@ -19,8 +19,9 @@ import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -80,8 +81,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *                host value in an HTTP request, it must be processed through the possible host
      *                substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, SerializerAdapter serializer, String rawHost) {
-        this.serializer = serializer;
+    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -135,7 +136,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (!headerName.isEmpty()) {
                         final String headerValue = header.substring(colonIndex + 1).trim();
                         if (!headerValue.isEmpty()) {
-                            this.headers.set(headerName, headerValue);
+                            this.headers.put(headerName, headerValue);
                         }
                     }
                 }
@@ -328,12 +329,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                             final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                             final String headerValue = serialize(headerCollectionEntry.getValue());
-                            result.set(headerName, headerValue);
+                            result.put(headerName, headerValue);
                         }
                     } else {
                         final String headerName = headerSubstitution.urlParameterName();
                         final String headerValue = serialize(methodArgument);
-                        result.set(headerName, headerValue);
+                        result.put(headerName, headerValue);
                     }
                 }
             }
@@ -342,18 +343,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link ContextData} passed into the proxy method.
+     * Get the {@link Context} passed into the proxy method.
      *
      * @param swaggerMethodArguments the arguments passed to the proxy method
-     * @return the context, or null if no context was provided
+     * @return the context, or {@link Context#NONE} if no context was provided
      */
-    public ContextData contextData(Object[] swaggerMethodArguments) {
-        Object firstArg = swaggerMethodArguments != null && swaggerMethodArguments.length > 0 ? swaggerMethodArguments[0] : null;
-        if (firstArg instanceof ContextData) {
-            return (ContextData) firstArg;
-        } else {
-            return ContextData.NONE;
-        }
+    public Context context(Object[] swaggerMethodArguments) {
+        Context context = ImplUtils.findFirstOfType(swaggerMethodArguments, Context.class);
+
+        return (context != null) ? context : Context.NONE;
     }
 
     /**
@@ -583,7 +581,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedExceptionInformation(HttpRequestException.class);
+            defaultException = new UnexpectedExceptionInformation(HttpResponseException.class);
         }
 
         return exceptionHashMap;

@@ -19,14 +19,12 @@ public enum SecurityTokenType {
     JWT(SecurityConstants.JWT_TOKEN_TYPE);
     
     private final String tokenTypeString;
-    SecurityTokenType(String tokenTypeString)
-    {
+    SecurityTokenType(String tokenTypeString) {
         this.tokenTypeString = tokenTypeString;
     }
     
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.tokenTypeString;
     }
 }

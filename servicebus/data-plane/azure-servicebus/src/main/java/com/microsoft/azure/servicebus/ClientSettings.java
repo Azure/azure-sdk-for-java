@@ -28,8 +28,7 @@ public class ClientSettings {
      * 
      * @see RetryPolicy#getDefault()
      */
-    public ClientSettings(TokenProvider tokenProvider)
-    {
+    public ClientSettings(TokenProvider tokenProvider) {
         this(tokenProvider, RetryPolicy.getDefault(), Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS), TransportType.AMQP);
     }
 
@@ -39,8 +38,7 @@ public class ClientSettings {
      * @param retryPolicy {@link RetryPolicy} instance
      * @param operationTimeout default operation timeout to be used for all client operations. Client can override this value by explicitly specifying a timeout in the operation.
      */
-    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout)
-    {
+    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout) {
         this(tokenProvider, retryPolicy, operationTimeout, TransportType.AMQP);
     }
 
@@ -51,8 +49,7 @@ public class ClientSettings {
      * @param operationTimeout default operation timeout to be used for all client operations. Client can override this value by explicitly specifying a timeout in the operation.
      * @param transportType {@link TransportType} instance
      */
-    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout, TransportType transportType)
-    {
+    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout, TransportType transportType) {
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
         this.operationTimeout = operationTimeout;
@@ -63,8 +60,7 @@ public class ClientSettings {
      * Gets the token provider contained in this instance.
      * @return TokenProvider contained in this instance
      */
-    public TokenProvider getTokenProvider()
-    {
+    public TokenProvider getTokenProvider() {
         return tokenProvider;
     }
 
@@ -72,8 +68,7 @@ public class ClientSettings {
      * Gets the retry policy contained in this instance.
      * @return RetryPolicy contained in this instance
      */
-    public RetryPolicy getRetryPolicy()
-    {
+    public RetryPolicy getRetryPolicy() {
         return retryPolicy;
     }
 
@@ -81,8 +76,7 @@ public class ClientSettings {
      * Gets the operation timeout contained in this instance.
      * @return operation timeout contained in this instance
      */
-    public Duration getOperationTimeout()
-    {
+    public Duration getOperationTimeout() {
         return operationTimeout;
     }
 
@@ -90,5 +84,7 @@ public class ClientSettings {
      * Gets the transport type for this instance
      * @return transport type for the instance
      */
-    public TransportType getTransportType() { return transportType; }
+    public TransportType getTransportType() {
+        return transportType;
+    }
 }

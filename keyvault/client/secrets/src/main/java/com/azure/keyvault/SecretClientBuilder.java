@@ -3,17 +3,15 @@
 
 package com.azure.keyvault;
 
-import com.azure.core.credentials.ServiceClientCredentials;
-import com.azure.core.credentials.TokenCredentials;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.CredentialsPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ import java.util.Objects;
  * calling {@link SecretClientBuilder#build() build} constructs an instance of the client.
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretClient}
- * are {@link String endpoint} and {@link ServiceClientCredentials credentials}. </p>
+ * are {@link String endpoint} and {@link TokenCredential credentials}. </p>
  * <pre>
  * SecretClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
@@ -59,7 +57,7 @@ import java.util.Objects;
  * */
 public final class SecretClientBuilder {
     private final List<HttpPipelinePolicy> policies;
-    private ServiceClientCredentials credentials;
+    private TokenCredential credentials;
     private HttpPipeline pipeline;
     private URL endpoint;
     private HttpClient httpClient;
@@ -81,11 +79,11 @@ public final class SecretClientBuilder {
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link SecretClientBuilder#credentials(ServiceClientCredentials) key vault credentials and
+     * then {@link SecretClientBuilder#credentials(TokenCredential) key vault credentials and
      * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretClient client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
-     * @throws IllegalStateException If {@link SecretClientBuilder#credentials(ServiceClientCredentials)} or
+     * @throws IllegalStateException If {@link SecretClientBuilder#credentials(TokenCredential)} or
      * {@link SecretClientBuilder#endpoint(String)} have not been set.
      */
     public SecretClient build() {
@@ -106,13 +104,14 @@ public final class SecretClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(userAgent));
         policies.add(retryPolicy);
-        policies.add(new CredentialsPolicy(getTokenCredentials()));
+        policies.add(new TokenCredentialPolicy(credentials));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
+        HttpPipeline pipeline = HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
 
         return new SecretClient(endpoint, pipeline);
     }
@@ -140,7 +139,7 @@ public final class SecretClientBuilder {
      * @return the updated Builder object.
      * @throws NullPointerException if {@code credentials} is {@code null}.
      */
-    public SecretClientBuilder credentials(ServiceClientCredentials credentials) {
+    public SecretClientBuilder credentials(TokenCredential credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         return this;
@@ -201,15 +200,5 @@ public final class SecretClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
-    }
-
-    private TokenCredentials getTokenCredentials() {
-        String token = "";
-        try {
-            token = credentials.authorizationHeaderValue(endpoint.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new TokenCredentials("Bearer", token);
     }
 }

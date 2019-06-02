@@ -13,12 +13,12 @@ public interface IQueueClient extends IMessageSender, IMessageAndSessionPump, IM
      *
      * @return The receive mode.
      */
-    public ReceiveMode getReceiveMode();
+    ReceiveMode getReceiveMode();
 
     /**
      * Gets the name of the queue.
      *
      * @return The name of the queue.
      */
-    public String getQueueName();
+    String getQueueName();
 }

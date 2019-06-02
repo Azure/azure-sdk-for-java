@@ -36,7 +36,7 @@ public class SqlFilter extends Filter {
             return false;
         }
 
-        SqlFilter other = (SqlFilter)o;
+        SqlFilter other = (SqlFilter) o;
         return (this.sqlExpression == null ? other.sqlExpression == null : this.sqlExpression.equals(other.sqlExpression));
     }
 

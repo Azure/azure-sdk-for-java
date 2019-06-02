@@ -5,8 +5,7 @@ package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
-public interface IAmqpLink
-{
+public interface IAmqpLink {
     /**
      * @param completionException completionException=null if open is successful
      */

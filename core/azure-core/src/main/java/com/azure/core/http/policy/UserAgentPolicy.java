@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -17,9 +18,13 @@ import reactor.core.publisher.Mono;
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
 
-    // From the design guidelines, the user agent header format is:
+    // From the design guidelines, the default user agent header format is:
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
+
+    // From the design guidelines, the platform info format is:
+    // <language runtime>; <os name> <os version>
+    private static final String PLATFORM_INFO_FORMAT = "%s; %s %s";
 
     private final String userAgent;
 
@@ -51,8 +56,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkVersion Version of the client library.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion) {
-        String platformInfo = System.getProperty("java.version") + "; " + getOSInformation();
-        this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, platformInfo);
+        this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
     }
 
     @Override
@@ -63,11 +67,15 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().set("User-Agent", header);
+        context.httpRequest().headers().put("User-Agent", header);
         return next.process();
     }
 
-    private static String getOSInformation() {
-        return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
+    private static String getPlatformInfo() {
+        String javaVersion = ConfigurationManager.getConfiguration().get("java.version");
+        String osName = ConfigurationManager.getConfiguration().get("os.name");
+        String osVersion = ConfigurationManager.getConfiguration().get("os.version");
+
+        return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }
 }

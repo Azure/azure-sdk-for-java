@@ -20,5 +20,5 @@ public interface IProgressReceiver {
      * @param bytesTransferred
      *      The total number of bytes transferred during this transaction.
      */
-    public void reportProgress(long bytesTransferred);
+    void reportProgress(long bytesTransferred);
 }

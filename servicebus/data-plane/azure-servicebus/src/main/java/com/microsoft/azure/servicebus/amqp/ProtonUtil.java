@@ -8,14 +8,11 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
 
-public final class ProtonUtil
-{
-    private ProtonUtil()
-    {
+public final class ProtonUtil {
+    private ProtonUtil() {
     }
 
-    public static Reactor reactor(ReactorHandler reactorHandler, final int maxFrameSize) throws IOException
-    {
+    public static Reactor reactor(ReactorHandler reactorHandler, final int maxFrameSize) throws IOException {
         final ReactorOptions reactorOptions = new ReactorOptions();
         reactorOptions.setMaxFrameSize(maxFrameSize);
 

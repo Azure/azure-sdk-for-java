@@ -32,11 +32,11 @@ public final class TelemetryFactory implements RequestPolicyFactory {
      */
     public TelemetryFactory(TelemetryOptions telemetryOptions) {
         telemetryOptions = telemetryOptions == null ? new TelemetryOptions() : telemetryOptions;
-        String userAgentPrefix = telemetryOptions.userAgentPrefix() == null ?
-                Constants.EMPTY_STRING : telemetryOptions.userAgentPrefix();
-        this.userAgent = userAgentPrefix + ' ' +
-                Constants.HeaderConstants.USER_AGENT_PREFIX + '/' + Constants.HeaderConstants.USER_AGENT_VERSION +
-                String.format(Locale.ROOT, " (JavaJRE %s; %s %s)",
+        String userAgentPrefix = telemetryOptions.userAgentPrefix() == null
+                ? Constants.EMPTY_STRING : telemetryOptions.userAgentPrefix();
+        this.userAgent = userAgentPrefix + ' '
+                + Constants.HeaderConstants.USER_AGENT_PREFIX + '/' + Constants.HeaderConstants.USER_AGENT_VERSION
+                + String.format(Locale.ROOT, " (JavaJRE %s; %s %s)",
                         System.getProperty("java.version"),
                         System.getProperty("os.name").replaceAll(" ", ""),
                         System.getProperty("os.version"));

@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class QueueSendReceiveTests extends SendReceiveTests {
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSendReceiveTests";
+        return "QueueSendReceiveTests";
     }
 
     @Override

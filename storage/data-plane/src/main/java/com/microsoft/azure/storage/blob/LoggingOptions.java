@@ -21,7 +21,6 @@ public final class LoggingOptions {
         this(defaultMinDurationToLogSlowRequests);
     }
 
-
     /**
      * Creates a new {@link LoggingOptions} object.
      *

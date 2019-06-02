@@ -322,13 +322,13 @@
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- The checked field is always not null. -->
   <Match>
-    <Class name="com.azure.core.management.AzureProxy"/>
+    <Class name="com.azure.core.management.implementation.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -353,10 +353,72 @@
   <Match>
     <Package name="com.microsoft.azure.storage.blob"/>
     <Bug pattern="NM_CONFUSING"/>
-  <!--The public field already exists in the public API surface area-->
+  </Match>
+
+  <!-- The public field already exists in the public API surface area -->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
     <Field name="~(MAX_DURATION|NULL_TXN)"/>
     <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+
+  <!-- The HttpRequest fields are serializable. Flux<T> and HttpHeaders are able to serialize and deserialize. -->
+  <Match>
+    <Class name="com.azure.core.http.HttpRequest"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- The two values can still change in the future. Change it will be a breaking code change.-->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
+    <Bug pattern="DB_DUPLICATE_BRANCHES"/>
+  </Match>
+
+  <!-- The return value is ignored for purpose -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.servicebus\.primitives\.(AsyncUtil|RequestResponseLink\$InternalReceiver)"/>
+    <Method name="~(completeFuture|completeFutureExceptionally|run|onReceiveComplete)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- Unreachable Path -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseLink$InternalSender"/>
+    <Local name="encodedPair"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION"/>
+  </Match>
+
+  <!-- The casting is correct, it is beyond the SpotBugs's ability to determine the correctness -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseUtils"/>
+    <Method name="encodeRuleDescriptionToMap"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.Utils"/>
+    <Method name="getDataFromMessageBody"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Unstable implementation. It is in Service team's to-do-list -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
+    <Method name="onReceiveComplete"/>
+    <Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/>
+  </Match>
+
+  <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
+  <Match>
+    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Method name="endTracingSpan"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.core.configuration.Configuration"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 </FindBugsFilter>

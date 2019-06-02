@@ -36,6 +36,6 @@ public class DeleteAndRecoverOperations {
 
         // To ensure permanent deletion, we might need to purge the secret.
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted secret needs to be purged.
-        // client.purgeSecret("STORAGE_ACCOUNT_PASSWORD");
+        // client.purgeDeletedSecret("STORAGE_ACCOUNT_PASSWORD");
     }
 }

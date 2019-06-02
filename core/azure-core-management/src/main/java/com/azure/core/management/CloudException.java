@@ -3,13 +3,17 @@
 
 package com.azure.core.management;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public final class CloudException extends HttpRequestException {
+public final class CloudException extends HttpResponseException {
+
+    /**Serial version id for this class*/
+    private static final long serialVersionUID = 1L;
+
     /**
      * Initializes a new instance of the CloudException class.
      *

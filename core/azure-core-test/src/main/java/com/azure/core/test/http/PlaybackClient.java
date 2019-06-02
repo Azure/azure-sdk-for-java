@@ -107,7 +107,7 @@ public final class PlaybackClient implements HttpClient {
                         rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
                     }
                 }
-                headers.set(pair.getKey(), rawHeader);
+                headers.put(pair.getKey(), rawHeader);
             }
         }
 
@@ -122,7 +122,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             bytes = rawBody.getBytes(StandardCharsets.UTF_8);
-            headers.set("Content-Length", String.valueOf(bytes.length));
+            headers.put("Content-Length", String.valueOf(bytes.length));
         }
 
         HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
