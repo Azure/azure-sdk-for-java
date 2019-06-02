@@ -187,7 +187,7 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
         return connection;
     }
 
-    private class ReactorExceptionHandler extends ExceptionHandler {
+    private static class ReactorExceptionHandler extends ExceptionHandler {
         @Override
         public void onConnectionError(Throwable exception) {
             super.onConnectionError(exception);

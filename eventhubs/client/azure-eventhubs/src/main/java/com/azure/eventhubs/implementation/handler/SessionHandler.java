@@ -148,7 +148,7 @@ public class SessionHandler extends Handler {
         // }
     }
 
-    private class SessionErrorContext extends ErrorContext {
+    private static class SessionErrorContext extends ErrorContext {
         private static final long serialVersionUID = 7031664116367058509L;
         private final String entityPath;
 

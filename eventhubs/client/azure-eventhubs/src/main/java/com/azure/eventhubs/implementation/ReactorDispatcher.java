@@ -158,7 +158,7 @@ public final class ReactorDispatcher {
     }
 
     // Work items that are dispatched to reactor.
-    private final class Work {
+    private static final class Work {
         // The work item that is dispatched to Reactor.
         private final DispatchHandler dispatchHandler;
         private final Duration delay;
