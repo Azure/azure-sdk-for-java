@@ -21,6 +21,12 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ProxyOnlyResource;
 @JsonFlatten
 public class BackupRequestInner extends ProxyOnlyResource {
     /**
+     * Name of the backup.
+     */
+    @JsonProperty(value = "properties.backupName")
+    private String backupName;
+
+    /**
      * True if the backup schedule is enabled (must be included in that case),
      * false if the backup schedule should be disabled.
      */
@@ -44,6 +50,26 @@ public class BackupRequestInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.databases")
     private List<DatabaseBackupSetting> databases;
+
+    /**
+     * Get name of the backup.
+     *
+     * @return the backupName value
+     */
+    public String backupName() {
+        return this.backupName;
+    }
+
+    /**
+     * Set name of the backup.
+     *
+     * @param backupName the backupName value to set
+     * @return the BackupRequestInner object itself.
+     */
+    public BackupRequestInner withBackupName(String backupName) {
+        this.backupName = backupName;
+        return this;
+    }
 
     /**
      * Get true if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.

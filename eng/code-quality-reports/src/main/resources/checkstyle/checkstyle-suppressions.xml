@@ -7,7 +7,8 @@
   <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
   https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
   <suppress checks="RedundantModifier" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
-  <suppress checks="RedundantModifier" files="keyvault[/\\]data-plane[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
+  <suppress checks="RedundantModifier"
+            files="keyvault[/\\]data-plane[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
 
   <!-- AutoRest generates with unused imports. Remove this suppression when:
   https://github.com/Azure/autorest.java/issues/330 is fixed. -->
@@ -80,5 +81,8 @@
   <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
 
   <!-- Add NoImplInPublicAPI suppression for any test files (ie. ones that live under src/test/java). -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="src[/\\]test[/\\]java[/\\].*.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Add JavadocThrowsChecks suppression for any test or implementation files (ie. ones that live under src/test/java or implementation). -->
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
 </suppressions>
