@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfailfd27911145?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F46E2C109F\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b4d64e-f01e-00e4-24dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfailfd27911145/javablob3105148ff5d349",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F46E3439C0\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b4d66b-f01e-00e4-40dd-18237c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfailfd27911145/javablob3105148ff5d349",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:d5b4d68b-f01e-00e4-60dd-18237c000000\nTime:2019-06-02T00:51:21.5565425Z</Message></Error>",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "d5b4d68b-f01e-00e4-60dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtcuploadfileacfailfd27911145", "javablob3105148ff5d349", "ba3a7fe2724146b8b4daf30b69d9ccbf", "DwgbMg0BMzEENw==" ]
+}

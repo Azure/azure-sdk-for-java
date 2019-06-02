@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetaccountinfomine523053896?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F467634D7B\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:10 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b4bd5f-f01e-00e4-2fdd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:09 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d5b4bd85-f01e-00e4-51dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:09 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?restype=account&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-account-kind" : "StorageV2",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "x-ms-sku-name" : "Standard_RAGRS",
+      "body" : "",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d5b4bda0-f01e-00e4-6add-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:09 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d5b4bdb5-f01e-00e4-7ddd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:09 GMT"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtcgetaccountinfomine523053896" ]
+}

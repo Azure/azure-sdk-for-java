@@ -82,8 +82,8 @@ class HelperTest extends APISpec {
                 .withDelete(true)
                 .withAdd(true)
         v.withPermissions(p.toString())
-                .withStartTime(OffsetDateTime.now().minusDays(1))
-                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withStartTime(getCurrentTime().minusDays(1))
+                .withExpiryTime(getCurrentTime().plusDays(1))
                 .withContainerName(containerName)
                 .withBlobName(blobName)
         def ipR = new IPRange()
@@ -99,8 +99,10 @@ class HelperTest extends APISpec {
 
         when:
         def parts = URLParser.parse(cu.createBlobURL(blobName).toURL())
-        parts.withSasQueryParameters(v.generateSASQueryParameters(primaryCreds)).withScheme("https")
-        def bu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
+        setSASQueryParametersSignature(parameters)
+        parts.withSasQueryParameters(parameters).withScheme("https")
+        def bu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
         then:
@@ -136,8 +138,8 @@ class HelperTest extends APISpec {
                 .withDelete(true)
                 .withAdd(true)
         v.withPermissions(p.toString())
-                .withStartTime(OffsetDateTime.now().minusDays(1))
-                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withStartTime(getCurrentTime().minusDays(1))
+                .withExpiryTime(getCurrentTime().plusDays(1))
                 .withContainerName(containerName)
                 .withBlobName(blobName)
                 .withSnapshotId(snapshotId)
@@ -154,9 +156,11 @@ class HelperTest extends APISpec {
 
         when:
         def parts = URLParser.parse(bu.toURL())
-        parts.withSasQueryParameters(v.generateSASQueryParameters(primaryCreds)).withScheme("https")
+        SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
+        setSASQueryParametersSignature(parameters)
+        parts.withSasQueryParameters(parameters).withScheme("https")
         // base blob with snapshot SAS
-        def bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        def bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
         bsu.download().blockingGet()
 
@@ -167,7 +171,7 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.withSnapshot(snapshotId)
-        bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
         def data = FlowableUtil.collectBytesInBuffer(bsu.download().blockingGet().body(null)).blockingGet()
 
@@ -192,7 +196,7 @@ class HelperTest extends APISpec {
         def cu = primaryServiceURL.createContainerURL(containerName)
         cu.create(null, null, null).blockingGet()
         def id = new SignedIdentifier().withId("0000").withAccessPolicy(new AccessPolicy().withPermission("racwdl")
-                .withExpiry(OffsetDateTime.now().plusDays(1)))
+                .withExpiry(getCurrentTime().plusDays(1)))
         cu.setAccessPolicy(null, Arrays.asList(id), null, null).blockingGet()
 
         // Check id field
@@ -211,18 +215,22 @@ class HelperTest extends APISpec {
                 .withAdd(true)
                 .withList(true)
         v2.withPermissions(p.toString())
-                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withExpiryTime(getCurrentTime().plusDays(1))
                 .withContainerName(containerName)
 
         when:
+        SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
+        setSASQueryParametersSignature(parameters)
         def parts = URLParser.parse(cu.toURL())
-                .withSasQueryParameters(v.generateSASQueryParameters(primaryCreds))
+                .withSasQueryParameters(parameters)
                 .withScheme("https")
-        def cuSAS = new ContainerURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        def cuSAS = new ContainerURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
-        parts.withSasQueryParameters(v2.generateSASQueryParameters(primaryCreds))
-        def cuSAS2 = new ContainerURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        SASQueryParameters parameters2 = v2.generateSASQueryParameters(primaryCreds)
+        setSASQueryParametersSignature(parameters2)
+        parts.withSasQueryParameters(parameters2)
+        def cuSAS2 = new ContainerURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
         then:
@@ -246,8 +254,8 @@ class HelperTest extends APISpec {
                 .withDelete(true)
                 .withAdd(true)
         v.withPermissions(p.toString())
-                .withStartTime(OffsetDateTime.now().minusDays(1))
-                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withStartTime(getCurrentTime().minusDays(1))
+                .withExpiryTime(getCurrentTime().plusDays(1))
                 .withContainerName(containerName)
                 .withBlobName(blobName)
         def ipR = new IPRange()
@@ -260,12 +268,14 @@ class HelperTest extends APISpec {
                 .withContentEncoding("encoding")
                 .withContentLanguage("language")
                 .withContentType("type")
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).blockingGet().body()
+        def key = getOAuthServiceURL().getUserDelegationKey(null, getCurrentTime().plusDays(1)).blockingGet().body()
 
         when:
         def parts = URLParser.parse(cu.createBlobURL(blobName).toURL())
-        parts.withSasQueryParameters(v.generateSASQueryParameters(key, primaryCreds.accountName)).withScheme("https")
-        def bu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
+        setSASQueryParametersSignature(parameters)
+        parts.withSasQueryParameters(parameters).withScheme("https")
+        def bu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
         then:
@@ -301,8 +311,8 @@ class HelperTest extends APISpec {
                 .withDelete(true)
                 .withAdd(true)
         v.withPermissions(p.toString())
-                .withStartTime(OffsetDateTime.now().minusDays(1))
-                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withStartTime(getCurrentTime().minusDays(1))
+                .withExpiryTime(getCurrentTime().plusDays(1))
                 .withContainerName(containerName)
                 .withBlobName(blobName)
                 .withSnapshotId(snapshotId)
@@ -316,13 +326,15 @@ class HelperTest extends APISpec {
                 .withContentEncoding("encoding")
                 .withContentLanguage("language")
                 .withContentType("type")
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).blockingGet().body()
+        def key = getOAuthServiceURL().getUserDelegationKey(null, getCurrentTime().plusDays(1)).blockingGet().body()
 
         when:
         def parts = URLParser.parse(bu.toURL())
-        parts.withSasQueryParameters(v.generateSASQueryParameters(key, primaryCreds.accountName)).withScheme("https")
+        SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
+        setSASQueryParametersSignature(parameters)
+        parts.withSasQueryParameters(parameters).withScheme("https")
         // base blob with snapshot SAS
-        def bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        def bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
         bsu.download().blockingGet()
 
@@ -333,7 +345,7 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.withSnapshot(snapshotId)
-        bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
+        bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
         def data = FlowableUtil.collectBytesInBuffer(bsu.download().blockingGet().body(null)).blockingGet()
 
@@ -368,17 +380,18 @@ class HelperTest extends APISpec {
         def v = new ServiceSASSignatureValues()
                 .withContainerName(containerName)
                 .withProtocol(SASProtocol.HTTPS_HTTP)
-                .withExpiryTime(OffsetDateTime.now().plusHours(5))
+                .withExpiryTime(getCurrentTime().plusHours(5))
                 .withPermissions(p.toString())
 
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).blockingGet().body()
+        def key = getOAuthServiceURL().getUserDelegationKey(null, getCurrentTime().plusDays(1)).blockingGet().body()
 
         when:
+        SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
+        setSASQueryParametersSignature(parameters)
         def parts = URLParser.parse(cu.toURL())
-                .withSasQueryParameters(v.generateSASQueryParameters(key, primaryCreds.accountName))
+                .withSasQueryParameters(parameters)
                 .withScheme("http")
-        def cuSAS = new ContainerURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
-                new PipelineOptions()))
+        def cuSAS = new ContainerURL(parts.toURL(), createPipeline(new AnonymousCredentials(), new PipelineOptions()))
 
         then:
         cuSAS.listBlobsFlatSegment(null, null, null).blockingGet()

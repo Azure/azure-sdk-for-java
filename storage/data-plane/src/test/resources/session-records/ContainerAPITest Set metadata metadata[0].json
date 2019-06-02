@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27346c1e9a9a0602b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F399FFC6F0\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:25 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ed995c-e01e-0051-4adc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:24 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27346c1e9a9a0602b?restype=container&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F39A06E525\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:25 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "71ed996f-e01e-0051-57dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:25 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc27346c1e9a9a0602b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:25 GMT",
+      "retry-after" : "0",
+      "body" : "",
+      "StatusCode" : "200",
+      "Date" : "Sun, 02 Jun 2019 00:45:25 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "ETag" : "\"0x8D6E6F39A06E525\"",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "71ed9977-e01e-0051-5edc-182e83000000"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc27346c1e9a9a0602b" ]
+}

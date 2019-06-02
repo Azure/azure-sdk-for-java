@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.storage.blob;
+package com.microsoft.azure.storage.blob
+
 
 import com.microsoft.azure.storage.APISpec
 import io.reactivex.Flowable
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantLock
 
 class ProgressReporterTest extends APISpec {
     def "Report progress sequential"() {

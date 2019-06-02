@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc63684e3c5342866ba?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F3836675E3\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:44:47 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7a82be37-a01e-00b3-4ddc-18caf1000000",
+      "Date" : "Sun, 02 Jun 2019 00:44:47 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc63684e3c5342866ba/javablob58786a299b6089",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F3836D4CE3\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:44:47 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7a82be3e-a01e-00b3-51dc-18caf1000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 02 Jun 2019 00:44:47 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc22050d37a865ab1b7/javablob75907ecf4e1352?restype=account&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:7a82be49-a01e-00b3-57dc-18caf1000000\nTime:2019-06-02T00:44:47.6376298Z</Message></Error>",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "7a82be49-a01e-00b3-57dc-18caf1000000",
+      "Date" : "Sun, 02 Jun 2019 00:44:47 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc63684e3c5342866ba", "javablob58786a299b6089", "jtc22050d37a865ab1b7", "javablob75907ecf4e1352" ]
+}

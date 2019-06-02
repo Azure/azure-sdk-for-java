@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc751665985099857ee?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F39C52AB78\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ed9d10-e01e-0051-1adc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc751665985099857ee?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F39C52AB78\"",
+      "x-ms-lease-id" : "d1d36f95-98a9-47dd-9310-b7a63077ed72",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ed9d18-e01e-0051-20dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc751665985099857ee?restype=container&comp=acl",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F39C52AB78\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "retry-after" : "0",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers />",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "71ed9d24-e01e-0051-27dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc751665985099857ee" ]
+}

@@ -69,7 +69,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiConsumer;
-import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.File;
@@ -93,17 +92,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Samples {
-
-    public static final String PLAYBACK_MODE = "PlAYBACK";
-
-    //Samples only run in Live/Record mode.
-    void checkMode() {
-        String testMode = System.getenv("AZURE_TEST_MODE");
-        if (testMode == null) {
-            testMode = PLAYBACK_MODE;
-        }
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
-    }
 
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {
         return containerURL.create(null, null, null).map((r) -> true).onErrorResumeNext((e) -> {
@@ -157,7 +145,6 @@ public class Samples {
     }
 
     private String getAccountName() {
-        checkMode();
         return System.getenv("PRIMARY_STORAGE_ACCOUNT_NAME");
     }
 

@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc755249c30c15e5ad2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F479B18D58\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b502fc-f01e-00e4-40dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:40 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc755249c30c15e5ad2/javablob80440e93afd024",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F479BDF382\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b50327-f01e-00e4-67dd-18237c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 02 Jun 2019 00:51:40 GMT",
+      "Content-MD5" : "k/Fr70b2tcmEwzPn524XPw=="
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc755249c30c15e5ad2/javablob80440e93afd024",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Content-Range" : "bytes */7",
+      "x-ms-error-code" : "InvalidRange",
+      "retry-after" : "0",
+      "Content-Length" : "249",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:d5b50346-f01e-00e4-05dd-18237c000000\nTime:2019-06-02T00:51:40.9053186Z</Message></Error>",
+      "StatusCode" : "416",
+      "x-ms-request-id" : "d5b50346-f01e-00e4-05dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:40 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc755249c30c15e5ad2", "javablob80440e93afd024", "7ec0a5e3cda84ebc80bfddfc00d3f644", "CEA5Dg0+Mg==", "87ad99ba24d0497cb13555ccd37b1afe", "" ]
+}

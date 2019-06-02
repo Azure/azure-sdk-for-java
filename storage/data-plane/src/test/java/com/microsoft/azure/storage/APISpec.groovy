@@ -5,26 +5,40 @@ package com.microsoft.azure.storage
 
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
+import com.microsoft.azure.management.resources.core.TestBase
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.interceptor.InterceptorManager
+import com.microsoft.azure.storage.interceptor.TestResourceNamer
 import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.*
+import com.microsoft.rest.v2.policy.DecodingPolicyFactory
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
+import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
-import org.junit.Assume
+import org.junit.Rule
+import org.junit.rules.TestName
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.lang.reflect.Method
+import java.lang.reflect.Field
 import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
 class APISpec extends Specification {
     static final String RECORD_MODE = "RECORD"
+    static final String PLAYBACK_MODE = "PLAYBACK"
+    // Prefixes for blobs and containers
+    static String containerPrefix = "jtc" // java test container
+    static String blobPrefix = "javablob"
+
+    @Rule
+    TestName testName = new TestName()
 
     @Shared
     Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
@@ -45,11 +59,6 @@ class APISpec extends Specification {
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
-
-    // Prefixes for blobs and containers
-    static String containerPrefix = "jtc" // java test container
-
-    static String blobPrefix = "javablob"
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -83,20 +92,22 @@ class APISpec extends Specification {
     @Shared
     static SharedKeyCredentials alternateCreds
 
+    @Shared
+    static TestBase.TestMode testMode = null
+
     /*
-    URLs to various kinds of accounts.
+     * URLs to various kinds of accounts.
+     * Removed the static shared property from URLs as these URLs are different instances in different test.
      */
-    @Shared
-    static ServiceURL primaryServiceURL
+    ServiceURL primaryServiceURL
 
-    @Shared
-    static ServiceURL alternateServiceURL
+    ServiceURL alternateServiceURL
 
-    @Shared
-    static ServiceURL blobStorageServiceURL
+    ServiceURL blobStorageServiceURL
 
-    @Shared
-    static ServiceURL premiumServiceURL
+    ServiceURL premiumServiceURL
+
+    InterceptorManager interceptorManager
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -107,60 +118,12 @@ class APISpec extends Specification {
 
     static final Context defaultContext = new Context(defaultContextKey, defaultContextValue)
 
-    static String getTestName(ISpecificationContext ctx) {
-        return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
-    }
-
-    def generateContainerName() {
-        generateContainerName(specificationContext, iterationNo, entityNo++)
-    }
-
-    def generateBlobName() {
-        generateBlobName(specificationContext, iterationNo, entityNo++)
-    }
-
-    /**
-     * This function generates an entity name by concatenating the passed prefix, the name of the test requesting the
-     * entity name, and some unique suffix. This ensures that the entity name is unique for each test so there are
-     * no conflicts on the service. If we are not recording, we can just use the time. If we are recording, the suffix
-     * must always be the same so we can match requests. To solve this, we use the entityNo for how many entities have
-     * already been created by this test so far. This would sufficiently distinguish entities within a recording, but
-     * could still yield duplicates on the service for data-driven tests. Therefore, we also add the iteration number
-     * of the data driven tests.
-     *
-     * @param specificationContext
-     *      Used to obtain the name of the test running.
-     * @param prefix
-     *      Used to group all entities created by these tests under common prefixes. Useful for listing.
-     * @param iterationNo
-     *      Indicates which iteration of a data-driven test is being executed.
-     * @param entityNo
-     *      Indicates how man entities have been created by the test so far. This distinguishes multiple containers
-     *      or multiple blobs created by the same test. Only used when dealing with recordings.
-     * @return
-     */
-    static String generateResourceName(ISpecificationContext specificationContext, String prefix, int iterationNo,
-                                       int entityNo) {
-        String suffix = ""
-        suffix += System.currentTimeMillis() // For uniqueness between runs.
-        suffix += entityNo // For easy identification of which call created this resource.
-        return prefix + getTestName(specificationContext).take(63 - suffix.length() - prefix.length()) + suffix
-    }
-
     static int updateIterationNo(ISpecificationContext specificationContext, int iterationNo) {
         if (specificationContext.currentIteration.estimatedNumIterations > 1) {
             return iterationNo + 1
         } else {
             return 0
         }
-    }
-
-    static String generateContainerName(ISpecificationContext specificationContext, int iterationNo, int entityNo) {
-        return generateResourceName(specificationContext, containerPrefix, iterationNo, entityNo)
-    }
-
-    static String generateBlobName(ISpecificationContext specificationContext, int iterationNo, int entityNo) {
-        return generateResourceName(specificationContext, blobPrefix, iterationNo, entityNo)
     }
 
     static void setupFeatureRecording(String sceneName) {
@@ -180,6 +143,12 @@ class APISpec extends Specification {
     }
 
     static getGenericCreds(String accountType) {
+
+        // Added the dummy creds when playback
+        if (testMode == TestBase.TestMode.PLAYBACK) {
+            return new SharedKeyCredentials(defaultText, defaultText)
+        }
+
         String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
         String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
 
@@ -199,29 +168,10 @@ class APISpec extends Specification {
         } else return HttpClient.createDefault()
     }
 
-    static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
-        PipelineOptions po = new PipelineOptions()
-        po.withClient(getHttpClient())
-
-        // Logging errors can be helpful for debugging in Travis.
-        po.withLogger(new HttpPipelineLogger() {
-            @Override
-            HttpPipelineLogLevel minimumLogLevel() {
-                return HttpPipelineLogLevel.ERROR
-            }
-
-            @Override
-            void log(HttpPipelineLogLevel httpPipelineLogLevel, String s, Object... objects) {
-                System.out.println(String.format(s, objects))
-            }
-        })
-
-        HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
-
-        return new ServiceURL(new URL("http://" + creds.getAccountName() + ".blob.core.windows.net"), pipeline)
-    }
-
     static void cleanupContainers() throws MalformedURLException {
+        if (testMode == TestBase.TestMode.PLAYBACK) {
+            return
+        }
         // Create a new pipeline without any proxies
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, new PipelineOptions())
 
@@ -252,11 +202,11 @@ class APISpec extends Specification {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
-    static File getRandomFile(int size) {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+    File getRandomFile(int size) {
+        File file = File.createTempFile(new TestResourceNamer(testName.getMethodName(), interceptorManager).randomString(), ".txt")
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
-        fos.write(getRandomData(size).array())
+        fos.write(ByteBuffer.wrap(new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(size)).array())
         fos.close()
         return file
     }
@@ -265,12 +215,24 @@ class APISpec extends Specification {
         return System.currentTimeMillis()
     }
 
+    static TestBase.TestMode getTestModeType() {
+        String testModeString = System.getenv("AZURE_TEST_MODE")
+        if (testModeString == null) {
+            testModeString = System.getProperty("testMode")
+        }
+        if (RECORD_MODE.equalsIgnoreCase(testModeString)){
+            testMode = TestBase.TestMode.RECORD
+        } else if (PLAYBACK_MODE.equalsIgnoreCase(testModeString)) {
+            testMode = TestBase.TestMode.PLAYBACK
+        }
+        return testMode
+    }
+
     def setupSpec() {
         /*
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
         primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
-        primaryServiceURL = getGenericServiceURL(primaryCreds)
 
         /*
         It's feasible someone wants to test a specific subset of tests, so we'll still attempt to create each of the
@@ -280,36 +242,114 @@ class APISpec extends Specification {
          */
         try {
             alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
-            alternateServiceURL = getGenericServiceURL(alternateCreds)
+        } catch (Exception e){
         }
-        catch (Exception e) {
-        }
-        try {
-            blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
-        }
-        catch (Exception e) {
-        }
-        try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
-        }
-        catch (Exception e) {
-        }
-    }
-
-    def cleanupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        cleanupContainers()
     }
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+        // Initialize the interceptor manager.
+        interceptorManager = InterceptorManager.create(testName.getMethodName(), getTestModeType())
+
+        // Initialize the URL before methods as they carry along the test method information when record and playback.
+        primaryServiceURL = getGenericServiceURL(primaryCreds)
+        alternateServiceURL = getGenericServiceURL(alternateCreds)
+        blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+        premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
+
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
 
+    def cleanupSpec() {
+        cleanupContainers()
+    }
+
     def cleanup() {
+        if (testMode == null) {
+            return
+        }
+        interceptorManager.finalizeInterceptor()
         // TODO: Scrub auth header here?
-        iterationNo = updateIterationNo(specificationContext, iterationNo)
+    }
+
+
+    /**
+     * This function generates an entity name by concating prefix with random string.
+     * This ensures that the entity name is unique for each test so there are no conflicts on the service.
+     * We will push the name into variables when recording, and pop up when playback to ensure we use the same request url.
+     *
+     * @param prefix
+     *      Used to group all entities created by these tests under common prefixes. Useful for listing.
+     * @return
+     */
+    def generateResourceName(String prefix) {
+        return new TestResourceNamer(testName.getMethodName(), interceptorManager).randomName(prefix, 32)
+    }
+
+    def generateContainerName() {
+        generateResourceName(containerPrefix)
+    }
+
+    def generateBlobName() {
+        generateResourceName(blobPrefix)
+    }
+
+    def getGenericServiceURL(SharedKeyCredentials creds) {
+        PipelineOptions po = new PipelineOptions()
+        po.withClient(getHttpClient())
+
+        // Logging errors can be helpful for debugging in Travis.
+        po.withLogger(new HttpPipelineLogger() {
+            @Override
+            HttpPipelineLogLevel minimumLogLevel() {
+                return HttpPipelineLogLevel.ERROR
+            }
+
+            @Override
+            void log(HttpPipelineLogLevel httpPipelineLogLevel, String s, Object... objects) {
+                System.out.println(String.format(s, objects))
+            }
+        })
+
+        HttpPipeline newPipeline = createPipeline(creds, po)
+
+        return new ServiceURL(new URL("http://" + creds.getAccountName() + ".blob.core.windows.net"), newPipeline)
+    }
+
+    HttpPipeline createPipeline(ICredentials credentials) {
+        return createPipeline(credentials, new PipelineOptions())
+    }
+
+    HttpPipeline createPipeline(ICredentials credentials, PipelineOptions pipelineOptions) {
+        /*
+        PipelineOptions is mutable, but its fields refer to immutable objects. This method can pass the fields to other
+        methods, but the PipelineOptions object itself can only be used for the duration of this call; it must not be
+        passed to anything with a longer lifetime.
+         */
+        if (credentials == null) {
+            credentials = new AnonymousCredentials()
+        }
+        if (pipelineOptions == null) {
+            throw new IllegalArgumentException("pipelineOptions cannot be null. You must at least specify a client.")
+        }
+        // Closest to API goes first, closest to wire goes last.
+        ArrayList<RequestPolicyFactory> factories = new ArrayList<>()
+        factories.add(new TelemetryFactory(pipelineOptions.telemetryOptions()))
+        factories.add(new RequestIDFactory())
+        factories.add(new RequestRetryFactory(pipelineOptions.requestRetryOptions()))
+        if (!(credentials instanceof AnonymousCredentials) && testMode != TestBase.TestMode.PLAYBACK) {
+            factories.add(credentials)
+        }
+        factories.add(new SetResponseFieldFactory());
+        factories.add(new DecodingPolicyFactory())
+        factories.add(new LoggingFactory(pipelineOptions.loggingOptions()))
+        HttpPipelineOptions op = new HttpPipelineOptions().withLogger(pipelineOptions.logger()).withHttpClient(pipelineOptions.client())
+        if (testMode == TestBase.TestMode.RECORD) {
+            factories.add(interceptorManager.initRecordPolicy())
+        } else if (testMode == TestBase.TestMode.PLAYBACK){
+            op.withHttpClient(interceptorManager.initPlaybackClient())
+        }
+        return HttpPipeline.build(op, Arrays.asList(factories.toArray(new RequestPolicyFactory[factories.size()])))
     }
 
     /**
@@ -585,24 +625,83 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        String tenantId = getEnvironmentVariable("MICROSOFT_AD_TENANT_ID");
-        String servicePrincipalId = getEnvironmentVariable("ARM_CLIENTID");
-        String servicePrincipalKey = getEnvironmentVariable("ARM_CLIENTKEY");
+        ICredentials creds
+        if (testMode == TestBase.TestMode.PLAYBACK) {
+            creds = new AnonymousCredentials()
+        } else {
+            String tenantId = getEnvironmentVariable("MICROSOFT_AD_TENANT_ID");
+            String servicePrincipalId = getEnvironmentVariable("ARM_CLIENTID");
+            String servicePrincipalKey = getEnvironmentVariable("ARM_CLIENTKEY");
 
-        def authority = String.format("https://login.microsoftonline.com/%s/oauth2/token",tenantId);
-        def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
-        def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
-
+            def authority = String.format("https://login.microsoftonline.com/%s/oauth2/token", tenantId);
+            def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
+            def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
+            creds = new TokenCredentials(token)
+        }
         return new ServiceURL(
                 new URL(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName)),
-                StorageURL.createPipeline(new TokenCredentials(token)))
+                createPipeline(creds))
     }
 
-    def getTestMode(){
-        String testMode =  System.getenv("AZURE_TEST_MODE")
-        if(testMode == null){
-            testMode =  "PLAYBACK"
-        }
-        return testMode
+    def getCurrentTime() {
+        return new TestResourceNamer(testName.getMethodName(), interceptorManager).getCurrentTime()
     }
+
+    def setSASQueryParametersSignature(SASQueryParameters parameters) {
+        String signature
+        if (testMode == TestBase.TestMode.PLAYBACK) {
+            signature = interceptorManager.popVariable()
+            Field f = SASQueryParameters.getDeclaredField("signature")
+            f.setAccessible(true)
+            f.set(parameters, signature)
+        } else {
+            signature = parameters.signature()
+            interceptorManager.pushVariable(signature)
+        }
+    }
+
+    def compareDataToFile(Flowable<ByteBuffer> data, File file) {
+        FileInputStream fis = new FileInputStream(file)
+
+        for (ByteBuffer received : data.blockingIterable()) {
+            byte[] readBuffer = new byte[received.remaining()]
+            fis.read(readBuffer)
+            for (int i = 0; i < received.remaining(); i++) {
+                if (readBuffer[i] != received.get(i)) {
+                    return false
+                }
+            }
+        }
+
+        fis.close()
+        return true
+    }
+
+
+    def compareFiles(AsynchronousFileChannel channel1, long offset, long count, AsynchronousFileChannel channel2) {
+        int chunkSize = 8 * 1024 * 1024
+        long pos = 0
+
+        while (pos < count) {
+            chunkSize = Math.min(chunkSize, count - pos)
+            def buf1 = FlowableUtil.collectBytesInBuffer(FlowableUtil.readFile(channel1, offset + pos, chunkSize))
+                .blockingGet()
+            def buf2 = FlowableUtil.collectBytesInBuffer(FlowableUtil.readFile(channel2, pos, chunkSize)).blockingGet()
+
+            buf1.position(0)
+            buf2.position(0)
+
+            if (buf1.compareTo(buf2) != 0) {
+                return false
+            }
+
+            pos += chunkSize
+        }
+        if (pos != count && pos != channel2.size()) {
+            return false
+        }
+        return true
+    }
+
 }
+

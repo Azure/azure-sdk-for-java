@@ -1,0 +1,70 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc36062f39c8a01db45?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F3EA6A00D7\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:47:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ee181a-e01e-0051-4edc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:47:39 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc36062f39c8a01db45?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F3EA6A00D7\"",
+      "x-ms-lease-id" : "99387ec3-f866-424a-8185-d019bf0e6a47",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:47:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ee1820-e01e-0051-52dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:47:39 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc36062f39c8a01db45?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "x-ms-lease-status" : "locked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "leased",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:47:40 GMT",
+      "retry-after" : "0",
+      "body" : "",
+      "StatusCode" : "200",
+      "Date" : "Sun, 02 Jun 2019 00:47:39 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "ETag" : "\"0x8D6E6F3EA6A00D7\"",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-lease-duration" : "infinite",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "71ee1831-e01e-0051-61dc-182e83000000"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc36062f39c8a01db45" ]
+}

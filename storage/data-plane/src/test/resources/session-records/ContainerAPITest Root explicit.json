@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc925562a5651b60371?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F40EEA28C4\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:48:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ee4fcf-e01e-0051-2ddc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:48:40 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/$root?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerAlreadyExists",
+      "retry-after" : "0",
+      "Content-Length" : "230",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:71ee4fd2-e01e-0051-2fdc-182e83000000\nTime:2019-06-02T00:48:41.6619914Z</Message></Error>",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "71ee4fd2-e01e-0051-2fdc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:48:40 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/$root/rootblob",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F40EFB5975\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:48:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ee4fe0-e01e-0051-3adc-182e83000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 02 Jun 2019 00:48:40 GMT"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc925562a5651b60371" ]
+}

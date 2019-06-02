@@ -54,7 +54,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 this.scenarioData = APISpec.getRandomData(1024);
                 break;
             default:
-                throw new IllegalArgumentException("Invalid downlaod resource test scenario.");
+                // do nothing
+                break;
         }
     }
 

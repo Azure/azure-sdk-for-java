@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc42534d457ccb4e06e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F3EA19AA8F\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:47:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ee179b-e01e-0051-62dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:47:39 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc838255663608cb399?delimiter=.&include=&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:71ee17a2-e01e-0051-68dc-182e83000000\nTime:2019-06-02T00:47:39.9016369Z</Message></Error>",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "71ee17a2-e01e-0051-68dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:47:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc42534d457ccb4e06e", "jtc838255663608cb399" ]
+}

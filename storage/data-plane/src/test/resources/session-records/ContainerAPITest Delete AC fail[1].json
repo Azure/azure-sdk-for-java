@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc87404da2e14c7d420?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F39D221479\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:45:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "71ed9e0d-e01e-0051-63dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:30 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc87404da2e14c7d420?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:71ed9e15-e01e-0051-68dc-182e83000000\nTime:2019-06-02T00:45:30.7682111Z</Message></Error>",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "71ed9e15-e01e-0051-68dc-182e83000000",
+      "Date" : "Sun, 02 Jun 2019 00:45:30 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc87404da2e14c7d420" ]
+}

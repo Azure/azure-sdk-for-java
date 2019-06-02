@@ -4,20 +4,12 @@
 package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
-import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpMethod
-import com.microsoft.rest.v2.http.HttpPipelineLogLevel
-import com.microsoft.rest.v2.http.HttpPipelineLogger
-import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.*
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.slf4j.LoggerFactory
 import spock.lang.Unroll
-import uk.org.lidalia.slf4jtest.TestLogger
 import uk.org.lidalia.slf4jtest.TestLoggerFactory
-
-import java.util.logging.Logger
 
 class LoggingTest extends APISpec {
     /*
@@ -42,7 +34,7 @@ class LoggingTest extends APISpec {
     just keep it from growing too large.
      */
     def cleanupSpec() {
-        File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
+        File logsDir = new File(System.getProperty("java.io.tmpdir"), "AzureStorageJavaSDKLogs")
         for (File file : logsDir.listFiles()) {
             file.delete()
         }
@@ -55,7 +47,7 @@ class LoggingTest extends APISpec {
     as we know the directory will exist and that there will be no subdirectories.
      */
     def calculateLogsDirectorySize() {
-        File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
+        File logsDir = new File(System.getProperty("java.io.tmpdir"), "AzureStorageJavaSDKLogs")
         long length = 0
 
         for (File file : logsDir.listFiles()){
@@ -291,7 +283,7 @@ class LoggingTest extends APISpec {
         po.withLogger(logger)
 
         cu = primaryServiceURL.createContainerURL(generateContainerName())
-        cu = new ContainerURL(cu.toURL(), StorageURL.createPipeline(primaryCreds, po))
+        cu = new ContainerURL(cu.toURL(), createPipeline(primaryCreds, po))
 
         when:
         cu.create(null, null, null).blockingGet()

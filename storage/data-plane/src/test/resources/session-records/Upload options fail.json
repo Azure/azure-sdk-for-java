@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadoptionsfail141176066e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F478661D65\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:51:38 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b4fd67-f01e-00e4-07dd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:51:37 GMT"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtcuploadoptionsfail141176066e", "javablob25661459751f97" ]
+}

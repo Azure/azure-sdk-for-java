@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F432D1DF85\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b40195-f01e-00e4-4bdd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67/javablob38108e8ab21fff",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6E6F432DA9BB7\"",
+      "Last-Modified" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "body" : "",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d5b401ae-f01e-00e4-5cdd-18237c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT"
+    },
+    "Errors" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67/javablob21951130a58128?comp=incrementalcopy",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidSourceBlobUrl",
+      "retry-after" : "0",
+      "Content-Length" : "270",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidSourceBlobUrl</Code><Message>The source url for incremental copy request must be valid azure storage blob url.\nRequestId:d5b401c5-f01e-00e4-6edd-18237c000000\nTime:2019-06-02T00:49:41.9608675Z</Message></Error>",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "d5b401c5-f01e-00e4-6edd-18237c000000",
+      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Errors" : null
+  } ],
+  "variables" : [ "jtc616985f35dffffc67", "javablob38108e8ab21fff", "javablob21951130a58128" ]
+}

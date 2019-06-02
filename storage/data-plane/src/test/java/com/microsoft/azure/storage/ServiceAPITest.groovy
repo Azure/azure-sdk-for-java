@@ -7,7 +7,6 @@ import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.HttpPipeline
-import org.junit.Assume
 
 import java.time.OffsetDateTime
 
@@ -28,7 +27,7 @@ class ServiceAPITest extends APISpec {
     }
 
     def cleanup() {
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+      //  Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
         RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
         primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withStaticWebsite(new StaticWebsite().withEnabled(false))
@@ -254,7 +253,7 @@ class ServiceAPITest extends APISpec {
     def "Set props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
-                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+                createPipeline(primaryCreds, new PipelineOptions()))
                 .setProperties(new StorageServiceProperties(), null).blockingGet()
 
         then:
@@ -284,7 +283,7 @@ class ServiceAPITest extends APISpec {
     def "Get props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
-                StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties(null).blockingGet()
+                createPipeline(primaryCreds, new PipelineOptions())).getProperties(null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -307,7 +306,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get UserDelegationKey"() {
         setup:
-        def start = OffsetDateTime.now()
+        def start = getCurrentTime()
         def expiry = start.plusDays(1)
 
         def response = getOAuthServiceURL().getUserDelegationKey(start, expiry, Context.NONE).blockingGet()
@@ -326,7 +325,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get UserDelegationKey min"() {
         setup:
-        def expiry = OffsetDateTime.now().plusDays(1)
+        def expiry = getCurrentTime().plusDays(1)
 
         def response = getOAuthServiceURL().getUserDelegationKey(null, expiry).blockingGet()
 
@@ -367,7 +366,7 @@ class ServiceAPITest extends APISpec {
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
         parts.withHost(primaryCreds.getAccountName() + "-secondary.blob.core.windows.net")
         ServiceURL secondary = new ServiceURL(parts.toURL(),
-                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+                createPipeline(primaryCreds, new PipelineOptions()))
         ServiceGetStatisticsResponse response = secondary.getStatistics(null).blockingGet()
 
         expect:
@@ -383,7 +382,7 @@ class ServiceAPITest extends APISpec {
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
         parts.withHost(primaryCreds.getAccountName() + "-secondary.blob.core.windows.net")
         ServiceURL secondary = new ServiceURL(parts.toURL(),
-                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+                createPipeline(primaryCreds, new PipelineOptions()))
 
         expect:
         secondary.getStatistics(null).blockingGet().statusCode() == 200
@@ -432,7 +431,7 @@ class ServiceAPITest extends APISpec {
     def "Get account info error"() {
         when:
         ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
-                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+                createPipeline(new AnonymousCredentials(), new PipelineOptions()))
         serviceURL.getAccountInfo(null).blockingGet()
 
         then:
@@ -460,7 +459,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
         def po = new PipelineOptions().withRequestRetryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
-        def sURL = new ServiceURL(badURL, StorageURL.createPipeline(primaryCreds, po))
+        def sURL = new ServiceURL(badURL, createPipeline(primaryCreds, po))
 
         when:
         sURL.getProperties().blockingGet()
