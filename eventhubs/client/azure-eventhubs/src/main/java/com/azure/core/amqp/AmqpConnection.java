@@ -13,6 +13,13 @@ import java.util.Map;
  */
 public interface AmqpConnection extends StateNotifier, Closeable {
     /**
+     * Gets the connection identifier.
+     *
+     * @return The connection identifier.
+     */
+    String getIdentifier();
+
+    /**
      * Gets the host for the AMQP connection.
      *
      * @return The host for the AMQP connection.

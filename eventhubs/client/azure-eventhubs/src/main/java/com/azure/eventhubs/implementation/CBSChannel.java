@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ExceptionUtil;
@@ -17,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 class CBSChannel implements CBSNode {
     private static final String SESSION_NAME = "cbs-session";
@@ -31,19 +33,23 @@ class CBSChannel implements CBSNode {
     private static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
 
     private final ServiceLogger logger = new ServiceLogger(CBSChannel.class);
-    private final ReactorConnection connection;
+    private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorDispatcher dispatcher;
 
-    CBSChannel(ReactorConnection connection, TokenProvider tokenProvider, ReactorDispatcher dispatcher) {
+    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorDispatcher dispatcher) {
+        Objects.requireNonNull(connection);
+        Objects.requireNonNull(tokenProvider);
+        Objects.requireNonNull(dispatcher);
+
         this.connection = connection;
         this.tokenProvider = tokenProvider;
-
+        this.dispatcher = dispatcher;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
-            .map(session -> new RequestResponseChannel(connection.getProperties(), LINK_NAME, CBS_ADDRESS, session.session()));
-        this.dispatcher = dispatcher;
+            .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
+                CBS_ADDRESS, session.session()));
     }
 
     @Override

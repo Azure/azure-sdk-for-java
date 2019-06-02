@@ -42,8 +42,8 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
     private final Mono<Connection> connectionMono;
     private final Scheduler scheduler;
     private final ReactorProvider provider;
-    private final ConnectionProperties properties;
     private final Mono<CBSNode> cbsChannelMono;
+    private final String connectionId;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -57,10 +57,11 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
         Objects.requireNonNull(handler);
         Objects.requireNonNull(scheduler);
         Objects.requireNonNull(provider);
+        Objects.requireNonNull(tokenProvider);
 
         this.provider = provider;
         this.scheduler = scheduler;
-        this.properties = new ConnectionProperties(connectionId, handler.getHostname());
+        this.connectionId = connectionId;
         this.handler = handler;
         this.connectionMono = Mono.fromCallable(this::createConnectionAndStart)
             .doOnSubscribe(c -> {
@@ -102,6 +103,11 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
         return cbsChannelMono;
     }
 
+    @Override
+    public String getIdentifier() {
+        return connectionId;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -132,7 +138,8 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = new SessionHandler(properties, sessionName, provider.getReactorDispatcher(), DEFAULT_OPERATION_TIMEOUT);
+            final SessionHandler handler = new SessionHandler(connectionId, getHost(), sessionName,
+                provider.getReactorDispatcher(), DEFAULT_OPERATION_TIMEOUT);
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
@@ -168,16 +175,13 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
         super.close();
     }
 
-    ConnectionProperties getProperties() {
-        return properties;
-    }
 
     private synchronized Connection createConnectionAndStart() throws IOException {
-        final Reactor reactor = provider.createReactor(properties.connectionId(), handler.getMaxFrameSize());
+        final Reactor reactor = provider.createReactor(connectionId, handler.getMaxFrameSize());
         final Connection connection = reactor.connectionToHost(handler.getHostname(), handler.protocolPort(), handler);
 
         reactorExceptionHandler = new ReactorExceptionHandler();
-        executor = new ReactorExecutor(reactor, scheduler, properties.connectionId(), reactorExceptionHandler, DEFAULT_OPERATION_TIMEOUT);
+        executor = new ReactorExecutor(reactor, scheduler, connectionId, reactorExceptionHandler, DEFAULT_OPERATION_TIMEOUT);
         executor.start();
 
         return connection;

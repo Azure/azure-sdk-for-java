@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.Closeable;
+import java.util.Objects;
 
 abstract class StateNotifierBase implements StateNotifier, Closeable {
     private final ReplayProcessor<ConnectionState> connectionStateProcessor = ReplayProcessor.cacheLastOrDefault(ConnectionState.UNINITIALIZED);
@@ -26,6 +27,8 @@ abstract class StateNotifierBase implements StateNotifier, Closeable {
     private volatile ConnectionState state;
 
     StateNotifierBase(ServiceLogger logger) {
+        Objects.requireNonNull(logger);
+
         this.logger = logger;
         this.subscription = connectionStateProcessor.subscribe(s -> this.state = s);
     }

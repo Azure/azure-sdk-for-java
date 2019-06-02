@@ -14,6 +14,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
 
 class ReactorSession extends StateNotifierBase implements AmqpSession {
     private final Session session;
@@ -23,8 +24,15 @@ class ReactorSession extends StateNotifierBase implements AmqpSession {
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
 
-    ReactorSession(Session session, SessionHandler handler, String sessionName, ReactorDispatcher dispatcher, Duration openTimeout) {
+    ReactorSession(Session session, SessionHandler handler, String sessionName, ReactorDispatcher dispatcher,
+                   Duration openTimeout) {
         super(new ServiceLogger(ReactorSession.class));
+
+        Objects.requireNonNull(session);
+        Objects.requireNonNull(handler);
+        Objects.requireNonNull(sessionName);
+        Objects.requireNonNull(dispatcher);
+        Objects.requireNonNull(openTimeout);
 
         this.session = session;
         this.handler = handler;

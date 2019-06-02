@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs.implementation.handler;
 
-import com.azure.eventhubs.implementation.ConnectionProperties;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -25,8 +24,8 @@ public class SendLinkHandler extends LinkHandler {
     private final FluxSink<Integer> creditSink = creditProcessor.sink();
     private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
 
-    public SendLinkHandler(final ConnectionProperties properties, final String senderName) {
-        super(properties.connectionId(), properties.host());
+    public SendLinkHandler(String connectionId, String host, final String senderName) {
+        super(connectionId, host);
         this.senderName = senderName;
     }
 

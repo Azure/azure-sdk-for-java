@@ -16,6 +16,7 @@ import java.io.Closeable;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,8 +33,14 @@ class ReactorExecutor implements Closeable {
     private final Duration timeout;
     private final ExceptionHandler exceptionHandler;
 
-    ReactorExecutor(final Reactor reactor, final Scheduler scheduler, final String connectionId,
-                    final ExceptionHandler exceptionHandler, final Duration timeout) {
+    ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, ExceptionHandler exceptionHandler,
+                    Duration timeout) {
+        Objects.requireNonNull(reactor);
+        Objects.requireNonNull(scheduler);
+        Objects.requireNonNull(connectionId);
+        Objects.requireNonNull(exceptionHandler);
+        Objects.requireNonNull(timeout);
+
         this.reactor = reactor;
         this.scheduler = scheduler;
         this.connectionId = connectionId;

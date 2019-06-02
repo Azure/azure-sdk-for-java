@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs.implementation.handler;
 
-import com.azure.eventhubs.implementation.ConnectionProperties;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -20,8 +19,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Flux<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
 
-    public ReceiveLinkHandler(final ConnectionProperties properties, final String receiverName) {
-        super(properties.connectionId(), properties.host());
+    public ReceiveLinkHandler(String connectionId, String host, String receiverName) {
+        super(connectionId, host);
         this.deliveries = Flux.create(sink -> {
             deliverySink = sink;
         });
