@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -88,10 +89,16 @@ public class SitePatchResource extends ProxyOnlyResource {
     private Boolean reserved;
 
     /**
-     * Hyper-V sandbox.
+     * Obsolete: Hyper-V sandbox.
      */
     @JsonProperty(value = "properties.isXenon")
     private Boolean isXenon;
+
+    /**
+     * Hyper-V sandbox.
+     */
+    @JsonProperty(value = "properties.hyperV")
+    private Boolean hyperV;
 
     /**
      * Last time the app was modified, in UTC. Read-only.
@@ -150,6 +157,12 @@ public class SitePatchResource extends ProxyOnlyResource {
     private Boolean clientCertEnabled;
 
     /**
+     * client certificate authentication comma-separated exclusion paths.
+     */
+    @JsonProperty(value = "properties.clientCertExclusionPaths")
+    private String clientCertExclusionPaths;
+
+    /**
      * &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the
      * app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
@@ -206,13 +219,6 @@ public class SitePatchResource extends ProxyOnlyResource {
     private CloningInfo cloningInfo;
 
     /**
-     * If specified during app creation, the app is created from a previous
-     * snapshot.
-     */
-    @JsonProperty(value = "properties.snapshotInfo")
-    private SnapshotRecoveryRequest snapshotInfo;
-
-    /**
      * Name of the resource group the app belongs to. Read-only.
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -244,6 +250,31 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.httpsOnly")
     private Boolean httpsOnly;
+
+    /**
+     * Site redundancy mode. Possible values include: 'None', 'Manual',
+     * 'Failover', 'ActiveActive', 'GeoRedundant'.
+     */
+    @JsonProperty(value = "properties.redundancyMode")
+    private RedundancyMode redundancyMode;
+
+    /**
+     * Specifies an operation id if this site has a pending operation.
+     */
+    @JsonProperty(value = "properties.inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID inProgressOperationId;
+
+    /**
+     * GeoDistributions for this site.
+     */
+    @JsonProperty(value = "properties.geoDistributions")
+    private List<GeoDistribution> geoDistributions;
+
+    /**
+     * The identity property.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
      * Get current state of the app.
@@ -381,7 +412,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get hyper-V sandbox.
+     * Get obsolete: Hyper-V sandbox.
      *
      * @return the isXenon value
      */
@@ -390,13 +421,33 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set hyper-V sandbox.
+     * Set obsolete: Hyper-V sandbox.
      *
      * @param isXenon the isXenon value to set
      * @return the SitePatchResource object itself.
      */
     public SitePatchResource withIsXenon(Boolean isXenon) {
         this.isXenon = isXenon;
+        return this;
+    }
+
+    /**
+     * Get hyper-V sandbox.
+     *
+     * @return the hyperV value
+     */
+    public Boolean hyperV() {
+        return this.hyperV;
+    }
+
+    /**
+     * Set hyper-V sandbox.
+     *
+     * @param hyperV the hyperV value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withHyperV(Boolean hyperV) {
+        this.hyperV = hyperV;
         return this;
     }
 
@@ -528,6 +579,26 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get client certificate authentication comma-separated exclusion paths.
+     *
+     * @return the clientCertExclusionPaths value
+     */
+    public String clientCertExclusionPaths() {
+        return this.clientCertExclusionPaths;
+    }
+
+    /**
+     * Set client certificate authentication comma-separated exclusion paths.
+     *
+     * @param clientCertExclusionPaths the clientCertExclusionPaths value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withClientCertExclusionPaths(String clientCertExclusionPaths) {
+        this.clientCertExclusionPaths = clientCertExclusionPaths;
+        return this;
+    }
+
+    /**
      * Get &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
       If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
      *
@@ -647,26 +718,6 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @return the snapshotInfo value
-     */
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.snapshotInfo;
-    }
-
-    /**
-     * Set if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @param snapshotInfo the snapshotInfo value to set
-     * @return the SitePatchResource object itself.
-     */
-    public SitePatchResource withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo) {
-        this.snapshotInfo = snapshotInfo;
-        return this;
-    }
-
-    /**
      * Get name of the resource group the app belongs to. Read-only.
      *
      * @return the resourceGroup value
@@ -721,6 +772,75 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     public SitePatchResource withHttpsOnly(Boolean httpsOnly) {
         this.httpsOnly = httpsOnly;
+        return this;
+    }
+
+    /**
+     * Get site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'.
+     *
+     * @return the redundancyMode value
+     */
+    public RedundancyMode redundancyMode() {
+        return this.redundancyMode;
+    }
+
+    /**
+     * Set site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'.
+     *
+     * @param redundancyMode the redundancyMode value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withRedundancyMode(RedundancyMode redundancyMode) {
+        this.redundancyMode = redundancyMode;
+        return this;
+    }
+
+    /**
+     * Get specifies an operation id if this site has a pending operation.
+     *
+     * @return the inProgressOperationId value
+     */
+    public UUID inProgressOperationId() {
+        return this.inProgressOperationId;
+    }
+
+    /**
+     * Get geoDistributions for this site.
+     *
+     * @return the geoDistributions value
+     */
+    public List<GeoDistribution> geoDistributions() {
+        return this.geoDistributions;
+    }
+
+    /**
+     * Set geoDistributions for this site.
+     *
+     * @param geoDistributions the geoDistributions value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withGeoDistributions(List<GeoDistribution> geoDistributions) {
+        this.geoDistributions = geoDistributions;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

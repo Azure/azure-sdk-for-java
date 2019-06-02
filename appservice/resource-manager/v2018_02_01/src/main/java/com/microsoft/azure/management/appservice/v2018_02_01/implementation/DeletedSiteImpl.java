@@ -9,13 +9,20 @@
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
+import rx.Observable;
 
-class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSite {
+class DeletedSiteImpl extends IndexableRefreshableWrapperImpl<DeletedSite, DeletedSiteInner> implements DeletedSite {
     private final AppServiceManager manager;
-    DeletedSiteImpl(DeletedSiteInner inner, AppServiceManager manager) {
-        super(inner);
+    private String location;
+    private String deletedSiteId;
+
+    DeletedSiteImpl(DeletedSiteInner inner,  AppServiceManager manager) {
+        super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
+        this.location = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
+        this.deletedSiteId = IdParsingUtils.getValueFromIdByName(inner.id(), "deletedSites");
     }
 
     @Override
@@ -24,8 +31,21 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     }
 
     @Override
+    protected Observable<DeletedSiteInner> getInnerAsync() {
+        DeletedWebAppsInner client = this.manager().inner().deletedWebApps();
+        return client.getDeletedWebAppByLocationAsync(this.location, this.deletedSiteId);
+    }
+
+
+
+    @Override
     public Integer deletedSiteId() {
         return this.inner().deletedSiteId();
+    }
+
+    @Override
+    public String deletedSiteKind() {
+        return this.inner().deletedSiteKind();
     }
 
     @Override
@@ -36,6 +56,26 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String deletedTimestamp() {
         return this.inner().deletedTimestamp();
+    }
+
+    @Override
+    public String geoRegionName() {
+        return this.inner().geoRegionName();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String kind() {
+        return this.inner().kind();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -51,6 +91,11 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String subscription() {
         return this.inner().subscription();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
     }
 
 }

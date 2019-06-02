@@ -44,6 +44,11 @@ public interface SiteAuthSettings extends HasInner<SiteAuthSettingsInner>, HasMa
     String clientSecret();
 
     /**
+     * @return the clientSecretCertificateThumbprint value.
+     */
+    String clientSecretCertificateThumbprint();
+
+    /**
      * @return the defaultProvider value.
      */
     BuiltInAuthenticationProvider defaultProvider();
