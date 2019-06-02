@@ -15,8 +15,7 @@ import reactor.test.StepVerifier;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class EventHubClientTest {
-    private static final String CONNECTION_STRING = "";
+public class EventHubClientTest extends TestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
 
     @Test(expected = NullPointerException.class)
@@ -31,7 +30,7 @@ public class EventHubClientTest {
 
     @Test
     public void getPartitionInformation() throws InterruptedException, InvalidKeyException, NoSuchAlgorithmException {
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(CONNECTION_STRING);
+        final ConnectionStringBuilder builder = new ConnectionStringBuilder(getConnectionString());
         final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
         final ReactorProvider provider = new ReactorProvider();
         final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
