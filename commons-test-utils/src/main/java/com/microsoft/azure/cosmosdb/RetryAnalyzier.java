@@ -50,5 +50,4 @@ public class RetryAnalyzier extends RetryAnalyzerCount {
 
         return true;
     }
-
 }
