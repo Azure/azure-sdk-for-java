@@ -79,7 +79,7 @@ public class InterceptorManager {
     public boolean isLiveMode() {
         return testMode != TestBase.TestMode.PLAYBACK && testMode != TestBase.TestMode.RECORD;
     }
-    
+
     public RecordPolicyFactory initRecordPolicy() {
         if (recordedData == null) {
             recordedData = new RecordedData();

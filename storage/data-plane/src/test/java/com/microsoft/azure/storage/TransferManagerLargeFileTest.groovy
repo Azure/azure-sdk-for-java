@@ -18,6 +18,13 @@ class TransferManagerLargeFileTest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
+
+        /*
+        We just print something out in between each test to keep Travis from being idle for too long. The tests seem
+        to run slower on Travis, and without this keep-alive, it may exceed the 10 minutes of no output and error the
+        CI build.
+         */
+        System.out.println("Starting test")
     }
 
     //Multi part
