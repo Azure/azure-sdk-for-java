@@ -6,7 +6,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.profile_2019_03_01_hybrid</groupId>
-  a
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-arm-parent</artifactId>
+    <version>1.1.0</version>
+    <relativePath>../../pom.management.xml</relativePath>
+  </parent>
   <artifactId>azure-profile-parent</artifactId>
   <version>1.0.0-beta</version>
   <packaging>pom</packaging>
