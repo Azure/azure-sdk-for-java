@@ -24,6 +24,12 @@ public class CsmPublishingProfileOptions {
     private PublishingProfileFormat format;
 
     /**
+     * Include the DisasterRecover endpoint if true.
+     */
+    @JsonProperty(value = "includeDisasterRecoveryEndpoints")
+    private Boolean includeDisasterRecoveryEndpoints;
+
+    /**
      * Get name of the format. Valid values are:
      FileZilla3
      WebDeploy -- default
@@ -46,6 +52,26 @@ public class CsmPublishingProfileOptions {
      */
     public CsmPublishingProfileOptions withFormat(PublishingProfileFormat format) {
         this.format = format;
+        return this;
+    }
+
+    /**
+     * Get include the DisasterRecover endpoint if true.
+     *
+     * @return the includeDisasterRecoveryEndpoints value
+     */
+    public Boolean includeDisasterRecoveryEndpoints() {
+        return this.includeDisasterRecoveryEndpoints;
+    }
+
+    /**
+     * Set include the DisasterRecover endpoint if true.
+     *
+     * @param includeDisasterRecoveryEndpoints the includeDisasterRecoveryEndpoints value to set
+     * @return the CsmPublishingProfileOptions object itself.
+     */
+    public CsmPublishingProfileOptions withIncludeDisasterRecoveryEndpoints(Boolean includeDisasterRecoveryEndpoints) {
+        this.includeDisasterRecoveryEndpoints = includeDisasterRecoveryEndpoints;
         return this;
     }
 

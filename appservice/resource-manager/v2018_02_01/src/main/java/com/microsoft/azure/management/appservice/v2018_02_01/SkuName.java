@@ -40,6 +40,12 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value PremiumV2 for SkuName. */
     public static final SkuName PREMIUM_V2 = fromString("PremiumV2");
 
+    /** Static value ElasticPremium for SkuName. */
+    public static final SkuName ELASTIC_PREMIUM = fromString("ElasticPremium");
+
+    /** Static value ElasticIsolated for SkuName. */
+    public static final SkuName ELASTIC_ISOLATED = fromString("ElasticIsolated");
+
     /**
      * Creates or finds a SkuName from its string representation.
      * @param name a name to look for
