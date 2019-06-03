@@ -39,6 +39,12 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     private String snapshotTime;
 
     /**
+     * If true, the snapshot is retrieved from DRSecondary endpoint.
+     */
+    @JsonProperty(value = "properties.useDRSecondary")
+    private Boolean useDRSecondary;
+
+    /**
      * Get aRM resource ID of the deleted app. Example:
      /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
      *
@@ -99,6 +105,26 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      */
     public DeletedAppRestoreRequest withSnapshotTime(String snapshotTime) {
         this.snapshotTime = snapshotTime;
+        return this;
+    }
+
+    /**
+     * Get if true, the snapshot is retrieved from DRSecondary endpoint.
+     *
+     * @return the useDRSecondary value
+     */
+    public Boolean useDRSecondary() {
+        return this.useDRSecondary;
+    }
+
+    /**
+     * Set if true, the snapshot is retrieved from DRSecondary endpoint.
+     *
+     * @param useDRSecondary the useDRSecondary value to set
+     * @return the DeletedAppRestoreRequest object itself.
+     */
+    public DeletedAppRestoreRequest withUseDRSecondary(Boolean useDRSecondary) {
+        this.useDRSecondary = useDRSecondary;
         return this;
     }
 
