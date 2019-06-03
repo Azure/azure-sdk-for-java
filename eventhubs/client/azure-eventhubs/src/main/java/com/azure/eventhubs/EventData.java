@@ -62,30 +62,29 @@ public class EventData implements Comparable<EventData> {
         }});
 
     private final Map<String, Object> properties;
-    private final ByteBuffer data;
+    private final ByteBuffer body;
 
     private SystemProperties systemProperties = new SystemProperties(Collections.emptyMap());
 
     /**
      * Creates an event containing the {@code data}.
      *
-     * @param data The data to set for this event.
+     * @param body The data to set for this event.
      */
-    public EventData(byte[] data) {
-        this(ByteBuffer.wrap(data));
+    public EventData(byte[] body) {
+        this(ByteBuffer.wrap(body));
     }
 
     /**
-     * Creates an event containing the {@code data}.
+     * Creates an event containing the {@code body}.
      *
-     * @param data The data to set for this event.
+     * @param body The data to set for this event.
+     * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public EventData(ByteBuffer data) {
-        if (data == null) {
-            throw new IllegalArgumentException("'data' cannot be null");
-        }
+    public EventData(ByteBuffer body) {
+        Objects.requireNonNull(body);
 
-        this.data = data;
+        this.body = body;
         this.properties = new HashMap<>();
     }
 
@@ -128,9 +127,9 @@ public class EventData implements Comparable<EventData> {
         final Section bodySection = message.getBody();
         if (bodySection instanceof Data) {
             Data bodyData = (Data) bodySection;
-            this.data = bodyData.getValue().asByteBuffer();
+            this.body = bodyData.getValue().asByteBuffer();
         } else {
-            this.data = null;
+            this.body = null;
         }
 
         message.clear();
@@ -189,7 +188,7 @@ public class EventData implements Comparable<EventData> {
      * @return ByteBuffer representing the data.
      */
     public ByteBuffer data() {
-        return data;
+        return body;
     }
 
     /**
@@ -339,7 +338,7 @@ public class EventData implements Comparable<EventData> {
         }
 
         EventData eventData = (EventData) o;
-        return Objects.equals(data, eventData.data);
+        return Objects.equals(body, eventData.body);
     }
 
     /**
@@ -347,7 +346,7 @@ public class EventData implements Comparable<EventData> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(data);
+        return Objects.hash(body);
     }
 
     /**
@@ -394,6 +393,8 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
+         * event.
          */
         public long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());

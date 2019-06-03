@@ -138,6 +138,8 @@ public class ReceiverOptions {
      *
      * @param prefetchCount The amount of events to queue locally.
      * @return The updated ReceiverOptions object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
+     * greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
     public ReceiverOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {

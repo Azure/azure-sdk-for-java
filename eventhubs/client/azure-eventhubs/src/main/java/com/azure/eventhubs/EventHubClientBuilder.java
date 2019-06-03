@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
 /**
- * Builder to createReactor an {@link EventHubClient}.
+ * Builder to create an {@link EventHubClient}.
  */
 public class EventHubClientBuilder {
     private ConnectionStringBuilder credentials;
@@ -104,6 +104,7 @@ public class EventHubClientBuilder {
      * Creates a new {@link EventHubClient} based on the configuration set in this builder.
      *
      * @return A new {@link EventHubClient} instance.
+     * @throws AzureException If the token provider cannot be created for authorizing requests.
      */
     public EventHubClient build() {
         final ReactorProvider provider = new ReactorProvider();

@@ -177,5 +177,3 @@ class ReactorExecutor implements Closeable {
         }
     }
 }
-
-

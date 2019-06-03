@@ -281,6 +281,4 @@ public class ConnectionHandler extends Handler {
             error != null ? error.getCondition() : NOT_APPLICABLE,
             error != null ? error.getDescription() : NOT_APPLICABLE);
     }
-
-
 }
