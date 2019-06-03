@@ -4,9 +4,12 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.ConnectionState;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
@@ -93,6 +96,9 @@ public class ReactorConnectionTest {
         Assert.assertTrue(connection.getConnectionProperties().isEmpty());
     }
 
+    /**
+     * Creates a session with the given name and set handler.
+     */
     @Test
     public void createSession() {
         // Arrange
@@ -111,8 +117,115 @@ public class ReactorConnectionTest {
             .assertNext(s -> {
                 Assert.assertNotNull(s);
                 Assert.assertEquals(SESSION_NAME, s.sessionName());
+                Assert.assertTrue(s instanceof ReactorSession);
+                Assert.assertSame(session, ((ReactorSession) s).session());
+            }).verifyComplete();
+
+        // Assert that the same instance is obtained and we don't get a new session with the same name.
+        StepVerifier.create(connection.createSession(SESSION_NAME))
+            .assertNext(s -> {
+                Assert.assertNotNull(s);
+                Assert.assertEquals(SESSION_NAME, s.sessionName());
+                Assert.assertTrue(s instanceof ReactorSession);
+                Assert.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
 
         verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+    }
+
+    /**
+     * Creates a session with the given name and set handler.
+     */
+    @Test
+    public void removeSessionThatExists() {
+        // Arrange
+        final Connection connectionProtonJ = mock(Connection.class);
+        final Session session = mock(Session.class);
+        final Record record = mock(Record.class);
+
+        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still process.
+        when(reactor.process()).thenReturn(true);
+        when(reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler)).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.session()).thenReturn(session);
+        when(session.attachments()).thenReturn(record);
+
+        // Act & Assert
+        StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.sessionName())))
+            .expectNext(true)
+            .verifyComplete();
+
+        verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+    }
+
+    /**
+     * Creates a session with the given name and set handler.
+     */
+    @Test
+    public void removeSessionThatDoesNotExist() {
+        // Arrange
+        final Connection connectionProtonJ = mock(Connection.class);
+        final Session session = mock(Session.class);
+        final Record record = mock(Record.class);
+
+        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still process.
+        when(reactor.process()).thenReturn(true);
+        when(reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler)).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.session()).thenReturn(session);
+        when(session.attachments()).thenReturn(record);
+
+        // Act & Assert
+        StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession("does-not-exist")))
+            .expectNext(false)
+            .verifyComplete();
+
+        verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+    }
+
+    /**
+     * Verifies initial endpoint state is uninitialized and completes when the connection is closed.
+     */
+    @Test
+    public void initialConnectionState() {
+        // Assert
+        StepVerifier.create(connection.getConnectionStates())
+            .expectNext(ConnectionState.UNINITIALIZED)
+            .then(() -> {
+                try {
+                    connection.close();
+                } catch (IOException e) {
+                    Assert.fail("Should not have thrown an error.");
+                }
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies Connection state reports correct status when ConnectionHandler updates its state.
+     */
+    @Test
+    public void onConnectionStateOpen() {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Connection connectionProtonJ = mock(Connection.class);
+        when(event.getConnection()).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.getHostname()).thenReturn(HOSTNAME);
+        when(connectionProtonJ.getRemoteContainer()).thenReturn("remote-container");
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        // Act & Assert
+        StepVerifier.create(connection.getConnectionStates())
+            .expectNext(ConnectionState.UNINITIALIZED)
+            .then(() -> handler.onConnectionRemoteOpen(event))
+            .expectNext(ConnectionState.ACTIVE)
+            // getConnectionStates is distinct. We don't expect to see another event with the same status.
+            .then(() -> handler.onConnectionRemoteOpen(event))
+            .then(() -> {
+                try {
+                    connection.close();
+                } catch (IOException e) {
+                    Assert.fail("Should not have thrown an error.");
+                }
+            })
+            .verifyComplete();
     }
 }
