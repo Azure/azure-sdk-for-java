@@ -11,12 +11,11 @@ import java.util.Properties;
 class KeyVaultErrorCodeStrings {
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
     private static Properties errorStrings;
-    private static HashMap<String, String> errorStringsDefault;
 
     /**
      * The property name of Azure Key Vault Credentials required error string.
      */
-    static final String CREDENTIALS_REQUIRED = "credentials_required";
+    static final String CREDENTIAL_REQUIRED = "credential_required";
 
     /**
      * The property name of Azure Key Vault Endpoint required error string.

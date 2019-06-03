@@ -26,7 +26,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
         super(name, new VnetInfoInner());
         this.manager = manager;
         // Set resource name
-        this.slot = name;
+        this.vnetName = name;
         //
     }
 
@@ -34,8 +34,8 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.slot = inner.name();
-        // resource ancestor names
+        this.vnetName = inner.name();
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");
@@ -75,7 +75,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
 
 
     @Override
-    public byte[] certBlob() {
+    public String certBlob() {
         return this.inner().certBlob();
     }
 
@@ -92,6 +92,11 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public Boolean isSwift() {
+        return this.inner().isSwift();
     }
 
     @Override
@@ -139,7 +144,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     }
 
     @Override
-    public SiteVnetInfoImpl withCertBlob(byte[] certBlob) {
+    public SiteVnetInfoImpl withCertBlob(String certBlob) {
         this.inner().withCertBlob(certBlob);
         return this;
     }
@@ -147,6 +152,12 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     @Override
     public SiteVnetInfoImpl withDnsServers(String dnsServers) {
         this.inner().withDnsServers(dnsServers);
+        return this;
+    }
+
+    @Override
+    public SiteVnetInfoImpl withIsSwift(Boolean isSwift) {
+        this.inner().withIsSwift(isSwift);
         return this;
     }
 

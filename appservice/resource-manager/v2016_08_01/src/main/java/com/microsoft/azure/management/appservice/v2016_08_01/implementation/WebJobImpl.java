@@ -24,6 +24,7 @@ class WebJobImpl extends IndexableRefreshableWrapperImpl<WebJob, WebJobInner> im
     WebJobImpl(WebJobInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.webJobName = IdParsingUtils.getValueFromIdByName(inner.id(), "webjobs");

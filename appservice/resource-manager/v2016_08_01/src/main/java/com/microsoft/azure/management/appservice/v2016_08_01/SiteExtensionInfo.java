@@ -166,6 +166,9 @@ public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Ind
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Site name
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }

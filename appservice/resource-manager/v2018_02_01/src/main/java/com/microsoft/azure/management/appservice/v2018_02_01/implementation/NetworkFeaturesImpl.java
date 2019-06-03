@@ -26,6 +26,7 @@ class NetworkFeaturesImpl extends IndexableRefreshableWrapperImpl<NetworkFeature
     NetworkFeaturesImpl(NetworkFeaturesInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.view = IdParsingUtils.getValueFromIdByName(inner.id(), "networkFeatures");

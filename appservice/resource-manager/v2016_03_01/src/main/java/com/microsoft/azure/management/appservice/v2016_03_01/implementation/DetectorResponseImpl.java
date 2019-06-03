@@ -24,6 +24,7 @@ class DetectorResponseImpl extends IndexableRefreshableWrapperImpl<DetectorRespo
     DetectorResponseImpl(DetectorResponseInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "hostingEnvironments");
         this.detectorName = IdParsingUtils.getValueFromIdByName(inner.id(), "detectors");
