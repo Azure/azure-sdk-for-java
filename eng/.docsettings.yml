@@ -44,6 +44,11 @@ known_presence_issues:
   - ['core/azure-core', '#2847']
   - ['core/azure-core-auth', '#2847']
   - ['core/azure-core-management', '#2847']
+  - ['cosmosdb/data-plane/commons-test-utils', '#2847']
+  - ['cosmosdb/data-plane/sdk', '#2847']
+  - ['cosmosdb/data-plane/gateway', '#2847']
+  - ['cosmosdb/data-plane/commons', '#2847']
+  - ['cosmosdb/data-plane/direct-impl', '#2847']
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
@@ -59,6 +64,10 @@ known_content_issues:
   - ['storage/data-plane/README.md', '#3113']
   - ['storage/data-plane/swagger/README.md', '#3113']
   - ['core/README.md', '#3113']
+  - ['cosmosdb/data-plane/README.md', '#3113']
+  - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
+  - ['cosmosdb/data-plane/changelog/README.md', '#3113']
+  - ['cosmosdb/data-plane/faq/README.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
   - azure-applicationinsights-query-sample

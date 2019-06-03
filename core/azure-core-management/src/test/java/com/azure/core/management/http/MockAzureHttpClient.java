@@ -12,11 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.management.AsyncOperationResource;
-import com.azure.core.management.AzureAsyncOperationPollStrategy;
 import com.azure.core.management.HttpBinJSON;
-import com.azure.core.management.LocationPollStrategy;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.OperationState;
+import com.azure.core.management.implementation.AzureAsyncOperationPollStrategy;
+import com.azure.core.management.implementation.LocationPollStrategy;
 import com.azure.core.test.http.MockHttpResponse;
 import reactor.core.publisher.Mono;
 
