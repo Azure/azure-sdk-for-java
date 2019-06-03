@@ -22,6 +22,8 @@
  */
 package com.microsoft.azure.cosmos.examples;
 
+import com.microsoft.azure.cosmos.CosmosItem;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
@@ -29,8 +31,6 @@ import com.microsoft.azure.cosmos.CosmosClient;
 import com.microsoft.azure.cosmos.CosmosContainer;
 import com.microsoft.azure.cosmos.CosmosContainerSettings;
 import com.microsoft.azure.cosmos.CosmosDatabase;
-import com.microsoft.azure.cosmos.CosmosItem;
-import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
 import com.microsoft.azure.cosmos.CosmosItemResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -106,10 +106,10 @@ public class BasicDemo {
             log("Couldn't create items due to above exceptions");
         }
         if(cosmosItem != null) {
-            cosmosItem.set("new property", "value");
+            replaceObject.setName("new name test3");
 
             //Replace the item and wait for completion
-            cosmosItem.replace(cosmosItem, new CosmosItemRequestOptions(cosmosItem.get("country"))).block();
+            cosmosItem.replace(replaceObject).block();
         }
     }
 
@@ -130,7 +130,7 @@ public class BasicDemo {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItem>> queryFlux = container.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemSettings>> queryFlux = container.queryItems(query, options);
 
         queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
                             throwable -> {},
@@ -155,8 +155,8 @@ public class BasicDemo {
         String continuation = null;
         do{
             options.setRequestContinuation(continuation);
-            Flux<FeedResponse<CosmosItem>> queryFlux = container.queryItems(query, options);
-            FeedResponse<CosmosItem> page = queryFlux.blockFirst();
+            Flux<FeedResponse<CosmosItemSettings>> queryFlux = container.queryItems(query, options);
+            FeedResponse<CosmosItemSettings> page = queryFlux.blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getResponseContinuation();

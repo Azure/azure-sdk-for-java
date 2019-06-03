@@ -135,6 +135,9 @@ import reactor.core.publisher.Mono;
      */
     public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseSettings databaseSettings,
             CosmosDatabaseRequestOptions options) {
+        if (options == null) {
+            options = new CosmosDatabaseRequestOptions();
+        }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->

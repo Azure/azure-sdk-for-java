@@ -152,10 +152,18 @@ public class CosmosItemRequestOptions extends CosmosRequestOptions {
 
     /**
      * Sets the partition key
-     * @param partitionKey
+     * @param partitionKey the partition key
      */
     public void setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
+    }
+
+    /**
+     * Gets the partition key
+     * @return the partition key
+     */
+    public PartitionKey getPartitionKey() {
+        return partitionKey;
     }
 
     @Override

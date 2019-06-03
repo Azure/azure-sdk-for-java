@@ -66,7 +66,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             }else if(resourceResponse instanceof CosmosContainerResponse){
                 return ((CosmosContainerResponse)resourceResponse).getCosmosContainerSettings();
             }else if(resourceResponse instanceof CosmosItemResponse){
-                return ((CosmosItemResponse)resourceResponse).getItem();
+                return ((CosmosItemResponse)resourceResponse).getCosmosItemSettings();
             }
             return null;
         }
