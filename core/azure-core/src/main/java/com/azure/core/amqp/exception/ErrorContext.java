@@ -24,7 +24,8 @@ public class ErrorContext implements Serializable {
      *
      * @param exception Exception that caused this error.
      * @param namespaceName Event Hub namespace of the error context.
-     * @throws IllegalArgumentException when 'namespaceName' is {@code null} or empty.
+     * @throws NullPointerException when {@code exception} is {@code null}.
+     * @throws IllegalArgumentException when {@code namespaceName} is {@code null} or empty.
      */
     public ErrorContext(final Throwable exception, final String namespaceName) {
         Objects.requireNonNull(exception);

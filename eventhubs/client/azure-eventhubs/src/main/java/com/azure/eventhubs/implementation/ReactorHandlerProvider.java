@@ -1,6 +1,7 @@
-package com.azure.eventhubs.implementation;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
