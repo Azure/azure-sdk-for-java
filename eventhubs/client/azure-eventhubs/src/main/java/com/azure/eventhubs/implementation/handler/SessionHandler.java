@@ -29,7 +29,7 @@ public class SessionHandler extends Handler {
     private final ReactorDispatcher reactorDispatcher;
 
     public SessionHandler(String connectionId, String host, String entityName, ReactorDispatcher reactorDispatcher,
-                   final Duration openTimeout) {
+                   Duration openTimeout) {
         this.connectionId = connectionId;
         this.host = host;
         this.entityName = entityName;

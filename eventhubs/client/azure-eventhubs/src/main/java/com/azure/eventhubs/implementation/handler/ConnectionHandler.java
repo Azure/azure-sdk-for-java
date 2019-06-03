@@ -29,10 +29,10 @@ public class ConnectionHandler extends Handler {
     private static final Symbol PLATFORM = Symbol.valueOf("platform");
     private static final Symbol FRAMEWORK = Symbol.valueOf("framework");
     private static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
-    private static final int MAX_USER_AGENT_LENGTH = 128;
 
-    private static final int AMQPS_PORT = 5671;
-    private static final int MAX_FRAME_SIZE = 65536;
+    static final int MAX_USER_AGENT_LENGTH = 128;
+    static final int AMQPS_PORT = 5671;
+    static final int MAX_FRAME_SIZE = 65536;
 
     private final ServiceLogger logger;
     private final String connectionId;
@@ -58,7 +58,7 @@ public class ConnectionHandler extends Handler {
      * address.
      * @param logger The service logger to use.
      */
-    ConnectionHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
+    protected ConnectionHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
         add(new Handshaker());
         this.connectionId = connectionId;
         this.hostname = hostname;
@@ -81,7 +81,7 @@ public class ConnectionHandler extends Handler {
         return this.hostname;
     }
 
-    public Map<String, Object> connectionProperties() {
+    public Map<String, Object> getConnectionProperties() {
         return connectionProperties;
     }
 
@@ -95,7 +95,7 @@ public class ConnectionHandler extends Handler {
         logger.asInformational().log("onConnectionInit hostname[{}], connectionId[{}]", hostname, this.connectionId);
 
         final Connection connection = event.getConnection();
-        final String hostName = hostname + ":" + protocolPort();
+        final String hostName = hostname + ":" + getProtocolPort();
 
         connection.setHostname(hostName);
         connection.setContainer(this.connectionId);
@@ -112,7 +112,7 @@ public class ConnectionHandler extends Handler {
      *
      * @return The port used to open connection.
      */
-    public int protocolPort() {
+    public int getProtocolPort() {
         return AMQPS_PORT;
     }
 

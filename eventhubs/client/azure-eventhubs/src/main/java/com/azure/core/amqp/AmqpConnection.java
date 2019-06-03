@@ -34,11 +34,11 @@ public interface AmqpConnection extends StateNotifier, Closeable {
     int getMaxFrameSize();
 
     /**
-     * Gets the client properties.
+     * Gets the connection properties.
      *
-     * @return Client properties associated with this connection.
+     * @return Properties associated with this connection.
      */
-    Map<String, Object> getClientProperties();
+    Map<String, Object> getConnectionProperties();
 
     /**
      * Gets the claims-based security (CBS) node that authorizes access to resources.

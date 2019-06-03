@@ -78,6 +78,7 @@ class ReactorExecutor implements Closeable {
      */
     private void run() {
         if (!hasStarted.get()) {
+            logger.asWarning().log("Cannot start ReactorExecutor if ReactorExecutor.start() has not invoked.");
             return;
         }
 

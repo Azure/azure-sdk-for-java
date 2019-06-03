@@ -6,6 +6,7 @@ package com.azure.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.exception.AzureException;
 import com.azure.eventhubs.implementation.ReactorConnection;
+import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.StringUtil;
 import com.azure.eventhubs.implementation.TokenProvider;
@@ -37,14 +38,15 @@ public class EventHubClient implements Closeable {
     //TODO (conniey): Replace with configured values in EventHubClientBuilder.
     private final Duration timeout = Duration.ofSeconds(45);
 
-    EventHubClient(ConnectionStringBuilder connectionStringBuilder, Scheduler scheduler, ReactorProvider provider, TokenProvider tokenProvider) {
+    EventHubClient(ConnectionStringBuilder connectionStringBuilder, TokenProvider tokenProvider,
+                   ReactorProvider provider, ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
         Objects.requireNonNull(connectionStringBuilder, "'connectionStringBuilder' is null");
         Objects.requireNonNull(connectionStringBuilder.endpoint(), "'connectionStringBuilder.endpoint()' is null.");
 
         this.connectionStringBuilder = connectionStringBuilder;
         this.host = connectionStringBuilder.endpoint().getHost();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, scheduler, provider))
+        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, provider, handlerProvider, scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }

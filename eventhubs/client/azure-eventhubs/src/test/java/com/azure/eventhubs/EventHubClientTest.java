@@ -4,9 +4,11 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -20,21 +22,19 @@ public class EventHubClientTest extends TestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
-        new EventHubClient(null, null, null, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void invalidConnectionStringEndpoint() {
-        new EventHubClient(new ConnectionStringBuilder(), null, null, null);
+        new EventHubClient(null, null, null, null, null);
     }
 
     @Test
     public void getPartitionInformation() throws InterruptedException, InvalidKeyException, NoSuchAlgorithmException {
+        Assume.assumeTrue(isTestConfigurationSet());
+
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(getConnectionString());
         final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
         final ReactorProvider provider = new ReactorProvider();
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
-        EventHubClient client = new EventHubClient(builder, scheduler, provider, tokenProvider);
+        EventHubClient client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
 
         StepVerifier.create(client.getHubProperties())
             .assertNext(properties -> {
