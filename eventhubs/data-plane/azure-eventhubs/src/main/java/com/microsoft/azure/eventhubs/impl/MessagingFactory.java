@@ -8,6 +8,7 @@ import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.ITokenProvider;
+import com.microsoft.azure.eventhubs.ManagedIdentityTokenProvider;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
@@ -129,6 +130,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSharedAccessSignature());
 		} else if (!StringUtil.isNullOrWhiteSpace(csb.getSasKey())) {
 			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSasKeyName(), csb.getSasKey());
+		} else if ((csb.getAuthentication() != null) && csb.getAuthentication().equalsIgnoreCase("Managed Identity")) {
+			tokenProvider = new ManagedIdentityTokenProvider();
 		} else {
 			throw new IllegalArgumentException("Connection string must specify a Shared Access Signature, Shared Access Key, or Managed Identity");
 		}

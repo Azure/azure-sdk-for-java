@@ -36,6 +36,11 @@
       <artifactId>nimbus-jose-jwt</artifactId>
       <version>7.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>1.6.7</version>
+    </dependency>
   </dependencies>
 
 </project>
