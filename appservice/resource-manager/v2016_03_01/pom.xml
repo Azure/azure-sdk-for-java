@@ -11,13 +11,8 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
-<<<<<<< HEAD
         <version>1.1.0</version>
         <relativePath>../../../pom.management.xml</relativePath>
-=======
-        <version>0.0.3-beta</version>
-        <relativePath>../../../pom.xml</relativePath>
->>>>>>> 709dc4ac3a1984bf8a760f39edd49e174ab79e09
     </parent>
     <artifactId>azure-mgmt-appservice</artifactId>
     <version>1.0.0-beta</version>
