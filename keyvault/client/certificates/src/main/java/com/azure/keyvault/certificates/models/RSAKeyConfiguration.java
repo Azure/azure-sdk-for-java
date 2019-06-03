@@ -9,9 +9,10 @@ import java.util.List;
 
 public class RSAKeyConfiguration extends KeyConfiguration {
 
+    private boolean hsm;
 
-    public RSAKeyConfiguration(JsonWebKeyType keyType){
-        super.keyType = keyType;
+    public RSAKeyConfiguration(){
+        this.keyType = JsonWebKeyType.RSA;
     }
 
     /**
@@ -83,7 +84,6 @@ public class RSAKeyConfiguration extends KeyConfiguration {
         return this.keyType;
     }
 
-
     /**
      * Get the keySize value.
      *
@@ -114,6 +114,17 @@ public class RSAKeyConfiguration extends KeyConfiguration {
     }
 
     /**
+     * Set the keyUsage value.
+     *
+     * @param keyUsage the keyUsage value to set
+     * @return the X509CertificateProperties object itself.
+     */
+    public RSAKeyConfiguration keyUsage(List<KeyUsageType> keyUsage) {
+        this.keyUsage = keyUsage;
+        return this;
+    }
+
+    /**
      * Set the reuseKey value.
      *
      * @param reuseKey the reuseKey value to set
@@ -124,4 +135,13 @@ public class RSAKeyConfiguration extends KeyConfiguration {
         return this;
     }
 
+    public boolean hsm() {
+        return this.hsm;
+    }
+
+    public RSAKeyConfiguration hsm(boolean hsm){
+        this.hsm = hsm;
+        this.keyType = hsm ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA;
+        return this;
+    }
 }

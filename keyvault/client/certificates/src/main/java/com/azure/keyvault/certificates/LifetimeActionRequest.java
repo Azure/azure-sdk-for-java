@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Action and its trigger that will be performed by Key Vault over the lifetime
  * of a certificate.
  */
-public class LifetimeAction {
+public class LifetimeActionRequest {
     /**
      * The condition that will execute the action.
      */
@@ -36,9 +36,9 @@ public class LifetimeAction {
      * Set the trigger value.
      *
      * @param trigger the trigger value to set
-     * @return the LifetimeAction object itself.
+     * @return the LifetimeActionRequest object itself.
      */
-    public LifetimeAction withTrigger(Trigger trigger) {
+    public LifetimeActionRequest withTrigger(Trigger trigger) {
         this.trigger = trigger;
         return this;
     }
@@ -56,9 +56,9 @@ public class LifetimeAction {
      * Set the action value.
      *
      * @param action the action value to set
-     * @return the LifetimeAction object itself.
+     * @return the LifetimeActionRequest object itself.
      */
-    public LifetimeAction withAction(Action action) {
+    public LifetimeActionRequest withAction(Action action) {
         this.action = action;
         return this;
     }

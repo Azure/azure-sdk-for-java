@@ -6,6 +6,12 @@ import java.util.List;
 
 public class ECKeyConfiguration extends KeyConfiguration {
 
+    private boolean hsm;
+
+    public ECKeyConfiguration(){
+        this.keyType = JsonWebKeyType.EC;
+    }
+
     /**
      * Get the keyUsage value.
      *
@@ -123,6 +129,16 @@ public class ECKeyConfiguration extends KeyConfiguration {
      */
     public ECKeyConfiguration curve(JsonWebKeyCurveName curve) {
         this.curve = curve;
+        return this;
+    }
+
+    public boolean hsm() {
+        return this.hsm;
+    }
+
+    public ECKeyConfiguration hsm(boolean hsm){
+        this.hsm = hsm;
+        this.keyType = hsm ? JsonWebKeyType.EC_HSM : JsonWebKeyType.EC;
         return this;
     }
 

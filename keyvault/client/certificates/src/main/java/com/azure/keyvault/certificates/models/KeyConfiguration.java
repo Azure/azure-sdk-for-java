@@ -142,17 +142,17 @@ public abstract class KeyConfiguration {
     public Integer keySize() {
         return this.keySize;
     }
-
-    /**
-     * Set the keySize value.
-     *
-     * @param keySize the keySize value to set
-     * @return the KeyProperties object itself.
-     */
-    public KeyConfiguration keySize(Integer keySize) {
-        this.keySize = keySize;
-        return this;
-    }
+//
+//    /**
+//     * Set the keySize value.
+//     *
+//     * @param keySize the keySize value to set
+//     * @return the KeyProperties object itself.
+//     */
+//    public KeyConfiguration keySize(Integer keySize) {
+//        this.keySize = keySize;
+//        return this;
+//    }
 
     /**
      * Get the reuseKey value.
@@ -174,6 +174,7 @@ public abstract class KeyConfiguration {
         return this;
     }
 
+
     /**
      * Get the curve value.
      *
@@ -182,16 +183,16 @@ public abstract class KeyConfiguration {
     public JsonWebKeyCurveName curve() {
         return this.curve;
     }
-
-    /**
-     * Set the curve value.
-     *
-     * @param curve the curve value to set
-     * @return the KeyProperties object itself.
-     */
-    public KeyConfiguration curve(JsonWebKeyCurveName curve) {
-        this.curve = curve;
-        return this;
-    }
+//
+//    /**
+//     * Set the curve value.
+//     *
+//     * @param curve the curve value to set
+//     * @return the KeyProperties object itself.
+//     */
+//    public KeyConfiguration curve(JsonWebKeyCurveName curve) {
+//        this.curve = curve;
+//        return this;
+//    }
 
 }

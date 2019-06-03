@@ -5,6 +5,7 @@
 package com.azure.keyvault.certificates;
 
 import com.azure.keyvault.certificates.models.CertificateBase;
+import com.azure.keyvault.certificates.models.CertificatePolicy;
 import com.azure.keyvault.certificates.models.KeyConfiguration;
 import com.azure.keyvault.certificates.models.webkey.JsonWebKeyCurveName;
 import com.azure.keyvault.certificates.models.webkey.JsonWebKeyType;
@@ -15,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyProperties {
 
-    public KeyProperties(KeyConfiguration keyConfiguration){
+    public KeyProperties(CertificatePolicy certificatePolicy){
+        KeyConfiguration keyConfiguration = certificatePolicy.rsaKeyConfiguration() != null ? certificatePolicy.rsaKeyConfiguration() : certificatePolicy.ecKeyConfiguration();
         this.curve = keyConfiguration.curve();
         this.exportable = keyConfiguration.exportable();
         this.keySize = keyConfiguration.keySize();

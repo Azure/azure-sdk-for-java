@@ -16,7 +16,7 @@ public class CertificateRequestParameters {
      * The management policy for the certificate.
      */
     @JsonProperty(value = "policy")
-    private CertificatePolicy certificatePolicy;
+    private CertificatePolicyRequest certificatePolicyRequest;
 
     /**
      * The attributes of the certificate (optional).
@@ -31,22 +31,22 @@ public class CertificateRequestParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the certificatePolicy value.
+     * Get the certificatePolicyRequest value.
      *
-     * @return the certificatePolicy value
+     * @return the certificatePolicyRequest value
      */
-    public CertificatePolicy certificatePolicy() {
-        return this.certificatePolicy;
+    public CertificatePolicyRequest certificatePolicy() {
+        return this.certificatePolicyRequest;
     }
 
     /**
-     * Set the certificatePolicy value.
+     * Set the certificatePolicyRequest value.
      *
-     * @param certificatePolicy the certificatePolicy value to set
+     * @param certificatePolicyRequest the certificatePolicyRequest value to set
      * @return the CertificateCreateParameters object itself.
      */
-    public CertificateRequestParameters withCertificatePolicy(CertificatePolicy certificatePolicy) {
-        this.certificatePolicy = certificatePolicy;
+    public CertificateRequestParameters withCertificatePolicy(CertificatePolicyRequest certificatePolicyRequest) {
+        this.certificatePolicyRequest = certificatePolicyRequest;
         return this;
     }
 

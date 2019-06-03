@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class CertificateAsyncClient extends ServiceClient {
+public class CertificateClient extends ServiceClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
@@ -25,12 +25,12 @@ public class CertificateAsyncClient extends ServiceClient {
     private final CertificateService service;
 
     /**
-     * Creates a CertificateAsyncClient that uses {@code pipeline} to service requests
+     * Creates a CertificateClient that uses {@code pipeline} to service requests
      *
      * @param endpoint URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    CertificateAsyncClient(URL endpoint, HttpPipeline pipeline) {
+    CertificateClient(URL endpoint, HttpPipeline pipeline) {
         super(pipeline);
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
@@ -41,29 +41,29 @@ public class CertificateAsyncClient extends ServiceClient {
      * Creates a builder that can configure options for the CertificateAsyncClient before creating an instance of it.
      * @return A new builder to create a CertificateAsyncClient from.
      */
-    public static CertificateAsyncClientBuilder builder() {
-        return new CertificateAsyncClientBuilder();
+    public static CertificateClientBuilder builder() {
+        return new CertificateClientBuilder();
     }
 
 
-    public Mono<Response<CertificateOperation>> createCertificate(Certificate certificate) {
+    public Response<CertificateOperation> createCertificate(Certificate certificate) {
         CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
                 .withCertificateAttributes(new CertificateRequestAttributes(certificate))
                 .withCertificatePolicy(new CertificatePolicyRequest(certificate.certificatePolicy()))
                 .withTags(certificate.tags());
-        return service.createCertificate(endpoint, certificate.name(), API_VERSION, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.createCertificate(endpoint, certificate.name(), API_VERSION, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
-    public Mono<Response<Certificate>> getCertificate(String name) {
-        return service.getCertificate(endpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+    public Response<Certificate> getCertificate(String name) {
+        return service.getCertificate(endpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
-    public Mono<Response<Certificate>> updateCertificate(CertificateBase certificateBase) {
+    public Response<Certificate> updateCertificate(CertificateBase certificateBase) {
         return  null;
     }
 
 
-    public Mono<Response<Certificate>> getSecret(String name, String version) {
+    public Response<Certificate> getSecret(String name, String version) {
         String certificateVersion = "";
         if (version != null) {
             certificateVersion = version;
@@ -72,64 +72,64 @@ public class CertificateAsyncClient extends ServiceClient {
     }
 
 
-    public Mono<Response<Certificate>> getCertificate(CertificateBase certificateBase) {
+    public Response<Certificate> getCertificate(CertificateBase certificateBase) {
         Objects.requireNonNull(certificateBase, "The Secret Base parameter cannot be null.");
         return  null;
     }
 
-    public Mono<Response<Certificate>> getCertifciate(String name) {
+    public Response<Certificate> getCertifciate(String name) {
         //return getCertificate(name, "");
         return  null;
     }
 
 
-    public Mono<Response<CertificatePolicy>> updateCertificatePolicy(CertificatePolicy certificate) {
+    public Response<CertificatePolicy> updateCertificatePolicy(CertificatePolicy certificate) {
         Objects.requireNonNull(certificate, "The certificate input parameter cannot be null.");
         return  null;
     }
 
 
-    public Mono<Response<DeletedCertificate>> deleteCertificate(String name) {
+    public Response<DeletedCertificate> deleteCertificate(String name) {
         return  null;
     }
 
 
-    public Mono<Response<DeletedCertificate>> getDeletedCertificate(String name) {
+    public Response<DeletedCertificate> getDeletedCertificate(String name) {
         return  null;
     }
 
 
-    public Mono<VoidResponse> purgeDeletedCertificate(String name) {
+    public VoidResponse purgeDeletedCertificate(String name) {
         return  null;
     }
 
 
-    public Mono<Response<Certificate>> recoverDeletedCertificate(String name) {
+    public Response<Certificate> recoverDeletedCertificate(String name) {
         return  null;
     }
 
 
-    public Mono<Response<byte[]>> backupCertificate(String name) {
+    public Response<byte[]> backupCertificate(String name) {
         return  null;
     }
 
 
-    public Mono<Response<Certificate>> restoreCertificate(byte[] backup) {
+    public Response<Certificate> restoreCertificate(byte[] backup) {
         return  null;
     }
 
 
-    public Flux<CertificateBase> listSecrets() {
+    public List<CertificateBase> listSecrets() {
         return  null;
     }
 
 
-    public Flux<DeletedCertificate> listDeletedSecrets() {
+    public List<DeletedCertificate> listDeletedSecrets() {
         return  null;
     }
 
 
-    public Flux<CertificateBase> listSecretVersions(String name) {
+    public List<CertificateBase> listSecretVersions(String name) {
         return  null;
     }
 
@@ -151,73 +151,73 @@ public class CertificateAsyncClient extends ServiceClient {
         return extractAndFetch(page, this::listDeletedSecretsNext);
     }
 
-    public Mono<Response<byte[]>> getPendingCertificateSigningRequest(String certificateName) {
+    public Response<byte[]> getPendingCertificateSigningRequest(String certificateName) {
         return null;
     }
-    public Mono<Response<String>> mergeCertificate(String name, List<byte[]> x509Certificates) {
+    public Response<String> mergeCertificate(String name, List<byte[]> x509Certificates) {
         return null;
     }
-    public Mono<Response<Certificate>> mergeCertificate(MergeCertificateConfig mergeCertificateConfig){
+    public Response<Certificate> mergeCertificate(MergeCertificateConfig mergeCertificateConfig){
         return null;
     }
 
     // Certificate Policy
-    public Mono<Response<CertificateBase>> getCertificatePolicy(String certificateName) {
+    public Response<CertificateBase> getCertificatePolicy(String certificateName) {
         return null;
     }
-    public Mono<Response<CertificateBase>> updateCertificatePolicy(String certificateName, CertificateBase certificate) {
+    public Response<CertificateBase> updateCertificatePolicy(String certificateName, CertificateBase certificate) {
         return null;
     }
 
 
 
     // Certificate Issuer methods
-    public Mono<Response<Issuer>> createCertificateIssuer(String name, String provider) {
+    public Response<Issuer> createCertificateIssuer(String name, String provider) {
         return null;
     }
-    public Mono<Response<Issuer>> createCertificateIssuer(Issuer issuer) {
-        return null;
-    }
-
-    public Mono<Response<Issuer>> getCertificateIssuer(String name){
+    public Response<Issuer> createCertificateIssuer(Issuer issuer) {
         return null;
     }
 
-    public Mono<Response<Issuer>> deleteCertificateIssuer(String name){
+    public Response<Issuer> getCertificateIssuer(String name){
         return null;
     }
 
-    public Flux<IssuerBase> listCertificateIssuers(){
+    public Response<Issuer> deleteCertificateIssuer(String name){
         return null;
     }
 
-    public Mono<Response<Issuer>> updateIssuer(Issuer issuer){
+    public List<IssuerBase> listCertificateIssuers(){
+        return null;
+    }
+
+    public Response<Issuer> updateIssuer(Issuer issuer){
         return null;
     }
 
     // Certificate Contacts methods
-    public Flux<Contact> setCertificateContacts(List<Contact> contacts) {
+    public List<Contact> setCertificateContacts(List<Contact> contacts) {
         return null;
     }
 
-    public Flux<Contact> listCertificateContacts() {
+    public List<Contact> listCertificateContacts() {
         return null;
     }
 
-    public Flux<Contact> deleteCertificateContacts() {
+    public List<Contact> deleteCertificateContacts() {
         return null;
     }
 
     // Certificate Operation methods
-    public Mono<Response<CertificateOperation>> getCertificateOperation(String certificateName) {
+    public Response<CertificateOperation> getCertificateOperation(String certificateName) {
         return null;
     }
 
-    public Mono<Response<CertificateOperation>> deleteCertificateOperation(String certificateName) {
+    public Response<CertificateOperation> deleteCertificateOperation(String certificateName) {
         return null;
     }
 
-    public Mono<Response<CertificateOperation>> updateCertificateOperation(String certificateName, boolean cancellationRequested) {
+    public Response<CertificateOperation> updateCertificateOperation(String certificateName, boolean cancellationRequested) {
         return null;
     }
 

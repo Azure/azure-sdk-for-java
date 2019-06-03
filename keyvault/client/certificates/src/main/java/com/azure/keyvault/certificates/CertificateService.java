@@ -5,7 +5,6 @@ package com.azure.keyvault.certificates;
 
 import com.azure.core.annotations.ExpectedResponses;
 import com.azure.core.annotations.Host;
-import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PathParam;
@@ -13,17 +12,13 @@ import com.azure.core.annotations.BodyParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.GET;
-import com.azure.core.annotations.DELETE;
 import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.POST;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ServerException;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.keyvault.certificates.models.Certificate;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +63,7 @@ interface CertificateService {
                                             @PathParam("certificate-name") String certificateName,
                                             @QueryParam("api-version") String apiVersion,
                                             @HeaderParam("accept-language") String acceptLanguage,
-                                            @BodyParam("body") CertificatePolicy properties,
+                                            @BodyParam("body") CertificatePolicyRequest properties,
                                             @HeaderParam("Content-Type") String type);
 
 

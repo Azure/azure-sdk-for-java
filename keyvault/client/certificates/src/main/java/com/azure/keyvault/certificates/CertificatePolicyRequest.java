@@ -5,6 +5,7 @@
 package com.azure.keyvault.certificates;
 
 import com.azure.keyvault.certificates.models.CertificateBase;
+import com.azure.keyvault.certificates.models.CertificatePolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -12,14 +13,14 @@ import java.util.List;
 /**
  * Management policy for a certificate.
  */
-public class CertificatePolicy {
+public class CertificatePolicyRequest {
 
-    public CertificatePolicy(CertificateBase certificateBase) {
-        this.keyProperties =  certificateBase.keyConfiguration() != null ? new KeyProperties(certificateBase.keyConfiguration()) : null;
-        this.x509CertificateProperties = new X509CertificateProperties(certificateBase);
-        this.secretProperties = new SecretProperties(certificateBase.secretContentType());
-        this.issuerParameters = new IssuerParameters(certificateBase);
-        this.attributes = new CertificateRequestAttributes().enabled(certificateBase.propertiesEnabled());
+    public CertificatePolicyRequest(CertificatePolicy certificatePolicy) {
+        this.keyProperties =  new KeyProperties(certificatePolicy);
+        this.x509CertificateProperties = new X509CertificateProperties(certificatePolicy);
+        this.secretProperties = new SecretProperties(certificatePolicy.secretContentType());
+        this.issuerParameters = new IssuerParameters(certificatePolicy);
+        this.attributes = new CertificateRequestAttributes().enabled(certificatePolicy.enabled());
     }
 
 
@@ -52,7 +53,7 @@ public class CertificatePolicy {
      * certificate.
      */
     @JsonProperty(value = "lifetime_actions")
-    private List<LifetimeAction> lifetimeActions;
+    private List<LifetimeActionRequest> lifetimeActionRequests;
 
     /**
      * Parameters for the issuer of the X509 component of a certificate.
@@ -88,9 +89,9 @@ public class CertificatePolicy {
      * Set the keyProperties value.
      *
      * @param keyProperties the keyProperties value to set
-     * @return the CertificatePolicy object itself.
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withKeyProperties(KeyProperties keyProperties) {
+    public CertificatePolicyRequest withKeyProperties(KeyProperties keyProperties) {
         this.keyProperties = keyProperties;
         return this;
     }
@@ -108,9 +109,9 @@ public class CertificatePolicy {
      * Set the secretProperties value.
      *
      * @param secretProperties the secretProperties value to set
-     * @return the CertificatePolicy object itself.
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withSecretProperties(SecretProperties secretProperties) {
+    public CertificatePolicyRequest withSecretProperties(SecretProperties secretProperties) {
         this.secretProperties = secretProperties;
         return this;
     }
@@ -128,30 +129,30 @@ public class CertificatePolicy {
      * Set the x509CertificateProperties value.
      *
      * @param x509CertificateProperties the x509CertificateProperties value to set
-     * @return the CertificatePolicy object itself.
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withX509CertificateProperties(X509CertificateProperties x509CertificateProperties) {
+    public CertificatePolicyRequest withX509CertificateProperties(X509CertificateProperties x509CertificateProperties) {
         this.x509CertificateProperties = x509CertificateProperties;
         return this;
     }
 
     /**
-     * Get the lifetimeActions value.
+     * Get the lifetimeActionRequests value.
      *
-     * @return the lifetimeActions value
+     * @return the lifetimeActionRequests value
      */
-    public List<LifetimeAction> lifetimeActions() {
-        return this.lifetimeActions;
+    public List<LifetimeActionRequest> lifetimeActions() {
+        return this.lifetimeActionRequests;
     }
 
     /**
-     * Set the lifetimeActions value.
+     * Set the lifetimeActionRequests value.
      *
-     * @param lifetimeActions the lifetimeActions value to set
-     * @return the CertificatePolicy object itself.
+     * @param lifetimeActionRequests the lifetimeActionRequests value to set
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withLifetimeActions(List<LifetimeAction> lifetimeActions) {
-        this.lifetimeActions = lifetimeActions;
+    public CertificatePolicyRequest withLifetimeActions(List<LifetimeActionRequest> lifetimeActionRequests) {
+        this.lifetimeActionRequests = lifetimeActionRequests;
         return this;
     }
 
@@ -168,9 +169,9 @@ public class CertificatePolicy {
      * Set the issuerParameters value.
      *
      * @param issuerParameters the issuerParameters value to set
-     * @return the CertificatePolicy object itself.
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withIssuerParameters(IssuerParameters issuerParameters) {
+    public CertificatePolicyRequest withIssuerParameters(IssuerParameters issuerParameters) {
         this.issuerParameters = issuerParameters;
         return this;
     }
@@ -188,9 +189,9 @@ public class CertificatePolicy {
      * Set the attributes value.
      *
      * @param attributes the attributes value to set
-     * @return the CertificatePolicy object itself.
+     * @return the CertificatePolicyRequest object itself.
      */
-    public CertificatePolicy withAttributes(CertificateRequestAttributes attributes) {
+    public CertificatePolicyRequest withAttributes(CertificateRequestAttributes attributes) {
         this.attributes = attributes;
         return this;
     }
