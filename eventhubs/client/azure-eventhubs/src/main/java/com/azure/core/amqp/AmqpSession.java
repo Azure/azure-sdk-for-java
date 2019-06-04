@@ -33,7 +33,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param timeout Timeout required for creating and opening AMPQ link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createSender(String linkName, Duration timeout);
+    Mono<AmqpLink> createSender(String linkName, String path, Duration timeout);
 
     /**
      * Creates a new AMQP receiver link.
@@ -42,7 +42,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param timeout Timeout required for creating and opening AMPQ link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createReceiver(String linkName, Duration timeout);
+    Mono<AmqpLink> createReceiver(String linkName, String path, Duration timeout);
 
     /**
      * Removes a {@link AmqpLink} with the given {@code linkName}.
