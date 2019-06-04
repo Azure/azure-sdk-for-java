@@ -127,6 +127,7 @@ public final class ConnectionStringBuilder {
      *                      - "servicebus.cloudapi.de"
      *                      - "servicebus.chinacloudapi.cn"
      * @return the {@link ConnectionStringBuilder} being set.
+     * @throws IllegalArgumentException If 'namespaceName' cannot be parsed from the endpoint.
      */
     public ConnectionStringBuilder endpoint(String namespaceName, String domainName) {
         try {

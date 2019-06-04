@@ -20,6 +20,8 @@ public final class ExceptionUtil {
      * @param errorCondition The error condition string.
      * @param description The error message.
      * @return An exception that maps to the {@code errorCondition} provided.
+     * @throws IllegalArgumentException when 'errorCondition' is {@code null} or empty, cannot be translated into an
+     * {@link ErrorCondition}, or cannot be determined whether the {@link ErrorCondition} is transient or not.
      * @see ErrorCondition
      */
     public static Exception toException(String errorCondition, String description) {

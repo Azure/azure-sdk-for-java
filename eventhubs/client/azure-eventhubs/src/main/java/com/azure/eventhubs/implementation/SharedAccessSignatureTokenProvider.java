@@ -7,7 +7,7 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -18,31 +18,12 @@ import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class SharedAccessSignatureTokenProvider {
-    final String keyName;
-    final String sharedAccessKey;
-    final String sharedAccessSignature;
+public class SharedAccessSignatureTokenProvider implements TokenProvider {
+    private static final String HASH_ALGORITHM = "HMACSHA256";
+    private final String keyName;
+    private final Mac hmac;
 
-    SharedAccessSignatureTokenProvider(
-            final String keyName,
-            final String sharedAccessKey) {
-        this.keyName = keyName;
-        this.sharedAccessKey = sharedAccessKey;
-        this.sharedAccessSignature = null;
-    }
-
-    public SharedAccessSignatureTokenProvider(final String sharedAccessSignature) {
-        this.keyName = null;
-        this.sharedAccessKey = null;
-        this.sharedAccessSignature = sharedAccessSignature;
-    }
-
-    public static String generateSharedAccessSignature(
-            final String keyName,
-            final String sharedAccessKey,
-            final String resource,
-            final Duration tokenTimeToLive)
-            throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public SharedAccessSignatureTokenProvider(final String keyName, final String sharedAccessKey) throws NoSuchAlgorithmException, InvalidKeyException {
         if (ImplUtils.isNullOrEmpty(keyName)) {
             throw new IllegalArgumentException("keyName cannot be empty");
         }
@@ -51,6 +32,20 @@ public class SharedAccessSignatureTokenProvider {
             throw new IllegalArgumentException("sharedAccessKey cannot be empty");
         }
 
+        this.keyName = keyName;
+
+        hmac = Mac.getInstance(HASH_ALGORITHM);
+
+        final byte[] sasKeyBytes = sharedAccessKey.getBytes(UTF_8);
+        final SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
+        hmac.init(finalKey);
+    }
+
+    public String getToken(final String resource, final Duration tokenTimeToLive) throws UnsupportedEncodingException {
+        return generateSharedAccessSignature(resource, tokenTimeToLive);
+    }
+
+    private String generateSharedAccessSignature(final String resource, final Duration tokenTimeToLive) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
             throw new IllegalArgumentException("resource cannot be empty");
         }
@@ -64,24 +59,13 @@ public class SharedAccessSignatureTokenProvider {
         String audienceUri = URLEncoder.encode(resource, utf8Encoding);
         String secretToSign = audienceUri + "\n" + expiresOn;
 
-        final String hashAlgorithm = "HMACSHA256";
-        Mac hmac = Mac.getInstance(hashAlgorithm);
-        byte[] sasKeyBytes = sharedAccessKey.getBytes(utf8Encoding);
-        SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, hashAlgorithm);
-        hmac.init(finalKey);
-        byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
-        String signature = Base64.getEncoder().encodeToString(signatureBytes);
+        final byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
+        final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
         return String.format(Locale.US, "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s",
-                audienceUri,
-                URLEncoder.encode(signature, utf8Encoding),
-                URLEncoder.encode(expiresOn, utf8Encoding),
-                URLEncoder.encode(keyName, utf8Encoding));
-    }
-
-    public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-        return this.sharedAccessSignature == null
-                ? generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive)
-                : this.sharedAccessSignature;
+            audienceUri,
+            URLEncoder.encode(signature, utf8Encoding),
+            URLEncoder.encode(expiresOn, utf8Encoding),
+            URLEncoder.encode(keyName, utf8Encoding));
     }
 }
