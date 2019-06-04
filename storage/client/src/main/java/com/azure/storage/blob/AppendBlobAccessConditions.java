@@ -3,9 +3,9 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions;
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.AppendPositionAccessConditions;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
 
 /**
  * This class contains values that restrict the successful completion of AppendBlock operations to certain conditions.

@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
- * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
+ * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobAsyncRawClient#download(BlobRange,
  * BlobAccessConditions, boolean, com.microsoft.rest.v2.Context)} to automatically retry failed reads from the body as
  * appropriate. If the download is interrupted, the {@code DownloadResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are

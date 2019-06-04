@@ -3,23 +3,18 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlResponse;
-import com.azure.storage.blob.models.AppendBlobAppendBlockResponse;
-import com.azure.storage.blob.models.AppendBlobCreateResponse;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.AppendBlobsAppendBlockFromUrlResponse;
+import com.azure.storage.blob.models.AppendBlobsAppendBlockResponse;
+import com.azure.storage.blob.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.microsoft.rest.v2.Context;
-import com.microsoft.rest.v2.http.HttpPipeline;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
@@ -30,7 +25,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
+public final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -43,48 +38,15 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Creates a {@code AppendBlobAsyncRawRawClient} object pointing to the account specified by the URL and using the provided
+     * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      *
-     * @param url
-     *         A {@code URL} to an Azure Storage append blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     * @param url      A {@code URL} to an Azure Storage append blob.
+     * @param pipeline A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
+     *                 {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public AppendBlobAsyncRawRawClient(URL url, HttpPipeline pipeline) {
-        super(url, pipeline);
-    }
-
-    /**
-     * Creates a new {@link AppendBlobAsyncRawRawClient} with the given pipeline.
-     *
-     * @param pipeline
-     *         An {@code HttpPipeline} object to process HTTP transactions.
-     *
-     * @return An {@code AppendBlobAsyncRawRawClient} object with the given pipeline.
-     */
-    public AppendBlobAsyncRawRawClient withPipeline(HttpPipeline pipeline) {
-        try {
-            return new AppendBlobAsyncRawRawClient(new URL(this.storageClient.url()), pipeline);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    /**
-     * Creates a new {@code AppendBlobAsyncRawRawClient} with the given snapshot.
-     *
-     * @param snapshot
-     *         A {@code String} of the snapshot identifier.
-     *
-     * @return An {@code AppendBlobAsyncRawRawClient} object with the given pipeline.
-     */
-    public AppendBlobAsyncRawRawClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
-        BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.withSnapshot(snapshot);
-        return new AppendBlobAsyncRawRawClient(blobURLParts.toURL(), super.storageClient.httpPipeline());
+    AppendBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
     }
 
     /**
@@ -92,12 +54,11 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobCreateResponse> create() {
+    public Mono<AppendBlobsCreateResponse> create() {
         return this.create(null, null, null, null);
     }
 
@@ -105,34 +66,29 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
+     * @param headers          {@link BlobHTTPHeaders}
+     * @param metadata         {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param context          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *                         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *                         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *                         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *                         its parent, forming a linked list.
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions, Context context) {
+    public Mono<AppendBlobsCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
+                                                  BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return postProcessResponse(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
-                0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
-                accessConditions.modifiedAccessConditions()));
+        return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
+            null, 0, null, metadata, null, null,
+            null, null, headers, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -142,20 +98,16 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flowable} must produce the same data each time it is subscribed to.
      *
-     * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
-     *
+     * @param data   The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *               (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the data
+     *               emitted by the {@code Flowable}.
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.appendBlock")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobAppendBlockResponse> appendBlock(Flux<ByteBuffer> data, long length) {
+    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length) {
         return this.appendBlock(data, length, null, null);
     }
 
@@ -166,37 +118,33 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flowable} must produce the same data each time it is subscribed to.
      *
-     * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * @param length
-     *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
-     * @param appendBlobAccessConditions
-     *         {@link AppendBlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
+     * @param data                       The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *                                   (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param length                     The exact length of the data. It is important that this value match precisely the length of the data
+     *                                   emitted by the {@code Flowable}.
+     * @param appendBlobAccessConditions {@link AppendBlobAccessConditions}
+     * @param context                    {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *                                   {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *                                   arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *                                   immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *                                   its parent, forming a linked list.
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.appendBlock")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobAppendBlockResponse> appendBlock(Flux<ByteBuffer> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
+    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length,
+                                                            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
-                : appendBlobAccessConditions;
+            : appendBlobAccessConditions;
         context = context == null ? Context.NONE : context;
 
-        return postProcessResponse(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
-                context, data, length, null, null, null, appendBlobAccessConditions.leaseAccessConditions(),
-                appendBlobAccessConditions.appendPositionAccessConditions(),
-                appendBlobAccessConditions.modifiedAccessConditions()));
+        return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
+            null, null, data, length, null, null,
+            null, null, null, null,
+            appendBlobAccessConditions.leaseAccessConditions(),
+            appendBlobAccessConditions.appendPositionAccessConditions(),
+            appendBlobAccessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -204,23 +152,19 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      * <p>
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
-     *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
-     *          must either be public or must be authenticated via a shared access signature. If the source blob is
-     *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          The source {@link BlobRange} to copy.
-     *
+     * @param sourceURL   The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *                    be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *                    must either be public or must be authenticated via a shared access signature. If the source blob is
+     *                    public, no authentication is required to perform the operation.
+     * @param sourceRange The source {@link BlobRange} to copy.
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawRawClient.appendBlockFromUrl")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null);
+            null, null);
     }
 
     /**
@@ -228,47 +172,39 @@ public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      * <p>
      *
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
-     *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
-     *          must either be public or must be authenticated via a shared access signature. If the source blob is
-     *          public, no authentication is required to perform the operation.
-     * @param sourceRange
-     *          {@link BlobRange}
-     * @param sourceContentMD5
-     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
-     *          of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions
-     *          {@link AppendBlobAccessConditions}
-     * @param sourceAccessConditions
-     *          {@link SourceModifiedAccessConditions}
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
-     *
+     * @param sourceURL              The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *                               be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
+     *                               must either be public or must be authenticated via a shared access signature. If the source blob is
+     *                               public, no authentication is required to perform the operation.
+     * @param sourceRange            {@link BlobRange}
+     * @param sourceContentMD5       An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *                               of the received data and fail the request if it does not match the provided MD5.
+     * @param destAccessConditions   {@link AppendBlobAccessConditions}
+     * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     * @param context                {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *                               {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *                               arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *                               immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *                               its parent, forming a linked list.
      * @return Emits the successful response.
-     *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawRawClient.appendBlockFromUrl")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
-            byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+                                                                          byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
+                                                                          SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
         sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
         destAccessConditions = destAccessConditions == null
-                ? new AppendBlobAccessConditions() : destAccessConditions;
+            ? new AppendBlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(
-                this.storageClient.generatedAppendBlobs().appendBlockFromUrlWithRestResponseAsync(context,
-                        sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null,
-                        destAccessConditions.leaseAccessConditions(),
-                        destAccessConditions.appendPositionAccessConditions(),
-                        destAccessConditions.modifiedAccessConditions(), sourceAccessConditions));
+            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
+                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null,
+                destAccessConditions.leaseAccessConditions(),
+                destAccessConditions.appendPositionAccessConditions(),
+                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, context));
     }
 }

@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,9 +18,9 @@ import java.net.URL;
  * instead a convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
-public class BlobSyncRawClient {
+public class BlobSyncClient {
 
-    BlobAsyncRawClient blobAsyncRawClient;
+    BlobAsyncClient blobAsyncClient;
 
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
@@ -31,40 +32,8 @@ public class BlobSyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    BlobSyncRawClient(URL url, HttpPipeline pipeline) {
-        super(url, pipeline);
-    }
-
-    /**
-     * Converts this BlobAsyncRawClient to a {@link BlockBlobAsyncRawClient} object. Note that this does not change the actual type of the
-     * blob if it has already been created.
-     *
-     * @return A {@link BlockBlobAsyncRawClient} object.
-     */
-    // TODO: figure out what to do with these methods
-    // return raw clients or pretty clients?
-    public BlockBlobAsyncRawClient toBlockBlobAsyncClient() {
-        return blobAsyncRawClient.toBlockBlobAsyncClient();
-    }
-
-    /**
-     * Converts this BlobAsyncRawClient to an {@link AppendBlobAsyncRawClient} object. Note that this does not change the actual type of the
-     * blob if it has already been created.
-     *
-     * @return An {@link AppendBlobAsyncRawClient} object.
-     */
-    public AppendBlobAsyncRawClient toAppendBlobAsyncClient() {
-        return blobAsyncRawClient.toAppendBlobAsyncClient();
-    }
-
-    /**
-     * Converts this BlobAsyncRawClient to a {@link PageBlobAsyncRawClient} object. Note that this does not change the actual type of the blob
-     * if it has already been created.
-     *
-     * @return A {@link PageBlobAsyncRawClient} object.
-     */
-    public PageBlobAsyncRawClient toPageBlobAsyncClient() {
-        return blobAsyncRawClient.toPageBlobAsyncClient();
+    BlobSyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        blobAsyncClient = new BlobAsyncClient(azureBlobStorage);
     }
 
     /**
@@ -82,7 +51,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
-        return blobAsyncRawClient.startCopyFromURL(sourceURL, null, null, null, null);
+        return blobAsyncClient.startCopyFromURL(sourceURL, null, null, null, null);
     }
 
     /**
@@ -116,7 +85,7 @@ public class BlobSyncRawClient {
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
                                                                  ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                                                                  Context context) {
-        return blobAsyncRawClient.startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+        return blobAsyncClient.startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
     }
 
     /**
@@ -134,7 +103,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> abortCopyFromURL(String copyId) {
-        return blobAsyncRawClient.abortCopyFromURL(copyId, null, null);
+        return blobAsyncClient.abortCopyFromURL(copyId, null, null);
     }
 
     /**
@@ -162,7 +131,7 @@ public class BlobSyncRawClient {
      */
     public Mono<Void> abortCopyFromURL(String copyId,
                                                                  LeaseAccessConditions leaseAccessConditions, Context context) {
-        return blobAsyncRawClient.abortCopyFromURL(copyId, leaseAccessConditions, context);
+        return blobAsyncClient.abortCopyFromURL(copyId, leaseAccessConditions, context);
     }
 
     /**
@@ -179,7 +148,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource) {
-        return blobAsyncRawClient.syncCopyFromURL(copySource, null, null, null, null);
+        return blobAsyncClient.syncCopyFromURL(copySource, null, null, null, null);
     }
 
     /**
@@ -213,7 +182,7 @@ public class BlobSyncRawClient {
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource, Metadata metadata,
                                                            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                                                            Context context) {
-        return blobAsyncRawClient.syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+        return blobAsyncClient.syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
     }
 
     /**
@@ -229,7 +198,7 @@ public class BlobSyncRawClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Flux<DownloadResponse> download() {
-        return blobAsyncRawClient.download(null, null, false, null);
+        return blobAsyncClient.download(null, null, false, null);
     }
 
     /**
@@ -260,7 +229,7 @@ public class BlobSyncRawClient {
      */
     public Flux<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
-        return blobAsyncRawClient.download(range, accessConditions, rangeGetContentMD5, context);
+        return blobAsyncClient.download(range, accessConditions, rangeGetContentMD5, context);
     }
 
     /**
@@ -273,7 +242,7 @@ public class BlobSyncRawClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete() {
-        return blobAsyncRawClient.delete(null, null, null);
+        return blobAsyncClient.delete(null, null, null);
     }
 
     /**
@@ -301,7 +270,7 @@ public class BlobSyncRawClient {
      */
     public Mono<Void> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
                                              BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.delete(deleteBlobSnapshotOptions, accessConditions, context);
+        return blobAsyncClient.delete(deleteBlobSnapshotOptions, accessConditions, context);
     }
 
     /**
@@ -315,7 +284,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetPropertiesResponse> getProperties() {
-        return blobAsyncRawClient.getProperties(null, null);
+        return blobAsyncClient.getProperties(null, null);
     }
 
     /**
@@ -337,7 +306,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.getProperties(accessConditions, context);
+        return blobAsyncClient.getProperties(accessConditions, context);
     }
 
     /**
@@ -354,7 +323,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return blobAsyncRawClient.setHTTPHeaders(headers, null, null);
+        return blobAsyncClient.setHTTPHeaders(headers, null, null);
     }
 
     /**
@@ -379,7 +348,7 @@ public class BlobSyncRawClient {
      */
     public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers,
                                                              BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.setHTTPHeaders(headers, accessConditions, context);
+        return blobAsyncClient.setHTTPHeaders(headers, accessConditions, context);
     }
 
     /**
@@ -395,7 +364,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setMetadata(Metadata metadata) {
-        return blobAsyncRawClient.setMetadata(metadata, null, null);
+        return blobAsyncClient.setMetadata(metadata, null, null);
     }
 
     /**
@@ -420,7 +389,7 @@ public class BlobSyncRawClient {
      */
     public Mono<Void> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
                                                        Context context) {
-        return blobAsyncRawClient.setMetadata(metadata, accessConditions, context);
+        return blobAsyncClient.setMetadata(metadata, accessConditions, context);
     }
 
     /**
@@ -433,7 +402,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<String> createSnapshot() {
-        return blobAsyncRawClient.createSnapshot(null, null, null);
+        return blobAsyncClient.createSnapshot(null, null, null);
     }
 
     /**
@@ -458,7 +427,7 @@ public class BlobSyncRawClient {
      */
     public Mono<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
                                                              Context context) {
-        return blobAsyncRawClient.createSnapshot(metadata, accessConditions, context);
+        return blobAsyncClient.createSnapshot(metadata, accessConditions, context);
     }
 
     /**
@@ -478,7 +447,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setTier(AccessTier tier) {
-        return blobAsyncRawClient.setTier(tier, null, null);
+        return blobAsyncClient.setTier(tier, null, null);
     }
 
     /**
@@ -508,7 +477,7 @@ public class BlobSyncRawClient {
      */
     public Mono<Void> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
                                                Context context) {
-        return blobAsyncRawClient.setTier(tier, leaseAccessConditions, context);
+        return blobAsyncClient.setTier(tier, leaseAccessConditions, context);
     }
 
     /**
@@ -543,7 +512,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> undelete(Context context) {
-        return blobAsyncRawClient.undelete(context);
+        return blobAsyncClient.undelete(context);
     }
 
     /**
@@ -563,7 +532,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return blobAsyncRawClient.acquireLease(proposedId, duration, null, null);
+        return blobAsyncClient.acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -594,7 +563,7 @@ public class BlobSyncRawClient {
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedID, int duration,
                                                          ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
+        return blobAsyncClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
     }
 
     /**
@@ -610,7 +579,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID) {
-        return blobAsyncRawClient.renewLease(leaseID, null, null);
+        return blobAsyncClient.renewLease(leaseID, null, null);
     }
 
     /**
@@ -637,7 +606,7 @@ public class BlobSyncRawClient {
      */
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
                                                      Context context) {
-        return blobAsyncRawClient.renewLease(leaseID, modifiedAccessConditions, context);
+        return blobAsyncClient.renewLease(leaseID, modifiedAccessConditions, context);
     }
 
     /**
@@ -653,7 +622,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID) {
-        return blobAsyncRawClient.releaseLease(leaseID, null, null);
+        return blobAsyncClient.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -680,7 +649,7 @@ public class BlobSyncRawClient {
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID,
                                                          ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions, context);
+        return blobAsyncClient.releaseLease(leaseID, modifiedAccessConditions, context);
     }
 
     /**
@@ -696,7 +665,7 @@ public class BlobSyncRawClient {
      *      Emits the successful response.
      */
     public Mono<BlobsBreakLeaseResponse> breakLease() {
-        return blobAsyncRawClient.breakLease(null, null, null);
+        return blobAsyncClient.breakLease(null, null, null);
     }
 
     /**
@@ -729,7 +698,7 @@ public class BlobSyncRawClient {
      */
     public Mono<BlobsBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
                                                      ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
+        return blobAsyncClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
     }
 
     /**
@@ -747,7 +716,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
-        return blobAsyncRawClient.changeLease(leaseId, proposedID, null, null);
+        return blobAsyncClient.changeLease(leaseId, proposedID, null, null);
     }
 
     /**
@@ -776,7 +745,7 @@ public class BlobSyncRawClient {
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID,
                                                        ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.changeLease(leaseId, proposedID, modifiedAccessConditions, context);
+        return blobAsyncClient.changeLease(leaseId, proposedID, modifiedAccessConditions, context);
     }
 
     /**
@@ -789,7 +758,7 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetAccountInfoResponse> getAccountInfo() {
-        return blobAsyncRawClient.getAccountInfo(null);
+        return blobAsyncClient.getAccountInfo(null);
     }
 
     /**
@@ -809,6 +778,6 @@ public class BlobSyncRawClient {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetAccountInfoResponse> getAccountInfo(Context context) {
-        return blobAsyncRawClient.getAccountInfo(context);
+        return blobAsyncClient.getAccountInfo(context);
     }
 }

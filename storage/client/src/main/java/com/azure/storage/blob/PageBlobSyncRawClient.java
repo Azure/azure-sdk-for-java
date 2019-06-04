@@ -4,18 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
@@ -24,7 +20,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobAsyncClient extends BlobAsyncRawClient {
+public final class PageBlobSyncRawClient extends BlobAsyncRawClient {
 
     PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
@@ -48,8 +44,8 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public PageBlobAsyncClient(URL url, HttpPipeline pipeline) {
-        super(url, pipeline);
+    public PageBlobSyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers
@@ -58,10 +54,10 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
                     + "0 if specified.");
         }
-        if (pageRange.start() % PageBlobAsyncClient.PAGE_BYTES != 0) {
+        if (pageRange.start() % PageBlobSyncRawClient.PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
         }
-        if (pageRange.end() % PageBlobAsyncClient.PAGE_BYTES != PageBlobAsyncClient.PAGE_BYTES - 1) {
+        if (pageRange.end() % PageBlobSyncRawClient.PAGE_BYTES != PageBlobSyncRawClient.PAGE_BYTES - 1) {
             throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
         }
         if (pageRange.end() <= pageRange.start()) {
@@ -146,7 +142,7 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
+    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return pageBlobAsyncRawClient.uploadPages(pageRange, body, null, null);
     }
 
@@ -180,7 +176,7 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
+    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         return pageBlobAsyncRawClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
     }

@@ -5,21 +5,11 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
-import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
-import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
@@ -28,7 +18,9 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class ServiceAsyncClient extends StorageURL {
+public final class BlobServiceSyncRawClient {
+
+    BlobServiceAsyncRawClient blobServiceAsyncRawClient;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -44,8 +36,8 @@ public final class ServiceAsyncClient extends StorageURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServiceAsyncClient(URL url, HttpPipeline pipeline) {
-        super(url, pipeline);
+    public BlobServiceSyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorage);
     }
 
     /**
@@ -58,28 +50,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient createContainerURL(String containerName) {
-        try {
-            return new ContainerAsyncClient(StorageURL.appendToURLPath(new URL(super.storageClient.url()), containerName),
-                    super.storageClient.httpPipeline());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Creates a new {@link ServiceAsyncClient} with the given pipeline.
-     *
-     * @param pipeline
-     *         An {@link HttpPipeline} object to set.
-     *
-     * @return A {@link ServiceAsyncClient} object with the given pipeline.
-     */
-    public ServiceAsyncClient withPipeline(HttpPipeline pipeline) {
-        try {
-            return new ServiceAsyncClient(new URL(super.storageClient.url()), pipeline);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return blobServiceAsyncRawClient.createContainerURL(containerName);
     }
 
     /**
@@ -105,7 +76,7 @@ public final class ServiceAsyncClient extends StorageURL {
      */
     public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
                                                                              ListContainersOptions options) {
-        return this.listContainersSegment(marker, options, null);
+        return blobServiceAsyncRawClient.listContainersSegment(marker, options, null);
     }
 
     /**
@@ -123,7 +94,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -137,12 +108,7 @@ public final class ServiceAsyncClient extends StorageURL {
      */
     public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
-        options = options == null ? new ListContainersOptions() : options;
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(context,
-                        options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null, null));
+        return blobServiceAsyncRawClient.listContainersSegment(marker, options, context);
     }
 
     /**
@@ -156,7 +122,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetPropertiesResponse> getProperties() {
-        return this.getProperties(null);
+        return blobServiceAsyncRawClient.getProperties(null);
     }
 
     /**
@@ -165,7 +131,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -177,10 +143,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetPropertiesResponse> getProperties(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(context, null, null));
+        return blobServiceAsyncRawClient.getProperties(context);
     }
 
     /**
@@ -199,7 +162,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null);
+        return blobServiceAsyncRawClient.setProperties(properties, null);
     }
 
     /**
@@ -212,7 +175,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *         Configures the service.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -224,11 +187,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
-                        null));
+        return blobServiceAsyncRawClient.setProperties(properties, context);
     }
 
     /**
@@ -243,7 +202,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * @return Emits the successful response.
      */
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null);
+        return blobServiceAsyncRawClient.getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -256,7 +215,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *         Expiration of the key's validity.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -265,21 +224,7 @@ public final class ServiceAsyncClient extends StorageURL {
      */
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
-        Utility.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
-            throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
-        }
-
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getUserDelegationKeyWithRestResponseAsync(
-                        context,
-                        new KeyInfo()
-                                .withStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                                .withExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                        null, null)
-        );
+        return blobServiceAsyncRawClient.getUserDelegationKey(start, expiry, context);
     }
 
     /**
@@ -295,7 +240,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetStatisticsResponse> getStatistics() {
-        return this.getStatistics(null);
+        return blobServiceAsyncRawClient.getStatistics(null);
     }
 
     /**
@@ -306,7 +251,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -318,10 +263,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetStatisticsResponse> getStatistics(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(context, null, null));
+        return blobServiceAsyncRawClient.getStatistics(context);
     }
 
     /**
@@ -335,7 +277,7 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetAccountInfoResponse> getAccountInfo() {
-        return this.getAccountInfo(null);
+        return blobServiceAsyncRawClient.getAccountInfo(null);
     }
 
     /**
@@ -344,7 +286,7 @@ public final class ServiceAsyncClient extends StorageURL {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -356,9 +298,6 @@ public final class ServiceAsyncClient extends StorageURL {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetAccountInfoResponse> getAccountInfo(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync(context));
+        return blobServiceAsyncRawClient.getAccountInfo(context);
     }
 }
