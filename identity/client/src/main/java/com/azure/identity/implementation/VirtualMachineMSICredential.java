@@ -3,26 +3,25 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.identity.AccessToken;
 import com.azure.identity.IdentityClient;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
+/**
+ * The Managed Service Identity credential for Virtual Machines.
+ */
 public class VirtualMachineMSICredential {
-    //
+
     private final IdentityClient identityClient;
 
     private String objectId;
     private String clientId;
     private String identityId;
 
+    /**
+     * Creates an instance of VirtualMachineMSICredential.
+     * @param identityClient the identity client to acquire a token with.
+     */
     public VirtualMachineMSICredential(IdentityClient identityClient) {
         this.identityClient = identityClient;
     }
@@ -81,6 +80,11 @@ public class VirtualMachineMSICredential {
         return this;
     }
 
+    /**
+     * Gets the token for a list of scopes.
+     * @param scopes the scopes to get token for
+     * @return a Publisher that emits an AccessToken
+     */
     public Mono<AccessToken> authenticate(String[] scopes) {
         return identityClient.managedIdentityClient().authenticateToIMDSEndpoint(clientId(), objectId(), identityId(), scopes);
     }

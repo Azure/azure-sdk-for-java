@@ -25,6 +25,7 @@ public class EnvironmentCredential implements TokenCredential {
 
     /**
      * Creates an instance of the default environment credential provider.
+     * @param identityClientOptions the options for configuring the identity client
      */
     public EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         this.configuration = ConfigurationManager.getConfiguration();

@@ -12,7 +12,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * The Pipeline policy that adds credential from ServiceClientCredentials to a request.
+ * The Pipeline policy that applies a token credential to an HTTP request
+ * with "Bearer" scheme.
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -22,14 +23,21 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private final String[] scopes;
 
     /**
-     * Creates CredentialsPolicy.
+     * Creates BearerTokenAuthenticationPolicy.
      *
-     * @param credential the credential
+     * @param credential the token credential to authenticate the request
+     * @param scope the scope of authentication the credential should get token for
      */
     public BearerTokenAuthenticationPolicy(TokenCredential credential, String scope) {
         this(credential, new String[] { scope });
     }
 
+    /**
+     * Creates BearerTokenAuthenticationPolicy.
+     *
+     * @param credential the token credential to authenticate the request
+     * @param scopes the scopes of authentication the credential should get token for
+     */
     public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         Objects.requireNonNull(scopes);

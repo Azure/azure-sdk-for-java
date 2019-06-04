@@ -22,11 +22,21 @@ public class ChainedCredential implements TokenCredential {
         credentials = new ArrayDeque<>();
     }
 
+    /**
+     * Adds a credential to try to authenticate at the front of the chain.
+     * @param credential the credential to be added to the front of chain
+     * @return the ChainedCredential itself
+     */
     public ChainedCredential addFirst(TokenCredential credential) {
         credentials.addFirst(credential);
         return this;
     }
 
+    /**
+     * Adds a credential to try to authenticate at the last of the chain.
+     * @param credential the credential to be added to the end of chain
+     * @return the ChainedCredential itself
+     */
     public ChainedCredential addLast(TokenCredential credential) {
         credentials.addLast(credential);
         return this;

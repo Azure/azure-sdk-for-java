@@ -92,18 +92,60 @@ public class IdentityClient {
             this.options = options;
         }
 
-        public Mono<AccessToken> acquireTokenWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
+        /**
+         * Asynchronously acquire a token from Active Directory with a client secret.
+         * @param tenantId the tenant ID of the application
+         * @param clientId the client ID of the application
+         * @param clientSecret the client secret of the application
+         * @param scopes the scopes to authenticate to
+         * @return a Publisher that emits an AccessToken
+         */
+        public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
             String resource = ScopeUtil.scopesToResource(scopes);
-            return new RefreshableTokenCache() {
-                @Override
-                protected Mono<AccessToken> authenticate(String resource) {
-                    String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-                    return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+            return new RefreshableTokenCache(res -> {
+                String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+                return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+                    context.acquireToken(
+                        res,
+                        new ClientCredential(clientId, clientSecret),
+                        new AuthenticationCallback<AuthenticationResult>() {
+                            @Override
+                            public void onSuccess(AuthenticationResult o) {
+                                callback.success(o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+                }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+                    .doFinally(s -> executor.shutdown());
+            }).getToken(resource);
+        }
+
+        /**
+         * Asynchronously acquire a token from Active Directory with a PKCS12 certificate.
+         * @param tenantId the tenant ID of the application
+         * @param clientId the client ID of the application
+         * @param pfxCertificatePath the path to the PKCS12 certificate of the application
+         * @param pfxCertificatePassword the password protecting the PFX certificate
+         * @param scopes the scopes to authenticate to
+         * @return a Publisher that emits an AccessToken
+         */
+        public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
+            String resource = ScopeUtil.scopesToResource(scopes);
+            return new RefreshableTokenCache(res -> {
+                String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+                return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+                    try {
                         context.acquireToken(
                             resource,
-                            new ClientCredential(clientId, clientSecret),
+                            AsymmetricKeyCredential.create(clientId, new FileInputStream(pfxCertificatePath), pfxCertificatePassword),
                             new AuthenticationCallback<AuthenticationResult>() {
                                 @Override
                                 public void onSuccess(AuthenticationResult o) {
@@ -115,65 +157,40 @@ public class IdentityClient {
                                     callback.error(throwable);
                                 }
                             });
-                    }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                        .doFinally(s -> executor.shutdown());                }
-            }.getToken(resource);
+                    } catch (Exception e) {
+                        callback.error(e);
+                    }
+                }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+                    .doFinally(s -> executor.shutdown());
+            }).getToken(resource);
         }
 
-        public Mono<AccessToken> acquireTokenWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
+        /**
+         * Asynchronously acquire a token from Active Directory with a PEM certificate.
+         * @param tenantId the tenant ID of the application
+         * @param clientId the client ID of the application
+         * @param pemCertificatePath the path to the PEM certificate of the application
+         * @param scopes the scopes to authenticate to
+         * @return a Publisher that emits an AccessToken
+         */
+        public Mono<AccessToken> athenticateuWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
             String resource = ScopeUtil.scopesToResource(scopes);
-            return new RefreshableTokenCache() {
-                @Override
-                protected Mono<AccessToken> authenticate(String resource) {
-                    String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-                    return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-                        try {
-                            context.acquireToken(
-                                resource,
-                                AsymmetricKeyCredential.create(clientId, new FileInputStream(pfxCertificatePath), pfxCertificatePassword),
-                                new AuthenticationCallback<AuthenticationResult>() {
-                                    @Override
-                                    public void onSuccess(AuthenticationResult o) {
-                                        callback.success(o);
-                                    }
-
-                                    @Override
-                                    public void onFailure(Throwable throwable) {
-                                        callback.error(throwable);
-                                    }
-                                });
-                        } catch (Exception e) {
-                            callback.error(e);
-                        }
-                    }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                        .doFinally(s -> executor.shutdown());
-                }
-            }.getToken(resource);
-        }
-
-        public Mono<AccessToken> acquireTokenWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
-            String resource = ScopeUtil.scopesToResource(scopes);
-            return new RefreshableTokenCache() {
-                @Override
-                protected Mono<AccessToken> authenticate(String resource) {
-                    String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-                    return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-                        try {
-                            context.acquireToken(
-                                scopes[0].substring(0, scopes[0].lastIndexOf('.')),
-                                AsymmetricKeyCredential.create(clientId, privateKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath))), publicKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath)))),
-                                null).get();
-                        } catch (Exception e) {
-                            callback.error(e);
-                        }
-                    }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                        .doFinally(s -> executor.shutdown());
-                }
-            }.getToken(resource);
+            return new RefreshableTokenCache(res -> {
+                String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+                return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+                    try {
+                        context.acquireToken(
+                            scopes[0].substring(0, scopes[0].lastIndexOf('.')),
+                            AsymmetricKeyCredential.create(clientId, privateKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath))), publicKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath)))),
+                            null).get();
+                    } catch (Exception e) {
+                        callback.error(e);
+                    }
+                }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+                    .doFinally(s -> executor.shutdown());
+            }).getToken(resource);
         }
 
         private static PrivateKey privateKeyFromPem(byte[] pem) {
@@ -238,11 +255,19 @@ public class IdentityClient {
             this.options = options;
         }
 
+        /**
+         * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+         * @param msiEndpoint the endpoint to acquire token from
+         * @param msiSecret the secret to acquire token with
+         * @param scopes the scopes to authenticate to
+         * @return a Publisher that emits an AccessToken
+         */
         public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String[] scopes) {
-            return Mono.fromSupplier(() -> {
+            String resource = ScopeUtil.scopesToResource(scopes);
+            return new RefreshableTokenCache(res -> Mono.fromCallable(() -> {
                 HttpURLConnection connection = null;
                 try {
-                    String urlString = String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, scopes[0].substring(0, scopes[0].lastIndexOf('.')));
+                    String urlString = String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, res);
                     URL url = new URL(urlString);
                     InputStream stream = null;
 
@@ -265,16 +290,23 @@ public class IdentityClient {
                         connection.disconnect();
                     }
                 }
-            });
+            })).getToken(resource);
         }
 
+        /**
+         * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
+         * @param clientId the client ID of the virtual machine
+         * @param objectId the object ID of the virtual machine
+         * @param identityId the identity ID of the virtual machine
+         * @param scopes the scopes to authenticate to
+         * @return a Publisher that emits an AccessToken
+         */
         public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String objectId, String identityId, String[] scopes) {
-            return Mono.fromCallable(() -> {
+            String resource = ScopeUtil.scopesToResource(scopes);
+            return new RefreshableTokenCache(tokenAudience -> Mono.fromCallable(() -> {
                 StringBuilder payload = new StringBuilder();
                 final int imdsUpgradeTimeInMs = 70 * 1000;
-                String tokenAudience = scopes[0].substring(0, scopes[0].lastIndexOf('.'));
 
-                //
                 try {
                     payload.append("api-version");
                     payload.append("=");
@@ -349,7 +381,7 @@ public class IdentityClient {
                     throw new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times", options.maxRetry()));
                 }
                 return null;
-            });
+            })).getToken(resource);
         }
 
         private static void sleep(int millis) {

@@ -20,13 +20,7 @@ public class RefreshableTokenCacheTests {
     @Test
     public void testOnlyOneThreadRefreshesToken() throws Exception {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
-        RefreshableTokenCache refresher = new RefreshableTokenCache() {
-
-            @Override
-            protected Mono<AccessToken> authenticate(String resource) {
-                return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
-            }
-        };
+        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> incrementalRemoteGetTokenAsync(new AtomicInteger(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
@@ -55,13 +49,7 @@ public class RefreshableTokenCacheTests {
     @Test
     public void testLongRunningWontOverflow() throws Exception {
         // token expires on creation. Run this 100 times to simulate running the application a long time
-        RefreshableTokenCache refresher = new RefreshableTokenCache() {
-
-            @Override
-            protected Mono<AccessToken> authenticate(String resource) {
-                return remoteGetTokenThatExpiresSoonAsync(1000, 0);
-            }
-        };
+        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenThatExpiresSoonAsync(1000, 0));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong refreshes = new AtomicLong(0);
@@ -91,13 +79,7 @@ public class RefreshableTokenCacheTests {
     @Test
     public void testOverflowBuffer() throws Exception {
         // Run 100 resources to make sure the buffer can handle it
-        RefreshableTokenCache refresher = new RefreshableTokenCache() {
-
-            @Override
-            protected Mono<AccessToken> authenticate(String resource) {
-                return remoteGetTokenAsync(1000);
-            }
-        };
+        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenAsync(1000));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong minMillis = new AtomicLong(5000);
@@ -126,13 +108,7 @@ public class RefreshableTokenCacheTests {
     @Test
     public void testRefreshIsCalledBeforeNew() throws Exception {
         // Token expires on acquisition so every one has to get new token. But refresh is faster
-        RefreshableTokenCache refresher = new RefreshableTokenCache() {
-
-            @Override
-            protected Mono<AccessToken> authenticate(String resource) {
-                return remoteGetTokenThatExpiresSoonAsync(2000, 0);
-            }
-
+        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenThatExpiresSoonAsync(2000, 0)) {
             @Override
             protected Mono<AccessToken> refresh(AccessToken expiredResult, String resource) {
                 return remoteGetTokenThatExpiresSoonAsync(100, 0);

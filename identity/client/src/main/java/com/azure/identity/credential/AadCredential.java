@@ -14,13 +14,10 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
 
     private String tenantId;
 
-    private String aadEndpoint;
-
     /**
-     * Creates an AadCredential with default AAD endpoint https://login.microsoftonline.com.
+     * Creates an AadCredential.
      */
     protected AadCredential() {
-        aadEndpoint = "https://login.microsoftonline.com/";
     }
 
     /**
@@ -59,24 +56,6 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
         return (T) this;
     }
 
-    /**
-     * @return the endpoint for the Azure Active Directory.
-     */
-    public String aadEndpoint() {
-        return aadEndpoint;
-    }
-
-    /**
-     * Sets the endpoint of the Azure Active Directory.
-     * @param aadEndpoint the endpoint of the Azure Active Directory
-     * @return the credential itself
-     */
-    @SuppressWarnings("unchecked")
-    public T aadEndpoint(String aadEndpoint) {
-        this.aadEndpoint = aadEndpoint;
-        return (T) this;
-    }
-
     protected void validate() {
         List<String> missing = new ArrayList<>();
         if (clientId == null) {
@@ -84,9 +63,6 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
         }
         if (tenantId == null) {
             missing.add("tenantId");
-        }
-        if (aadEndpoint == null) {
-            missing.add("aadEndpoint");
         }
         if (missing.size() > 0) {
             throw new IllegalArgumentException("Must provide non-null values for " +

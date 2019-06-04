@@ -14,32 +14,29 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 /**
  * The base class for all credentials that intends to refresh tokens after expiration.
  */
-public abstract class RefreshableTokenCache {
+public class RefreshableTokenCache {
     private static final int REFRESH_TIMEOUT_SECONDS = 30;
 
     private final Map<String, AccessToken> cache;
     private final Map<String, AtomicBoolean> wips;
     private final EmitterProcessor<String> emitterProcessor = EmitterProcessor.create(false);
     private final FluxSink<String> sink = emitterProcessor.sink(OverflowStrategy.BUFFER);
+    private final Function<String, Mono<AccessToken>> authenticate;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
+     * @param authenticate the function to asynchronously acquire an authentication result with a given resource
      */
-    public RefreshableTokenCache(){
+    public RefreshableTokenCache(Function<String, Mono<AccessToken>> authenticate){
         cache = new ConcurrentHashMap<>();
         wips = new ConcurrentHashMap<>();
+        this.authenticate = authenticate;
     }
-
-    /**
-     * Asynchronously acquire an authentication result with a given resource.
-     * @param resource the AAD resource to acquire token for.
-     * @return a Publisher that emits a single Authentication result, or an error if failed
-     */
-    protected abstract Mono<AccessToken> authenticate(String resource);
 
     /**
      * Asynchronously refreshes an authentication result with a given resource and a
@@ -50,9 +47,14 @@ public abstract class RefreshableTokenCache {
      * @return a Publisher that emits a single Authentication result, or an error if failed
      */
     protected Mono<AccessToken> refresh(AccessToken expiredAccessToken, String resource) {
-        return authenticate(resource);
+        return authenticate.apply(resource);
     }
 
+    /**
+     * Asynchronously get a token from either the cache or replenish the cache with a new token.
+     * @param resource the resource to get token for
+     * @return a Publisher that emits an AccessToken
+     */
     public Mono<AccessToken> getToken(String resource) {
         if (isCached(resource)) {
             return Mono.just(cache.get(resource));
@@ -76,7 +78,7 @@ public abstract class RefreshableTokenCache {
                         acquirer = acquirer.switchIfEmpty(refresh(cache.get(resource), resource));
                     }
                     acquirer = acquirer.onErrorResume(t -> Mono.empty())
-                        .switchIfEmpty(authenticate(resource))
+                        .switchIfEmpty(authenticate.apply(resource))
                         .doOnNext(val -> {
                             cache.put(resource, val);
                             // notify the receivers

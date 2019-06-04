@@ -14,12 +14,16 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
     private final IdentityClient identityClient;
 
     /**
-     * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
+     * Creates a ClientSecretCredential with default identity client options.
      */
     public ClientCertificateCredential() {
         this(new IdentityClientOptions());
     }
 
+    /**
+     * Creates a ClientSecretCredential with default identity client options.
+     * @param identityClientOptions the options to configure the identity client
+     */
     public ClientCertificateCredential(IdentityClientOptions identityClientOptions) {
         this.identityClient = new IdentityClient(identityClientOptions);
     }
@@ -53,9 +57,9 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
             return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential"));
         }
         if (clientCertificatePassword != null) {
-            return identityClient.activeDirectory().acquireTokenWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
+            return identityClient.activeDirectory().authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
         } else {
-            return identityClient.activeDirectory().acquireTokenWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
+            return identityClient.activeDirectory().athenticateuWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
         }
     }
 }

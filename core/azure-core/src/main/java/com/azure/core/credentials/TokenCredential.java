@@ -6,7 +6,7 @@ package com.azure.core.credentials;
 import reactor.core.publisher.Mono;
 
 /**
- * The base class for credentials that can provide a token.
+ * The interface for credentials that can provide a token.
  */
 @FunctionalInterface
 public interface TokenCredential {

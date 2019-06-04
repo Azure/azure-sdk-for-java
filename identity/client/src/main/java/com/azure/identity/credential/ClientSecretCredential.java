@@ -3,18 +3,7 @@ package com.azure.identity.credential;
 import com.azure.identity.AccessToken;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
-import com.microsoft.aad.adal4j.AuthenticationCallback;
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
-
-import java.net.MalformedURLException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 /**
  * An AAD credential that acquires a token with a client secret for an AAD application.
@@ -34,7 +23,7 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
     /**
      * Creates a ClientSecretCredential with the given identity client options.
      *
-     * @param identityClientOptions the identity client options
+     * @param identityClientOptions the options for configuring the identity client
      */
     public ClientSecretCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClient(identityClientOptions);
@@ -52,6 +41,6 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
 
     @Override
     public Mono<String> getToken(String... scopes) {
-        return identityClient.activeDirectory().acquireTokenWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
+        return identityClient.activeDirectory().authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
     }
 }
