@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.rest.v2.http.UrlBuilder;
+import com.azure.core.implementation.http.UrlBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;

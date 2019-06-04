@@ -3,11 +3,10 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.reactivex.Single;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -49,33 +48,19 @@ public final class TokenCredentials implements ICredentials {
      * @param token
      *         A {@code String} containing the new token's value.
      */
-    public void setToken(String token) {
+    public void withToken(String token) {
         this.token.set(token);
     }
 
+
     @Override
-    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-        return new TokenCredentialsPolicy(this, next);
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (!context.httpRequest().url().getProtocol().equals(Constants.HTTPS)) {
+            throw new Error("Token credentials require a URL using the https protocol scheme");
+        }
+        context.httpRequest().withHeader(Constants.HeaderConstants.AUTHORIZATION,
+            "Bearer " + this.getToken());
+        return next.process();
     }
 
-    private static final class TokenCredentialsPolicy implements RequestPolicy {
-
-        private final TokenCredentials factory;
-
-        private final RequestPolicy nextPolicy;
-
-        private TokenCredentialsPolicy(TokenCredentials factory, RequestPolicy nextPolicy) {
-            this.factory = factory;
-            this.nextPolicy = nextPolicy;
-        }
-
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
-            if (!request.url().getProtocol().equals(Constants.HTTPS)) {
-                throw new Error("Token credentials require a URL using the https protocol scheme");
-            }
-            request.withHeader(Constants.HeaderConstants.AUTHORIZATION,
-                    "Bearer " + this.factory.getToken());
-            return this.nextPolicy.sendAsync(request);
-        }
-    }
 }

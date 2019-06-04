@@ -5,22 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
-import com.azure.storage.blob.models.BlobsBreakLeaseResponse;
-import com.azure.storage.blob.models.BlobsChangeLeaseResponse;
-import com.azure.storage.blob.models.BlobsCopyFromURLResponse;
-import com.azure.storage.blob.models.BlobsGetAccountInfoResponse;
-import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobsReleaseLeaseResponse;
-import com.azure.storage.blob.models.BlobsRenewLeaseResponse;
-import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
-import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -133,7 +118,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobAsyncRawClient.abortCopyFromURL")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
+    public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(String copyId) {
         return this.abortCopyFromURL(copyId, null, null);
     }
 
@@ -160,8 +145,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobAsyncRawClient.abortCopyFromURL")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> abortCopyFromURL(String copyId,
-                                                                 LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(String copyId,
+                                                                LeaseAccessConditions leaseAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
@@ -246,7 +231,7 @@ public class BlobAsyncRawClient {
      * "Sample code for BlobAsyncRawClient.download")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<DownloadResponse> download() {
+    public Mono<DownloadResponse> download() {
         return this.download(null, null, false, null);
     }
 
@@ -276,7 +261,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobAsyncRawClient.download")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
+    public Mono<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? new BlobRange() : range;
@@ -295,7 +280,7 @@ public class BlobAsyncRawClient {
             // Convert the autorest response to a DownloadResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
-                info.withETag(response.headers().eTag());
+                info.withETag(response.deserializedHeaders().eTag());
                 return new DownloadResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
@@ -316,7 +301,7 @@ public class BlobAsyncRawClient {
      * "Sample code for BlobAsyncRawClient.delete")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> delete() {
+    public Mono<BlobsDeleteResponse> delete() {
         return this.delete(null, null, null);
     }
 
@@ -343,8 +328,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete "Sample code for BlobAsyncRawClient.delete")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-                                             BlobAccessConditions accessConditions, Context context) {
+    public Mono<BlobsDeleteResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+                                            BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -409,7 +394,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setHTTPHeaders")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
+    public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
         return this.setHTTPHeaders(headers, null, null);
     }
 
@@ -433,8 +418,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setHTTPHeaders")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers,
-                                                             BlobAccessConditions accessConditions, Context context) {
+    public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers,
+                                                            BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -455,7 +440,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setMetadata")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
+    public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
     }
 
@@ -479,8 +464,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setMetadata")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
-                                                       Context context) {
+    public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
+                                                      Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
@@ -500,7 +485,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobAsyncRawClient.createSnapshot")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<String> createSnapshot() {
+    public Mono<BlobsCreateSnapshotResponse> createSnapshot() {
         return this.createSnapshot(null, null, null);
     }
 
@@ -524,8 +509,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobAsyncRawClient.createSnapshot")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
-                                                             Context context) {
+    public Mono<BlobsCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
+                                                            Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
@@ -552,7 +537,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobAsyncRawClient.setTier")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setTier(AccessTier tier) {
+    public Mono<BlobsSetTierResponse> setTier(AccessTier tier) {
         return this.setTier(tier, null, null);
     }
 
@@ -581,8 +566,8 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobAsyncRawClient.setTier")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
-                                               Context context) {
+    public Mono<BlobsSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
+                                              Context context) {
         Utility.assertNotNull("tier", tier);
         context = context == null ? Context.NONE : context;
 
@@ -600,7 +585,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobAsyncRawClient.undelete")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> undelete() {
+    public Mono<BlobsUndeleteResponse> undelete() {
         return this.undelete(null);
     }
 
@@ -621,7 +606,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobAsyncRawClient.undelete")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> undelete(Context context) {
+    public Mono<BlobsUndeleteResponse> undelete(Context context) {
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,

@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,13 +31,13 @@ import java.util.function.Function;
 public final class DownloadResponse {
     private final HTTPGetterInfo info;
 
-    private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
+    private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse;
 
     private final Function<HTTPGetterInfo, Mono<DownloadResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    public DownloadResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
+    public DownloadResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
             HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
@@ -56,7 +57,7 @@ public final class DownloadResponse {
      *
      * @return A {@code Flux} which emits the data as {@code ByteBuffer}s.
      */
-    public Flux<ByteBuffer> body(ReliableDownloadOptions options) {
+    public Flux<ByteBuf> body(ReliableDownloadOptions options) {
         ReliableDownloadOptions optionsReal = options == null ? new ReliableDownloadOptions() : options;
         if (optionsReal.maxRetryRequests() == 0) {
             return this.rawResponse.value();
@@ -70,7 +71,7 @@ public final class DownloadResponse {
         return this.applyReliableDownload(this.rawResponse.value(), -1, optionsReal);
     }
 
-    private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuf> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
         // If all the errors are exhausted, return this error to the user.
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
             return Flux.error(t);
@@ -97,7 +98,7 @@ public final class DownloadResponse {
         }
     }
 
-    private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data,
+    private Flux<ByteBuf> applyReliableDownload(Flux<ByteBuf> data,
             int currentRetryCount, ReliableDownloadOptions options) {
         return data
                 .doOnNext(buffer -> {

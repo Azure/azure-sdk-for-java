@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.azure.storage.blob.models.ListBlobsIncludeItem;
 
 import java.util.ArrayList;
 

@@ -184,7 +184,7 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> create() {
+    public Mono<ContainersCreateResponse> create() {
         return this.create(null, null, null);
     }
 
@@ -211,7 +211,7 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
+    public Mono<ContainersCreateResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         context = context == null ? Context.NONE : context;
 
@@ -231,7 +231,7 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> delete() {
+    public Mono<ContainersDeleteResponse> delete() {
         return this.delete(null, null);
     }
 
@@ -255,7 +255,7 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
+    public Mono<ContainersDeleteResponse> delete(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -326,7 +326,7 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
+    public Mono<ContainersSetMetadataResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
     }
 
@@ -351,8 +351,8 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions, Context context) {
+    public Mono<ContainersSetMetadataResponse> setMetadata(Metadata metadata,
+                                                           ContainerAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
@@ -433,8 +433,8 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-            List<SignedIdentifier> identifiers) {
+    public Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
+                                                                   List<SignedIdentifier> identifiers) {
         return this.setAccessPolicy(accessType, identifiers, null, null);
     }
 
@@ -466,8 +466,8 @@ public final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
+    public Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
+                                                                   List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
