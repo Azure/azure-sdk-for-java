@@ -3,6 +3,8 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -31,18 +33,18 @@ final class MessagesAsyncRawClient {
         return new MessageIdAsyncRawClient(messageId, client);
     }
 
-    public Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Context context) {
+    public Mono<Response<EnqueuedMessage>> enqueue(QueueMessage queueMessage, Context context) {
         return enqueue(queueMessage, null, context);
     }
 
-    Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
+    Mono<Response<EnqueuedMessage>> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
         if (timeout == null) {
             return client.messages().enqueueWithRestResponseAsync(queueMessage, context)
-                .flatMapMany(response -> Flux.fromIterable(response.value()));
+                .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value().get(0)));
         } else {
             return client.messages().enqueueWithRestResponseAsync(queueMessage, context)
                 .timeout(timeout)
-                .flatMapMany(response -> Flux.fromIterable(response.value()));
+                .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value().get(0)));
         }
     }
 

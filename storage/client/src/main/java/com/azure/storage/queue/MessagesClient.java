@@ -29,8 +29,8 @@ public final class MessagesClient {
         return new MessageIdClient(client.getMessageIdRawClient(messageId));
     }
 
-    public List<EnqueuedMessage> enqueue(QueueMessage queueMessage) {
-        return client.enqueue(queueMessage, null, Context.NONE);
+    public EnqueuedMessage enqueue(QueueMessage queueMessage) {
+        return client.enqueue(queueMessage, null, Context.NONE).value();
     }
 
     public List<DequeuedMessageItem> dequeue(int numberOfMessages) {

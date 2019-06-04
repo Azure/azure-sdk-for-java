@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.DequeuedMessageItem;
@@ -23,8 +24,8 @@ public final class MessagesRawClient {
         return new MessageIdRawClient(client.getMessageIdAsyncRawClient(messageId));
     }
 
-    public List<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
-        return client.enqueue(queueMessage, timeout, context).collectList().block();
+    public Response<EnqueuedMessage> enqueue(QueueMessage queueMessage, Duration timeout, Context context) {
+        return client.enqueue(queueMessage, timeout, context).block();
     }
 
     public List<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.DequeuedMessageItem;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -29,8 +30,9 @@ public final class MessagesAsyncClient {
         return new MessageIdAsyncClient(client.getMessageIdAsyncRawClient(messageId));
     }
 
-    public Flux<EnqueuedMessage> enqueue(QueueMessage queueMessage) {
-        return client.enqueue(queueMessage, null, Context.NONE);
+    public Mono<EnqueuedMessage> enqueue(QueueMessage queueMessage) {
+        return client.enqueue(queueMessage, null, Context.NONE)
+            .map(Response::value);
     }
 
     public Flux<DequeuedMessageItem> dequeue(int numberOfMessages) {
