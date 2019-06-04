@@ -13,6 +13,7 @@ import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
@@ -72,6 +73,7 @@ public final class PageBlobsImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Blobs PageBlobs")
     private interface PageBlobsService {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})

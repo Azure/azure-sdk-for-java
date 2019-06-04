@@ -13,6 +13,7 @@ import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.POST;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
@@ -58,6 +59,7 @@ public final class ServicesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Blobs Services")
     private interface ServicesService {
         @PUT("")
         @ExpectedResponses({202})
