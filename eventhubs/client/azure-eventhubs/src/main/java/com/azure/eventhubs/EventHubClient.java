@@ -67,7 +67,7 @@ public class EventHubClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
-    public Mono<EventHubProperties> getHubProperties() {
+    public Mono<EventHubProperties> getProperties() {
         return connectionMono.flatMap(connection -> {
             //TODO (conniey): Replace with management plane call.
             final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
@@ -83,7 +83,7 @@ public class EventHubClient implements Closeable {
      * @return The set of identifiers for the partitions of an Event Hub.
      */
     public Mono<String[]> getPartitionIds() {
-        return getHubProperties().map(EventHubProperties::partitionIds);
+        return getProperties().map(EventHubProperties::partitionIds);
     }
 
     /**

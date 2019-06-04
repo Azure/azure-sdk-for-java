@@ -36,7 +36,7 @@ public class EventHubClientTest extends TestBase {
         final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
         EventHubClient client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
 
-        StepVerifier.create(client.getHubProperties())
+        StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
                 Assert.assertNotEquals(0, properties.partitionIds().length);
