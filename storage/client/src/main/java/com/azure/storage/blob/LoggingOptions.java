@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 /**
- * Options to configure the {@link LoggingFactory}. Please refer to the Factory for more information.
+ * Options to configure the {@link LoggingPolicy}. Please refer to the Factory for more information.
  */
 public final class LoggingOptions {
 

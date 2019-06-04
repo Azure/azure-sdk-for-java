@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob;
 
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,9 +34,9 @@ public final class ProgressReporter {
             this.blockProgress = 0;
         }
 
-        Flowable<ByteBuffer> addProgressReporting(Flowable<ByteBuffer> data) {
-            return Single.just(this)
-                    .flatMapPublisher(progressReporter -> {
+        Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data) {
+            return Mono.just(this)
+                    .flatMapMany(progressReporter -> {
                     /*
                     Each time there is a new subscription, we will rewind the progress. This is desirable specifically
                     for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
@@ -145,7 +145,7 @@ public final class ProgressReporter {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=progress "Sample code for ProgressReporterFactor.addProgressReporting")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public static Flowable<ByteBuffer> addProgressReporting(Flowable<ByteBuffer> data,
+    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data,
             IProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
@@ -155,7 +155,7 @@ public final class ProgressReporter {
         }
     }
 
-    static Flowable<ByteBuffer> addParallelProgressReporting(Flowable<ByteBuffer> data,
+    static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data,
             IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;

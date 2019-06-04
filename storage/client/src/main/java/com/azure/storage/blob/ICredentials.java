@@ -3,12 +3,12 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.rest.v2.policy.RequestPolicyFactory;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 
 /**
  * Credentials represent any credential type
  * it is used to create a credential policy Factory.
  */
-public interface ICredentials extends RequestPolicyFactory {
+public interface ICredentials extends HttpPipelinePolicy {
 
 }

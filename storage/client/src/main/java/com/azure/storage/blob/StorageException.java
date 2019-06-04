@@ -3,9 +3,10 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.StorageErrorCode;
-import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.RestException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.storage.blob.models.StorageErrorCode;
+import com.azure.storage.blob.models.StorageErrorException;
+import reactor.core.publisher.Mono;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
@@ -20,17 +21,13 @@ import com.microsoft.rest.v2.RestException;
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")] \n
  * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
-public final class StorageException extends RestException {
+public final class StorageException extends HttpResponseException {
 
     private final String message;
 
-    StorageException(StorageErrorException e) {
+    StorageException(StorageErrorException e, String responseBody) {
         super(e.getMessage(), e.response(), e);
-        if (e.body() != null) {
-            this.message = e.body().message();
-        } else {
-            this.message = null;
-        }
+        this.message = responseBody;
     }
 
     /**

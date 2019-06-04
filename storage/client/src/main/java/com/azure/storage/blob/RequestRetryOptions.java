@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Options for configuring the {@link RequestRetryFactory}. Please refer to the Factory for more information. Note
+ * Options for configuring the {@link RequestRetryPolicy}. Please refer to the Factory for more information. Note
  * that there is no option for overall operation timeout. This is because Rx object have a timeout field which provides
  * this functionality.
  */

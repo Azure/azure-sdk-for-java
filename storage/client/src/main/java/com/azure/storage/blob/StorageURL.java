@@ -143,15 +143,15 @@ public abstract class StorageURL {
 
         // Closest to API goes first, closest to wire goes last.
         ArrayList<RequestPolicyFactory> factories = new ArrayList<>();
-        factories.add(new TelemetryFactory(pipelineOptions.telemetryOptions()));
-        factories.add(new RequestIDFactory());
-        factories.add(new RequestRetryFactory(pipelineOptions.requestRetryOptions()));
+        factories.add(new TelemetryPolicy(pipelineOptions.telemetryOptions()));
+        factories.add(new RequestIDPolicy());
+        factories.add(new RequestRetryPolicy(pipelineOptions.requestRetryOptions()));
         if (!(credentials instanceof AnonymousCredentials)) {
             factories.add(credentials);
         }
-        factories.add(new SetResponseFieldFactory());
+        factories.add(new SetResponseFieldPolicy());
         factories.add(new DecodingPolicyFactory());
-        factories.add(new LoggingFactory(pipelineOptions.loggingOptions()));
+        factories.add(new LoggingPolicy(pipelineOptions.loggingOptions()));
 
         return HttpPipeline.build(new HttpPipelineOptions().withHttpClient(pipelineOptions.client())
                         .withLogger(pipelineOptions.logger()),

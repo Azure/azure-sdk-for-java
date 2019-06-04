@@ -3,42 +3,41 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.microsoft.rest.v2.RestResponse;
-import com.microsoft.rest.v2.http.HttpPipeline;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * BlobAccessConditions, boolean, com.microsoft.rest.v2.Context)} to automatically retry failed reads from the body as
+ * BlobAccessConditions, boolean, com.azure.core.util.Context)} to automatically retry failed reads from the body as
  * appropriate. If the download is interrupted, the {@code DownloadResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
  * download will also lock on the blob's etag to ensure consistency.
  * <p>
  * Note that the retries performed as a part of this reader are composed with those of any retries in an {@link
- * HttpPipeline} used in conjunction with this reader. That is, if this object issues a request to resume a download,
+ * com.azure.core.http.HttpPipeline} used in conjunction with this reader. That is, if this object issues a request to resume a download,
  * an underlying pipeline may issue several retries as a part of that request. Furthermore, this reader only retries on
  * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
- * entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
+ * entirely independent of and in no way coupled to an {@link com.azure.core.http.HttpPipeline}'s retry mechanism.
  */
 public final class DownloadResponse {
     private final HTTPGetterInfo info;
 
-    private final RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> rawResponse;
+    private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
 
-    private final Function<HTTPGetterInfo, Single<DownloadResponse>> getter;
+    private final Function<HTTPGetterInfo, Mono<DownloadResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    public DownloadResponse(RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> response,
-            HTTPGetterInfo info, Function<HTTPGetterInfo, Single<DownloadResponse>> getter) {
+    public DownloadResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
+            HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.eTag());
@@ -55,26 +54,26 @@ public final class DownloadResponse {
      * @param options
      *         {@link ReliableDownloadOptions}
      *
-     * @return A {@code Flowable} which emits the data as {@code ByteBuffer}s.
+     * @return A {@code Flux} which emits the data as {@code ByteBuffer}s.
      */
-    public Flowable<ByteBuffer> body(ReliableDownloadOptions options) {
+    public Flux<ByteBuffer> body(ReliableDownloadOptions options) {
         ReliableDownloadOptions optionsReal = options == null ? new ReliableDownloadOptions() : options;
         if (optionsReal.maxRetryRequests() == 0) {
-            return this.rawResponse.body();
+            return this.rawResponse.value();
         }
 
         /*
-        We pass -1 for currentRetryCount because we want tryContinueFlowable to receive a value of 0 for number of
+        We pass -1 for currentRetryCount because we want tryContinueFlux to receive a value of 0 for number of
         retries as we have not actually retried yet, only made the initial try. Because applyReliableDownload() will
-        add 1 before calling into tryContinueFlowable, we set the initial value to -1.
+        add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
-        return this.applyReliableDownload(this.rawResponse.body(), -1, optionsReal);
+        return this.applyReliableDownload(this.rawResponse.value(), -1, optionsReal);
     }
 
-    private Flowable<ByteBuffer> tryContinueFlowable(Throwable t, int retryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
         // If all the errors are exhausted, return this error to the user.
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
-            return Flowable.error(t);
+            return Flux.error(t);
         } else {
             /*
             We wrap this in a try catch because we don't know the behavior of the getter. Most errors would probably
@@ -85,20 +84,20 @@ public final class DownloadResponse {
             try {
                 // Get a new response and try reading from it.
                 return getter.apply(this.info)
-                        .flatMapPublisher(response ->
+                        .flatMapMany(response ->
                             /*
                             Do not compound the number of retries by passing in another set of downloadOptions; just get
                             the raw body.
                              */
-                            this.applyReliableDownload(this.rawResponse.body(), retryCount, options));
+                            this.applyReliableDownload(this.rawResponse.value(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
-                return Flowable.error(e);
+                return Flux.error(e);
             }
         }
     }
 
-    private Flowable<ByteBuffer> applyReliableDownload(Flowable<ByteBuffer> data,
+    private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data,
             int currentRetryCount, ReliableDownloadOptions options) {
         return data
                 .doOnNext(buffer -> {
@@ -111,9 +110,9 @@ public final class DownloadResponse {
                         this.info.withCount(this.info.count() - buffer.remaining());
                     }
                 })
-                .onErrorResumeNext(t2 -> {
+                .onErrorResume(t2 -> {
                     // Increment the retry count and try again with the new exception.
-                    return tryContinueFlowable(t2, currentRetryCount + 1, options);
+                    return tryContinueFlux(t2, currentRetryCount + 1, options);
                 });
     }
 
@@ -122,14 +121,14 @@ public final class DownloadResponse {
     }
 
     public BlobDownloadHeaders headers() {
-        return this.rawResponse.headers();
+        return this.rawResponse.deserializedHeaders();
     }
 
     public Map<String, String> rawHeaders() {
-        return this.rawResponse.rawHeaders();
+        return this.rawResponse.headers().toMap();
     }
 
-    public RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> rawResponse() {
+    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse() {
         return this.rawResponse;
     }
 }

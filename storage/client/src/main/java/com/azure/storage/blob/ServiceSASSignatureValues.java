@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.models.UserDelegationKey;
 
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;

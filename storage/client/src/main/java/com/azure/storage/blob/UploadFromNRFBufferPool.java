@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import io.reactivex.Flowable;
+import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
@@ -51,7 +51,7 @@ final class UploadFromNRFBufferPool {
 
 
         //These buffers will be used in calls to stageBlock, so they must be no greater than block size.
-        Utility.assertInBounds("buffSize", buffSize, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
+        Utility.assertInBounds("buffSize", buffSize, 1, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
         this.buffSize = buffSize;
 
         //We prep the queue with two buffers in case there is overflow.
@@ -60,20 +60,20 @@ final class UploadFromNRFBufferPool {
         this.numBuffs = 2;
     }
 
-    public Flowable<ByteBuffer> write(ByteBuffer buf) {
+    public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
         }
 
-        Flowable<ByteBuffer> result;
+        Flux<ByteBuffer> result;
         // We can fit this whole write in the buffer we currently have.
         if (this.currentBuf.remaining() >= buf.remaining()) {
             this.currentBuf.put(buf);
             if (this.currentBuf.remaining() == 0) {
                 // Reset the position so that we can read the whole thing then return this buffer.
                 this.currentBuf.position(0);
-                result = Flowable.just(this.currentBuf);
+                result = Flux.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
             } else {
@@ -81,7 +81,7 @@ final class UploadFromNRFBufferPool {
                 We are still filling the current buffer, so we have no data to return. We will return the buffer once it
                 is filled
                  */
-                result = Flowable.empty();
+                result = Flux.empty();
             }
         } else {
             // We will overflow the current buffer and require another one.
@@ -94,7 +94,7 @@ final class UploadFromNRFBufferPool {
 
             // Reset the position so we can read the buffer.
             this.currentBuf.position(0);
-            result =  Flowable.just(this.currentBuf);
+            result =  Flux.just(this.currentBuf);
 
             /*
             Get a new buffer and fill it with whatever is left from buf. Note that this relies on the assumption that
@@ -127,7 +127,7 @@ final class UploadFromNRFBufferPool {
         return result;
     }
 
-    Flowable<ByteBuffer> flush() {
+    Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -137,9 +137,9 @@ final class UploadFromNRFBufferPool {
             ByteBuffer last = this.currentBuf;
             // If there is an accidental duplicate call to flush, this prevents sending the last buffer twice
             this.currentBuf = null;
-            return Flowable.just(last);
+            return Flux.just(last);
         }
-        return Flowable.empty();
+        return Flux.empty();
     }
 
     void returnBuffer(ByteBuffer b) {

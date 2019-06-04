@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
 
 /**
  * Configures the parallel upload behavior for methods on the {@link TransferManager}.

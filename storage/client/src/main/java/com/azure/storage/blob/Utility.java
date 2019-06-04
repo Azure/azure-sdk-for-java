@@ -3,13 +3,14 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.azure.storage.blob.models.UserDelegationKey;
-import io.reactivex.Single;
+import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.UserDelegationKey;
+import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -239,7 +240,7 @@ final class Utility {
         }
     }
 
-    static <T> Single<T> postProcessResponse(Single<T> s) {
+    static <T> Mono<T> postProcessResponse(Mono<T> s) {
         s = addErrorWrappingToSingle(s);
         s = scrubEtagHeaderInResponse(s);
         return s;
@@ -249,13 +250,10 @@ final class Utility {
     We need to convert the generated StorageErrorException to StorageException, which has a cleaner interface and
     methods to conveniently access important values.
      */
-    private static <T> Single<T> addErrorWrappingToSingle(Single<T> s) {
-        return s.onErrorResumeNext(e -> {
-            if (e instanceof StorageErrorException) {
-                return Single.error(new StorageException((StorageErrorException) e));
-            }
-            return Single.error(e);
-        });
+    private static <T> Mono<T> addErrorWrappingToSingle(Mono<T> s) {
+        return s.onErrorResume(
+            StorageErrorException.class,
+            e -> e.response().bodyAsString().flatMap(body -> Mono.error(new StorageException(e, body))));
     }
 
     /*
@@ -263,7 +261,7 @@ final class Utility {
     response returns an etag value, and if it does, remove any quotes that may be present to give the user a more
     predictable format to work with.
      */
-    private static <T> Single<T> scrubEtagHeaderInResponse(Single<T> s) {
+    private static <T> Mono<T> scrubEtagHeaderInResponse(Mono<T> s) {
         return s.map(response -> {
             try {
                 Object headers = response.getClass().getMethod("headers").invoke(response);
@@ -277,6 +275,8 @@ final class Utility {
                 headers.getClass().getMethod("withETag", String.class).invoke(headers, etag);
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                //TODO validate this won't throw
             }
             return response;
         });

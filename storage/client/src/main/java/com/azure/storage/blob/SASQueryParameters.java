@@ -3,13 +3,13 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.models.UserDelegationKey;
 
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
+import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly
@@ -506,12 +506,12 @@ public final class SASQueryParameters {
 
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
-                .withSignedExpiry(this.keyExpiry)
-                .withSignedOid(this.keyOid)
-                .withSignedService(this.keyService)
-                .withSignedStart(this.keyStart)
-                .withSignedTid(this.keyTid)
-                .withSignedVersion(this.keyVersion);
+                .signedExpiry(this.keyExpiry)
+                .signedOid(this.keyOid)
+                .signedService(this.keyService)
+                .signedStart(this.keyStart)
+                .signedTid(this.keyTid)
+                .signedVersion(this.keyVersion);
     }
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {

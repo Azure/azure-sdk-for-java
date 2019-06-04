@@ -3,9 +3,9 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.models.BlockBlobCommitBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobUploadResponse;
-import com.microsoft.rest.v2.RestResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
+import com.azure.storage.blob.models.BlockBlobsUploadResponse;
 
 import java.time.OffsetDateTime;
 
@@ -16,22 +16,22 @@ import java.time.OffsetDateTime;
  */
 public final class CommonRestResponse {
 
-    private BlockBlobUploadResponse uploadBlobResponse;
+    private BlockBlobsUploadResponse uploadBlobResponse;
 
-    private BlockBlobCommitBlockListResponse commitBlockListResponse;
+    private BlockBlobsCommitBlockListResponse commitBlockListResponse;
 
     private CommonRestResponse() {
         uploadBlobResponse = null;
         commitBlockListResponse = null;
     }
 
-    static CommonRestResponse createFromPutBlobResponse(BlockBlobUploadResponse response) {
+    static CommonRestResponse createFromPutBlobResponse(BlockBlobsUploadResponse response) {
         CommonRestResponse commonRestResponse = new CommonRestResponse();
         commonRestResponse.uploadBlobResponse = response;
         return commonRestResponse;
     }
 
-    static CommonRestResponse createFromPutBlockListResponse(BlockBlobCommitBlockListResponse response) {
+    static CommonRestResponse createFromPutBlockListResponse(BlockBlobsCommitBlockListResponse response) {
         CommonRestResponse commonRestResponse = new CommonRestResponse();
         commonRestResponse.commitBlockListResponse = response;
         return commonRestResponse;
@@ -52,9 +52,9 @@ public final class CommonRestResponse {
      */
     public String eTag() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().eTag();
+            return uploadBlobResponse.deserializedHeaders().eTag();
         }
-        return commitBlockListResponse.headers().eTag();
+        return commitBlockListResponse.deserializedHeaders().eTag();
     }
 
     /**
@@ -62,9 +62,9 @@ public final class CommonRestResponse {
      */
     public OffsetDateTime lastModified() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().lastModified();
+            return uploadBlobResponse.deserializedHeaders().lastModified();
         }
-        return commitBlockListResponse.headers().lastModified();
+        return commitBlockListResponse.deserializedHeaders().lastModified();
     }
 
     /**
@@ -72,9 +72,9 @@ public final class CommonRestResponse {
      */
     public String requestId() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().requestId();
+            return uploadBlobResponse.deserializedHeaders().requestId();
         }
-        return commitBlockListResponse.headers().requestId();
+        return commitBlockListResponse.deserializedHeaders().requestId();
     }
 
     /**
@@ -82,9 +82,9 @@ public final class CommonRestResponse {
      */
     public OffsetDateTime date() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().date();
+            return uploadBlobResponse.deserializedHeaders().dateProperty();
         }
-        return commitBlockListResponse.headers().date();
+        return commitBlockListResponse.deserializedHeaders().dateProperty();
     }
 
     /**
@@ -92,15 +92,15 @@ public final class CommonRestResponse {
      */
     public String version() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().version();
-        }
-        return commitBlockListResponse.headers().version();
+            return uploadBlobResponse.deserializedHeaders().version();
+    }
+        return commitBlockListResponse.deserializedHeaders().version();
     }
 
     /**
      * @return The underlying response.
      */
-    public RestResponse response() {
+    public Response<Void> response() {
         if (uploadBlobResponse != null) {
             return uploadBlobResponse;
         }
