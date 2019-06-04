@@ -24,11 +24,11 @@ import java.util.Map;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class ConnectionHandler extends Handler {
-    private static final Symbol PRODUCT = Symbol.valueOf("product");
-    private static final Symbol VERSION = Symbol.valueOf("version");
-    private static final Symbol PLATFORM = Symbol.valueOf("platform");
-    private static final Symbol FRAMEWORK = Symbol.valueOf("framework");
-    private static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
+    static final Symbol PRODUCT = Symbol.valueOf("product");
+    static final Symbol VERSION = Symbol.valueOf("version");
+    static final Symbol PLATFORM = Symbol.valueOf("platform");
+    static final Symbol FRAMEWORK = Symbol.valueOf("framework");
+    static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
     static final int MAX_USER_AGENT_LENGTH = 128;
     static final int AMQPS_PORT = 5671;

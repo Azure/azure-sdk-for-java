@@ -13,7 +13,7 @@ import reactor.core.publisher.UnicastProcessor;
 
 import java.io.Closeable;
 
-public class Handler extends BaseHandler implements Closeable {
+public abstract class Handler extends BaseHandler implements Closeable {
     private final ReplayProcessor<EndpointState> endpointStateProcessor = ReplayProcessor.cacheLastOrDefault(EndpointState.UNINITIALIZED);
     private final UnicastProcessor<ErrorContext> errorContextProcessor = UnicastProcessor.create();
     private final FluxSink<EndpointState> endpointSink = endpointStateProcessor.sink();
@@ -37,8 +37,9 @@ public class Handler extends BaseHandler implements Closeable {
 
     @Override
     public void close() {
+        onNext(EndpointState.CLOSED);
+
         endpointSink.complete();
         errorSink.complete();
-        onNext(EndpointState.CLOSED);
     }
 }
