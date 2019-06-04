@@ -17,6 +17,7 @@ import com.microsoft.azure.management.storage.v2017_10_01.Kind;
 import com.microsoft.azure.management.storage.v2017_10_01.Sku;
 import com.microsoft.azure.management.storage.v2017_10_01.SkuName;
 import com.microsoft.azure.management.storage.v2017_10_01.StorageAccount;
+import com.microsoft.azure.management.storage.v2017_10_01.implementation.SkuInner;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class AzureTests extends TestBase {
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withKind(Kind.STORAGE)
-                .withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                .withSku(new SkuInner().withName(SkuName.STANDARD_LRS))
                 .create();
 
         Assert.assertNotNull(storageAccount);

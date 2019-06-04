@@ -14,14 +14,18 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.appservice.v2016_03_01.BillingMeters;
-import com.microsoft.azure.management.appservice.v2016_03_01.Certificates;
-import com.microsoft.azure.management.appservice.v2016_03_01.DeletedWebApps;
-import com.microsoft.azure.management.appservice.v2016_03_01.Diagnostics;
-import com.microsoft.azure.management.appservice.v2016_03_01.Recommendations;
-import com.microsoft.azure.management.appservice.v2016_03_01.ResourceHealthMetadatas;
-import com.microsoft.azure.management.appservice.v2016_08_01.WebApps;
-import com.microsoft.azure.management.appservice.v2016_09_01.AppServiceEnvironments;
-import com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans;
+import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceCertificateOrders;
+import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments;
+import com.microsoft.azure.management.appservice.v2018_02_01.CertificateRegistrationProviders;
+import com.microsoft.azure.management.appservice.v2018_02_01.Certificates;
+import com.microsoft.azure.management.appservice.v2018_02_01.DeletedWebApps;
+import com.microsoft.azure.management.appservice.v2018_02_01.Diagnostics;
+import com.microsoft.azure.management.appservice.v2018_02_01.DomainRegistrationProviders;
+import com.microsoft.azure.management.appservice.v2018_02_01.Domains;
+import com.microsoft.azure.management.appservice.v2018_02_01.Recommendations;
+import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadatas;
+import com.microsoft.azure.management.appservice.v2018_02_01.TopLevelDomains;
+import com.microsoft.azure.management.appservice.v2018_02_01.WebApps;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
 import com.microsoft.azure.management.compute.v2017_03_30.Disks;
@@ -539,7 +543,6 @@ public final class Azure {
      */
     public ApplicationGateways applicationGateways() {
         return this.networkManager20171001.applicationGateways();
-        this.locksManager20160901.
     }
 
     /**
@@ -838,82 +841,92 @@ public final class Azure {
     public com.microsoft.azure.management.keyvault.v2016_10_01.Operations keyVaultOperations() { return this.keyVaultManager20161001.operations(); }
 
     /**
-     * @return Entry point to manage key vaults.
-     */
-    public Vaults keyVaults() {
-        return this.keyVaultManager20161001.vaults();
-    }
-
-    /**
-     * @return Entry point to manage Certificates.
-     */
-    public Certificates certificates() {
-        return this.appServiceManager20160301.certificates();
-    }
-
-    /**
-     * @return Entry point to manage DeletedWebApps.
-     */
-    public DeletedWebApps deletedWebApps() {
-        return this.appServiceManager20160301.deletedWebApps();
-    }
-
-    /**
-     * @return Entry point to manage Diagnostics.
-     */
-    public Diagnostics diagnostics() {
-        return this.appServiceManager20160301.diagnostics();
-    }
-
-    /**
-     * @return Entry point to manage Providers.
-     */
-    public com.microsoft.azure.management.appservice.v2016_03_01.Providers appServiceProviders() {
-        return this.appServiceManager20160301.providers();
-    }
-
-    /**
-     * @return Entry point to manage Recommendations.
-     */
-    public Recommendations recommendations() {
-        return this.appServiceManager20160301.recommendations();
-    }
-
-    /**
-     * @return Entry point to manage ResourceHealthMetadatas.
-     */
-    public ResourceHealthMetadatas resourceHealthMetadatas() {
-        return this.appServiceManager20160301.resourceHealthMetadatas();
-    }
-
-    /**
      * @return Entry point to manage BillingMeters.
      */
     public BillingMeters billingMeters() {
         return this.appServiceManager20160301.billingMeters();
     }
 
-    /**
-     * @return Entry point to manage WebApps.
-     */
-    public WebApps webApps() {
-        return this.appServiceManager20160801.webApps();
-    }
 
     /**
      * @return Entry point to manage AppServiceEnvironments.
      */
     public AppServiceEnvironments appServiceEnvironments() {
-        return this.appServiceManager20160901.appServiceEnvironments();
-        this.appServiceManager20160301.
+        return this.appServiceManager20180201.appServiceEnvironments();
     }
+
+    /**
+     * @return Entry point to manage AppServiceCertificateOrders.
+     */
+    public AppServiceCertificateOrders appServiceCertificateOrders() { return this.appServiceManager20180201.appServiceCertificateOrders(); }
 
     /**
      * @return Entry point to manage AppServicePlans.
      */
-    public AppServicePlans appServicePlans() {
-        return this.appServiceManager20160901.appServicePlans();
+    public com.microsoft.azure.management.appservice.v2018_02_01.AppServicePlans appServicePlans() { return this.appServiceManager20180201.appServicePlans(); }
+
+    /**
+     * @return Entry point to manage CertificateRegistrationProviders.
+     */
+    public CertificateRegistrationProviders certificateRegistrationProviders() { return this.appServiceManager20180201.certificateRegistrationProviders(); }
+
+    /**
+     * @return Entry point to manage Certificates.
+     */
+    public Certificates certificates() { return this.appServiceManager20180201.certificates(); }
+
+    /**
+     * @return Entry point to manage DeletedWebApps.
+     */
+    public DeletedWebApps deletedWebApps() { return this.appServiceManager20180201.deletedWebApps(); }
+
+    /**
+     * @return Entry point to manage Diagnostics.
+     */
+    public Diagnostics diagnostics() { return this.appServiceManager20180201.diagnostics(); }
+
+    /**
+     * @return Entry point to manage DomainRegistrationProviders.
+     */
+    public DomainRegistrationProviders domainRegistrationProviders() { return this.appServiceManager20180201.domainRegistrationProviders(); }
+
+    /**
+     * @return Entry point to manage Domains.
+     */
+    public Domains domains() { return this.appServiceManager20180201.domains(); }
+
+    /**
+     * @return Entry point to manage AppService Providers.
+     */
+    public com.microsoft.azure.management.appservice.v2018_02_01.Providers appServiceProviders() { return this.appServiceManager20180201.providers(); }
+
+    /**
+     * @return Entry point to manage Recommendations.
+     */
+    public Recommendations recommendations() { return this.appServiceManager20180201.recommendations(); }
+
+    /**
+     * @return Entry point to manage ResourceHealthMetadatas.
+     */
+    public ResourceHealthMetadatas resourceHealthMetadatas() { return this.appServiceManager20180201.resourceHealthMetadatas(); }
+
+    /**
+     * @return Entry point to manage TopLevelDomains.
+     */
+    public TopLevelDomains topLevelDomains() { return this.appServiceManager20180201.topLevelDomains(); }
+
+    /**
+     * @return Entry point to manage WebApps.
+     */
+    public WebApps webApps() { return this.appServiceManager20180201.webApps(); }
+
+    /**
+     * @return Entry point to manage key vaults.
+     */
+    public Vaults keyVaults() {
+        return this.keyVaultManager20161001.vaults();
     }
+
 
     /**
      * The implementation for Configurable interface.
@@ -937,8 +950,8 @@ public final class Azure {
         this.dnsManager20160401 = com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager.authenticate(restClient, subscriptionId);
         this.storageManager20171001 = com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageManager.authenticate(restClient, subscriptionId);
         this.appServiceManager20160301 = com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
-        this.appServiceManager20160801 = com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
         this.appServiceManager20160901 = com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
+        this.appServiceManager20180201 = com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager20161001 = com.microsoft.azure.management.keyvault.v2016_10_01.implementation.KeyVaultManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
