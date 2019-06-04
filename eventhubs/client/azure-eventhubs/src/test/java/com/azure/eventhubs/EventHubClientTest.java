@@ -5,12 +5,15 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.test.TestMode;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -19,8 +22,11 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
-public class EventHubClientTest extends TestBase {
+public class EventHubClientTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
+
+    @Rule
+    public TestName testName = new TestName();
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
@@ -51,5 +57,10 @@ public class EventHubClientTest extends TestBase {
         client.close();
 
         Thread.sleep(1000);
+    }
+
+    @Override
+    protected String testName() {
+        return testName.getMethodName();
     }
 }
