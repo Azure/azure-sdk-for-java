@@ -3,25 +3,19 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
-import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
-import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
-import com.azure.storage.blob.models.ContainersGetAccessPolicyResponse;
-import com.azure.storage.blob.models.ContainersGetAccountInfoResponse;
-import com.azure.storage.blob.models.ContainersGetPropertiesResponse;
-import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
-import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
-import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
-import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+
+import static com.azure.storage.blob.Utility.postProcessResponse;
+import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -31,9 +25,7 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
-public final class ContainerAsyncClient {
-
-    ContainerAsyncRawClient containerAsyncRawClient;
+public final class ContainerAsyncRawClient {
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -41,6 +33,7 @@ public final class ContainerAsyncClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    public AzureBlobStorageImpl azureBlobStorage;
 
     /**
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
@@ -52,8 +45,8 @@ public final class ContainerAsyncClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    public ContainerAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**
@@ -69,7 +62,22 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncRawClient createBlockBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlockBlobAsyncClient(blobName);
+        blobName = safeURLEncode(blobName);
+
+        // Construct new AzureBlobStorageImpl from current httpPipeline
+        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
+        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
+
+        // Set version
+        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
+
+        // Set URL of blob
+        try {
+            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
+            return new BlockBlobAsyncRawClient(newAzureBlobStorage);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -85,7 +93,22 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncRawClient createPageBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createPageBlobAsyncClient(blobName);
+        blobName = safeURLEncode(blobName);
+
+        // Construct new AzureBlobStorageImpl from current httpPipeline
+        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
+        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
+
+        // Set version
+        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
+
+        // Set URL of blob
+        try {
+            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
+            return new PageBlobAsyncRawClient(newAzureBlobStorage);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -101,7 +124,22 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncRawClient createAppendBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createAppendBlobAsyncClient(blobName);
+        blobName = safeURLEncode(blobName);
+
+        // Construct new AzureBlobStorageImpl from current httpPipeline
+        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
+        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
+
+        // Set version
+        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
+
+        // Set URL of blob
+        try {
+            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
+            return new AppendBlobAsyncRawClient(newAzureBlobStorage);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -117,7 +155,22 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncRawClient createBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlobAsyncClient(blobName);
+        blobName = safeURLEncode(blobName);
+
+        // Construct new AzureBlobStorageImpl from current httpPipeline
+        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
+        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
+
+        // Set version
+        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
+
+        // Set URL of blob
+        try {
+            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
+            return new BlobAsyncRawClient(newAzureBlobStorage);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -132,7 +185,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> create() {
-        return containerAsyncRawClient.create(null, null, null);
+        return this.create(null, null, null);
     }
 
     /**
@@ -147,7 +200,7 @@ public final class ContainerAsyncClient {
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -159,7 +212,11 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
-        return containerAsyncRawClient.create(metadata, accessType, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
+                null, null, metadata, accessType, null, context));
 
     }
 
@@ -175,7 +232,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete() {
-        return containerAsyncRawClient.delete(null, null);
+        return this.delete(null, null);
     }
 
     /**
@@ -187,7 +244,7 @@ public final class ContainerAsyncClient {
      *         {@link ContainerAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -199,7 +256,18 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.delete(accessConditions, context);
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException("ETag access conditions are not supported for this API.");
+        }
+
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .deleteWithRestResponseAsync(null, null, null,
+                    accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -213,7 +281,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersGetPropertiesResponse> getProperties() {
-        return containerAsyncRawClient.getProperties(null, null);
+        return this.getProperties(null, null);
     }
 
     /**
@@ -225,7 +293,7 @@ public final class ContainerAsyncClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -238,7 +306,11 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersGetPropertiesResponse> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
-        return containerAsyncRawClient.getProperties(leaseAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .getPropertiesWithRestResponseAsync(null, null, null,
+                    leaseAccessConditions, context));
     }
 
     /**
@@ -255,7 +327,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setMetadata(Metadata metadata) {
-        return containerAsyncRawClient.setMetadata(metadata, null, null);
+        return this.setMetadata(metadata, null, null);
     }
 
     /**
@@ -268,7 +340,7 @@ public final class ContainerAsyncClient {
      *         {@link ContainerAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -281,7 +353,20 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setMetadata(metadata, accessConditions, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions())
+                || accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "If-Modified-Since is the only HTTP access condition supported for this API");
+        }
+
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .setMetadataWithRestResponseAsync(null, null, metadata, null,
+                        accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -296,7 +381,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy() {
-        return containerAsyncRawClient.getAccessPolicy(null, null);
+        return this.getAccessPolicy(null, null);
     }
 
     /**
@@ -309,7 +394,7 @@ public final class ContainerAsyncClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -322,7 +407,10 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
-        return containerAsyncRawClient.getAccessPolicy(leaseAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
+                null, null, null, leaseAccessConditions, context));
     }
 
     /**
@@ -347,7 +435,7 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, null, null);
+        return this.setAccessPolicy(accessType, identifiers, null, null);
     }
 
     /**
@@ -367,7 +455,7 @@ public final class ContainerAsyncClient {
      *         {@link ContainerAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -380,10 +468,41 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException("ETag access conditions are not supported for this API.");
+        }
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (identifiers != null) {
+            for (SignedIdentifier identifier : identifiers) {
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().start() != null) {
+                    identifier.accessPolicy().start(
+                            identifier.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().expiry() != null) {
+                    identifier.accessPolicy().expiry(
+                            identifier.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
+
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .setAccessPolicyWithRestResponseAsync(null, identifiers, null, accessType,
+                    null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
+                    context));
+
     }
 
-    // TODO: figure out if this is meant to stay private or change to public
     private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
         if (modifiedAccessConditions == null) {
             return true;
@@ -414,7 +533,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return containerAsyncRawClient.acquireLease(proposedId, duration, null, null);
+        return this.acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -433,7 +552,7 @@ public final class ContainerAsyncClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -446,7 +565,16 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "ETag access conditions are not supported for this API.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().acquireLeaseWithRestResponseAsync(
+                null, null, duration, proposedID, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -463,7 +591,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
-        return containerAsyncRawClient.renewLease(leaseID, null, null);
+        return this.renewLease(leaseID, null, null);
     }
 
     /**
@@ -478,7 +606,7 @@ public final class ContainerAsyncClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -491,7 +619,16 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.renewLease(leaseID, modifiedAccessConditions, context);
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "ETag access conditions are not supported for this API.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().renewLeaseWithRestResponseAsync(null,
+            leaseID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -508,7 +645,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
-        return containerAsyncRawClient.releaseLease(leaseID, null, null);
+        return this.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -523,7 +660,7 @@ public final class ContainerAsyncClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -536,7 +673,16 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions, context);
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "ETag access conditions are not supported for this API.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().releaseLeaseWithRestResponseAsync(
+            null, leaseID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -551,7 +697,7 @@ public final class ContainerAsyncClient {
      * @return Emits the successful response.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease() {
-        return containerAsyncRawClient.breakLease(null, null, null);
+        return this.breakLease(null, null, null);
     }
 
     /**
@@ -565,7 +711,7 @@ public final class ContainerAsyncClient {
      *         available before the break period has expired, but the lease may be held for longer than the break period.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -582,7 +728,17 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "ETag access conditions are not supported for this API.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().breakLeaseWithRestResponseAsync(null,
+            null, breakPeriodInSeconds, null, modifiedAccessConditions, context));
+
     }
 
     /**
@@ -601,7 +757,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, null, null);
+        return this.changeLease(leaseID, proposedID, null, null);
     }
 
     /**
@@ -618,7 +774,7 @@ public final class ContainerAsyncClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -631,7 +787,16 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, modifiedAccessConditions, context);
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new UnsupportedOperationException(
+                    "ETag access conditions are not supported for this API.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.containers().changeLeaseWithRestResponseAsync(null,
+            leaseID, proposedID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -656,7 +821,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, null);
+        return this.listBlobsFlatSegment(marker, options, null);
     }
 
     /**
@@ -674,7 +839,7 @@ public final class ContainerAsyncClient {
      *         {@link ListBlobsOptions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -688,7 +853,13 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
             Context context) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, context);
+        options = options == null ? new ListBlobsOptions() : options;
+        context = context == null ? Context.NONE : context;
+
+        // TODO : include parameter do I need to cast?
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .listBlobFlatSegmentWithRestResponseAsync(null, options.prefix(), marker,
+                    options.maxResults(), options.details().toList(), null, null, context));
     }
 
     /**
@@ -718,7 +889,7 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, null);
+        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
     }
 
     /**
@@ -740,7 +911,7 @@ public final class ContainerAsyncClient {
      *         {@link ListBlobsOptions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -754,7 +925,17 @@ public final class ContainerAsyncClient {
      */
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options, Context context) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, context);
+        options = options == null ? new ListBlobsOptions() : options;
+        if (options.details().snapshots()) {
+            throw new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        //TODO: does this require the include parameter
+
+        return postProcessResponse(this.azureBlobStorage.containers()
+                .listBlobHierarchySegmentWithRestResponseAsync(null, delimiter, options.prefix(), marker,
+                    options.maxResults(), options.details().toList(), null, null, context));
     }
 
     /**
@@ -768,7 +949,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersGetAccountInfoResponse> getAccountInfo() {
-        return containerAsyncRawClient.getAccountInfo(null);
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -777,7 +958,7 @@ public final class ContainerAsyncClient {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
@@ -789,6 +970,9 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersGetAccountInfoResponse> getAccountInfo(Context context) {
-        return containerAsyncRawClient.getAccountInfo(context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(
+                this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context));
     }
 }

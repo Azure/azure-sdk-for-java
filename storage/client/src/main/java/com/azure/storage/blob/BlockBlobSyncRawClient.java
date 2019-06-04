@@ -22,7 +22,7 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
+public final class BlockBlobSyncRawClient extends BlobAsyncRawClient {
 
     BlockBlobAsyncRawClient blockBlobAsyncRawClient;
     /**
@@ -50,9 +50,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    BlockBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+    BlockBlobSyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
-        blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorage);
+        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorage);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -179,7 +179,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -191,7 +191,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlockBlobsStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-            LeaseAccessConditions leaseAccessConditions, Context context) {
+                                                         LeaseAccessConditions leaseAccessConditions, Context context) {
         return blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
     }
 
@@ -246,7 +246,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         {@link SourceModifiedAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -282,7 +282,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
     }
 
     /**
-     *
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
@@ -294,7 +293,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -355,7 +354,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.

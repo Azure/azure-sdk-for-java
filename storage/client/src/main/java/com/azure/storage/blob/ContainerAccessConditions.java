@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
 
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions

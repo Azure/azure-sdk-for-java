@@ -3,16 +3,28 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
+import com.azure.storage.blob.models.BlobsBreakLeaseResponse;
+import com.azure.storage.blob.models.BlobsChangeLeaseResponse;
+import com.azure.storage.blob.models.BlobsCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsGetAccountInfoResponse;
+import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobsReleaseLeaseResponse;
+import com.azure.storage.blob.models.BlobsRenewLeaseResponse;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
@@ -22,9 +34,9 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * instead a convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
-public class BlobAsyncClient {
+public class BlobAsyncRawClient {
 
-    BlobAsyncRawClient blobAsyncRawClient;
+    protected AzureBlobStorageImpl azureBlobStorage;
 
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
@@ -36,8 +48,8 @@ public class BlobAsyncClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
+    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**
@@ -55,7 +67,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
-        return blobAsyncRawClient.startCopyFromURL(sourceURL, null, null, null, null);
+        return this.startCopyFromURL(sourceURL, null, null, null, null);
     }
 
     /**
@@ -89,7 +101,22 @@ public class BlobAsyncClient {
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
                                                                  ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                                                                  Context context) {
-        return blobAsyncRawClient.startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+            ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        context = context == null ? Context.NONE : context;
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+            .sourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
+            .sourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
+            .sourceIfMatch(sourceModifiedAccessConditions.ifMatch())
+            .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+
+        return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
+            null, null,  sourceURL, null, metadata, null, sourceConditions,
+            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context));
     }
 
     /**
@@ -107,7 +134,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> abortCopyFromURL(String copyId) {
-        return blobAsyncRawClient.abortCopyFromURL(copyId, null, null);
+        return this.abortCopyFromURL(copyId, null, null);
     }
 
     /**
@@ -135,7 +162,10 @@ public class BlobAsyncClient {
      */
     public Mono<Void> abortCopyFromURL(String copyId,
                                                                  LeaseAccessConditions leaseAccessConditions, Context context) {
-        return blobAsyncRawClient.abortCopyFromURL(copyId, leaseAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
+            null, null, copyId, null, null, leaseAccessConditions, context));
     }
 
     /**
@@ -152,7 +182,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource) {
-        return blobAsyncRawClient.syncCopyFromURL(copySource, null, null, null, null);
+        return this.syncCopyFromURL(copySource, null, null, null, null);
     }
 
     /**
@@ -186,7 +216,22 @@ public class BlobAsyncClient {
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource, Metadata metadata,
                                                            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                                                            Context context) {
-        return blobAsyncRawClient.syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+            ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        context = context == null ? Context.NONE : context;
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+            .sourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
+            .sourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
+            .sourceIfMatch(sourceModifiedAccessConditions.ifMatch())
+            .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+
+        return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
+            null, null, copySource, null, metadata, null, sourceConditions,
+            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context));
     }
 
     /**
@@ -202,7 +247,7 @@ public class BlobAsyncClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Flux<DownloadResponse> download() {
-        return blobAsyncRawClient.download(null, null, false, null);
+        return this.download(null, null, false, null);
     }
 
     /**
@@ -233,7 +278,33 @@ public class BlobAsyncClient {
      */
     public Flux<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
-        return blobAsyncRawClient.download(range, accessConditions, rangeGetContentMD5, context);
+        Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
+        range = range == null ? new BlobRange() : range;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        HTTPGetterInfo info = new HTTPGetterInfo()
+            .withOffset(range.offset())
+            .withCount(range.count())
+            .withETag(accessConditions.modifiedAccessConditions().ifMatch());
+
+        // TODO: range is BlobRange but expected as String
+        // TODO: figure out correct response
+        return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
+            null, null, null, null, null, range.toHeaderValue(), getMD5,
+            null, null, null, null,
+            accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), context))
+            // Convert the autorest response to a DownloadResponse, which enable reliable download.
+            .map(response -> {
+                // If there wasn't an etag originally specified, lock on the one returned.
+                info.withETag(response.headers().eTag());
+                return new DownloadResponse(response, info,
+                    // In the event of a stream failure, make a new request to pick up where we left off.
+                    newInfo ->
+                        this.download(new BlobRange().withOffset(newInfo.offset())
+                                .withCount(newInfo.count()),
+                            new BlobAccessConditions().withModifiedAccessConditions(
+                                new ModifiedAccessConditions().ifMatch(info.eTag())), false,
+                            context == null ? Context.NONE : context));
+            });
     }
 
     /**
@@ -246,7 +317,7 @@ public class BlobAsyncClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete() {
-        return blobAsyncRawClient.delete(null, null, null);
+        return this.delete(null, null, null);
     }
 
     /**
@@ -274,7 +345,13 @@ public class BlobAsyncClient {
      */
     public Mono<Void> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
                                              BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.delete(deleteBlobSnapshotOptions, accessConditions, context);
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
+            null, null, null, null, null, deleteBlobSnapshotOptions,
+            null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
+            context));
     }
 
     /**
@@ -288,7 +365,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetPropertiesResponse> getProperties() {
-        return blobAsyncRawClient.getProperties(null, null);
+        return this.getProperties(null, null);
     }
 
     /**
@@ -310,7 +387,13 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.getProperties(accessConditions, context);
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
+            null, null, null, null, null, null,
+            null, null, null, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -327,7 +410,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return blobAsyncRawClient.setHTTPHeaders(headers, null, null);
+        return this.setHTTPHeaders(headers, null, null);
     }
 
     /**
@@ -352,7 +435,12 @@ public class BlobAsyncClient {
      */
     public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers,
                                                              BlobAccessConditions accessConditions, Context context) {
-        return blobAsyncRawClient.setHTTPHeaders(headers, accessConditions, context);
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
+            null, null, null, null, headers,
+            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -368,7 +456,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setMetadata(Metadata metadata) {
-        return blobAsyncRawClient.setMetadata(metadata, null, null);
+        return this.setMetadata(metadata, null, null);
     }
 
     /**
@@ -393,7 +481,14 @@ public class BlobAsyncClient {
      */
     public Mono<Void> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
                                                        Context context) {
-        return blobAsyncRawClient.setMetadata(metadata, accessConditions, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
+            null, null, null, metadata, null, null,
+            null, null, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), context));
     }
 
     /**
@@ -406,7 +501,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<String> createSnapshot() {
-        return blobAsyncRawClient.createSnapshot(null, null, null);
+        return this.createSnapshot(null, null, null);
     }
 
     /**
@@ -431,7 +526,14 @@ public class BlobAsyncClient {
      */
     public Mono<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
                                                              Context context) {
-        return blobAsyncRawClient.createSnapshot(metadata, accessConditions, context);
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
+            null, null, null, metadata, null, null,
+            null, null, accessConditions.modifiedAccessConditions(),
+            accessConditions.leaseAccessConditions(), context));
     }
 
     /**
@@ -451,7 +553,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setTier(AccessTier tier) {
-        return blobAsyncRawClient.setTier(tier, null, null);
+        return this.setTier(tier, null, null);
     }
 
     /**
@@ -481,7 +583,11 @@ public class BlobAsyncClient {
      */
     public Mono<Void> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
                                                Context context) {
-        return blobAsyncRawClient.setTier(tier, leaseAccessConditions, context);
+        Utility.assertNotNull("tier", tier);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
+            null, null, tier, null, null, leaseAccessConditions, context));
     }
 
     /**
@@ -516,7 +622,10 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> undelete(Context context) {
-        return blobAsyncRawClient.undelete(context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,
+            null, context));
     }
 
     /**
@@ -536,7 +645,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return blobAsyncRawClient.acquireLease(proposedId, duration, null, null);
+        return this.acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -567,7 +676,16 @@ public class BlobAsyncClient {
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedID, int duration,
                                                          ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
+        if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
+            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
+        }
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(
+            null, null, null, duration, proposedID, null,
+            modifiedAccessConditions, context));
     }
 
     /**
@@ -583,7 +701,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID) {
-        return blobAsyncRawClient.renewLease(leaseID, null, null);
+        return this.renewLease(leaseID, null, null);
     }
 
     /**
@@ -610,7 +728,10 @@ public class BlobAsyncClient {
      */
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
                                                      Context context) {
-        return blobAsyncRawClient.renewLease(leaseID, modifiedAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().renewLeaseWithRestResponseAsync(null,
+            null, leaseID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -626,7 +747,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID) {
-        return blobAsyncRawClient.releaseLease(leaseID, null, null);
+        return this.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -653,7 +774,10 @@ public class BlobAsyncClient {
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID,
                                                          ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().releaseLeaseWithRestResponseAsync(null,
+            null, leaseID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -669,7 +793,7 @@ public class BlobAsyncClient {
      *      Emits the successful response.
      */
     public Mono<BlobsBreakLeaseResponse> breakLease() {
-        return blobAsyncRawClient.breakLease(null, null, null);
+        return this.breakLease(null, null, null);
     }
 
     /**
@@ -702,7 +826,10 @@ public class BlobAsyncClient {
      */
     public Mono<BlobsBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
                                                      ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().breakLeaseWithRestResponseAsync(null,
+            null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -720,7 +847,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
-        return blobAsyncRawClient.changeLease(leaseId, proposedID, null, null);
+        return this.changeLease(leaseId, proposedID, null, null);
     }
 
     /**
@@ -749,7 +876,10 @@ public class BlobAsyncClient {
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID,
                                                        ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return blobAsyncRawClient.changeLease(leaseId, proposedID, modifiedAccessConditions, context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.azureBlobStorage.blobs().changeLeaseWithRestResponseAsync(null,
+            null, leaseId, proposedID, null, null, modifiedAccessConditions, context));
     }
 
     /**
@@ -762,7 +892,7 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetAccountInfoResponse> getAccountInfo() {
-        return blobAsyncRawClient.getAccountInfo(null);
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -782,6 +912,9 @@ public class BlobAsyncClient {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetAccountInfoResponse> getAccountInfo(Context context) {
-        return blobAsyncRawClient.getAccountInfo(context);
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(
+            this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null, context));
     }
 }
