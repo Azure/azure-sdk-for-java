@@ -117,7 +117,7 @@ import java.io.IOException;
  */
 public final class Azure {
     private com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager computeManager20170330;
-    private com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager computeManager201712011;
+    private com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager computeManager20171201;
     private com.microsoft.azure.management.resources.v2018_05_01.implementation.ResourcesManager resourceManager20180501;
     private com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager authorizationManager20161201;
     private com.microsoft.azure.management.monitor.v2018_01_01.implementation.MonitorManager monitorManager20180101;
@@ -365,66 +365,66 @@ public final class Azure {
      * @return Entry point to manage AvailabilitySets.
      */
     public AvailabilitySets availabilitySets() {
-        return this.computeManager201712011.availabilitySets();
+        return this.computeManager20171201.availabilitySets();
     }
 
     /**
      * @return Entry point to manage compute LogAnalytics.
      */
-    public LogAnalytics computeLogAnalytics() { return this.computeManager201712011.logAnalytics(); }
+    public LogAnalytics computeLogAnalytics() { return this.computeManager20171201.logAnalytics(); }
 
     /**
      * @return Entry point to manage computer operations.
      */
-    public com.microsoft.azure.management.compute.v2017_12_01.Operations computerOperations() { return this.computeManager201712011.operations(); }
+    public com.microsoft.azure.management.compute.v2017_12_01.Operations computerOperations() { return this.computeManager20171201.operations(); }
 
     /**
      * @return Entry point to manage VirtualMachineExtensionImages.
      */
     public VirtualMachineExtensionImages virtualMachineExtensionImages() {
-        return this.computeManager201712011.virtualMachineExtensionImages();
+        return this.computeManager20171201.virtualMachineExtensionImages();
     }
 
     /**
      * @return Entry point to manage VirtualMachineExtensions.
      */
     public VirtualMachineExtensions virtualMachineExtensions() {
-        return this.computeManager201712011.virtualMachineExtensions();
+        return this.computeManager20171201.virtualMachineExtensions();
     }
 
     /**
      * @return Entry point to manage VirtualMachines.
      */
     public VirtualMachines virtualMachines() {
-        return this.computeManager201712011.virtualMachines();
+        return this.computeManager20171201.virtualMachines();
     }
 
     /**
      * @return Entry point to manage VirtualMachineImages.
      */
     public VirtualMachineImages virtualMachineImages() {
-        return this.computeManager201712011.virtualMachineImages();
+        return this.computeManager20171201.virtualMachineImages();
     }
 
     /**
      * @return Entry point to manage Usages.
      */
     public Usages ComputeUsages() {
-        return this.computeManager201712011.usages();
+        return this.computeManager20171201.usages();
     }
 
     /**
      * @return Entry point to manage VirtualMachineSizes.
      */
     public VirtualMachineSizes virtualMachineSizes() {
-        return this.computeManager201712011.virtualMachineSizes();
+        return this.computeManager20171201.virtualMachineSizes();
     }
 
     /**
      * @return Entry point to manage Images.
      */
     public Images images() {
-        return this.computeManager201712011.images();
+        return this.computeManager20171201.images();
     }
 
     /**
@@ -438,28 +438,28 @@ public final class Azure {
      * @return Entry point to manage VirtualMachineScaleSets.
      */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
-        return this.computeManager201712011.virtualMachineScaleSets();
+        return this.computeManager20171201.virtualMachineScaleSets();
     }
 
     /**
      * @return Entry point to manage VirtualMachineScaleSetExtensions.
      */
     public VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions() {
-        return this.computeManager201712011.virtualMachineScaleSetExtensions();
+        return this.computeManager20171201.virtualMachineScaleSetExtensions();
     }
 
     /**
      * @return Entry point to manage VirtualMachineScaleSetRollingUpgrades.
      */
     public VirtualMachineScaleSetRollingUpgrades virtualMachineScaleSetRollingUpgrades() {
-        return this.computeManager201712011.virtualMachineScaleSetRollingUpgrades();
+        return this.computeManager20171201.virtualMachineScaleSetRollingUpgrades();
     }
 
     /**
      * @return Entry point to manage VirtualMachineScaleSetVMs.
      */
     public VirtualMachineScaleSetVMs virtualMachineScaleSetVMs() {
-        return this.computeManager201712011.virtualMachineScaleSetVMs();
+        return this.computeManager20171201.virtualMachineScaleSetVMs();
     }
 
     /**
@@ -480,7 +480,7 @@ public final class Azure {
      * @return Entry point to manage VirtualMachineRunCommands.
      */
     public VirtualMachineRunCommands virtualMachineRunCommands() {
-        return this.computeManager201712011.virtualMachineRunCommands();
+        return this.computeManager20171201.virtualMachineRunCommands();
     }
 
     /**
@@ -836,17 +836,16 @@ public final class Azure {
     public Skus storageSkus() { return this.storageManager20171001.skus(); }
 
     /**
-     * @return Entry point to manage KeyVault Operations.
-     */
-    public com.microsoft.azure.management.keyvault.v2016_10_01.Operations keyVaultOperations() { return this.keyVaultManager20161001.operations(); }
-
-    /**
      * @return Entry point to manage BillingMeters.
      */
     public BillingMeters billingMeters() {
         return this.appServiceManager20160301.billingMeters();
     }
 
+    /**
+     * @return Entry point to manage AppServicePlans.
+     */
+    public com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans appServicePlans() { return this.appServiceManager20160901.appServicePlans(); }
 
     /**
      * @return Entry point to manage AppServiceEnvironments.
@@ -860,10 +859,6 @@ public final class Azure {
      */
     public AppServiceCertificateOrders appServiceCertificateOrders() { return this.appServiceManager20180201.appServiceCertificateOrders(); }
 
-    /**
-     * @return Entry point to manage AppServicePlans.
-     */
-    public com.microsoft.azure.management.appservice.v2018_02_01.AppServicePlans appServicePlans() { return this.appServiceManager20180201.appServicePlans(); }
 
     /**
      * @return Entry point to manage CertificateRegistrationProviders.
@@ -927,6 +922,11 @@ public final class Azure {
         return this.keyVaultManager20161001.vaults();
     }
 
+    /**
+     * @return Entry point to manage KeyVault Operations.
+     */
+    public com.microsoft.azure.management.keyvault.v2016_10_01.Operations keyVaultOperations() { return this.keyVaultManager20161001.operations(); }
+
 
     /**
      * The implementation for Configurable interface.
@@ -939,7 +939,7 @@ public final class Azure {
 
     private Azure(RestClient restClient, String subscriptionId, Authenticated authenticated) {
         this.computeManager20170330 = com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager.authenticate(restClient, subscriptionId);
-        this.computeManager201712011 = com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager.authenticate(restClient, subscriptionId);
+        this.computeManager20171201 = com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager.authenticate(restClient, subscriptionId);
         this.resourceManager20180501 = com.microsoft.azure.management.resources.v2018_05_01.implementation.ResourcesManager.authenticate(restClient, subscriptionId);
         this.authorizationManager20161201 = com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager.authenticate(restClient, subscriptionId);
         this.locksManager20160901 = com.microsoft.azure.management.locks.v2016_09_01.implementation.LocksManager.authenticate(restClient, subscriptionId);
