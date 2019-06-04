@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob;
 
@@ -65,6 +53,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 this.scenarioData = APISpec.getRandomData(1024);
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid downlaod resource test scenario.");
         }
     }
 
@@ -97,8 +87,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.offset() != (this.tryNumber - 1) * 256 ||
-                            this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                    if (this.info.offset() != (this.tryNumber - 1) * 256
+                            || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                         s.onError(new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
@@ -109,8 +99,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                     s.onError(new IOException());
                     break;
                 }
-                if (this.info.offset() != (this.tryNumber - 1) * 256 ||
-                        this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                if (this.info.offset() != (this.tryNumber - 1) * 256
+                        || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                     s.onError(new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
@@ -157,6 +147,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                         // All calls to getter checked. Exit. This test does not check for data.
                         s.onComplete();
                         break;
+                    default:
+                        throw new IllegalArgumentException("Invalid try number.");
                 }
                 break;
 

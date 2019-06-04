@@ -82,6 +82,13 @@ public class StreamingLocatorInner extends ProxyResource {
     private String alternativeMediaId;
 
     /**
+     * A list of asset or account filters which apply to this streaming
+     * locator.
+     */
+    @JsonProperty(value = "properties.filters")
+    private List<String> filters;
+
+    /**
      * Get asset Name.
      *
      * @return the assetName value
@@ -247,6 +254,26 @@ public class StreamingLocatorInner extends ProxyResource {
      */
     public StreamingLocatorInner withAlternativeMediaId(String alternativeMediaId) {
         this.alternativeMediaId = alternativeMediaId;
+        return this;
+    }
+
+    /**
+     * Get a list of asset or account filters which apply to this streaming locator.
+     *
+     * @return the filters value
+     */
+    public List<String> filters() {
+        return this.filters;
+    }
+
+    /**
+     * Set a list of asset or account filters which apply to this streaming locator.
+     *
+     * @param filters the filters value to set
+     * @return the StreamingLocatorInner object itself.
+     */
+    public StreamingLocatorInner withFilters(List<String> filters) {
+        this.filters = filters;
         return this;
     }
 

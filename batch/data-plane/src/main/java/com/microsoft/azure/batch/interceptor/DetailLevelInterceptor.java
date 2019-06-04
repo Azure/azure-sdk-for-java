@@ -4,6 +4,7 @@
 package com.microsoft.azure.batch.interceptor;
 
 import com.microsoft.azure.batch.DetailLevel;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,43 +23,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
      */
     public DetailLevelInterceptor(final DetailLevel detailLevel) {
         this.detailLevel = detailLevel;
-        this.withHandler(new BatchRequestInterceptHandler() {
-            @Override
-            public void modify(Object request) {
-                if (detailLevel != null) {
-                    Class<?> c = request.getClass();
-                    try {
-                        Method selectMethod = c.getMethod("withSelect", String.class);
-                        if (selectMethod != null) {
-                            selectMethod.invoke(request, detailLevel.selectClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                        // Ignore exception
-                    }
-
-                    try {
-                        Method filterMethod = c.getMethod("withFilter", String.class);
-                        if (filterMethod != null) {
-                            filterMethod.invoke(request, detailLevel.filterClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                        // Ignore exception
-                    }
-
-                    try {
-                        Method expandMethod = c.getMethod("withExpand", String.class);
-                        if (expandMethod != null) {
-                            expandMethod.invoke(request, detailLevel.expandClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                        // Ignore exception
-                    }
-                }
-            }
-        });
+        this.withHandler(new RequestHandler(detailLevel));
     }
 
     /**
@@ -68,5 +33,40 @@ public class DetailLevelInterceptor extends RequestInterceptor {
      */
     public DetailLevel detailLevel() {
         return this.detailLevel;
+    }
+
+    private static class RequestHandler implements BatchRequestInterceptHandler {
+        private final DetailLevel detailLevel;
+
+        RequestHandler(DetailLevel level) {
+            this.detailLevel = level;
+        }
+
+        @Override
+        public void modify(Object request) {
+            if (detailLevel != null) {
+                Class<?> c = request.getClass();
+                try {
+                    Method selectMethod = c.getMethod("withSelect", String.class);
+                    selectMethod.invoke(request, detailLevel.selectClause());
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
+                }
+
+                try {
+                    Method filterMethod = c.getMethod("withFilter", String.class);
+                    filterMethod.invoke(request, detailLevel.filterClause());
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
+                }
+
+                try {
+                    Method expandMethod = c.getMethod("withExpand", String.class);
+                    expandMethod.invoke(request, detailLevel.expandClause());
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
+                }
+            }
+        }
     }
 }

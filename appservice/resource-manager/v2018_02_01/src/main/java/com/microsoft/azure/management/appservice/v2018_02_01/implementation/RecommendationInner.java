@@ -103,8 +103,8 @@ public class RecommendationInner extends ProxyOnlyResource {
     private Integer enabled;
 
     /**
-     * The list of states of this recommendation. If it's null then it shoud be
-     * considered "Active".
+     * The list of states of this recommendation. If it's null then it should
+     * be considered "Active".
      */
     @JsonProperty(value = "properties.states")
     private List<String> states;
@@ -401,7 +401,7 @@ public class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the list of states of this recommendation. If it's null then it shoud be considered "Active".
+     * Get the list of states of this recommendation. If it's null then it should be considered "Active".
      *
      * @return the states value
      */
@@ -410,7 +410,7 @@ public class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the list of states of this recommendation. If it's null then it shoud be considered "Active".
+     * Set the list of states of this recommendation. If it's null then it should be considered "Active".
      *
      * @param states the states value to set
      * @return the RecommendationInner object itself.

@@ -22,7 +22,7 @@ public class StreamingPolicyContentKeys {
     private DefaultKey defaultKey;
 
     /**
-     * Representing tracks needs sepearete content key.
+     * Representing tracks needs separate content key.
      */
     @JsonProperty(value = "keyToTrackMappings")
     private List<StreamingPolicyContentKey> keyToTrackMappings;
@@ -48,7 +48,7 @@ public class StreamingPolicyContentKeys {
     }
 
     /**
-     * Get representing tracks needs sepearete content key.
+     * Get representing tracks needs separate content key.
      *
      * @return the keyToTrackMappings value
      */
@@ -57,7 +57,7 @@ public class StreamingPolicyContentKeys {
     }
 
     /**
-     * Set representing tracks needs sepearete content key.
+     * Set representing tracks needs separate content key.
      *
      * @param keyToTrackMappings the keyToTrackMappings value to set
      * @return the StreamingPolicyContentKeys object itself.

@@ -4,7 +4,40 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.ApplicationPackageReference;
+import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CertificateReference;
+import com.microsoft.azure.batch.protocol.models.CloudPool;
+import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
+import com.microsoft.azure.batch.protocol.models.ComputeNode;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocationOption;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.NodeRemoveParameter;
+import com.microsoft.azure.batch.protocol.models.PoolAddOptions;
+import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
+import com.microsoft.azure.batch.protocol.models.PoolDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.PoolDisableAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleParameter;
+import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolPatchOptions;
+import com.microsoft.azure.batch.protocol.models.PoolPatchParameter;
+import com.microsoft.azure.batch.protocol.models.PoolRemoveNodesOptions;
+import com.microsoft.azure.batch.protocol.models.PoolResizeOptions;
+import com.microsoft.azure.batch.protocol.models.PoolResizeParameter;
+import com.microsoft.azure.batch.protocol.models.PoolStatistics;
+import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
+import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesOptions;
+import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesParameter;
+import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
+import com.microsoft.azure.batch.protocol.models.StartTask;
+import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
@@ -18,15 +51,15 @@ import java.util.List;
  */
 public class PoolOperations implements IInheritedBehaviors {
     PoolOperations(BatchClient batchClient, Collection<BatchClientBehavior> customBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
     }
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch
@@ -36,7 +69,7 @@ public class PoolOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -49,7 +82,7 @@ public class PoolOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -114,7 +147,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().list(options);
+        return this.parentBatchClient.protocolLayer().pools().list(options);
     }
 
     /**
@@ -186,7 +219,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().get(poolId, options);
+        return this.parentBatchClient.protocolLayer().pools().get(poolId, options);
     }
 
     /**
@@ -228,7 +261,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().pools().delete(poolId, options);
+        this.parentBatchClient.protocolLayer().pools().delete(poolId, options);
     }
 
     /**
@@ -253,7 +286,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *             Batch service.
      */
     public void createPool(String poolId, String virtualMachineSize,
-            CloudServiceConfiguration cloudServiceConfiguration, int targetDedicatedNodes)
+                           CloudServiceConfiguration cloudServiceConfiguration, int targetDedicatedNodes)
             throws BatchErrorException, IOException {
         createPool(poolId, virtualMachineSize, cloudServiceConfiguration, targetDedicatedNodes, 0, null);
     }
@@ -346,7 +379,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *             Batch service.
      */
     public void createPool(String poolId, String virtualMachineSize,
-            VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicatedNodes)
+                           VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicatedNodes)
             throws BatchErrorException, IOException {
         createPool(poolId, virtualMachineSize, virtualMachineConfiguration, targetDedicatedNodes, 0, null);
     }
@@ -458,7 +491,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().pools().add(pool, options);
+        this.parentBatchClient.protocolLayer().pools().add(pool, options);
     }
 
     /**
@@ -577,7 +610,7 @@ public class PoolOperations implements IInheritedBehaviors {
                 .withNodeDeallocationOption(deallocationOption).withTargetDedicatedNodes(targetDedicatedNodes)
                 .withTargetLowPriorityNodes(targetLowPriorityNodes);
 
-        this._parentBatchClient.protocolLayer().pools().resize(poolId, param, options);
+        this.parentBatchClient.protocolLayer().pools().resize(poolId, param, options);
     }
 
     /**
@@ -619,7 +652,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().pools().stopResize(poolId, options);
+        this.parentBatchClient.protocolLayer().pools().stopResize(poolId, options);
     }
 
     /**
@@ -709,7 +742,7 @@ public class PoolOperations implements IInheritedBehaviors {
         PoolEnableAutoScaleParameter param = new PoolEnableAutoScaleParameter().withAutoScaleFormula(autoScaleFormula)
                 .withAutoScaleEvaluationInterval(autoScaleEvaluationInterval);
 
-        this._parentBatchClient.protocolLayer().pools().enableAutoScale(poolId, param, options);
+        this.parentBatchClient.protocolLayer().pools().enableAutoScale(poolId, param, options);
     }
 
     /**
@@ -751,7 +784,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().pools().disableAutoScale(poolId, options);
+        this.parentBatchClient.protocolLayer().pools().disableAutoScale(poolId, options);
     }
 
     /**
@@ -799,12 +832,12 @@ public class PoolOperations implements IInheritedBehaviors {
      *             Batch service.
      */
     public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula,
-            Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+                                          Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolEvaluateAutoScaleOptions options = new PoolEvaluateAutoScaleOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
+        return this.parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
     }
 
     /**
@@ -986,7 +1019,7 @@ public class PoolOperations implements IInheritedBehaviors {
         NodeRemoveParameter param = new NodeRemoveParameter().withNodeList(computeNodeIds)
                 .withNodeDeallocationOption(deallocationOption).withResizeTimeout(resizeTimeout);
 
-        this._parentBatchClient.protocolLayer().pools().removeNodes(poolId, param, options);
+        this.parentBatchClient.protocolLayer().pools().removeNodes(poolId, param, options);
     }
 
     /**
@@ -1031,7 +1064,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().exists(poolId, options);
+        return this.parentBatchClient.protocolLayer().pools().exists(poolId, options);
     }
 
     /**
@@ -1065,8 +1098,8 @@ public class PoolOperations implements IInheritedBehaviors {
      *             Batch service.
      */
     public void updatePoolProperties(String poolId, StartTask startTask,
-            Collection<CertificateReference> certificateReferences,
-            Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata)
+                                     Collection<CertificateReference> certificateReferences,
+                                     Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata)
             throws BatchErrorException, IOException {
         updatePoolProperties(poolId, startTask, certificateReferences, applicationPackageReferences, metadata, null);
     }
@@ -1121,7 +1154,7 @@ public class PoolOperations implements IInheritedBehaviors {
                         : new LinkedList<>(certificateReferences))
                 .withStartTask(startTask);
 
-        this._parentBatchClient.protocolLayer().pools().updateProperties(poolId, param, options);
+        this.parentBatchClient.protocolLayer().pools().updateProperties(poolId, param, options);
     }
 
     /**
@@ -1207,7 +1240,7 @@ public class PoolOperations implements IInheritedBehaviors {
             param.withCertificateReferences(new LinkedList<>(certificateReferences));
         }
 
-        this._parentBatchClient.protocolLayer().pools().patch(poolId, param, options);
+        this.parentBatchClient.protocolLayer().pools().patch(poolId, param, options);
     }
 
     /**
@@ -1286,7 +1319,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().listUsageMetrics(options);
+        return this.parentBatchClient.protocolLayer().pools().listUsageMetrics(options);
     }
 
     /**
@@ -1330,6 +1363,6 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().pools().getAllLifetimeStatistics(options);
+        return this.parentBatchClient.protocolLayer().pools().getAllLifetimeStatistics(options);
     }
 }

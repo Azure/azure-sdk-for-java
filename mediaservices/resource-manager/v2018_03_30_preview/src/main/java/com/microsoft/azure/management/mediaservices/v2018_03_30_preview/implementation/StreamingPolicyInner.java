@@ -53,7 +53,7 @@ public class StreamingPolicyInner extends ProxyResource {
     private CommonEncryptionCbcs commonEncryptionCbcs;
 
     /**
-     * Configuations of NoEncryption.
+     * Configuration of NoEncryption.
      */
     @JsonProperty(value = "properties.noEncryption")
     private NoEncryption noEncryption;
@@ -148,7 +148,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get configuations of NoEncryption.
+     * Get configuration of NoEncryption.
      *
      * @return the noEncryption value
      */
@@ -157,7 +157,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set configuations of NoEncryption.
+     * Set configuration of NoEncryption.
      *
      * @param noEncryption the noEncryption value to set
      * @return the StreamingPolicyInner object itself.

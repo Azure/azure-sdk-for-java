@@ -8,52 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for StreamingPolicyStreamingProtocol.
  */
-public enum StreamingPolicyStreamingProtocol {
-    /** HLS protocol. */
-    HLS("Hls"),
+public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum<StreamingPolicyStreamingProtocol> {
+    /** Static value Hls for StreamingPolicyStreamingProtocol. */
+    public static final StreamingPolicyStreamingProtocol HLS = fromString("Hls");
 
-    /** DASH protocol. */
-    DASH("Dash"),
+    /** Static value Dash for StreamingPolicyStreamingProtocol. */
+    public static final StreamingPolicyStreamingProtocol DASH = fromString("Dash");
 
-    /** SmoothStreaming protocol. */
-    SMOOTH_STREAMING("SmoothStreaming"),
+    /** Static value SmoothStreaming for StreamingPolicyStreamingProtocol. */
+    public static final StreamingPolicyStreamingProtocol SMOOTH_STREAMING = fromString("SmoothStreaming");
 
-    /** Download protocol. */
-    DOWNLOAD("Download");
+    /** Static value Download for StreamingPolicyStreamingProtocol. */
+    public static final StreamingPolicyStreamingProtocol DOWNLOAD = fromString("Download");
 
-    /** The actual serialized value for a StreamingPolicyStreamingProtocol instance. */
-    private String value;
-
-    StreamingPolicyStreamingProtocol(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StreamingPolicyStreamingProtocol from its string representation.
+     * @param name a name to look for
+     * @return the corresponding StreamingPolicyStreamingProtocol
+     */
+    @JsonCreator
+    public static StreamingPolicyStreamingProtocol fromString(String name) {
+        return fromString(name, StreamingPolicyStreamingProtocol.class);
     }
 
     /**
-     * Parses a serialized value to a StreamingPolicyStreamingProtocol instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StreamingPolicyStreamingProtocol object, or null if unable to parse.
+     * @return known StreamingPolicyStreamingProtocol values
      */
-    @JsonCreator
-    public static StreamingPolicyStreamingProtocol fromString(String value) {
-        StreamingPolicyStreamingProtocol[] items = StreamingPolicyStreamingProtocol.values();
-        for (StreamingPolicyStreamingProtocol item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StreamingPolicyStreamingProtocol> values() {
+        return values(StreamingPolicyStreamingProtocol.class);
     }
 }

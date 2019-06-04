@@ -11,9 +11,10 @@ package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementat
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Configurations;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterConfigurations;
+import rx.Completable;
 import java.util.Map;
 
 class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Configurations {
@@ -26,6 +27,18 @@ class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Con
 
     public HDInsightManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Observable<ClusterConfigurations> listAsync(String resourceGroupName, String clusterName) {
+        ConfigurationsInner client = this.inner();
+        return client.listAsync(resourceGroupName, clusterName)
+        .map(new Func1<ClusterConfigurationsInner, ClusterConfigurations>() {
+            @Override
+            public ClusterConfigurations call(ClusterConfigurationsInner inner) {
+                return new ClusterConfigurationsImpl(inner, manager());
+            }
+        });
     }
 
     @Override

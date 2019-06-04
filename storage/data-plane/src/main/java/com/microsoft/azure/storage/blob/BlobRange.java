@@ -1,17 +1,6 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import java.util.Locale;
@@ -22,11 +11,6 @@ import java.util.Locale;
  * of a new object. Passing null as a BlobRange value will default to the entire range of the blob.
  */
 public final class BlobRange {
-
-    /**
-     * An object which reflects the service's default range, which is the whole blob.
-     */
-    public static final BlobRange DEFAULT = new BlobRange();
 
     private long offset;
 
@@ -85,5 +69,18 @@ public final class BlobRange {
 
         return String.format(
                 Locale.ROOT, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
+    }
+
+    /*
+    In the case where the customer passes a null BlobRange, constructing the default of "0-" will fail on an empty blob.
+    By returning null as the header value, we elect not to set the header, which has the same effect, namely downloading
+    the whole blob, but it will not fail in the empty case.
+     */
+    String toHeaderValue() {
+        // The default values of a BlobRange
+        if (this.offset == 0 && this.count == null) {
+            return null;
+        }
+        return this.toString();
     }
 }

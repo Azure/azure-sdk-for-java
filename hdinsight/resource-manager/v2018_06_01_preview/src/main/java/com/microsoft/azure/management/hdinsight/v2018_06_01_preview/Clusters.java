@@ -35,6 +35,27 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
     Completable rotateDiskEncryptionKeyAsync(String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters);
 
     /**
+     * Gets the gateway settings for the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<GatewaySettings> getGatewaySettingsAsync(String resourceGroupName, String clusterName);
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable updateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters);
+
+    /**
      * Executes script actions on the specified HDInsight cluster.
      *
      * @param resourceGroupName The name of the resource group.

@@ -14,338 +14,338 @@ public final class BatchErrorCodeStrings {
      */
     public static final String AccountIsDisabled = "AccountIsDisabled";
 
-     /**
-      *  The account has reached its quota of active jobs and job schedules.
-      */
-     public static final String ActiveJobAndScheduleQuotaReached = "ActiveJobAndScheduleQuotaReached";
-
-     /**
-      * The specified application does not exist.
-      */
-     public static final String ApplicationNotFound  = "ApplicationNotFound";
-
-     /**
-      * An automatic scaling formula has a syntax error.
-      */
-     public static final String AutoScalingFormulaSyntaxError = "AutoScalingFormulaSyntaxError";
-
-     /**
-      * An automatic scaling formula is too long. The maximum length is 8192 characters.
-      */
-     public static final String AutoScaleFormulaTooLong = "AutoScaleFormulaTooLong";
-
-     /**
-      * Enable AutoScale requests for the same pool must be separated by at least 30 seconds.
-      */
-     public static final String AutoScaleTooManyRequestsToEnable = "TooManyEnableAutoScaleRequests";
-
-     /**
-      * A certificate operation was attempted which is not permitted when the certificate is in the process of being deleted.
-      */
-     public static final String CertificateBeingDeleted = "CertificateBeingDeleted";
-
-     /**
-      * The certificate you are attempting to add already exists.
-      */
-     public static final String CertificateExists = "CertificateExists";
-
-     /**
-      * The certificate on which an operation was attempted is not present in the Batch account.
-      */
-     public static final String CertificateNotFound = "CertificateNotFound";
-
-     /**
-      * A certificate operation was attempted which is not permitted when the certificate is active.
-      */
-     public static final String CertificateStateActive = "CertificateStateActive";
-
-     /**
-      * A certificate could not be deleted because it is still in use.
-      */
-     public static final String CertificateStateDeleteFailed = "CertificateDeleteFailed";
-
-     /**
-      * A node file requested from a task or compute node was not found.
-      */
-     public static final String FileNotFound = "FileNotFound";
-
-     /**
-      * One or more application package references could not be satisfied. This occurs if the application
-      * ID or version does not exist or is not active, or if the reference did not specify a version and
-      * there is no default version configured.
-      */
-     public static final String InvalidApplicationPackageReferences = "InvalidApplicationPackageReferences";
-
-     /**
-      * A pool specification specifies one or more invalid certificates (for example, certificates that are
-      * not present in the Batch account).
-      */
-     public static final String InvalidCertificateReferences = "InvalidCertificateReferences";
-
-     /**
-      * A value in a job or task constraint is out of range.
-      */
-     public static final String InvalidConstraintValue = "InvalidConstraintValue";
-
-     /**
-      * There is a conflict between the REST API being used and the account.
-      */
-     public static final String InvalidRestAPIForAccountSetting = "InvalidRestAPIForAccountSetting";
-
-     /**
-      * A job operation was attempted which is not permitted when the job is in the process of being deleted.
-      */
-     public static final String JobBeingDeleted = "JobBeingDeleted";
-
-     /**
-      * A job operation was attempted which is not permitted when the job is in the process of being terminated.
-      */
-     public static final String JobBeingTerminated = "JobBeingTerminated";
-
-     /**
-      * A job operation was attempted which is not permitted when the job has been completed.
-      */
-     public static final String JobCompleted = "JobCompleted";
-
-     /**
-      * A job operation was attempted which is not permitted when the job is not active.
-      */
-     public static final String JobNotActive = "JobNotActive";
-
-     /**
-      * The specified job exists.
-      */
-     public static final String JobExists = "JobExists";
-
-     /**
-      * A Job Preparation task was not run on a compute node.
-      */
-     public static final String JobPreparationTaskNotRunOnNode = "JobPreparationTaskNotRunOnNode";
-
-     /**
-      * The specified job does not have a Job Preparation task.
-      */
-     public static final String JobPreparationTaskNotSpecified = "JobPreparationTaskNotSpecified";
-
-     /**
-      * A Job Release task was not run on a compute node.
-      */
-     public static final String JobReleaseTaskNotRunOnNode = "JobReleaseTaskNotRunOnNode";
-
-     /**
-      * The specified job does not have a Job Release task.
-      */
-     public static final String JobReleaseTaskNotSpecified = "JobReleaseTaskNotSpecified";
-
-     /**
-      * The job on which an operation was attempted is not present in the Batch account.
-      */
-     public static final String JobNotFound = "JobNotFound";
-
-     /**
-      * An I/O error occurred while trying to access a resource within the Batch account.
-      */
-     public static final String IOError = "IOError";
-
-     /**
-      * The specified operation is not valid for the current state of the resource.
-      */
-     public static final String OperationInvalidForCurrentState = "OperationInvalidForCurrentState";
-
-     /**
-      * The specified Azure Guest OS version is disabled.
-      */
-     public static final String OSVersionDisabled = "OSVersionDisabled";
-
-     /**
-      * The specified Azure Guest OS version is expired.
-      */
-     public static final String OSVersionExpired = "OSVersionExpired";
-
-     /**
-      * The specified Azure Guest OS version was not found.
-      */
-     public static final String OSVersionNotFound = "OSVersionNotFound";
-
-     /**
-      * A job priority was specified which was outside the permitted range of -1000 to 1000.
-      */
-     public static final String OutOfRangePriority = "OutOfRangePriority";
-
-     /**
-      * A file path was not found on a compute node.
-      */
-     public static final String PathNotFound = "PathNotFound";
-
-     /**
-      * A pool operation was attempted which is not permitted when the pool is in the process of being deleted.
-      */
-     public static final String PoolBeingDeleted = "PoolBeingDeleted";
-
-     /**
-      * A pool operation was attempted which is not permitted when the pool is in the process of being resized.
-      */
-     public static final String PoolBeingResized = "PoolBeingResized";
-
-     /**
-      * A pool operation was attempted which is not permitted when the pool is in the process of being created.
-      */
-     public static final String PoolBeingCreated = "PoolBeingCreated";
-
-     /**
-      * The pool you are attempting to add already exists.
-      */
-     public static final String PoolExists = "PoolExists";
-
-     /**
-      * The specified pool is not eligible for an operating system version upgrade.
-      */
-     public static final String PoolNotEligibleForOSVersionUpgrade = "PoolNotEligibleForOSVersionUpgrade";
-
-     /**
-      * The pool on which an operation was attempted is not present in the Batch account.
-      */
-     public static final String PoolNotFound = "PoolNotFound";
-
-     /**
-      * The account has reached its quota of pools.
-      */
-     public static final String PoolQuotaReached = "PoolQuotaReached";
-
-     /**
-      * The pool is already on the operating system version to which it was asked to upgrade.
-      */
-     public static final String PoolVersionEqualsUpgradeVersion = "PoolVersionEqualsUpgradeVersion";
-
-     /**
-      * A requested storage account was not found.
-      */
-     public static final String StorageAccountNotFound = "StorageAccountNotFound";
-
-     /**
-      * A task operation was attempted which is not permitted when the task has been completed.
-      */
-     public static final String TaskCompleted = "TaskCompleted";
-
-     /**
-      * A task was specified as depending on other tasks, but the job did not specify that it would use task dependencies.
-      */
-     public static final String TaskDependenciesNotSpecifiedOnJob = "TaskDependenciesNotSpecifiedOnJob";
-
-     /**
-      * A task was specified as depending on other tasks, but the list of dependencies was too long to be stored.
-      */
-     public static final String TaskDependencyListTooLong = "TaskDependencyListTooLong";
-
-     /**
-      * A task was specified as depending on other tasks, but the list of task ID ranges was too long to be stored.
-      */
-     public static final String TaskDependencyRangesTooLong = "TaskDependencyRangesTooLong";
-
-     /**
-      * The node files for a task are not available, for example because the retention period has expired.
-      */
-     public static final String TaskFilesUnavailable = "TaskFilesUnavailable";
-
-     /**
-      * The files of the specified task are cleaned up.
-      */
-     public static final String TaskFilesCleanedup = "TaskFilesCleanedup";
-
-     /**
-      * The task you are attempting to add already exists.
-      */
-     public static final String TaskExists = "TaskExists";
-
-     /**
-      * The task ID is the same as that of the Job Preparation task.
-      */
-     public static final String TaskIdSameAsJobPreparationTask = "TaskIdSameAsJobPreparationTask";
-
-     /**
-      * The task ID is the same as that of the Job Release task.
-      */
-     public static final String TaskIdSameAsJobReleaseTask = "TaskIdSameAsJobReleaseTask";
-
-     /**
-      * The task on which an operation was attempted is not present in the job.
-      */
-     public static final String TaskNotFound = "TaskNotFound";
-
-     /**
-      * A compute node operation was attempted which is not permitted when the node is in the process of being created.
-      */
-     public static final String NodeBeingCreated = "NodeBeingCreated";
-
-     /**
-      * A compute node operation was attempted which is not permitted when the node is in the process of being started.
-      */
-     public static final String NodeBeingStarted = "NodeBeingStarted";
-
-     /**
-      * A compute node operation was attempted which is not permitted when the node is in the process of being rebooted.
-      */
-     public static final String NodeBeingRebooted = "NodeBeingRebooted";
-
-     /**
-      * A compute node operation was attempted which is not permitted when the node is in the process of being reimaged.
-      */
-     public static final String NodeBeingReimaged = "NodeBeingReimaged";
-
-     /**
-      * The node counts do not match.
-      */
-     public static final String NodeCountsMismatch = "NodeCountsMismatch";
-
-     /**
-      * The compute node on which an operation was attempted is not present in the given pool.
-      */
-     public static final String NodeNotFound = "NodeNotFound";
-
-     /**
-      * A compute node operation was attempted which is not permitted when the node is unusable.
-      */
-     public static final String NodeStateUnusable = "NodeStateUnusable";
-
-     /**
-      * The compute node user account you are attempting to add already exists.
-      */
-     public static final String NodeUserExists = "NodeUserExists";
-
-     /**
-      * The compute node user account on which an operation was attempted does not exist.
-      */
-     public static final String NodeUserNotFound = "NodeUserNotFound";
-
-     /**
-      * The specified compute node is already in the target scheduling state.
-      */
-     public static final String NodeAlreadyInTargetSchedulingState = "NodeAlreadyInTargetSchedulingState";
-
-     /**
-      * The pool is already upgrading to a different operating system version.
-      */
-     public static final String UpgradePoolVersionConflict = "UpgradePoolVersionConflict";
-
-     /**
-      * A requested job or task constraint is not supported.
-      */
-     public static final String UnsupportedConstraint = "UnsupportedConstraint";
-
-     /**
-      * The specified version of the Batch REST API is not supported.
-      */
-     public static final String UnsupportedRequestVersion = "UnsupportedRequestVersion";
-
-     /**
-      * A job schedule operation was attempted which is not permitted when the schedule is in the process of being deleted.
-      */
-     public static final String JobScheduleBeingDeleted = "JobScheduleBeingDeleted";
-
-     /**
-      * A job schedule operation was attempted which is not permitted when the schedule is in the process of being terminated.
-      */
-     public static final String JobScheduleBeingTerminated = "JobScheduleBeingTerminated";
+    /**
+     * The account has reached its quota of active jobs and job schedules.
+     */
+    public static final String ActiveJobAndScheduleQuotaReached = "ActiveJobAndScheduleQuotaReached";
+
+    /**
+     * The specified application does not exist.
+     */
+    public static final String ApplicationNotFound = "ApplicationNotFound";
+
+    /**
+     * An automatic scaling formula has a syntax error.
+     */
+    public static final String AutoScalingFormulaSyntaxError = "AutoScalingFormulaSyntaxError";
+
+    /**
+     * An automatic scaling formula is too long. The maximum length is 8192 characters.
+     */
+    public static final String AutoScaleFormulaTooLong = "AutoScaleFormulaTooLong";
+
+    /**
+     * Enable AutoScale requests for the same pool must be separated by at least 30 seconds.
+     */
+    public static final String AutoScaleTooManyRequestsToEnable = "TooManyEnableAutoScaleRequests";
+
+    /**
+     * A certificate operation was attempted which is not permitted when the certificate is in the process of being deleted.
+     */
+    public static final String CertificateBeingDeleted = "CertificateBeingDeleted";
+
+    /**
+     * The certificate you are attempting to add already exists.
+     */
+    public static final String CertificateExists = "CertificateExists";
+
+    /**
+     * The certificate on which an operation was attempted is not present in the Batch account.
+     */
+    public static final String CertificateNotFound = "CertificateNotFound";
+
+    /**
+     * A certificate operation was attempted which is not permitted when the certificate is active.
+     */
+    public static final String CertificateStateActive = "CertificateStateActive";
+
+    /**
+     * A certificate could not be deleted because it is still in use.
+     */
+    public static final String CertificateStateDeleteFailed = "CertificateDeleteFailed";
+
+    /**
+     * A node file requested from a task or compute node was not found.
+     */
+    public static final String FileNotFound = "FileNotFound";
+
+    /**
+     * One or more application package references could not be satisfied. This occurs if the application
+     * ID or version does not exist or is not active, or if the reference did not specify a version and
+     * there is no default version configured.
+     */
+    public static final String InvalidApplicationPackageReferences = "InvalidApplicationPackageReferences";
+
+    /**
+     * A pool specification specifies one or more invalid certificates (for example, certificates that are
+     * not present in the Batch account).
+     */
+    public static final String InvalidCertificateReferences = "InvalidCertificateReferences";
+
+    /**
+     * A value in a job or task constraint is out of range.
+     */
+    public static final String InvalidConstraintValue = "InvalidConstraintValue";
+
+    /**
+     * There is a conflict between the REST API being used and the account.
+     */
+    public static final String InvalidRestAPIForAccountSetting = "InvalidRestAPIForAccountSetting";
+
+    /**
+     * A job operation was attempted which is not permitted when the job is in the process of being deleted.
+     */
+    public static final String JobBeingDeleted = "JobBeingDeleted";
+
+    /**
+     * A job operation was attempted which is not permitted when the job is in the process of being terminated.
+     */
+    public static final String JobBeingTerminated = "JobBeingTerminated";
+
+    /**
+     * A job operation was attempted which is not permitted when the job has been completed.
+     */
+    public static final String JobCompleted = "JobCompleted";
+
+    /**
+     * A job operation was attempted which is not permitted when the job is not active.
+     */
+    public static final String JobNotActive = "JobNotActive";
+
+    /**
+     * The specified job exists.
+     */
+    public static final String JobExists = "JobExists";
+
+    /**
+     * A Job Preparation task was not run on a compute node.
+     */
+    public static final String JobPreparationTaskNotRunOnNode = "JobPreparationTaskNotRunOnNode";
+
+    /**
+     * The specified job does not have a Job Preparation task.
+     */
+    public static final String JobPreparationTaskNotSpecified = "JobPreparationTaskNotSpecified";
+
+    /**
+     * A Job Release task was not run on a compute node.
+     */
+    public static final String JobReleaseTaskNotRunOnNode = "JobReleaseTaskNotRunOnNode";
+
+    /**
+     * The specified job does not have a Job Release task.
+     */
+    public static final String JobReleaseTaskNotSpecified = "JobReleaseTaskNotSpecified";
+
+    /**
+     * The job on which an operation was attempted is not present in the Batch account.
+     */
+    public static final String JobNotFound = "JobNotFound";
+
+    /**
+     * An I/O error occurred while trying to access a resource within the Batch account.
+     */
+    public static final String IOError = "IOError";
+
+    /**
+     * The specified operation is not valid for the current state of the resource.
+     */
+    public static final String OperationInvalidForCurrentState = "OperationInvalidForCurrentState";
+
+    /**
+     * The specified Azure Guest OS version is disabled.
+     */
+    public static final String OSVersionDisabled = "OSVersionDisabled";
+
+    /**
+     * The specified Azure Guest OS version is expired.
+     */
+    public static final String OSVersionExpired = "OSVersionExpired";
+
+    /**
+     * The specified Azure Guest OS version was not found.
+     */
+    public static final String OSVersionNotFound = "OSVersionNotFound";
+
+    /**
+     * A job priority was specified which was outside the permitted range of -1000 to 1000.
+     */
+    public static final String OutOfRangePriority = "OutOfRangePriority";
+
+    /**
+     * A file path was not found on a compute node.
+     */
+    public static final String PathNotFound = "PathNotFound";
+
+    /**
+     * A pool operation was attempted which is not permitted when the pool is in the process of being deleted.
+     */
+    public static final String PoolBeingDeleted = "PoolBeingDeleted";
+
+    /**
+     * A pool operation was attempted which is not permitted when the pool is in the process of being resized.
+     */
+    public static final String PoolBeingResized = "PoolBeingResized";
+
+    /**
+     * A pool operation was attempted which is not permitted when the pool is in the process of being created.
+     */
+    public static final String PoolBeingCreated = "PoolBeingCreated";
+
+    /**
+     * The pool you are attempting to add already exists.
+     */
+    public static final String PoolExists = "PoolExists";
+
+    /**
+     * The specified pool is not eligible for an operating system version upgrade.
+     */
+    public static final String PoolNotEligibleForOSVersionUpgrade = "PoolNotEligibleForOSVersionUpgrade";
+
+    /**
+     * The pool on which an operation was attempted is not present in the Batch account.
+     */
+    public static final String PoolNotFound = "PoolNotFound";
+
+    /**
+     * The account has reached its quota of pools.
+     */
+    public static final String PoolQuotaReached = "PoolQuotaReached";
+
+    /**
+     * The pool is already on the operating system version to which it was asked to upgrade.
+     */
+    public static final String PoolVersionEqualsUpgradeVersion = "PoolVersionEqualsUpgradeVersion";
+
+    /**
+     * A requested storage account was not found.
+     */
+    public static final String StorageAccountNotFound = "StorageAccountNotFound";
+
+    /**
+     * A task operation was attempted which is not permitted when the task has been completed.
+     */
+    public static final String TaskCompleted = "TaskCompleted";
+
+    /**
+     * A task was specified as depending on other tasks, but the job did not specify that it would use task dependencies.
+     */
+    public static final String TaskDependenciesNotSpecifiedOnJob = "TaskDependenciesNotSpecifiedOnJob";
+
+    /**
+     * A task was specified as depending on other tasks, but the list of dependencies was too long to be stored.
+     */
+    public static final String TaskDependencyListTooLong = "TaskDependencyListTooLong";
+
+    /**
+     * A task was specified as depending on other tasks, but the list of task ID ranges was too long to be stored.
+     */
+    public static final String TaskDependencyRangesTooLong = "TaskDependencyRangesTooLong";
+
+    /**
+     * The node files for a task are not available, for example because the retention period has expired.
+     */
+    public static final String TaskFilesUnavailable = "TaskFilesUnavailable";
+
+    /**
+     * The files of the specified task are cleaned up.
+     */
+    public static final String TaskFilesCleanedup = "TaskFilesCleanedup";
+
+    /**
+     * The task you are attempting to add already exists.
+     */
+    public static final String TaskExists = "TaskExists";
+
+    /**
+     * The task ID is the same as that of the Job Preparation task.
+     */
+    public static final String TaskIdSameAsJobPreparationTask = "TaskIdSameAsJobPreparationTask";
+
+    /**
+     * The task ID is the same as that of the Job Release task.
+     */
+    public static final String TaskIdSameAsJobReleaseTask = "TaskIdSameAsJobReleaseTask";
+
+    /**
+     * The task on which an operation was attempted is not present in the job.
+     */
+    public static final String TaskNotFound = "TaskNotFound";
+
+    /**
+     * A compute node operation was attempted which is not permitted when the node is in the process of being created.
+     */
+    public static final String NodeBeingCreated = "NodeBeingCreated";
+
+    /**
+     * A compute node operation was attempted which is not permitted when the node is in the process of being started.
+     */
+    public static final String NodeBeingStarted = "NodeBeingStarted";
+
+    /**
+     * A compute node operation was attempted which is not permitted when the node is in the process of being rebooted.
+     */
+    public static final String NodeBeingRebooted = "NodeBeingRebooted";
+
+    /**
+     * A compute node operation was attempted which is not permitted when the node is in the process of being reimaged.
+     */
+    public static final String NodeBeingReimaged = "NodeBeingReimaged";
+
+    /**
+     * The node counts do not match.
+     */
+    public static final String NodeCountsMismatch = "NodeCountsMismatch";
+
+    /**
+     * The compute node on which an operation was attempted is not present in the given pool.
+     */
+    public static final String NodeNotFound = "NodeNotFound";
+
+    /**
+     * A compute node operation was attempted which is not permitted when the node is unusable.
+     */
+    public static final String NodeStateUnusable = "NodeStateUnusable";
+
+    /**
+     * The compute node user account you are attempting to add already exists.
+     */
+    public static final String NodeUserExists = "NodeUserExists";
+
+    /**
+     * The compute node user account on which an operation was attempted does not exist.
+     */
+    public static final String NodeUserNotFound = "NodeUserNotFound";
+
+    /**
+     * The specified compute node is already in the target scheduling state.
+     */
+    public static final String NodeAlreadyInTargetSchedulingState = "NodeAlreadyInTargetSchedulingState";
+
+    /**
+     * The pool is already upgrading to a different operating system version.
+     */
+    public static final String UpgradePoolVersionConflict = "UpgradePoolVersionConflict";
+
+    /**
+     * A requested job or task constraint is not supported.
+     */
+    public static final String UnsupportedConstraint = "UnsupportedConstraint";
+
+    /**
+     * The specified version of the Batch REST API is not supported.
+     */
+    public static final String UnsupportedRequestVersion = "UnsupportedRequestVersion";
+
+    /**
+     * A job schedule operation was attempted which is not permitted when the schedule is in the process of being deleted.
+     */
+    public static final String JobScheduleBeingDeleted = "JobScheduleBeingDeleted";
+
+    /**
+     * A job schedule operation was attempted which is not permitted when the schedule is in the process of being terminated.
+     */
+    public static final String JobScheduleBeingTerminated = "JobScheduleBeingTerminated";
 
     /**
      * A job schedule operation was attempted which is not permitted when the schedule has completed.

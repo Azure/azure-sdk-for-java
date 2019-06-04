@@ -1,107 +1,424 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
-    <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
-        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-    </Match>
+  <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
 
-    <!-- These keyvault models are already publicly released APIs with name
-    matching the simple name of superclass -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
-        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
-    </Match>
+  <!-- These keyvault models are already publicly released APIs with name matching the simple name of superclass -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+  </Match>
 
-    <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
-    <Match>
-        <Or>
-            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
-            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
-        </Or>
-        <Method name="~(CreateDecryptor|CreateEncryptor)" />
-        <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
-    </Match>
+  <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
+  <Match>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)"/>
+      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm"/>
+    </Or>
+    <Method name="~(CreateDecryptor|CreateEncryptor)"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
 
-    <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
-    intention that a null could be passed in. In the original code, it would have thrown a
-    NullReferenceException. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
-        <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
-    </Match>
+  <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
+  intention that a null could be passed in. In the original code, it would have thrown a
+  NullReferenceException. -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+    <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
+  </Match>
 
-    <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
-        <Method name="run" />
-        <Bug pattern="DE_MIGHT_IGNORE"/>
-    </Match>
+  <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+"/>
+    <Method name="run"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
 
-    <!-- Protected field already exists in the public API surface area even
-    though it is unused. -->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
-        <Field name="defaultEncryptionAlgorithm"/>
-        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
-    </Match>
+  <!-- Protected field already exists in the public API surface area even though it is unused. -->
+  <Match>
+    <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
+    <Field name="defaultEncryptionAlgorithm"/>
+    <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
 
-    <!-- Public field already exists in the public API surface area even
-    though it should be final. -->
-    <Match>
-      <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
-      <Field name="USER_AGENT"/>
-      <Bug pattern="MS_SHOULD_BE_FINAL"/>
-    </Match>
+  <!-- Public field already exists in the public API surface. -->
+  <Match>
+    <Class name="com.microsoft.azure.batch.auth.BatchUserTokenCredentials"/>
+    <Method name="username"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
 
-    <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
-    than an empty array. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
-        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-    </Match>
+  <!-- These KeyVault classes are publicly released APIs that intentionally return null rather than an empty array. -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
 
-    <!-- Suppress non-null warning in the case that we change the code and it is possible for
-    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-    </Match>
+  <!-- Suppress non-null warning in the case that we change the code and it is possible for
+  KeyVaultCredentials.getAuthenticationCredentials to return null. -->
+  <Match>
+    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
-    <!-- These KeyVaultClientBase methods are made synchronous by blocking and
-    waiting for a result. They do not return anything, so it can be ignored. -->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
-        <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
-        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-    </Match>
+  <!-- These KeyVaultClientBase methods are made synchronous by blocking and waiting for a result. They do not return
+  anything, so it can be ignored. -->
+  <Match>
+    <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
+    <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
 
-    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
-    Suppressing error for using anonymous inner classes. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
-        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-    </Match>
+  <!-- These autorest generated APIs for existing Azure SDK components supports Java 7. Suppressing error for using
+  anonymous inner classes. -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 
-    <!-- KeyVaultCredential values manipulated do not need to be localised. They
-    are base64 encoded or URL encoded.-->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-        <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
-        <Bug pattern="DM_CONVERT_CASE"/>
-    </Match>
-    <!-- HTTP header, "content-type" is not localised. -->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity"/>
-        <Method name="unprotectResponse"/>
-        <Bug pattern="DM_CONVERT_CASE"/>
-    </Match>
+  <!-- KeyVaultCredential values manipulated do not need to be localised. They are base64 encoded or URL encoded.-->
+  <Match>
+    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+    <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
+    <Bug pattern="DM_CONVERT_CASE"/>
+  </Match>
 
-    <!-- Known issue in autorest where it will generate a variable with a value of null.
-    https://github.com/Azure/autorest.java/issues/324 -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
-        <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
-    </Match>
+  <!-- HTTP header, "content-type" is not localised. -->
+  <Match>
+    <Class name="com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity"/>
+    <Method name="unprotectResponse"/>
+    <Bug pattern="DM_CONVERT_CASE"/>
+  </Match>
+
+  <!-- HTTP header, "ocp-date" is not localised. -->
+  <Match>
+    <Class name="com.microsoft.azure.batch.auth.BatchSharedKeyCredentialsInterceptor"/>
+    <Method name="signHeader"/>
+    <Bug pattern="DM_CONVERT_CASE"/>
+  </Match>
+
+  <!-- Known issue in autorest where it will generate a variable with a value of null.
+  https://github.com/Azure/autorest.java/issues/324 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
+  <!-- Public field already exists in the public API surface area even though no writes were seen to this public field.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.BatchOptions"/>
+    <Field name="~(maxMessageSize|partitionKey)"/>
+    <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Public method already exists in the public API surface area even though it has confusing name.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L247
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L251
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessagingFactory.java#L146 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(MessageReceiver|MessagingFactory)"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+    <Method name="~(getPartitionIds|onConnectionInit)"/>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- EventHubRuntimeInformation is populated by the service. There is no user input. Copying partitionId contents is
+    not necessary.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+    <Field name="partitionIds"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Public field already exists in the public API surface area even though it should be final.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L41 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
+    <Field name="USER_AGENT"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL,UWF_NULL_FIELD"/>
+  </Match>
+
+  <!-- Values are initialized at runtime
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L47 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
+    <Field name="~(sender|timer|underlyingFactory)"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ReplayableWorkItem.java#L35 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.impl.ReplayableWorkItem"/>
+    <Field name="amqpMessage"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Return value is fine to not check, if add, it will be a redundant step
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L80
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L123 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.FaultTolerantObject(\$(1|2))?"/>
+    <Method name="~(onEvent|runOnOpenedObject|close)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L150
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
+    <Method name="~(getBytes|getDesiredCapabilities)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- EventHubClientImpl.USER_AGENT is public and can be set by consumers of the SDK to not be null.
+  https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.impl.ConnectionHandler"/>
+    <Method name="onConnectionInit"/>
+    <Bug pattern="UWF_NULL_FIELD"/>
+  </Match>
+
+  <!-- Unchecked cast already exists as inner class of a public class but they are logically correct so it can be ignored.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L323 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventprocessorhost.PartitionManager$FinalException"/>
+    <Method name="getInner"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Even though volatile reference to an array exists in protected API surface area changing it will cause another public API surface to change.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L29 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventprocessorhost.PartitionManager"/>
+    <Field name="partitionIds"/>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
+  </Match>
+
+  <!-- Unchecked cast already exists in the public API surface area, they are logically right, so it can be ignored.
+    At AzureStorageCheckpointLeaseManager.java:[line 180,430,446,542,574]
+      https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/AzureStorageCheckpointLeaseManager.java#L180
+    At InMemoryLeaseManager.java:[line 148,155,209,241,268]
+      https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/InMemoryLeaseManager.java#L155 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- Public inner class already exists in the public API surface area even though it should be static.
+    At EventProcessorOptions.java:[lines 234-237]
+      https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorOptions.java#L234 -->
+  <Match>
+    <Class name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+  </Match>
+
+  <!-- EventProcessorHost and ExceptionReceivedEventArgs are shipped with method in its public surface area.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorHost.java#L346 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventprocessorhost.EventProcessorHost"/>
+    <Method name="getHostName"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
+  <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
+  https://github.com/Azure/autorest.java/issues/328 -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.microsoft.azure.batch.CreateTasksErrorException"/>
+    <Or>
+      <Field name="failureTaskList"/>
+      <Field name="pendingTaskList"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- No need to implements cloneable. -->
+  <Match>
+    <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
+  <Match>
+    <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
+  <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
+  <Match>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
+  -->
+  <Match>
+    <Class name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+
+  <!-- The casting problems do not exist in Azure use cases -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.TypeUtil"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliSubscription$UserInfo"/>
+    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be not read. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliToken"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be not used. They are for deserializing. -->
+  <Match>
+    <Class name="~com\.azure\.core\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what
+  type to use. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- These fields has checked null and initialized in the constructor. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
+  the class proposed. Suppress the warning for current design. -->
+  <Match>
+    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
+  the class proposed. Suppress the warning for current design. -->
+  <Match>
+    <Class name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- The checked field is always not null. -->
+  <Match>
+    <Class name="com.azure.core.management.implementation.AzureProxy"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
+  <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
+  <Match>
+    <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- The field is used in public Constructor. -->
+  <Match>
+    <Class name="com.microsoft.azure.storage.blob.RequestIDFactory$RequestIDPolicy"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Exclude the files generated by auto rest -->
+  <Match>
+    <Package name="~com\.microsoft\.azure\.storage\.blob\.model(.+)"/>
+  </Match>
+
+  <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
+  <Match>
+    <Package name="com.microsoft.azure.storage.blob"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
+  <!-- The public field already exists in the public API surface area -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
+    <Field name="~(MAX_DURATION|NULL_TXN)"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+
+  <!-- The HttpRequest fields are serializable. Flux<T> and HttpHeaders are able to serialize and deserialize. -->
+  <Match>
+    <Class name="com.azure.core.http.HttpRequest"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- The two values can still change in the future. Change it will be a breaking code change.-->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
+    <Bug pattern="DB_DUPLICATE_BRANCHES"/>
+  </Match>
+
+  <!-- The return value is ignored for purpose -->
+  <Match>
+    <Class name="~com\.microsoft\.azure\.servicebus\.primitives\.(AsyncUtil|RequestResponseLink\$InternalReceiver)"/>
+    <Method name="~(completeFuture|completeFutureExceptionally|run|onReceiveComplete)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- Unreachable Path -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseLink$InternalSender"/>
+    <Local name="encodedPair"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION"/>
+  </Match>
+
+  <!-- The casting is correct, it is beyond the SpotBugs's ability to determine the correctness -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseUtils"/>
+    <Method name="encodeRuleDescriptionToMap"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.Utils"/>
+    <Method name="getDataFromMessageBody"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Unstable implementation. It is in Service team's to-do-list -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
+    <Method name="onReceiveComplete"/>
+    <Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/>
+  </Match>
+
+  <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
+  <Match>
+    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Method name="endTracingSpan"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.core.configuration.Configuration"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
 </FindBugsFilter>

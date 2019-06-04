@@ -29,7 +29,7 @@ public class DetailLevel {
         /**
          * Initializes a new instance of the Builder class.
          */
-        public Builder() {}
+        public Builder() { }
 
         /**
          * Sets the OData filter clause. Used to restrict a list operation to items that match specified criteria.

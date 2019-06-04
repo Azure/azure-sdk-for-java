@@ -4,28 +4,48 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.ComputeNode;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeAddUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDisableSchedulingOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeUploadBatchServiceLogsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeUser;
+import com.microsoft.azure.batch.protocol.models.DisableComputeNodeSchedulingOption;
+import com.microsoft.azure.batch.protocol.models.NodeUpdateUserParameter;
+import com.microsoft.azure.batch.protocol.models.UploadBatchServiceLogsConfiguration;
+import com.microsoft.azure.batch.protocol.models.UploadBatchServiceLogsResult;
 import org.joda.time.DateTime;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Performs compute node-related operations on an Azure Batch account.
  */
 public class ComputeNodeOperations implements IInheritedBehaviors {
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private BatchClient parentBatchClient;
 
     ComputeNodeOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
     }
 
     /**
@@ -35,7 +55,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -46,7 +66,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -78,7 +98,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().addUser(poolId, nodeId, user, options);
+        this.parentBatchClient.protocolLayer().computeNodes().addUser(poolId, nodeId, user, options);
     }
 
     /**
@@ -109,7 +129,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().deleteUser(poolId, nodeId, userName, options);
+        this.parentBatchClient.protocolLayer().computeNodes().deleteUser(poolId, nodeId, userName, options);
     }
 
     /**
@@ -158,7 +178,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey) throws BatchErrorException, IOException {
-        updateComputeNodeUser(poolId, nodeId, userName, sshPublicKey, (Iterable<BatchClientBehavior>)null);
+        updateComputeNodeUser(poolId, nodeId, userName, sshPublicKey, (Iterable<BatchClientBehavior>) null);
     }
 
     /**
@@ -195,7 +215,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, options);
+        this.parentBatchClient.protocolLayer().computeNodes().updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, options);
     }
 
     /**
@@ -242,7 +262,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
+        return this.parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
     }
 
     /**
@@ -288,7 +308,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().reboot(poolId, nodeId, nodeRebootOption, options);
+        this.parentBatchClient.protocolLayer().computeNodes().reboot(poolId, nodeId, nodeRebootOption, options);
     }
 
     /**
@@ -334,7 +354,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().reimage(poolId, nodeId, nodeReimageOption, options);
+        this.parentBatchClient.protocolLayer().computeNodes().reimage(poolId, nodeId, nodeReimageOption, options);
     }
 
     /**
@@ -377,7 +397,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().disableScheduling(poolId, nodeId, nodeDisableSchedulingOption, options);
+        this.parentBatchClient.protocolLayer().computeNodes().disableScheduling(poolId, nodeId, nodeDisableSchedulingOption, options);
     }
 
     /**
@@ -406,7 +426,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().computeNodes().enableScheduling(poolId, nodeId, options);
+        this.parentBatchClient.protocolLayer().computeNodes().enableScheduling(poolId, nodeId, options);
     }
 
     /**
@@ -438,7 +458,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options, outputStream);
+        this.parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options, outputStream);
         String rdpContent = outputStream.toString("UTF-8");
         outputStream.close();
         return rdpContent;
@@ -472,7 +492,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
+        return this.parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
     }
 
     /**
@@ -516,7 +536,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
+        return this.parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
     }
 
     /**
@@ -560,6 +580,6 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().computeNodes().uploadBatchServiceLogs(poolId, nodeId, configuration, options);
+        return this.parentBatchClient.protocolLayer().computeNodes().uploadBatchServiceLogs(poolId, nodeId, configuration, options);
     }
 }

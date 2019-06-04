@@ -4,7 +4,24 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudJobSchedule;
+import com.microsoft.azure.batch.protocol.models.JobScheduleAddOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleAddParameter;
+import com.microsoft.azure.batch.protocol.models.JobScheduleDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleDisableOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleEnableOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleExistsOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleListOptions;
+import com.microsoft.azure.batch.protocol.models.JobSchedulePatchOptions;
+import com.microsoft.azure.batch.protocol.models.JobSchedulePatchParameter;
+import com.microsoft.azure.batch.protocol.models.JobScheduleTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateParameter;
+import com.microsoft.azure.batch.protocol.models.JobSpecification;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.Schedule;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -15,15 +32,15 @@ import java.util.List;
  */
 public class JobScheduleOperations implements IInheritedBehaviors {
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     JobScheduleOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
     }
 
     /**
@@ -33,7 +50,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -44,7 +61,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -74,7 +91,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
+        return this.parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
     }
 
     /**
@@ -101,7 +118,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobSchedules().delete(jobScheduleId, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().delete(jobScheduleId, options);
     }
 
     /**
@@ -145,7 +162,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
+        return this.parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
     }
 
     /**
@@ -198,7 +215,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
                 .withJobSpecification(jobSpecification)
                 .withMetadata(metadata)
                 .withSchedule(schedule);
-        this._parentBatchClient.protocolLayer().jobSchedules().patch(jobScheduleId, param, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().patch(jobScheduleId, param, options);
     }
 
     /**
@@ -251,7 +268,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
                 .withJobSpecification(jobSpecification)
                 .withMetadata(metadata)
                 .withSchedule(schedule);
-        this._parentBatchClient.protocolLayer().jobSchedules().update(jobScheduleId, param, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().update(jobScheduleId, param, options);
     }
 
     /**
@@ -278,7 +295,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobSchedules().disable(jobScheduleId, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().disable(jobScheduleId, options);
     }
 
     /**
@@ -305,7 +322,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobSchedules().enable(jobScheduleId, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().enable(jobScheduleId, options);
     }
 
     /**
@@ -332,7 +349,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobSchedules().terminate(jobScheduleId, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().terminate(jobScheduleId, options);
     }
 
     /**
@@ -390,7 +407,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobSchedules().add(jobSchedule, options);
+        this.parentBatchClient.protocolLayer().jobSchedules().add(jobSchedule, options);
     }
 
     /**
@@ -431,7 +448,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().jobSchedules().list(options);
+        return this.parentBatchClient.protocolLayer().jobSchedules().list(options);
     }
 
 }

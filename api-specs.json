@@ -42,6 +42,10 @@
     "source": "specification/containerregistry/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
+  "cosmosdb/resource-manager": {
+    "source": "specification/cosmos-db/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -69,6 +73,10 @@
   "eventgrid/data-plane": {
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
+  },
+  "eventhub/resource-manager": {
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
@@ -123,6 +131,10 @@
       "\"moduleName\"": "\"MySQL\""
     }
   },
+  "monitor/resource-manager": {
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "network/resource-manager": {
     "source": "specification/network/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -154,6 +166,10 @@
       "\"knownPlurals\"": ["\"redis\""],
       "\"knownSingulars\"": ["\"redis\""]
     }
+  },
+  "resourcegraph/resource-manager": {
+    "source": "specification/resourcegraph/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",

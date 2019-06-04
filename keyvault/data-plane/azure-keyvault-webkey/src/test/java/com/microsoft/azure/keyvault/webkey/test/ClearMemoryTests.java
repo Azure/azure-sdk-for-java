@@ -11,10 +11,9 @@ import org.junit.Test;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 public class ClearMemoryTests {
-    
+
     @Test
-    public void clearMemory()
-    {
+    public void clearMemory() {
         JsonWebKey key = new JsonWebKey()
                 .withD(getRandomByte())
                 .withDp(getRandomByte())
@@ -37,15 +36,14 @@ public class ClearMemoryTests {
         Assert.assertNull(key.q());
         Assert.assertNull(key.qi());
         Assert.assertNull(key.t());
-        
+
         // Compare it with a newly created JsonWebKey with no properties set.
         JsonWebKey key2 = new JsonWebKey();
         Assert.assertTrue(key2.equals(key));
     }
-    
+
     @Test
-    public void clearNullMemory()
-    {
+    public void clearNullMemory() {
         JsonWebKey key = new JsonWebKey();
         key.clearMemory();
     }
@@ -55,5 +53,5 @@ public class ClearMemoryTests {
         new Random().nextBytes(bytes);
         return bytes;
     }
-    
+
 }

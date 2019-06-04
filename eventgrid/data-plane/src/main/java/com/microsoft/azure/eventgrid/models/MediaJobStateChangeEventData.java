@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.eventgrid.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,21 +21,27 @@ public class MediaJobStateChangeEventData {
      * 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
      */
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
-    private JobState previousState;
+    private MediaJobState previousState;
 
     /**
      * The new state of the Job. Possible values include: 'Canceled',
      * 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private JobState state;
+    private MediaJobState state;
+
+    /**
+     * Gets the Job correlation data.
+     */
+    @JsonProperty(value = "correlationData")
+    private Map<String, String> correlationData;
 
     /**
      * Get the previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
      *
      * @return the previousState value
      */
-    public JobState previousState() {
+    public MediaJobState previousState() {
         return this.previousState;
     }
 
@@ -43,8 +50,28 @@ public class MediaJobStateChangeEventData {
      *
      * @return the state value
      */
-    public JobState state() {
+    public MediaJobState state() {
         return this.state;
+    }
+
+    /**
+     * Get gets the Job correlation data.
+     *
+     * @return the correlationData value
+     */
+    public Map<String, String> correlationData() {
+        return this.correlationData;
+    }
+
+    /**
+     * Set gets the Job correlation data.
+     *
+     * @param correlationData the correlationData value to set
+     * @return the MediaJobStateChangeEventData object itself.
+     */
+    public MediaJobStateChangeEventData withCorrelationData(Map<String, String> correlationData) {
+        this.correlationData = correlationData;
+        return this;
     }
 
 }

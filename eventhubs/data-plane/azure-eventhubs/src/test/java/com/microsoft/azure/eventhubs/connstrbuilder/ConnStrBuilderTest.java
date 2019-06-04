@@ -6,24 +6,23 @@ package com.microsoft.azure.eventhubs.connstrbuilder;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.IllegalConnectionStringFormatException;
 import com.microsoft.azure.eventhubs.TransportType;
-import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.function.Consumer;
 
-public class ConnStrBuilderTest extends ApiTestBase {
-    static final String correctConnectionString = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S;TransportType=AMQP";
-    static final Consumer<ConnectionStringBuilder> validateConnStrBuilder = new Consumer<ConnectionStringBuilder>() {
+public class ConnStrBuilderTest {
+    private static final String CORRECT_CONNECTION_STRING = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S;TransportType=AMQP";
+    private static final Consumer<ConnectionStringBuilder> VALIDATE_CONN_STR_BUILDER = new Consumer<ConnectionStringBuilder>() {
         @Override
         public void accept(ConnectionStringBuilder connStrBuilder) {
-            Assert.assertTrue(connStrBuilder.getEventHubName().equals("eventhub1"));
-            Assert.assertTrue(connStrBuilder.getEndpoint().getHost().equals("endpoint1"));
-            Assert.assertTrue(connStrBuilder.getSasKey().equals("something"));
-            Assert.assertTrue(connStrBuilder.getSasKeyName().equals("somevalue"));
-            Assert.assertTrue(connStrBuilder.getTransportType() == TransportType.AMQP);
-            Assert.assertTrue(connStrBuilder.getOperationTimeout().equals(Duration.ofSeconds(5)));
+            Assert.assertEquals("eventhub1", connStrBuilder.getEventHubName());
+            Assert.assertEquals("endpoint1", connStrBuilder.getEndpoint().getHost());
+            Assert.assertEquals("something", connStrBuilder.getSasKey());
+            Assert.assertEquals("somevalue", connStrBuilder.getSasKeyName());
+            Assert.assertSame(connStrBuilder.getTransportType(), TransportType.AMQP);
+            Assert.assertEquals(connStrBuilder.getOperationTimeout(), Duration.ofSeconds(5));
         }
     };
 
@@ -34,12 +33,12 @@ public class ConnStrBuilderTest extends ApiTestBase {
 
     @Test(expected = IllegalConnectionStringFormatException.class)
     public void throwOnUnrecognizedParts() {
-        new ConnectionStringBuilder(correctConnectionString + ";" + "something");
+        new ConnectionStringBuilder(CORRECT_CONNECTION_STRING + ";" + "something");
     }
 
     @Test(expected = IllegalConnectionStringFormatException.class)
     public void throwOnInvalidTransportType() {
-        ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(correctConnectionString);
+        ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(CORRECT_CONNECTION_STRING);
         String connectionStringWithTransportType = connectionStringBuilder.setTransportType(TransportType.AMQP_WEB_SOCKETS).toString();
         String connectionStringWithInvalidTransportType = connectionStringWithTransportType.replace(TransportType.AMQP_WEB_SOCKETS.toString(), "invalid");
         new ConnectionStringBuilder(connectionStringWithInvalidTransportType);
@@ -47,13 +46,13 @@ public class ConnStrBuilderTest extends ApiTestBase {
 
     @Test
     public void parseValidConnectionString() {
-        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(correctConnectionString);
-        validateConnStrBuilder.accept(connStrBuilder);
+        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(CORRECT_CONNECTION_STRING);
+        VALIDATE_CONN_STR_BUILDER.accept(connStrBuilder);
     }
 
     @Test
     public void exchangeConnectionStringAcrossConstructors() {
-        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(correctConnectionString);
+        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(CORRECT_CONNECTION_STRING);
         final ConnectionStringBuilder secondConnStr = new ConnectionStringBuilder()
                 .setEndpoint(connStrBuilder.getEndpoint())
                 .setEventHubName(connStrBuilder.getEventHubName())
@@ -62,20 +61,20 @@ public class ConnStrBuilderTest extends ApiTestBase {
                 .setTransportType(connStrBuilder.getTransportType())
                 .setOperationTimeout(connStrBuilder.getOperationTimeout());
 
-        validateConnStrBuilder.accept(new ConnectionStringBuilder(secondConnStr.toString()));
+        VALIDATE_CONN_STR_BUILDER.accept(new ConnectionStringBuilder(secondConnStr.toString()));
     }
 
     @Test
     public void testPropertySetters() {
-        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(correctConnectionString);
+        final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(CORRECT_CONNECTION_STRING);
         final ConnectionStringBuilder testConnStrBuilder = new ConnectionStringBuilder(connStrBuilder.toString());
-        validateConnStrBuilder.accept(testConnStrBuilder);
+        VALIDATE_CONN_STR_BUILDER.accept(testConnStrBuilder);
 
         connStrBuilder.setOperationTimeout(Duration.ofSeconds(8));
         connStrBuilder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
 
         ConnectionStringBuilder testConnStrBuilder1 = new ConnectionStringBuilder(connStrBuilder.toString());
-        Assert.assertTrue(testConnStrBuilder1.getOperationTimeout().getSeconds() == 8);
-        Assert.assertTrue(testConnStrBuilder1.getTransportType() == TransportType.AMQP_WEB_SOCKETS);
+        Assert.assertEquals(8, testConnStrBuilder1.getOperationTimeout().getSeconds());
+        Assert.assertSame(testConnStrBuilder1.getTransportType(), TransportType.AMQP_WEB_SOCKETS);
     }
 }

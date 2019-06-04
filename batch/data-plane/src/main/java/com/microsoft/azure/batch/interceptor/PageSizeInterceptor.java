@@ -27,9 +27,7 @@ public class PageSizeInterceptor extends RequestInterceptor {
                 Class<?> c = request.getClass();
                 try {
                     Method maxResultsMethod = c.getMethod("withMaxResults", Integer.class);
-                    if (maxResultsMethod != null) {
-                        maxResultsMethod.invoke(request, maxResults);
-                    }
+                    maxResultsMethod.invoke(request, maxResults);
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                     // Ignore exception
                 }

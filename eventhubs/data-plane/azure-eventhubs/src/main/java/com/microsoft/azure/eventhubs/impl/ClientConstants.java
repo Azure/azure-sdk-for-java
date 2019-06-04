@@ -19,6 +19,7 @@ public final class ClientConstants {
     public static final Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":store-lock-lost");
     public static final Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
     public static final Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+    public static final Symbol PROTON_IO_ERROR = Symbol.getSymbol(AmqpConstants.PROTON + ":io");
     public static final Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
@@ -26,7 +27,7 @@ public final class ClientConstants {
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
     public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
     public static final Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
-    public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(10); // renew every 10 mins, which expires 20 mins
+    public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(5); // renew every 5 minutes, which expires 20 minutes
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
     public static final boolean DEFAULT_IS_TRANSIENT = true;
@@ -36,7 +37,7 @@ public final class ClientConstants {
     public static final String NO_RETRY = "NoRetry";
     public static final String DEFAULT_RETRY = "Default";
     public static final String PRODUCT_NAME = "MSJavaClient";
-    public static final String CURRENT_JAVACLIENT_VERSION = "2.0.0";
+    public static final String CURRENT_JAVACLIENT_VERSION = "2.3.1";
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
     public static final String CBS_ADDRESS = "$cbs";
@@ -75,6 +76,9 @@ public final class ClientConstants {
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
+
+    public static final String COMMUNICATION_EXCEPTION_GENERIC_MESSAGE = "A communication error has occurred. "
+        + "This may be due to an incorrect host name in your connection string or a problem with your network connection.";
 
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.

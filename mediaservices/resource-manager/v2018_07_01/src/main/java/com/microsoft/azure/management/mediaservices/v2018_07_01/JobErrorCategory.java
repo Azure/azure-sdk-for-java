@@ -8,55 +8,43 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for JobErrorCategory.
  */
-public enum JobErrorCategory {
-    /** The error is service related. */
-    SERVICE("Service"),
+public final class JobErrorCategory extends ExpandableStringEnum<JobErrorCategory> {
+    /** Static value Service for JobErrorCategory. */
+    public static final JobErrorCategory SERVICE = fromString("Service");
 
-    /** The error is download related. */
-    DOWNLOAD("Download"),
+    /** Static value Download for JobErrorCategory. */
+    public static final JobErrorCategory DOWNLOAD = fromString("Download");
 
-    /** The error is upload related. */
-    UPLOAD("Upload"),
+    /** Static value Upload for JobErrorCategory. */
+    public static final JobErrorCategory UPLOAD = fromString("Upload");
 
-    /** The error is configuration related. */
-    CONFIGURATION("Configuration"),
+    /** Static value Configuration for JobErrorCategory. */
+    public static final JobErrorCategory CONFIGURATION = fromString("Configuration");
 
-    /** The error is related to data in the input files. */
-    CONTENT("Content");
+    /** Static value Content for JobErrorCategory. */
+    public static final JobErrorCategory CONTENT = fromString("Content");
 
-    /** The actual serialized value for a JobErrorCategory instance. */
-    private String value;
-
-    JobErrorCategory(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a JobErrorCategory from its string representation.
+     * @param name a name to look for
+     * @return the corresponding JobErrorCategory
+     */
+    @JsonCreator
+    public static JobErrorCategory fromString(String name) {
+        return fromString(name, JobErrorCategory.class);
     }
 
     /**
-     * Parses a serialized value to a JobErrorCategory instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed JobErrorCategory object, or null if unable to parse.
+     * @return known JobErrorCategory values
      */
-    @JsonCreator
-    public static JobErrorCategory fromString(String value) {
-        JobErrorCategory[] items = JobErrorCategory.values();
-        for (JobErrorCategory item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<JobErrorCategory> values() {
+        return values(JobErrorCategory.class);
     }
 }

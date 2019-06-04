@@ -16,27 +16,24 @@ public class ClientRequestIdInterceptor extends RequestInterceptor {
      * Initializes a new {@link ClientRequestIdInterceptor} for use in setting the client request ID of a request.
      */
     public ClientRequestIdInterceptor() {
-        this.withHandler(new BatchRequestInterceptHandler() {
-            @Override
-            public void modify(Object request) {
-                Class<?> c = request.getClass();
+        this.withHandler(new RequestInterceptorHandler());
+    }
 
-                try {
-                    Method clientRequestIdMethod = c.getMethod("withClientRequestId", UUID.class);
-                    if (clientRequestIdMethod != null) {
-                        UUID clientRequestId = UUID.randomUUID();
-                        clientRequestIdMethod.invoke(request, clientRequestId);
-                    }
+    private static class RequestInterceptorHandler implements BatchRequestInterceptHandler {
+        @Override
+        public void modify(Object request) {
+            Class<?> c = request.getClass();
 
-                    Method returnClientRequestIdMethod = c.getMethod("withReturnClientRequestId", Boolean.class);
-                    if (returnClientRequestIdMethod != null) {
-                        returnClientRequestIdMethod.invoke(request, true);
-                    }
-                }
-                catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                    // Ignore exception
-                }
+            try {
+                Method clientRequestIdMethod = c.getMethod("withClientRequestId", UUID.class);
+                UUID clientRequestId = UUID.randomUUID();
+                clientRequestIdMethod.invoke(request, clientRequestId);
+
+                Method returnClientRequestIdMethod = c.getMethod("withReturnClientRequestId", Boolean.class);
+                returnClientRequestIdMethod.invoke(request, true);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                // Ignore exception
             }
-        });
+        }
     }
 }

@@ -4,7 +4,35 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudJob;
+import com.microsoft.azure.batch.protocol.models.DisableJobOption;
+import com.microsoft.azure.batch.protocol.models.JobAddOptions;
+import com.microsoft.azure.batch.protocol.models.JobAddParameter;
+import com.microsoft.azure.batch.protocol.models.JobConstraints;
+import com.microsoft.azure.batch.protocol.models.JobDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
+import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
+import com.microsoft.azure.batch.protocol.models.JobExecutionInformation;
+import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetTaskCountsOptions;
+import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleOptions;
+import com.microsoft.azure.batch.protocol.models.JobListOptions;
+import com.microsoft.azure.batch.protocol.models.JobListPreparationAndReleaseTaskStatusOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchParameter;
+import com.microsoft.azure.batch.protocol.models.JobPreparationAndReleaseTaskExecutionInformation;
+import com.microsoft.azure.batch.protocol.models.JobPreparationTask;
+import com.microsoft.azure.batch.protocol.models.JobReleaseTask;
+import com.microsoft.azure.batch.protocol.models.JobStatistics;
+import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.OnAllTasksComplete;
+import com.microsoft.azure.batch.protocol.models.PoolInformation;
+import com.microsoft.azure.batch.protocol.models.TaskCounts;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -15,15 +43,15 @@ import java.util.List;
  */
 public class JobOperations implements IInheritedBehaviors {
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     JobOperations(BatchClient batchClient, Collection<BatchClientBehavior> inheritedBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
     }
 
     /**
@@ -33,7 +61,7 @@ public class JobOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -44,7 +72,7 @@ public class JobOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -72,7 +100,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().jobs().getAllLifetimeStatistics(options);
+        return this.parentBatchClient.protocolLayer().jobs().getAllLifetimeStatistics(options);
     }
 
     /**
@@ -117,7 +145,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getJobOptions);
 
-        return this._parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
+        return this.parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
     }
 
     /**
@@ -159,7 +187,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        return this._parentBatchClient.protocolLayer().jobs().list(jobListOptions);
+        return this.parentBatchClient.protocolLayer().jobs().list(jobListOptions);
     }
 
     /**
@@ -204,7 +232,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        return this._parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
+        return this.parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
     }
 
     /**
@@ -234,7 +262,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        return this._parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
+        return this.parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
     }
 
     /**
@@ -290,7 +318,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().add(job, options);
+        this.parentBatchClient.protocolLayer().jobs().add(job, options);
     }
 
     /**
@@ -317,7 +345,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().delete(jobId, options);
+        this.parentBatchClient.protocolLayer().jobs().delete(jobId, options);
     }
 
     /**
@@ -357,7 +385,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().terminate(jobId, terminateReason, options);
+        this.parentBatchClient.protocolLayer().jobs().terminate(jobId, terminateReason, options);
     }
 
     /**
@@ -384,7 +412,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().enable(jobId, options);
+        this.parentBatchClient.protocolLayer().jobs().enable(jobId, options);
     }
 
     /**
@@ -413,7 +441,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().disable(jobId, disableJobOption, options);
+        this.parentBatchClient.protocolLayer().jobs().disable(jobId, disableJobOption, options);
     }
 
     /**
@@ -461,7 +489,7 @@ public class JobOperations implements IInheritedBehaviors {
                 .withOnAllTasksComplete(onAllTasksComplete)
                 .withMetadata(metadata);
 
-        this._parentBatchClient.protocolLayer().jobs().update(jobId, param, options);
+        this.parentBatchClient.protocolLayer().jobs().update(jobId, param, options);
     }
 
     /**
@@ -562,7 +590,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().jobs().patch(jobId, jobPatchParameter, options);
+        this.parentBatchClient.protocolLayer().jobs().patch(jobId, jobPatchParameter, options);
     }
 
     /**
@@ -593,7 +621,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().jobs().getTaskCounts(jobId, options);
+        return this.parentBatchClient.protocolLayer().jobs().getTaskCounts(jobId, options);
     }
 
 }

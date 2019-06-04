@@ -6,7 +6,7 @@ package com.microsoft.azure.eventprocessorhost;
 public class LeaseLostException extends Exception {
     private static final long serialVersionUID = -4625001822439809869L;
 
-    private final BaseLease lease;
+    private final transient BaseLease lease;
 
     LeaseLostException(BaseLease lease, Throwable cause) {
         super(null, cause);

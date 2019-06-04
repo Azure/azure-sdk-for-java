@@ -125,7 +125,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                                 "clientId[%s], path[%s], linkName[%s] - Reschedule operation timer, current: [%s], remaining: [%s] secs",
                                                 getClientId(),
                                                 receivePath,
-                                                receiveLink.getName(),
+                                                getReceiveLinkName(),
                                                 Instant.now(),
                                                 timeoutTracker.remaining().getSeconds()));
                             }
@@ -161,7 +161,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                                 TRACE_LOGGER.debug(
                                                         String.format(Locale.US,
                                                                 "clientId[%s], path[%s], linkName[%s] - token renewed",
-                                                                getClientId(), receivePath, receiveLink.getName()));
+                                                                getClientId(), receivePath, getReceiveLinkName()));
                                             }
                                         }
 
@@ -171,7 +171,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                                 TRACE_LOGGER.info(
                                                         String.format(Locale.US,
                                                                 "clientId[%s], path[%s], linkName[%s], tokenRenewalFailure[%s]",
-                                                                getClientId(), receivePath, receiveLink.getName(), error.getMessage()));
+                                                                getClientId(), receivePath, getReceiveLinkName(), error.getMessage()));
                                             }
                                         }
                                     });
@@ -180,7 +180,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                 TRACE_LOGGER.info(
                                         String.format(Locale.US,
                                                 "clientId[%s], path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]",
-                                                getClientId(), receivePath, receiveLink.getName(), exception.getMessage()));
+                                                getClientId(), receivePath, getReceiveLinkName(), exception.getMessage()));
                             }
                         }
                     }
@@ -243,6 +243,10 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         return returnMessages;
     }
 
+    private String getReceiveLinkName() {
+        return this.receiveLink == null ? "null" : this.receiveLink.getName();
+    }
+
     public Duration getReceiveTimeout() {
         return this.receiveTimeout;
     }
@@ -270,7 +274,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                 "clientId[%s], path[%s], linkName[%s] - schedule operation timer, current: [%s], remaining: [%s] secs",
                                 this.getClientId(),
                                 this.receivePath,
-                                this.receiveLink.getName(),
+                                this.getReceiveLinkName(),
                                 Instant.now(),
                                 this.receiveTimeout.getSeconds()));
             }
@@ -314,8 +318,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             this.sendFlow(this.prefetchCount - this.prefetchedMessages.size());
 
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("onOpenComplete - clientId[%s], receiverPath[%s], linkName[%s], updated-link-credit[%s], sentCredits[%s]",
-                        this.getClientId(), this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
+                TRACE_LOGGER.info(String.format(Locale.US, "onOpenComplete - clientId[%s], receiverPath[%s], linkName[%s], updated-link-credit[%s], sentCredits[%s]",
+                        this.getClientId(), this.receivePath, this.getReceiveLinkName(), this.receiveLink.getCredit(), this.prefetchCount));
             }
         } else {
             synchronized (this.errorConditionLock) {
@@ -394,9 +398,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         this.prefetchedMessages.clear();
 
         if (this.getIsClosingOrClosed()) {
-            if (this.closeTimer != null)
+            if (this.closeTimer != null) {
                 this.closeTimer.cancel(false);
-
+            }
             this.drainPendingReceives(exception);
             this.linkClose.complete(null);
         } else {
@@ -414,7 +418,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         String.format(Locale.US, "clientId[%s], receiverPath[%s], linkName[%s], onError: %s",
                                 this.getClientId(),
                                 this.receivePath,
-                                this.receiveLink.getName(),
+                                this.getReceiveLinkName(),
                                 completionException));
             }
 
@@ -432,7 +436,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         @Override
                         public void onEvent() {
                             if (!MessageReceiver.this.getIsClosingOrClosed()
-                                    && (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
+                                    && (receiveLink == null || receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
                                 createReceiveLink();
                                 underlyingFactory.getRetryPolicy().incrementRetryCount(getClientId());
                             }
@@ -445,7 +449,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                 String.format(Locale.US, "clientId[%s], receiverPath[%s], linkName[%s], scheduling createLink encountered error: %s",
                                         this.getClientId(),
                                         this.receivePath,
-                                        this.receiveLink.getName(), ignore.getLocalizedMessage()));
+                                        this.getReceiveLinkName(), ignore.getLocalizedMessage()));
                     }
                 }
             }
@@ -480,6 +484,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private void createReceiveLink() {
         synchronized (this.errorConditionLock) {
             if (this.creatingLink) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
+                            String.format(Locale.US,
+                                    "clientId[%s], path[%s], operationTimeout[%s], creating a receive link is already in progress",
+                                    this.getClientId(), this.receivePath, this.operationTimeout));
+                }
+
                 return;
             }
 
@@ -502,6 +513,12 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             public void accept(Session session) {
                 // if the MessageReceiver is closed - we no-longer need to create the link
                 if (MessageReceiver.this.getIsClosingOrClosed()) {
+                    if (TRACE_LOGGER.isInfoEnabled()) {
+                        TRACE_LOGGER.info(
+                                String.format(Locale.US,
+                                        "clientId[%s], path[%s], canceling the job of creating a receive link because the receiver was closed",
+                                        getClientId(), receivePath));
+                    }
 
                     session.close();
                     return;
@@ -511,9 +528,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 source.setAddress(receivePath);
 
                 final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
-                if (filterMap != null)
+                if (filterMap != null) {
                     source.setFilter(filterMap);
-
+                }
                 final Receiver receiver = session.receiver(TrackingUtil.getLinkName(session));
                 receiver.setSource(source);
 
@@ -526,14 +543,14 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
 
                 final Map<Symbol, Object> linkProperties = MessageReceiver.this.settingsProvider.getProperties();
-                if (linkProperties != null)
+                if (linkProperties != null) {
                     receiver.setProperties(linkProperties);
-
+                }
                 final Symbol[] desiredCapabilities = MessageReceiver.this.settingsProvider.getDesiredCapabilities();
-                if (desiredCapabilities != null)
+                if (desiredCapabilities != null) {
                     receiver.setDesiredCapabilities(desiredCapabilities);
-
-                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
+                }
+                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this, MessageReceiver.this.getClientId());
                 BaseHandler.setHandler(receiver, handler);
 
                 if (MessageReceiver.this.receiveLink != null) {
@@ -569,9 +586,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
-                            if (MessageReceiver.this.getIsClosingOrClosed())
+                            if (MessageReceiver.this.getIsClosingOrClosed()) {
                                 return;
-
+                            }
                             underlyingFactory.getSession(
                                     receivePath,
                                     onSessionOpen,
@@ -613,16 +630,21 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private void sendFlow(final int credits) {
         // slow down sending the flow - to make the protocol less-chat'y
         this.nextCreditToFlow += credits;
-        if (this.nextCreditToFlow >= this.prefetchCount || this.nextCreditToFlow >= 100) {
+        if (this.shouldSendFlow()) {
             final int tempFlow = this.nextCreditToFlow;
             this.receiveLink.flow(tempFlow);
             this.nextCreditToFlow = 0;
 
             if (TRACE_LOGGER.isDebugEnabled()) {
-                TRACE_LOGGER.debug(String.format("clientId[%s], receiverPath[%s], linkName[%s], updated-link-credit[%s], sentCredits[%s], ThreadId[%s]",
-                        this.getClientId(), this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow, Thread.currentThread().getId()));
+                TRACE_LOGGER.debug(String.format(Locale.US, "clientId[%s], receiverPath[%s], linkName[%s], updated-link-credit[%s], sentCredits[%s], ThreadId[%s]",
+                        this.getClientId(), this.receivePath, this.getReceiveLinkName(), this.receiveLink.getCredit(), tempFlow, Thread.currentThread().getId()));
             }
         }
+    }
+
+    private boolean shouldSendFlow() {
+        return (this.nextCreditToFlow > 0 && this.nextCreditToFlow >= (this.prefetchCount / 2))
+                || (this.nextCreditToFlow >= 100);
     }
 
     private void scheduleLinkOpenTimeout(final TimeoutTracker timeout) {
@@ -633,10 +655,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         creatingLink = false;
 
                         if (!linkOpen.getWork().isDone()) {
-                            final Receiver link;
                             final Exception lastReportedLinkError;
                             synchronized (errorConditionLock) {
-                                link = MessageReceiver.this.receiveLink;
                                 lastReportedLinkError = MessageReceiver.this.lastKnownLinkError;
                             }
 
@@ -800,14 +820,16 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
         @Override
         public void onEvent() {
+            // If there are prefetched messages, then we check to see if there are any pendingReceives before pulling it
+            // from the top of the pendingReceives queue.
+            while (!prefetchedMessages.isEmpty() && !pendingReceives.isEmpty()) {
+                ReceiveWorkItem pendingReceive = pendingReceives.poll();
+                CompletableFuture<Collection<Message>> work = pendingReceive.getWork();
 
-            ReceiveWorkItem pendingReceive = pendingReceives.poll();
-            while (!prefetchedMessages.isEmpty() && pendingReceive != null) {
-                if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
+                if (work != null && !work.isDone()) {
                     Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
-                    pendingReceive.getWork().complete(receivedMessages);
+                    work.complete(receivedMessages);
                 }
-                pendingReceive = pendingReceives.poll();
             }
         }
     }
@@ -819,7 +841,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             receiveWork.onEvent();
 
             if (!MessageReceiver.this.getIsClosingOrClosed()
-                    && (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
+                    && (receiveLink == null || receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
                 createReceiveLink();
             }
         }

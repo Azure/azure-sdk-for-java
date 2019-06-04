@@ -1,23 +1,12 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse;
 import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.StorageErrorCode;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -26,12 +15,16 @@ import io.reactivex.Single;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.StrictMath.toIntExact;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains a collection of methods (and structures associated with those methods) which perform higher-level
@@ -60,6 +53,11 @@ public final class TransferManager {
      *         full. This value will be ignored if the data can be uploaded in a single put-blob operation. Must be
      *         between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well that
      *         {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
+     * @param maxSingleShotSize
+     *         If the size of the data is less than or equal to this value, it will be uploaded in a single put
+     *         rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
+     *         ignored. Some constraints to consider are that more requests cost more, but several small or mid-sized
+     *         requests may sometimes perform better. Must be greater than 0. May be null to accept default behavior.
      * @param options
      *         {@link TransferManagerUploadToBlockBlobOptions}
      *
@@ -69,21 +67,26 @@ public final class TransferManager {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.uploadFileToBlockBlob")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public static Single<CommonRestResponse> uploadFileToBlockBlob(
-            final AsynchronousFileChannel file, final BlockBlobURL blockBlobURL, final int blockLength,
+    public static Single<CommonRestResponse> uploadFileToBlockBlob(final AsynchronousFileChannel file,
+            final BlockBlobURL blockBlobURL, final int blockLength, Integer maxSingleShotSize,
             final TransferManagerUploadToBlockBlobOptions options) throws IOException {
         Utility.assertNotNull("file", file);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
+        if (maxSingleShotSize != null) {
+            Utility.assertInBounds("maxSingleShotSize", maxSingleShotSize, 0, BlockBlobURL.MAX_UPLOAD_BLOB_BYTES);
+        } else {
+            maxSingleShotSize = BlockBlobURL.MAX_UPLOAD_BLOB_BYTES;
+        }
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
         Lock progressLock = new ReentrantLock();
 
         // If the size of the file can fit in a single upload, do it this way.
-        if (file.size() < BlockBlobURL.MAX_UPLOAD_BLOB_BYTES) {
+        if (file.size() < maxSingleShotSize) {
             Flowable<ByteBuffer> data = FlowableUtil.readFile(file);
 
             data = ProgressReporter.addProgressReporting(data, optionsReal.progressReceiver());
@@ -108,16 +111,16 @@ public final class TransferManager {
                  */
                 .concatMapEager(i -> {
                     // The max number of bytes for a block is currently 100MB, so the final result must be an int.
-                    int count = (int) Math.min((long)blockLength, (file.size() - i * (long)blockLength));
+                    int count = (int) Math.min((long) blockLength, (file.size() - i * (long) blockLength));
                     // i * blockLength could be a long, so we need a cast to prevent overflow.
-                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long)blockLength, count);
+                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long) blockLength, count);
 
                     // Report progress as necessary.
                     data = ProgressReporter.addParallelProgressReporting(data, optionsReal.progressReceiver(),
                                 progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
@@ -187,9 +190,8 @@ public final class TransferManager {
      */
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
             BlobRange range, TransferManagerDownloadFromBlobOptions options) {
-        BlobRange rangeReal = range == null ? BlobRange.DEFAULT : range;
-        TransferManagerDownloadFromBlobOptions optionsReal = options == null ?
-                TransferManagerDownloadFromBlobOptions.DEFAULT : options;
+        BlobRange rangeReal = range == null ? new BlobRange() : range;
+        TransferManagerDownloadFromBlobOptions optionsReal = options == null ? new TransferManagerDownloadFromBlobOptions() : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
@@ -198,93 +200,160 @@ public final class TransferManager {
         AtomicLong totalProgress = new AtomicLong(0);
 
         // Get the size of the data and etag if not specified by the user.
-        Single<List<Object>> setupSingle = getSetupSingle(blobURL, rangeReal, optionsReal);
+        Single<DownloadHelper> setupSingle = getSetupSingle(blobURL, rangeReal, optionsReal);
 
-        return setupSingle.flatMap(setupPair -> {
-            Long dataSize = (Long)setupPair.get(0);
-            BlobAccessConditions realConditions = (BlobAccessConditions)setupPair.get(1);
+        return setupSingle.flatMap(helper -> {
+            long newCount = helper.newCount;
+            BlobAccessConditions realConditions = helper.realConditions;
 
-            int numChunks = calculateNumBlocks(dataSize, optionsReal.chunkSize());
+            int numChunks = calculateNumBlocks(newCount, optionsReal.chunkSize());
 
             // In case it is an empty blob, this ensures we still actually perform a download operation.
             numChunks = numChunks == 0 ? 1 : numChunks;
 
-            return Observable.range(0, numChunks)
-                    .flatMap(chunkNum -> {
+            DownloadResponse initialResponse = helper.initialResponse;
+            return Flowable.range(0, numChunks)
+                    .flatMapSingle(chunkNum -> {
+                        // The first chunk was retrieved during setup.
+                        if (chunkNum == 0) {
+                            return writeBodyToFile(initialResponse, file, 0, optionsReal, progressLock, totalProgress);
+                        }
+
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
                         long chunkSizeActual = Math.min(optionsReal.chunkSize(),
-                                dataSize - (chunkNum * optionsReal.chunkSize()));
+                                newCount - (chunkNum * optionsReal.chunkSize()));
                         BlobRange chunkRange = new BlobRange().withOffset(
                                 rangeReal.offset() + (chunkNum * optionsReal.chunkSize()))
                                 .withCount(chunkSizeActual);
 
                         // Make the download call.
                         return blobURL.download(chunkRange, realConditions, false, null)
-                                // Extract the body.
-                                .flatMapObservable(response -> {
-                                    Flowable<ByteBuffer> data = response.body(
-                                            optionsReal.reliableDownloadOptionsPerBlock());
-
-                                    // Report progress as necessary.
-                                    data = ProgressReporter.addParallelProgressReporting(data,
-                                            optionsReal.progressReceiver(), progressLock, totalProgress);
-
-                                    // Write to the file.
-                                    return FlowableUtil.writeFile(data, file,
-                                            chunkNum * optionsReal.chunkSize())
-                                            /*
-                                            Satisfy the return type. Observable required for flatmap to accept
-                                            maxConcurrency. We want to eventually give the user back the headers.
-                                             */
-                                            .andThen(Single.just(response.headers()))
-                                            .toObservable();
-                                });
-                    }, optionsReal.parallelism())
+                                .flatMap(response ->
+                                    writeBodyToFile(response, file, chunkNum, optionsReal, progressLock,
+                                            totalProgress));
+                    }, false, optionsReal.parallelism())
                     // All the headers will be the same, so we just pick the last one.
                     .lastOrError();
         });
     }
 
-    private static Single<List<Object>> getSetupSingle(BlobURL blobURL, BlobRange r,
+    /*
+    Construct a Single which will emit the total count for calculating the number of chunks, access conditions
+    containing the etag to lock on, and the response from downloading the first chunk.
+     */
+    private static Single<DownloadHelper> getSetupSingle(BlobURL blobURL, BlobRange r,
             TransferManagerDownloadFromBlobOptions o) {
+        // We will scope our initial download to either be one chunk or the total size.
+        long initialChunkSize = r.count() != null && r.count() < o.chunkSize() ? r.count() : o.chunkSize();
+
+        return blobURL.download(new BlobRange().withOffset(r.offset()).withCount(initialChunkSize),
+                o.accessConditions(), false, null)
+                .map(response -> {
+                    /*
+                    Either the etag was set and it matches because the download succeed, so this is a no-op, or there
+                    was no etag, so we set it here.
+                     */
+                    BlobAccessConditions newConditions = setEtag(o.accessConditions(), response.headers().eTag());
+
+                    /*
+                    If the user either didn't specify a count or they specified a count greater than the size of the
+                    remaining data, take the size of the remaining data. This is to prevent the case where the count
+                    is much much larger than the size of the blob and we could try to download at an invalid offset.
+                     */
+                    long newCount;
+                    // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
+                    long totalLength = extractTotalBlobLength(response.headers().contentRange());
+                    if (r.count() == null || r.count() > (totalLength - r.offset())) {
+                        newCount = totalLength - r.offset();
+                    } else {
+                        newCount = r.count();
+                    }
+                    return new DownloadHelper(newCount, newConditions, response);
+                })
+                .onErrorResumeNext(throwable -> {
+                    /*
+                    In the case of an empty blob, we still want to report successful download to file and give back
+                    valid DownloadResponseHeaders. Attempting a range download on an empty blob will return an
+                    InvalidRange error code and a Content-Range header of the format "bytes * /0".
+                    We need to double check that the total size is zero in the case that the customer has attempted an
+                    invalid range on a non-zero length blob.
+                     */
+                    if (throwable instanceof StorageException
+                            && ((StorageException) throwable).errorCode() == StorageErrorCode.INVALID_RANGE
+                            && extractTotalBlobLength(((StorageException) throwable).response()
+                                    .headers().value("Content-Range")) == 0) {
+                        return blobURL.download(new BlobRange().withOffset(0).withCount(0L), o.accessConditions(),
+                                false, null)
+                                .map(response -> {
+                                    /*
+                                    Ensure the blob is still 0 length by checking our download was the full length.
+                                    (200 is for full blob; 206 is partial).
+                                     */
+                                    if (response.statusCode() != 200) {
+                                        throw new IllegalStateException("Blob was modified mid download. It was "
+                                            + "originally 0 bytes and is now larger.");
+                                    }
+                                    return new DownloadHelper(0L, o.accessConditions(), response);
+                                });
+                    }
+                    return Single.error(throwable);
+                });
+    }
+
+    private static BlobAccessConditions setEtag(BlobAccessConditions accessConditions, String etag) {
         /*
-        Construct a Single which will emit the total count of bytes to be downloaded and retrieve an etag to lock on to
-        if one was not specified. We use a single for this because we may have to make a REST call to get the length to
-        calculate the count and we need to maintain asynchronicity.
+        We don't want to modify the user's object, so we'll create a duplicate and set the
+        retrieved etag.
          */
-        if (r.count() == null || o.accessConditions().modifiedAccessConditions().ifMatch() == null) {
-            return blobURL.getProperties(o.accessConditions(), null)
-                    .map(response -> {
-                        BlobAccessConditions newConditions;
-                        if (o.accessConditions().modifiedAccessConditions().ifMatch() == null) {
-                            newConditions = new BlobAccessConditions()
-                                    .withModifiedAccessConditions(new ModifiedAccessConditions()
-                                            .withIfModifiedSince(
-                                                    o.accessConditions().modifiedAccessConditions().ifModifiedSince())
-                                            .withIfUnmodifiedSince(
-                                                    o.accessConditions().modifiedAccessConditions().ifUnmodifiedSince())
-                                            .withIfMatch(response.headers().eTag())
-                                            .withIfNoneMatch(
-                                                    o.accessConditions().modifiedAccessConditions().ifNoneMatch()))
-                                    .withLeaseAccessConditions(o.accessConditions().leaseAccessConditions());
-                        } else {
-                            newConditions = o.accessConditions();
-                        }
-                        long newCount;
-                        /*
-                        If the user either didn't specify a count or they specified a count greater than the size of the
-                        remaining data, take the size of the remaining data. This is to prevent the case where the count
-                        is much much larger than the size of the blob and we could try to download at an invalid offset.
-                         */
-                        if (r.count() == null || r.count() > response.headers().contentLength() - r.offset()) {
-                            newCount = response.headers().contentLength() - r.offset();
-                        } else {
-                            newCount = r.count();
-                        }
-                        return Arrays.asList(newCount, newConditions);
-                    });
-        } else {
-            return Single.just(Arrays.asList(r.count(), o.accessConditions()));
+        return new BlobAccessConditions()
+                .withModifiedAccessConditions(new ModifiedAccessConditions()
+                        .withIfModifiedSince(
+                                accessConditions.modifiedAccessConditions().ifModifiedSince())
+                        .withIfUnmodifiedSince(
+                                accessConditions.modifiedAccessConditions().ifUnmodifiedSince())
+                        .withIfMatch(etag)
+                        .withIfNoneMatch(
+                                accessConditions.modifiedAccessConditions().ifNoneMatch()))
+                .withLeaseAccessConditions(accessConditions.leaseAccessConditions());
+    }
+
+    private static Single<BlobDownloadHeaders> writeBodyToFile(DownloadResponse response,
+            AsynchronousFileChannel file, long chunkNum, TransferManagerDownloadFromBlobOptions optionsReal,
+            Lock progressLock, AtomicLong totalProgress) {
+
+        // Extract the body.
+        Flowable<ByteBuffer> data = response.body(
+                optionsReal.reliableDownloadOptionsPerBlock());
+
+        // Report progress as necessary.
+        data = ProgressReporter.addParallelProgressReporting(data,
+                optionsReal.progressReceiver(), progressLock, totalProgress);
+
+        // Write to the file.
+        return FlowableUtil.writeFile(data, file,
+                chunkNum * optionsReal.chunkSize())
+                /*
+                Satisfy the return type. Observable required for flatmap to accept
+                maxConcurrency. We want to eventually give the user back the headers.
+                 */
+                .andThen(Single.just(response.headers()));
+    }
+
+    private static long extractTotalBlobLength(String contentRange) {
+        return Long.parseLong(contentRange.split("/")[1]);
+    }
+
+    private static final class DownloadHelper {
+        final long newCount;
+
+        final BlobAccessConditions realConditions;
+
+        final DownloadResponse initialResponse;
+
+        DownloadHelper(long newCount, BlobAccessConditions realConditions, DownloadResponse initialResponse) {
+            this.newCount = newCount;
+            this.realConditions = realConditions;
+            this.initialResponse = initialResponse;
         }
     }
 
@@ -301,7 +370,7 @@ public final class TransferManager {
      *
      * Note that buffering must be strictly sequential. Only the upload portion of this operation may be parallelized;
      * the reads cannot be. Therefore, this method is not as optimal as
-     * {@link #uploadFileToBlockBlob(AsynchronousFileChannel, BlockBlobURL, int, TransferManagerUploadToBlockBlobOptions)}
+     * {@link #uploadFileToBlockBlob(AsynchronousFileChannel, BlockBlobURL, int, Integer, TransferManagerUploadToBlockBlobOptions)}
      * and if the source is known to be a file, that method should be preferred.
      *
      * @param source
@@ -337,8 +406,8 @@ public final class TransferManager {
         Utility.assertNotNull("source", source);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
 
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
-                TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null
+                ? new TransferManagerUploadToBlockBlobOptions() : options;
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -357,11 +426,11 @@ public final class TransferManager {
                 return Flowable.just(buffer);
             }
             List<ByteBuffer> smallerChunks = new ArrayList<>();
-            for (int i=0; i < Math.ceil(buffer.remaining() / (double)blockSize); i++) {
+            for (int i = 0; i < Math.ceil(buffer.remaining() / (double) blockSize); i++) {
                 // Note that duplicate does not duplicate data. It simply creates a duplicate view of the data.
                 ByteBuffer duplicate = buffer.duplicate();
                 duplicate.position(i * blockSize);
-                duplicate.limit(Math.min(duplicate.limit(), (i+1) * blockSize));
+                duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
                 smallerChunks.add(duplicate);
             }
             return Flowable.fromIterable(smallerChunks);
@@ -378,7 +447,7 @@ public final class TransferManager {
                             optionsReal.progressReceiver(), progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other

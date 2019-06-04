@@ -6,8 +6,7 @@ package com.microsoft.azure.batch;
 /**
  * Contains error codes specific to pool resize errors.
  */
-public final class PoolResizeErrorCodes
-{
+public final class PoolResizeErrorCodes {
     /**
      * The account has reached its quota of compute nodes.
      */
@@ -21,7 +20,7 @@ public final class PoolResizeErrorCodes
     /**
      * The Batch service was unable to allocate the desired number of compute nodes within the resize timeout.
      */
-    public static final String AllocationTimedOut= "AllocationTimedout";
+    public static final String AllocationTimedOut = "AllocationTimedout";
 
     /**
      * An error occurred when removing compute nodes from the pool.

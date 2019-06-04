@@ -75,4 +75,14 @@ public class CompleteLease extends BaseLease {
         this.epoch++;
         return this.epoch;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

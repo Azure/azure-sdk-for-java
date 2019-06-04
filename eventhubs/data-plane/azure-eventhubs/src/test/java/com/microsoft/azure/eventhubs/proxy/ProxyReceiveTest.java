@@ -10,7 +10,11 @@ import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.sendrecv.ReceiveTest;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,23 +26,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProxyReceiveTest extends SasTokenTestBase {
+    private static final int PROXY_PORT = 8899;
 
-    private static final int proxyPort = 8899;
     private static ProxyServer proxyServer;
     private static ReceiveTest receiveTest;
     private static ProxySelector defaultProxySelector;
 
     @BeforeClass
     public static void initialize() throws Exception {
-        proxyServer = ProxyServer.create("localhost", proxyPort);
-        proxyServer.start(t -> {});
+        proxyServer = ProxyServer.create("localhost", PROXY_PORT);
+        proxyServer.start(t -> {
+        });
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
                 LinkedList<Proxy> proxies = new LinkedList<>();
-                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", proxyPort)));
+                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", PROXY_PORT)));
                 return proxies;
             }
 

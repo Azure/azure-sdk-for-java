@@ -94,21 +94,19 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
             request = builder.build();
         }
 
-        String signature = request.method() + "\n";
-        signature = signature + headerValue(request, "Content-Encoding")
-                + "\n";
-        signature = signature + headerValue(request, "Content-Language")
-                + "\n";
+        StringBuffer signature = new StringBuffer(request.method());
+        signature.append("\n");
+        signature.append(headerValue(request, "Content-Encoding")).append("\n");
+        signature.append(headerValue(request, "Content-Language")).append("\n");
 
         // Special handle content length
         long length = -1;
         if (request.body() != null) {
             length = request.body().contentLength();
         }
-        signature = signature + (length >= 0 ? Long.valueOf(length) : "")
-                + "\n";
+        signature.append((length >= 0 ? Long.valueOf(length) : "")).append("\n");
 
-        signature = signature + headerValue(request, "Content-MD5") + "\n";
+        signature.append(headerValue(request, "Content-MD5")).append("\n");
 
         // Special handle content type header
         String contentType = request.header("Content-Type");
@@ -121,16 +119,14 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
                 }
             }
         }
-        signature = signature + contentType + "\n";
+        signature.append(contentType).append("\n");
 
-        signature = signature + headerValue(request, "Date") + "\n";
-        signature = signature + headerValue(request, "If-Modified-Since")
-                + "\n";
-        signature = signature + headerValue(request, "If-Match") + "\n";
-        signature = signature + headerValue(request, "If-None-Match") + "\n";
-        signature = signature + headerValue(request, "If-Unmodified-Since")
-                + "\n";
-        signature = signature + headerValue(request, "Range") + "\n";
+        signature.append(headerValue(request, "Date")).append("\n");
+        signature.append(headerValue(request, "If-Modified-Since")).append("\n");
+        signature.append(headerValue(request, "If-Match")).append("\n");
+        signature.append(headerValue(request, "If-None-Match")).append("\n");
+        signature.append(headerValue(request, "If-Unmodified-Since")).append("\n");
+        signature.append(headerValue(request, "Range")).append("\n");
 
         ArrayList<String> customHeaders = new ArrayList<>();
         for (String name : request.headers().names()) {
@@ -143,12 +139,12 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
             String value = request.header(canonicalHeader);
             value = value.replace('\n', ' ').replace('\r', ' ')
                     .replaceAll("^[ ]+", "");
-            signature = signature + canonicalHeader + ":" + value + "\n";
+            signature.append(canonicalHeader).append(":").append(value).append("\n");
         }
 
-        signature = signature + "/"
-                + credentials.accountName().toLowerCase() + "/"
-                + request.url().uri().getRawPath().replaceAll("^[/]+", "");
+        signature.append("/")
+                .append(credentials.accountName().toLowerCase()).append("/")
+                .append(request.url().uri().getRawPath().replaceAll("^[/]+", ""));
 
         String query = request.url().query();
         if (query != null) {
@@ -160,14 +156,14 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
                         .toLowerCase(Locale.US);
                 queryComponents.put(
                         key,
-                        key + ":" + URLDecoder.decode(pair.substring(idx + 1),"UTF-8"));
+                        key + ":" + URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
             }
 
             for (Map.Entry<String, String> entry : queryComponents.entrySet()) {
-                signature = signature + "\n" + entry.getValue();
+                signature.append("\n").append(entry.getValue());
             }
         }
-        String signedSignature = sign(signature);
+        String signedSignature = sign(signature.toString());
         String authorization = "SharedKey " + credentials.accountName()
                 + ":" + signedSignature;
         builder.header("Authorization", authorization);
