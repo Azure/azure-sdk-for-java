@@ -107,7 +107,7 @@
     </profile>
   </profiles>
   <modules>
-    <!-- roll up pakcages -->
+    <!-- roll up packages -->
     <module>./azure</module>
     <!-- multi api -->
     <module>../../resources/resource-manager/v2016_06_01</module>

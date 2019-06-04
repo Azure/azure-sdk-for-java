@@ -369,11 +369,6 @@ public final class Azure {
     }
 
     /**
-     * @return Entry point to manage compute LogAnalytics.
-     */
-    public LogAnalytics computeLogAnalytics() { return this.computeManager20171201.logAnalytics(); }
-
-    /**
      * @return Entry point to manage computer operations.
      */
     public com.microsoft.azure.management.compute.v2017_12_01.Operations computerOperations() { return this.computeManager20171201.operations(); }
@@ -484,16 +479,6 @@ public final class Azure {
     }
 
     /**
-     * @return Entry point to manage ActivityLogs.
-     */
-    public ActivityLogs activityLogs() { return this.monitorManager20150401.activityLogs(); }
-
-    /**
-     * @return Entry point to manage AutoscaleSettings.
-     */
-    public AutoscaleSettings autoscaleSettings() { return this.monitorManager20150401.autoscaleSettings(); }
-
-    /**
      * @return Entry point to manage EventCategories.
      */
     public EventCategories eventCategories() { return this.monitorManager20150401.eventCategories(); }
@@ -502,11 +487,6 @@ public final class Azure {
      * @return Entry point to manage monitor Operations.
      */
     public com.microsoft.azure.management.monitor.v2015_04_01.Operations monitorOperations() { return this.monitorManager20150401.operations(); }
-
-    /**
-     * @return Entry point to manage TenantActivityLogs.
-     */
-    public TenantActivityLogs tenantActivityLogs() { return this.monitorManager20150401.tenantActivityLogs(); }
 
     /**
      * @return Entry point to manage DiagnosticSettings.
@@ -537,55 +517,6 @@ public final class Azure {
      * @return Entry point to manage ManagementLocks.
      */
     public ManagementLocks managementLocks() { return this.locksManager20160901.managementLocks(); }
-
-    /**
-     * @return Entry point to manage ApplicationGateways.
-     */
-    public ApplicationGateways applicationGateways() {
-        return this.networkManager20171001.applicationGateways();
-    }
-
-    /**
-     * @return Entry point to manage ApplicationSecurityGroups.
-     */
-    public ApplicationSecurityGroups applicationSecurityGroups() {
-        return this.networkManager20171001.applicationSecurityGroups();
-    }
-
-    /**
-     * @return Entry point to manage AvailableEndpointServices.
-     */
-    public AvailableEndpointServices availableEndpointServices() {
-        return this.networkManager20171001.availableEndpointServices();
-    }
-
-    /**
-     * @return Entry point to manage ExpressRouteCircuitAuthorizations.
-     */
-    public ExpressRouteCircuitAuthorizations expressRouteCircuitAuthorizations() {
-        return this.networkManager20171001.expressRouteCircuitAuthorizations();
-    }
-
-    /**
-     * @return Entry point to manage ExpressRouteCircuitPeerings.
-     */
-    public ExpressRouteCircuitPeerings expressRouteCircuitPeerings() {
-        return this.networkManager20171001.expressRouteCircuitPeerings();
-    }
-
-    /**
-     * @return Entry point to manage ExpressRouteCircuits.
-     */
-    public ExpressRouteCircuits expressRouteCircuits() {
-        return this.networkManager20171001.expressRouteCircuits();
-    }
-
-    /**
-     * @return Entry point to manage ExpressRouteServiceProviders.
-     */
-    public ExpressRouteServiceProviders expressRouteServiceProviders() {
-        return this.networkManager20171001.expressRouteServiceProviders();
-    }
 
     /**
      * @return Entry point to manage LoadBalancers.
@@ -679,20 +610,6 @@ public final class Azure {
     }
 
     /**
-     * @return Entry point to manage NetworkWatchers.
-     */
-    public NetworkWatchers networkWatchers() {
-        return this.networkManager20171001.networkWatchers();
-    }
-
-    /**
-     * @return Entry point to manage PacketCaptures.
-     */
-    public PacketCaptures packetCaptures() {
-        return this.networkManager20171001.packetCaptures();
-    }
-
-    /**
      * @return Entry point to manage ConnectionMonitors.
      */
     public ConnectionMonitors connectionMonitors() {
@@ -739,13 +656,6 @@ public final class Azure {
      */
     public Routes routes() {
         return this.networkManager20171001.routes();
-    }
-
-    /**
-     * @return Entry point to manage BgpServiceCommunities.
-     */
-    public BgpServiceCommunities bgpServiceCommunities() {
-        return this.networkManager20171001.bgpServiceCommunities();
     }
 
     /**
@@ -848,24 +758,6 @@ public final class Azure {
     public com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans appServicePlans() { return this.appServiceManager20160901.appServicePlans(); }
 
     /**
-     * @return Entry point to manage AppServiceEnvironments.
-     */
-    public AppServiceEnvironments appServiceEnvironments() {
-        return this.appServiceManager20180201.appServiceEnvironments();
-    }
-
-    /**
-     * @return Entry point to manage AppServiceCertificateOrders.
-     */
-    public AppServiceCertificateOrders appServiceCertificateOrders() { return this.appServiceManager20180201.appServiceCertificateOrders(); }
-
-
-    /**
-     * @return Entry point to manage CertificateRegistrationProviders.
-     */
-    public CertificateRegistrationProviders certificateRegistrationProviders() { return this.appServiceManager20180201.certificateRegistrationProviders(); }
-
-    /**
      * @return Entry point to manage Certificates.
      */
     public Certificates certificates() { return this.appServiceManager20180201.certificates(); }
@@ -881,34 +773,14 @@ public final class Azure {
     public Diagnostics diagnostics() { return this.appServiceManager20180201.diagnostics(); }
 
     /**
-     * @return Entry point to manage DomainRegistrationProviders.
-     */
-    public DomainRegistrationProviders domainRegistrationProviders() { return this.appServiceManager20180201.domainRegistrationProviders(); }
-
-    /**
-     * @return Entry point to manage Domains.
-     */
-    public Domains domains() { return this.appServiceManager20180201.domains(); }
-
-    /**
      * @return Entry point to manage AppService Providers.
      */
     public com.microsoft.azure.management.appservice.v2018_02_01.Providers appServiceProviders() { return this.appServiceManager20180201.providers(); }
 
     /**
-     * @return Entry point to manage Recommendations.
-     */
-    public Recommendations recommendations() { return this.appServiceManager20180201.recommendations(); }
-
-    /**
      * @return Entry point to manage ResourceHealthMetadatas.
      */
     public ResourceHealthMetadatas resourceHealthMetadatas() { return this.appServiceManager20180201.resourceHealthMetadatas(); }
-
-    /**
-     * @return Entry point to manage TopLevelDomains.
-     */
-    public TopLevelDomains topLevelDomains() { return this.appServiceManager20180201.topLevelDomains(); }
 
     /**
      * @return Entry point to manage WebApps.
