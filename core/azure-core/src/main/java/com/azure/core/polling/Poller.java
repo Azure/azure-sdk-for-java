@@ -28,7 +28,9 @@ public class Poller<T> {
 
     /* Indicate to poll automatically or not when poller is created.
      * default value is false;*/
-    private boolean autoPolling;
+    private boolean autoPolling = true;
+
+    private Flux<PollResponse<T>> fluxAtHand;
 
     /**
      * Create a Poller that is configured to auto-poll.
@@ -84,18 +86,14 @@ public class Poller<T> {
      **/
     public Flux<PollResponse<T>> poll() {
         setStopPolling(false);
-        return sendPollRequestWithDelay()
-            //.flatMap(response -> Mono.just(response))
-            .repeat()
-            .timeout(Duration.ofMillis(this.pollerOptions.getTimeoutInMilliSeconds()))
-            .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED ||
-                pollResponse.status() == PollResponse.OperationStatus.FAILED ||
-                pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
-        /*return Flux.defer(() -> {
-            setStopPolling(false);
-            pollResponse=  sendPollRequestWithDelay().block(Duration.ofMillis(this.pollerOptions.getTimeoutInMilliSeconds()));
-            return Flux.just(pollResponse);
-        });*/
+        if (fluxAtHand == null) {
+            fluxAtHand = sendPollRequestWithDelay()
+                .repeat(this.pollerOptions.getTimeoutInMilliSeconds() / this.pollerOptions.getPollIntervalInMillis())
+                .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED ||
+                    pollResponse.status() == PollResponse.OperationStatus.FAILED ||
+                    pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
+        }
+        return fluxAtHand;
     }
 
     public Flux<PollResponse<T>> block() {
@@ -112,8 +110,11 @@ public class Poller<T> {
 
     Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
-            if (!isPollingStopped())
+            if (!isPollingStopped()) {
                 pollResponse = pollOperation.apply(pollResponse);
+            } else {
+                return Mono.empty();
+            }
             return Mono.just(pollResponse);
         })));
     }
@@ -143,42 +144,14 @@ public class Poller<T> {
     }
 
     private void setStopPolling(boolean stop) {
-        this.autoPolling = stop;
+        this.autoPolling = !stop;
     }
 
     public boolean isPollingStopped() {
-        return this.autoPolling;
+        return !this.autoPolling;
     }
 
     public PollResponse.OperationStatus getStatus() {
         return pollResponse != null ? pollResponse.status() : null;
     }
-/*
-    static String serializePoller(Poller poller) {
-        String serializedObject = "";
-        try {
-            ByteArrayOutputStream bArrOutStream = new ByteArrayOutputStream();
-            ObjectOutputStream objOutStream = new ObjectOutputStream(bArrOutStream);
-            objOutStream.writeObject(poller);
-            objOutStream.flush();
-            serializedObject = new String(Base64.getEncoder().encode(bArrOutStream.toByteArray()));
-        } catch (Exception ex) {
-            //TODO Handle Exception
-        }
-        return serializedObject;
-    }
-
-    static Poller deserializePoller(String serializedPoller) {
-        Poller poller = null;
-        try {
-            byte b[] = Base64.getDecoder().decode(serializedPoller.getBytes());
-            ByteArrayInputStream bi = new ByteArrayInputStream(b);
-            ObjectInputStream si = new ObjectInputStream(bi);
-            poller = (Poller) si.readObject();
-        } catch (Exception e) {
-            //TODO Handle Exception
-        }
-        return poller;
-    }
-    */
 }

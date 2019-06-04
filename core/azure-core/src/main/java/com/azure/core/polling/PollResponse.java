@@ -1,7 +1,6 @@
 package com.azure.core.polling;
 
 import com.azure.core.exception.HttpResponseException;
-import com.microsoft.azure.eventhubs.impl.Operation;
 
 import java.io.Serializable;
 

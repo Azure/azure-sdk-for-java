@@ -1,14 +1,22 @@
 package com.azure.core.polling;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.polling.PollResponse.OperationStatus;
+
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -16,127 +24,156 @@ import java.util.function.Supplier;
 
 public class PollerTests {
 
-/*
-    @Test
-    public void basicManualPollOnceTest() throws Exception {
-        MyCustomServiceResponse myCustomPollResponse = new MyCustomServiceResponse("service data");
-        PollResponse<MyCustomServiceResponse> myPollResponse = new PollResponse<MyCustomServiceResponse>(PollResponse.OperationStatus.IN_PROGRESS,myCustomPollResponse);
-        Supplier<PollResponse> serviceSupplier = () -> myPollResponse;
 
-        // Lambda Runnable
-        Runnable callbackToCancelOperation = () -> {
-            System.out.println(Thread.currentThread().getName() + " is running. Callback to cancel.");
-        };
-        int timeoutInMilliSeconds = 1000*60*5;
-        int pollIntervalInMillis = 10;
-        float poolIntervalGrowthFactor =1.0f;
+    private Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> createPollOperation(
+        PollResponse<CreateCertificateResponse> intermediateProgressPollResponse,
+        PollResponse<CreateCertificateResponse> finalPollResponse,
+        int pollIntervalInMillis,
+        int sendFinalResponseInSeconds
+    ) {
+        return new Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>>() {
+            // Will return success after this time.
+            LocalDateTime timeToReturnSuccess = LocalDateTime.now().plusSeconds(sendFinalResponseInSeconds);
 
-        PollerOptions pollerOptions =  new PollerOptions(timeoutInMilliSeconds,pollIntervalInMillis,poolIntervalGrowthFactor);
-        Poller<MyCustomServiceResponse> poller =  new Poller( pollerOptions, serviceSupplier,callbackToCancelOperation); // 5 minutes
-
-        Mono<MyCustomServiceResponse> pollResponseMono = poller.pollOnce();
-
-        pollResponseMono.subscribe(
-             pollResponse -> Assert.assertTrue(poller.status() == PollResponse.OperationStatus.IN_PROGRESS),
-             error ->  System.out.println("Error : "+error.getMessage()),
-                () ->  System.out.println("Mono consumed: Operation is not complete yet.")
-        );
-
-        System.out.println("Test: Manually making operation successfully complete.");
-        myPollResponse.setStatus(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
-
-        pollResponseMono = poller.pollOnce();
-        pollResponseMono.subscribe(
-            pollResponse ->  Assert.assertTrue(poller.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)  ,
-            error ->  System.out.println("Error : "+error.getMessage()),
-            () ->  System.out.println("Mono consumed: Operation is now complete.")
-        );
-
-    }// basicPollOnceTest
-*/
-
-    @Test
-    public void basicPollUntilDone_completeInNSecondsTest() throws Exception {
-
-        CreateCertificateResponse createCertificateResponse = new CreateCertificateResponse("Starting : Cert A");
-        PollResponse<CreateCertificateResponse> myPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS,createCertificateResponse);
-        int timeoutInMilliSeconds = 1000 * 3; // 3 seconds
-        int pollIntervalInMillis = 10;
-        float poolIntervalGrowthFactor = 1.0f;
-
-        PollerOptions pollerOptions = new PollerOptions(timeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation = new Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>>() {
-            LocalDateTime timeToReturnSuccess= LocalDateTime.now().plusSeconds(10);
             @Override
-            public PollResponse<CreateCertificateResponse> apply(PollResponse<CreateCertificateResponse> pollResponse) {
-
-                if (pollResponse.status() == PollResponse.OperationStatus.IN_PROGRESS && LocalDateTime.now().isBefore(timeToReturnSuccess)) {
-                    System.out.println(LocalDateTime.now() + " Test pollOperation Triggered. Returning " + pollResponse.status().toString());
-                    return pollResponse;
+            public PollResponse<CreateCertificateResponse> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
+                if (LocalDateTime.now().isBefore(timeToReturnSuccess)) {
+                    return intermediateProgressPollResponse;
                 } else {
-                    PollResponse<CreateCertificateResponse> myNewPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
-                    System.out.println(LocalDateTime.now()+" Test pollOperation Triggered. Returning "+myNewPollResponse.status().toString());
-                    return myNewPollResponse;
+                    return finalPollResponse;
                 }
             }
         };
-        Poller<CreateCertificateResponse> createCertPoller = new Poller(pollerOptions,pollOperation );
+    }
 
-        Flux<PollResponse<CreateCertificateResponse>> myCreateCertPollResponseFlux = createCertPoller.poll();
 
-        myCreateCertPollResponseFlux.subscribe(
-            pollResponse -> System.out.println(new Date() + "  Test : Got poll Response with status " + pollResponse.status().toString()),
-            error -> System.out.println(new Date() + "Error : " + error.getMessage()),
-            () -> System.out.println(new Date() + " Mono consumed: Operation is  complete")
-        );
-
-    }// basicPollUntilDone_completeInNSecondsTest
-
-/*
+    /* Test where SDK Client is subscribed all responses.
+     * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+     * This scenario is setup where source will generate successful response returned after few in-progress response.
+     **/
     @Test
-    public void basicPollUntilDone_cancelInNSecondsTest() throws Exception {
+    public void subscribeToAllPollEvent_SuccessfullyCompleteInNSecondsTest() throws Exception {
 
-        PollResponse myPollResponse = new MyPollResponse(true,false,false,true,false);
-        SerializableSupplier<PollResponse> serviceSupplier = () -> myPollResponse;
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
-        int timeoutInMilliSeconds = 1000*60*5;
-        int pollIntervalInMillis = 10;
-        float poolIntervalGrowthFactor =1.0f;
-        boolean operationAllowedToCancel =true;
-        // Lambda Runnable
-        Runnable callbackWhenDone = () -> {
-            System.out.println(Thread.currentThread().getName() + " is running callback when done.");
-        };
-        Runnable callbackToCancelOperation = () -> {
-            System.out.println(Thread.currentThread().getName() + " is running callback to cancel.");
-        };
-        Poller poller =  new Poller(timeoutInMilliSeconds,pollIntervalInMillis,poolIntervalGrowthFactor , serviceSupplier,callbackWhenDone,callbackToCancelOperation,operationAllowedToCancel); // 5 minutes
+        int totalTimeoutInMilliSeconds = 1000 * 6;
+        int pollIntervalInMillis = 1000 * 1;
+        float poolIntervalGrowthFactor = 1.0f;
 
-        Mono<PollResponse> pollResponseMono = poller.pollUntilDone();
-        // now a thread to complete the operation after 5 seconds
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            PollResponse pollResponse = myPollResponse;
+        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                successPollResponse,
+                pollIntervalInMillis,
+                pollIntervalInMillis / 1000 + 1);
+
+        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+
+        StepVerifier.create(createCertPoller.poll())
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(PollResponse -> PollResponse.status() == OperationStatus.IN_PROGRESS)
+            .consumeRecordedWith(results -> {
+                assertTrue(results.contains(inProgressPollResponse));
+                assertTrue(results.contains(successPollResponse));
+                assertTrue(results.size() <= totalTimeoutInMilliSeconds / pollIntervalInMillis + 1);
+            })
+            .verifyComplete();
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+    }
+
+    /* Test where SDK Client is subscribed to only final/last response.
+     * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+     * This scenario is setup where source will generate successful response returned after few in progress response.
+     * But the subscriber is only interested in last response, The test will ensure subscriber
+     * only gets last PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED . */
+
+    @Test
+    public void subscribeToOnlyFinalEvent_SuccessfullyCompleteInNSecondsTest() throws Exception {
+
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+
+        int totalTimeoutInMilliSeconds = 1000 * 6;
+        int pollIntervalInMillis = 1000 * 1;
+        float poolIntervalGrowthFactor = 1.0f;
+
+        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                successPollResponse,
+                pollIntervalInMillis,
+                pollIntervalInMillis / 1000 + 1);
+
+        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+
+        StepVerifier.create(createCertPoller.block())
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(PollResponse -> PollResponse.status() == OperationStatus.IN_PROGRESS)
+            .consumeRecordedWith(results -> {
+                assertFalse(results.contains(inProgressPollResponse));
+                assertTrue(results.contains(successPollResponse));
+                assertTrue(results.size() == 1);
+            })
+            .verifyComplete();
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+    }
+
+    /* Test where SDK Client is subscribed all responses.
+     * This scenario is setup where source will generate successful response returned
+     * after few in-progress response. But the sdk client will stop polling in between
+     * and subscriber should never get final successful response.
+     **/
+    @Test
+    public void subscribeToAllPollEvent_StopPollingAfterNSecondsTest() throws Exception {
+
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+
+        int totalTimeoutInMilliSeconds = 1000 * 6;
+        int pollIntervalInMillis = 1000 * 1;
+        float poolIntervalGrowthFactor = 1.0f;
+
+        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                successPollResponse,
+                pollIntervalInMillis,
+                2);
+
+        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Thread t = new Thread() {
             @Override
             public void run() {
-                // code in here
-                System.out.println("Test: sleep for 5 second and complete in error");
-                try{Thread.sleep(1000*2);}catch (Exception e) {}
-
-                System.out.println("Test: Manually making operation complete in error.");
-                ((MyPollResponse)pollResponse).setOperationCancelled(new HttpResponseException("Error", null) );
-
-                ((MyPollResponse)pollResponse).setOperationInProgress(false);
+                try {
+                    Thread.sleep(1500);
+                } catch (Exception e) {
+                }
+                createCertPoller.stopPolling();
             }
-        });
-        pollResponseMono.subscribe(
-            pollResponse ->  Assert.assertTrue(pollResponse.isOperationCancelled())  ,
-            error ->  System.out.println("Error : "+error.getMessage()),
-            () ->  System.out.println("Mono consumed: Operation is cancelled")
-        );
 
-    }// basicPollOnceTest
+            ;
+        };
+        t.start();
+        StepVerifier.create(createCertPoller.poll())
+            .recordWith(ArrayList<PollResponse<CreateCertificateResponse>>::new)
+            .thenConsumeWhile(PollResponse -> PollResponse.status() == OperationStatus.IN_PROGRESS)
+            .consumeRecordedWith(results -> {
+                assertTrue(results.contains(inProgressPollResponse));
+                assertFalse(results.contains(successPollResponse));
+            })
+            .verifyComplete();
 
- */
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.IN_PROGRESS);
+    }
+
+    private void showResults(Collection<PollResponse<CreateCertificateResponse>> al) {
+        for (PollResponse<CreateCertificateResponse> pr : al) {
+            System.out.println(" response status, data=  " + pr.status().toString() + " , " + pr.getResult().response);
+
+        }
+
+    }
 
     class CreateCertificateResponse {
         String response;
@@ -149,8 +186,9 @@ public class PollerTests {
         public String getResponse() {
             return response;
         }
+
         public void setResponse(String st) {
             response = st;
         }
-}
+    }
 }
