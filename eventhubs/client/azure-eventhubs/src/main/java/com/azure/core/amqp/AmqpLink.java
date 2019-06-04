@@ -8,7 +8,7 @@ import java.io.Closeable;
 /**
  * Represents a unidirectional AMQP link.
  */
-public interface AmqpLink extends Closeable {
+public interface AmqpLink extends EndpointStateNotifier, Closeable {
     /**
      * Gets the name of the link.
      *
