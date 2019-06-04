@@ -7,7 +7,10 @@ import com.azure.core.credentials.BasicAuthenticationCredential;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -31,9 +34,12 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new BearerTokenAuthenticationPolicy(credentials), auditorPolicy)
+            .policies((context, next) -> credentials.getToken("scope./default")
+                .flatMap(token -> {
+                    context.httpRequest().headers().put("Authorization", "Basic " + token);
+                    return next.process();
+                }), auditorPolicy)
             .build();
-
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();
@@ -56,7 +62,7 @@ public class CredentialsTests {
 
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new BearerTokenAuthenticationPolicy(credentials), auditorPolicy)
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));

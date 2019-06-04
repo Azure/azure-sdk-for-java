@@ -548,5 +548,6 @@
     <module>./core</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
+    <module>./identity/client</module>
   </modules>
 </project>
