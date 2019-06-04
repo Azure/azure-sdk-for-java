@@ -28,7 +28,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class ServiceAsyncRawClient {
+public final class ServiceAsyncClient extends StorageURL {
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -44,7 +44,7 @@ public final class ServiceAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServiceAsyncRawClient(URL url, HttpPipeline pipeline) {
+    public ServiceAsyncClient(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
 
@@ -67,16 +67,16 @@ public final class ServiceAsyncRawClient {
     }
 
     /**
-     * Creates a new {@link ServiceAsyncRawClient} with the given pipeline.
+     * Creates a new {@link ServiceAsyncClient} with the given pipeline.
      *
      * @param pipeline
      *         An {@link HttpPipeline} object to set.
      *
-     * @return A {@link ServiceAsyncRawClient} object with the given pipeline.
+     * @return A {@link ServiceAsyncClient} object with the given pipeline.
      */
-    public ServiceAsyncRawClient withPipeline(HttpPipeline pipeline) {
+    public ServiceAsyncClient withPipeline(HttpPipeline pipeline) {
         try {
-            return new ServiceAsyncRawClient(new URL(super.storageClient.url()), pipeline);
+            return new ServiceAsyncClient(new URL(super.storageClient.url()), pipeline);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

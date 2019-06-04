@@ -5,30 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlockBlobCommitBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobGetBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobStageBlockFromURLResponse;
-import com.azure.storage.blob.models.BlockBlobStageBlockResponse;
-import com.azure.storage.blob.models.BlockBlobUploadResponse;
-import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.models.BlockLookupList;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.microsoft.rest.v2.Context;
-import com.microsoft.rest.v2.http.HttpPipeline;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.List;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a block blob. It may be obtained by direct construction or via the create method on a
@@ -37,8 +20,9 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
+public final class BlockBlobSyncRawClient extends BlobAsyncRawClient {
 
+    BlockBlobAsyncRawClient blockBlobAsyncRawClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -64,38 +48,8 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public BlockBlobAsyncRawClient(URL url, HttpPipeline pipeline) {
+    BlockBlobSyncRawClient(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncRawClient} with the given pipeline.
-     *
-     * @param pipeline
-     *         An {@link HttpPipeline} object to set.
-     *
-     * @return A {@link BlockBlobAsyncRawClient} object with the given pipeline.
-     */
-    public BlockBlobAsyncRawClient withPipeline(HttpPipeline pipeline) {
-        try {
-            return new BlockBlobAsyncRawClient(new URL(this.storageClient.url()), pipeline);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncRawClient} with the given snapshot.
-     *
-     * @param snapshot
-     *         A {@code String} of the snapshot identifier.
-     *
-     * @return A {@link BlockBlobAsyncRawClient} object with the given pipeline.
-     */
-    public BlockBlobAsyncRawClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
-        BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.withSnapshot(snapshot);
-        return new BlockBlobAsyncRawClient(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
     /**
@@ -124,8 +78,8 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobUploadResponse> upload(Flux<ByteBuffer> data, long length) {
-        return this.upload(data, length, null, null, null, null);
+    public Mono<BlockBlobsUploadResponse> upload(Flux<ByteBuffer> data, long length) {
+        return blockBlobAsyncRawClient.upload(data, length, null, null, null, null);
     }
 
     /**
@@ -155,7 +109,7 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -166,15 +120,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobUploadResponse> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+    public Mono<BlockBlobsUploadResponse> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
-        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
-                data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
-                accessConditions.modifiedAccessConditions()));
+        return blockBlobAsyncRawClient.upload(data, length, headers, metadata, accessConditions, context);
     }
 
     /**
@@ -201,9 +149,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data,
-                                 long length) {
-        return this.stageBlock(base64BlockID, data, length, null, null);
+    public Mono<BlockBlobsStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuffer> data,
+                                                         long length) {
+        return blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, null, null);
     }
 
     /**
@@ -228,7 +176,7 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -239,12 +187,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length,
+    public Mono<BlockBlobsStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
-                context, base64BlockID, length, data, null, null, null, leaseAccessConditions));
+        return blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
     }
 
     /**
@@ -268,9 +213,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobAsyncRawClient.stageBlockFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
+        return blockBlobAsyncRawClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null);
     }
 
@@ -298,7 +243,7 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link SourceModifiedAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -309,16 +254,10 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobAsyncRawClient.stageBlockFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(context,
-                        base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5,
-                        null, null, leaseAccessConditions, sourceModifiedAccessConditions));
+        return blockBlobAsyncRawClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
     }
 
     /**
@@ -335,8 +274,8 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.getBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType) {
-        return this.getBlockList(listType, null, null);
+    public Mono<BlockBlobsGetBlockListResponse> getBlockList(BlockListType listType) {
+        return blockBlobAsyncRawClient.getBlockList(listType, null, null);
     }
 
     /**
@@ -351,7 +290,7 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         lease on the blob.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -362,12 +301,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.getBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType,
+    public Mono<BlockBlobsGetBlockListResponse> getBlockList(BlockListType listType,
             LeaseAccessConditions leaseAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
-                context, listType, null, null, null, leaseAccessConditions));
+        return blockBlobAsyncRawClient.getBlockList(listType, leaseAccessConditions, context);
     }
 
     /**
@@ -390,8 +326,8 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.commitBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null);
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs) {
+        return blockBlobAsyncRawClient.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
     /**
@@ -415,7 +351,7 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -426,15 +362,8 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.commitBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
-        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
-                context, new BlockLookupList().withLatest(base64BlockIDs), null,
-                metadata, null, headers, accessConditions.leaseAccessConditions(),
-                accessConditions.modifiedAccessConditions()));
+        return blockBlobAsyncRawClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
     }
 }

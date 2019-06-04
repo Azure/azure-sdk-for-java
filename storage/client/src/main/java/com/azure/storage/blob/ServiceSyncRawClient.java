@@ -5,14 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
-import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
-import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -28,7 +21,9 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class ServiceAsyncRawClient {
+public final class ServiceAsyncClient {
+
+    ServiceAsyncRawClient serviceAsyncRawClient;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -44,7 +39,7 @@ public final class ServiceAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServiceAsyncRawClient(URL url, HttpPipeline pipeline) {
+    public ServiceAsyncClient(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
 
@@ -58,28 +53,7 @@ public final class ServiceAsyncRawClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient createContainerURL(String containerName) {
-        try {
-            return new ContainerAsyncClient(StorageURL.appendToURLPath(new URL(super.storageClient.url()), containerName),
-                    super.storageClient.httpPipeline());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Creates a new {@link ServiceAsyncRawClient} with the given pipeline.
-     *
-     * @param pipeline
-     *         An {@link HttpPipeline} object to set.
-     *
-     * @return A {@link ServiceAsyncRawClient} object with the given pipeline.
-     */
-    public ServiceAsyncRawClient withPipeline(HttpPipeline pipeline) {
-        try {
-            return new ServiceAsyncRawClient(new URL(super.storageClient.url()), pipeline);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return serviceAsyncRawClient.createContainerURL(containerName);
     }
 
     /**
@@ -105,7 +79,7 @@ public final class ServiceAsyncRawClient {
      */
     public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
                                                                              ListContainersOptions options) {
-        return this.listContainersSegment(marker, options, null);
+        return serviceAsyncRawClient.listContainersSegment(marker, options, null);
     }
 
     /**
@@ -123,7 +97,7 @@ public final class ServiceAsyncRawClient {
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -137,12 +111,7 @@ public final class ServiceAsyncRawClient {
      */
     public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
-        options = options == null ? new ListContainersOptions() : options;
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(context,
-                        options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null, null));
+        return serviceAsyncRawClient.listContainersSegment(marker, options, context);
     }
 
     /**
@@ -156,7 +125,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetPropertiesResponse> getProperties() {
-        return this.getProperties(null);
+        return serviceAsyncRawClient.getProperties(null);
     }
 
     /**
@@ -165,7 +134,7 @@ public final class ServiceAsyncRawClient {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -177,10 +146,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetPropertiesResponse> getProperties(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(context, null, null));
+        return serviceAsyncRawClient.getProperties(context);
     }
 
     /**
@@ -199,7 +165,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null);
+        return serviceAsyncRawClient.setProperties(properties, null);
     }
 
     /**
@@ -212,7 +178,7 @@ public final class ServiceAsyncRawClient {
      *         Configures the service.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -224,11 +190,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
-                        null));
+        return serviceAsyncRawClient.setProperties(properties, context);
     }
 
     /**
@@ -243,7 +205,7 @@ public final class ServiceAsyncRawClient {
      * @return Emits the successful response.
      */
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null);
+        return serviceAsyncRawClient.getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -256,7 +218,7 @@ public final class ServiceAsyncRawClient {
      *         Expiration of the key's validity.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -265,21 +227,7 @@ public final class ServiceAsyncRawClient {
      */
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
-        Utility.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
-            throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
-        }
-
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getUserDelegationKeyWithRestResponseAsync(
-                        context,
-                        new KeyInfo()
-                                .withStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                                .withExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                        null, null)
-        );
+        return serviceAsyncRawClient.getUserDelegationKey(start, expiry, context);
     }
 
     /**
@@ -295,7 +243,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetStatisticsResponse> getStatistics() {
-        return this.getStatistics(null);
+        return serviceAsyncRawClient.getStatistics(null);
     }
 
     /**
@@ -306,7 +254,7 @@ public final class ServiceAsyncRawClient {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -318,10 +266,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetStatisticsResponse> getStatistics(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(context, null, null));
+        return serviceAsyncRawClient.getStatistics(context);
     }
 
     /**
@@ -335,7 +280,7 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetAccountInfoResponse> getAccountInfo() {
-        return this.getAccountInfo(null);
+        return serviceAsyncRawClient.getAccountInfo(null);
     }
 
     /**
@@ -344,7 +289,7 @@ public final class ServiceAsyncRawClient {
      *
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -356,9 +301,6 @@ public final class ServiceAsyncRawClient {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ServicesGetAccountInfoResponse> getAccountInfo(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return postProcessResponse(
-                this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync(context));
+        return serviceAsyncRawClient.getAccountInfo(context);
     }
 }

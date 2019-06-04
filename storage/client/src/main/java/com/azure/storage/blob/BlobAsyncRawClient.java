@@ -109,14 +109,14 @@ public class BlobAsyncRawClient {
     }
 
     /**
-     * Converts this BlobAsyncRawClient to an {@link AppendBlobAsyncRawClient} object. Note that this does not change the actual type of the
+     * Converts this BlobAsyncRawClient to an {@link AppendBlobAsyncRawRawClient} object. Note that this does not change the actual type of the
      * blob if it has already been created.
      *
-     * @return An {@link AppendBlobAsyncRawClient} object.
+     * @return An {@link AppendBlobAsyncRawRawClient} object.
      */
-    public AppendBlobAsyncRawClient toAppendBlobAsyncClient() {
+    public AppendBlobAsyncRawRawClient toAppendBlobAsyncClient() {
         try {
-            return new AppendBlobAsyncRawClient(new URL(this.storageClient.url()), super.storageClient.httpPipeline());
+            return new AppendBlobAsyncRawRawClient(new URL(this.storageClient.url()), super.storageClient.httpPipeline());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

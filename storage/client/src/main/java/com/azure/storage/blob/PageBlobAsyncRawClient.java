@@ -8,21 +8,24 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
-import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
-import com.azure.storage.blob.models.PageBlobsCreateResponse;
-import com.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.models.PageBlobsGetPageRangesResponse;
-import com.azure.storage.blob.models.PageBlobsResizeResponse;
-import com.azure.storage.blob.models.PageBlobsUpdateSequenceNumberResponse;
-import com.azure.storage.blob.models.PageBlobsUploadPagesFromURLResponse;
-import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
+import com.azure.storage.blob.models.PageBlobClearPagesResponse;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalResponse;
+import com.azure.storage.blob.models.PageBlobCreateResponse;
+import com.azure.storage.blob.models.PageBlobGetPageRangesDiffResponse;
+import com.azure.storage.blob.models.PageBlobGetPageRangesResponse;
+import com.azure.storage.blob.models.PageBlobResizeResponse;
+import com.azure.storage.blob.models.PageBlobUpdateSequenceNumberResponse;
+import com.azure.storage.blob.models.PageBlobUploadPagesFromURLResponse;
+import com.azure.storage.blob.models.PageBlobUploadPagesResponse;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.core.http.HttpPipeline;
+import com.microsoft.rest.v2.Context;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.UrlBuilder;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,7 +41,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
+public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Indicates the number of bytes in a page.
@@ -51,7 +54,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
     /**
-     * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
+     * Creates a {@code PageBlobAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      *
      * @param url
@@ -60,7 +63,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public PageBlobAsyncRawClient(URL url, HttpPipeline pipeline) {
+    public PageBlobAsyncClient(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
 
@@ -69,10 +72,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
                     + "0 if specified.");
         }
-        if (pageRange.start() % PageBlobAsyncRawClient.PAGE_BYTES != 0) {
+        if (pageRange.start() % PageBlobAsyncClient.PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
         }
-        if (pageRange.end() % PageBlobAsyncRawClient.PAGE_BYTES != PageBlobAsyncRawClient.PAGE_BYTES - 1) {
+        if (pageRange.end() % PageBlobAsyncClient.PAGE_BYTES != PageBlobAsyncClient.PAGE_BYTES - 1) {
             throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
         }
         if (pageRange.end() <= pageRange.start()) {
@@ -82,33 +85,33 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
     }
 
     /**
-     * Creates a new {@link PageBlobAsyncRawClient} with the given pipeline.
+     * Creates a new {@link PageBlobAsyncClient} with the given pipeline.
      *
      * @param pipeline
      *         A {@link HttpPipeline} object to set.
      *
-     * @return A {@link PageBlobAsyncRawClient} object with the given pipeline.
+     * @return A {@link PageBlobAsyncClient} object with the given pipeline.
      */
-    public PageBlobAsyncRawClient withPipeline(HttpPipeline pipeline) {
+    public PageBlobAsyncClient withPipeline(HttpPipeline pipeline) {
         try {
-            return new PageBlobAsyncRawClient(new URL(this.storageClient.url()), pipeline);
+            return new PageBlobAsyncClient(new URL(this.storageClient.url()), pipeline);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Creates a new {@link PageBlobAsyncRawClient} with the given snapshot.
+     * Creates a new {@link PageBlobAsyncClient} with the given snapshot.
      *
      * @param snapshot
      *         A {@code String} of the snapshot id.
      *
-     * @return A {@link PageBlobAsyncRawClient} object with the given pipeline.
+     * @return A {@link PageBlobAsyncClient} object with the given pipeline.
      */
-    public PageBlobAsyncRawClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
+    public PageBlobAsyncClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts BlobURLParts = URLParser.parse(new URL(this.storageClient.url()));
         BlobURLParts.withSnapshot(snapshot);
-        return new PageBlobAsyncRawClient(BlobURLParts.toURL(), super.storageClient.httpPipeline());
+        return new PageBlobAsyncClient(BlobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
     /**
@@ -123,10 +126,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsCreateResponse> create(long size) {
+    public Mono<PageBlobCreateResponse> create(long size) {
         return this.create(size, null, null, null, null, null);
     }
 
@@ -149,7 +152,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -157,17 +160,17 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    public Mono<PageBlobCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
-        if (size % PageBlobAsyncRawClient.PAGE_BYTES != 0) {
+        if (size % PageBlobAsyncClient.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncRawClient.PAGE_BYTES.");
+            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
         }
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -201,10 +204,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
+    public Mono<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
         return this.uploadPages(pageRange, body, null, null);
     }
 
@@ -227,7 +230,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link PageBlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -235,10 +238,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
+    public Mono<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
                 : pageBlobAccessConditions;
@@ -280,10 +283,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncClient.uploadPagesFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+    public Mono<PageBlobUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
                 null, null);
     }
@@ -315,7 +318,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *          {@link SourceModifiedAccessConditions}
      * @param context
      *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *          {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *          its parent, forming a linked list.
@@ -323,10 +326,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncClient.uploadPagesFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public Mono<PageBlobUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
@@ -367,10 +370,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.clearPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsClearPagesResponse> clearPages(PageRange pageRange) {
+    public Mono<PageBlobClearPagesResponse> clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null);
     }
 
@@ -385,7 +388,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         are 0-511, 512-1023, etc.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -395,10 +398,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.clearPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsClearPagesResponse> clearPages(PageRange pageRange,
+    public Mono<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
                 : pageBlobAccessConditions;
@@ -426,10 +429,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.getPageRanges")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange) {
+    public Flux<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null);
     }
 
@@ -443,7 +446,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -451,10 +454,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.getPageRanges")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange,
+    public Flux<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? new BlobRange() : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -479,10 +482,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncClient.getPageRangesDiff")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public Flux<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
     }
 
@@ -500,7 +503,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -508,10 +511,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncClient.getPageRangesDiff")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
+    public Flux<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? new BlobRange() : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -537,10 +540,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.resize")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsResizeResponse> resize(long size) {
+    public Mono<PageBlobResizeResponse> resize(long size) {
         return this.resize(size, null, null);
     }
 
@@ -555,7 +558,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -563,14 +566,14 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.resize")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsResizeResponse> resize(long size, BlobAccessConditions accessConditions, Context context) {
-        if (size % PageBlobAsyncRawClient.PAGE_BYTES != 0) {
+    public Mono<PageBlobResizeResponse> resize(long size, BlobAccessConditions accessConditions, Context context) {
+        if (size % PageBlobAsyncClient.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncRawClient.PAGE_BYTES.");
+            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
@@ -593,10 +596,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.updateSequenceNumber")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
+    public Mono<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
         return this.updateSequenceNumber(action, sequenceNumber, null, null);
     }
@@ -614,7 +617,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
@@ -622,10 +625,10 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncClient.updateSequenceNumber")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
+    public Mono<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -657,7 +660,7 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *
      * @return Emits the successful response.
      */
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot) {
+    public Mono<PageBlobCopyIncrementalResponse> copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null);
     }
 
@@ -679,14 +682,14 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
      * @return Emits the successful response.
      */
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
+    public Mono<PageBlobCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
         context = context == null ? Context.NONE : context;
 

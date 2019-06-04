@@ -5,8 +5,15 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlResponse;
+import com.azure.storage.blob.models.AppendBlobAppendBlockResponse;
+import com.azure.storage.blob.models.AppendBlobCreateResponse;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
@@ -23,7 +30,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
+public final class AppendBlobAsyncRawRawClient extends BlobAsyncRawClient {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -36,7 +43,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
+     * Creates a {@code AppendBlobAsyncRawRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      *
      * @param url
@@ -45,21 +52,21 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public AppendBlobAsyncPrettyClient(URL url, HttpPipeline pipeline) {
+    public AppendBlobAsyncRawRawClient(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
 
     /**
-     * Creates a new {@link AppendBlobAsyncPrettyClient} with the given pipeline.
+     * Creates a new {@link AppendBlobAsyncRawRawClient} with the given pipeline.
      *
      * @param pipeline
      *         An {@code HttpPipeline} object to process HTTP transactions.
      *
-     * @return An {@code AppendBlobAsyncRawClient} object with the given pipeline.
+     * @return An {@code AppendBlobAsyncRawRawClient} object with the given pipeline.
      */
-    public AppendBlobAsyncPrettyClient withPipeline(HttpPipeline pipeline) {
+    public AppendBlobAsyncRawRawClient withPipeline(HttpPipeline pipeline) {
         try {
-            return new AppendBlobAsyncPrettyClient(new URL(this.storageClient.url()), pipeline);
+            return new AppendBlobAsyncRawRawClient(new URL(this.storageClient.url()), pipeline);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -67,17 +74,17 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
     }
 
     /**
-     * Creates a new {@code AppendBlobAsyncRawClient} with the given snapshot.
+     * Creates a new {@code AppendBlobAsyncRawRawClient} with the given snapshot.
      *
      * @param snapshot
      *         A {@code String} of the snapshot identifier.
      *
-     * @return An {@code AppendBlobAsyncRawClient} object with the given pipeline.
+     * @return An {@code AppendBlobAsyncRawRawClient} object with the given pipeline.
      */
-    public AppendBlobAsyncPrettyClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
+    public AppendBlobAsyncRawRawClient withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
         blobURLParts.withSnapshot(snapshot);
-        return new AppendBlobAsyncPrettyClient(blobURLParts.toURL(), super.storageClient.httpPipeline());
+        return new AppendBlobAsyncRawRawClient(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
     /**
@@ -87,7 +94,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobCreateResponse> create() {
@@ -114,7 +121,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
@@ -145,7 +152,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobAppendBlockResponse> appendBlock(Flux<ByteBuffer> data, long length) {
@@ -177,7 +184,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobAppendBlockResponse> appendBlock(Flux<ByteBuffer> data, long length,
@@ -208,7 +215,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
@@ -245,7 +252,7 @@ public final class AppendBlobAsyncPrettyClient extends BlobAsyncRawClient {
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
