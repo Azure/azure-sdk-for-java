@@ -5,6 +5,8 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
+import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
+import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -14,7 +16,7 @@ import java.util.Locale;
 /**
  * Provides handlers for the various types of links.
  */
-public class ReactorHandlerProvider {
+class ReactorHandlerProvider {
     private final ReactorProvider provider;
 
     /**
@@ -23,7 +25,7 @@ public class ReactorHandlerProvider {
      *
      * @param provider The provider that creates and manages {@link Reactor} instances.
      */
-    public ReactorHandlerProvider(ReactorProvider provider) {
+    ReactorHandlerProvider(ReactorProvider provider) {
         this.provider = provider;
     }
 
@@ -35,7 +37,7 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
+    ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
@@ -54,7 +56,31 @@ public class ReactorHandlerProvider {
      * @param openTimeout Duration to wait for the session to open.
      * @return A new {@link SessionHandler}.
      */
-    public SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
+    SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
         return new SessionHandler(connectionId, host, sessionName, provider.getReactorDispatcher(), openTimeout);
+    }
+
+    /**
+     * Creates a new link handler for sending messages.
+     *
+     * @param connectionId Identifier of the parent connection that created this session.
+     * @param host Host of the parent connection.
+     * @param senderName Name of the send link.
+     * @return A new {@link SendLinkHandler}.
+     */
+    SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName) {
+        return new SendLinkHandler(connectionId, host, senderName);
+    }
+
+    /**
+     * Creates a new link handler for receiving messages.
+     *
+     * @param connectionId Identifier of the parent connection that created this session.
+     * @param host Host of the parent connection.
+     * @param receiverName Name of the send link.
+     * @return A new {@link ReceiveLinkHandler}.
+     */
+    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName) {
+        return new ReceiveLinkHandler(connectionId, host, receiverName);
     }
 }
