@@ -410,8 +410,8 @@ class RequestResponseLink extends ClientEntity {
         this.amqpSender.sendRequest(requestId, false);
 
         // Check and recreate links if necessary
-        if (!((this.amqpSender.sendLink.getLocalState() == EndpointState.ACTIVE && this.amqpSender.sendLink.getRemoteState() == EndpointState.ACTIVE)
-                && (this.amqpReceiver.receiveLink.getLocalState() == EndpointState.ACTIVE && this.amqpReceiver.receiveLink.getRemoteState() == EndpointState.ACTIVE))) {
+        if (!((this.amqpSender.sendLink != null && this.amqpSender.sendLink.getLocalState() == EndpointState.ACTIVE && this.amqpSender.sendLink.getRemoteState() == EndpointState.ACTIVE)
+                && (this.amqpReceiver.receiveLink != null && this.amqpReceiver.receiveLink.getLocalState() == EndpointState.ACTIVE && this.amqpReceiver.receiveLink.getRemoteState() == EndpointState.ACTIVE))) {
             this.ensureUniqueLinkRecreation();
         }
         
