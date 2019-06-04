@@ -4,10 +4,9 @@
 package com.azure.eventhubs;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 
-abstract class ApiTestBase extends TestBase {
+abstract class TestBase {
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
@@ -15,13 +14,7 @@ abstract class ApiTestBase extends TestBase {
         return CONNECTION_STRING;
     }
 
-    @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.RECORD) {
-            return ImplUtils.isNullOrEmpty(getConnectionString())
-                ? TestMode.PLAYBACK
-                : TestMode.RECORD;
-        }
-        return super.getTestMode();
+    TestMode getTestMode() {
+        return ImplUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 }

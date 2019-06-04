@@ -11,9 +11,7 @@ import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -22,11 +20,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
-public class EventHubClientTest extends ApiTestBase {
+public class EventHubClientTest extends TestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
-
-    @Rule
-    public TestName testName = new TestName();
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
@@ -57,10 +52,5 @@ public class EventHubClientTest extends ApiTestBase {
         client.close();
 
         Thread.sleep(1000);
-    }
-
-    @Override
-    protected String testName() {
-        return testName.getMethodName();
     }
 }
