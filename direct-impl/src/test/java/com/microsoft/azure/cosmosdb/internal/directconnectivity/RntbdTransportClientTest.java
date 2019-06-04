@@ -692,7 +692,7 @@ public class RntbdTransportClientTest {
         RntbdResponse response
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
-        final Duration timeout = Duration.ofMillis(100);
+        final Duration timeout = Duration.ofMillis(1000);
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, timeout, response)) {
 

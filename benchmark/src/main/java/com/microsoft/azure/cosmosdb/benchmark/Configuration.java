@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.benchmark;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
@@ -98,6 +99,20 @@ class Configuration {
 
     @Parameter(names = "-numberOfOperations", description = "Total Number Of Documents To Insert")
     private int numberOfOperations = 100000;
+
+    static class DurationConverter implements IStringConverter<Duration> {
+        @Override
+        public Duration convert(String value) {
+            if (value == null) {
+                return null;
+            }
+
+            return Duration.parse(value);
+        }
+    }
+
+    @Parameter(names = "-maxRunningTimeDuration", description = "Max Running Time Duration", converter = DurationConverter.class)
+    private Duration maxRunningTimeDuration;
 
     @Parameter(names = "-printingInterval", description = "Interval of time after which Metrics should be printed (seconds)")
     private int printingInterval = 10;
@@ -179,6 +194,10 @@ class Configuration {
             }
             return ret;
         }
+    }
+
+    Duration getMaxRunningTimeDuration() {
+        return maxRunningTimeDuration;
     }
 
     Operation getOperationType() {

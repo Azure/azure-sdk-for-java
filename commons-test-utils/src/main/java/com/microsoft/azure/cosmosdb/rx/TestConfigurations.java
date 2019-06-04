@@ -64,4 +64,22 @@ public final class TestConfigurations {
             System.getProperty("PREFERRED_LOCATIONS",
                                StringUtils.defaultString(Strings.emptyToNull(
                                        System.getenv().get("PREFERRED_LOCATIONS")), null));
+
+    public static String MAX_RETRY_LIMIT =
+            System.getProperty("MAX_RETRY_LIMIT",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("MAX_RETRY_LIMIT")),
+                                                         "2"));
+
+    public static String DESIRED_CONSISTENCIES =
+            System.getProperty("DESIRED_CONSISTENCIES",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("DESIRED_CONSISTENCIES")),
+                                                         null));
+
+    public static String PROTOCOLS =
+            System.getProperty("PROTOCOLS",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("PROTOCOLS")),
+                                                         null));
 }

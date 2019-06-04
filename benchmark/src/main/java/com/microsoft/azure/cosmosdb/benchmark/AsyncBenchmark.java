@@ -47,17 +47,17 @@ import rx.Observable;
 import rx.Subscriber;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
     private final ScheduledReporter reporter;
-    private final CountDownLatch operationCounterLatch;
     private final String nameCollectionLink;
 
     private Meter successMeter;
@@ -87,7 +87,6 @@ abstract class AsyncBenchmark<T> {
         nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
         partitionKey = collection.getPartitionKey().getPaths().iterator().next().split("/")[1];
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
-        operationCounterLatch = new CountDownLatch(cfg.getNumberOfOperations());
         configuration = cfg;
 
         ArrayList<Observable<Document>> createDocumentObservables = new ArrayList<>();
@@ -166,6 +165,24 @@ abstract class AsyncBenchmark<T> {
 
     protected abstract void performWorkload(Subscriber<T> subs, long i) throws Exception;
 
+    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
+        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
+        int maxNumberOfOperations = configuration.getNumberOfOperations();
+        if (maxDurationTime == null) {
+            return iterationCount < maxNumberOfOperations;
+        }
+
+        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
+            return false;
+        }
+
+        if (maxNumberOfOperations < 0) {
+            return true;
+        }
+
+        return iterationCount < maxNumberOfOperations;
+    }
+
     void run() throws Exception {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
@@ -178,7 +195,9 @@ abstract class AsyncBenchmark<T> {
 
         long startTime = System.currentTimeMillis();
 
-        for (long i = 1; i <= configuration.getNumberOfOperations(); i++) {
+        AtomicLong count = new AtomicLong(0);
+        long i;
+        for ( i = 0; shouldContinue(startTime, i); i++) {
 
             Subscriber<T> subs = new Subscriber<T>() {
 
@@ -190,8 +209,12 @@ abstract class AsyncBenchmark<T> {
                 public void onCompleted() {
                     successMeter.mark();
                     concurrencyControlSemaphore.release();
-                    operationCounterLatch.countDown();
                     AsyncBenchmark.this.onSuccess();
+
+                    synchronized (count) {
+                        count.incrementAndGet();
+                        count.notify();
+                    }
                 }
 
                 @Override
@@ -200,8 +223,12 @@ abstract class AsyncBenchmark<T> {
                     logger.error("Encountered failure {} on thread {}" ,
                                  e.getMessage(), Thread.currentThread().getName(), e);
                     concurrencyControlSemaphore.release();
-                    operationCounterLatch.countDown();
                     AsyncBenchmark.this.onError(e);
+
+                    synchronized (count) {
+                        count.incrementAndGet();
+                        count.notify();
+                    }
                 }
 
                 @Override
@@ -212,7 +239,12 @@ abstract class AsyncBenchmark<T> {
             performWorkload(subs, i);
         }
 
-        operationCounterLatch.await();
+        synchronized (count) {
+            while (count.get() < i) {
+                count.wait();
+            }
+        }
+
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
                     configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));

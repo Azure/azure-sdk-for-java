@@ -26,6 +26,7 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.RetryAnalyzer;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +54,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void queryLargeDocuments() {
         int cnt = 5;
         for(int i = 0; i < cnt; i++) {

@@ -70,7 +70,7 @@ public class RetryThrottleTest extends TestSuiteBase {
     private Database database;
     private DocumentCollection collection;
 
-    @Test(groups = { "long" }, timeOut = LARGE_TIMEOUT )
+    @Test(groups = { "long" }, timeOut = LARGE_TIMEOUT, enabled = false)
     public void retryCreateDocumentsOnSpike() throws Exception {
         ConnectionPolicy policy = new ConnectionPolicy();
         RetryOptions retryOptions = new RetryOptions();
@@ -118,7 +118,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         System.out.println("total count is " + totalCount.get());
     }
     
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT, enabled = false)
     public void retryDocumentCreate() throws Exception {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
@@ -153,12 +153,12 @@ public class RetryThrottleTest extends TestSuiteBase {
         validateSuccess(createObservable, validator, TIMEOUT);
     }
 
-    @AfterMethod(groups = { "long" })
+    @AfterMethod(groups = { "long" }, enabled = false)
     private void afterMethod() {
         safeClose(client);
     }
     
-    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT, enabled = false)
     public void beforeClass() {
         // set up the client
         database = SHARED_DATABASE;
@@ -176,7 +176,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         return doc;
     }
 
-    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, enabled = false)
     public void afterClass() {        
     }
 }
