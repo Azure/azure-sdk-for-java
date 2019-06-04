@@ -180,8 +180,8 @@ final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.data() != null) {
-            message.setBody(new Data(Binary.create(event.data())));
+        if (event.body() != null) {
+            message.setBody(new Data(Binary.create(event.body())));
         }
 
         return message;

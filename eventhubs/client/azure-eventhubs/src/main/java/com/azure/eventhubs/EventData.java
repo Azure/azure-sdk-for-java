@@ -41,7 +41,7 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  *
  * <ol>
  * <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
- * <li>{@link #data()} - if AMQPMessage.Body has Data section</li>
+ * <li>{@link #body()} - if AMQPMessage.Body has Data section</li>
  * </ol>
  *
  * <p>
@@ -187,7 +187,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return ByteBuffer representing the data.
      */
-    public ByteBuffer data() {
+    public ByteBuffer body() {
         return body;
     }
 
@@ -203,8 +203,8 @@ public class EventData implements Comparable<EventData> {
         setSystemProperties(message);
         setPartitionKey(message, partitionKey);
 
-        if (data() != null) {
-            message.setBody(new Data(Binary.create(data())));
+        if (body() != null) {
+            message.setBody(new Data(Binary.create(body())));
         }
 
         return message;

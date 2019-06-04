@@ -4,6 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.exception.AzureException;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
@@ -37,6 +38,7 @@ public class EventHubClient implements Closeable {
     private final ConnectionStringBuilder connectionStringBuilder;
     //TODO (conniey): Replace with configured values in EventHubClientBuilder.
     private final Duration timeout = Duration.ofSeconds(45);
+    private final String eventHubName;
 
     EventHubClient(ConnectionStringBuilder connectionStringBuilder, TokenProvider tokenProvider,
                    ReactorProvider provider, ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
@@ -44,6 +46,7 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(connectionStringBuilder.endpoint(), "'connectionStringBuilder.endpoint()' is null.");
 
         this.connectionStringBuilder = connectionStringBuilder;
+        this.eventHubName = connectionStringBuilder.eventHubName();
         this.host = connectionStringBuilder.endpoint().getHost();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, provider, handlerProvider, scheduler))
@@ -67,7 +70,8 @@ public class EventHubClient implements Closeable {
      */
     public Mono<EventHubProperties> getHubProperties() {
         return connectionMono.flatMap(connection -> {
-            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), "conniey-test");
+            //TODO (conniey): Replace with management plane call.
+            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
             return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
         }).then(Mono.fromCallable(() -> {
             return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
@@ -152,7 +156,7 @@ public class EventHubClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw new AzureException("Unable to close connection to service", exception);
+                throw new AmqpException(false, "Unable to close connection to service", exception);
             }
         }
     }
