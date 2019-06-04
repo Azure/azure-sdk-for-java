@@ -17,7 +17,7 @@ import java.util.Map;
  * AzureTokenCredentials represents a credentials object with access to Azure
  * Resource management.
  */
-public abstract class AzureTokenCredentials extends TokenCredential {
+public abstract class AzureTokenCredentials implements TokenCredential {
     private static final String SCHEME = "Bearer ";
     private final AzureEnvironment environment;
     private final String domain;
@@ -85,7 +85,7 @@ public abstract class AzureTokenCredentials extends TokenCredential {
 
     @Override
     public Mono<String> getToken(String... scopes) {
-        String scope = scopes.get(0);
+        String scope = scopes[0];
         String resource = scope.substring(0, scope.lastIndexOf('.'));
         return getTokenFromUri(resource).map(token -> SCHEME + token);
     }

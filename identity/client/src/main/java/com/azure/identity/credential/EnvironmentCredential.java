@@ -5,6 +5,7 @@ import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.identity.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
 /**
@@ -13,12 +14,21 @@ import reactor.core.publisher.Mono;
  */
 public class EnvironmentCredential implements TokenCredential {
     private Configuration configuration;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates an instance of the default environment credential provider.
      */
     public EnvironmentCredential() {
-        configuration = ConfigurationManager.getConfiguration();
+        this(new IdentityClientOptions());
+    }
+
+    /**
+     * Creates an instance of the default environment credential provider.
+     */
+    public EnvironmentCredential(IdentityClientOptions identityClientOptions) {
+        this.configuration = ConfigurationManager.getConfiguration();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -28,7 +38,7 @@ public class EnvironmentCredential implements TokenCredential {
                 && configuration.contains(BaseConfigurations.AZURE_CLIENT_SECRET)
                 && configuration.contains(BaseConfigurations.AZURE_TENANT_ID)) {
                 // TODO: support other clouds
-                return new ClientSecretCredential()
+                return new ClientSecretCredential(identityClientOptions)
                     .clientId(configuration.get(BaseConfigurations.AZURE_CLIENT_ID))
                     .clientSecret(configuration.get(BaseConfigurations.AZURE_CLIENT_SECRET))
                     .tenantId(configuration.get(BaseConfigurations.AZURE_TENANT_ID));

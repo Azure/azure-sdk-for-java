@@ -22,17 +22,19 @@ import java.util.function.Consumer;
 public class ClientSecretCredential extends AadCredential<ClientSecretCredential> {
     /* The client secret value. */
     private String clientSecret;
-    private IdentityClient identityClient;
+    private final IdentityClient identityClient;
 
     /**
-     * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
+     * Creates a ClientSecretCredential with default identity client options.
      */
     public ClientSecretCredential() {
         this(new IdentityClientOptions());
     }
 
     /**
-     * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
+     * Creates a ClientSecretCredential with the given identity client options.
+     *
+     * @param identityClientOptions the identity client options
      */
     public ClientSecretCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClient(identityClientOptions);

@@ -1,5 +1,7 @@
 package com.azure.identity;
 
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.ProxyOptions.Type;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -49,7 +52,7 @@ import java.util.regex.Pattern;
  * from various configurations.
  */
 public class IdentityClient {
-    private IdentityClientOptions options;
+    private final IdentityClientOptions options;
 
     /**
      * Creates an IdentityClient with default options.
@@ -96,13 +99,7 @@ public class IdentityClient {
                 protected Mono<AccessToken> authenticate(String resource) {
                     String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context;
-                    try {
-                        context = new AuthenticationContext(authorityUrl, false, executor);
-                    } catch (MalformedURLException mue) {
-                        executor.shutdown();
-                        throw Exceptions.propagate(mue);
-                    }
+                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
                     return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
                         context.acquireToken(
                             resource,
@@ -130,13 +127,7 @@ public class IdentityClient {
                 protected Mono<AccessToken> authenticate(String resource) {
                     String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context;
-                    try {
-                        context = new AuthenticationContext(authorityUrl, false, executor);
-                    } catch (MalformedURLException mue) {
-                        executor.shutdown();
-                        throw Exceptions.propagate(mue);
-                    }
+                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
                     return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
                         try {
                             context.acquireToken(
@@ -169,13 +160,7 @@ public class IdentityClient {
                 protected Mono<AccessToken> authenticate(String resource) {
                     String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    AuthenticationContext context;
-                    try {
-                        context = new AuthenticationContext(authorityUrl, false, executor);
-                    } catch (MalformedURLException mue) {
-                        executor.shutdown();
-                        throw Exceptions.propagate(mue);
-                    }
+                    AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
                     return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
                         try {
                             context.acquireToken(
@@ -225,6 +210,19 @@ public class IdentityClient {
             } catch (CertificateException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        private static AuthenticationContext createAuthenticationContext(ExecutorService executor, String authorityUrl, ProxyOptions proxyOptions) {
+            AuthenticationContext context;
+            try {
+                context = new AuthenticationContext(authorityUrl, false, executor);
+            } catch (MalformedURLException mue) {
+                throw Exceptions.propagate(mue);
+            }
+            if (proxyOptions != null) {
+                context.setProxy(new Proxy(proxyOptions.type() == Type.HTTP ? Proxy.Type.HTTP : Proxy.Type.SOCKS, proxyOptions.address()));
+            }
+            return context;
         }
     }
 

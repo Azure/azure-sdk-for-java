@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class ClientCertificateCredential extends AadCredential<ClientCertificateCredential> {
     private String clientCertificate;
     private String clientCertificatePassword;
-    private IdentityClient identityClient;
+    private final IdentityClient identityClient;
 
     /**
      * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
