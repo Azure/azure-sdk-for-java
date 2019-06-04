@@ -9,14 +9,13 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpClient;
-import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.util.List;
 
 public class CredentialsTests {
 
@@ -32,7 +31,7 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new TokenCredentialPolicy(credentials), auditorPolicy)
+            .policies(new BearerTokenAuthenticationPolicy(credentials), auditorPolicy)
             .build();
 
 
@@ -44,7 +43,7 @@ public class CredentialsTests {
     public void tokenCredentialTest() throws Exception {
         TokenCredential credentials = new TokenCredential() {
             @Override
-            public Mono<String> getTokenAsync(List<String> scopes) {
+            public Mono<String> getToken(String... scopes) {
                 return Mono.just("this_is_a_token");
             }
         };
@@ -57,7 +56,7 @@ public class CredentialsTests {
 
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new TokenCredentialPolicy(credentials), auditorPolicy)
+            .policies(new BearerTokenAuthenticationPolicy(credentials), auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));

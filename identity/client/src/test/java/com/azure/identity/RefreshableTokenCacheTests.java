@@ -1,6 +1,6 @@
 package com.azure.identity;
 
-import com.azure.identity.implementation.RefreshableTokenCredential;
+import com.azure.identity.implementation.RefreshableTokenCache;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -9,31 +9,21 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class RefreshableTokenCredentialTests {
+public class RefreshableTokenCacheTests {
     private static final Random RANDOM = new Random();
 
     @Test
     public void testOnlyOneThreadRefreshesToken() throws Exception {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
-        RefreshableTokenCredential<Token> refresher = new RefreshableTokenCredential<Token>() {
-            @Override
-            protected String getTokenFromAuthResult(Token authResult) {
-                return authResult.token();
-            }
+        RefreshableTokenCache refresher = new RefreshableTokenCache() {
 
             @Override
-            protected boolean isExpired(Token authResult) {
-                return authResult.isExpired();
-            }
-
-            @Override
-            protected Mono<Token> authenticateAsync(String resource) {
+            protected Mono<AccessToken> authenticate(String resource) {
                 return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
             }
         };
@@ -43,9 +33,9 @@ public class RefreshableTokenCredentialTests {
 
         Flux.range(1, 10)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getTokenAsync() on 10 different threads
+                // Runs refresher.getToken() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
+                .flatMap(start -> refresher.getToken("resource")
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis > maxMillis.get()) {
@@ -65,19 +55,10 @@ public class RefreshableTokenCredentialTests {
     @Test
     public void testLongRunningWontOverflow() throws Exception {
         // token expires on creation. Run this 100 times to simulate running the application a long time
-        RefreshableTokenCredential<Token> refresher = new RefreshableTokenCredential<Token>() {
-            @Override
-            protected String getTokenFromAuthResult(Token authResult) {
-                return authResult.token();
-            }
+        RefreshableTokenCache refresher = new RefreshableTokenCache() {
 
             @Override
-            protected boolean isExpired(Token authResult) {
-                return authResult.isExpired();
-            }
-
-            @Override
-            protected Mono<Token> authenticateAsync(String resource) {
+            protected Mono<AccessToken> authenticate(String resource) {
                 return remoteGetTokenThatExpiresSoonAsync(1000, 0);
             }
         };
@@ -88,9 +69,9 @@ public class RefreshableTokenCredentialTests {
         Flux.interval(Duration.ofMillis(100))
             .take(100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getTokenAsync() on 10 different threads
+                // Runs refresher.getToken() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
+                .flatMap(start -> refresher.getToken("resource")
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis > 1000) {
@@ -110,19 +91,10 @@ public class RefreshableTokenCredentialTests {
     @Test
     public void testOverflowBuffer() throws Exception {
         // Run 100 resources to make sure the buffer can handle it
-        RefreshableTokenCredential<Token> refresher = new RefreshableTokenCredential<Token>() {
-            @Override
-            protected String getTokenFromAuthResult(Token authResult) {
-                return authResult.token();
-            }
+        RefreshableTokenCache refresher = new RefreshableTokenCache() {
 
             @Override
-            protected boolean isExpired(Token authResult) {
-                return authResult.isExpired();
-            }
-
-            @Override
-            protected Mono<Token> authenticateAsync(String resource) {
+            protected Mono<AccessToken> authenticate(String resource) {
                 return remoteGetTokenAsync(1000);
             }
         };
@@ -133,16 +105,16 @@ public class RefreshableTokenCredentialTests {
         // Default buffer size for token cache is 16
         Flux.range(1, 100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getTokenAsync() on 10 different threads
+                // Runs refresher.getToken() on 100 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource" + i +".default")) // a different resource every time
+                .flatMap(start -> refresher.getToken("resource" + i)
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis < minMillis.get()) {
                             minMillis.set(millis);
                         }
 //                        System.out.format("Resource: %s\tDuration: %smillis%n",
-//                            "resource" + i, Duration.between(start, OffsetDateTime.now()).toMillis());
+//                            "resource" + i, millis);
                     })))
             .doOnComplete(latch::countDown)
             .subscribe();
@@ -154,24 +126,15 @@ public class RefreshableTokenCredentialTests {
     @Test
     public void testRefreshIsCalledBeforeNew() throws Exception {
         // Token expires on acquisition so every one has to get new token. But refresh is faster
-        RefreshableTokenCredential<Token> refresher = new RefreshableTokenCredential<Token>() {
-            @Override
-            protected String getTokenFromAuthResult(Token authResult) {
-                return authResult.token();
-            }
+        RefreshableTokenCache refresher = new RefreshableTokenCache() {
 
             @Override
-            protected boolean isExpired(Token authResult) {
-                return authResult.isExpired();
-            }
-
-            @Override
-            protected Mono<Token> authenticateAsync(String resource) {
+            protected Mono<AccessToken> authenticate(String resource) {
                 return remoteGetTokenThatExpiresSoonAsync(2000, 0);
             }
 
             @Override
-            protected Mono<Token> refreshAsync(Token expiredResult, String resource) {
+            protected Mono<AccessToken> refresh(AccessToken expiredResult, String resource) {
                 return remoteGetTokenThatExpiresSoonAsync(100, 0);
             }
         };
@@ -184,9 +147,9 @@ public class RefreshableTokenCredentialTests {
         Flux.concat(flux1, flux2)
             .take(5)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getTokenAsync() on 10 different threads
+                // Runs refresher.getToken() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getTokenAsync(Arrays.asList("resource.default"))
+                .flatMap(start -> refresher.getToken("resource")
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (i >= 0 && millis > maxMillis.get()) {
@@ -202,27 +165,28 @@ public class RefreshableTokenCredentialTests {
         Assert.assertTrue(maxMillis.get() < 1000); // no new is called
     }
 
-    private Mono<Token> remoteGetTokenAsync(long delayInMillis) {
+    private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
         return Mono.delay(Duration.ofMillis(delayInMillis))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));
     }
 
-    private Mono<Token> remoteGetTokenThatExpiresSoonAsync(long delayInMillis, long validityInMillis) {
+    private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync(long delayInMillis, long validityInMillis) {
         return Mono.delay(Duration.ofMillis(delayInMillis))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100)), validityInMillis));
     }
 
     // First token takes latency seconds, and adds 1 sec every subsequent call
-    private Mono<Token> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
+    private Mono<AccessToken> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
         return Mono.delay(Duration.ofSeconds(latency.getAndIncrement()))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));
     }
 
-    private static class Token {
+    private static class Token extends AccessToken {
         private String token;
         private OffsetDateTime expiry;
 
-        String token() {
+        @Override
+        public String token() {
             return token;
         }
 
@@ -235,7 +199,13 @@ public class RefreshableTokenCredentialTests {
             this.expiry = OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis));
         }
 
-        boolean isExpired() {
+        @Override
+        public OffsetDateTime expiresOn() {
+            return expiry;
+        }
+
+        @Override
+        public boolean isExpired() {
             return OffsetDateTime.now().isAfter(expiry);
         }
     }

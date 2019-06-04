@@ -23,7 +23,7 @@ public class EnvironmentCredentialTests {
         EnvironmentCredential credential = new EnvironmentCredential();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        String token = credential.getTokenAsync(Arrays.asList("qux.default"))
+        String token = credential.getToken("qux/.default")
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
                 String message = t.getMessage();

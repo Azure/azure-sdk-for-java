@@ -1,5 +1,8 @@
 package com.azure.identity.credential;
 
+import com.azure.identity.AccessToken;
+import com.azure.identity.IdentityClient;
+import com.azure.identity.IdentityClientOptions;
 import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -19,12 +22,20 @@ import java.util.function.Consumer;
 public class ClientSecretCredential extends AadCredential<ClientSecretCredential> {
     /* The client secret value. */
     private String clientSecret;
+    private IdentityClient identityClient;
 
     /**
      * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
      */
     public ClientSecretCredential() {
-        super();
+        this(new IdentityClientOptions());
+    }
+
+    /**
+     * Creates a ClientSecretCredential with default AAD endpoint https://login.microsoftonline.com.
+     */
+    public ClientSecretCredential(IdentityClientOptions identityClientOptions) {
+        identityClient = new IdentityClient(identityClientOptions);
     }
 
     /**
@@ -38,39 +49,7 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
     }
 
     @Override
-    public Mono<AuthenticationResult> authenticateAsync(String resource) {
-        validate();
-        if (clientSecret == null) {
-            throw new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential");
-        }
-        return acquireAccessToken(resource);
-    }
-
-    private Mono<AuthenticationResult> acquireAccessToken(String resource) {
-        String authorityUrl = this.aadEndpoint() + this.tenantId();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context;
-        try {
-            context = new AuthenticationContext(authorityUrl, false, executor);
-        } catch (MalformedURLException mue) {
-            executor.shutdown();
-            throw Exceptions.propagate(mue);
-        }
-        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-            context.acquireToken(
-                    resource,
-                    new ClientCredential(this.clientId(), this.clientSecret),
-                    new AuthenticationCallback<AuthenticationResult>() {
-                        @Override
-                        public void onSuccess(AuthenticationResult o) {
-                            callback.success(o);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            callback.error(throwable);
-                        }
-                    });
-        }).doFinally(s -> executor.shutdown());
+    public Mono<String> getToken(String... scopes) {
+        return identityClient.activeDirectory().acquireTokenWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
     }
 }

@@ -7,36 +7,35 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
  */
-public class ChainedTokenCredential extends TokenCredential {
+public class ChainedCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    public ChainedTokenCredential() {
+    public ChainedCredential() {
         credentials = new ArrayDeque<>();
     }
 
-    public ChainedTokenCredential addFirst(TokenCredential credential) {
+    public ChainedCredential addFirst(TokenCredential credential) {
         credentials.addFirst(credential);
         return this;
     }
 
-    public ChainedTokenCredential addLast(TokenCredential credential) {
+    public ChainedCredential addLast(TokenCredential credential) {
         credentials.addLast(credential);
         return this;
     }
 
     @Override
-    public Mono<String> getTokenAsync(List<String> scopes) {
+    public Mono<String> getToken(String... scopes) {
         return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getTokenAsync(scopes))
+            .flatMap(p -> p.getToken(scopes))
             .next()
             .switchIfEmpty(Mono.error(new ClientAuthenticationException("No credential can provide a token in the chain", null)));
     }

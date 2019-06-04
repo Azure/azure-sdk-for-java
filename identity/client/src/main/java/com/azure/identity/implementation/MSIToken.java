@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.identity.AccessToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -11,7 +12,7 @@ import java.time.ZoneOffset;
 /**
  * Type representing response from the local MSI token provider.
  */
-public class MSIToken {
+public class MSIToken extends AccessToken {
 
     private static OffsetDateTime epoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
@@ -24,14 +25,17 @@ public class MSIToken {
     @JsonProperty(value = "expires_on")
     private String expiresOn;
 
-    public String accessToken() {
+    @Override
+    public String token() {
         return accessToken;
     }
 
-    public String tokenType() {
-        return tokenType;
+    @Override
+    public OffsetDateTime expiresOn() {
+        return epoch.plusSeconds(Integer.parseInt(this.expiresOn));
     }
 
+    @Override
     public boolean isExpired() {
         OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime expireOn = epoch.plusSeconds(Integer.parseInt(this.expiresOn));

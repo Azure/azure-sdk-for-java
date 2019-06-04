@@ -1,16 +1,14 @@
 package com.azure.identity.credential;
 
-import com.azure.identity.implementation.RefreshableTokenCredential;
-import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.azure.core.credentials.TokenCredential;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The base class for credentials that acquires a token from AAD.
  */
-public abstract class AadCredential<T extends AadCredential<T>> extends RefreshableTokenCredential<AuthenticationResult> {
+public abstract class AadCredential<T extends AadCredential<T>> implements TokenCredential {
 
     private String clientId;
 
@@ -23,19 +21,6 @@ public abstract class AadCredential<T extends AadCredential<T>> extends Refresha
      */
     protected AadCredential() {
         aadEndpoint = "https://login.microsoftonline.com/";
-    }
-
-    @Override
-    protected String getTokenFromAuthResult(AuthenticationResult authResult) {
-        return authResult.getAccessToken();
-    }
-
-    @Override
-    protected boolean isExpired(AuthenticationResult authResult) {
-        if (authResult.getExpiresOnDate() == null) {
-            return true; // one-time tokens?
-        }
-        return OffsetDateTime.now().toInstant().isAfter(authResult.getExpiresOnDate().toInstant());
     }
 
     /**

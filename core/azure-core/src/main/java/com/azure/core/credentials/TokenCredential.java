@@ -5,41 +5,15 @@ package com.azure.core.credentials;
 
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * The base class for credentials that can provide a token.
  */
-public abstract class TokenCredential {
-    private String scheme;
-
-    /**
-     * Creates a token credential with scheme "Bearer";
-     */
-    protected TokenCredential() {
-        this.scheme = "Bearer";
-    }
-
-    /**
-     * Sets the token credential with the provided scheme.
-     * @param scheme the scheme for the token.
-     */
-    protected TokenCredential scheme(String scheme) {
-        this.scheme = scheme;
-        return this;
-    }
-
-    /**
-     * @return the scheme of the token
-     */
-    public String scheme() {
-        return scheme;
-    }
-
+@FunctionalInterface
+public interface TokenCredential {
     /**
      * Asynchronously get a token for a given resource/audience.
-     * @param scopes the resource/audience the token will be used for
+     * @param scopes the scopes the token will be used for
      * @return a Publisher that emits a single token
      */
-    public abstract Mono<String> getTokenAsync(List<String> scopes);
+    Mono<String> getToken(String... scopes);
 }
