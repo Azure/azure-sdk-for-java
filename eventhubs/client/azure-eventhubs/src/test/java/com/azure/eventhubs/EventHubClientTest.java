@@ -3,10 +3,12 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.TransportType;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
+import com.sun.net.httpserver.Authenticator;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -16,25 +18,27 @@ import reactor.test.StepVerifier;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 
 public class EventHubClientTest extends TestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
-        new EventHubClient(null, null, null, null, null);
+        new EventHubClient(null, null, null);
     }
 
     @Test
     public void getPartitionInformation() throws InterruptedException, InvalidKeyException, NoSuchAlgorithmException {
         Assume.assumeTrue(isTestConfigurationSet());
-
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(getConnectionString());
+        final CredentialInfo credentialInfo = CredentialInfo.from(getConnectionString());
         final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
+        final Duration timeout = Duration.ofSeconds(60);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
-        EventHubClient client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
+        final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
+        final ConnectionParameters connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP, new Retry(), new ProxyConfiguration(), scheduler);
+        EventHubClient client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {

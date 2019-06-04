@@ -5,41 +5,51 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.exception.AzureException;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.configuration.BaseConfigurations;
+import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.time.Duration;
 
 /**
  * Builder to create an {@link EventHubClient}.
  */
 public class EventHubClientBuilder {
-    private ConnectionStringBuilder credentials;
+
+    private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
+
+    private CredentialInfo credentials;
     private TransportType transport;
-    private Duration duration;
+    private Duration timeout;
     private Scheduler scheduler;
     private ProxyConfiguration proxyConfiguration;
-    private RetryPolicy retryPolicy;
+    private Retry retryPolicy;
+    private Configuration configuration;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
      */
     public EventHubClientBuilder() {
-        transport = TransportType.AMQP;
+        this.transport = TransportType.AMQP;
     }
 
     /**
-     * Sets the credentials.
+     * Sets the credentials information from connection string
      *
      * @param credentials Credentials for the EventHubClient.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder credentials(ConnectionStringBuilder credentials) {
+    public EventHubClientBuilder credentials(CredentialInfo credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -59,11 +69,11 @@ public class EventHubClientBuilder {
     /**
      * Sets the timeout for each connection, link, and session.
      *
-     * @param duration Duration for timeout.
+     * @param timeout Duration for timeout.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder timeout(Duration duration) {
-        this.duration = duration;
+    public EventHubClientBuilder timeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 
@@ -85,7 +95,7 @@ public class EventHubClientBuilder {
      * @param proxyConfiguration The proxy configuration to use.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder proxy(ProxyConfiguration proxyConfiguration) {
+    public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
         this.proxyConfiguration = proxyConfiguration;
         return this;
     }
@@ -96,32 +106,99 @@ public class EventHubClientBuilder {
      * @param retryPolicy The retry policy to use.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder retry(RetryPolicy retryPolicy) {
+    public EventHubClientBuilder retry(Retry retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated EventHubClientBuilder object.
+     */
+    public EventHubClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubClient} based on the configuration set in this builder.
+     * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
+     * @throws IllegalArgumentException when 'connStr' is {@code null} or empty.
      * @throws AzureException If the token provider cannot be created for authorizing requests.
      */
     public EventHubClient build() {
+        this.configuration = this.configuration == null ? ConfigurationManager.getConfiguration().clone() : this.configuration;
+
+        if (this.credentials == null) {
+            String connectionString = this.configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
+            if (ImplUtils.isNullOrEmpty(connectionString)) {
+                throw new IllegalArgumentException("connection string is null or empty.");
+            }
+            this.credentials = CredentialInfo.from(connectionString);
+        }
+
+        if (this.timeout == null) {
+            this.timeout = Duration.ofSeconds(60);
+        }
+
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final SharedAccessSignatureTokenProvider tokenProvider;
 
         try {
-            tokenProvider = new SharedAccessSignatureTokenProvider("", "");
+            tokenProvider = new SharedAccessSignatureTokenProvider(credentials.sharedAccessKeyName(), credentials.sharedAccessKey());
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new AzureException("Could not createc token provider.");
         }
 
-        return new EventHubClient(credentials, tokenProvider, provider, handlerProvider, scheduler);
+        if (tokenProvider == null) {
+            // TODO: add default tokenProvider
+        }
+
+        if (this.retryPolicy == null) {
+             this.retryPolicy = Retry.getDefault();
+        }
+
+        this.proxyConfiguration = constructDefaultProxyConfiguration(this.configuration);
+
+        if (this.scheduler == null) {
+            this.scheduler = Schedulers.elastic();
+        }
+
+        ConnectionParameters connectionParameters = new ConnectionParameters(this.credentials, this.timeout,
+            tokenProvider, this.transport, this.retryPolicy, this.proxyConfiguration, this.scheduler);
+
+        return new EventHubClient(connectionParameters, provider, handlerProvider);
     }
 
-    //TODO (conniey): Remove placeholder when the client is updated.
-    public static class ProxyConfiguration {
+    private ProxyConfiguration constructDefaultProxyConfiguration(Configuration configuration) {
+        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
+        if (this.proxyConfiguration != null) {
+            authentication = this.proxyConfiguration.authentication();
+        }
+
+        String proxyAddress = configuration.get(BaseConfigurations.HTTP_PROXY);
+        Proxy proxy = null;
+        if (proxyAddress != null) {
+            String[] hostPort = proxyAddress.split(":");
+            if (hostPort.length < 2) {
+                throw new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy");
+            }
+            String host = hostPort[0];
+            Integer port = Integer.parseInt(hostPort[1]);
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+        }
+
+        String username = configuration.get(ProxyConfiguration.PROXY_USERNAME);
+        String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
+
+        return new ProxyConfiguration(authentication, proxy, username, password);
     }
 }

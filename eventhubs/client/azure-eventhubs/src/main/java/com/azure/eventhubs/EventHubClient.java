@@ -34,20 +34,22 @@ public class EventHubClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
 
     //TODO (conniey): Can we remove this and replace with an TokenProvider?
-    private final ConnectionStringBuilder connectionStringBuilder;
+//    private final ConnectionStringBuilder connectionStringBuilder;
+    private final ConnectionParameters connectionParameters;
     //TODO (conniey): Replace with configured values in EventHubClientBuilder.
     private final Duration timeout = Duration.ofSeconds(45);
     private final String eventHubName;
 
-    EventHubClient(ConnectionStringBuilder connectionStringBuilder, TokenProvider tokenProvider,
-                   ReactorProvider provider, ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
-        Objects.requireNonNull(connectionStringBuilder, "'connectionStringBuilder' is null");
-        Objects.requireNonNull(connectionStringBuilder.endpoint(), "'connectionStringBuilder.endpoint()' is null.");
 
-        this.connectionStringBuilder = connectionStringBuilder;
-        this.eventHubName = connectionStringBuilder.eventHubName();
-        this.host = connectionStringBuilder.endpoint().getHost();
+    EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+        Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
+        this.connectionParameters = connectionParameters;
+        this.eventHubName = connectionParameters.getCredentials().eventHubName();
+        this.host = connectionParameters.getCredentials().endpoint().getHost();
         this.connectionId = StringUtil.getRandomString("MF");
+
+        TokenProvider tokenProvider = connectionParameters.getTokenProvider();
+        Scheduler scheduler = connectionParameters.getScheduler();
         this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, provider, handlerProvider, scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
