@@ -20,31 +20,31 @@ import java.util.Locale;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class SessionHandler extends Handler {
-    private final ServiceLogger logger = new ServiceLogger(SessionHandler.class);
-
-    private final String connectionId;
-    private final String host;
     private final String entityName;
+    private final ServiceLogger logger = new ServiceLogger(SessionHandler.class);
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
 
-    public SessionHandler(String connectionId, String host, String entityName, ReactorDispatcher reactorDispatcher,
+    public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
                    Duration openTimeout) {
-        this.connectionId = connectionId;
-        this.host = host;
+        super(connectionId, hostname);
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
     }
 
+    public String getEntityName() {
+        return this.entityName;
+    }
+
     public ErrorContext getContext(Throwable throwable) {
-        return new SessionErrorContext(throwable, host, entityName);
+        return new SessionErrorContext(throwable, getHostname(), entityName);
     }
 
     @Override
     public void onSessionLocalOpen(Event e) {
         logger.asInfo().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
-            connectionId, this.entityName,
+            getConnectionId(), this.entityName,
             e.getSession().getCondition() == null ? NOT_APPLICABLE : e.getSession().getCondition().toString());
 
         final Session session = e.getSession();
@@ -53,14 +53,14 @@ public class SessionHandler extends Handler {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
         } catch (IOException ioException) {
             logger.asWarning().log("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
-                connectionId, this.entityName,
+                getConnectionId(), this.entityName,
                 ioException.getMessage());
 
             session.close();
 
             final String message = String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
-                connectionId, this.entityName, ioException.getMessage());
-            final ErrorContext errorContext = new SessionErrorContext(new AmqpException(false, message, ioException), connectionId, entityName);
+                getConnectionId(), this.entityName, ioException.getMessage());
+            final ErrorContext errorContext = new SessionErrorContext(new AmqpException(false, message, ioException), getConnectionId(), entityName);
 
             onNext(errorContext);
         }
@@ -72,7 +72,7 @@ public class SessionHandler extends Handler {
 
         logger.asInfo().log(
             "onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}], sessionOutgoingWindow[{}]",
-            connectionId, entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
+            getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
 
         if (session.getLocalState() == EndpointState.UNINITIALIZED) {
             session.open();
@@ -86,7 +86,7 @@ public class SessionHandler extends Handler {
         final ErrorCondition condition = e.getSession().getCondition();
 
         logger.asInfo().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
-            entityName, connectionId,
+            entityName, getConnectionId(),
             condition == null ? NOT_APPLICABLE : condition.toString());
     }
 
@@ -95,7 +95,7 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
 
         logger.asInfo().log("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
-            entityName, connectionId,
+            entityName, getConnectionId(),
             session == null || session.getRemoteCondition() == null ? NOT_APPLICABLE : session.getRemoteCondition().toString());
 
         ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
@@ -103,7 +103,7 @@ public class SessionHandler extends Handler {
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             logger.asInfo().log(
                 "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], description[{}]",
-                connectionId, entityName,
+                getConnectionId(), entityName,
                 condition != null ? condition.getCondition() : NOT_APPLICABLE,
                 condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
@@ -115,8 +115,8 @@ public class SessionHandler extends Handler {
 
         if (condition != null) {
             final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", connectionId, entityName));
-            final ErrorContext context = new SessionErrorContext(exception, host, entityName);
+                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(), entityName));
+            final ErrorContext context = new SessionErrorContext(exception, getHostname(), entityName);
             onNext(context);
         }
     }
@@ -127,7 +127,7 @@ public class SessionHandler extends Handler {
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
         logger.asInfo().log("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
-            connectionId, entityName,
+            getConnectionId(), entityName,
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
