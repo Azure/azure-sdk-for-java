@@ -30,6 +30,10 @@ final class MessageIdAsyncRawClient {
         this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public Mono<Response<UpdatedMessage>> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Context context) {
         return update(queueMessage, popReceipt, visibilityTimeout, null, context);
     }

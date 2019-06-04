@@ -19,6 +19,10 @@ public final class QueueServiceClient {
         return new QueueServiceClientBuilder();
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public QueueServiceRawClient getRawClient() {
         return client;
     }

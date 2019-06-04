@@ -19,6 +19,10 @@ public final class MessageIdAsyncClient {
         return new MessageIdAsyncClientBuilder();
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessageIdAsyncRawClient getRawClient() {
         return client;
     }

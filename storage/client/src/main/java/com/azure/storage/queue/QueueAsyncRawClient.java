@@ -28,27 +28,31 @@ final class QueueAsyncRawClient {
             .withUrl(generateClient.url() + "/" + queueName)
             .withVersion(generateClient.version());
 
-        this.create(Context.NONE);
+        this.create(null, Context.NONE);
     }
 
     QueueAsyncRawClient(URL endpoint, HttpPipeline httpPipeline) {
         this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessagesAsyncRawClient getMessagesClient() {
         return new MessagesAsyncRawClient(client);
     }
 
-    public Mono<VoidResponse> create(Context context) {
+    public Mono<VoidResponse> create(Map<String, String> metadata, Context context) {
         return create(null, context);
     }
 
-    Mono<VoidResponse> create(Duration timeout, Context context) {
+    Mono<VoidResponse> create(Map<String, String> metdata, Duration timeout, Context context) {
         if (timeout == null) {
-            return client.queues().createWithRestResponseAsync(context)
+            return client.queues().createWithRestResponseAsync(null, metdata, null, context)
                 .map(VoidResponse::new);
         } else {
-            return client.queues().createWithRestResponseAsync(context)
+            return client.queues().createWithRestResponseAsync(null, metdata, null, context)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }

@@ -26,6 +26,10 @@ public final class QueueAsyncClient {
         return new QueueAsyncClientBuilder();
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public QueueAsyncRawClient getRawClient() {
         return client;
     }
@@ -34,8 +38,8 @@ public final class QueueAsyncClient {
         return new MessagesAsyncClient(client.getMessagesClient());
     }
 
-    public Mono<Void> create() {
-        return client.create(null, Context.NONE)
+    public Mono<Void> create(Map<String, String> metadata) {
+        return client.create(metadata, null, Context.NONE)
             .flatMap(response -> Mono.empty());
     }
 

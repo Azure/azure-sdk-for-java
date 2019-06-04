@@ -17,6 +17,10 @@ final class MessageIdRawClient {
         this.client = client;
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public Response<UpdatedMessage> update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
         return client.update(queueMessage, popReceipt, visibilityTimeout, timeout, context).block();
     }

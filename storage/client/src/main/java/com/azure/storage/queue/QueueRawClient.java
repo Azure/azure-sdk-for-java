@@ -19,12 +19,16 @@ final class QueueRawClient {
         this.client = client;
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessagesRawClient getMessagesClient() {
         return new MessagesRawClient(this.client.getMessagesClient());
     }
 
-    public VoidResponse create(Duration timeout, Context context) {
-        return client.create(timeout, context).block();
+    public VoidResponse create(Map<String, String> metadata, Duration timeout, Context context) {
+        return client.create(metadata, timeout, context).block();
     }
 
     public VoidResponse delete(Duration timeout, Context context) {

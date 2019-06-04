@@ -21,6 +21,10 @@ public final class MessagesClient {
         return new MessagesClientBuilder();
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessagesRawClient getRawClient() {
         return client;
     }

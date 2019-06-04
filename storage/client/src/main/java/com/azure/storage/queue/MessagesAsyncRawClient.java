@@ -29,6 +29,10 @@ final class MessagesAsyncRawClient {
         this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessageIdAsyncRawClient getMessageIdAsyncRawClient(String messageId) {
         return new MessageIdAsyncRawClient(messageId, client);
     }

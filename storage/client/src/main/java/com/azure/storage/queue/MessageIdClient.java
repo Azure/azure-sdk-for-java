@@ -17,6 +17,10 @@ public final class MessageIdClient {
         return new MessageIdClientBuilder();
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessageIdRawClient getRawClient() {
         return client;
     }

@@ -27,6 +27,10 @@ final class QueueServiceAsyncRawClient {
         return new QueueAsyncRawClient(queueName, client);
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public Mono<Response<ListQueuesSegmentResponse>> listQueuesSegment(String marker, QueuesSegmentOptions options, Context context) {
         return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, context)
             .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));

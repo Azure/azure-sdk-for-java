@@ -28,11 +28,11 @@ public final class QueuesSegmentOptions {
         return this;
     }
 
-    public int maxResults() {
+    public Integer maxResults() {
         return maxResults;
     }
 
-    public QueuesSegmentOptions maxResults(int maxResults) {
+    public QueuesSegmentOptions maxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }

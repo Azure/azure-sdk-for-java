@@ -20,6 +20,10 @@ public final class QueueClient {
         this.client = client;
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public QueueRawClient getRawClient() {
         return client;
     }
@@ -28,8 +32,8 @@ public final class QueueClient {
         return new MessagesClient(client.getMessagesClient());
     }
 
-    public void create() {
-        client.create(null, Context.NONE);
+    public void create(Map<String, String> metadata) {
+        client.create(metadata, null, Context.NONE);
     }
 
     public void delete() {

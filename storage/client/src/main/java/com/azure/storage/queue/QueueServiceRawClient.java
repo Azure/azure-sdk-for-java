@@ -21,6 +21,10 @@ final class QueueServiceRawClient {
         return new QueueRawClient(client.getQueueAsyncRawClient(queueName));
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public QueueRawClient getQueueRawClient(String queueName) {
         return new QueueRawClient(client.getQueueAsyncRawClient(queueName));
     }

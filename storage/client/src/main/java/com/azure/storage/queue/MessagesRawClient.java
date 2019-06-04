@@ -20,6 +20,10 @@ public final class MessagesRawClient {
         this.client = client;
     }
 
+    public String url() {
+        return client.url();
+    }
+
     public MessageIdRawClient getMessageIdRawClient(String messageId) {
         return new MessageIdRawClient(client.getMessageIdAsyncRawClient(messageId));
     }
