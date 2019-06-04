@@ -32,11 +32,11 @@ import org.testng.util.RetryAnalyzerCount;
 
 import java.util.concurrent.TimeUnit;
 
-public class RetryAnalyzier extends RetryAnalyzerCount {
-    private final Logger logger = LoggerFactory.getLogger(RetryAnalyzier.class);
+public class RetryAnalyzer extends RetryAnalyzerCount {
+    private final Logger logger = LoggerFactory.getLogger(RetryAnalyzer.class);
     private final int waitBetweenRetriesInSeconds = 120;
 
-    public RetryAnalyzier() {
+    public RetryAnalyzer() {
         this.setCount(Integer.parseInt(TestConfigurations.MAX_RETRY_LIMIT));
     }
 
