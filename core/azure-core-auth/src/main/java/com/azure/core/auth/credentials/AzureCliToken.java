@@ -121,6 +121,10 @@ final class AzureCliToken implements Cloneable {
         return this;
     }
 
+    /**
+     * @return the cloned token
+     * @throws CloneNotSupportedException if super doesn't support clone
+     */
     public AzureCliToken clone() throws CloneNotSupportedException {
         AzureCliToken token = (AzureCliToken) super.clone();
         token.expiresOnDate = LocalDateTime.from(expiresOn());
