@@ -5,6 +5,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -30,7 +31,8 @@ public class Poller<T> {
      * default value is false;*/
     private boolean autoPolling = true;
 
-    private Flux<PollResponse<T>> fluxAtHand;
+    /*Indicate if cancel is initiated.*/
+    private boolean cancelInitiated ;
 
     /**
      * Create a Poller that is configured to auto-poll.
@@ -73,27 +75,26 @@ public class Poller<T> {
 
         //We can not cancel an operation if it was never started
         //or it is in its terminal state.
-        if (pollResponse == null || pollResponse.status() != PollResponse.OperationStatus.IN_PROGRESS) {
+        //Check cancelInitiated: to protect against multiple time call to cancel operation
+        if (cancelInitiated  ||
+            (pollResponse != null && pollResponse.status() != PollResponse.OperationStatus.IN_PROGRESS)) {
             return;
         }
+        //Time to call cancel
         cancelOperation.accept(this);
+        cancelInitiated = true;
     }
 
-    //TODO : Make sure we do not pool every cpu cycle. Polling must be throttle by parameter defined in PollingType i.e interval or expeonential polling
-
     /**
-     * This will poll once. If you had stopped polling erlier, we will enable polling again.
+     * This will poll and send PollResponse. If you had stopped polling erlier, we will enable polling again.
      **/
     public Flux<PollResponse<T>> poll() {
         setStopPolling(false);
-        if (fluxAtHand == null) {
-            fluxAtHand = sendPollRequestWithDelay()
+        return sendPollRequestWithDelay()
                 .repeat(this.pollerOptions.getTimeoutInMilliSeconds() / this.pollerOptions.getPollIntervalInMillis())
                 .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED ||
                     pollResponse.status() == PollResponse.OperationStatus.FAILED ||
                     pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
-        }
-        return fluxAtHand;
     }
 
     public Flux<PollResponse<T>> block() {
@@ -106,9 +107,7 @@ public class Poller<T> {
      *
      * @return Whether or not this PollStrategy's long running operation is done.
      */
-
-
-    Mono<PollResponse<T>> sendPollRequestWithDelay() {
+    private Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             if (!isPollingStopped()) {
                 pollResponse = pollOperation.apply(pollResponse);
@@ -126,7 +125,7 @@ public class Poller<T> {
      *
      * @return A Mono with delay if this PollerOptions has a pollIntervalInMillis value.
      */
-    Mono<Void> delayAsync() {
+    private Mono<Void> delayAsync() {
         Mono<Void> result = Mono.empty();
         if (this.pollerOptions.getPollIntervalInMillis() > 0) {
             result = result.delaySubscription(Duration.ofMillis(
@@ -141,6 +140,12 @@ public class Poller<T> {
      **/
     public void stopPolling() {
         setStopPolling(true);
+        System.out.println(new Date()+" Poller: Stop Polling  ");
+    }
+
+    public void enablePolling() {
+        setStopPolling(false);
+        System.out.println(new Date()+" Poller: Enable Polling  ");
     }
 
     private void setStopPolling(boolean stop) {
