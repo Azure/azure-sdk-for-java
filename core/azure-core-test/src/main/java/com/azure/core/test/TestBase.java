@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;
@@ -33,7 +34,7 @@ public abstract class TestBase {
      */
     @BeforeClass
     public static void setupClass() {
-        testMode = getTestMode();
+        testMode = initializeTestMode();
     }
 
     /**
@@ -70,6 +71,15 @@ public abstract class TestBase {
     }
 
     /**
+     * Gets the TestMode that has been initialized.
+     *
+     * @return The TestMode that has been initialized.
+     */
+    public TestMode getTestMode() {
+        return testMode;
+    }
+
+    /**
      * Gets the name of the current test being run.
      * <p>
      * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns {@code
@@ -93,9 +103,9 @@ public abstract class TestBase {
     protected void afterTest() {
     }
 
-    private static TestMode getTestMode() {
+    private static TestMode initializeTestMode() {
         final Logger logger = LoggerFactory.getLogger(TestBase.class);
-        final String azureTestMode = System.getenv(AZURE_TEST_MODE);
+        final String azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {
@@ -104,6 +114,7 @@ public abstract class TestBase {
                 if (logger.isErrorEnabled()) {
                     logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 }
+
                 return TestMode.PLAYBACK;
             }
         }
@@ -111,7 +122,6 @@ public abstract class TestBase {
         if (logger.isInfoEnabled()) {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         }
-
         return TestMode.PLAYBACK;
     }
 }

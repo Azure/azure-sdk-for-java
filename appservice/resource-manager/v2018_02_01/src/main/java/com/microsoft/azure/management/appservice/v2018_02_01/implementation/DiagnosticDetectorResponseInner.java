@@ -19,7 +19,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.appservice.v2018_02_01.ProxyOnlyResource;
 
 /**
- * Class representing Reponse from Diagnostic Detectors.
+ * Class representing Response from Diagnostic Detectors.
  */
 @JsonFlatten
 public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
