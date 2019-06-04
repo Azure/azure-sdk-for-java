@@ -6,7 +6,7 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.ExceptionHandler;
+import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ReactorConnection extends StateNotifierBase implements AmqpConnection {
+public class ReactorConnection extends EndpointStateNotifierBase implements AmqpConnection {
     //TODO (conniey): Change this to use our configuration settings.
     private static final Duration DEFAULT_OPERATION_TIMEOUT = Duration.ofSeconds(60);
 
@@ -188,7 +188,7 @@ public class ReactorConnection extends StateNotifierBase implements AmqpConnecti
         return connection;
     }
 
-    private static class ReactorExceptionHandler extends ExceptionHandler {
+    private static class ReactorExceptionHandler extends AmqpExceptionHandler {
         @Override
         public void onConnectionError(Throwable exception) {
             super.onConnectionError(exception);

@@ -54,7 +54,7 @@ public class EventHubClient implements Closeable {
     /**
      * Creates a builder that can configure options for the {@link EventHubClient} before creating an instance of it.
      *
-     * @return A new {@link EventHubClientBuilder} to createReactor an EventHubClient from.
+     * @return A new {@link EventHubClientBuilder} to create an EventHubClient from.
      */
     public static EventHubClientBuilder builder() {
         return new EventHubClientBuilder();

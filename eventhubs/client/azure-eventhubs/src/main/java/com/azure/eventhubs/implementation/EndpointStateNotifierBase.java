@@ -3,9 +3,9 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.ConnectionState;
-import com.azure.core.amqp.ShutdownSignal;
-import com.azure.core.amqp.StateNotifier;
+import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.EndpointStateNotifier;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.logging.ServiceLogger;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -17,16 +17,16 @@ import reactor.core.publisher.ReplayProcessor;
 import java.io.Closeable;
 import java.util.Objects;
 
-abstract class StateNotifierBase implements StateNotifier, Closeable {
-    private final ReplayProcessor<ConnectionState> connectionStateProcessor = ReplayProcessor.cacheLastOrDefault(ConnectionState.UNINITIALIZED);
+abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Closeable {
+    private final ReplayProcessor<AmqpEndpointState> connectionStateProcessor = ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final DirectProcessor<ErrorContext> errorContextProcessor = DirectProcessor.create();
-    private final DirectProcessor<ShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
+    private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private final Disposable subscription;
 
     protected ServiceLogger logger;
-    private volatile ConnectionState state;
+    private volatile AmqpEndpointState state;
 
-    StateNotifierBase(ServiceLogger logger) {
+    EndpointStateNotifierBase(ServiceLogger logger) {
         Objects.requireNonNull(logger);
 
         this.logger = logger;
@@ -34,7 +34,7 @@ abstract class StateNotifierBase implements StateNotifier, Closeable {
     }
 
     @Override
-    public ConnectionState getCurrentState() {
+    public AmqpEndpointState getCurrentState() {
         return state;
     }
 
@@ -44,12 +44,12 @@ abstract class StateNotifierBase implements StateNotifier, Closeable {
     }
 
     @Override
-    public Flux<ConnectionState> getConnectionStates() {
+    public Flux<AmqpEndpointState> getConnectionStates() {
         return connectionStateProcessor;
     }
 
     @Override
-    public Flux<ShutdownSignal> getShutdownSignals() {
+    public Flux<AmqpShutdownSignal> getShutdownSignals() {
         return shutdownSignalProcessor;
     }
 
@@ -57,24 +57,24 @@ abstract class StateNotifierBase implements StateNotifier, Closeable {
         errorContextProcessor.onNext(error);
     }
 
-    void notifyShutdown(ShutdownSignal shutdownSignal) {
+    void notifyShutdown(AmqpShutdownSignal shutdownSignal) {
         shutdownSignalProcessor.onNext(shutdownSignal);
     }
 
     void notifyAndSetConnectionState(EndpointState endpointState) {
         logger.asInformational().log("Connection state: {}", endpointState);
-        final ConnectionState state = getConnectionState(endpointState);
+        final AmqpEndpointState state = getConnectionState(endpointState);
         connectionStateProcessor.onNext(state);
     }
 
-    private static ConnectionState getConnectionState(EndpointState state) {
+    private static AmqpEndpointState getConnectionState(EndpointState state) {
         switch (state) {
             case ACTIVE:
-                return ConnectionState.ACTIVE;
+                return AmqpEndpointState.ACTIVE;
             case UNINITIALIZED:
-                return ConnectionState.UNINITIALIZED;
+                return AmqpEndpointState.UNINITIALIZED;
             case CLOSED:
-                return ConnectionState.CLOSED;
+                return AmqpEndpointState.CLOSED;
             default:
                 throw new UnsupportedOperationException("This endpoint state is not supported. State:" + state);
         }

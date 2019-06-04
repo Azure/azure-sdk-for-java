@@ -11,20 +11,20 @@ import java.time.Duration;
 /**
  * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink}.
  */
-public interface AmqpSession extends StateNotifier, Closeable {
+public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
      * Gets the entity path for this AMQP session.
      *
      * @return The entity path for the AMQP session.
      */
-    String sessionName();
+    String getSessionName();
 
     /**
      * Gets the operation timeout for starting the AMQP session.
      *
      * @return The timeout for starting the AMQP session.
      */
-    Duration openTimeout();
+    Duration getOpenTimeout();
 
     /**
      * Creates a new AMQP sender link.

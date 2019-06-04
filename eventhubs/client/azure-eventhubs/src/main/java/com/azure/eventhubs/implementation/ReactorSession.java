@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Objects;
 
-class ReactorSession extends StateNotifierBase implements AmqpSession {
+class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     private final Session session;
     private final SessionHandler handler;
     private final String sessionName;
@@ -64,12 +64,12 @@ class ReactorSession extends StateNotifierBase implements AmqpSession {
     }
 
     @Override
-    public String sessionName() {
+    public String getSessionName() {
         return sessionName;
     }
 
     @Override
-    public Duration openTimeout() {
+    public Duration getOpenTimeout() {
         return openTimeout;
     }
 

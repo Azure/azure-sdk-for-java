@@ -6,7 +6,7 @@ package com.azure.core.amqp;
 /**
  * Represents a state for a connection, session, or link.
  */
-public enum ConnectionState {
+public enum AmqpEndpointState {
     /**
      * The endpoint has not been initialized.
      */

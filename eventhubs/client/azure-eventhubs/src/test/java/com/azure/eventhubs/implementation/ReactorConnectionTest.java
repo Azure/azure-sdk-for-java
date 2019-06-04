@@ -4,7 +4,7 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
-import com.azure.core.amqp.ConnectionState;
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -116,7 +116,7 @@ public class ReactorConnectionTest {
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
                 Assert.assertNotNull(s);
-                Assert.assertEquals(SESSION_NAME, s.sessionName());
+                Assert.assertEquals(SESSION_NAME, s.getSessionName());
                 Assert.assertTrue(s instanceof ReactorSession);
                 Assert.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
@@ -125,7 +125,7 @@ public class ReactorConnectionTest {
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
                 Assert.assertNotNull(s);
-                Assert.assertEquals(SESSION_NAME, s.sessionName());
+                Assert.assertEquals(SESSION_NAME, s.getSessionName());
                 Assert.assertTrue(s instanceof ReactorSession);
                 Assert.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
@@ -150,7 +150,7 @@ public class ReactorConnectionTest {
         when(session.attachments()).thenReturn(record);
 
         // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.sessionName())))
+        StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
             .expectNext(true)
             .verifyComplete();
 
@@ -188,7 +188,7 @@ public class ReactorConnectionTest {
     public void initialConnectionState() {
         // Assert
         StepVerifier.create(connection.getConnectionStates())
-            .expectNext(ConnectionState.UNINITIALIZED)
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> {
                 try {
                     connection.close();
@@ -214,9 +214,9 @@ public class ReactorConnectionTest {
 
         // Act & Assert
         StepVerifier.create(connection.getConnectionStates())
-            .expectNext(ConnectionState.UNINITIALIZED)
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> handler.onConnectionRemoteOpen(event))
-            .expectNext(ConnectionState.ACTIVE)
+            .expectNext(AmqpEndpointState.ACTIVE)
             // getConnectionStates is distinct. We don't expect to see another event with the same status.
             .then(() -> handler.onConnectionRemoteOpen(event))
             .then(() -> {

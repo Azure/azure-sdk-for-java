@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends StateNotifier, Closeable {
+public interface AmqpConnection extends EndpointStateNotifier, Closeable {
     /**
      * Gets the connection identifier.
      *

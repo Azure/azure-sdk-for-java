@@ -115,7 +115,7 @@ public class EventHubClientBuilder {
         try {
             tokenProvider = new SharedAccessSignatureTokenProvider("", "");
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new AzureException("Could not create token provider.");
+            throw new AzureException("Could not createc token provider.");
         }
 
         return new EventHubClient(credentials, tokenProvider, provider, handlerProvider, scheduler);

@@ -14,5 +14,5 @@ public interface AmqpLink extends Closeable {
      *
      * @return The name of the link.
      */
-    String linkName();
+    String getLinkName();
 }

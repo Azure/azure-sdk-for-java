@@ -3,8 +3,8 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.ExceptionHandler;
-import com.azure.core.amqp.ShutdownSignal;
+import com.azure.core.amqp.AmqpExceptionHandler;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
@@ -31,9 +31,9 @@ class ReactorExecutor implements Closeable {
     private final Scheduler scheduler;
     private final String connectionId;
     private final Duration timeout;
-    private final ExceptionHandler exceptionHandler;
+    private final AmqpExceptionHandler exceptionHandler;
 
-    ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, ExceptionHandler exceptionHandler,
+    ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, AmqpExceptionHandler exceptionHandler,
                     Duration timeout) {
         Objects.requireNonNull(reactor);
         Objects.requireNonNull(scheduler);
@@ -174,7 +174,7 @@ class ReactorExecutor implements Closeable {
                 this.reactor.free();
             }
 
-            exceptionHandler.onConnectionShutdown(new ShutdownSignal(false, isUserInitialized, reason));
+            exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
         }
     }
 }
