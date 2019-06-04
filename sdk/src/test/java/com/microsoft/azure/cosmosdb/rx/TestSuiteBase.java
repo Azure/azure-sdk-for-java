@@ -700,7 +700,7 @@ public class TestSuiteBase {
                 try {
                     client.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("failed to close client", e);
                 }
             }).start();
         }
@@ -711,7 +711,7 @@ public class TestSuiteBase {
             try {
                 client.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("failed to close client", e);
             }
         }
     }
@@ -893,7 +893,7 @@ public class TestSuiteBase {
     }
 
     static Protocol[] toArray(List<Protocol> protocols) {
-        return protocols.toArray(new Protocol[0]);
+        return protocols.toArray(new Protocol[protocols.size()]);
     }
 
     private static Object[][] clientBuildersWithDirectSession(Protocol... protocols) {
