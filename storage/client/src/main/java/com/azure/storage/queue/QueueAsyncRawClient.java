@@ -23,6 +23,14 @@ import java.util.Map;
 final class QueueAsyncRawClient {
     private final AzureQueueStorageImpl client;
 
+    QueueAsyncRawClient(String queueName, AzureQueueStorageImpl generateClient) {
+        this.client = new AzureQueueStorageImpl(generateClient.httpPipeline())
+            .withUrl(generateClient.url() + "/" + queueName)
+            .withVersion(generateClient.version());
+
+        this.create(Context.NONE);
+    }
+
     QueueAsyncRawClient(URL endpoint, HttpPipeline httpPipeline) {
         this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }

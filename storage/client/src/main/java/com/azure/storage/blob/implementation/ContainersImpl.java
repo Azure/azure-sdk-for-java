@@ -18,6 +18,7 @@ import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
@@ -692,7 +693,7 @@ public final class ContainersImpl {
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
@@ -735,7 +736,7 @@ public final class ContainersImpl {
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(String containerName, String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
     }
 

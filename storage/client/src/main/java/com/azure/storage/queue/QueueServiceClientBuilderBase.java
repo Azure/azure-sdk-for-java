@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-final class QueueClientBuilderBase {
+class QueueServiceClientBuilderBase {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -38,13 +38,13 @@ final class QueueClientBuilderBase {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    QueueClientBuilderBase() {
+    QueueServiceClientBuilderBase() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
-    QueueAsyncRawClient build() {
+    QueueServiceAsyncRawClient build() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -67,10 +67,10 @@ final class QueueClientBuilderBase {
             .httpClient(httpClient)
             .build();
 
-        return new QueueAsyncRawClient(endpoint, pipeline);
+        return new QueueServiceAsyncRawClient(endpoint, pipeline);
     }
 
-    public QueueClientBuilderBase endpoint(String endpoint) {
+    public QueueServiceClientBuilderBase endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -81,12 +81,12 @@ final class QueueClientBuilderBase {
         return this;
     }
 
-    public QueueClientBuilderBase credentials(TokenCredential credentials) {
+    public QueueServiceClientBuilderBase credentials(TokenCredential credentials) {
         this.credentials = credentials;
         return this;
     }
 
-    public QueueClientBuilderBase connectionString(String connectionString) {
+    public QueueServiceClientBuilderBase connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -107,22 +107,22 @@ final class QueueClientBuilderBase {
         return this;
     }
 
-    public QueueClientBuilderBase httpClient(HttpClient httpClient) {
+    public QueueServiceClientBuilderBase httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
 
-    public QueueClientBuilderBase addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public QueueServiceClientBuilderBase addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
 
-    public QueueClientBuilderBase httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public QueueServiceClientBuilderBase httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
 
-    public QueueClientBuilderBase configuration(Configuration configuration) {
+    public QueueServiceClientBuilderBase configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }

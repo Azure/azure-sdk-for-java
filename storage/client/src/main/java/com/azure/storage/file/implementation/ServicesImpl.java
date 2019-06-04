@@ -15,6 +15,7 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ServicesGetPropertiesResponse;
@@ -22,8 +23,9 @@ import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import com.azure.storage.file.models.StorageServiceProperties;
-import java.util.List;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -161,7 +163,7 @@ public final class ServicesImpl {
      */
     public Mono<ServicesListSharesSegmentResponse> listSharesSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listSharesSegment(this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), comp, context);
     }
 }

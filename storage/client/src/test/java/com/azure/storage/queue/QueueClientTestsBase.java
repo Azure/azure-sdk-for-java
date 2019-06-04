@@ -41,13 +41,17 @@ public abstract class QueueClientTestsBase extends TestBase {
 
         Objects.requireNonNull(connectionString, "AZURE_STORAGE_CONNECTION_STRING expected to be set.");
 
+        if (ImplUtils.isNullOrEmpty(testQueueName)) {
+            testQueueName = testResourceNamer.randomName("queue", 16);
+        }
+
         return Objects.requireNonNull(clientBuilder.apply(connectionString, getQueueEndpoint(connectionString)));
     }
 
     private String getQueueEndpoint(String connectionString) {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
-            String[] kvp = s.split("=", 1);
+            String[] kvp = s.split("=", 2);
             connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
         }
 
@@ -60,9 +64,6 @@ public abstract class QueueClientTestsBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        if (ImplUtils.isNullOrEmpty(testQueueName)) {
-            testQueueName = testResourceNamer.randomName("queue", 16);
-        }
     }
 
     @Override
