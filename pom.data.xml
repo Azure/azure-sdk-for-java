@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-client-sdk-parent</artifactId>
+  <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
-  <name>Microsoft Azure SDK for Java - Client Libraries</name>
+  <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>
@@ -61,12 +61,12 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
-    <build.context>azure-client-sdk-parent</build.context>
+    <build.context>azure-data-sdk-parent</build.context>
   </properties>
 
   <build>
     <plugins>
-      <!-- This plugin scans checkstyle issues in the code -->
+      <!-- This plugin scans checkstyle issues in these code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -196,7 +196,6 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <additionalOptions></additionalOptions>
             </configuration>
           </execution>
         </executions>
@@ -258,28 +257,27 @@
             <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
-            <excludePackageNames>
-              com.microsoft.azure.template:
-              *.impl.*:
-              *.implementation.*:
-              com.azure.tracing.opencensus*
-            </excludePackageNames>
+            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
               <group>
-                <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
+                <title>Azure Batch</title>
+                <packages>com.microsoft.azure.batch*</packages>
               </group>
               <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
+                <title>Azure Event Hubs</title>
+                <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
               </group>
               <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
+                <title>Azure Key Vault</title>
+                <packages>com.microsoft.azure.keyvault*</packages>
               </group>
               <group>
-                <title>Azure App Configuration</title>
-                <packages>com.azure.applicationconfig*</packages>
+                <title>Azure Service Bus</title>
+                <packages>com.microsoft.azure.servicebus*</packages>
+              </group>
+              <group>
+                <title>Azure Storage</title>
+                <packages>com.microsoft.azure.storage*</packages>
               </group>
             </groups>
             <links>
@@ -316,7 +314,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
   </build>
 
   <reporting>
@@ -518,7 +515,7 @@
     </profile>
 
     <profile>
-      <id>non-shipping-modules</id>
+      <id>non-shippping-modules</id>
       <activation>
         <property>
           <name>include-non-shipping-modules</name>
@@ -544,9 +541,10 @@
   </profiles>
 
   <modules>
-    <module>./applicationconfig/client</module>
-    <module>./core</module>
-    <module>./keyvault/client</module>
-    <module>./tracing</module>
+    <module>./batch/data-plane</module>
+    <module>./eventhubs/data-plane</module>
+    <module>./keyvault/data-plane</module>
+    <module>./servicebus/data-plane</module>
+    <module>./storage/data-plane</module>
   </modules>
 </project>
