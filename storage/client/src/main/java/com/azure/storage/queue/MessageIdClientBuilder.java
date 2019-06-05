@@ -11,14 +11,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import java.net.MalformedURLException;
 
 public final class MessageIdClientBuilder {
-    private final MessageIdClientBuilderBase builder;
+    private final MessageIdAsyncClientBuilder builder;
 
     MessageIdClientBuilder() {
-        this.builder = new MessageIdClientBuilderBase();
+        this.builder = new MessageIdAsyncClientBuilder();
     }
 
     public MessageIdClient build() {
-        return new MessageIdClient(new MessageIdRawClient(builder.build()));
+        return new MessageIdClient(builder.build());
     }
 
     public MessageIdClientBuilder endpoint(String endpoint) throws MalformedURLException {

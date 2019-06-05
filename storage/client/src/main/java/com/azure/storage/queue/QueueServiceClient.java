@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 
-public final class QueueServiceClient {
-    private final QueueServiceRawClient client;
+final class QueueServiceClient {
+    private final QueueServiceAsyncClient client;
 
-    QueueServiceClient(QueueServiceRawClient client) {
+    QueueServiceClient(QueueServiceAsyncClient client) {
         this.client = client;
     }
 
@@ -23,27 +25,23 @@ public final class QueueServiceClient {
         return client.url();
     }
 
-    public QueueServiceRawClient getRawClient() {
-        return client;
-    }
-
     public QueueClient getQueueClient(String queueName) {
-        return new QueueClient(client.getQueueServiceRawClient(queueName));
+        return new QueueClient(client.getQueueAsyncClient(queueName));
     }
 
-    public ListQueuesSegmentResponse listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.listQueuesSegment(marker, options, Context.NONE).value();
+    public Response<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options, Context context) {
+        return client.listQueuesSegment(marker, options, context).block();
     }
 
-    public StorageServiceProperties getProperties() {
-        return client.getProperties(Context.NONE).value();
+    public Response<StorageServiceProperties> getProperties(Context context) {
+        return client.getProperties(context).block();
     }
 
-    public void setProperties(StorageServiceProperties properties) {
-        client.setProperties(properties, Context.NONE);
+    public VoidResponse setProperties(StorageServiceProperties properties, Context context) {
+        return client.setProperties(properties, context).block();
     }
 
-    public StorageServiceStats getStatistics() {
-        return client.getStatistics(Context.NONE).value();
+    public Response<StorageServiceStats> getStatistics(Context context) {
+        return client.getStatistics(context).block();
     }
 }

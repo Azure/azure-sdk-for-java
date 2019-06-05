@@ -2,19 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
-public final class QueueServiceAsyncClient {
-    private final QueueServiceAsyncRawClient client;
+import java.net.URL;
 
-    QueueServiceAsyncClient(QueueServiceAsyncRawClient client) {
-        this.client = client;
+final class QueueServiceAsyncClient {
+    private final AzureQueueStorageImpl client;
+
+    QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
+        this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
     }
 
     public static QueueServiceAsyncClientBuilder builder() {
@@ -25,31 +31,27 @@ public final class QueueServiceAsyncClient {
         return client.url();
     }
 
-    public QueueServiceAsyncRawClient getRawClient() {
-        return client;
-    }
-
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client.getQueueAsyncRawClient(queueName));
+        return new QueueAsyncClient(queueName, client);
     }
 
-    public Mono<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.listQueuesSegment(marker, options, Context.NONE)
-            .map(Response::value);
+    public Mono<Response<ListQueuesSegmentResponse>> listQueuesSegment(String marker, QueuesSegmentOptions options, Context context) {
+        return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, context)
+            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 
-    public Mono<StorageServiceProperties> getProperties() {
-        return client.getProperties(Context.NONE)
-            .map(Response::value);
+    public Mono<Response<StorageServiceProperties>> getProperties(Context context) {
+        return client.services().getPropertiesWithRestResponseAsync(context)
+            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 
-    public Mono<Void> setProperties(StorageServiceProperties properties) {
-        return client.setProperties(properties, Context.NONE)
-            .flatMap(response -> Mono.empty());
+    public Mono<VoidResponse> setProperties(StorageServiceProperties properties, Context context) {
+        return client.services().setPropertiesWithRestResponseAsync(properties, context)
+            .map(VoidResponse::new);
     }
 
-    public Mono<StorageServiceStats> getStatistics() {
-        return client.getStatistics(Context.NONE)
-            .map(Response::value);
+    public Mono<Response<StorageServiceStats>> getStatistics(Context context) {
+        return client.services().getStatisticsWithRestResponseAsync(context)
+            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 }

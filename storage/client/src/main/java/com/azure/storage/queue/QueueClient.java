@@ -2,57 +2,56 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public final class QueueClient {
-    private final QueueRawClient client;
+final class QueueClient {
+    private final QueueAsyncClient client;
+
+    QueueClient(QueueAsyncClient client) {
+        this.client = client;
+    }
 
     public static QueueClientBuilder builder() {
         return new QueueClientBuilder();
-    }
-
-    QueueClient(QueueRawClient client) {
-        this.client = client;
     }
 
     public String url() {
         return client.url();
     }
 
-    public QueueRawClient getRawClient() {
-        return client;
-    }
-
     public MessagesClient getMessagesClient() {
-        return new MessagesClient(client.getMessagesClient());
+        return new MessagesClient(this.client.getMessagesAsyncClient());
     }
 
-    public void create(Map<String, String> metadata) {
-        client.create(metadata, null, Context.NONE);
+    public VoidResponse create(Map<String, String> metadata, Duration timeout, Context context) {
+        return client.create(metadata, timeout, context).block();
     }
 
-    public void delete() {
-        client.delete(null, Context.NONE);
+    public VoidResponse delete(Duration timeout, Context context) {
+        return client.delete(timeout, context).block();
     }
 
-    public QueueProperties getProperties() {
-        return client.getProperties(null, Context.NONE).value();
+    public Response<QueueProperties> getProperties(Duration timeout, Context context) {
+        return client.getProperties(timeout, context).block();
     }
 
-    public void setMetadata(Map<String, String> metadata) {
-        client.setMetadata(metadata, null, Context.NONE);
+    public VoidResponse setMetadata(Map<String, String> metadata, Duration timeout, Context context) {
+        return client.setMetadata(metadata, timeout, context).block();
     }
 
-    public List<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy(null, Context.NONE);
+    public List<SignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
+        return client.getAccessPolicy(timeout, context).collectList().block();
     }
 
-    public void setAccessPolicy(List<SignedIdentifier> permissions) {
-        client.setAccessPolicy(permissions, null, Context.NONE);
+    public VoidResponse setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout, Context context) {
+        return client.setAccessPolicy(permissions, timeout, context).block();
     }
 }

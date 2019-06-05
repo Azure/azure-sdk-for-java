@@ -2,14 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.UpdatedMessage;
 
-public final class MessageIdClient {
-    private final MessageIdRawClient client;
+import java.time.Duration;
 
-    MessageIdClient(MessageIdRawClient client) {
+final class MessageIdClient {
+    private final MessageIdAsyncClient client;
+
+    MessageIdClient(MessageIdAsyncClient client) {
         this.client = client;
     }
 
@@ -21,15 +24,11 @@ public final class MessageIdClient {
         return client.url();
     }
 
-    public MessageIdRawClient getRawClient() {
-        return client;
+    public Response<UpdatedMessage> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
+        return client.update(messageText, popReceipt, visibilityTimeout, timeout, context).block();
     }
 
-    public UpdatedMessage update(QueueMessage queueMessage, String popReceipt, int visibilityTimeout) {
-        return client.update(queueMessage, popReceipt, visibilityTimeout, null, Context.NONE).value();
-    }
-
-    public void delete(String popReceipt) {
-        client.delete(popReceipt, null, Context.NONE);
+    public VoidResponse delete(String popReceipt, Duration timeout, Context context) {
+        return client.delete(popReceipt, timeout, context).block();
     }
 }

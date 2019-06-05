@@ -5,52 +5,125 @@ package com.azure.storage.queue;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 
-public final class QueueAsyncClientBuilder {
-    private final QueueClientBuilderBase builder;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+final class QueueAsyncClientBuilder {
+    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
+    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+
+    private final List<HttpPipelinePolicy> policies;
+
+    private URL endpoint;
+    private TokenCredential credentials; // Revert this to SharedKeyCredentials once it is implemented.
+    private HttpClient httpClient;
+    private HttpLogDetailLevel logLevel;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     QueueAsyncClientBuilder() {
-        builder = new QueueClientBuilderBase();
+        retryPolicy = new RetryPolicy();
+        logLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
     }
 
-    public QueueAsyncClient build() {
-        return new QueueAsyncClient(builder.build());
+    QueueAsyncClient build() {
+        Objects.requireNonNull(endpoint);
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+        policies.add(new TokenCredentialPolicy(credentials)); // This needs to be a different credential type.
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        policies.add(retryPolicy);
+
+        policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(logLevel));
+
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        return new QueueAsyncClient(endpoint, pipeline);
     }
 
     public QueueAsyncClientBuilder endpoint(String endpoint) {
-        builder.endpoint(endpoint);
+        Objects.requireNonNull(endpoint);
+        try {
+            this.endpoint = new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+        }
+
         return this;
     }
 
     public QueueAsyncClientBuilder credentials(TokenCredential credentials) {
-        builder.credentials(credentials);
+        this.credentials = credentials;
         return this;
     }
 
     public QueueAsyncClientBuilder connectionString(String connectionString) {
-        builder.connectionString(connectionString);
+        Objects.requireNonNull(connectionString);
+
+        Map<String, String> connectionKVPs = new HashMap<>();
+        for (String s : connectionString.split(";")) {
+            String[] kvp = s.split("=", 2);
+            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+        }
+
+        String accountName = connectionKVPs.get(ACCOUNT_NAME);
+        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+        }
+
+        // Use accountName and accountKey to get the SAS token using the credential class.
+
         return this;
     }
 
     public QueueAsyncClientBuilder httpClient(HttpClient httpClient) {
-        builder.httpClient(httpClient);
+        this.httpClient = httpClient;
         return this;
     }
 
     public QueueAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        builder.addPolicy(pipelinePolicy);
+        this.policies.add(pipelinePolicy);
         return this;
     }
 
     public QueueAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        builder.httpLogDetailLevel(logLevel);
+        this.logLevel = logLevel;
         return this;
     }
 
     public QueueAsyncClientBuilder configuration(Configuration configuration) {
-        builder.configuration(configuration);
+        this.configuration = configuration;
         return this;
     }
 }

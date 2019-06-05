@@ -11,10 +11,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import java.net.MalformedURLException;
 
 public final class MessagesClientBuilder {
-    private final MessagesClientBuilderBase builder;
+    private final MessagesAsyncClientBuilder builder;
 
     MessagesClientBuilder() {
-        builder = new MessagesClientBuilderBase();
+        builder = new MessagesAsyncClientBuilder();
     }
 
     public MessagesAsyncClient build() {

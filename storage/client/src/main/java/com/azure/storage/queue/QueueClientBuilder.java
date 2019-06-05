@@ -9,14 +9,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
 public final class QueueClientBuilder {
-    private final QueueClientBuilderBase builder;
+    private final QueueAsyncClientBuilder builder;
 
     QueueClientBuilder() {
-        builder = new QueueClientBuilderBase();
+        builder = new QueueAsyncClientBuilder();
     }
 
     public QueueClient build() {
-        return new QueueClient(new QueueRawClient(builder.build()));
+        return new QueueClient(builder.build());
     }
 
     public QueueClientBuilder endpoint(String endpoint) {
