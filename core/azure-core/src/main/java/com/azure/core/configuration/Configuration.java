@@ -93,8 +93,8 @@ public class Configuration implements Cloneable {
 
         // Special handling for tracing disabled and log level as they need to be updated instantly on
         // configuration change.
-        if (BaseConfigurations.AZURE_TRACING_DISABLED.equalsIgnoreCase(name) ||
-            BaseConfigurations.AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
+        if (BaseConfigurations.AZURE_TRACING_DISABLED.equalsIgnoreCase(name)
+            || BaseConfigurations.AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
             load(name);
         }
 
