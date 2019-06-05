@@ -8,7 +8,6 @@ import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
-import com.sun.net.httpserver.Authenticator;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;

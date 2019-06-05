@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.eventhubs;
 
 // TODO: replace it after Retry PR merged
-public class Retry {
+class Retry {
 
-    public static Retry getDefault() {
+    static Retry getDefault() {
         return new Retry();
     }
 }

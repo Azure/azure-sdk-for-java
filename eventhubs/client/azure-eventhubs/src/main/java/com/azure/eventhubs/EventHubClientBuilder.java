@@ -158,12 +158,8 @@ public class EventHubClientBuilder {
             throw new AzureException("Could not createc token provider.");
         }
 
-        if (tokenProvider == null) {
-            // TODO: add default tokenProvider
-        }
-
         if (this.retryPolicy == null) {
-             this.retryPolicy = Retry.getDefault();
+            this.retryPolicy = Retry.getDefault();
         }
 
         this.proxyConfiguration = constructDefaultProxyConfiguration(this.configuration);

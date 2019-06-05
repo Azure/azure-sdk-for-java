@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.TransportType;
@@ -7,18 +10,21 @@ import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * A wrap class that contains all parameters that need to establish a connection to an event hub.
+ */
 class ConnectionParameters {
-    private CredentialInfo credentials;
-    private Duration timeout;
-    private TokenProvider tokenProvider;
-    private TransportType transport;
-    private Retry retryPolicy;
-    private ProxyConfiguration proxyConfiguration;
-    private Scheduler scheduler;
+    private final CredentialInfo credentials;
+    private final Duration timeout;
+    private final TokenProvider tokenProvider;
+    private final TransportType transport;
+    private final Retry retryPolicy;
+    private final ProxyConfiguration proxyConfiguration;
+    private final Scheduler scheduler;
 
-    ConnectionParameters(CredentialInfo credentials, Duration timeout, TokenProvider tokenProvider,
-                         TransportType transport, Retry retryPolicy,
-                         ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
+    ConnectionParameters(final CredentialInfo credentials, final Duration timeout, final TokenProvider tokenProvider,
+                         final TransportType transport, final Retry retryPolicy,
+                         final ProxyConfiguration proxyConfiguration, final Scheduler scheduler) {
         Objects.requireNonNull(credentials);
         Objects.requireNonNull(timeout);
         Objects.requireNonNull(tokenProvider);
@@ -36,59 +42,31 @@ class ConnectionParameters {
         this.scheduler = scheduler;
     }
 
-    public CredentialInfo getCredentials() {
+    CredentialInfo getCredentials() {
         return credentials;
     }
 
-    public void setCredentials(CredentialInfo credentials) {
-        this.credentials = credentials;
-    }
-
-    public Duration getTimeout() {
+    Duration getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(Duration timeout) {
-        this.timeout = timeout;
-    }
-
-    public TokenProvider getTokenProvider() {
+    TokenProvider getTokenProvider() {
         return tokenProvider;
     }
 
-    public void setTokenProvider(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
-
-    public TransportType getTransport() {
+    TransportType getTransportType() {
         return transport;
     }
 
-    public void setTransport(TransportType transport) {
-        this.transport = transport;
-    }
-
-    public Retry getRetryPolicy() {
+    Retry getRetryPolicy() {
         return retryPolicy;
     }
 
-    public void setRetryPolicy(Retry retryPolicy) {
-        this.retryPolicy = retryPolicy;
-    }
-
-    public ProxyConfiguration getProxyConfiguration() {
+    ProxyConfiguration getProxyConfiguration() {
         return proxyConfiguration;
     }
 
-    public void setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        this.proxyConfiguration = proxyConfiguration;
-    }
-
-    public Scheduler getScheduler() {
+    Scheduler getScheduler() {
         return scheduler;
-    }
-
-    public void setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
     }
 }
