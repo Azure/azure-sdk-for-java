@@ -13,7 +13,7 @@ public class RetryTest {
 
     @Test
     public void defaultRetryPolicy() {
-        Retry retry = Retry.getDefault();
+        Retry retry = Retry.getDefaultRetry();
         Exception exception = new AmqpException(true, "error message");
         Duration sixtySec = Duration.ofSeconds(60);
 
@@ -31,7 +31,7 @@ public class RetryTest {
 
     @Test
     public void atomicIntegerProperty() {
-        Retry retry = Retry.getDefault();
+        Retry retry = Retry.getDefaultRetry();
         Assert.assertEquals(0, retry.getRetryCount());
 
         retry.incrementRetryCount();
@@ -58,7 +58,7 @@ public class RetryTest {
 
     @Test
     public void noRetryPolicy() {
-        Retry noRetry = Retry.NO_RETRY;
+        Retry noRetry = Retry.getNoRetry();
         Exception exception = new AmqpException(true, "error message");
         Duration sixtySec = Duration.ofSeconds(60);
         Duration nullDuration = noRetry.getNextRetryInterval(exception, sixtySec);
@@ -69,7 +69,7 @@ public class RetryTest {
 
     @Test
     public void excessMaxRetry() {
-        Retry retry = Retry.getDefault();
+        Retry retry = Retry.getDefaultRetry();
         Exception exception = new AmqpException(true, "error message");
         Duration sixtySec = Duration.ofSeconds(60);
 

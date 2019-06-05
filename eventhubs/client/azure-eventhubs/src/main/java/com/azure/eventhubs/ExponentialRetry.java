@@ -5,12 +5,11 @@ package com.azure.eventhubs;
 
 import java.time.Duration;
 
-public final class RetryExponential extends Retry {
+public final class ExponentialRetry extends Retry {
 
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
     private final Duration minBackoff;
     private final Duration maxBackoff;
-    private final int maxRetryCount;
     private final double retryFactor;
 
     /**
@@ -18,19 +17,20 @@ public final class RetryExponential extends Retry {
      * @param maxBackoff The maximum time period permissible for backing off between retries.
      * @param maxRetryCount The maximum number of retries allowed.
      */
-    public RetryExponential(Duration minBackoff, Duration maxBackoff, int maxRetryCount) {
+    public ExponentialRetry(Duration minBackoff, Duration maxBackoff, int maxRetryCount) {
+        super(maxRetryCount);
         this.minBackoff = minBackoff;
         this.maxBackoff = maxBackoff;
-        this.maxRetryCount = maxRetryCount;
+
         this.retryFactor = computeRetryFactor();
     }
 
     @Override
-    protected Duration onGetNextRetryInterval(final Exception lastException,
+    protected Duration calculateNextRetryInterval(final Exception lastException,
                                               final Duration remainingTime,
                                               final int baseWaitSeconds,
                                               final int retryCount) {
-        if ((!Retry.isRetriableException(lastException)) || retryCount >= maxRetryCount) {
+        if ((!Retry.isRetriableException(lastException)) || retryCount >= super.maxRetryCount) {
             return null;
         }
         final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
@@ -47,9 +47,9 @@ public final class RetryExponential extends Retry {
 
     private double computeRetryFactor() {
         final long deltaBackoff = this.maxBackoff.minus(this.minBackoff).getSeconds();
-        if (deltaBackoff <= 0 || this.maxRetryCount <= 0) {
+        if (deltaBackoff <= 0 || super.maxRetryCount <= 0) {
             return 0;
         }
-        return Math.log(deltaBackoff) / Math.log(this.maxRetryCount);
+        return Math.log(deltaBackoff) / Math.log(super.maxRetryCount);
     }
 }
