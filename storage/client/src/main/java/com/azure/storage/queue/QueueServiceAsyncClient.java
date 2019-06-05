@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
-final class QueueServiceAsyncClient {
+public final class QueueServiceAsyncClient {
     private final AzureQueueStorageImpl client;
 
     QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
@@ -35,23 +35,23 @@ final class QueueServiceAsyncClient {
         return new QueueAsyncClient(queueName, client);
     }
 
-    public Mono<Response<ListQueuesSegmentResponse>> listQueuesSegment(String marker, QueuesSegmentOptions options, Context context) {
-        return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, context)
+    public Mono<Response<ListQueuesSegmentResponse>> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+        return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, Context.NONE)
             .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 
-    public Mono<Response<StorageServiceProperties>> getProperties(Context context) {
-        return client.services().getPropertiesWithRestResponseAsync(context)
+    public Mono<Response<StorageServiceProperties>> getProperties() {
+        return client.services().getPropertiesWithRestResponseAsync(Context.NONE)
             .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 
-    public Mono<VoidResponse> setProperties(StorageServiceProperties properties, Context context) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, context)
+    public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
+        return client.services().setPropertiesWithRestResponseAsync(properties, Context.NONE)
             .map(VoidResponse::new);
     }
 
-    public Mono<Response<StorageServiceStats>> getStatistics(Context context) {
-        return client.services().getStatisticsWithRestResponseAsync(context)
+    public Mono<Response<StorageServiceStats>> getStatistics() {
+        return client.services().getStatisticsWithRestResponseAsync(Context.NONE)
             .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
     }
 }

@@ -4,13 +4,12 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 
-final class QueueServiceClient {
+public final class QueueServiceClient {
     private final QueueServiceAsyncClient client;
 
     QueueServiceClient(QueueServiceAsyncClient client) {
@@ -30,18 +29,18 @@ final class QueueServiceClient {
     }
 
     public Response<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.listQueuesSegment(marker, options, Context.NONE).block();
+        return client.listQueuesSegment(marker, options).block();
     }
 
     public Response<StorageServiceProperties> getProperties() {
-        return client.getProperties(Context.NONE).block();
+        return client.getProperties().block();
     }
 
     public VoidResponse setProperties(StorageServiceProperties properties) {
-        return client.setProperties(properties, Context.NONE).block();
+        return client.setProperties(properties).block();
     }
 
     public Response<StorageServiceStats> getStatistics() {
-        return client.getStatistics(Context.NONE).block();
+        return client.getStatistics().block();
     }
 }

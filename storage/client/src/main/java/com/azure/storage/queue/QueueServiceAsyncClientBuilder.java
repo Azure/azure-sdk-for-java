@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-class QueueServiceAsyncClientBuilder {
+public final class QueueServiceAsyncClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 

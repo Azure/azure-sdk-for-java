@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 
-final class MessagesAsyncClient {
+public final class MessagesAsyncClient {
     private final AzureQueueStorageImpl client;
 
     MessagesAsyncClient(AzureQueueStorageImpl client) {
@@ -44,63 +44,63 @@ final class MessagesAsyncClient {
         return new MessageIdAsyncClient(messageId, client);
     }
 
-    public Mono<Response<EnqueuedMessage>> enqueue(String messageText, Context context) {
-        return enqueue(messageText, null, context);
+    public Mono<Response<EnqueuedMessage>> enqueue(String messageText) {
+        return enqueue(messageText, null);
     }
 
-    Mono<Response<EnqueuedMessage>> enqueue(String messageText, Duration timeout, Context context) {
+    Mono<Response<EnqueuedMessage>> enqueue(String messageText, Duration timeout) {
         QueueMessage message = new QueueMessage().messageText(messageText);
         if (timeout == null) {
-            return client.messages().enqueueWithRestResponseAsync(message, context)
+            return client.messages().enqueueWithRestResponseAsync(message, Context.NONE)
                 .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value().get(0)));
         } else {
-            return client.messages().enqueueWithRestResponseAsync(message, context)
+            return client.messages().enqueueWithRestResponseAsync(message, Context.NONE)
                 .timeout(timeout)
                 .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value().get(0)));
         }
     }
 
-    public Flux<DequeuedMessage> dequeue(int numberOfMessages, Context context) {
-        return dequeue(numberOfMessages, null, context);
+    public Flux<DequeuedMessage> dequeue(int numberOfMessages) {
+        return dequeue(numberOfMessages, null);
     }
 
-    Flux<DequeuedMessage> dequeue(int numberOfMessages, Duration timeout, Context context) {
+    Flux<DequeuedMessage> dequeue(int numberOfMessages, Duration timeout) {
         if (timeout == null) {
-            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, context)
+            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, Context.NONE)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         } else {
-            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, context)
+            return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, Context.NONE)
                 .timeout(timeout)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         }
     }
 
-    public Flux<PeekedMessage> peek(int numberOfMessages, Context context) {
-        return peek(numberOfMessages, null, context);
+    public Flux<PeekedMessage> peek(int numberOfMessages) {
+        return peek(numberOfMessages, null);
     }
 
-    Flux<PeekedMessage> peek(int numberOfMessages, Duration timeout, Context context) {
+    Flux<PeekedMessage> peek(int numberOfMessages, Duration timeout) {
         if (timeout == null) {
-            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, context)
+            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, Context.NONE)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         } else {
-            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, context)
+            return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, Context.NONE)
                 .timeout(timeout)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         }
 
     }
 
-    public Mono<VoidResponse> clear(Context context) {
-        return clear(null, context);
+    public Mono<VoidResponse> clear() {
+        return clear(null);
     }
 
-    Mono<VoidResponse> clear(Duration timeout, Context context) {
+    Mono<VoidResponse> clear(Duration timeout) {
         if (timeout == null) {
-            return client.messages().clearWithRestResponseAsync(context)
+            return client.messages().clearWithRestResponseAsync(Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.messages().clearWithRestResponseAsync(context)
+            return client.messages().clearWithRestResponseAsync(Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }

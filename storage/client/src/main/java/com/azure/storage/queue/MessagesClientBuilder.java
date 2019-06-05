@@ -17,8 +17,8 @@ public final class MessagesClientBuilder {
         builder = new MessagesAsyncClientBuilder();
     }
 
-    public MessagesAsyncClient build() {
-        return new MessagesAsyncClient(builder.build());
+    public MessagesClient build() {
+        return new MessagesClient(builder.build());
     }
 
     public MessagesClientBuilder endpoint(String endpoint) throws MalformedURLException {

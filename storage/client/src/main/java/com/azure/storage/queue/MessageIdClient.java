@@ -4,12 +4,11 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.queue.models.UpdatedMessage;
 
 import java.time.Duration;
 
-final class MessageIdClient {
+public final class MessageIdClient {
     private final MessageIdAsyncClient client;
 
     MessageIdClient(MessageIdAsyncClient client) {
@@ -25,10 +24,10 @@ final class MessageIdClient {
     }
 
     public Response<UpdatedMessage> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout) {
-        return client.update(messageText, popReceipt, visibilityTimeout, timeout, Context.NONE).block();
+        return client.update(messageText, popReceipt, visibilityTimeout, timeout).block();
     }
 
     public VoidResponse delete(String popReceipt, Duration timeout) {
-        return client.delete(popReceipt, timeout, Context.NONE).block();
+        return client.delete(popReceipt, timeout).block();
     }
 }

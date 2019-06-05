@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 
-final class MessageIdAsyncClient {
+public final class MessageIdAsyncClient {
     private final AzureQueueStorageImpl client;
 
     MessageIdAsyncClient(String messageId, AzureQueueStorageImpl generateClient) {
@@ -38,32 +38,32 @@ final class MessageIdAsyncClient {
         return client.url();
     }
 
-    public Mono<Response<UpdatedMessage>> update(String messageText, String popReceipt, int visibilityTimeout, Context context) {
-        return update(messageText, popReceipt, visibilityTimeout, null, context);
+    public Mono<Response<UpdatedMessage>> update(String messageText, String popReceipt, int visibilityTimeout) {
+        return update(messageText, popReceipt, visibilityTimeout, null);
     }
 
-    Mono<Response<UpdatedMessage>> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
+    Mono<Response<UpdatedMessage>> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout) {
         QueueMessage message = new QueueMessage().messageText(messageText);
         if (timeout == null) {
-            return client.messageIds().updateWithRestResponseAsync(message, popReceipt, visibilityTimeout, context)
+            return client.messageIds().updateWithRestResponseAsync(message, popReceipt, visibilityTimeout, Context.NONE)
                 .map(this::getUpdatedMessageResponse);
         } else {
-            return client.messageIds().updateWithRestResponseAsync(message, popReceipt, visibilityTimeout, context)
+            return client.messageIds().updateWithRestResponseAsync(message, popReceipt, visibilityTimeout, Context.NONE)
                 .timeout(timeout)
                 .map(this::getUpdatedMessageResponse);
         }
     }
 
-    public Mono<VoidResponse> delete(String popReceipt, Context context) {
-        return delete(popReceipt, null, context);
+    public Mono<VoidResponse> delete(String popReceipt) {
+        return delete(popReceipt, null);
     }
 
-    Mono<VoidResponse> delete(String popReceipt, Duration timeout, Context context) {
+    Mono<VoidResponse> delete(String popReceipt, Duration timeout) {
         if (timeout == null) {
-            return client.messageIds().deleteWithRestResponseAsync(popReceipt, context)
+            return client.messageIds().deleteWithRestResponseAsync(popReceipt, Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.messageIds().deleteWithRestResponseAsync(popReceipt, context)
+            return client.messageIds().deleteWithRestResponseAsync(popReceipt, Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }

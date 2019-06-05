@@ -4,7 +4,6 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 
@@ -12,7 +11,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-final class QueueClient {
+public final class QueueClient {
     private final QueueAsyncClient client;
 
     QueueClient(QueueAsyncClient client) {
@@ -32,26 +31,26 @@ final class QueueClient {
     }
 
     public VoidResponse create(Map<String, String> metadata, Duration timeout) {
-        return client.create(metadata, timeout, Context.NONE).block();
+        return client.create(metadata, timeout).block();
     }
 
     public VoidResponse delete(Duration timeout) {
-        return client.delete(timeout, Context.NONE).block();
+        return client.delete(timeout).block();
     }
 
     public Response<QueueProperties> getProperties(Duration timeout) {
-        return client.getProperties(timeout, Context.NONE).block();
+        return client.getProperties(timeout).block();
     }
 
     public VoidResponse setMetadata(Map<String, String> metadata, Duration timeout) {
-        return client.setMetadata(metadata, timeout, Context.NONE).block();
+        return client.setMetadata(metadata, timeout).block();
     }
 
     public Iterable<SignedIdentifier> getAccessPolicy(Duration timeout) {
-        return client.getAccessPolicy(timeout, Context.NONE).toIterable();
+        return client.getAccessPolicy(timeout).toIterable();
     }
 
     public VoidResponse setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout) {
-        return client.setAccessPolicy(permissions, timeout, Context.NONE).block();
+        return client.setAccessPolicy(permissions, timeout).block();
     }
 }

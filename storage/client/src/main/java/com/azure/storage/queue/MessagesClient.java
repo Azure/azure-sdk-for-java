@@ -4,7 +4,6 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.PeekedMessage;
@@ -31,18 +30,18 @@ public final class MessagesClient {
     }
 
     public Response<EnqueuedMessage> enqueue(String messageText, Duration timeout) {
-        return client.enqueue(messageText, timeout, Context.NONE).block();
+        return client.enqueue(messageText, timeout).block();
     }
 
     public Iterable<DequeuedMessage> dequeue(int numberOfMessages, Duration timeout) {
-        return client.dequeue(numberOfMessages, timeout, Context.NONE).toIterable();
+        return client.dequeue(numberOfMessages, timeout).collectList().block();
     }
 
     public Iterable<PeekedMessage> peek(int numberOfMessages, Duration timeout) {
-        return client.peek(numberOfMessages, timeout, Context.NONE).toIterable();
+        return client.peek(numberOfMessages, timeout).collectList().block();
     }
 
     public VoidResponse clear(Duration timeout) {
-        return client.clear(timeout, Context.NONE).block();
+        return client.clear(timeout).block();
     }
 }

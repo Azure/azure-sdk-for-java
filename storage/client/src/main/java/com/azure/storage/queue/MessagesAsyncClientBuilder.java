@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-final class MessagesAsyncClientBuilder {
+public final class MessagesAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;

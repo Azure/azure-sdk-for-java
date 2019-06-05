@@ -20,7 +20,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-final class QueueAsyncClient {
+public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
 
     QueueAsyncClient(String queueName, AzureQueueStorageImpl generateClient) {
@@ -28,7 +28,7 @@ final class QueueAsyncClient {
             .withUrl(generateClient.url() + "/" + queueName)
             .withVersion(generateClient.version());
 
-        this.create(null, Context.NONE);
+        this.create(null, null);
     }
 
     QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
@@ -47,92 +47,92 @@ final class QueueAsyncClient {
         return new MessagesAsyncClient(client);
     }
 
-    public Mono<VoidResponse> create(Map<String, String> metadata, Context context) {
-        return create(null, context);
+    public Mono<VoidResponse> create(Map<String, String> metadata) {
+        return create(metadata, null);
     }
 
-    Mono<VoidResponse> create(Map<String, String> metdata, Duration timeout, Context context) {
+    Mono<VoidResponse> create(Map<String, String> metdata, Duration timeout) {
         if (timeout == null) {
-            return client.queues().createWithRestResponseAsync(null, metdata, null, context)
+            return client.queues().createWithRestResponseAsync(null, metdata, null, Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.queues().createWithRestResponseAsync(null, metdata, null, context)
+            return client.queues().createWithRestResponseAsync(null, metdata, null, Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }
 
     }
 
-    public Mono<VoidResponse> delete(Context context) {
-        return delete(null, context);
+    public Mono<VoidResponse> delete() {
+        return delete(null);
     }
 
-    Mono<VoidResponse> delete(Duration timeout, Context context) {
+    Mono<VoidResponse> delete(Duration timeout) {
         if (timeout == null) {
-            return client.queues().deleteWithRestResponseAsync(context)
+            return client.queues().deleteWithRestResponseAsync(Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.queues().deleteWithRestResponseAsync(context)
+            return client.queues().deleteWithRestResponseAsync(Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }
     }
 
-    public Mono<Response<QueueProperties>> getProperties(Context context) {
-        return getProperties(null, context);
+    public Mono<Response<QueueProperties>> getProperties() {
+        return getProperties(null);
     }
 
-    Mono<Response<QueueProperties>> getProperties(Duration timeout, Context context) {
+    Mono<Response<QueueProperties>> getProperties(Duration timeout) {
         if (timeout == null) {
-            return client.queues().getPropertiesWithRestResponseAsync(context)
+            return client.queues().getPropertiesWithRestResponseAsync(Context.NONE)
                 .map(this::getQueuePropertiesResponse);
         } else {
-            return client.queues().getPropertiesWithRestResponseAsync(context)
+            return client.queues().getPropertiesWithRestResponseAsync(Context.NONE)
                 .timeout(timeout)
                 .map(this::getQueuePropertiesResponse);
         }
     }
 
-    public Mono<VoidResponse> setMetadata(Map<String, String> metadata, Context context) {
-        return setMetadata(metadata, null, context);
+    public Mono<VoidResponse> setMetadata(Map<String, String> metadata) {
+        return setMetadata(metadata, null);
     }
 
-    Mono<VoidResponse> setMetadata(Map<String, String> metadata, Duration timeout, Context context) {
+    Mono<VoidResponse> setMetadata(Map<String, String> metadata, Duration timeout) {
         if (timeout == null) {
-            return client.queues().setMetadataWithRestResponseAsync(null, metadata, null, context)
+            return client.queues().setMetadataWithRestResponseAsync(null, metadata, null, Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.queues().setMetadataWithRestResponseAsync(null, metadata, null, context)
+            return client.queues().setMetadataWithRestResponseAsync(null, metadata, null, Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }
     }
 
-    public Flux<SignedIdentifier> getAccessPolicy(Context context) {
-        return getAccessPolicy(null, context);
+    public Flux<SignedIdentifier> getAccessPolicy() {
+        return getAccessPolicy(null);
     }
 
-    Flux<SignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
+    Flux<SignedIdentifier> getAccessPolicy(Duration timeout) {
         if (timeout == null) {
-            return client.queues().getAccessPolicyWithRestResponseAsync(context)
+            return client.queues().getAccessPolicyWithRestResponseAsync(Context.NONE)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         } else {
-            return client.queues().getAccessPolicyWithRestResponseAsync(context)
+            return client.queues().getAccessPolicyWithRestResponseAsync(Context.NONE)
                 .timeout(timeout)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
         }
     }
 
-    public Mono<VoidResponse> setAccessPolicy(List<SignedIdentifier> permissions, Context context) {
-        return setAccessPolicy(permissions, null, context);
+    public Mono<VoidResponse> setAccessPolicy(List<SignedIdentifier> permissions) {
+        return setAccessPolicy(permissions, null);
     }
 
-    Mono<VoidResponse> setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout, Context context) {
+    Mono<VoidResponse> setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout) {
         if (timeout == null) {
-            return client.queues().setAccessPolicyWithRestResponseAsync(permissions, null, null, context)
+            return client.queues().setAccessPolicyWithRestResponseAsync(permissions, null, null, Context.NONE)
                 .map(VoidResponse::new);
         } else {
-            return client.queues().setAccessPolicyWithRestResponseAsync(permissions, null, null, context)
+            return client.queues().setAccessPolicyWithRestResponseAsync(permissions, null, null, Context.NONE)
                 .timeout(timeout)
                 .map(VoidResponse::new);
         }
