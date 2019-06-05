@@ -222,7 +222,7 @@ final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Deserializes a response body as a Page<T> given that {@param wireType} is either:
+     * Deserializes a response body as a Page&lt;T&gt; given that {@param wireType} is either:
      * 1. A type that implements the interface
      * 2. Is of {@link Page}
      *
