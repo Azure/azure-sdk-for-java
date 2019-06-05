@@ -603,10 +603,10 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     /*
-     * Verifies that even though our HTTP response does not conform to the Page<T> interface, the service does not throw
+     * Verifies that even though our HTTP response does not conform to the Page&lt;T&gt; interface, the service does not throw
      * an exception and returns a response.
      * This is a scenario where our developer has set @ReturnValueWireType(Page.class), but their service returns a JSON
-     * object that does not conform to Page<T> interface.
+     * object that does not conform to Page&lt;T&gt; interface.
      */
     @Test
     public void service2getPageSerializes() {

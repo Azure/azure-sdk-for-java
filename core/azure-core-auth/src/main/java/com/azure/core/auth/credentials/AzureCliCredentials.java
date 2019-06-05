@@ -86,6 +86,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
      * @param accessTokens the accessTokens.json file created by Azure CLI
      * @return an instance of AzureCliCredentials
      * @throws IOException if the Azure CLI token files are not accessible
+     * @throws FileNotFoundException if {@code azureProfile} or {@code accessTokens} is null
      */
     public static AzureCliCredentials create(File azureProfile, File accessTokens) throws IOException {
         if (azureProfile == null || accessTokens == null) {

@@ -24,6 +24,7 @@ class VnetInfoImpl extends IndexableRefreshableWrapperImpl<VnetInfo, VnetInfoInn
     VnetInfoImpl(VnetInfoInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");

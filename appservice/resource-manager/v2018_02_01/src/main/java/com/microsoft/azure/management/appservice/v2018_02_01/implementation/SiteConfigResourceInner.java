@@ -11,6 +11,8 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteMachineKey;
 import com.microsoft.azure.management.appservice.v2018_02_01.HandlerMapping;
@@ -80,8 +82,8 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Xenon App Framework and version.
      */
-    @JsonProperty(value = "properties.xenonFxVersion")
-    private String xenonFxVersion;
+    @JsonProperty(value = "properties.windowsFxVersion")
+    private String windowsFxVersion;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
@@ -140,6 +142,12 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.appSettings")
     private List<NameValuePair> appSettings;
+
+    /**
+     * User-provided Azure storage accounts.
+     */
+    @JsonProperty(value = "properties.azureStorageAccounts")
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -239,7 +247,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private SiteLoadBalancing loadBalancing;
 
     /**
-     * This is work around for polymophic types.
+     * This is work around for polymorphic types.
      */
     @JsonProperty(value = "properties.experiments")
     private Experiments experiments;
@@ -319,10 +327,22 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private Integer xManagedServiceIdentityId;
 
     /**
-     * IP security restrictions.
+     * IP security restrictions for main.
      */
     @JsonProperty(value = "properties.ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm.
+     */
+    @JsonProperty(value = "properties.scmIpSecurityRestrictions")
+    private List<IpSecurityRestriction> scmIpSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm to use main.
+     */
+    @JsonProperty(value = "properties.scmIpSecurityRestrictionsUseMain")
+    private Boolean scmIpSecurityRestrictionsUseMain;
 
     /**
      * Http20Enabled: configures a web site to allow clients to connect over
@@ -344,6 +364,13 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.ftpsState")
     private FtpsState ftpsState;
+
+    /**
+     * Number of reserved instances.
+     * This setting only applies to the Consumption Plan.
+     */
+    @JsonProperty(value = "properties.reservedInstanceCount")
+    private Integer reservedInstanceCount;
 
     /**
      * Get number of workers.
@@ -488,20 +515,20 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get xenon App Framework and version.
      *
-     * @return the xenonFxVersion value
+     * @return the windowsFxVersion value
      */
-    public String xenonFxVersion() {
-        return this.xenonFxVersion;
+    public String windowsFxVersion() {
+        return this.windowsFxVersion;
     }
 
     /**
      * Set xenon App Framework and version.
      *
-     * @param xenonFxVersion the xenonFxVersion value to set
+     * @param windowsFxVersion the windowsFxVersion value to set
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withXenonFxVersion(String xenonFxVersion) {
-        this.xenonFxVersion = xenonFxVersion;
+    public SiteConfigResourceInner withWindowsFxVersion(String windowsFxVersion) {
+        this.windowsFxVersion = windowsFxVersion;
         return this;
     }
 
@@ -682,6 +709,26 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get user-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set user-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -975,7 +1022,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get this is work around for polymophic types.
+     * Get this is work around for polymorphic types.
      *
      * @return the experiments value
      */
@@ -984,7 +1031,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set this is work around for polymophic types.
+     * Set this is work around for polymorphic types.
      *
      * @param experiments the experiments value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1235,7 +1282,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get iP security restrictions.
+     * Get iP security restrictions for main.
      *
      * @return the ipSecurityRestrictions value
      */
@@ -1244,13 +1291,53 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set iP security restrictions.
+     * Set iP security restrictions for main.
      *
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withIpSecurityRestrictions(List<IpSecurityRestriction> ipSecurityRestrictions) {
         this.ipSecurityRestrictions = ipSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm.
+     *
+     * @return the scmIpSecurityRestrictions value
+     */
+    public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
+        return this.scmIpSecurityRestrictions;
+    }
+
+    /**
+     * Set iP security restrictions for scm.
+     *
+     * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withScmIpSecurityRestrictions(List<IpSecurityRestriction> scmIpSecurityRestrictions) {
+        this.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm to use main.
+     *
+     * @return the scmIpSecurityRestrictionsUseMain value
+     */
+    public Boolean scmIpSecurityRestrictionsUseMain() {
+        return this.scmIpSecurityRestrictionsUseMain;
+    }
+
+    /**
+     * Set iP security restrictions for scm to use main.
+     *
+     * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withScmIpSecurityRestrictionsUseMain(Boolean scmIpSecurityRestrictionsUseMain) {
+        this.scmIpSecurityRestrictionsUseMain = scmIpSecurityRestrictionsUseMain;
         return this;
     }
 
@@ -1311,6 +1398,28 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withFtpsState(FtpsState ftpsState) {
         this.ftpsState = ftpsState;
+        return this;
+    }
+
+    /**
+     * Get number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @return the reservedInstanceCount value
+     */
+    public Integer reservedInstanceCount() {
+        return this.reservedInstanceCount;
+    }
+
+    /**
+     * Set number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withReservedInstanceCount(Integer reservedInstanceCount) {
+        this.reservedInstanceCount = reservedInstanceCount;
         return this;
     }
 

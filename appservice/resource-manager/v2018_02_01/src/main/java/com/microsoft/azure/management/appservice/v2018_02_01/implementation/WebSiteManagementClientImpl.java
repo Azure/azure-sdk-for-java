@@ -19,6 +19,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.CsmMoveResourceEnve
 import com.microsoft.azure.management.appservice.v2018_02_01.DefaultErrorResponseException;
 import com.microsoft.azure.management.appservice.v2018_02_01.ResourceNameAvailabilityRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SkuName;
+import com.microsoft.azure.management.appservice.v2018_02_01.ValidateContainerSettingsRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.ValidateRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.VnetParameters;
 import com.microsoft.azure.Page;
@@ -97,11 +98,11 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -110,7 +111,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -120,11 +121,11 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -133,7 +134,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -143,11 +144,11 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -156,7 +157,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -336,6 +337,19 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ResourceHealthMetadatasInner object to access its operations.
+     */
+    private ResourceHealthMetadatasInner resourceHealthMetadatas;
+
+    /**
+     * Gets the ResourceHealthMetadatasInner object to access its operations.
+     * @return the ResourceHealthMetadatasInner object.
+     */
+    public ResourceHealthMetadatasInner resourceHealthMetadatas() {
+        return this.resourceHealthMetadatas;
+    }
+
+    /**
      * Initializes an instance of WebSiteManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -383,6 +397,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         this.webApps = new WebAppsInner(restClient().retrofit(), this);
         this.appServiceEnvironments = new AppServiceEnvironmentsInner(restClient().retrofit(), this);
         this.appServicePlans = new AppServicePlansInner(restClient().retrofit(), this);
+        this.resourceHealthMetadatas = new ResourceHealthMetadatasInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -394,7 +409,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "WebSiteManagementClient", "2018-02-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "WebSiteManagementClient", "2018-02-01");
     }
 
     private void initializeService() {
@@ -428,7 +443,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient listBillingMeters" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters")
-        Observable<Response<ResponseBody>> listBillingMeters(@Path("subscriptionId") String subscriptionId, @Query("billingLocation") String billingLocation, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listBillingMeters(@Path("subscriptionId") String subscriptionId, @Query("billingLocation") String billingLocation, @Query("osType") String osType, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
@@ -440,7 +455,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient listGeoRegions" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
-        Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("linuxWorkersEnabled") Boolean linuxWorkersEnabled, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("linuxWorkersEnabled") Boolean linuxWorkersEnabled, @Query("xenonWorkersEnabled") Boolean xenonWorkersEnabled, @Query("linuxDynamicWorkersEnabled") Boolean linuxDynamicWorkersEnabled, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient listSiteIdentifiersAssignedToHostName" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName")
@@ -465,6 +480,10 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient validate" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validate")
         Observable<Response<ResponseBody>> validate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ValidateRequest validateRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient validateContainerSettings" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validateContainerSettings")
+        Observable<Response<ResponseBody>> validateContainerSettings(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ValidateContainerSettingsRequest validateContainerSettingsRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient validateMove" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/validateMoveResources")
@@ -1015,7 +1034,8 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final String billingLocation = null;
-        return service.listBillingMeters(this.subscriptionId(), billingLocation, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        final String osType = null;
+        return service.listBillingMeters(this.subscriptionId(), billingLocation, osType, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingMeterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingMeterInner>>> call(Response<ResponseBody> response) {
@@ -1034,13 +1054,14 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource
+     * @param osType App Service OS type meters used for
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BillingMeterInner&gt; object if successful.
      */
-    public PagedList<BillingMeterInner> listBillingMeters(final String billingLocation) {
-        ServiceResponse<Page<BillingMeterInner>> response = listBillingMetersSinglePageAsync(billingLocation).toBlocking().single();
+    public PagedList<BillingMeterInner> listBillingMeters(final String billingLocation, final String osType) {
+        ServiceResponse<Page<BillingMeterInner>> response = listBillingMetersSinglePageAsync(billingLocation, osType).toBlocking().single();
         return new PagedList<BillingMeterInner>(response.body()) {
             @Override
             public Page<BillingMeterInner> nextPage(String nextPageLink) {
@@ -1054,13 +1075,14 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource
+     * @param osType App Service OS type meters used for
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<BillingMeterInner>> listBillingMetersAsync(final String billingLocation, final ListOperationCallback<BillingMeterInner> serviceCallback) {
+    public ServiceFuture<List<BillingMeterInner>> listBillingMetersAsync(final String billingLocation, final String osType, final ListOperationCallback<BillingMeterInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listBillingMetersSinglePageAsync(billingLocation),
+            listBillingMetersSinglePageAsync(billingLocation, osType),
             new Func1<String, Observable<ServiceResponse<Page<BillingMeterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingMeterInner>>> call(String nextPageLink) {
@@ -1075,11 +1097,12 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource
+     * @param osType App Service OS type meters used for
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingMeterInner&gt; object
      */
-    public Observable<Page<BillingMeterInner>> listBillingMetersAsync(final String billingLocation) {
-        return listBillingMetersWithServiceResponseAsync(billingLocation)
+    public Observable<Page<BillingMeterInner>> listBillingMetersAsync(final String billingLocation, final String osType) {
+        return listBillingMetersWithServiceResponseAsync(billingLocation, osType)
             .map(new Func1<ServiceResponse<Page<BillingMeterInner>>, Page<BillingMeterInner>>() {
                 @Override
                 public Page<BillingMeterInner> call(ServiceResponse<Page<BillingMeterInner>> response) {
@@ -1093,11 +1116,12 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource
+     * @param osType App Service OS type meters used for
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingMeterInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BillingMeterInner>>> listBillingMetersWithServiceResponseAsync(final String billingLocation) {
-        return listBillingMetersSinglePageAsync(billingLocation)
+    public Observable<ServiceResponse<Page<BillingMeterInner>>> listBillingMetersWithServiceResponseAsync(final String billingLocation, final String osType) {
+        return listBillingMetersSinglePageAsync(billingLocation, osType)
             .concatMap(new Func1<ServiceResponse<Page<BillingMeterInner>>, Observable<ServiceResponse<Page<BillingMeterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingMeterInner>>> call(ServiceResponse<Page<BillingMeterInner>> page) {
@@ -1115,17 +1139,18 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets a list of meters for a given location.
      *
     ServiceResponse<PageImpl<BillingMeterInner>> * @param billingLocation Azure Location of billable resource
+    ServiceResponse<PageImpl<BillingMeterInner>> * @param osType App Service OS type meters used for
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BillingMeterInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<BillingMeterInner>>> listBillingMetersSinglePageAsync(final String billingLocation) {
+    public Observable<ServiceResponse<Page<BillingMeterInner>>> listBillingMetersSinglePageAsync(final String billingLocation, final String osType) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.listBillingMeters(this.subscriptionId(), billingLocation, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.listBillingMeters(this.subscriptionId(), billingLocation, osType, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingMeterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingMeterInner>>> call(Response<ResponseBody> response) {
@@ -1501,7 +1526,9 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         }
         final SkuName sku = null;
         final Boolean linuxWorkersEnabled = null;
-        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        final Boolean xenonWorkersEnabled = null;
+        final Boolean linuxDynamicWorkersEnabled = null;
+        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
@@ -1519,15 +1546,17 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public PagedList<GeoRegionInner> listGeoRegions(final SkuName sku, final Boolean linuxWorkersEnabled) {
-        ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled).toBlocking().single();
+    public PagedList<GeoRegionInner> listGeoRegions(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled).toBlocking().single();
         return new PagedList<GeoRegionInner>(response.body()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) {
@@ -1540,15 +1569,17 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled, final ListOperationCallback<GeoRegionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled),
+            listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(String nextPageLink) {
@@ -1562,13 +1593,15 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<Page<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled) {
-        return listGeoRegionsWithServiceResponseAsync(sku, linuxWorkersEnabled)
+    public Observable<Page<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        return listGeoRegionsWithServiceResponseAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
             .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
                 public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
@@ -1581,13 +1614,15 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsWithServiceResponseAsync(final SkuName sku, final Boolean linuxWorkersEnabled) {
-        return listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled)
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsWithServiceResponseAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        return listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
@@ -1604,19 +1639,21 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
     ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsSinglePageAsync(final SkuName sku, final Boolean linuxWorkersEnabled) {
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsSinglePageAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
@@ -2313,6 +2350,97 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     private ServiceResponse<ValidateResponseInner> validateDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<ValidateResponseInner, DefaultErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ValidateResponseInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Validate if the container settings are correct.
+     * Validate if the container settings are correct.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateContainerSettingsRequest the ValidateContainerSettingsRequest value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object validateContainerSettings(String resourceGroupName, ValidateContainerSettingsRequest validateContainerSettingsRequest) {
+        return validateContainerSettingsWithServiceResponseAsync(resourceGroupName, validateContainerSettingsRequest).toBlocking().single().body();
+    }
+
+    /**
+     * Validate if the container settings are correct.
+     * Validate if the container settings are correct.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateContainerSettingsRequest the ValidateContainerSettingsRequest value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> validateContainerSettingsAsync(String resourceGroupName, ValidateContainerSettingsRequest validateContainerSettingsRequest, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(validateContainerSettingsWithServiceResponseAsync(resourceGroupName, validateContainerSettingsRequest), serviceCallback);
+    }
+
+    /**
+     * Validate if the container settings are correct.
+     * Validate if the container settings are correct.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateContainerSettingsRequest the ValidateContainerSettingsRequest value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> validateContainerSettingsAsync(String resourceGroupName, ValidateContainerSettingsRequest validateContainerSettingsRequest) {
+        return validateContainerSettingsWithServiceResponseAsync(resourceGroupName, validateContainerSettingsRequest).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Validate if the container settings are correct.
+     * Validate if the container settings are correct.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateContainerSettingsRequest the ValidateContainerSettingsRequest value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> validateContainerSettingsWithServiceResponseAsync(String resourceGroupName, ValidateContainerSettingsRequest validateContainerSettingsRequest) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (validateContainerSettingsRequest == null) {
+            throw new IllegalArgumentException("Parameter validateContainerSettingsRequest is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(validateContainerSettingsRequest);
+        return service.validateContainerSettings(resourceGroupName, this.subscriptionId(), validateContainerSettingsRequest, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = validateContainerSettingsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Object> validateContainerSettingsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }

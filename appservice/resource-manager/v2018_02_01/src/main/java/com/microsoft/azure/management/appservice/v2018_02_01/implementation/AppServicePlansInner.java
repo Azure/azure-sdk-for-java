@@ -223,8 +223,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
@@ -242,8 +242,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -262,8 +262,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -279,8 +279,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -300,8 +300,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -329,8 +329,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
@@ -350,8 +350,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
@@ -372,8 +372,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
@@ -391,8 +391,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
@@ -414,8 +414,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
@@ -836,6 +836,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     private ServiceResponse<AppServicePlanInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
+                .register(201, new TypeToken<AppServicePlanInner>() { }.getType())
                 .register(202, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
@@ -1923,8 +1924,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1944,8 +1945,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1966,8 +1967,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1985,8 +1986,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2008,8 +2009,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2046,13 +2047,13 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2069,13 +2070,13 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2093,13 +2094,13 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -2114,13 +2115,13 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -2139,13 +2140,13 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the App Service plan.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2272,7 +2273,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2287,7 +2288,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2302,7 +2303,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -2321,7 +2322,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -2627,8 +2628,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Gets all selectable sku's for a given App Service Plan.
-     * Gets all selectable sku's for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan
@@ -2642,8 +2643,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Gets all selectable sku's for a given App Service Plan.
-     * Gets all selectable sku's for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan
@@ -2656,8 +2657,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Gets all selectable sku's for a given App Service Plan.
-     * Gets all selectable sku's for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan
@@ -2674,8 +2675,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Gets all selectable sku's for a given App Service Plan.
-     * Gets all selectable sku's for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan
@@ -4006,8 +4007,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4026,8 +4027,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -4048,8 +4049,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4066,8 +4067,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4088,8 +4089,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4586,8 +4587,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4606,8 +4607,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -4628,8 +4629,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4646,8 +4647,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4668,8 +4669,8 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     }
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

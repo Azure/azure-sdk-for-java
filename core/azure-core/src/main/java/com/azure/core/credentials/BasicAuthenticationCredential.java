@@ -34,6 +34,9 @@ public class BasicAuthenticationCredential extends TokenCredential {
         this.password = password;
     }
 
+    /**
+     * @throws RuntimeException If the UTF-8 encoding isn't supported.
+     */
     @Override
     public Mono<String> getTokenAsync(String resource) {
         String credential = userName + ":" + password;
