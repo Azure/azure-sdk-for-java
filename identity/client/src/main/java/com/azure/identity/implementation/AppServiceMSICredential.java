@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.configuration.BaseConfigurations;
@@ -10,7 +13,7 @@ import reactor.core.publisher.Mono;
 /**
  * The Managed Service Identity credential for App Service.
  */
-public class AppServiceMSICredential {
+public final class AppServiceMSICredential {
     private String msiEndpoint;
     private String msiSecret;
     private final IdentityClient identityClient;

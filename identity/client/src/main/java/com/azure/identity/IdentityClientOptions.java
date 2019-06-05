@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 import com.azure.core.http.ProxyOptions;
@@ -7,7 +10,7 @@ import java.util.function.Function;
 /**
  * Options to configure the IdentityClient.
  */
-public class IdentityClientOptions {
+public final class IdentityClientOptions {
     private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
     private static final int MAX_RETRY_DEFAULT_LIMIT = 20;
 

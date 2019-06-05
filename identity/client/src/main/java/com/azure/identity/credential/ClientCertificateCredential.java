@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.credential;
 
 import com.azure.identity.AccessToken;
@@ -59,7 +62,7 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
         if (clientCertificatePassword != null) {
             return identityClient.activeDirectory().authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
         } else {
-            return identityClient.activeDirectory().athenticateuWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
+            return identityClient.activeDirectory().authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
         }
     }
 }

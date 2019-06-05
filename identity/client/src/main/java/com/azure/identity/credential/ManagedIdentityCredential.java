@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 /**
  * The base class for Managed Service Identity token based credentials.
  */
-public class ManagedIdentityCredential implements TokenCredential {
+public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMSICredential appServiceMSICredential;
     private final VirtualMachineMSICredential virtualMachineMSICredential;
 
@@ -143,8 +143,9 @@ public class ManagedIdentityCredential implements TokenCredential {
 
     @Override
     public Mono<String> getToken(String... scopes) {
-        return (appServiceMSICredential != null ?
-            appServiceMSICredential.authenticate(scopes) : virtualMachineMSICredential.authenticate(scopes))
+        return (appServiceMSICredential != null
+            ? appServiceMSICredential.authenticate(scopes)
+            : virtualMachineMSICredential.authenticate(scopes))
             .map(AccessToken::token);
     }
 }

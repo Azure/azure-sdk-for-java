@@ -12,7 +12,7 @@ import java.time.ZoneOffset;
 /**
  * Type representing response from the local MSI token provider.
  */
-public class MSIToken extends AccessToken {
+public final class MSIToken extends AccessToken {
 
     private static OffsetDateTime epoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 

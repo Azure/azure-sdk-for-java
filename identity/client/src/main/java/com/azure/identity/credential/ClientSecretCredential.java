@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.credential;
 
 import com.azure.identity.AccessToken;
@@ -41,6 +44,10 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
 
     @Override
     public Mono<String> getToken(String... scopes) {
+        validate();
+        if (clientSecret == null) {
+            return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential"));
+        }
         return identityClient.activeDirectory().authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
     }
 }

@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 /**
  * The Managed Service Identity credential for Virtual Machines.
  */
-public class VirtualMachineMSICredential {
+public final class VirtualMachineMSICredential {
 
     private final IdentityClient identityClient;
 

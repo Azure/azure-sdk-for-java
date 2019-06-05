@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 import com.azure.core.configuration.BaseConfigurations;
@@ -7,8 +10,6 @@ import com.azure.identity.credential.EnvironmentCredential;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.fail;
 

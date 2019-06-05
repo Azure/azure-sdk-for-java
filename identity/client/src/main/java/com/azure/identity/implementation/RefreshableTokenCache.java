@@ -11,6 +11,7 @@ import reactor.core.publisher.FluxSink.OverflowStrategy;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,9 +33,9 @@ public class RefreshableTokenCache {
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      * @param authenticate the function to asynchronously acquire an authentication result with a given resource
      */
-    public RefreshableTokenCache(Function<String, Mono<AccessToken>> authenticate){
+    public RefreshableTokenCache(Function<String, Mono<AccessToken>> authenticate) {
         cache = new ConcurrentHashMap<>();
-        wips = new ConcurrentHashMap<>();
+        wips = new HashMap<>();
         this.authenticate = authenticate;
     }
 
