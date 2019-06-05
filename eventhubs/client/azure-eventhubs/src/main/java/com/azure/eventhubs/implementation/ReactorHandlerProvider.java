@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * Provides handlers for the various types of links.
  */
-class ReactorHandlerProvider {
+public class ReactorHandlerProvider {
     private final ReactorProvider provider;
 
     /**
@@ -25,7 +25,7 @@ class ReactorHandlerProvider {
      *
      * @param provider The provider that creates and manages {@link Reactor} instances.
      */
-    ReactorHandlerProvider(ReactorProvider provider) {
+    public ReactorHandlerProvider(ReactorProvider provider) {
         this.provider = provider;
     }
 
