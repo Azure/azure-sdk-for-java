@@ -30,7 +30,7 @@ public final class ExponentialRetry extends Retry {
                                               final Duration remainingTime,
                                               final int baseWaitSeconds,
                                               final int retryCount) {
-        if ((!Retry.isRetriableException(lastException)) || retryCount >= super.maxRetryCount) {
+        if ((!Retry.isRetriableException(lastException)) || retryCount >= super.maxRetryCount()) {
             return null;
         }
         final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
@@ -47,9 +47,9 @@ public final class ExponentialRetry extends Retry {
 
     private double computeRetryFactor() {
         final long deltaBackoff = this.maxBackoff.minus(this.minBackoff).getSeconds();
-        if (deltaBackoff <= 0 || super.maxRetryCount <= 0) {
+        if (deltaBackoff <= 0 || super.maxRetryCount() <= 0) {
             return 0;
         }
-        return Math.log(deltaBackoff) / Math.log(super.maxRetryCount);
+        return Math.log(deltaBackoff) / Math.log(super.maxRetryCount());
     }
 }

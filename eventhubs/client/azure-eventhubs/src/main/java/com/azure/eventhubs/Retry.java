@@ -17,8 +17,12 @@ public abstract class Retry {
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
 
     private final AtomicInteger retryCount = new AtomicInteger();
-    public final int maxRetryCount;
+    private final int maxRetryCount;
 
+    /**
+     * An abstract representation of a policy to govern retrying of messaging operations.
+     * @param maxRetryCount The maximum number of retries allowed.
+     */
     public Retry(int maxRetryCount) {
         this.maxRetryCount = maxRetryCount;
     }
@@ -80,6 +84,15 @@ public abstract class Retry {
      */
     public void resetRetryInterval() {
         retryCount.set(0);
+    }
+
+    /**
+     * Get the maximum allowed retry count.
+     *
+     * @return maximum allowed retry count value.
+     */
+    public int maxRetryCount() {
+        return this.maxRetryCount;
     }
 
     /**
