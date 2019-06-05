@@ -12,35 +12,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Retry {
 
-    public static final Retry NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0);
+    public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
+    public static final Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
+    public static final int DEFAULT_MAX_RETRY_COUNT = 10;
 
-    private AtomicInteger retryCount = new AtomicInteger(0);
+    public static final Retry NO_RETRY = new RetryExponential(Duration.ZERO, Duration.ZERO, 0);
+
+    private final AtomicInteger retryCount = new AtomicInteger();
 
     /**
      * Check if the existing exception is a retryable exception.
      *
      * @param exception A exception that was observed for the operation to be retried.
      * @return true if the exception is a retryable exception, otherwise false.
-     * @throws IllegalArgumentException when the exception is null.
      */
-    public static boolean isRetryableException(Exception exception) {
-        if (exception == null) {
-            throw new IllegalArgumentException("exception cannot be null");
-        }
-
-        if (exception instanceof AmqpException) {
-            return ((AmqpException) exception).isTransient();
-        }
-        return false;
-    }
-
-    /**
-     * Get 'NO_RETRY' of current.
-     *
-     * @return Retry 'NO_RETRY'.
-     */
-    public static Retry getNoRetry() {
-        return Retry.NO_RETRY;
+    public static boolean isRetriableException(Exception exception) {
+        return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 
     /**
@@ -50,9 +37,9 @@ public abstract class Retry {
      */
     public static Retry getDefault() {
         return new RetryExponential(
-            ClientConstants.DEFAULT_RETRY_MIN_BACKOFF,
-            ClientConstants.DEFAULT_RETRY_MAX_BACKOFF,
-            ClientConstants.DEFAULT_MAX_RETRY_COUNT);
+            DEFAULT_RETRY_MIN_BACKOFF,
+            DEFAULT_RETRY_MAX_BACKOFF,
+            DEFAULT_MAX_RETRY_COUNT);
     }
 
     /**
@@ -91,7 +78,7 @@ public abstract class Retry {
         int baseWaitTime = 0;
 
         if (lastException == null || !(lastException instanceof AmqpException)) {
-            return this.onGetNextRetryInterval(lastException, remainingTime, baseWaitTime, this.getRetryCount());
+            return null;
         }
 
         if (((AmqpException) lastException).getErrorCondition() == ErrorCondition.SERVER_BUSY_ERROR) {

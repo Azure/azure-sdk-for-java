@@ -3,11 +3,11 @@
 
 package com.azure.eventhubs;
 
-import com.azure.eventhubs.implementation.ClientConstants;
-
 import java.time.Duration;
 
 public final class RetryExponential extends Retry {
+
+    public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
     private final Duration minBackoff;
     private final Duration maxBackoff;
     private final int maxRetryCount;
@@ -30,23 +30,23 @@ public final class RetryExponential extends Retry {
                                               final Duration remainingTime,
                                               final int baseWaitSeconds,
                                               final int retryCount) {
-        if ((!Retry.isRetryableException(lastException)) || retryCount >= maxRetryCount) {
+        if ((!Retry.isRetriableException(lastException)) || retryCount >= maxRetryCount) {
             return null;
         }
-        double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
+        final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
 
-        long nextRetryIntervalSeconds = (long) nextRetryInterval;
-        long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
-        if (remainingTime.getSeconds() < Math.max(nextRetryInterval, ClientConstants.TIMER_TOLERANCE.getSeconds())) {
+        final long nextRetryIntervalSeconds = (long) nextRetryInterval;
+        final long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
+        if (remainingTime.getSeconds() < Math.max(nextRetryInterval, TIMER_TOLERANCE.getSeconds())) {
             return null;
         }
 
-        Duration retryAfter = this.minBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
+        final Duration retryAfter = this.minBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
         return retryAfter.plus(Duration.ofSeconds(baseWaitSeconds));
     }
 
     private double computeRetryFactor() {
-        long deltaBackoff = this.maxBackoff.minus(this.minBackoff).getSeconds();
+        final long deltaBackoff = this.maxBackoff.minus(this.minBackoff).getSeconds();
         if (deltaBackoff <= 0 || this.maxRetryCount <= 0) {
             return 0;
         }

@@ -4,7 +4,6 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.eventhubs.implementation.ClientConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,15 +50,15 @@ public class RetryTest {
     @Test
     public void isRetryable() {
         Exception exception = new AmqpException(true, "error message");
-        Assert.assertTrue(Retry.isRetryableException(exception));
+        Assert.assertTrue(Retry.isRetriableException(exception));
 
         Exception invalidException = new RuntimeException("invalid exception");
-        Assert.assertFalse(Retry.isRetryableException(invalidException));
+        Assert.assertFalse(Retry.isRetriableException(invalidException));
     }
 
     @Test
     public void noRetryPolicy() {
-        Retry noRetry = Retry.getNoRetry();
+        Retry noRetry = Retry.NO_RETRY;
         Exception exception = new AmqpException(true, "error message");
         Duration sixtySec = Duration.ofSeconds(60);
         Duration nullDuration = noRetry.getNextRetryInterval(exception, sixtySec);
@@ -74,10 +73,10 @@ public class RetryTest {
         Exception exception = new AmqpException(true, "error message");
         Duration sixtySec = Duration.ofSeconds(60);
 
-        for (int i = 0; i < ClientConstants.DEFAULT_MAX_RETRY_COUNT; i++) {
+        for (int i = 0; i < Retry.DEFAULT_MAX_RETRY_COUNT; i++) {
             retry.incrementRetryCount();
         }
-        Assert.assertEquals(retry.getRetryCount(), ClientConstants.DEFAULT_MAX_RETRY_COUNT);
+        Assert.assertEquals(retry.getRetryCount(), Retry.DEFAULT_MAX_RETRY_COUNT);
         Duration firstRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
         Assert.assertNull(firstRetryInterval);
     }
