@@ -1,4 +1,8 @@
 {
+  "apimanagement/resource-manager": {
+    "source": "specification/apimanagement/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "applicationinsights/resource-manager": {
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -130,6 +134,10 @@
     "fconfig": {
       "\"moduleName\"": "\"MySQL\""
     }
+  },
+  "monitor/resource-manager": {
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "network/resource-manager": {
     "source": "specification/network/resource-manager/readme.md",

@@ -11,6 +11,7 @@ public final class BaseConfigurations {
     private BaseConfigurations() {
     }
 
+    // Proxy Settings
     /**
      * URI of the proxy for HTTP connections.
      *
@@ -21,7 +22,7 @@ public final class BaseConfigurations {
     /**
      * URI of the proxy for HTTPS connections.
      *
-     * No proxy is configured by default..
+     * No proxy is configured by default.
      */
     public static final String HTTPS_PROXY = "HTTPS_PROXY";
 
@@ -32,27 +33,72 @@ public final class BaseConfigurations {
      */
     public static final String NO_PROXY = "NO_PROXY";
 
+    // Identity
     /**
-     * User agent to use for HTTP requests.
+     * AAD MSI Credentials.
      */
-    public static final String AZURE_USER_AGENT = "AZURE_USER_AGENT";
+    public static final String MSI_ENDPOINT = "MSI_ENDPOINT";
 
     /**
-     * Minimum logging level to log.
-     *
-     * Logging is disabled by default.
+     * AAD MSI Credentials.
+     */
+    public static final String MSI_SECRET = "MSI_SECRET";
+
+    /**
+     * Azure subscription.
+     */
+    public static final String AZURE_SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
+
+    /**
+     * Azure username for U/P Auth.
+     */
+    public static final String AZURE_USERNAME = "AZURE_USERNAME";
+
+    /**
+     * Azure password for U/P Auth.
+     */
+    public static final String AZURE_PASSWORD = "AZURE_PASSWORD";
+
+    /**
+     * AAD
+     */
+    public static final String AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+
+    /**
+     * AAD
+     */
+    public static final String AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
+
+    /**
+     * AAD
+     */
+    public static final String AZURE_TENANT_ID = "AZURE_TENANT_ID";
+
+    /**
+     * Azure resource group.
+     */
+    public static final String AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
+
+    /**
+     * mooncake, govcloud, etc.
+     */
+    public static final String AZURE_CLOUD = "AZURE_CLOUD";
+
+    // Pipeline Configuration
+    /**
+     * Disables telemetry.
+     */
+    public static final String AZURE_TELEMETRY_DISABLED = "AZURE_TELEMETRY_DISABLED";
+
+    /**
+     * Enable console logging by setting a log level.
      */
     public static final String AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
     /**
-     * Whether logging happens.
+     * Disables tracing.
      */
-    public static final String AZURE_LOGGING_ENABLED = "AZURE_LOGGING_ENABLED";
-
-    /**
-     * Whether tracing happens.
-     */
-    public static final String AZURE_TRACING_ENABLED = "AZURE_TRACING_ENABLED";
+    public static final String AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
@@ -61,9 +107,18 @@ public final class BaseConfigurations {
         HTTP_PROXY,
         HTTPS_PROXY,
         NO_PROXY,
-        AZURE_USER_AGENT,
+        MSI_ENDPOINT,
+        MSI_SECRET,
+        AZURE_SUBSCRIPTION_ID,
+        AZURE_USERNAME,
+        AZURE_PASSWORD,
+        AZURE_CLIENT_ID,
+        AZURE_CLIENT_SECRET,
+        AZURE_TENANT_ID,
+        AZURE_RESOURCE_GROUP,
+        AZURE_CLOUD,
+        AZURE_TELEMETRY_DISABLED,
         AZURE_LOG_LEVEL,
-        AZURE_LOGGING_ENABLED,
-        AZURE_TRACING_ENABLED
+        AZURE_TRACING_DISABLED,
     };
 }

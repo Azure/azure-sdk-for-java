@@ -69,6 +69,9 @@ public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdent
         interface WithDomain {
            /**
             * Specifies resourceGroupName, domainName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param domainName Name of domain
+            * @return the next definition stage
             */
             WithCreate withExistingDomain(String resourceGroupName, String domainName);
         }
@@ -79,6 +82,8 @@ public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdent
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -89,6 +94,8 @@ public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdent
         interface WithOwnershipId {
             /**
              * Specifies ownershipId.
+             * @param ownershipId Ownership Id
+             * @return the next definition stage
              */
             WithCreate withOwnershipId(String ownershipId);
         }
@@ -117,6 +124,8 @@ public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdent
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -127,6 +136,8 @@ public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdent
         interface WithOwnershipId {
             /**
              * Specifies ownershipId.
+             * @param ownershipId Ownership Id
+             * @return the next update stage
              */
             Update withOwnershipId(String ownershipId);
         }

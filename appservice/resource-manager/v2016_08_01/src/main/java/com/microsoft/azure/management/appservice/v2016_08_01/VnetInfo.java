@@ -95,6 +95,10 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithSlot {
            /**
             * Specifies resourceGroupName, name, slot.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot
+            * @return the next definition stage
             */
             WithCreate withExistingSlot(String resourceGroupName, String name, String slot);
         }
@@ -105,6 +109,9 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithCertBlob {
             /**
              * Specifies certBlob.
+             * @param certBlob A certificate file (.cer) blob containing the public key of the private key used to authenticate a
+ Point-To-Site VPN connection
+             * @return the next definition stage
              */
             WithCreate withCertBlob(byte[] certBlob);
         }
@@ -115,6 +122,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithDnsServers {
             /**
              * Specifies dnsServers.
+             * @param dnsServers DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses
+             * @return the next definition stage
              */
             WithCreate withDnsServers(String dnsServers);
         }
@@ -125,6 +134,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -135,6 +146,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithVnetResourceId {
             /**
              * Specifies vnetResourceId.
+             * @param vnetResourceId The Virtual Network's resource ID
+             * @return the next definition stage
              */
             WithCreate withVnetResourceId(String vnetResourceId);
         }
@@ -163,6 +176,9 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithCertBlob {
             /**
              * Specifies certBlob.
+             * @param certBlob A certificate file (.cer) blob containing the public key of the private key used to authenticate a
+ Point-To-Site VPN connection
+             * @return the next update stage
              */
             Update withCertBlob(byte[] certBlob);
         }
@@ -173,6 +189,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithDnsServers {
             /**
              * Specifies dnsServers.
+             * @param dnsServers DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses
+             * @return the next update stage
              */
             Update withDnsServers(String dnsServers);
         }
@@ -183,6 +201,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -193,6 +213,8 @@ public interface VnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshabl
         interface WithVnetResourceId {
             /**
              * Specifies vnetResourceId.
+             * @param vnetResourceId The Virtual Network's resource ID
+             * @return the next update stage
              */
             Update withVnetResourceId(String vnetResourceId);
         }

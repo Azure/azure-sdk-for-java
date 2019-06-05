@@ -21,6 +21,7 @@ class DiagnosticCategoryImpl extends IndexableRefreshableWrapperImpl<DiagnosticC
     DiagnosticCategoryImpl(DiagnosticCategoryInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.siteName = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.diagnosticCategory = IdParsingUtils.getValueFromIdByName(inner.id(), "diagnostics");

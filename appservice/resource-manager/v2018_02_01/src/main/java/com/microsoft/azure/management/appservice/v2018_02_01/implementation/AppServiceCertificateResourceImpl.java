@@ -37,7 +37,7 @@ class AppServiceCertificateResourceImpl extends CreatableUpdatableImpl<AppServic
         this.manager = manager;
         // Set resource name
         this.name = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.certificateOrderName = IdParsingUtils.getValueFromIdByName(inner.id(), "certificateOrders");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "certificates");
