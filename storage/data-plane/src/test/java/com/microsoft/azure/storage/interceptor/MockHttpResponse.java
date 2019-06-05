@@ -43,8 +43,6 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public HttpHeaders headers() {
-//        String eTag = headers.value("etag");
-//        ContainerCreateHeaders headers = new
         return headers;
     }
 

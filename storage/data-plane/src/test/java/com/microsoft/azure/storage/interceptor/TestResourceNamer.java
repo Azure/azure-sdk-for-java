@@ -61,7 +61,7 @@ public class TestResourceNamer {
         }
         byte[] randomBytes = new byte[size];
         for (int i = 0; i < size; i++) {
-            randomBytes[i] = (byte)((new Random()).nextInt(MAX_BYTE_BOUND) + OFFSET);
+            randomBytes[i] = (byte) ((new Random()).nextInt(MAX_BYTE_BOUND) + OFFSET);
         }
 
         if (interceptorManager.isRecordMode()) {
@@ -104,7 +104,7 @@ public class TestResourceNamer {
 
     private String randomStringWithLength(int length) {
         String str;
-        for(str = ""; str.length() < length; str = str + UUID.randomUUID().toString().replace("-", "").substring(0, Math.min(32, length)).toLowerCase()) {
+        for (str = ""; str.length() < length; str = str + UUID.randomUUID().toString().replace("-", "").substring(0, Math.min(32, length)).toLowerCase()) {
         }
         return str;
     }

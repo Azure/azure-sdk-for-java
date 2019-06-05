@@ -44,9 +44,9 @@ import java.util.zip.ZipException;
  * When in record mode, run the real traffic and record the request and response to json file.
  * When in playback mode, use the mocked request and response retrieved from json file to run the tests.
  */
-public class InterceptorManager {
+public final class InterceptorManager {
 
-    private final static String RECORD_FOLDER = "session-records/";
+    private static final String RECORD_FOLDER = "session-records/";
 
     private Map<String, String> textReplacementRules = new HashMap<>();
     // Stores a map of all the HTTP properties in a session
@@ -115,7 +115,7 @@ public class InterceptorManager {
         }
     }
 
-    class RecordPolicy implements RequestPolicy {
+    final class RecordPolicy implements RequestPolicy {
         final RequestPolicy next;
         private RecordPolicy(RequestPolicy next) {
             this.next = next;
@@ -204,7 +204,7 @@ public class InterceptorManager {
             incomingUrl = removeHost(incomingUrl);
             NetworkCallRecord networkCallRecord = null;
             synchronized (recordedData) {
-                for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext(); ) {
+                for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext();) {
                     NetworkCallRecord record = iterator.next();
                     if (record.Method.equalsIgnoreCase(incomingMethod) && removeHost(record.Uri).equalsIgnoreCase(incomingUrl)) {
                         networkCallRecord = record;
@@ -231,7 +231,7 @@ public class InterceptorManager {
                 if (networkCallRecord.Errors.args == null) {
                     throw (Exception) networkCallRecord.Errors.classType.getConstructor().newInstance();
                 }
-                throw (Exception)networkCallRecord.Errors.classType.getConstructor(networkCallRecord.Errors.types).newInstance(networkCallRecord.Errors.args);
+                throw (Exception) networkCallRecord.Errors.classType.getConstructor(networkCallRecord.Errors.types).newInstance(networkCallRecord.Errors.args);
             }
 
             int recordStatusCode = Integer.parseInt(networkCallRecord.Response.get("StatusCode"));
@@ -406,7 +406,7 @@ public class InterceptorManager {
         } else if (type == Float.TYPE) {
             return 0.0F;
         } else if (type == Short.TYPE) {
-            return Short.valueOf((short)0);
+            return Short.valueOf((short) 0);
         } else if (type == Double.TYPE) {
             return type == Double.TYPE;
         } else if (type == Character.TYPE) {
