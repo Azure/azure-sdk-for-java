@@ -155,7 +155,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = setSpanName("addSetting", context);
@@ -287,7 +287,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = setSpanName("setSetting", context);
@@ -390,7 +390,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = setSpanName("updateSetting", context);
@@ -477,7 +477,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = setSpanName("getSetting", context);
@@ -576,7 +576,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = setSpanName("deleteSetting", context);
@@ -624,7 +624,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    Flux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         final Context contextWithSpanName = setSpanName("listSettings", context);
 
@@ -690,7 +690,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         final Context contextWithSpanName = setSpanName("listSettingRevisions", context);
 
