@@ -516,7 +516,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Test is unstable, will fail if we run 10 times. The behavior can reproduce in mainline without playback change.
-    @Ignore
+    //@Ignore
     def "Get block list"() {
         setup:
         List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID())
