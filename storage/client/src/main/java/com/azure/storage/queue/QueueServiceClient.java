@@ -29,19 +29,19 @@ final class QueueServiceClient {
         return new QueueClient(client.getQueueAsyncClient(queueName));
     }
 
-    public Response<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options, Context context) {
-        return client.listQueuesSegment(marker, options, context).block();
+    public Response<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+        return client.listQueuesSegment(marker, options, Context.NONE).block();
     }
 
-    public Response<StorageServiceProperties> getProperties(Context context) {
-        return client.getProperties(context).block();
+    public Response<StorageServiceProperties> getProperties() {
+        return client.getProperties(Context.NONE).block();
     }
 
-    public VoidResponse setProperties(StorageServiceProperties properties, Context context) {
-        return client.setProperties(properties, context).block();
+    public VoidResponse setProperties(StorageServiceProperties properties) {
+        return client.setProperties(properties, Context.NONE).block();
     }
 
-    public Response<StorageServiceStats> getStatistics(Context context) {
-        return client.getStatistics(context).block();
+    public Response<StorageServiceStats> getStatistics() {
+        return client.getStatistics(Context.NONE).block();
     }
 }

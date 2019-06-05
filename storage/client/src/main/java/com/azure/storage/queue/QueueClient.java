@@ -31,27 +31,27 @@ final class QueueClient {
         return new MessagesClient(this.client.getMessagesAsyncClient());
     }
 
-    public VoidResponse create(Map<String, String> metadata, Duration timeout, Context context) {
-        return client.create(metadata, timeout, context).block();
+    public VoidResponse create(Map<String, String> metadata, Duration timeout) {
+        return client.create(metadata, timeout, Context.NONE).block();
     }
 
-    public VoidResponse delete(Duration timeout, Context context) {
-        return client.delete(timeout, context).block();
+    public VoidResponse delete(Duration timeout) {
+        return client.delete(timeout, Context.NONE).block();
     }
 
-    public Response<QueueProperties> getProperties(Duration timeout, Context context) {
-        return client.getProperties(timeout, context).block();
+    public Response<QueueProperties> getProperties(Duration timeout) {
+        return client.getProperties(timeout, Context.NONE).block();
     }
 
-    public VoidResponse setMetadata(Map<String, String> metadata, Duration timeout, Context context) {
-        return client.setMetadata(metadata, timeout, context).block();
+    public VoidResponse setMetadata(Map<String, String> metadata, Duration timeout) {
+        return client.setMetadata(metadata, timeout, Context.NONE).block();
     }
 
-    public List<SignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
-        return client.getAccessPolicy(timeout, context).collectList().block();
+    public Iterable<SignedIdentifier> getAccessPolicy(Duration timeout) {
+        return client.getAccessPolicy(timeout, Context.NONE).toIterable();
     }
 
-    public VoidResponse setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout, Context context) {
-        return client.setAccessPolicy(permissions, timeout, context).block();
+    public VoidResponse setAccessPolicy(List<SignedIdentifier> permissions, Duration timeout) {
+        return client.setAccessPolicy(permissions, timeout, Context.NONE).block();
     }
 }

@@ -8,9 +8,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.DequeuedMessageItem;
+import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.PeekedMessage;
 import com.azure.storage.queue.models.QueueMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -60,11 +60,11 @@ final class MessagesAsyncClient {
         }
     }
 
-    public Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Context context) {
+    public Flux<DequeuedMessage> dequeue(int numberOfMessages, Context context) {
         return dequeue(numberOfMessages, null, context);
     }
 
-    Flux<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {
+    Flux<DequeuedMessage> dequeue(int numberOfMessages, Duration timeout, Context context) {
         if (timeout == null) {
             return client.messages().dequeueWithRestResponseAsync(numberOfMessages, null, null, null, context)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));
@@ -75,11 +75,11 @@ final class MessagesAsyncClient {
         }
     }
 
-    public Flux<PeekedMessageItem> peek(int numberOfMessages, Context context) {
+    public Flux<PeekedMessage> peek(int numberOfMessages, Context context) {
         return peek(numberOfMessages, null, context);
     }
 
-    Flux<PeekedMessageItem> peek(int numberOfMessages, Duration timeout, Context context) {
+    Flux<PeekedMessage> peek(int numberOfMessages, Duration timeout, Context context) {
         if (timeout == null) {
             return client.messages().peekWithRestResponseAsync(numberOfMessages, null, null, context)
                 .flatMapMany(response -> Flux.fromIterable(response.value()));

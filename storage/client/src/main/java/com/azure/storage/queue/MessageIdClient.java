@@ -24,11 +24,11 @@ final class MessageIdClient {
         return client.url();
     }
 
-    public Response<UpdatedMessage> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout, Context context) {
-        return client.update(messageText, popReceipt, visibilityTimeout, timeout, context).block();
+    public Response<UpdatedMessage> update(String messageText, String popReceipt, int visibilityTimeout, Duration timeout) {
+        return client.update(messageText, popReceipt, visibilityTimeout, timeout, Context.NONE).block();
     }
 
-    public VoidResponse delete(String popReceipt, Duration timeout, Context context) {
-        return client.delete(popReceipt, timeout, context).block();
+    public VoidResponse delete(String popReceipt, Duration timeout) {
+        return client.delete(popReceipt, timeout, Context.NONE).block();
     }
 }

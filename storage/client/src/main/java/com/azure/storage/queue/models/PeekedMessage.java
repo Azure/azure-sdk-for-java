@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
-public final class PeekedMessageItem {
+public final class PeekedMessage {
     /*
      * The Id of the Message.
      */
@@ -58,9 +58,9 @@ public final class PeekedMessageItem {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the PeekedMessageItem object itself.
+     * @return the PeekedMessage object itself.
      */
-    public PeekedMessageItem messageId(String messageId) {
+    public PeekedMessage messageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -83,9 +83,9 @@ public final class PeekedMessageItem {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the PeekedMessageItem object itself.
+     * @return the PeekedMessage object itself.
      */
-    public PeekedMessageItem insertionTime(OffsetDateTime insertionTime) {
+    public PeekedMessage insertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -112,9 +112,9 @@ public final class PeekedMessageItem {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the PeekedMessageItem object itself.
+     * @return the PeekedMessage object itself.
      */
-    public PeekedMessageItem expirationTime(OffsetDateTime expirationTime) {
+    public PeekedMessage expirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -138,9 +138,9 @@ public final class PeekedMessageItem {
      * dequeued.
      *
      * @param dequeueCount the dequeueCount value to set.
-     * @return the PeekedMessageItem object itself.
+     * @return the PeekedMessage object itself.
      */
-    public PeekedMessageItem dequeueCount(long dequeueCount) {
+    public PeekedMessage dequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
     }
@@ -158,9 +158,9 @@ public final class PeekedMessageItem {
      * Set the messageText property: The content of the Message.
      *
      * @param messageText the messageText value to set.
-     * @return the PeekedMessageItem object itself.
+     * @return the PeekedMessage object itself.
      */
-    public PeekedMessageItem messageText(String messageText) {
+    public PeekedMessage messageText(String messageText) {
         this.messageText = messageText;
         return this;
     }

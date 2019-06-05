@@ -5,12 +5,11 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.DequeuedMessageItem;
+import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.PeekedMessage;
 
 import java.time.Duration;
-import java.util.List;
 
 public final class MessagesClient {
     private final MessagesAsyncClient client;
@@ -31,19 +30,19 @@ public final class MessagesClient {
         return new MessageIdClient(client.getMessageIdAsyncRawClient(messageId));
     }
 
-    public Response<EnqueuedMessage> enqueue(String messageText, Duration timeout, Context context) {
-        return client.enqueue(messageText, timeout, context).block();
+    public Response<EnqueuedMessage> enqueue(String messageText, Duration timeout) {
+        return client.enqueue(messageText, timeout, Context.NONE).block();
     }
 
-    public List<DequeuedMessageItem> dequeue(int numberOfMessages, Duration timeout, Context context) {
-        return client.dequeue(numberOfMessages, timeout, context).collectList().block();
+    public Iterable<DequeuedMessage> dequeue(int numberOfMessages, Duration timeout) {
+        return client.dequeue(numberOfMessages, timeout, Context.NONE).toIterable();
     }
 
-    public List<PeekedMessageItem> peek(int numberOfMessages, Duration timeout, Context context) {
-        return client.peek(numberOfMessages, timeout, context).collectList().block();
+    public Iterable<PeekedMessage> peek(int numberOfMessages, Duration timeout) {
+        return client.peek(numberOfMessages, timeout, Context.NONE).toIterable();
     }
 
-    public VoidResponse clear(Duration timeout, Context context) {
-        return client.clear(timeout, context).block();
+    public VoidResponse clear(Duration timeout) {
+        return client.clear(timeout, Context.NONE).block();
     }
 }
