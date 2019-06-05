@@ -38,23 +38,22 @@ public final class CredentialInfo {
             throw new IllegalArgumentException("connection string is null or empty.");
         }
 
-
-        String[] args = connectionString.toLowerCase(Locale.ENGLISH).split(";");
+        String[] args = connectionString.split(";");
 
         for (String arg : args) {
             String segment = arg.trim();
-
-            if (segment.startsWith(ENDPOINT.toLowerCase(Locale.ENGLISH))) {
+            String lowerCaseSegment = segment.toLowerCase(Locale.ENGLISH);
+            if (lowerCaseSegment.startsWith(ENDPOINT.toLowerCase(Locale.ENGLISH))) {
                 try {
                     credentialInfo.endpoint = new URI(segment.substring(ENDPOINT.length()));
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", segment), e);
                 }
-            } else if (segment.startsWith(SHARED_ACCESS_KEY_NAME.toLowerCase(Locale.ENGLISH))) {
+            } else if (lowerCaseSegment.startsWith(SHARED_ACCESS_KEY_NAME.toLowerCase(Locale.ENGLISH))) {
                 credentialInfo.sharedAccessKeyName = segment.substring(SHARED_ACCESS_KEY_NAME.length());
-            } else if (segment.startsWith(SHARED_ACCESS_KEY.toLowerCase(Locale.ENGLISH))) {
+            } else if (lowerCaseSegment.startsWith(SHARED_ACCESS_KEY.toLowerCase(Locale.ENGLISH))) {
                 credentialInfo.sharedAccessKey = segment.substring(SHARED_ACCESS_KEY.length());
-            } else if (segment.startsWith(ENTITY_PATH.toLowerCase(Locale.ENGLISH))) {
+            } else if (lowerCaseSegment.startsWith(ENTITY_PATH.toLowerCase(Locale.ENGLISH))) {
                 credentialInfo.eventHubName = segment.substring(ENTITY_PATH.length());
             }
         }
