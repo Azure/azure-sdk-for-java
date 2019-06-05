@@ -121,7 +121,7 @@ public final class KeyAsyncClientBuilder {
      *
      * @param endPoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated Builder object.
-     * @throws IllegalStateException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public KeyAsyncClientBuilder endpoint(String endPoint) {
         try {

@@ -43,12 +43,7 @@ import java.util.Objects;
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * KeyClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
- *   .build()
- * </pre>
+ * {@codesnippet com.azure.keyvault.keys.client.instantiation}
  *
  * @see KeyClientBuilder
  */
@@ -77,7 +72,7 @@ public final class KeyClient extends ServiceClient {
      * Creates a builder that can configure options for the KeyClient before creating an instance of it.
      * @return A new builder to create a KeyClient from.
      */
-    static KeyClientBuilder builder() {
+    public static KeyClientBuilder builder() {
         return new KeyClientBuilder();
     }
 
@@ -91,10 +86,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
-     * <pre>
-     * Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
-     * System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.client.createKey.string.keyType}
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
@@ -396,7 +388,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
-    public Response<Key> updateKey(KeyBase key, KeyOperation ... keyOperations) {
+    public Response<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())

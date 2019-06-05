@@ -123,6 +123,7 @@
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
+    <doclet.version>0.31</doclet.version>
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
@@ -552,6 +553,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+          <docletArtifact>
+            <groupId>org.apidesign.javadoc</groupId>
+            <artifactId>codesnippet-doclet</artifactId>
+            <version>${doclet.version}</version>
+          </docletArtifact>
+          <additionalOptions>-maxLineLength 120 -snippetpath src/samples/java</additionalOptions>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -670,6 +680,7 @@
               <link>https://netty.io/4.1/api/</link>
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
+
             <isOffline>false</isOffline>
           </configuration>
         </plugin>

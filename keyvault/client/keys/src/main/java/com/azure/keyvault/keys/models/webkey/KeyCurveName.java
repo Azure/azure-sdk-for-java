@@ -34,6 +34,10 @@ public enum KeyCurveName {
         return value;
     }
 
+    /**
+     * Calculates the hashcode of the custom value
+     * @return the hashcode of custom value for {@link KeyCurveName}
+     */
     public int hashValue() {
         return value.hashCode();
     }
@@ -44,10 +48,11 @@ public enum KeyCurveName {
      * @return the KeyCurveName
      */
     public static KeyCurveName fromString(String value) {
-        for(KeyCurveName keyCurve : values())
-            if(keyCurve.value.equalsIgnoreCase(value)){
+        for (KeyCurveName keyCurve : values()) {
+            if (keyCurve.value.equalsIgnoreCase(value)) {
                 return keyCurve;
             }
+        }
         return null;
     }
 }

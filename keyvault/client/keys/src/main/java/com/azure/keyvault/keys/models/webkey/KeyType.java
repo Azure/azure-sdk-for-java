@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for KeyType.
  */
 public enum KeyType {
-     EC ("EC"),
+     EC("EC"),
 
      EC_HSM("EC-HSM"),
 
@@ -35,6 +35,10 @@ public enum KeyType {
         return value;
     }
 
+    /**
+     * Calculates the hashcode of the custom value
+     * @return the hashcode of custom value for {@link KeyType}
+     */
     public int hashValue() {
         return value.hashCode();
     }
@@ -45,10 +49,11 @@ public enum KeyType {
      * @return the KeyType.
      */
     public static KeyType fromString(String value) {
-        for(KeyType keyType : values())
-            if(keyType.value.equalsIgnoreCase(value)){
+        for (KeyType keyType : values()) {
+            if (keyType.value.equalsIgnoreCase(value)) {
                 return keyType;
             }
+        }
         return null;
     }
 }
