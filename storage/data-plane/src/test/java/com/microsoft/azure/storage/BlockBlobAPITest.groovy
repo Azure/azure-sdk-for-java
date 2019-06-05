@@ -10,7 +10,6 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -516,7 +515,6 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Test is unstable, will fail if we run 10 times. The behavior can reproduce in mainline without playback change.
-    //@Ignore
     def "Get block list"() {
         setup:
         List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID())
