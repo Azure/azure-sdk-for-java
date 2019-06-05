@@ -1,0 +1,279 @@
+package com.azure.keyvault.keys;
+
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.keyvault.keys.models.DeletedKey;
+import com.azure.keyvault.keys.models.Key;
+import com.azure.keyvault.keys.models.KeyBase;
+import com.azure.keyvault.keys.models.KeyCreateOptions;
+import com.azure.keyvault.keys.models.webkey.KeyType;
+import io.netty.handler.codec.http.HttpResponseStatus;
+
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+public class KeyClientTest extends KeyClientTestBase {
+
+    private KeyClient client;
+
+    @Override
+    protected void beforeTest() {
+        beforeTestSetup();
+
+        if (interceptorManager.isPlaybackMode()) {
+            client = clientSetup(credentials -> KeyClient.builder()
+                .credential(credentials)
+                .endpoint(getEndpoint())
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .build());
+        } else {
+            client = clientSetup(credentials -> KeyClient.builder()
+                .credential(credentials)
+                .endpoint(getEndpoint())
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .build());
+        }
+    }
+
+    @Override
+    protected void afterTest() {
+
+        for (KeyBase key : client.listKeys()) {
+         //   client.deleteKey(key.name());
+        }
+    }
+
+    /**
+     * Tests that a key can be created in the key vault.
+     */
+    public void setKey() {
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+    }
+
+    /**
+     * Tests that an attempt to create a key with empty string name throws an error.
+     */
+    public void setKeyEmptyName() {
+        assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+    }
+
+    /**
+     * Tests that we cannot create keys when key type is null.
+     */
+    public void setKeyNullType() {
+        setKeyEmptyValueRunner((key) -> {
+            assertRestException(() -> client.createKey(key.name(), key.keyType()), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+        });
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key object is passed for creation.
+     */
+    public void setKeyNull() {
+        assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
+    }
+
+    /**
+     * Tests that a key is able to be updated when it exists.
+     */
+    public void updateKey() {
+        updateKeyRunner((original, updated) -> {
+            assertKeyEquals(original, client.createKey(original));
+            Key keyToUpdate = client.getKey(original.name()).value();
+            client.updateKey(keyToUpdate.expires(updated.expires()));
+            assertKeyEquals(updated, client.getKey(original.name()));
+        });
+    }
+
+    /**
+     * Tests that a key is able to be updated when it is disabled.
+     */
+    public void updateDisabledKey() {
+        updateDisabledKeyRunner((original, updated) -> {
+            assertKeyEquals(original, client.createKey(original));
+            Key keyToUpdate = client.getKey(original.name()).value();
+            client.updateKey(keyToUpdate.expires(updated.expires()));
+            assertKeyEquals(updated, client.getKey(original.name()));
+        });
+    }
+
+    /**
+     * Tests that an existing key can be retrieved.
+     */
+    public void getKey() {
+        getKeyRunner((original) -> {
+            client.createKey(original);
+            assertKeyEquals(original, client.getKey(original.name()));
+        });
+    }
+
+    /**
+     * Tests that a specific version of the key can be retrieved.
+     */
+    public void getKeySpecificVersion() {
+        getKeySpecificVersionRunner((key, keyWithNewVal) -> {
+            Key keyVersionOne = client.createKey(key).value();
+            Key keyVersionTwo = client.createKey(keyWithNewVal).value();
+            assertKeyEquals(key, client.getKey(keyVersionOne.name(), keyVersionOne.version()));
+            assertKeyEquals(keyWithNewVal, client.getKey(keyVersionTwo.name(), keyVersionTwo.version()));
+        });
+    }
+
+    /**
+     * Tests that an attempt to get a non-existing key throws an error.
+     */
+    public void getKeyNotFound() {
+        assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+    }
+
+    /**
+     * Tests that an existing key can be deleted.
+     */
+    public void deleteKey() {
+        deleteKeyRunner((keyToDelete) -> {
+            assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
+            DeletedKey deletedKey = client.deleteKey(keyToDelete.name()).value();
+            sleep(30000);
+            assertNotNull(deletedKey.deletedDate());
+            assertNotNull(deletedKey.recoveryId());
+            assertNotNull(deletedKey.scheduledPurgeDate());
+            assertEquals(keyToDelete.name(), deletedKey.name());
+            client.purgeDeletedKey(keyToDelete.name());
+            sleep(15000);
+        });
+    }
+
+    public void deleteKeyNotFound() {
+        assertRestException(() -> client.deleteKey("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+    }
+
+    /**
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
+     */
+    public void getDeletedKey() {
+        getDeletedKeyRunner((keyToDeleteAndGet) -> {
+//            client.purgeDeletedKey(keyToDeleteAndGet.name());
+//            sleep(15000);
+            assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
+            assertNotNull(client.deleteKey(keyToDeleteAndGet.name()).value());
+            sleep(30000);
+            DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name()).value();
+            assertNotNull(deletedKey.deletedDate());
+            assertNotNull(deletedKey.recoveryId());
+            assertNotNull(deletedKey.scheduledPurgeDate());
+            assertEquals(keyToDeleteAndGet.name(), deletedKey.name());
+            client.purgeDeletedKey(keyToDeleteAndGet.name());
+            sleep(15000);
+        });
+    }
+
+    /**
+     * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
+     */
+    public void getDeletedKeyNotFound() {
+        assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+    }
+
+
+    /**
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
+     */
+    public void recoverDeletedKey() {
+        recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
+            assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
+            assertNotNull(client.deleteKey(keyToDeleteAndRecover.name()).value());
+            sleep(30000);
+            Key recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.name()).value();
+            assertEquals(keyToDeleteAndRecover.name(), recoveredKey.name());
+            assertEquals(keyToDeleteAndRecover.notBefore(), recoveredKey.notBefore());
+            assertEquals(keyToDeleteAndRecover.expires(), recoveredKey.expires());
+        });
+    }
+
+    /**
+     * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
+     */
+    public void recoverDeletedKeyNotFound() {
+        assertRestException(() -> client.recoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+    }
+
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
+    public void backupKey() {
+        backupKeyRunner((keyToBackup) -> {
+            assertKeyEquals(keyToBackup, client.createKey(keyToBackup));
+            byte[] backupBytes = (client.backupKey(keyToBackup.name()).value());
+            assertNotNull(backupBytes);
+            assertTrue(backupBytes.length > 0);
+        });
+    }
+
+    /**
+     * Tests that an attempt to backup a non existing key throws an error.
+     */
+    public void backupKeyNotFound() {
+        assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+    }
+
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
+    public void restoreKey() {
+        restoreKeyRunner((keyToBackupAndRestore) -> {
+            assertKeyEquals(keyToBackupAndRestore, client.createKey(keyToBackupAndRestore));
+            byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.name()).value());
+            assertNotNull(backupBytes);
+            assertTrue(backupBytes.length > 0);
+            client.deleteKey(keyToBackupAndRestore.name());
+            sleep(32000);
+            client.purgeDeletedKey(keyToBackupAndRestore.name());
+            sleep(15000);
+            Key restoredKey = client.restoreKey(backupBytes).value();
+            assertEquals(keyToBackupAndRestore.name(), restoredKey.name());
+            //assertEquals(keyToBackupAndRestore.notBefore(), restoredKey.notBefore());
+            assertEquals(keyToBackupAndRestore.expires(), restoredKey.expires());
+        });
+    }
+
+    /**
+     * Tests that an attempt to restore a key from malformed backup bytes throws an error.
+     */
+    public void restoreKeyFromMalformedBackup() {
+        byte[] keyBackupBytes = "non-existing".getBytes();
+        assertRestException(() -> client.restoreKey(keyBackupBytes), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+    }
+
+    /**
+     * Tests that keys can be listed in the key vault.
+     */
+    public void listKeys() {
+        listKeysRunner((keys) -> {
+            HashMap<String, KeyCreateOptions> keysToList = keys;
+            for(KeyCreateOptions key :  keysToList.values()){
+                assertKeyEquals(key, client.createKey(key));
+            }
+            List<KeyBase> keysListed = client.listKeys();
+            for(KeyBase actualKey : keysListed){
+                if(keysToList.containsKey(actualKey.name())){
+                    KeyCreateOptions expectedKey = keysToList.get(actualKey.name());
+                    assertEquals(expectedKey.expires(), actualKey.expires());
+                    assertEquals(expectedKey.notBefore(), actualKey.notBefore());
+                    keysToList.remove(actualKey.name());
+                }
+            }
+            assertEquals(0,keysToList.size());
+        });
+    }
+
+
+}
