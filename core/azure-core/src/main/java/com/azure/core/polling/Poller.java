@@ -11,7 +11,8 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/** This is implementation for Long Running Operations.
+/**
+ * This is implementation for Long Running Operations.
  **/
 public class Poller<T> {
 
@@ -38,9 +39,9 @@ public class Poller<T> {
     private Flux<PollResponse<T>> fluxHandle;
 
     /*Since constructor create a subscriber and start autopoll.
-    * This subscriber will be duplicate when client call subscriber.
-    * Thus this handle will be used to dispose the subscriber when
-    * client invoke poll function*/
+     * This subscriber will be duplicate when client call subscriber.
+     * Thus this handle will be used to dispose the subscriber when
+     * client invoke poll function*/
     private Disposable fluxDisposable;
 
     /**
@@ -60,17 +61,11 @@ public class Poller<T> {
         fluxDisposable = fluxHandle.subscribe(ps -> pollResponse = ps);
     }
 
-    private Flux<PollResponse<T>> createFlux() {
-        return sendPollRequestWithDelay()
-            .repeat(this.pollerOptions.getTimeoutInMilliSeconds() / this.pollerOptions.getPollIntervalInMillis())
-            .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
-                || pollResponse.status() == PollResponse.OperationStatus.FAILED
-                || pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
-    }
-
-    /** Constructor
-     * @param pollerOptions poller options
-     * @param pollOperation poller operation
+    /**
+     * Constructor
+     *
+     * @param pollerOptions   poller options
+     * @param pollOperation   poller operation
      * @param cancelOperation cancel operation
      **/
     public Poller(PollerOptions pollerOptions,
@@ -79,6 +74,26 @@ public class Poller<T> {
                   Consumer<Poller> cancelOperation) {
         this(pollerOptions, pollOperation);
         this.cancelOperation = cancelOperation;
+    }
+
+    private Flux<PollResponse<T>> createFlux() {
+        return sendPollRequestWithDelay()
+            .repeat(repeatPollTimes())
+            .takeUntil(pollResponse -> !isPollingStopped() && (pollResponse.status() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+                || pollResponse.status() == PollResponse.OperationStatus.FAILED
+                || pollResponse.status() == PollResponse.OperationStatus.USER_CANCELLED));
+    }
+
+    /*Calculate how many time we should repeat poll*/
+    private int repeatPollTimes() {
+        // Poller options will ensure that TimeoutInMilliSeconds > 0
+        if (this.pollerOptions.getPollIntervalInMillis() > 0) {
+            return this.pollerOptions.getTimeoutInMilliSeconds() / this.pollerOptions.getPollIntervalInMillis();
+        } else {
+            // Poller Options validation will ensure that poll interval is > 0
+            // We should never reach here. This is extra safety guard.
+            return this.pollerOptions.getTimeoutInMilliSeconds();
+        }
     }
 
     /**
@@ -104,6 +119,7 @@ public class Poller<T> {
 
     /**
      * This will poll and send PollResponse. If you had stopped polling erlier, we will enable polling again.
+     *
      * @return Return poll response as Flux
      **/
     public Flux<PollResponse<T>> poll() {
@@ -114,8 +130,11 @@ public class Poller<T> {
         return fluxHandle;
     }
 
-    /**This will block till poll operation is complete
-     * @return  returns poll response**/
+    /**
+     * This will block till poll operation is complete
+     *
+     * @return returns poll response
+     **/
     public PollResponse<T> block() {
         return poll().blockLast();
     }
@@ -163,13 +182,15 @@ public class Poller<T> {
     }
 
     /**
-     *This will stop polling
+     * This will stop polling
      **/
     public void stopPolling() {
         setStopPolling(true);
     }
 
-    /** Enable auto polling **/
+    /**
+     * Enable auto polling
+     **/
     public void enablePolling() {
         setStopPolling(false);
     }
@@ -177,13 +198,17 @@ public class Poller<T> {
     private void setStopPolling(boolean stop) {
         this.autoPolling = !stop;
     }
+
     /**
-     *  @return  true if polling is stopped.
-     *  **/
+     * @return true if polling is stopped.
+     **/
     public boolean isPollingStopped() {
         return !this.autoPolling;
     }
-    /** @return  status . Null if no status is available.**/
+
+    /**
+     * @return status . Null if no status is available.
+     **/
     public PollResponse.OperationStatus getStatus() {
         return pollResponse != null ? pollResponse.status() : null;
     }
