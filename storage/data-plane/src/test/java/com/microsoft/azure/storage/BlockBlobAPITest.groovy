@@ -48,15 +48,6 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
-    def "Stage block illegal arguments without BlockID"() {
-        when:
-        bu.stageBlock(null, defaultFlowable, defaultDataSize, null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        IllegalArgumentException.isInstance(e)
-    }
-
     @Unroll
     def "Stage block illegal arguments"() {
         when:
@@ -175,9 +166,6 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Stage block from URL IA without BlockID"() {
-        setup:
-        def blockId = getBlockID()
-
         when:
         bu.stageBlockFromURL(null, new URL("http://www.example.com"), null, null, null, null, null)
                 .blockingGet()
@@ -188,11 +176,15 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL IA with BlockID"() {
         when:
-        bu.stageBlockFromURL(getBlockID(), null, null, null, null, null, null)
+        bu.stageBlockFromURL(blockID, null, null, null, null, null, null)
             .blockingGet()
 
         then:
         thrown(IllegalArgumentException)
+
+        where:
+        blockID | _
+        getBlockID() | _
     }
 
     def "Stage block from URL range"() {

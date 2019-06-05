@@ -318,8 +318,7 @@ class AppendBlobAPITest extends APISpec {
     def "AppendBlobAPITest Append block from URL range"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
-        def data
-        data = new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(4 * 1024)
+        def data = new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(4 * 1024)
         bu.appendBlock(Flowable.just(ByteBuffer.wrap(data)), data.length).blockingGet()
 
         def destURL = cu.createAppendBlobURL(generateBlobName())

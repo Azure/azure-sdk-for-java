@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.storage
 
-
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.azure.storage.interceptor.TestResourceNamer

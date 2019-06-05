@@ -14,7 +14,7 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
-import spock.lang.Ignore
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -275,9 +275,9 @@ class TransferManagerTest extends APISpec {
         channel.close()
     }
 
-    @Ignore
     def "Upload single shot size"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         AsynchronousFileChannel channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath())
 
         when:
@@ -546,10 +546,11 @@ class TransferManagerTest extends APISpec {
         cleanup:
         outChannel.close()
     }
-    @Ignore
+
     @Unroll
     def "Download file options"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
@@ -641,10 +642,10 @@ class TransferManagerTest extends APISpec {
 
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF"() {
         when:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         def data = getRandomData(dataSize)
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, bufferSize, numBuffs, null)
                 .blockingGet()
@@ -682,7 +683,6 @@ class TransferManagerTest extends APISpec {
         return result.remaining() == 0
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF chunked source"() {
         /*
@@ -690,6 +690,7 @@ class TransferManagerTest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         TransferManager.uploadFromNonReplayableFlowable(Flowable.fromIterable(dataList), bu, bufferSize, numBuffers,
                 null).blockingGet()
 
@@ -736,9 +737,11 @@ class TransferManagerTest extends APISpec {
         5                                      | 1
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF headers"() {
+        setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+
         when:
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(defaultData), bu, 10, 2,
                 new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
@@ -762,10 +765,10 @@ class TransferManagerTest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF metadata"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -789,10 +792,10 @@ class TransferManagerTest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF AC"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -816,10 +819,10 @@ class TransferManagerTest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Ignore
     @Unroll
     def "Upload NRF AC fail"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -847,9 +850,9 @@ class TransferManagerTest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Ignore
     def "Upload NRF progress"() {
         setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
         def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
         long prevCount = 0
@@ -883,13 +886,13 @@ class TransferManagerTest extends APISpec {
         notThrown(IllegalArgumentException)
     }
 
-    @Ignore
     def "Upload NRF network error"() {
         setup:
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
          */
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         bu.upload(Flowable.just(defaultData), defaultDataSize).blockingGet()
         def nrf = bu.download().blockingGet().body(null)
 
