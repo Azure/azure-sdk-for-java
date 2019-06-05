@@ -3,15 +3,17 @@
 
 package com.azure.keyvault.keys;
 
+import com.azure.core.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,10 +65,8 @@ public final class KeyClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private RetryPolicy retryPolicy;
-    private String userAgent;
 
     KeyClientBuilder() {
-        userAgent = String.format("Azure-SDK-For-Java/%s (%s)", AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION);
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
@@ -102,7 +102,7 @@ public final class KeyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(userAgent));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, Configuration.NONE));
         policies.add(retryPolicy);
         policies.add(new TokenCredentialPolicy(credential));
         policies.addAll(this.policies);
