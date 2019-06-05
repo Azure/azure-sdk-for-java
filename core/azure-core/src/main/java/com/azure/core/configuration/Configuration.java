@@ -78,7 +78,7 @@ public class Configuration implements Cloneable {
         return converter.apply(value);
     }
 
-    /**
+    /*
      * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
      * attempts to load it from the runtime parameters then the environment variables.
      *
@@ -91,6 +91,13 @@ public class Configuration implements Cloneable {
     private String getOrLoad(String name) {
         loadBaseConfigurations();
 
+        // Special handling for tracing disabled and log level as they need to be updated instantly on
+        // configuration change.
+        if (BaseConfigurations.AZURE_TRACING_DISABLED.equalsIgnoreCase(name) ||
+            BaseConfigurations.AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
+            load(name);
+        }
+
         if (configurations.containsKey(name)) {
             return configurations.get(name);
         }
@@ -98,7 +105,7 @@ public class Configuration implements Cloneable {
         return load(name);
     }
 
-    /**
+    /*
      * Attempts to load the configuration from the environment.
      *
      * The runtime parameters are checked first followed by the environment variables. If the configuration is found
@@ -163,7 +170,7 @@ public class Configuration implements Cloneable {
         return clone;
     }
 
-    /**
+    /*
      * Attempts to convert the configuration value to {@code T}.
      *
      * If the value is null or empty then the default value is returned.
@@ -203,7 +210,7 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    /**
+    /*
      * Attempts to load the configuration using the passed loader. If the configuration is found it will be added to
      * the configuration store and a message will be logged.
      *
@@ -213,7 +220,7 @@ public class Configuration implements Cloneable {
      */
     private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
-        if (!ImplUtils.isNullOrEmpty(value)) {
+        if (!ImplUtils.isNullOrEmpty(value) && !value.equals(configurations.get(name))) {
             configurations.put(name, value);
             logger.asInformational().log(logMessage, name, value);
             return true;
@@ -222,6 +229,9 @@ public class Configuration implements Cloneable {
         return false;
     }
 
+    /*
+     * Loads all configurations in BaseConfigurations if they haven't been loaded already.
+     */
     private void loadBaseConfigurations() {
         if (loadedBaseConfigurations) {
             return;
