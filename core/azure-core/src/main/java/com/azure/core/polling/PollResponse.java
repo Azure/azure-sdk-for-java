@@ -5,11 +5,12 @@ package com.azure.core.polling;
 
 /**
  * The life cycle of an operation depicted below
- * NOT-STARTED --- IN-PROGRESS
- * ------ Successfully Complete
- * ------ User Cancelled
- * ------ Failed
- **/
+ * 1. NOT-STARTED
+ * 2. IN-PROGRESS
+ * 3. a. Successfully Complete
+ *    b. User Cancelled
+ *    c. Failed
+ */
 public final class PollResponse<T> {
 
     private OperationStatus status;
@@ -28,7 +29,7 @@ public final class PollResponse<T> {
      *
      * @param status : operation status
      * @param result : the result
-     **/
+     */
     public PollResponse(OperationStatus status, T result) {
         this.status = status;
         this.result = result;
@@ -36,14 +37,14 @@ public final class PollResponse<T> {
 
     /**
      * @return OperationStatus
-     **/
-    public OperationStatus status() {
+     */
+    public OperationStatus getStatus() {
         return status;
     }
 
     /**
      * @param status The status to be set
-     **/
+     */
     public void setStatus(OperationStatus status) {
         this.status = status;
     }
@@ -55,7 +56,7 @@ public final class PollResponse<T> {
      * c. Failed
      *
      * @return true if operation is done.
-     **/
+     */
     public boolean isDone() {
         return status == OperationStatus.SUCCESSFULLY_COMPLETED
             || status == OperationStatus.FAILED
@@ -66,7 +67,7 @@ public final class PollResponse<T> {
      * Return Result
      *
      * @return T result
-     **/
+     */
     public T getResult() {
         return result;
     }
