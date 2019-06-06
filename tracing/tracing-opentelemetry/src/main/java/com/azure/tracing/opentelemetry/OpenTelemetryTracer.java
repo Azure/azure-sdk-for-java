@@ -56,7 +56,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public void setAttribute(String key, String value, Context context) {
         if (ImplUtils.isNullOrEmpty(value)) {
-            logger.asInformational().log("Failed to set span attribute since value is null or empty.");
+            logger.asInfo().log("Failed to set span attribute since value is null or empty.");
             return;
         }
 
