@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.time.Duration;
 
 public class RetryTest {
-
     @Test
     public void defaultRetryPolicy() {
         Retry retry = Retry.getDefaultRetry();
@@ -51,7 +50,10 @@ public class RetryTest {
     public void isRetryable() {
         Exception exception = new AmqpException(true, "error message");
         Assert.assertTrue(Retry.isRetriableException(exception));
+    }
 
+    @Test
+    public void notRetryable() {
         Exception invalidException = new RuntimeException("invalid exception");
         Assert.assertFalse(Retry.isRetriableException(invalidException));
     }

@@ -24,7 +24,7 @@ public abstract class Retry {
 
     /**
      * Creates a new instance of Retry with the maximum retry count of {@code maxRetryCount}
-     * 
+     *
      * @param maxRetryCount The maximum number of retries allowed.
      */
     public Retry(int maxRetryCount) {
