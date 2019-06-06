@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Builder to create an EventHub Credentials Information from given ConnectionString and/or EventHub Path
+ * A credential information object that contains all key-value pairs of ConnectionString
  */
 public final class CredentialInfo {
 
@@ -32,10 +32,11 @@ public final class CredentialInfo {
     private CredentialInfo() { }
 
     /**
-     * Create a CredentialInfo object from connection string that contains 'EntityPath' key value pair, also well known as 'EventHub Name'.
+     * Create a {@link CredentialInfo} object that maps all key-value pairs of ConnectionString, include {@code EntityPath}.
+     * Such as the connection string from 'SAS Policy: root' which contains {@code EntityPath}, well known as 'EventHub Path'.
      *
-     * @param connectionString Connection String, which should at least include Endpoint, SharedAccessKeyName and SharedAccessKey
-     * @return CredentialInfo
+     * @param connectionString Connection String, which should at least include Endpoint, SharedAccessKeyName, SharedAccessKey and EntityPath.
+     * @return a new created {@link CredentialInfo}.
      * @throws IllegalArgumentException when 'connectionString' is {@code null} or empty, or cannot be translated into an
      * {@link CredentialInfo}, or have invalid format.
      */
@@ -44,17 +45,18 @@ public final class CredentialInfo {
     }
 
     /**
-     * Create a CredentialInfo object from connection string which doesn't contain 'EntityPath' key but provided it in this method.
+     * Create a {@link CredentialInfo} object that maps all key-value pairs of ConnectionString, exclude {@code EntityPath}.
+     * Such as the connection string from 'SAS Policy: RootManageSharedAccessKey', which doesn't contain {@code EntityPath}.
      *
-     * @param connectionString Connection String, which should at least include Endpoint, SharedAccessKeyName and SharedAccessKey
-     * @param eventHubPath EventHub Name that used in Azure Portal
-     * @return CredentialInfo
+     * @param connectionString Connection String, which should at least include Endpoint, SharedAccessKeyName and SharedAccessKey.
+     * @param eventHubPath EventHub Name that used in Azure Portal.
+     * @return a new created {@link CredentialInfo}.
      * @throws IllegalArgumentException when 'connectionString' is {@code null} or empty, or cannot be translated into an
      * {@link CredentialInfo}, or have invalid format.
      */
     public static CredentialInfo from(String connectionString, String eventHubPath) {
         if (ImplUtils.isNullOrEmpty(eventHubPath)) {
-            throw new IllegalArgumentException("EventHub path is null or empty.");
+            throw new IllegalArgumentException("EventHub path is null or empty");
         }
         return createCredentialInfo(connectionString, eventHubPath);
     }
@@ -77,7 +79,7 @@ public final class CredentialInfo {
 
     private static CredentialInfo createCredentialInfo(String connectionString, String eventHubPath) {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalArgumentException("Connection string is null or empty.");
+            throw new IllegalArgumentException("Connection string is null or empty");
         }
         CredentialInfo credentialInfo = new CredentialInfo();
         String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);

@@ -10,6 +10,9 @@ import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * A configuration object for Proxy
+ */
 public class ProxyConfiguration implements AutoCloseable {
     private final ServiceLogger logger = new ServiceLogger(ProxyConfiguration.class);
 
