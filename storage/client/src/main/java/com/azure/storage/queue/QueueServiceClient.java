@@ -4,7 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.queue.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
@@ -77,8 +77,8 @@ public final class QueueServiceClient {
      * @param options Filter for queue selection
      * @return Queues in the storage account that passed the filter and metadata to continue listing more queues
      */
-    public Response<ListQueuesSegmentResponse> listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.listQueuesSegment(marker, options).block();
+    public Iterable<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+        return client.listQueuesSegment(marker, options).collectList().block();
     }
 
     /**

@@ -3,10 +3,10 @@
 package com.azure.storage.queue;
 
 import com.azure.core.configuration.Configuration;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.queue.models.SharedKeyCredential;
 
 /**
  * Fluent builder for queue clients
@@ -51,7 +51,7 @@ public final class QueueClientBuilder {
      * @param credentials authorization credentials
      * @return the updated QueueClientBuilder object
      */
-    public QueueClientBuilder credentials(TokenCredential credentials) {
+    public QueueClientBuilder credentials(SharedKeyCredential credentials) {
         builder.credentials(credentials);
         return this;
     }

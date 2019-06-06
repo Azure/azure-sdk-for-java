@@ -1,17 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue.models;
 
-import com.azure.core.credentials.TokenCredential;
-import reactor.core.publisher.Mono;
-
-public class SharedKeyCredential extends TokenCredential {
+public class SharedKeyCredential {
     private final String sharedKey;
 
     public SharedKeyCredential(String sharedKey) {
         this.sharedKey = sharedKey;
     }
 
-    @Override
-    public Mono<String> getTokenAsync(String resource) {
-        return Mono.just(sharedKey);
+    public String sharedKey() {
+        return sharedKey;
     }
 }

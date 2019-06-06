@@ -8,12 +8,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageErrorCode;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -63,7 +64,7 @@ public final class QueueServiceAsyncClient {
      * @return the client to interact with the new queue
      */
     public QueueAsyncClient createQueue(String queueName) {
-        return createQueue(queueName);
+        return createQueue(queueName, null);
     }
 
     /**
@@ -109,9 +110,9 @@ public final class QueueServiceAsyncClient {
      * @param options Filter for queue selection
      * @return Queues in the storage account that passed the filter and metadata to continue listing more queues
      */
-    public Mono<Response<ListQueuesSegmentResponse>> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+    public Flux<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
         return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, Context.NONE)
-            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
+            .flatMapMany(response -> Flux.fromIterable(response.value().queueItems()));
     }
 
     /**

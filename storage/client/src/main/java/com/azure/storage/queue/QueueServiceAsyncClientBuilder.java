@@ -3,6 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -62,10 +63,12 @@ public final class QueueServiceAsyncClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(credentials);
 
+        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
+        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
         policies.add(new SharedKeyCredentialPolicy(credentials)); // This needs to be a different credential type.
@@ -188,15 +191,23 @@ public final class QueueServiceAsyncClientBuilder {
 
         StringBuilder sb = new StringBuilder();
         addQueryParam(sb, SV, sv);
+        sb.append('&');
         addQueryParam(sb, SS, ss);
+        sb.append('&');
         addQueryParam(sb, SRT, srt);
+        sb.append('&');
         addQueryParam(sb, SP, sp);
+        sb.append('&');
         addQueryParam(sb, SE, se);
+        sb.append('&');
         addQueryParam(sb, ST, st);
+        sb.append('&');
         addQueryParam(sb, SPR, spr);
+        sb.append('&');
         addQueryParam(sb, SIG, sig);
 
         if (!ImplUtils.isNullOrEmpty(sip)) {
+            sb.append('&');
             addQueryParam(sb, SIP, sip);
         }
 
