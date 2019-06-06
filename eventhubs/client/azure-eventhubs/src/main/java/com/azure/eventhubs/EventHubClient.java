@@ -85,7 +85,10 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return Mono.empty();
+        return connectionMono.flatMap(
+            connection -> connection.getManagementNode().flatMap(node -> {
+                return node.getPartitionProperties(partitionId);
+            }));
     }
 
     /**

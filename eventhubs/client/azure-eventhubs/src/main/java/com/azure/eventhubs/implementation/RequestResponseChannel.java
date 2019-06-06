@@ -108,7 +108,10 @@ class RequestResponseChannel implements Closeable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
             Mono.create(sink -> {
                 try {
+                    logger.asInformational().log("Scheduling work on dispatcher...");
+
                     dispatcher.invoke(() -> {
+                        logger.asInformational().log("Invoking message on dispatcher.");
                         unconfirmedSends.putIfAbsent(messageId, sink);
                         send(message);
                     });

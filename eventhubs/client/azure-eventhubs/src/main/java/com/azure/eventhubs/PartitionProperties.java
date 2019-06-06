@@ -18,15 +18,9 @@ public final class PartitionProperties {
     private final boolean isEmpty;
     private Instant propertyRetrievalTimeUtc;
 
-    PartitionProperties(
-            final String eventHubPath,
-            final String id,
-            final long beginningSequenceNumber,
-            final long lastEnqueuedSequenceNumber,
-            final String lastEnqueuedOffset,
-            final Instant lastEnqueuedTimeUtc,
-            final boolean isEmpty,
-            final Instant propertyRetrievalTimeUtc) {
+    public PartitionProperties(String eventHubPath, String id, long beginningSequenceNumber,
+                               long lastEnqueuedSequenceNumber, String lastEnqueuedOffset, Instant lastEnqueuedTimeUtc,
+                               boolean isEmpty, Instant propertyRetrievalTimeUtc) {
         this.eventHubPath = eventHubPath;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;

@@ -93,9 +93,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         this.cbsChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> new CBSChannel(this, tokenProvider, reactorProvider.getReactorDispatcher())));
+            Mono.fromCallable(() -> (CBSNode) new CBSChannel(this, tokenProvider, reactorProvider.getReactorDispatcher()))).cache();
         this.managementChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> new ManagementChannel(this, eventHubName, tokenProvider, reactorProvider.getReactorDispatcher())));
+            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this, eventHubName, tokenProvider, reactorProvider.getReactorDispatcher()))).cache();
     }
 
     /**

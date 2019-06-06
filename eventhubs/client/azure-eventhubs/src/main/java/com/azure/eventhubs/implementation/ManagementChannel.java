@@ -73,7 +73,8 @@ public class ManagementChannel implements EventHubManagementNode {
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                ADDRESS, session.session()));
+                ADDRESS, session.session()))
+            .cache();
     }
 
     @Override
@@ -83,31 +84,34 @@ public class ManagementChannel implements EventHubManagementNode {
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubPath);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, message -> {
-            if (!(message.getBody() instanceof AmqpValue)) {
-                throw new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody());
-            }
-
-            AmqpValue body = (AmqpValue) message.getBody();
-            if (!(body.getValue() instanceof Map)) {
-                throw new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map");
-            }
-
-            Map<?, ?> map = (Map<?, ?>) body.getValue();
-
-            return new EventHubProperties(
-                (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
-                ((Date) map.get(MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
-                (String[]) map.get(MANAGEMENT_RESULT_PARTITION_IDS), Instant.now());
-        });
+        return getProperties(properties, map -> new EventHubProperties(
+            (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
+            ((Date) map.get(MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+            (String[]) map.get(MANAGEMENT_RESULT_PARTITION_IDS), Instant.now()));
     }
 
     @Override
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return null;
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_PARTITION_ENTITY_TYPE);
+        properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubPath);
+        properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
+        properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
+
+        return getProperties(properties, map -> {
+            return new PartitionProperties(
+                (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
+                (String) map.get(MANAGEMENT_PARTITION_NAME_KEY),
+                (Long) map.get(MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                (Long) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                (String) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                ((Date) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                (Boolean) map.get(MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
+                Instant.now());
+        });
     }
 
-    private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Message, T> mapper) {
+    private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
         final String token;
         try {
             final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, connection.getHost(), eventHubPath);
@@ -122,7 +126,20 @@ public class ManagementChannel implements EventHubManagementNode {
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return channelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).map(mapper);
+        return channelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).map(message -> {
+            if (!(message.getBody() instanceof AmqpValue)) {
+                throw new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody());
+            }
+
+            AmqpValue body = (AmqpValue) message.getBody();
+            if (!(body.getValue() instanceof Map)) {
+                throw new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map");
+            }
+
+            Map<?, ?> map = (Map<?, ?>) body.getValue();
+
+            return mapper.apply(map);
+        });
     }
 
     @Override
