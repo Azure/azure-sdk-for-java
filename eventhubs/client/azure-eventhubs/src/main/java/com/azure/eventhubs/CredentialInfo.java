@@ -7,10 +7,7 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * A credential information object that contains all key-value pairs of ConnectionString
@@ -86,7 +83,7 @@ public final class CredentialInfo {
         for (String tokenValuePair : tokenValuePairs) {
             String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPERATOR);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(Locale.US,"Connection string has invalid key value pair: %s", tokenValuePair));
+                throw new IllegalArgumentException(String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
             }
 
             String pairKey = pair[0].trim();
