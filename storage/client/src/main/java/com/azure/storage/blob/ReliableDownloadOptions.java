@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 /**
  * {@code ReliableDownloadOptions} contains properties which help the {@code Flowable} returned from
- * {@link DownloadResponse#body(ReliableDownloadOptions)} determine when to retry.
+ * {@link DownloadAsyncResponse#body(ReliableDownloadOptions)} determine when to retry.
  */
 public final class ReliableDownloadOptions {
 

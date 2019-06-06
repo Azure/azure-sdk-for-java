@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -19,19 +18,13 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * instead a convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
-public class BlobAsyncRawClient {
+class BlobAsyncRawClient {
 
-    protected AzureBlobStorageImpl azureBlobStorage;
+    private AzureBlobStorageImpl azureBlobStorage;
 
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
-     * make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     * make HTTP requests..
      */
     BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
         this.azureBlobStorage = azureBlobStorage;
@@ -231,7 +224,7 @@ public class BlobAsyncRawClient {
      * "Sample code for BlobAsyncRawClient.download")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<DownloadResponse> download() {
+    public Mono<DownloadAsyncResponse> download() {
         return this.download(null, null, false, null);
     }
 
@@ -261,7 +254,7 @@ public class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobAsyncRawClient.download")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
+    public Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? new BlobRange() : range;
@@ -277,11 +270,11 @@ public class BlobAsyncRawClient {
             null, null, null, null, null, range.toHeaderValue(), getMD5,
             null, null, null, null,
             accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), context))
-            // Convert the autorest response to a DownloadResponse, which enable reliable download.
+            // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
                 info.withETag(response.deserializedHeaders().eTag());
-                return new DownloadResponse(response, info,
+                return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
                         this.download(new BlobRange().withOffset(newInfo.offset())

@@ -61,12 +61,12 @@ final class BlobClientBuilder {
         return azureBlobStorage;
     }
 
-    public BlobAsyncRawClient buildAsync() {
-        return new BlobAsyncRawClient(this.build());
+    public BlobAsyncClient buildAsync() {
+        return new BlobAsyncClient(this.build());
     }
 
-    public BlobSyncRawClient buildSync() {
-        return new BlobSyncRawClient(this.build());
+    public BlobClient buildSync() {
+        return new BlobSyncRlient(this.build());
     }
 
     public BlobClientBuilder endpoint(String endpoint) {

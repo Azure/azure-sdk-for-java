@@ -211,7 +211,7 @@ public final class TransferManager {
             // In case it is an empty blob, this ensures we still actually perform a download operation.
             numChunks = numChunks == 0 ? 1 : numChunks;
 
-            DownloadResponse initialResponse = helper.initialResponse;
+            DownloadAsyncResponse initialResponse = helper.initialResponse;
             return Flowable.range(0, numChunks)
                     .flatMapSingle(chunkNum -> {
                         // The first chunk was retrieved during setup.
@@ -317,7 +317,7 @@ public final class TransferManager {
                 .withLeaseAccessConditions(accessConditions.leaseAccessConditions());
     }
 
-    private static Single<BlobDownloadHeaders> writeBodyToFile(DownloadResponse response,
+    private static Single<BlobDownloadHeaders> writeBodyToFile(DownloadAsyncResponse response,
             AsynchronousFileChannel file, long chunkNum, TransferManagerDownloadFromBlobOptions optionsReal,
             Lock progressLock, AtomicLong totalProgress) {
 
@@ -348,9 +348,9 @@ public final class TransferManager {
 
         final BlobAccessConditions realConditions;
 
-        final DownloadResponse initialResponse;
+        final DownloadAsyncResponse initialResponse;
 
-        DownloadHelper(long newCount, BlobAccessConditions realConditions, DownloadResponse initialResponse) {
+        DownloadHelper(long newCount, BlobAccessConditions realConditions, DownloadAsyncResponse initialResponse) {
             this.newCount = newCount;
             this.realConditions = realConditions;
             this.initialResponse = initialResponse;
