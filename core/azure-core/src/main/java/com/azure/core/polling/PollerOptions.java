@@ -25,7 +25,7 @@ public class PollerOptions {
     /*
      * Validatations for non negative values and other validations
      */
-    private void validateValuesAndThrow( Duration pollInterval) {
+    private void validateValuesAndThrow(Duration pollInterval) {
 
         if (pollInterval.toNanos() <= 0) {
             throw new IllegalArgumentException(String.format(negativeValueFormat, pollInterval));

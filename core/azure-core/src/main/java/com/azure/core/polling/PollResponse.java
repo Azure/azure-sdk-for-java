@@ -3,6 +3,9 @@
 
 package com.azure.core.polling;
 
+import java.time.Duration;
+import java.util.Map;
+
 /**
  * The life cycle of an operation depicted below
  * 1. NOT-STARTED
@@ -15,6 +18,8 @@ public final class PollResponse<T> {
 
     private OperationStatus status;
     private T result;
+    private Duration retryAfter;
+    private Map<Object, Object> properties;
 
     public enum OperationStatus {
         NOT_STARTED,
@@ -29,12 +34,42 @@ public final class PollResponse<T> {
      *
      * @param status : operation status
      * @param result : the result
+     * @param retryAfter : How long before next retry.
+     * @param properties : the map of perperties
+     */
+    public PollResponse(OperationStatus status,
+                        T result,
+                        Duration retryAfter,
+                        Map<Object, Object> properties
+    ) {
+        this(status, result, retryAfter);
+        this.properties = properties;
+    }
+    /**
+     * Constructor
+     *
+     * @param status : operation status
+     * @param result : the result
+     * @param retryAfter : How long before next retry.
+     */
+    public PollResponse(OperationStatus status,
+                        T result,
+                        Duration retryAfter
+                        ) {
+        this(status, result);
+        this.retryAfter = retryAfter;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param status : operation status
+     * @param result : the result
      */
     public PollResponse(OperationStatus status, T result) {
         this.status = status;
         this.result = result;
     }
-
     /**
      * @return OperationStatus
      */
@@ -68,7 +103,23 @@ public final class PollResponse<T> {
      *
      * @return T result
      */
-    public T getResult() {
+    public T value() {
         return result;
+    }
+
+    /**
+     *
+     * @return Duration how long before next retry.
+     */
+    public Duration retryAfter() {
+        return  retryAfter;
+    }
+
+    /**
+     *
+     * @return Map of properties
+     */
+    public Map<Object, Object> properties() {
+        return properties;
     }
 }

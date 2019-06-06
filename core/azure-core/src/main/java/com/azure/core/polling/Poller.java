@@ -40,7 +40,7 @@ public class Poller<T> {
      * Indicate to poll automatically or not when poller is created.
      * default value is false;
      */
-    private boolean autoPollingEnabled ;
+    private boolean autoPollingEnabled;
 
     /*
      * Indicate if cancel is initiated.
@@ -51,7 +51,7 @@ public class Poller<T> {
 
     /*
      * Since constructor create a subscriber and start autopoll.
-     * This subscriber will be duplicate when client call subscriber.
+     * This subscriber will be duplicate when client call subscriber on Flux.
      * Thus this handle will be used to dispose the subscriber when
      * client invoke poll function
      */
@@ -70,7 +70,6 @@ public class Poller<T> {
         fluxHandle = createFlux();
         //autopolling  start here
         setAutoPollingEnabled(true);
-        fluxDisposable = fluxHandle.subscribe(ps -> pollResponse = ps);
     }
 
     /**
@@ -86,13 +85,19 @@ public class Poller<T> {
         this.cancelOperation = cancelOperation;
     }
 
+    /*
+     * We will maintain single instance of fluxHandle for one poller.
+     */
     private Flux<PollResponse<T>> createFlux() {
-        return sendPollRequestWithDelay()
-            .flux()
-            .takeUntil(pollResponse -> needsPolling(pollResponse) );
+        if (fluxHandle == null) {
+            fluxHandle = sendPollRequestWithDelay()
+                .flux()
+                .takeUntil(pollResponse -> needsPolling(pollResponse));
+        }
+        return fluxHandle;
     }
 
-    private boolean needsPolling(PollResponse<T> pollResponse){
+    private boolean needsPolling(PollResponse<T> pollResponse) {
         return !isAutoPollingEnabled() && (pollResponse.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
             || pollResponse.getStatus() == PollResponse.OperationStatus.FAILED
             || pollResponse.getStatus() == PollResponse.OperationStatus.USER_CANCELLED);
@@ -178,13 +183,27 @@ public class Poller<T> {
         return result;
     }
 
-    private void setAutoPollingEnabled(boolean autoPollingEnabled) {
-        this.autoPollingEnabled = !autoPollingEnabled;
+    /**
+     * 
+     * @param  autoPollingEnabled  true : Ensures the polling is happening in background.
+     *                             false : Ensures that polling is not happening in background.
+     */
+    public void setAutoPollingEnabled(boolean autoPollingEnabled) {
+        this.autoPollingEnabled = autoPollingEnabled;
+        if (this.autoPollingEnabled) {
+            if (fluxDisposable == null || fluxDisposable.isDisposed()) {
+                fluxDisposable = fluxHandle.subscribe(ps -> pollResponse = ps);
+            }
+        } else {
+            if (fluxDisposable != null && !fluxDisposable.isDisposed()) {
+                fluxDisposable.dispose();
+            }
+        }
     }
 
     /**
      * @return true if polling is stopped.
-     **/
+     */
     public boolean isAutoPollingEnabled() {
         return !this.autoPollingEnabled;
     }
