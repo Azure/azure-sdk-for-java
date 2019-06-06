@@ -4,9 +4,9 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -45,21 +45,34 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     private final ReactorProvider reactorProvider;
     private final Scheduler scheduler;
     private final Disposable.Composite subscriptions;
+    private final Mono<ManagementChannel> managementChannelMono;
+    private final String eventHubName;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
     private ReactorExceptionHandler reactorExceptionHandler;
 
-    ReactorConnection(String connectionId, String hostname, TokenProvider tokenProvider, ReactorProvider reactorProvider,
+
+    /**
+     * Creates a new AMQP connection that uses proton-j.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Host it is connecting to.
+     * @param scheduler The scheduler for this AmqpConnection
+     * @param reactorProvider Provider that creates Reactor instances.
+     * @param handlerProvider Provider that creates proton-j Handlers.
+     * @param tokenProvider Provider to generate authorisation tokens to connect to Event Hub.
+     */
+    public ReactorConnection(String connectionId, String hostname, String eventHubName, TokenProvider tokenProvider, ReactorProvider reactorProvider,
                       ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
         super(new ServiceLogger(ReactorConnection.class));
-
         Objects.requireNonNull(connectionId);
         Objects.requireNonNull(handlerProvider);
         Objects.requireNonNull(scheduler);
         Objects.requireNonNull(reactorProvider);
         Objects.requireNonNull(tokenProvider);
 
+        this.eventHubName = eventHubName;
         this.reactorProvider = reactorProvider;
         this.scheduler = scheduler;
         this.connectionId = connectionId;
@@ -83,19 +96,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
 
         this.cbsChannelMono = connectionMono.then(
             Mono.fromCallable(() -> new CBSChannel(this, tokenProvider, reactorProvider.getReactorDispatcher())));
-    }
-
-    /**
-     * Creates a new AMQP connection that uses proton-j.
-     *
-     * @param connectionId Identifier for the connection.
-     * @param hostname Host it is connecting to.
-     * @param scheduler The scheduler for this AmqpConnection
-     * @param provider Provider that creates Reactor instances.
-     */
-    public static AmqpConnection create(String connectionId, String hostname, TokenProvider tokenProvider,
-                                        ReactorProvider provider, ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
-        return new ReactorConnection(connectionId, hostname, tokenProvider, provider, handlerProvider, scheduler);
+        this.managementChannelMono = connectionMono.then(
+            Mono.fromCallable(() -> new ManagementChannel(this, eventHubName, tokenProvider, reactorProvider.getReactorDispatcher())));
     }
 
     /**
@@ -175,6 +177,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             }
         });
         super.close();
+    }
+
+    public Mono<ManagementChannel> getManagementNode() {
+        return managementChannelMono;
     }
 
     private synchronized Connection createConnectionAndStart() throws IOException {

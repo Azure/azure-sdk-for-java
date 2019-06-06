@@ -43,7 +43,8 @@ public class EventHubClientTest extends TestBase {
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertNotEquals(0, properties.partitionIds().length);
+                Assert.assertEquals("conniey-test", properties.path());
+                Assert.assertEquals(2, properties.partitionIds().length);
             }).verifyComplete();
 
         Thread.sleep(1000);

@@ -5,6 +5,7 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.eventhubs.implementation.ManagementChannel;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -16,9 +17,6 @@ import reactor.core.scheduler.Scheduler;
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.Period;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -46,9 +44,8 @@ public class EventHubClient implements Closeable {
         this.tokenProvider = connectionParameters.tokenProvider();
         this.scheduler = connectionParameters.scheduler();
         this.connectionId = StringUtil.getRandomString("MF");
-
-        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, this.tokenProvider,
-            provider, handlerProvider, this.scheduler))
+        this.connectionMono = Mono.fromCallable(() -> (AmqpConnection) new ReactorConnection(connectionId, host,
+            eventHubName, this.tokenProvider, provider, handlerProvider, this.scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -68,13 +65,8 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.flatMap(connection -> {
-            //TODO (conniey): Replace with management plane call.
-            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
-            return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
-        }).then(Mono.fromCallable(() -> {
-            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
-        }));
+        return connectionMono.cast(ReactorConnection.class)
+            .flatMap(connection -> connection.getManagementNode().flatMap(ManagementChannel::getEventHubProperties));
     }
 
     /**

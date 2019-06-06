@@ -43,6 +43,7 @@ public class ReactorConnectionTest {
     private static final String HOSTNAME = "test-host-name";
     private static final String SCHEDULER_NAME = "test-scheduler";
     private static final String SESSION_NAME = "test-session-name";
+    private static final String EVENT_HUB_NAME = "test-event-hub";
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
 
     private AmqpConnection connection;
@@ -73,7 +74,7 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler);
 
-        connection = ReactorConnection.create(CONNECTION_ID, HOSTNAME, tokenProvider, reactorProvider, reactorHandlerProvider, scheduler);
+        connection = new ReactorConnection(CONNECTION_ID, HOSTNAME, EVENT_HUB_NAME, tokenProvider, reactorProvider, reactorHandlerProvider, scheduler);
     }
 
     /**
