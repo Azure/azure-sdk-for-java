@@ -16,11 +16,7 @@ public final class EventHubProperties {
     private final String[] partitionIds;
     private Instant propertyRetrievalTimeUtc;
 
-    public EventHubProperties(
-            final String path,
-            final Instant createdAtUtc,
-            final String[] partitionIds,
-            final Instant propertyRetrievalTimeUtc) {
+    public EventHubProperties(String path, Instant createdAtUtc, String[] partitionIds, Instant propertyRetrievalTimeUtc) {
         this.path = path;
         this.createdAt = createdAtUtc;
         this.partitionIds = partitionIds != null
