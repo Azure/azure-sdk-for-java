@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
 import com.azure.storage.blob.models.BlockLookupList;
@@ -27,7 +28,7 @@ public class BlobPocTests {
 
     @Test
     public void testCreateBlob() {
-        AzureBlobStorageImpl client = new AzureBlobStorageImpl(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
+        AzureBlobStorageImpl client = new AzureBlobStorageBuilder().pipeline(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
             new HttpPipelinePolicy() {
                 @Override
                 public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -44,7 +45,7 @@ public class BlobPocTests {
                     }
                     return next.process();
                 }
-        }*/.build()).withUrl("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/mycontainer/random223" + System.getenv("AZURE_STORAGE_SAS_TOKEN"));
+        }*/.build()).url("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/mycontainer/random223" + System.getenv("AZURE_STORAGE_SAS_TOKEN")).build();
 
         Random random = new Random();
 

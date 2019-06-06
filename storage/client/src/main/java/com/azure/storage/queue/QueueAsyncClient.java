@@ -2,6 +2,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
 import java.net.URL;
@@ -14,7 +15,7 @@ public class QueueAsyncClient extends ServiceClient {
     private QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.endpoint = endpoint.toString();
-        this.generateClient = new AzureQueueStorageImpl(httpPipeline).withUrl(this.endpoint);
+        this.generateClient = new AzureQueueStorageBuilder().pipeline(httpPipeline).url(this.endpoint).build();
         this.apiVersion = this.generateClient.version();
     }
 
