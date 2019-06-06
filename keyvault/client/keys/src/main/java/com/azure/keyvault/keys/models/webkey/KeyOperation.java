@@ -40,10 +40,6 @@ public enum KeyOperation {
         return value;
     }
 
-    /**
-     * Calculates the hashcode of the custom value
-     * @return the hashcode of custom value for {@link KeyOperation}
-     */
     public int hashValue() {
         return value.hashCode();
     }
@@ -54,11 +50,10 @@ public enum KeyOperation {
      * @return the KeyOperation
      */
     public static KeyOperation fromString(String value) {
-        for (KeyOperation keyOp : values()) {
-            if (keyOp.value.equalsIgnoreCase(value)) {
+        for(KeyOperation keyOp : values())
+            if(keyOp.value.equalsIgnoreCase(value)){
                 return keyOp;
             }
-        }
         return null;
     }
 }

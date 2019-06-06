@@ -10,7 +10,7 @@ import com.azure.keyvault.keys.models.webkey.KeyType;
 /**
  * This class contains code samples for generating javadocs through doclets
  */
-public class KeyClientSamples {
+public class KeyClientJavaDocCodeSnippets {
 
     /**
      * Generates code sample for creating a {@link KeyClient}
@@ -18,12 +18,12 @@ public class KeyClientSamples {
      */
     public KeyClient createClient() {
         TokenCredential keyVaultCredential = getKeyVaultCredential();
-        // BEGIN: com.azure.keyvault.keys.client.instantiation
+        // BEGIN: com.azure.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = KeyClient.builder()
             .endpoint("https://myvault.azure.net/")
             .credential(keyVaultCredential)
             .build();
-        // END: com.azure.keyvault.keys.client.instantiation
+        // END: com.azure.keyvault.keys.keyclient.instantiation
         return keyClient;
     }
 
@@ -32,18 +32,17 @@ public class KeyClientSamples {
      */
     public void createKey() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.client.createKey.string.keyType
+        // BEGIN: com.azure.keyvault.keys.keyclient.createKey#string-keyType
         Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
         System.out.println("Key is created with name " + retKey.name() + " and id " + retKey.id());
-        // END: com.azure.keyvault.keys.client.createKey.string.keyType
+        // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
     }
 
     /**
-     * Helper method to create a token credential
-     * @return An instance of {@link TokenCredential}
+     * Implementation not provided for this method
+     * @return {@code null}
      */
     private TokenCredential getKeyVaultCredential() {
-        // Is it required to implement this?
         return null;
     }
 }

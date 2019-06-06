@@ -43,7 +43,7 @@ import java.util.Objects;
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
- * {@codesnippet com.azure.keyvault.keys.client.instantiation}
+ * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
  */
@@ -86,7 +86,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.client.createKey.string.keyType}
+     * {@codesnippet com.azure.keyvault.keys.client.createKey#string-keyType}
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
@@ -388,7 +388,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
-    public Response<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
+    public Response<Key> updateKey(KeyBase key, KeyOperation ... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())
