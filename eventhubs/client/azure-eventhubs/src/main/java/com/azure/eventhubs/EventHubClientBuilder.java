@@ -159,7 +159,7 @@ public class EventHubClientBuilder {
         }
 
         if (this.retry == null) {
-            this.retry = Retry.getDefault();
+            this.retry = Retry.getDefaultRetry();
         }
 
         this.proxyConfiguration = constructDefaultProxyConfiguration(this.configuration);

@@ -10,6 +10,7 @@ import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -36,7 +37,7 @@ public class EventHubClientTest extends TestBase {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
-        final ConnectionParameters connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP, new Retry(), new ProxyConfiguration(), scheduler);
+        final ConnectionParameters connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP, Retry.getDefaultRetry(), new ProxyConfiguration(), scheduler);
         EventHubClient client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         StepVerifier.create(client.getProperties())
