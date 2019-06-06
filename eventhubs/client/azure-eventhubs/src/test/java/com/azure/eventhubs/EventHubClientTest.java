@@ -4,7 +4,6 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.TransportType;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.test.TestMode;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -21,8 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
 public class EventHubClientTest extends TestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
-
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
         new EventHubClient(null, null, null);
