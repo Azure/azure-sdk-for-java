@@ -26,7 +26,7 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
     /**
      * @return the certBlob value.
      */
-    byte[] certBlob();
+    String certBlob();
 
     /**
      * @return the certThumbprint value.
@@ -42,6 +42,11 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the isSwift value.
+     */
+    Boolean isSwift();
 
     /**
      * @return the kind value.
@@ -95,6 +100,10 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithSlot {
            /**
             * Specifies resourceGroupName, name, slot.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot
+            * @return the next definition stage
             */
             WithCreate withExistingSlot(String resourceGroupName, String name, String slot);
         }
@@ -105,8 +114,11 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithCertBlob {
             /**
              * Specifies certBlob.
+             * @param certBlob A certificate file (.cer) blob containing the public key of the private key used to authenticate a
+ Point-To-Site VPN connection
+             * @return the next definition stage
              */
-            WithCreate withCertBlob(byte[] certBlob);
+            WithCreate withCertBlob(String certBlob);
         }
 
         /**
@@ -115,8 +127,22 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithDnsServers {
             /**
              * Specifies dnsServers.
+             * @param dnsServers DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses
+             * @return the next definition stage
              */
             WithCreate withDnsServers(String dnsServers);
+        }
+
+        /**
+         * The stage of the sitevnetinfo definition allowing to specify IsSwift.
+         */
+        interface WithIsSwift {
+            /**
+             * Specifies isSwift.
+             * @param isSwift Flag that is used to denote if this is VNET injection
+             * @return the next definition stage
+             */
+            WithCreate withIsSwift(Boolean isSwift);
         }
 
         /**
@@ -125,6 +151,8 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -135,6 +163,8 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithVnetResourceId {
             /**
              * Specifies vnetResourceId.
+             * @param vnetResourceId The Virtual Network's resource ID
+             * @return the next definition stage
              */
             WithCreate withVnetResourceId(String vnetResourceId);
         }
@@ -144,13 +174,13 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SiteVnetInfo>, DefinitionStages.WithCertBlob, DefinitionStages.WithDnsServers, DefinitionStages.WithKind, DefinitionStages.WithVnetResourceId {
+        interface WithCreate extends Creatable<SiteVnetInfo>, DefinitionStages.WithCertBlob, DefinitionStages.WithDnsServers, DefinitionStages.WithIsSwift, DefinitionStages.WithKind, DefinitionStages.WithVnetResourceId {
         }
     }
     /**
      * The template for a SiteVnetInfo update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SiteVnetInfo>, UpdateStages.WithCertBlob, UpdateStages.WithDnsServers, UpdateStages.WithKind, UpdateStages.WithVnetResourceId {
+    interface Update extends Appliable<SiteVnetInfo>, UpdateStages.WithCertBlob, UpdateStages.WithDnsServers, UpdateStages.WithIsSwift, UpdateStages.WithKind, UpdateStages.WithVnetResourceId {
     }
 
     /**
@@ -163,8 +193,11 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithCertBlob {
             /**
              * Specifies certBlob.
+             * @param certBlob A certificate file (.cer) blob containing the public key of the private key used to authenticate a
+ Point-To-Site VPN connection
+             * @return the next update stage
              */
-            Update withCertBlob(byte[] certBlob);
+            Update withCertBlob(String certBlob);
         }
 
         /**
@@ -173,8 +206,22 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithDnsServers {
             /**
              * Specifies dnsServers.
+             * @param dnsServers DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses
+             * @return the next update stage
              */
             Update withDnsServers(String dnsServers);
+        }
+
+        /**
+         * The stage of the sitevnetinfo update allowing to specify IsSwift.
+         */
+        interface WithIsSwift {
+            /**
+             * Specifies isSwift.
+             * @param isSwift Flag that is used to denote if this is VNET injection
+             * @return the next update stage
+             */
+            Update withIsSwift(Boolean isSwift);
         }
 
         /**
@@ -183,6 +230,8 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -193,6 +242,8 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         interface WithVnetResourceId {
             /**
              * Specifies vnetResourceId.
+             * @param vnetResourceId The Virtual Network's resource ID
+             * @return the next update stage
              */
             Update withVnetResourceId(String vnetResourceId);
         }

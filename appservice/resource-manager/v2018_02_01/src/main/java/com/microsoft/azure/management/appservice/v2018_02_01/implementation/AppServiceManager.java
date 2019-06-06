@@ -29,6 +29,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.Recommendations;
 import com.microsoft.azure.management.appservice.v2018_02_01.WebApps;
 import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments;
 import com.microsoft.azure.management.appservice.v2018_02_01.AppServicePlans;
+import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadatas;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -49,6 +50,7 @@ public final class AppServiceManager extends ManagerCore<AppServiceManager, WebS
     private WebApps webApps;
     private AppServiceEnvironments appServiceEnvironments;
     private AppServicePlans appServicePlans;
+    private ResourceHealthMetadatas resourceHealthMetadatas;
     /**
     * Get a Configurable instance that can be used to create AppServiceManager with optional configuration.
     *
@@ -224,6 +226,16 @@ public final class AppServiceManager extends ManagerCore<AppServiceManager, WebS
             this.appServicePlans = new AppServicePlansImpl(this);
         }
         return this.appServicePlans;
+    }
+
+    /**
+     * @return Entry point to manage ResourceHealthMetadatas.
+     */
+    public ResourceHealthMetadatas resourceHealthMetadatas() {
+        if (this.resourceHealthMetadatas == null) {
+            this.resourceHealthMetadatas = new ResourceHealthMetadatasImpl(this);
+        }
+        return this.resourceHealthMetadatas;
     }
 
     /**

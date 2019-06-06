@@ -291,7 +291,7 @@ public class JsonWebKey {
 
     /**
      * Get the RSA Private Key Parameter value.
-     * 
+     *
      * @return the RSA Private Key Parameter value.
      */
     @JsonProperty("dp")
@@ -303,7 +303,7 @@ public class JsonWebKey {
 
     /**
      * Set RSA Private Key Parameter value.
-     * 
+     *
      * @param dp
      *            the RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
@@ -315,7 +315,7 @@ public class JsonWebKey {
 
     /**
      * Get the RSA Private Key Parameter value.
-     * 
+     *
      * @return the RSA Private Key Parameter value.
      */
     @JsonProperty("dq")
@@ -327,7 +327,7 @@ public class JsonWebKey {
 
     /**
      * Set RSA Private Key Parameter value .
-     * 
+     *
      * @param dq
      *            the RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
@@ -339,7 +339,7 @@ public class JsonWebKey {
 
     /**
      * Get the RSA Private Key Parameter value.
-     * 
+     *
      * @return the RSA Private Key Parameter value.
      */
     @JsonProperty("qi")
@@ -351,7 +351,7 @@ public class JsonWebKey {
 
     /**
      * Set RSA Private Key Parameter value.
-     * 
+     *
      * @param qi
      *            the RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
@@ -363,7 +363,7 @@ public class JsonWebKey {
 
     /**
      * Get the RSA secret prime value.
-     * 
+     *
      * @return the RSA secret prime value.
      */
     @JsonProperty("p")
@@ -375,7 +375,7 @@ public class JsonWebKey {
 
     /**
      * Set the RSA secret prime value.
-     * 
+     *
      * @param p
      *            the RSA secret prime value.
      * @return the JsonWebKey object itself.
@@ -387,7 +387,7 @@ public class JsonWebKey {
 
     /**
      * Get RSA secret prime, with p &lt; q value.
-     * 
+     *
      * @return the RSA secret prime, with p &lt; q value.
      */
     @JsonProperty("q")
@@ -399,7 +399,7 @@ public class JsonWebKey {
 
     /**
      * Set the RSA secret prime, with p &lt; q value.
-     * 
+     *
      * @param q
      *            the the RSA secret prime, with p &lt; q value to be set.
      * @return the JsonWebKey object itself.
@@ -411,7 +411,7 @@ public class JsonWebKey {
 
     /**
      * Get Symmetric key value.
-     * 
+     *
      * @return the symmetric key value.
      */
     @JsonProperty("k")
@@ -423,7 +423,7 @@ public class JsonWebKey {
 
     /**
      * Set the Symmetric key value.
-     * 
+     *
      * @param k
      *            the symmetric key value to set.
      * @return the JsonWebKey object itself.
@@ -435,7 +435,7 @@ public class JsonWebKey {
 
     /**
      * Get HSM Token value, used with Bring Your Own Key.
-     * 
+     *
      * @return HSM Token, used with Bring Your Own Key.
      */
     @JsonProperty("key_hsm")
@@ -447,7 +447,7 @@ public class JsonWebKey {
 
     /**
      * Set HSM Token value, used with Bring Your Own Key.
-     * 
+     *
      * @param t
      *            HSM Token value to set, used with Bring Your Own Key
      * @return the JsonWebKey object itself.
@@ -658,7 +658,7 @@ public class JsonWebKey {
 
     /**
      * Converts RSA key pair to JSON web key.
-     * 
+     *
      * @param keyPair
      *            RSA key pair
      * @return the JSON web key, converted from RSA key pair.
@@ -690,7 +690,7 @@ public class JsonWebKey {
 
     /**
      * Converts JSON web key to RSA key pair.
-     * 
+     *
      * @return RSA key pair
      */
     public KeyPair toRSA() {
@@ -700,7 +700,7 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to RSA key pair and include the private key if set to
      * true.
-     * 
+     *
      * @param includePrivateParameters
      *            true if the RSA key pair should include the private key. False
      *            otherwise.
@@ -713,7 +713,7 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to RSA key pair and include the private key if set to
      * true.
-     * 
+     *
      * @param provider
      *            the Java security provider.
      * @param includePrivateParameters
@@ -736,7 +736,7 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to EC key pair and include the private key if set to
      * true.
-     * 
+     *
      * @return EC key pair
      */
     public KeyPair toEC() {
@@ -746,7 +746,7 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to EC key pair and include the private key if set to
      * true.
-     * 
+     *
      * @param includePrivateParameters
      *            true if the EC key pair should include the private key. False
      *            otherwise.
@@ -759,7 +759,7 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to EC key pair and include the private key if set to
      * true.
-     * 
+     *
      * @param includePrivateParameters
      *            true if the EC key pair should include the private key. False
      *            otherwise.
@@ -808,7 +808,7 @@ public class JsonWebKey {
 
     /**
      * Converts EC key pair to JSON web key.
-     * 
+     *
      * @param keyPair
      *            EC key pair
      * @param provider
@@ -869,7 +869,7 @@ public class JsonWebKey {
 
     /**
      * Converts AES key to JSON web key.
-     * 
+     *
      * @param secretKey
      *            AES key
      * @return the JSON web key, converted from AES key.
@@ -884,7 +884,7 @@ public class JsonWebKey {
 
     /**
      * Converts JSON web key to AES key.
-     * 
+     *
      * @return AES key
      */
     public SecretKey toAes() {
@@ -909,7 +909,7 @@ public class JsonWebKey {
 
     /**
      * Indicates whether some other {@link JsonWebKey} is "equal to" this one.
-     * 
+     *
      * @param jwk
      *            the other {@link JsonWebKey} to compare with.
      * @return true if this {@link JsonWebKey} is the same as the jwk argument;
@@ -984,7 +984,7 @@ public class JsonWebKey {
 
     /**
      * Verifies whether the {@link JsonWebKey} has private key.
-     * 
+     *
      * @return true if the {@link JsonWebKey} has private key; false otherwise.
      */
     public boolean hasPrivateKey() {
@@ -1002,7 +1002,7 @@ public class JsonWebKey {
 
     /**
      * Verifies whether the {@link JsonWebKey} is valid.
-     * 
+     *
      * @return true if the {@link JsonWebKey} is valid; false otherwise.
      */
     @JsonIgnore
@@ -1180,3 +1180,4 @@ public class JsonWebKey {
             .put(JsonWebKeyCurveName.P_384, "secp384r1").put(JsonWebKeyCurveName.P_521, "secp521r1")
             .put(JsonWebKeyCurveName.P_256K, "secp256k1").build();
 }
+
