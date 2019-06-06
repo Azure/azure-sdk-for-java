@@ -48,11 +48,11 @@ public class ServiceLogger implements ServiceLoggerAPI {
     }
 
     /**
-     * Sets the logger to the infomational logging level.
+     * Sets the logger to the info logging level.
      * @return Updated ServiceLogger if info is enabled, otherwise a no-op logger.
      */
     @Override
-    public ServiceLoggerAPI asInformational() {
+    public ServiceLoggerAPI asInfo() {
         return asLevel(INFORMATIONAL_LEVEL);
     }
 

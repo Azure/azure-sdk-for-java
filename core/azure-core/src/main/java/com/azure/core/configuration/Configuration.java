@@ -222,7 +222,7 @@ public class Configuration implements Cloneable {
         String value = loader.apply(name);
         if (!ImplUtils.isNullOrEmpty(value) && !value.equals(configurations.get(name))) {
             configurations.put(name, value);
-            logger.asInformational().log(logMessage, name, value);
+            logger.asInfo().log(logMessage, name, value);
             return true;
         }
 

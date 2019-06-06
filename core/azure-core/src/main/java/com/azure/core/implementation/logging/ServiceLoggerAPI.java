@@ -20,7 +20,7 @@ public interface ServiceLoggerAPI {
         return this;
     }
 
-    default ServiceLoggerAPI asInformational() {
+    default ServiceLoggerAPI asInfo() {
         return this;
     }
 
