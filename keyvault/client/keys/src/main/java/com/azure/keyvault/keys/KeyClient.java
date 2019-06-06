@@ -72,7 +72,7 @@ public final class KeyClient extends ServiceClient {
      * Creates a builder that can configure options for the KeyClient before creating an instance of it.
      * @return A new builder to create a KeyClient from.
      */
-    public static KeyClientBuilder builder() {
+    static KeyClientBuilder builder() {
         return new KeyClientBuilder();
     }
 
@@ -86,7 +86,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.client.createKey#string-keyType}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createKey#string-keyType}
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.

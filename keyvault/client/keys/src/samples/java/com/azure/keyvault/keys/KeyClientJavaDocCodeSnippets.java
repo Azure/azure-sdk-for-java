@@ -8,7 +8,7 @@ import com.azure.keyvault.keys.models.Key;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 
 /**
- * This class contains code samples for generating javadocs through doclets
+ * This class contains code samples for generating javadocs through doclets for {@link KeyClient}
  */
 public class KeyClientJavaDocCodeSnippets {
 
@@ -34,7 +34,7 @@ public class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.createKey#string-keyType
         Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
-        System.out.println("Key is created with name " + retKey.name() + " and id " + retKey.id());
+        System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
         // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
     }
 

@@ -20,13 +20,9 @@ import java.util.List;
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
  * ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector filter}.
  *
- * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * <pre>
- * ConfigurationClient client = ConfigurationClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.applicationconfig.configurationclient.instantiation}
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -62,9 +58,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.addSetting("prodDBConnection", "db_connection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.applicationconfig.configurationclient.addSetting#string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
