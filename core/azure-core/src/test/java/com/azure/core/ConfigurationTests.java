@@ -3,12 +3,14 @@
 
 package com.azure.core;
 
+import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.ConfigurationManager;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the configuration API.
@@ -89,5 +91,16 @@ public class ConfigurationTests {
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
         assertNull(ConfigurationManager.getConfiguration().get("invalidConfiguration", String::toUpperCase));
+    }
+
+    @Test
+    public void logLevelAndTracingDisabledUpdateInstantly() {
+        assertNull(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
+        System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, "2");
+        assertEquals(2, (int) ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, 5));
+
+        assertNull(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TELEMETRY_DISABLED));
+        System.setProperty(BaseConfigurations.AZURE_TELEMETRY_DISABLED, Boolean.toString(true));
+        assertTrue(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false));
     }
 }
