@@ -8,16 +8,18 @@ import java.util.Map;
 
 /**
  * The life cycle of an operation depicted below
- * 1. NOT-STARTED
- * 2. IN-PROGRESS
- * 3. a. Successfully Complete
- *    b. User Cancelled
- *    c. Failed
+ * <ul>
+ *    <li>NOT-STARTED </li>
+ *    <li>IN-PROGRESS</li>
+ *    <li>Successfully Complete</li>
+ *    <ul>User Cancelled</ul>
+ *    <ul>Failed</ul>
+ * </ul>
  */
 public final class PollResponse<T> {
 
     private OperationStatus status;
-    private T result;
+    private T value;
     private Duration retryAfter;
     private Map<Object, Object> properties;
 
@@ -37,11 +39,7 @@ public final class PollResponse<T> {
      * @param retryAfter : How long before next retry.
      * @param properties : the map of perperties
      */
-    public PollResponse(OperationStatus status,
-                        T result,
-                        Duration retryAfter,
-                        Map<Object, Object> properties
-    ) {
+    public PollResponse(OperationStatus status, T result, Duration retryAfter, Map<Object, Object> properties) {
         this(status, result, retryAfter);
         this.properties = properties;
     }
@@ -49,14 +47,11 @@ public final class PollResponse<T> {
      * Constructor
      *
      * @param status : operation status
-     * @param result : the result
+     * @param value : the value
      * @param retryAfter : How long before next retry.
      */
-    public PollResponse(OperationStatus status,
-                        T result,
-                        Duration retryAfter
-                        ) {
-        this(status, result);
+    public PollResponse(OperationStatus status, T value, Duration retryAfter) {
+        this(status, value);
         this.retryAfter = retryAfter;
     }
 
@@ -64,11 +59,11 @@ public final class PollResponse<T> {
      * Constructor
      *
      * @param status : operation status
-     * @param result : the result
+     * @param value : the value
      */
-    public PollResponse(OperationStatus status, T result) {
+    public PollResponse(OperationStatus status, T value) {
         this.status = status;
-        this.result = result;
+        this.value = value;
     }
     /**
      * @return OperationStatus
@@ -86,9 +81,11 @@ public final class PollResponse<T> {
 
     /**
      * An operation will be done if it is
-     * a. Successfully Complete
-     * b. Cancelled
-     * c. Failed
+     * <ul>
+     *     <li>Successfully Complete</li>
+     *     <li>Cancelled</li>
+     *     <li>Failed</li>
+     * </ul>
      *
      * @return true if operation is done.
      */
@@ -103,15 +100,15 @@ public final class PollResponse<T> {
      *
      * @return T result
      */
-    public T value() {
-        return result;
+    public T getValue() {
+        return value;
     }
 
     /**
      *
      * @return Duration how long before next retry.
      */
-    public Duration retryAfter() {
+    public Duration getRetryAfter() {
         return  retryAfter;
     }
 
@@ -119,7 +116,7 @@ public final class PollResponse<T> {
      *
      * @return Map of properties
      */
-    public Map<Object, Object> properties() {
+    public Map<Object, Object> getProperties() {
         return properties;
     }
 }

@@ -3,6 +3,9 @@
 
 package com.azure.core.polling;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -58,17 +61,17 @@ public class Poller<T> {
     private Disposable fluxDisposable;
 
     /**
-     * Create a Poller that is configured to auto-poll.
+     * Create a Poller object. Auto polling is turned on by default.
      * @param pollerOptions configuration options for poller.
      * @param pollOperation This is the operation to be called.
      */
-    public Poller(PollerOptions pollerOptions,
-                  Function<PollResponse<T>, PollResponse<T>> pollOperation) {
+    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, PollResponse<T>> pollOperation) {
 
         this.pollerOptions = pollerOptions;
         this.pollOperation = pollOperation;
-        fluxHandle = createFlux();
+        createFlux();
         //autopolling  start here
+        pollResponse = new PollResponse(PollResponse.OperationStatus.NOT_STARTED, null, null);
         setAutoPollingEnabled(true);
     }
 
@@ -78,9 +81,7 @@ public class Poller<T> {
      * @param pollOperation poller operation
      * @param cancelOperation cancel operation
      */
-    public Poller(PollerOptions pollerOptions,
-                  Function<PollResponse<T>, PollResponse<T>> pollOperation,
-                  Consumer<Poller> cancelOperation) {
+    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, PollResponse<T>> pollOperation, Consumer<Poller> cancelOperation) {
         this(pollerOptions, pollOperation);
         this.cancelOperation = cancelOperation;
     }
@@ -88,19 +89,17 @@ public class Poller<T> {
     /*
      * We will maintain single instance of fluxHandle for one poller.
      */
-    private Flux<PollResponse<T>> createFlux() {
+    private void createFlux() {
         if (fluxHandle == null) {
             fluxHandle = sendPollRequestWithDelay()
                 .flux()
+                .repeat()
                 .takeUntil(pollResponse -> needsPolling(pollResponse));
         }
-        return fluxHandle;
     }
 
     private boolean needsPolling(PollResponse<T> pollResponse) {
-        return !isAutoPollingEnabled() && (pollResponse.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
-            || pollResponse.getStatus() == PollResponse.OperationStatus.FAILED
-            || pollResponse.getStatus() == PollResponse.OperationStatus.USER_CANCELLED);
+        return (  !pollResponse.isDone());
     }
 
     /**
@@ -111,11 +110,11 @@ public class Poller<T> {
         if (cancelOperation == null) {
             throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
         }
-        //We can not cancel an operation if it was never started
-        //or it is in its terminal state.
-        //Check cancelInitiated: to protect against multiple time call to cancel operation
-        if (cancelInitiated
-            || (pollResponse != null && pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS)) {
+
+        // We can not cancel an operation if it was never started
+        // or it is in its terminal state.
+        // Check cancelInitiated: to protect against multiple time call to cancel operation
+        if (cancelInitiated || (pollResponse != null && pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS)) {
             return;
         }
         //Time to call cancel
@@ -124,14 +123,12 @@ public class Poller<T> {
     }
 
     /**
-     * This will poll and send PollResponse. If you had stopped polling erlier, we will enable polling again.
+     *
      * @return Return poll response as Flux
      */
     public Flux<PollResponse<T>> poll() {
-        if (fluxDisposable != null && !fluxDisposable.isDisposed()) {
-            fluxDisposable.dispose();
-        }
-        return fluxHandle;
+         createFlux();
+         return fluxHandle;
     }
 
     /**
@@ -161,10 +158,7 @@ public class Poller<T> {
      * Helper function
      */
     private boolean isTerminalState() {
-        return pollResponse != null && (
-            pollResponse.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
-                || pollResponse.getStatus() == PollResponse.OperationStatus.FAILED
-                || pollResponse.getStatus() == PollResponse.OperationStatus.USER_CANCELLED);
+        return pollResponse != null && pollResponse.isDone();
 
     }
 
@@ -184,7 +178,7 @@ public class Poller<T> {
     }
 
     /**
-     * 
+     *
      * @param  autoPollingEnabled  true : Ensures the polling is happening in background.
      *                             false : Ensures that polling is not happening in background.
      */
@@ -192,11 +186,13 @@ public class Poller<T> {
         this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
             if (fluxDisposable == null || fluxDisposable.isDisposed()) {
-                fluxDisposable = fluxHandle.subscribe(ps -> pollResponse = ps);
+                fluxDisposable = fluxHandle.subscribe(pr ->  pollResponse = pr );
+
             }
         } else {
             if (fluxDisposable != null && !fluxDisposable.isDisposed()) {
                 fluxDisposable.dispose();
+                fluxHandle = null;
             }
         }
     }

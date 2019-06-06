@@ -4,7 +4,7 @@
 package com.azure.core.polling;
 
 import com.azure.core.exception.HttpResponseException;
-/*import com.azure.core.polling.PollResponse.OperationStatus;
+import com.azure.core.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +12,8 @@ import reactor.test.StepVerifier;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;*/
+import java.time.Duration;
+import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -25,16 +26,15 @@ public class PollerTests {
     private Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> createPollOperation(
         PollResponse<CreateCertificateResponse> intermediateProgressPollResponse,
         PollResponse<CreateCertificateResponse> finalPollResponse,
-        int pollIntervalInMillis,
         int sendFinalResponseInSeconds
     ) {
         return new Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>>() {
             // Will return success after this time.
-            LocalDateTime timeToReturnSuccess = LocalDateTime.now().plusSeconds(sendFinalResponseInSeconds);
+            LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plusSeconds(sendFinalResponseInSeconds);
 
             @Override
             public PollResponse<CreateCertificateResponse> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
-                if (LocalDateTime.now().isBefore(timeToReturnSuccess)) {
+                if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                     debug(" Service poll function called ", " returning intermediate response ");
                     return intermediateProgressPollResponse;
                 } else {
@@ -49,34 +49,35 @@ public class PollerTests {
      * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
      * This scenario is setup where source will generate successful response returned after few in-progress response.
      **/
-    /*@Test
+    @Test
     public void subscribeToAllPollEventAutoStartPollingSuccessfullyComplete() throws Exception {
 
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
         int totalTimeoutInMilliSeconds = 1000 * 6;
-        int pollIntervalInMillis = 500;
-        float poolIntervalGrowthFactor = 1.0f;
+        Duration pollInterval = Duration.ofMillis(500);
 
         Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse,
-                pollIntervalInMillis,
-                5);
+                successPollResponse, 5);
 
-        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
+        PollerOptions pollerOptions = new PollerOptions(pollInterval);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-
+        new Thread().sleep(1000);
+        createCertPoller.setAutoPollingEnabled(false);
+        new Thread().sleep(1000);
+        debug("Going to create subscriber ");
         createCertPoller.poll().subscribe(createCertificateResponsePollResponse -> {
-            debug(" got Response " + createCertificateResponsePollResponse.getResult().response);
+            debug(" got Response " + createCertificateResponsePollResponse.getStatus().toString());
         });
 
         new Thread().sleep(totalTimeoutInMilliSeconds);
+        debug("Final poller status " +createCertPoller.getStatus());
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
     }
-*/
+
     /* Test where SDK Client is subscribed all responses.
      * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
      * This scenario is setup where source will generate successful response returned after few in-progress response.
@@ -346,7 +347,7 @@ public class PollerTests {
 
     private void showResults(Collection<PollResponse<CreateCertificateResponse>> al) {
         for (PollResponse<CreateCertificateResponse> pr : al) {
-            debug("done response status, data=  ", pr.getStatus().toString(), " , " + pr.value().response);
+            debug("done response status, data=  ", pr.getStatus().toString(), " , " + pr.getStatus().toString());
         }
     }
 
