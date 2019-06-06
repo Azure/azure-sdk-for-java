@@ -25,7 +25,7 @@ public class CredentialInfoTest {
 
     private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
 
-    private static final String CONN_STRING = String.format(
+    private static final String CONNECTION_STRING = String.format(
         "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, ENTITY_PATH);
 
@@ -40,9 +40,26 @@ public class CredentialInfoTest {
         CredentialInfo.from(connStr);
     }
 
+    @Theory
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidConnStrBuilderWithEventHubPath(String connStr) {
+        CredentialInfo.from(connStr, ENTITY_PATH);
+    }
+
     @Test
     public void propertySetter() {
-        final CredentialInfo credentialInfo = CredentialInfo.from(CONN_STRING);
+        final CredentialInfo credentialInfo = CredentialInfo.from(CONNECTION_STRING);
+        validateCredentialInfo(credentialInfo);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullEventHubPath() {
+        final CredentialInfo credentialInfo = CredentialInfo.from(CONNECTION_STRING, null);
+    }
+
+    @Test
+    public void customEventHubPath() {
+        final CredentialInfo credentialInfo = CredentialInfo.from(CONNECTION_STRING, ENTITY_PATH);
         validateCredentialInfo(credentialInfo);
     }
 
@@ -59,6 +76,6 @@ public class CredentialInfoTest {
         Assert.assertEquals(ENDPOINT, credentialInfo.endpoint().toString());
         Assert.assertEquals(SHARED_ACCESS_KEY, credentialInfo.sharedAccessKey());
         Assert.assertEquals(SHARED_ACCESS_KEY_NAME, credentialInfo.sharedAccessKeyName());
-        Assert.assertEquals(ENTITY_PATH, credentialInfo.eventHubName());
+        Assert.assertEquals(ENTITY_PATH, credentialInfo.eventHubPath());
     }
 }

@@ -29,12 +29,12 @@ public class EventHubClientBuilder {
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
 
     private CredentialInfo credentials;
-    private TransportType transport;
-    private Duration timeout;
-    private Scheduler scheduler;
-    private ProxyConfiguration proxyConfiguration;
-    private Retry retryPolicy;
     private Configuration configuration;
+    private Duration timeout;
+    private ProxyConfiguration proxyConfiguration;
+    private Retry retry;
+    private Scheduler scheduler;
+    private TransportType transport;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -103,11 +103,11 @@ public class EventHubClientBuilder {
     /**
      * Sets the retry policy for EventHubClient.
      *
-     * @param retryPolicy The retry policy to use.
+     * @param retry The retry policy to use.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubClientBuilder retry(Retry retryPolicy) {
-        this.retryPolicy = retryPolicy;
+    public EventHubClientBuilder retry(Retry retry) {
+        this.retry = retry;
         return this;
     }
 
@@ -130,7 +130,7 @@ public class EventHubClientBuilder {
      * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
-     * @throws IllegalArgumentException when 'connStr' is {@code null} or empty.
+     * @throws IllegalArgumentException when 'connectionString' is {@code null} or empty.
      * @throws AzureException If the token provider cannot be created for authorizing requests.
      */
     public EventHubClient build() {
@@ -139,7 +139,7 @@ public class EventHubClientBuilder {
         if (this.credentials == null) {
             String connectionString = this.configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
             if (ImplUtils.isNullOrEmpty(connectionString)) {
-                throw new IllegalArgumentException("connection string is null or empty.");
+                throw new IllegalArgumentException("Connection string is null or empty.");
             }
             this.credentials = CredentialInfo.from(connectionString);
         }
@@ -155,11 +155,11 @@ public class EventHubClientBuilder {
         try {
             tokenProvider = new SharedAccessSignatureTokenProvider(credentials.sharedAccessKeyName(), credentials.sharedAccessKey());
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new AzureException("Could not createc token provider.");
+            throw new AzureException("Could not create token provider.");
         }
 
-        if (this.retryPolicy == null) {
-            this.retryPolicy = Retry.getDefault();
+        if (this.retry == null) {
+            this.retry = Retry.getDefault();
         }
 
         this.proxyConfiguration = constructDefaultProxyConfiguration(this.configuration);
@@ -169,7 +169,7 @@ public class EventHubClientBuilder {
         }
 
         ConnectionParameters connectionParameters = new ConnectionParameters(this.credentials, this.timeout,
-            tokenProvider, this.transport, this.retryPolicy, this.proxyConfiguration, this.scheduler);
+            tokenProvider, this.transport, this.retry, this.proxyConfiguration, this.scheduler);
 
         return new EventHubClient(connectionParameters, provider, handlerProvider);
     }

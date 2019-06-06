@@ -20,6 +20,9 @@ public class ProxyConfiguration implements AutoCloseable {
     private final Proxy proxyAddress;
     private final ProxyAuthenticationType authentication;
 
+    /**
+     * Gets the system defaults for proxy configuration and authentication.
+     */
     public static final ProxyConfiguration SYSTEM_DEFAULTS = new ProxyConfiguration();
 
     ProxyConfiguration() {
@@ -27,7 +30,21 @@ public class ProxyConfiguration implements AutoCloseable {
         this.proxyAddress = null;
         this.authentication = null;
     }
-
+    /**
+     * Creates a proxy configuration that uses the {@code proxyAddress} and authenticates with provided
+     * {@code username}, {@code password} and {@code authentication}.
+     *
+     * @param authentication Authentication method to preemptively use with proxy.
+     * @param proxyAddress Proxy to use. If {@code null} is passed in, then the system configured {@link java.net.Proxy}
+     * is used.
+     * @param username Optional. Username used to authenticate with proxy. If not specified, the system-wide
+     * {@link java.net.Authenticator} is used to fetch credentials.
+     * @param password Optional. Password used to authenticate with proxy.
+     *
+     * @throws NullPointerException if {@code authentication} is {@code null}.
+     * @throws IllegalArgumentException if {@code authentication} is {@link ProxyAuthenticationType#BASIC} or
+     * {@link ProxyAuthenticationType#DIGEST} and {@code username} or {@code password} are {@code null}.
+     */
     ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username, String password) {
         Objects.requireNonNull(authentication);
         this.authentication = authentication;
@@ -36,7 +53,7 @@ public class ProxyConfiguration implements AutoCloseable {
         if (username != null && password != null) {
             this.credentials = new PasswordAuthentication(username, password.toCharArray());
         } else {
-            logger.asInformational().log("Username or Password is NULL.");
+            logger.asInformational().log("Username or password is null. Using system-wide authentication.");
             this.credentials = null;
         }
     }

@@ -1,16 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.eventhubs;
+
 /**
  * Supported methods of proxy authentication
  */
-package com.azure.eventhubs;
-
 public enum ProxyAuthenticationType {
-    /** Enum value NONE */
+    /**
+     * Proxy requires no authentication. Service calls will fail if proxy demands authentication.
+     */
     NONE,
-    /** Enum value BASIC */
+    /**
+     * Authenticates against proxy with basic authentication scheme.
+     */
     BASIC,
-    /** Enum value DIGEST */
-    DIGEST
+    /**
+     * Authenticates against proxy with digest access authentication.
+     */
+    DIGEST,
 }

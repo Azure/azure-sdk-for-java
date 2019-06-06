@@ -42,31 +42,31 @@ class ConnectionParameters {
         this.scheduler = scheduler;
     }
 
-    CredentialInfo getCredentials() {
+    CredentialInfo credentials() {
         return credentials;
     }
 
-    Duration getTimeout() {
+    Duration timeout() {
         return timeout;
     }
 
-    TokenProvider getTokenProvider() {
+    TokenProvider tokenProvider() {
         return tokenProvider;
     }
 
-    TransportType getTransportType() {
+    TransportType transportType() {
         return transport;
     }
 
-    Retry getRetryPolicy() {
+    Retry retryPolicy() {
         return retryPolicy;
     }
 
-    ProxyConfiguration getProxyConfiguration() {
+    ProxyConfiguration proxyConfiguration() {
         return proxyConfiguration;
     }
 
-    Scheduler getScheduler() {
+    Scheduler scheduler() {
         return scheduler;
     }
 }
