@@ -5,4 +5,6 @@ import reactor.core.publisher.Flux;
 
 public interface AmqpReceiveLink extends AmqpLink {
     Flux<Message> receive();
+
+    void addCredits(int credits);
 }
