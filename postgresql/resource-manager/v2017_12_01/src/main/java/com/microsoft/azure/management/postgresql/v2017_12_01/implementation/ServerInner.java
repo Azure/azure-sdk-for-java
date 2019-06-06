@@ -37,7 +37,8 @@ public class ServerInner extends Resource {
     private String administratorLogin;
 
     /**
-     * Server version. Possible values include: '9.5', '9.6'.
+     * Server version. Possible values include: '9.5', '9.6', '10', '10.0',
+     * '10.2', '11'.
      */
     @JsonProperty(value = "properties.version")
     private ServerVersion version;
@@ -75,7 +76,25 @@ public class ServerInner extends Resource {
     private StorageProfile storageProfile;
 
     /**
-     * Get the sku value.
+     * The replication role of the server.
+     */
+    @JsonProperty(value = "properties.replicationRole")
+    private String replicationRole;
+
+    /**
+     * The master server id of a replica server.
+     */
+    @JsonProperty(value = "properties.masterServerId")
+    private String masterServerId;
+
+    /**
+     * The maximum number of replicas that a master server can have.
+     */
+    @JsonProperty(value = "properties.replicaCapacity")
+    private Integer replicaCapacity;
+
+    /**
+     * Get the SKU (pricing tier) of the server.
      *
      * @return the sku value
      */
@@ -84,7 +103,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU (pricing tier) of the server.
      *
      * @param sku the sku value to set
      * @return the ServerInner object itself.
@@ -95,7 +114,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the administratorLogin value.
+     * Get the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @return the administratorLogin value
      */
@@ -104,7 +123,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the administratorLogin value.
+     * Set the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @param administratorLogin the administratorLogin value to set
      * @return the ServerInner object itself.
@@ -115,7 +134,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the version value.
+     * Get server version. Possible values include: '9.5', '9.6', '10', '10.0', '10.2', '11'.
      *
      * @return the version value
      */
@@ -124,7 +143,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the version value.
+     * Set server version. Possible values include: '9.5', '9.6', '10', '10.0', '10.2', '11'.
      *
      * @param version the version value to set
      * @return the ServerInner object itself.
@@ -135,7 +154,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the sslEnforcement value.
+     * Get enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @return the sslEnforcement value
      */
@@ -144,7 +163,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the sslEnforcement value.
+     * Set enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @param sslEnforcement the sslEnforcement value to set
      * @return the ServerInner object itself.
@@ -155,7 +174,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the userVisibleState value.
+     * Get a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
      *
      * @return the userVisibleState value
      */
@@ -164,7 +183,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the userVisibleState value.
+     * Set a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
      *
      * @param userVisibleState the userVisibleState value to set
      * @return the ServerInner object itself.
@@ -175,7 +194,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the fullyQualifiedDomainName value.
+     * Get the fully qualified domain name of a server.
      *
      * @return the fullyQualifiedDomainName value
      */
@@ -184,7 +203,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the fullyQualifiedDomainName value.
+     * Set the fully qualified domain name of a server.
      *
      * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set
      * @return the ServerInner object itself.
@@ -195,7 +214,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the earliestRestoreDate value.
+     * Get earliest restore point creation time (ISO8601 format).
      *
      * @return the earliestRestoreDate value
      */
@@ -204,7 +223,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the earliestRestoreDate value.
+     * Set earliest restore point creation time (ISO8601 format).
      *
      * @param earliestRestoreDate the earliestRestoreDate value to set
      * @return the ServerInner object itself.
@@ -215,7 +234,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get storage profile of a server.
      *
      * @return the storageProfile value
      */
@@ -224,13 +243,73 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set storage profile of a server.
      *
      * @param storageProfile the storageProfile value to set
      * @return the ServerInner object itself.
      */
     public ServerInner withStorageProfile(StorageProfile storageProfile) {
         this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the replication role of the server.
+     *
+     * @return the replicationRole value
+     */
+    public String replicationRole() {
+        return this.replicationRole;
+    }
+
+    /**
+     * Set the replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicationRole(String replicationRole) {
+        this.replicationRole = replicationRole;
+        return this;
+    }
+
+    /**
+     * Get the master server id of a replica server.
+     *
+     * @return the masterServerId value
+     */
+    public String masterServerId() {
+        return this.masterServerId;
+    }
+
+    /**
+     * Set the master server id of a replica server.
+     *
+     * @param masterServerId the masterServerId value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
+        return this;
+    }
+
+    /**
+     * Get the maximum number of replicas that a master server can have.
+     *
+     * @return the replicaCapacity value
+     */
+    public Integer replicaCapacity() {
+        return this.replicaCapacity;
+    }
+
+    /**
+     * Set the maximum number of replicas that a master server can have.
+     *
+     * @param replicaCapacity the replicaCapacity value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
+        this.replicaCapacity = replicaCapacity;
         return this;
     }
 
