@@ -32,7 +32,7 @@ class DeploymentImpl extends CreatableUpdatableImpl<Deployment, DeploymentInner,
         this.manager = manager;
         // Set resource name
         this.id = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.id = IdParsingUtils.getValueFromIdByName(inner.id(), "deployments");
