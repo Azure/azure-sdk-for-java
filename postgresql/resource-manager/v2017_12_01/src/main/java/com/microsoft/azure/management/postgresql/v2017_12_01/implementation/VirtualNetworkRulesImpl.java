@@ -42,29 +42,10 @@ class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> impl
         return new VirtualNetworkRuleImpl(name, this.manager());
     }
 
-    private Observable<Page<VirtualNetworkRuleInner>> listByServerNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworkRulesInner client = this.inner();
-        return client.listByServerNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkRuleInner>, Observable<Page<VirtualNetworkRuleInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkRuleInner>> call(Page<VirtualNetworkRuleInner> page) {
-                return Observable.just(page).concatWith(listByServerNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetworkRule> listByServerAsync(final String resourceGroupName, final String serverName) {
         VirtualNetworkRulesInner client = this.inner();
         return client.listByServerAsync(resourceGroupName, serverName)
-        .flatMap(new Func1<Page<VirtualNetworkRuleInner>, Observable<Page<VirtualNetworkRuleInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkRuleInner>> call(Page<VirtualNetworkRuleInner> page) {
-                return listByServerNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkRuleInner>, Iterable<VirtualNetworkRuleInner>>() {
             @Override
             public Iterable<VirtualNetworkRuleInner> call(Page<VirtualNetworkRuleInner> page) {
