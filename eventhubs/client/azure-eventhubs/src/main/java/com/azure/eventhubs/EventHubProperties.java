@@ -16,7 +16,7 @@ public final class EventHubProperties {
     private final String[] partitionIds;
     private Instant propertyRetrievalTimeUtc;
 
-    EventHubProperties(
+    public EventHubProperties(
             final String path,
             final Instant createdAtUtc,
             final String[] partitionIds,
