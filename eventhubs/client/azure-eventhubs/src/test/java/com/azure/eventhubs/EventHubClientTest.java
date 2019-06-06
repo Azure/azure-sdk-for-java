@@ -10,7 +10,6 @@ import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
