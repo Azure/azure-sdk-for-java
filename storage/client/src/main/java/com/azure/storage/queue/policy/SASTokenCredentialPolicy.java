@@ -7,16 +7,16 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.queue.models.SharedKeyCredential;
+import com.azure.storage.queue.models.SASTokenCredential;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
-    private final SharedKeyCredential credential;
+public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
+    private final SASTokenCredential credential;
 
-    public SharedKeyCredentialPolicy(SharedKeyCredential credential) {
+    public SASTokenCredentialPolicy(SASTokenCredential credential) {
         this.credential = credential;
     }
 

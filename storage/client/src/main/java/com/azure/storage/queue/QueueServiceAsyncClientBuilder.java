@@ -15,8 +15,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.queue.models.SharedKeyCredential;
-import com.azure.storage.queue.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.queue.models.SASTokenCredential;
+import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,7 +45,7 @@ public final class QueueServiceAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
-    private SharedKeyCredential credentials;
+    private SASTokenCredential credentials;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -71,7 +71,7 @@ public final class QueueServiceAsyncClientBuilder {
         policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new SharedKeyCredentialPolicy(credentials)); // This needs to be a different credential type.
+        policies.add(new SASTokenCredentialPolicy(credentials)); // This needs to be a different credential type.
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -93,7 +93,7 @@ public final class QueueServiceAsyncClientBuilder {
         try {
             String[] urlPieces = endpoint.split("\\?");
             this.endpoint = new URL(urlPieces[0]);
-            SharedKeyCredential credential = getCredentialFromQueryParam(urlPieces[1]);
+            SASTokenCredential credential = getCredentialFromQueryParam(urlPieces[1]);
             if (credential != null) {
                 this.credentials = credential;
             }
@@ -104,7 +104,7 @@ public final class QueueServiceAsyncClientBuilder {
         return this;
     }
 
-    public QueueServiceAsyncClientBuilder credentials(SharedKeyCredential credentials) {
+    public QueueServiceAsyncClientBuilder credentials(SASTokenCredential credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -152,7 +152,7 @@ public final class QueueServiceAsyncClientBuilder {
         return connectionStringPieces;
     }
 
-    static SharedKeyCredential getCredentialFromQueryParam(String queryParam) {
+    static SASTokenCredential getCredentialFromQueryParam(String queryParam) {
         if (ImplUtils.isNullOrEmpty(queryParam)) {
             return null;
         }
@@ -211,7 +211,7 @@ public final class QueueServiceAsyncClientBuilder {
             addQueryParam(sb, SIP, sip);
         }
 
-        return new SharedKeyCredential(sb.toString());
+        return new SASTokenCredential(sb.toString());
     }
 
     private static void addQueryParam(StringBuilder sb, String paramName, String paramValue) {

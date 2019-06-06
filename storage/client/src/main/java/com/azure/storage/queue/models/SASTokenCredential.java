@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue.models;
 
-public class SharedKeyCredential {
+public class SASTokenCredential {
     private final String sharedKey;
 
-    public SharedKeyCredential(String sharedKey) {
+    public SASTokenCredential(String sharedKey) {
         this.sharedKey = sharedKey;
     }
 

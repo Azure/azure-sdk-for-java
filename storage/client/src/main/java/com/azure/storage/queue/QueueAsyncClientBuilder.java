@@ -13,8 +13,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.storage.queue.models.SharedKeyCredential;
-import com.azure.storage.queue.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.queue.models.SASTokenCredential;
+import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +31,7 @@ public final class QueueAsyncClientBuilder {
 
     private URL endpoint;
     private String queueName;
-    private SharedKeyCredential credentials;
+    private SASTokenCredential credentials;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -59,7 +59,7 @@ public final class QueueAsyncClientBuilder {
         policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new SharedKeyCredentialPolicy(credentials));
+        policies.add(new SASTokenCredentialPolicy(credentials));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -86,7 +86,7 @@ public final class QueueAsyncClientBuilder {
         try {
             String[] urlPieces = endpoint.split("\\?");
             this.endpoint = new URL(urlPieces[0]);
-            SharedKeyCredential credential = QueueServiceAsyncClientBuilder.getCredentialFromQueryParam(urlPieces[1]);
+            SASTokenCredential credential = QueueServiceAsyncClientBuilder.getCredentialFromQueryParam(urlPieces[1]);
             if (credential != null) {
                 this.credentials = credential;
             }
@@ -112,7 +112,7 @@ public final class QueueAsyncClientBuilder {
      * @param credentials authorization credentials
      * @return the updated QueueAsyncClientBuilder object
      */
-    public QueueAsyncClientBuilder credentials(SharedKeyCredential credentials) {
+    public QueueAsyncClientBuilder credentials(SASTokenCredential credentials) {
         this.credentials = credentials;
         return this;
     }
