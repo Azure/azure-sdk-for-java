@@ -32,6 +32,7 @@ public final class QueueAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
+    private String queueName;
     private TokenCredential credentials; // Revert this to SharedKeyCredentials once it is implemented.
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
@@ -46,6 +47,8 @@ public final class QueueAsyncClientBuilder {
 
     QueueAsyncClient build() {
         Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(credentials);
+        Objects.requireNonNull(queueName);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -67,7 +70,7 @@ public final class QueueAsyncClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new QueueAsyncClient(endpoint, pipeline);
+        return new QueueAsyncClient(endpoint, pipeline, queueName);
     }
 
     public QueueAsyncClientBuilder endpoint(String endpoint) {
