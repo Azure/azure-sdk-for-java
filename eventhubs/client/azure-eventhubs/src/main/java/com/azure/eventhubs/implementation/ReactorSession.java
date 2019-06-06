@@ -3,7 +3,8 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.AmqpReceiveLink;
+import com.azure.core.amqp.AmqpSendLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
@@ -74,12 +75,12 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     }
 
     @Override
-    public Mono<AmqpLink> createSender(String linkName, Duration timeout) {
+    public Mono<AmqpSendLink> createSender(String linkName, String path, Duration timeout) {
         return null;
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, Duration timeout) {
+    public Mono<AmqpReceiveLink> createReceiver(String linkName, String path, Duration timeout) {
         return null;
     }
 
