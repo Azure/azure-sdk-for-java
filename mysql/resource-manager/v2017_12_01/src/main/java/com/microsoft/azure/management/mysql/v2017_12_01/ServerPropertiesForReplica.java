@@ -13,20 +13,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The properties used to create a new server by restoring to a different
- * region from a geo replicated backup.
+ * The properties to create a new replica.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
-@JsonTypeName("GeoRestore")
-public class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
+@JsonTypeName("Replica")
+public class ServerPropertiesForReplica extends ServerPropertiesForCreate {
     /**
-     * The source server id to restore from.
+     * The master server id to create replica from.
      */
     @JsonProperty(value = "sourceServerId", required = true)
     private String sourceServerId;
 
     /**
-     * Get the source server id to restore from.
+     * Get the master server id to create replica from.
      *
      * @return the sourceServerId value
      */
@@ -35,12 +34,12 @@ public class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
     }
 
     /**
-     * Set the source server id to restore from.
+     * Set the master server id to create replica from.
      *
      * @param sourceServerId the sourceServerId value to set
-     * @return the ServerPropertiesForGeoRestore object itself.
+     * @return the ServerPropertiesForReplica object itself.
      */
-    public ServerPropertiesForGeoRestore withSourceServerId(String sourceServerId) {
+    public ServerPropertiesForReplica withSourceServerId(String sourceServerId) {
         this.sourceServerId = sourceServerId;
         return this;
     }
