@@ -51,11 +51,15 @@ public class RefreshableTokenCacheTests {
 
     @Test
     public void testLongRunningWontOverflow() throws Exception {
+        AtomicLong refreshes = new AtomicLong(0);
+
         // token expires on creation. Run this 100 times to simulate running the application a long time
-        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenThatExpiresSoonAsync(1000, 0));
+        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> {
+            refreshes.incrementAndGet();
+            return remoteGetTokenThatExpiresSoonAsync(1000, 0);
+        });
 
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicLong refreshes = new AtomicLong(0);
 
         Flux.interval(Duration.ofMillis(100))
             .take(100)
@@ -65,9 +69,6 @@ public class RefreshableTokenCacheTests {
                 .flatMap(start -> refresher.getToken("resource")
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
-                        if (millis > 1000) {
-                            refreshes.incrementAndGet();
-                        }
 //                        System.out.format("Thread: %s\tDuration: %smillis%n",
 //                            Thread.currentThread().getName(), Duration.between(start, OffsetDateTime.now()).toMillis());
                     })))
@@ -86,13 +87,14 @@ public class RefreshableTokenCacheTests {
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong minMillis = new AtomicLong(5000);
+        AtomicInteger counter = new AtomicInteger(0);
 
         // Default buffer size for token cache is 16
-        Flux.range(1, 100)
-            .flatMap(i -> Mono.just(OffsetDateTime.now())
+        Mono.just(OffsetDateTime.now())
+                .repeat(100)
                 // Runs refresher.getToken() on 100 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getToken("resource" + i)
+                .flatMap(start -> refresher.getToken("resource" + counter.getAndIncrement())
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis < minMillis.get()) {
@@ -100,7 +102,7 @@ public class RefreshableTokenCacheTests {
                         }
 //                        System.out.format("Resource: %s\tDuration: %smillis%n",
 //                            "resource" + i, millis);
-                    })))
+                    }))
             .doOnComplete(latch::countDown)
             .subscribe();
 

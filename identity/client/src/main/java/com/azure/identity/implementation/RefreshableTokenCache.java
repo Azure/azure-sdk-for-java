@@ -79,7 +79,7 @@ public class RefreshableTokenCache {
                         acquirer = acquirer.switchIfEmpty(refresh(cache.get(resource), resource));
                     }
                     acquirer = acquirer.onErrorResume(t -> Mono.empty())
-                        .switchIfEmpty(authenticate.apply(resource))
+                        .switchIfEmpty(Mono.defer(() -> authenticate.apply(resource)))
                         .doOnNext(val -> {
                             cache.put(resource, val);
                             // notify the receivers
