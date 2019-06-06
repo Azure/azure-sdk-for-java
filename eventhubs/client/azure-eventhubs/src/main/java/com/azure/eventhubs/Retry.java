@@ -47,10 +47,7 @@ public abstract class Retry {
      * @return Retry which has all default property set up.
      */
     public static Retry getNoRetry() {
-        return new ExponentialRetry(
-            Duration.ZERO,
-            Duration.ZERO,
-            0);
+        return new ExponentialRetry(Duration.ZERO, Duration.ZERO, 0);
     }
 
     /**
@@ -59,10 +56,7 @@ public abstract class Retry {
      * @return Retry which has all default property set up.
      */
     public static Retry getDefaultRetry() {
-        return new ExponentialRetry(
-            DEFAULT_RETRY_MIN_BACKOFF,
-            DEFAULT_RETRY_MAX_BACKOFF,
-            DEFAULT_MAX_RETRY_COUNT);
+        return new ExponentialRetry(DEFAULT_RETRY_MIN_BACKOFF, DEFAULT_RETRY_MAX_BACKOFF, DEFAULT_MAX_RETRY_COUNT);
     }
 
     /**
@@ -104,7 +98,8 @@ public abstract class Retry {
      *
      * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
-     * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation is no longer eligible to be retried.
+     * @return The amount of time to delay before retrying the associated operation; if {@code null},
+     * then the operation is no longer eligible to be retried.
      */
     public Duration getNextRetryInterval(Exception lastException, Duration remainingTime) {
         int baseWaitTime = 0;
@@ -131,12 +126,11 @@ public abstract class Retry {
      * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
      * @param baseWaitSeconds The number of seconds to base the suggested retry interval on;
-     *   this should be used as the minimum interval returned under normal circumstances.
+     * this should be used as the minimum interval returned under normal circumstances.
      * @param retryCount The number of retries that have already been attempted.
-     * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation is no longer eligible to be retried.
+     * @return The amount of time to delay before retrying the associated operation; if {@code null},
+     * then the operation is no longer eligible to be retried.
      */
-    protected abstract Duration calculateNextRetryInterval(Exception lastException,
-                                                       Duration remainingTime,
-                                                       int baseWaitSeconds,
-                                                       int retryCount);
+    protected abstract Duration calculateNextRetryInterval(Exception lastException, Duration remainingTime,
+                                                           int baseWaitSeconds, int retryCount);
 }

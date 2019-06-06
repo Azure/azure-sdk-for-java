@@ -47,13 +47,13 @@ public class RetryTest {
     }
 
     @Test
-    public void isRetryable() {
+    public void isRetriable() {
         Exception exception = new AmqpException(true, "error message");
         Assert.assertTrue(Retry.isRetriableException(exception));
     }
 
     @Test
-    public void notRetryable() {
+    public void notRetriable() {
         Exception invalidException = new RuntimeException("invalid exception");
         Assert.assertFalse(Retry.isRetriableException(invalidException));
     }

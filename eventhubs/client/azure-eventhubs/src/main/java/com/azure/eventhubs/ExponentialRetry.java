@@ -12,6 +12,7 @@ import java.time.Duration;
 public final class ExponentialRetry extends Retry {
 
     public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
+
     private final Duration minBackoff;
     private final Duration maxBackoff;
     private final double retryFactor;
@@ -33,9 +34,9 @@ public final class ExponentialRetry extends Retry {
 
     @Override
     protected Duration calculateNextRetryInterval(final Exception lastException,
-                                              final Duration remainingTime,
-                                              final int baseWaitSeconds,
-                                              final int retryCount) {
+                                                  final Duration remainingTime,
+                                                  final int baseWaitSeconds,
+                                                  final int retryCount) {
         final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
         final long nextRetryIntervalSeconds = (long) nextRetryInterval;
         final long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
