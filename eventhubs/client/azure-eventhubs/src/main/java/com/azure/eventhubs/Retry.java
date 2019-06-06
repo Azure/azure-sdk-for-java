@@ -10,6 +10,9 @@ import com.azure.eventhubs.implementation.ClientConstants;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * An abstract representation of a policy to govern retrying of messaging operations.
+ */
 public abstract class Retry {
 
     public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
@@ -20,7 +23,8 @@ public abstract class Retry {
     private final int maxRetryCount;
 
     /**
-     * An abstract representation of a policy to govern retrying of messaging operations.
+     * Creates a new instance of Retry with the maximum retry count of {@code maxRetryCount}
+     * 
      * @param maxRetryCount The maximum number of retries allowed.
      */
     public Retry(int maxRetryCount) {
@@ -92,7 +96,7 @@ public abstract class Retry {
      * @return maximum allowed retry count value.
      */
     public int maxRetryCount() {
-        return this.maxRetryCount;
+        return maxRetryCount;
     }
 
     /**
@@ -105,11 +109,11 @@ public abstract class Retry {
     public Duration getNextRetryInterval(Exception lastException, Duration remainingTime) {
         int baseWaitTime = 0;
 
-        if (lastException == null || !(lastException instanceof AmqpException)) {
+        if (!isRetriableException(lastException)) {
             return null;
         }
 
-        if (this.retryCount.get() >= maxRetryCount) {
+        if (retryCount.get() >= maxRetryCount) {
             return null;
         }
 
