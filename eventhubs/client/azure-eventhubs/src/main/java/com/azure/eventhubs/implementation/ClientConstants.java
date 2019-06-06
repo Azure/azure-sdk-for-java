@@ -31,18 +31,9 @@ public final class ClientConstants {
      */
     public static final String USER_AGENT = String.format("azsdk-java-eventhubs/%s %s;%s",
         CURRENT_JAVACLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
-    public static final String MANAGEMENT_ADDRESS = "$management";
-    public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
-    public static final String MANAGEMENT_OPERATION_KEY = "operation";
-    public static final String READ_OPERATION_VALUE = "READ";
-    public static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
-    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
     public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
-    public static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
-    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
     public static final String MANAGEMENT_RESULT_PARTITION_COUNT = "partition_count";
-    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
     public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
