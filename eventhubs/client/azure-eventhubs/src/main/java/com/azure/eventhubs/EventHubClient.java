@@ -5,7 +5,8 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.eventhubs.implementation.ManagementChannel;
+import com.azure.eventhubs.implementation.EventHubConnection;
+import com.azure.eventhubs.implementation.EventHubManagementNode;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -27,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class EventHubClient implements Closeable {
     private final String connectionId;
-    private final Mono<AmqpConnection> connectionMono;
+    private final Mono<EventHubConnection> connectionMono;
     private final String host;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
 
@@ -44,8 +45,7 @@ public class EventHubClient implements Closeable {
         this.tokenProvider = connectionParameters.tokenProvider();
         this.scheduler = connectionParameters.scheduler();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> (AmqpConnection) new ReactorConnection(connectionId, host,
-            eventHubName, this.tokenProvider, provider, handlerProvider, this.scheduler))
+        this.connectionMono = Mono.fromCallable(() -> (EventHubConnection) new ReactorConnection(connectionId, host, eventHubName, this.tokenProvider, provider, handlerProvider, this.scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -65,8 +65,7 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.cast(ReactorConnection.class)
-            .flatMap(connection -> connection.getManagementNode().flatMap(ManagementChannel::getEventHubProperties));
+        return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
 
     /**

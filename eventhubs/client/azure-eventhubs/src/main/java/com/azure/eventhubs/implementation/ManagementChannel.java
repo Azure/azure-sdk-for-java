@@ -1,15 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.EventHubProperties;
+import com.azure.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.Instant;
@@ -27,7 +30,7 @@ import static com.azure.eventhubs.implementation.ClientConstants.TOKEN_REFRESH_I
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
  * include another partition, increasing quotas, etc.
  */
-public class ManagementChannel implements Closeable {
+public class ManagementChannel implements EventHubManagementNode {
     private static final String SESSION_NAME = "mgmt-session";
     private static final String LINK_NAME = "mgmt";
     private static final String ADDRESS = "$management";
@@ -73,6 +76,7 @@ public class ManagementChannel implements Closeable {
                 ADDRESS, session.session()));
     }
 
+    @Override
     public Mono<EventHubProperties> getEventHubProperties() {
         final Map<String, Object> properties = new HashMap<>();
         properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_EVENTHUB_ENTITY_TYPE);
@@ -89,13 +93,18 @@ public class ManagementChannel implements Closeable {
                 throw new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map");
             }
 
-            Map map = (Map) body.getValue();
+            Map<?, ?> map = (Map<?, ?>) body.getValue();
 
             return new EventHubProperties(
                 (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
                 ((Date) map.get(MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
                 (String[]) map.get(MANAGEMENT_RESULT_PARTITION_IDS), Instant.now());
         });
+    }
+
+    @Override
+    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return null;
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Message, T> mapper) {
