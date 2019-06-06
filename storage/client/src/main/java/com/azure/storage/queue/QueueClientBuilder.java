@@ -37,6 +37,16 @@ public final class QueueClientBuilder {
     }
 
     /**
+     * Sets the queue name
+     * @param queueName Name of the queue
+     * @return the updated QueueClientBuilder object
+     */
+    public QueueClientBuilder queueName(String queueName) {
+        builder.queueName(queueName);
+        return this;
+    }
+
+    /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
      * @return the updated QueueClientBuilder object
