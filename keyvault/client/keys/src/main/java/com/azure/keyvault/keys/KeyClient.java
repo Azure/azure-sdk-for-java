@@ -583,10 +583,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p>It is possible to get full keys with values for each version from this information. Loop over the {@link KeyBase key} and
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with values included of the specified versions.</p>
-     * <pre>
-     * keyClient.listKeyVersions("keyName").stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Received key's version with name %s and id %s", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.

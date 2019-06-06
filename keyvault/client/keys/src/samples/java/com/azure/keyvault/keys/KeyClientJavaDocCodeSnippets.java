@@ -10,7 +10,7 @@ import com.azure.keyvault.keys.models.webkey.KeyType;
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyClient}
  */
-public class KeyClientJavaDocCodeSnippets {
+public final class KeyClientJavaDocCodeSnippets {
 
     /**
      * Generates code sample for creating a {@link KeyClient}
@@ -36,6 +36,21 @@ public class KeyClientJavaDocCodeSnippets {
         Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
         System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
         // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
+    }
+
+    /**
+     * Generates code sample for using {@link KeyClient#listKeyVersions(String)}
+     */
+    public void listKeyVersions() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
+        keyClient.listKeyVersions("keyName")
+            .stream()
+            .map(keyClient::getKey)
+            .forEach(keyResponse ->
+                System.out.printf("Received key's version with name %s and id %s",
+                    keyResponse.value().name(), keyResponse.value().id()));
+        // END: com.azure.keyvault.keys.keyclient.listKeyVersions
     }
 
     /**

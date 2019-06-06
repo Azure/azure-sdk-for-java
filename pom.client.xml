@@ -680,7 +680,6 @@
               <link>https://netty.io/4.1/api/</link>
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
-
             <isOffline>false</isOffline>
           </configuration>
         </plugin>

@@ -10,7 +10,7 @@ import java.security.GeneralSecurityException;
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
  */
-public class ConfigurationClientJavaDocCodeSnippets {
+public final class ConfigurationClientJavaDocCodeSnippets {
 
     /**
      * Generates code sample for creating a {@link ConfigurationClient}
