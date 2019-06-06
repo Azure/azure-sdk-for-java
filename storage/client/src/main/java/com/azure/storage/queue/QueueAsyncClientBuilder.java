@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Fluent builder for queue async clients.
+ */
 public final class QueueAsyncClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
@@ -45,7 +48,11 @@ public final class QueueAsyncClientBuilder {
         policies = new ArrayList<>();
     }
 
-    QueueAsyncClient build() {
+    /**
+     * Constructs an instance of QueueAsyncClient based on the configurations stored in the builder.
+     * @return a new client instance
+     */
+    public QueueAsyncClient build() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(credentials);
         Objects.requireNonNull(queueName);
@@ -53,7 +60,7 @@ public final class QueueAsyncClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION));
+        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
         policies.add(new TokenCredentialPolicy(credentials)); // This needs to be a different credential type.
@@ -73,6 +80,11 @@ public final class QueueAsyncClientBuilder {
         return new QueueAsyncClient(endpoint, pipeline, queueName);
     }
 
+    /**
+     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * @param endpoint URL of the service
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
@@ -84,11 +96,21 @@ public final class QueueAsyncClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the credentials used to authorize requests sent to the service
+     * @param credentials authorization credentials
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder credentials(TokenCredential credentials) {
         this.credentials = credentials;
         return this;
     }
 
+    /**
+     * Sets the connection string for the service, parses it for authentication information (account name, account key)
+     * @param connectionString connection string from access keys section
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
@@ -110,21 +132,42 @@ public final class QueueAsyncClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the http client used to send service requests
+     * @param httpClient http client to send requests
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
 
+    /**
+     * Adds a pipeline policy to apply on each request sent
+     * @param pipelinePolicy a pipeline policy
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
 
+    /**
+     * Sets the logging level for service requests
+     * @param logLevel logging level
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
 
+    /**
+     * Sets the configuration object used to retrieve environment configuration values used to build the client with
+     * when they are not set in the builder, defaults to Configuration.NONE
+     * @param configuration configuration store
+     * @return the updated QueueAsyncClientBuilder object
+     */
     public QueueAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

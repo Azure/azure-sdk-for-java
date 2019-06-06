@@ -18,8 +18,6 @@ import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
-import com.azure.storage.queue.models.StorageErrorCode;
-import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,25 +27,31 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Queue async client
+ */
 public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
 
+    /**
+     * Constructor used by QueueServiceAsyncClient
+     * @param client Client that interacts with the service interfaces
+     * @param queueName Name of the queue
+     */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
         this.queueName = queueName;
         this.client = new AzureQueueStorageImpl(client.httpPipeline())
             .withUrl(client.url())
             .withVersion(client.version());
-
-        try {
-            create().block();
-        } catch (StorageErrorException ex) {
-            if (!StorageErrorCode.QUEUE_ALREADY_EXISTS.equals(ex.value().message())) {
-                throw ex;
-            }
-        }
     }
 
+    /**
+     * Constructor used by the builder
+     * @param endpoint URL of the queue
+     * @param httpPipeline Http pipeline
+     * @param queueName Name of the queue
+     */
     QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
         this.queueName = queueName;
         this.client = new AzureQueueStorageImpl(httpPipeline)
@@ -55,7 +59,7 @@ public final class QueueAsyncClient {
     }
 
     /**
-     * @return a client builder
+     * @return a new client builder instance
      */
     public static QueueAsyncClientBuilder builder() {
         return new QueueAsyncClientBuilder();
@@ -228,18 +232,35 @@ public final class QueueAsyncClient {
             .map(VoidResponse::new);
     }
 
+    /*
+     * Maps the HTTP headers returned from the service to the expected response type
+     * @param response Service response
+     * @return Mapped response
+     */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
         QueueGetPropertiesHeaders propertiesHeaders = response.deserializedHeaders();
         QueueProperties properties = new QueueProperties(propertiesHeaders.metadata(), propertiesHeaders.approximateMessagesCount());
         return mapResponse(response, properties);
     }
 
+    /*
+     * Maps the HTTP headers returned from the service to the expected response type
+     * @param response Service response
+     * @return Mapped response
+     */
     private Response<UpdatedMessage> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
         MessageIdUpdateHeaders headers = response.deserializedHeaders();
         UpdatedMessage updatedMessage = new UpdatedMessage(headers.popReceipt(), headers.timeNextVisible());
         return mapResponse(response, updatedMessage);
     }
 
+    /*
+     * Maps a response from the service to the expected response for the client
+     * @param response Service response
+     * @param value Service response value
+     * @param <T> Type of teh service response value
+     * @return Mapped response
+     */
     private <T> SimpleResponse<T> mapResponse(Response response, T value) {
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), value);
     }

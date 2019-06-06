@@ -15,6 +15,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Queue client
+ */
 public final class QueueClient {
     private final QueueAsyncClient client;
 
@@ -22,10 +25,16 @@ public final class QueueClient {
         this.client = client;
     }
 
+    /**
+     * @return a new client builder instance
+     */
     public static QueueClientBuilder builder() {
         return new QueueClientBuilder();
     }
 
+    /**
+     * @return the URL of the queue
+     */
     public String url() {
         return client.url();
     }
