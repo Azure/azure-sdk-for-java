@@ -60,19 +60,25 @@ public class EventHubClientTest extends TestBase {
         new EventHubClient(null, null, null);
     }
 
+    /**
+     * Verifies that we can get the metadata about an Event Hub
+     */
     @Test
-    public void getEventHubInformation() {
+    public void getEventHubProperties() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertEquals(data.properties.path(), properties.path());
-                Assert.assertEquals(data.properties.partitionIds().length, properties.partitionIds().length);
+                Assert.assertEquals(data.getProperties().path(), properties.path());
+                Assert.assertEquals(data.getProperties().partitionIds().length, properties.partitionIds().length);
             }).verifyComplete();
     }
 
+    /**
+     * Verifies that we can get the partition identifiers of an Event Hub.
+     */
     @Test
     public void getPartitionIds() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
@@ -83,6 +89,9 @@ public class EventHubClientTest extends TestBase {
             .verifyComplete();
     }
 
+    /**
+     * Verifies that we can get partition information for each of the partitions in an Event Hub.
+     */
     @Test
     public void getPartitionInformation() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
@@ -100,6 +109,12 @@ public class EventHubClientTest extends TestBase {
         }
     }
 
+    /**
+     * Verifies that we can make multiple service calls one after the other. This is a typical user scenario when
+     * consumers want to create a receiver.
+     * 1. Gets information about the Event Hub
+     * 2. Queries for partition information about each partition.
+     */
     @Test
     public void getPartitionInformationMultipleCalls() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
@@ -130,42 +145,9 @@ public class EventHubClientTest extends TestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void getPartitionIdsAndThenInformation() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
-
-        // Act
-        StepVerifier.create(client.getProperties())
-            .assertNext(properties -> {
-                Assert.assertEquals(data.properties.partitionIds().length, properties.partitionIds().length);
-            })
-            .verifyComplete();
-
-        final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
-            .flatMapMany(ids -> {
-                List<Mono<PartitionProperties>> results = new ArrayList<>();
-                for (String id : ids) {
-                    results.add(client.getPartitionProperties(id));
-                }
-
-                return Flux.merge(results);
-            });
-
-        // Assert
-        StepVerifier.create(partitionProperties)
-            .assertNext(properties -> {
-                final PartitionProperties expected = data.getPartitionProperties(properties.id());
-                Assert.assertNotNull(expected);
-                Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
-            })
-            .assertNext(properties -> {
-                final PartitionProperties expected = data.getPartitionProperties(properties.id());
-                Assert.assertNotNull(expected);
-                Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
-            })
-            .verifyComplete();
-    }
-
+    /**
+     * Holds expected data based on the test-mode.
+     */
     private static class ExpectedData {
         private final EventHubProperties properties;
         private final Map<String, PartitionProperties> partitionPropertiesMap;
@@ -199,11 +181,11 @@ public class EventHubClientTest extends TestBase {
             }
         }
 
-        public EventHubProperties getProperties() {
+        EventHubProperties getProperties() {
             return properties;
         }
 
-        public PartitionProperties getPartitionProperties(String id) {
+        PartitionProperties getPartitionProperties(String id) {
             return partitionPropertiesMap.get(id);
         }
     }
