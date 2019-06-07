@@ -71,7 +71,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install reporting tools'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: eng/code-quality-reports/pom.xml
           options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
