@@ -24,7 +24,7 @@ class TransferManagerLargeFileTest extends APISpec {
         to run slower on Travis, and without this keep-alive, it may exceed the 10 minutes of no output and error the
         CI build.
          */
-        System.out.println("Starting test")
+        System.out.println("Starting large file test")
     }
 
     //Multi part
