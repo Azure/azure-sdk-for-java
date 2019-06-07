@@ -31,7 +31,7 @@ import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
 class APISpec extends Specification {
-    static final String RECORD_MODE = "RECORD"
+    static final String RECORD_MODE = "RECORDING"
     static final String PLAYBACK_MODE = "PLAYBACK"
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
