@@ -45,7 +45,7 @@
                 <source>..\..\applicationconfig\client\src\main\java</source>
                 <source>..\..\applicationconfig\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
-                <source>..\..\core\azure-core-auth\src\main\jasva</source>
+                <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
               </sources>

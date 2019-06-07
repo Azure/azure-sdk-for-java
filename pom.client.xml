@@ -196,6 +196,8 @@
             <version>${doclet.version}</version>
           </docletArtifact>
           <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+          <failOnError>true</failOnError>
+          <failOnWarnings>true</failOnWarnings>
         </configuration>
         <executions>
           <execution>
@@ -544,9 +546,25 @@
           </plugin>
         </plugins>
       </build>
-
     </profile>
 
+    <profile>
+      <id>javadoc-warning-ignore-lts</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <failOnWarnings>false</failOnWarnings>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
     <profile>
       <id>non-shipping-modules</id>
