@@ -38,30 +38,42 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 #### Get Credentials
 
-Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+- SAS Token
+ 
+a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
 ```Powershell
-az storage blob generate-sas
-    --account-name {storage account name}
-    --account-key {storage account key}
-    --container-name {name of blob container}
-    --name {blob name}
-    --permissions {permission to grant}
+az storage queue generate-sas
+    --name {queue name}
     --expiry {date/time to expire SAS token}
+    --permission {permission to grant}
+    --connection-string {connection string of the storage account}
 ```
 
 ```Powershell
 #usage example
-az storage blob generate-sas
-    --account-name azstoragesdkaccount
-    --account-key iseSbogGerMqZj17Xz77XPCPutCqdnDHVOx3ZZsc+UVWfqrrPZRP7bFv64aL8X1Fl06++3JNiuU0iQirr9VCqw==
-    --container-name javablobsettiererror15514606921543
-    --name javablobsettiererror15514606921543
-    --permissions rwdac
+az storage queue generate-sas
+    --name javasdksas
     --expiry 2019-06-05
+    --permission rpau
+    --connection-string DefaultEndpointsProtocol=https;AccountName=azstoragesdkaccount;AccountKey=PhOFTkuqB09cmsy0aMgd+cJfp75xU3dgjRMKrWxHHx4pFvuFIMOSK/fhzGci6zxFGk4CkmgoXFO3s91S9m+ICw==;EndpointSuffix=core.windows.net
 ```
-Alternatively, get the Account SAS Token from the Azure Portal.
+b. Alternatively, get the Account SAS Token from the Azure Portal.
+```
+Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
+```
 
+- Shared Key Credential
+a. Use account name and account key. Account name is your storage account name.
+```
+// Here is where we get the key
+Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
+```
+b. Use the connection string
+```
+// Here is where we get the key
+Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
+```
 ## Key concepts
 ### URL format
 Queues are addressable using the following URL format:
@@ -79,14 +91,6 @@ For a queue, the base URI includes the name of the account and the name of the q
 https://myaccount.queue.core.windows.net/myqueue
 ```
 
-Each resource may also have components, which are expressed as part of the query string on the base URI. The syntax for the query string is `?comp=<component_name>`. 
-Currently, the following resource components are available for queue resources, as parameters on the URI.
-
-| Component   |      Supported resources      |  Description |
-|:----------:|:-------------:|------|
-| `list` |  Account | Enumerates the entities beneath this resource. On the account, returns the list of queues. |
-| `metadata` |    Queue   | Sets or returns queue properties, including user-defined metadata. |
-
 ### Supported HTTP Operations
 Each resource supports operations based on the HTTP verbs GET, PUT, HEAD, and DELETE. 
 The verb, syntax, and supported HTTP version(s) for each operation appears on the reference page for each operation. 
@@ -103,13 +107,6 @@ Metadata for a queue resource is stored as name-value pairs.
 Note that metadata names preserve the case with which they were created, but are case-insensitive when set or read. 
 If two or more metadata headers with the same name are submitted for a resource, the Queue service returns status code 400 (Bad Request).
 
-### Timeout
-A call to a Queue service API can include a server timeout interval, specified in the timeout parameter of the request URI. If the server timeout interval elapses before the service has finished processing the request, the service returns an error.
-The maximum timeout interval for Queue service operations is 30 seconds. The Queue service automatically reduces any timeouts larger than 30 seconds to the 30-second maximum.
-The following example REST URI sets the timeout interval for the List Queues operation to 20 seconds:
-```$xslt
-GET https://myaccount.queue.core.windows.net?comp=list&timeout=20
-```
 
 ### Queue Services
 The queue service do operations on the queues in the storage account and manage the queue properties. 
