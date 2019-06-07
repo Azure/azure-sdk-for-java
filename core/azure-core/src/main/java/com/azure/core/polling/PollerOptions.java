@@ -10,12 +10,12 @@ import java.time.Duration;
  */
 public class PollerOptions {
 
-    private String negativeValueFormat = "Negative or zero poll interval not allowed.";
+    private String negativeValueFormat = "Null, negative or zero poll interval not allowed.";
     private Duration pollInterval;
 
     /**
      * Constructor
-     * @param pollInterval     This will ensure that poll happens only once in pollInterval
+     * @param pollInterval This will ensure that poll happens only once in pollInterval
      */
     public PollerOptions(Duration pollInterval) {
         validateValuesAndThrow(pollInterval);
@@ -27,7 +27,7 @@ public class PollerOptions {
      */
     private void validateValuesAndThrow(Duration pollInterval) {
 
-        if (pollInterval.toNanos() <= 0) {
+        if (pollInterval == null || pollInterval.toNanos() <= 0) {
             throw new IllegalArgumentException(negativeValueFormat);
         }
     }

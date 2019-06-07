@@ -7,14 +7,11 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * The life cycle of an operation depicted below
- * <ul>
- *    <li>NOT-STARTED </li>
- *    <li>IN-PROGRESS</li>
- *    <li>Successfully Complete</li>
- *    <li>User Cancelled</li>
- *    <li>Failed</li>
- * </ul>
+ * This class is container of information related to polling and poll response.
+ * 
+ *
+ * <p><strong>Container of PollResponse and related information.</strong></p>
+ * @param <T>
  */
 public final class PollResponse<T> {
 
