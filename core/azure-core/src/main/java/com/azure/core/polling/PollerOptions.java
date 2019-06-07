@@ -6,7 +6,9 @@ package com.azure.core.polling;
 import java.time.Duration;
 
 /**
- * Place to provide configuration options for Poller
+ * This class provide configuration options needed to create Poller.
+ *
+ * <p><strong>Place holder for Poller Options</strong></p>
  */
 public class PollerOptions {
 
@@ -14,10 +16,12 @@ public class PollerOptions {
     private Duration pollInterval;
 
     /**
-     * Constructor
-     * @param pollInterval This will ensure that poll happens only once in pollInterval
+     * constructor
+     * @param pollInterval It ensure that polling happens only once in given pollInterval.
+     *
+     * @throws IllegalArgumentException for {@code null} , zero and negative values.
      */
-    public PollerOptions(Duration pollInterval) {
+    public PollerOptions(Duration pollInterval) throws IllegalArgumentException {
         validateValuesAndThrow(pollInterval);
         this.pollInterval = pollInterval;
     }

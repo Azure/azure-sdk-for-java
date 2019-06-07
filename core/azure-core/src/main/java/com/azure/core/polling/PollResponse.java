@@ -8,18 +8,23 @@ import java.util.Map;
 
 /**
  * This class is container of information related to polling and poll response.
- * 
  *
  * <p><strong>Container of PollResponse and related information.</strong></p>
  * @param <T>
  */
 public final class PollResponse<T> {
 
+    private String nullValueNotAllowedFormat = "Null %s value not allowed.";
+
     private OperationStatus status;
     private T value;
     private Duration retryAfter;
     private Map<Object, Object> properties;
 
+    /**
+     * Represent various state of poll operation.
+     * The poll operation is considered complete when status is one of SUCCESSFULLY_COMPLETED/FAILEDUSER_CANCELLED
+     **/
     public enum OperationStatus {
         NOT_STARTED,
         IN_PROGRESS,
@@ -34,7 +39,7 @@ public final class PollResponse<T> {
      * @param status : operation status
      * @param result : the result
      * @param retryAfter : How long before next retry.
-     * @param properties : the map of perperties
+     * @param properties : the map of perperties which user want to store.
      */
     public PollResponse(OperationStatus status, T result, Duration retryAfter, Map<Object, Object> properties) {
         this(status, result, retryAfter);
@@ -57,11 +62,21 @@ public final class PollResponse<T> {
      *
      * @param status : operation status
      * @param value : the value
+     *
+     * @throws IllegalArgumentException for null status
      */
-    public PollResponse(OperationStatus status, T value) {
+    public PollResponse(OperationStatus status, T value) throws IllegalArgumentException {
+        validateAndThrow(status, "status");
         this.status = status;
         this.value = value;
     }
+
+    private void validateAndThrow(Object object, String name) throws IllegalArgumentException {
+        if (object == null) {
+            throw new IllegalArgumentException(String.format(nullValueNotAllowedFormat, name));
+        }
+    }
+
     /**
      * @return OperationStatus
      */

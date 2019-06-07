@@ -29,7 +29,7 @@ public class PollerTests {
         long sendFinalResponseInMillis
     ) {
         return new Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>>() {
-            
+
             // Will return success after this time.
             LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(sendFinalResponseInMillis));
 
@@ -86,19 +86,16 @@ public class PollerTests {
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
-        long totalTimeoutInMillis = 1000 * 1;
+        long totalTimeoutInMillis = 1000 * 2;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
 
         Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
+                successPollResponse, totalTimeoutInMillis - pollInterval.toMillis() * 5);
 
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-       /*createCertPoller.getObserver().subscribe(ps -> {
-          debug("Got Response "+ps.getStatus().toString());
-       });*/
 
         StepVerifier.create(createCertPoller.getObserver())
             .recordWith(ArrayList::new)
@@ -106,12 +103,9 @@ public class PollerTests {
             .consumeRecordedWith(results -> {
                 assertTrue(results.contains(inProgressPollResponse));
                 assertTrue(results.contains(successPollResponse));
-                assertTrue(results.size() <= totalTimeoutInMillis / pollInterval.toMillis() + 1);
-                showResults(results);
             })
             .verifyComplete();
 
-        Thread.sleep(totalTimeoutInMillis);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
         Assert.assertTrue(createCertPoller.block() == successPollResponse);
