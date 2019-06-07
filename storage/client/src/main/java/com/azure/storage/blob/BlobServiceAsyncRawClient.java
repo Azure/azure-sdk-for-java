@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
@@ -32,23 +33,19 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 public final class BlobServiceAsyncRawClient {
 
     AzureBlobStorageImpl azureBlobStorage;
+    AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
      * to make HTTP requests.
      *
-     * @param url
-     *         A url to an Azure Storage account.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
-     *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlobServiceAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.azureBlobStorage = azureBlobStorage;
+    public BlobServiceAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
+        this.azureBlobStorage = azureBlobStorageBuilder.build();
     }
 
     /**
@@ -60,19 +57,11 @@ public final class BlobServiceAsyncRawClient {
      * @return
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
-    public ContainerAsyncClient createContainerURL(String containerName) {
-
-        // Construct new AzureBlobStorageImpl from current httpPipeline
-        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
-        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
-
-        // Set version
-        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
-
-        // Set URL of blob
+    public ContainerAsyncRawClient createContainerAsyncRawClient(String containerName) {
         try {
-            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), containerName).toString());
-            return new ContainerAsyncClient(newAzureBlobStorage);
+            ContainerAsyncRawClient containerAsyncRawClient = new ContainerAsyncRawClient(this.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), containerName).toString()));
+            this.azureBlobStorageBuilder.url(this.azureBlobStorage.url());
+            return containerAsyncRawClient;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

@@ -20,7 +20,7 @@ import java.net.URL;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobSyncClient extends BlobAsyncRawClient {
+public final class PageBlobClient extends BlobAsyncRawClient {
 
     PageBlobAsyncClient pageBlobAsyncClient;
 
@@ -44,7 +44,7 @@ public final class PageBlobSyncClient extends BlobAsyncRawClient {
      *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public PageBlobSyncClient(AzureBlobStorageImpl azureBlobStorage) {
+    public PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
     }
 
@@ -54,10 +54,10 @@ public final class PageBlobSyncClient extends BlobAsyncRawClient {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
                     + "0 if specified.");
         }
-        if (pageRange.start() % PageBlobSyncClient.PAGE_BYTES != 0) {
+        if (pageRange.start() % PageBlobClient.PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
         }
-        if (pageRange.end() % PageBlobSyncClient.PAGE_BYTES != PageBlobSyncClient.PAGE_BYTES - 1) {
+        if (pageRange.end() % PageBlobClient.PAGE_BYTES != PageBlobClient.PAGE_BYTES - 1) {
             throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
         }
         if (pageRange.end() <= pageRange.start()) {

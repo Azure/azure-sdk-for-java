@@ -4,7 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -40,16 +43,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage append blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorage);
+    AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
+        appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorageBuilder);
     }
 
 
@@ -63,8 +60,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create() {
-        return appendBlobAsyncRawClient.create(null, null, null, null);
+    public Mono<AppendBlobCreateHeaders> create() {
+        return this.create(null, null, null, null);
     }
 
     /**
@@ -90,9 +87,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<AppendBlobCreateHeaders> create(BlobHTTPHeaders headers, Metadata metadata,
                 BlobAccessConditions accessConditions, Context context) {
-            return appendBlobAsyncRawClient.create(headers, metadata, accessConditions, context);
+            return appendBlobAsyncRawClient
+                .create(headers, metadata, accessConditions, context)
+                .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -115,8 +114,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length) {
-        return appendBlobAsyncRawClient.appendBlock(data, length, null, null);
+    public Mono<AppendBlobAppendBlockHeaders> appendBlock(Flux<ByteBuf> data, long length) {
+        return this.appendBlock(data, length, null, null);
     }
 
     /**
@@ -147,9 +146,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length,
+    public Mono<AppendBlobAppendBlockHeaders> appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        return appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions, context);
+        return appendBlobAsyncRawClient
+            .appendBlock(data, length, appendBlobAccessConditions, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -171,8 +172,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, null, null,
+    public Mono<AppendBlobAppendBlockFromUrlHeaders> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
                  null, null);
     }
 
@@ -208,9 +209,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public Mono<AppendBlobAppendBlockFromUrlHeaders> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
-        return appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        return appendBlobAsyncRawClient
+            .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 }

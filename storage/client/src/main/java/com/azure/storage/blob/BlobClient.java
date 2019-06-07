@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
@@ -28,8 +29,8 @@ public class BlobClient {
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests.
      */
-    BlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        blobAsyncClient = new BlobAsyncClient(azureBlobStorage);
+    BlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        blobAsyncClient = new BlobAsyncClient(azureBlobStorageBuilder);
     }
 
     /**

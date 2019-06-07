@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
@@ -28,8 +29,8 @@ public class BlobAsyncClient {
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests.
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
+    BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder);
     }
 
     /**
@@ -311,7 +312,6 @@ public class BlobAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    //TODO determine this return type
     public Mono<BlobGetPropertiesHeaders> getProperties(BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .getProperties(accessConditions, context)

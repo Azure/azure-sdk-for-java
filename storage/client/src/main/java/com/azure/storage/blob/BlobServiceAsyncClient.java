@@ -4,11 +4,16 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
@@ -26,18 +31,12 @@ public final class BlobServiceAsyncClient {
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
      * to make HTTP requests.
      *
-     * @param url
-     *         A url to an Azure Storage account.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
-     *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorage);
+    public BlobServiceAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorageBuilder);
     }
 
     /**
@@ -49,8 +48,14 @@ public final class BlobServiceAsyncClient {
      * @return
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
-    public ContainerAsyncClient createContainerURL(String containerName) {
-        return blobServiceAsyncRawClient.createContainerURL(containerName);
+    public ContainerAsyncClient createContainerAsyncClient(String containerName) {
+        try {
+            ContainerAsyncClient containerAsyncClient = new ContainerAsyncClient(this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.blobServiceAsyncRawClient.azureBlobStorage.url()), containerName).toString()));
+            this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(this.blobServiceAsyncRawClient.azureBlobStorage.url());
+            return containerAsyncClient;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -74,9 +79,9 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
+    public Flux<ContainerItem> listContainersSegment(String marker,
                                                                              ListContainersOptions options) {
-        return blobServiceAsyncRawClient.listContainersSegment(marker, options, null);
+        return this.listContainersSegment(marker, options, null);
     }
 
     /**
@@ -106,9 +111,26 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
+
+    public Flux<ContainerItem> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
-        return blobServiceAsyncRawClient.listContainersSegment(marker, options, context);
+        return blobServiceAsyncRawClient
+            .listContainersSegment(null, options, context)
+            .flatMapMany(response -> listContainersSegmentHelper(response.value().marker(), options, context, response));
+    }
+
+    private Flux<ContainerItem> listContainersSegmentHelper(String marker, ListContainersOptions options, Context context,
+                                                    ServicesListContainersSegmentResponse response){
+        Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
+        if (response.value().nextMarker() != null) {
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(blobServiceAsyncRawClient.listContainersSegment(marker, options,
+                context)
+                .flatMapMany((r) ->
+                    listContainersSegmentHelper(response.value().nextMarker(), options, context, r)));
+        }
+
+        return result;
     }
 
     /**
@@ -121,8 +143,8 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetPropertiesResponse> getProperties() {
-        return blobServiceAsyncRawClient.getProperties(null);
+    public Mono<ServiceGetPropertiesHeaders> getProperties() {
+        return this.getProperties(null);
     }
 
     /**
@@ -142,8 +164,10 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetPropertiesResponse> getProperties(Context context) {
-        return blobServiceAsyncRawClient.getProperties(context);
+    public Mono<ServiceGetPropertiesHeaders> getProperties(Context context) {
+        return blobServiceAsyncRawClient
+            .getProperties(context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -161,8 +185,8 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
-        return blobServiceAsyncRawClient.setProperties(properties, null);
+    public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties) {
+        return this.setProperties(properties, null);
     }
 
     /**
@@ -186,8 +210,10 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
-        return blobServiceAsyncRawClient.setProperties(properties, context);
+    public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties, Context context) {
+        return blobServiceAsyncRawClient
+            .setProperties(properties, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -201,8 +227,8 @@ public final class BlobServiceAsyncClient {
      *
      * @return Emits the successful response.
      */
-    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return blobServiceAsyncRawClient.getUserDelegationKey(start, expiry, null);
+    public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return this.getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -222,9 +248,11 @@ public final class BlobServiceAsyncClient {
      *
      * @return Emits the successful response.
      */
-    public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+    public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
-        return blobServiceAsyncRawClient.getUserDelegationKey(start, expiry, context);
+        return blobServiceAsyncRawClient
+            .getUserDelegationKey(start, expiry, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -239,8 +267,8 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetStatisticsResponse> getStatistics() {
-        return blobServiceAsyncRawClient.getStatistics(null);
+    public Mono<ServiceGetStatisticsHeaders> getStatistics() {
+        return this.getStatistics(null);
     }
 
     /**
@@ -262,8 +290,10 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetStatisticsResponse> getStatistics(Context context) {
-        return blobServiceAsyncRawClient.getStatistics(context);
+    public Mono<ServiceGetStatisticsHeaders> getStatistics(Context context) {
+        return blobServiceAsyncRawClient
+            .getStatistics(context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -276,8 +306,8 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetAccountInfoResponse> getAccountInfo() {
-        return blobServiceAsyncRawClient.getAccountInfo(null);
+    public Mono<ServiceGetAccountInfoHeaders> getAccountInfo() {
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -297,7 +327,9 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ServicesGetAccountInfoResponse> getAccountInfo(Context context) {
-        return blobServiceAsyncRawClient.getAccountInfo(context);
+    public Mono<ServiceGetAccountInfoHeaders> getAccountInfo(Context context) {
+        return blobServiceAsyncRawClient
+            .getAccountInfo(context)
+            .map(ResponseBase::deserializedHeaders);
     }
 }

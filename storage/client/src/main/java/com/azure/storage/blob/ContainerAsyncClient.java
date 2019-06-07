@@ -3,25 +3,20 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
-import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
-import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
-import com.azure.storage.blob.models.ContainersGetAccessPolicyResponse;
-import com.azure.storage.blob.models.ContainersGetAccountInfoResponse;
-import com.azure.storage.blob.models.ContainersGetPropertiesResponse;
-import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
-import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
-import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
-import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
+import com.azure.storage.blob.models.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Blob;
 import java.util.List;
+
+import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -45,15 +40,9 @@ public final class ContainerAsyncClient {
     /**
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage container.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder);
     }
 
     /**
@@ -68,8 +57,9 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public BlockBlobAsyncRawClient createBlockBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlockBlobAsyncClient(blobName);
+    public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new BlockBlobAsyncClient(newAzureBlobStorage);
     }
 
     /**
@@ -84,8 +74,9 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public PageBlobAsyncRawClient createPageBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createPageBlobAsyncClient(blobName);
+    public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new PageBlobAsyncClient(newAzureBlobStorage);
     }
 
     /**
@@ -100,8 +91,9 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public AppendBlobAsyncRawClient createAppendBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createAppendBlobAsyncClient(blobName);
+    public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new AppendBlobAsyncClient(newAzureBlobStorage);
     }
 
     /**
@@ -116,8 +108,9 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public BlobAsyncRawClient createBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlobAsyncClient(blobName);
+    public BlobAsyncClient createBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new BlobAsyncClient(newAzureBlobStorage);
     }
 
     /**
@@ -132,7 +125,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> create() {
-        return containerAsyncRawClient.create(null, null, null);
+        return this.create(null, null, null);
     }
 
     /**
@@ -159,8 +152,9 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
-        return containerAsyncRawClient.create(metadata, accessType, context);
-
+        return containerAsyncRawClient
+            .create(metadata, accessType, context)
+            .then();
     }
 
     /**
@@ -175,7 +169,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete() {
-        return containerAsyncRawClient.delete(null, null);
+        return this.delete(null, null);
     }
 
     /**
@@ -199,7 +193,9 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.delete(accessConditions, context);
+        return containerAsyncRawClient
+            .delete(accessConditions, context)
+            .then();
     }
 
     /**
@@ -212,8 +208,8 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetPropertiesResponse> getProperties() {
-        return containerAsyncRawClient.getProperties(null, null);
+    public Mono<ContainerGetPropertiesHeaders> getProperties() {
+        return this.getProperties(null, null);
     }
 
     /**
@@ -236,9 +232,11 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetPropertiesResponse> getProperties(LeaseAccessConditions leaseAccessConditions,
+    public Mono<ContainerGetPropertiesHeaders> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
-        return containerAsyncRawClient.getProperties(leaseAccessConditions, context);
+        return containerAsyncRawClient
+            .getProperties(leaseAccessConditions, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -255,7 +253,7 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Void> setMetadata(Metadata metadata) {
-        return containerAsyncRawClient.setMetadata(metadata, null, null);
+        return this.setMetadata(metadata, null, null);
     }
 
     /**
@@ -281,7 +279,9 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setMetadata(metadata, accessConditions, context);
+        return containerAsyncRawClient
+            .setMetadata(metadata, accessConditions, context)
+            .then();
     }
 
     /**
@@ -295,8 +295,8 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy() {
-        return containerAsyncRawClient.getAccessPolicy(null, null);
+    public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy() {
+        return this.getAccessPolicy(null, null);
     }
 
     /**
@@ -320,9 +320,11 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+    public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
-        return containerAsyncRawClient.getAccessPolicy(leaseAccessConditions, context);
+        return containerAsyncRawClient
+            .getAccessPolicy(leaseAccessConditions, context)
+            .map(ResponseBase::deserializedHeaders);
     }
 
     /**
@@ -347,7 +349,7 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, null, null);
+        return this.setAccessPolicy(accessType, identifiers, null, null);
     }
 
     /**
@@ -380,7 +382,9 @@ public final class ContainerAsyncClient {
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+        return containerAsyncRawClient
+            .setAccessPolicy(accessType, identifiers, accessConditions, context)
+            .then();
     }
 
     // TODO: figure out if this is meant to stay private or change to public
@@ -391,6 +395,7 @@ public final class ContainerAsyncClient {
         return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
     }
 
+    // TODO: Lease methods not in the skeleton
     /**
      * Acquires a lease on the container for delete operations. The lease duration must be between 15 to
      * 60 seconds, or infinite (-1). For more information, see the
@@ -641,10 +646,6 @@ public final class ContainerAsyncClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      *
@@ -655,8 +656,8 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, null);
+    public Flux<BlobItem> listBlobsFlatSegment(ListBlobsOptions options) {
+        return this.listBlobsFlatSegment(options, null);
     }
 
     /**
@@ -666,10 +667,6 @@ public final class ContainerAsyncClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      * @param context
@@ -686,9 +683,26 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
-            Context context) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, context);
+
+    public Flux<BlobItem> listBlobsFlatSegment(ListBlobsOptions options, Context context) {
+        return containerAsyncRawClient
+            .listBlobsFlatSegment(null, options, context)
+            .flatMapMany(response -> listBlobsFlatSegmentHelper(response.value().marker(), options, context, response));
+    }
+
+    private Flux<BlobItem> listBlobsFlatSegmentHelper(String marker, ListBlobsOptions options,
+                                                      Context context, ContainersListBlobFlatSegmentResponse response){
+        Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems());
+
+        if (response.value().nextMarker() != null) {
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(marker, options,
+                context)
+                .flatMapMany((r) ->
+                    listBlobsFlatSegmentHelper(response.value().nextMarker(), options, context, r)));
+        }
+
+        return result;
     }
 
     /**
@@ -716,9 +730,9 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, null);
+        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
     }
 
     /**
@@ -752,9 +766,11 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options, Context context) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, context);
+        return containerAsyncRawClient
+            .listBlobsHierarchySegment(marker, delimiter, options, context)
+            .flatMapMany();
     }
 
     /**
@@ -767,8 +783,8 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccountInfoResponse> getAccountInfo() {
-        return containerAsyncRawClient.getAccountInfo(null);
+    public Mono<ContainerGetAccountInfoHeaders> getAccountInfo() {
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -788,7 +804,9 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccountInfoResponse> getAccountInfo(Context context) {
-        return containerAsyncRawClient.getAccountInfo(context);
+    public Mono<ContainerGetAccountInfoHeaders> getAccountInfo(Context context) {
+        return containerAsyncRawClient
+            .getAccountInfo(context)
+            .map(ResponseBase::deserializedHeaders);
     }
 }

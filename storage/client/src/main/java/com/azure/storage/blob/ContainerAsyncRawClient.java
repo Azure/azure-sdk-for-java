@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
@@ -33,20 +34,28 @@ public final class ContainerAsyncRawClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
-    public AzureBlobStorageImpl azureBlobStorage;
+    AzureBlobStorageImpl azureBlobStorage;
+    AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     /**
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage container.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public ContainerAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.azureBlobStorage = azureBlobStorage;
+    ContainerAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
+        this.azureBlobStorage = this.azureBlobStorageBuilder.build();
+    }
+
+    protected AzureBlobStorageImpl createNewAzureBlobStorage(String blobName) {
+        blobName = safeURLEncode(blobName);
+        // Set URL of blob
+        try {
+            AzureBlobStorageImpl impl = this.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString()).build();
+            this.azureBlobStorageBuilder.url(this.azureBlobStorage.url());
+            return impl;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -62,22 +71,8 @@ public final class ContainerAsyncRawClient {
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncRawClient createBlockBlobAsyncClient(String blobName) {
-        blobName = safeURLEncode(blobName);
-
-        // Construct new AzureBlobStorageImpl from current httpPipeline
-        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
-        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
-
-        // Set version
-        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
-
-        // Set URL of blob
-        try {
-            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
-            return new BlockBlobAsyncRawClient(newAzureBlobStorage);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        AzureBlobStorageImpl newAzureBlobStorage = createNewAzureBlobStorage(blobName);
+        return new BlockBlobAsyncRawClient(newAzureBlobStorage);
     }
 
     /**
@@ -93,22 +88,8 @@ public final class ContainerAsyncRawClient {
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncRawClient createPageBlobAsyncClient(String blobName) {
-        blobName = safeURLEncode(blobName);
-
-        // Construct new AzureBlobStorageImpl from current httpPipeline
-        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
-        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
-
-        // Set version
-        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
-
-        // Set URL of blob
-        try {
-            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
-            return new PageBlobAsyncRawClient(newAzureBlobStorage);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        AzureBlobStorageImpl newAzureBlobStorage = createNewAzureBlobStorage(blobName);
+        return new PageBlobAsyncRawClient(newAzureBlobStorage);
     }
 
     /**
@@ -124,22 +105,8 @@ public final class ContainerAsyncRawClient {
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncRawClient createAppendBlobAsyncClient(String blobName) {
-        blobName = safeURLEncode(blobName);
-
-        // Construct new AzureBlobStorageImpl from current httpPipeline
-        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
-        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
-
-        // Set version
-        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
-
-        // Set URL of blob
-        try {
-            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
-            return new AppendBlobAsyncRawClient(newAzureBlobStorage);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        AzureBlobStorageImpl newAzureBlobStorage = createNewAzureBlobStorage(blobName);
+        return new AppendBlobAsyncRawClient(newAzureBlobStorage);
     }
 
     /**
@@ -155,22 +122,8 @@ public final class ContainerAsyncRawClient {
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncRawClient createBlobAsyncClient(String blobName) {
-        blobName = safeURLEncode(blobName);
-
-        // Construct new AzureBlobStorageImpl from current httpPipeline
-        HttpPipeline httpPipeline = azureBlobStorage.httpPipeline();
-        AzureBlobStorageImpl newAzureBlobStorage = new AzureBlobStorageImpl(httpPipeline);
-
-        // Set version
-        newAzureBlobStorage = newAzureBlobStorage.withVersion(azureBlobStorage.version());
-
-        // Set URL of blob
-        try {
-            newAzureBlobStorage = newAzureBlobStorage.withUrl(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), blobName).toString());
-            return new BlobAsyncRawClient(newAzureBlobStorage);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        AzureBlobStorageImpl newAzureBlobStorage = createNewAzureBlobStorage(blobName);
+        return new BlobAsyncRawClient(newAzureBlobStorage);
     }
 
     /**
@@ -856,7 +809,6 @@ public final class ContainerAsyncRawClient {
         options = options == null ? new ListBlobsOptions() : options;
         context = context == null ? Context.NONE : context;
 
-        // TODO : include parameter do I need to cast?
         return postProcessResponse(this.azureBlobStorage.containers()
                 .listBlobFlatSegmentWithRestResponseAsync(null, options.prefix(), marker,
                     options.maxResults(), options.details().toList(), null, null, context));
@@ -930,8 +882,6 @@ public final class ContainerAsyncRawClient {
             throw new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported.");
         }
         context = context == null ? Context.NONE : context;
-
-        //TODO: does this require the include parameter
 
         return postProcessResponse(this.azureBlobStorage.containers()
                 .listBlobHierarchySegmentWithRestResponseAsync(null, delimiter, options.prefix(), marker,

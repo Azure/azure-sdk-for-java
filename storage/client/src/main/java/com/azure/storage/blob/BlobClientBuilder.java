@@ -66,7 +66,7 @@ final class BlobClientBuilder {
     }
 
     public BlobClient buildSync() {
-        return new BlobSyncRlient(this.build());
+        return new BlobClient(this.build());
     }
 
     public BlobClientBuilder endpoint(String endpoint) {

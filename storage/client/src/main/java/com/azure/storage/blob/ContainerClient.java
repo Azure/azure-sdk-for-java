@@ -5,10 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -19,9 +22,9 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
-public final class ContainerSyncRawClient {
+public final class ContainerClient {
 
-    ContainerAsyncRawClient containerAsyncRawClient;
+    private ContainerAsyncClient containerAsyncClient;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -33,15 +36,9 @@ public final class ContainerSyncRawClient {
     /**
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage container.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public ContainerSyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    ContainerClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.containerAsyncClient = new ContainerAsyncClient(azureBlobStorageBuilder);
     }
 
     /**
@@ -56,8 +53,9 @@ public final class ContainerSyncRawClient {
      *
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public BlockBlobAsyncRawClient createBlockBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlockBlobAsyncClient(blobName);
+    public BlockBlobClient createBlockBlobClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new BlockBlobClient(newAzureBlobStorage);
     }
 
     /**
@@ -72,8 +70,9 @@ public final class ContainerSyncRawClient {
      *
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public PageBlobAsyncRawClient createPageBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createPageBlobAsyncClient(blobName);
+    public PageBlobClient createPageBlobClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new PageBlobClient(newAzureBlobStorage);
     }
 
     /**
@@ -88,8 +87,9 @@ public final class ContainerSyncRawClient {
      *
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public AppendBlobAsyncRawClient createAppendBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createAppendBlobAsyncClient(blobName);
+    public AppendBlobClient createAppendBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new AppendBlobClient(newAzureBlobStorage);
     }
 
     /**
@@ -104,8 +104,9 @@ public final class ContainerSyncRawClient {
      *
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public BlobAsyncRawClient createBlobAsyncClient(String blobName) {
-        return containerAsyncRawClient.createBlobAsyncClient(blobName);
+    public BlobClient createBlobAsyncClient(String blobName) {
+        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
+        return new BlobClient(newAzureBlobStorage);
     }
 
     /**
@@ -119,8 +120,8 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> create() {
-        return containerAsyncRawClient.create(null, null, null);
+    public void create() {
+        this.create(null, null, null, null);
     }
 
     /**
@@ -146,239 +147,264 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
-        return containerAsyncRawClient.create(metadata, accessType, context);
+    public void create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
+        Mono<Void> response = containerAsyncClient.create(metadata, accessType, context);
 
-    }
-
-    /**
-     * Marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> delete() {
-        return containerAsyncRawClient.delete(null, null);
-    }
-
-    /**
-     * Marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
-     * @param accessConditions
-     *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.delete(accessConditions, context);
-    }
-
-    /**
-     * Returns the container's metadata and system properties. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersGetPropertiesResponse> getProperties() {
-        return containerAsyncRawClient.getProperties(null, null);
-    }
-
-    /**
-     * Returns the container's metadata and system properties. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
-     *
-     * @param leaseAccessConditions
-     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersGetPropertiesResponse> getProperties(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
-        return containerAsyncRawClient.getProperties(leaseAccessConditions, context);
-    }
-
-    /**
-     * Sets the container's metadata. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     *
-     * @param metadata
-     *         {@link Metadata}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> setMetadata(Metadata metadata) {
-        return containerAsyncRawClient.setMetadata(metadata, null, null);
-    }
-
-    /**
-     * Sets the container's metadata. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     *
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessConditions
-     *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setMetadata(metadata, accessConditions, context);
-    }
-
-    /**
-     * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy() {
-        return containerAsyncRawClient.getAccessPolicy(null, null);
-    }
-
-    /**
-     * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
-     *
-     * @param leaseAccessConditions
-     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
-        return containerAsyncRawClient.getAccessPolicy(leaseAccessConditions, context);
-    }
-
-    /**
-     * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
-     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
-     * ensure the time formatting is compatible with the service. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     *
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers
-     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
-     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *         for more information. Passing null will clear all access policies.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-            List<SignedIdentifier> identifiers) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, null, null);
-    }
-
-    /**
-     * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
-     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
-     * ensure the time formatting is compatible with the service. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     *
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers
-     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
-     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *         for more information. Passing null will clear all access policies.
-     * @param accessConditions
-     *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
-        return containerAsyncRawClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
-    }
-
-    // TODO: figure out if this is meant to stay private or change to public
-    private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
-        if (modifiedAccessConditions == null) {
-            return true;
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
         }
-        return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
     }
 
+    /**
+     * Marks the specified container for deletion. The container and any blobs contained within it are later
+     * deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void delete() {
+        this.delete(null, null, null);
+    }
+
+    /**
+     * Marks the specified container for deletion. The container and any blobs contained within it are later
+     * deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * @param accessConditions
+     *         {@link ContainerAccessConditions}
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Void> response = containerAsyncClient.delete(accessConditions, context);
+
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
+        }
+    }
+
+    /**
+     * Returns the container's metadata and system properties. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public ContainerGetPropertiesHeaders getProperties() {
+        return this.getProperties(null, null, null);
+    }
+
+    /**
+     * Returns the container's metadata and system properties. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
+     *
+     * @param leaseAccessConditions
+     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
+     *         lease on the blob.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public ContainerGetPropertiesHeaders getProperties(LeaseAccessConditions leaseAccessConditions,
+            Duration timeout, Context context) {
+        Mono<ContainerGetPropertiesHeaders> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
+
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
+    }
+
+    /**
+     * Sets the container's metadata. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
+     *
+     * @param metadata
+     *         {@link Metadata}
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void setMetadata(Metadata metadata) {
+        this.setMetadata(metadata, null, null, null);
+    }
+
+    /**
+     * Sets the container's metadata. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
+     *
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessConditions
+     *         {@link ContainerAccessConditions}
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void setMetadata(Metadata metadata,
+            ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Void> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
+
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
+        }
+    }
+
+    /**
+     * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public ContainerGetAccessPolicyHeaders getAccessPolicy() {
+        return this.getAccessPolicy(null, null, null);
+    }
+
+    /**
+     * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * @param leaseAccessConditions
+     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
+     *         lease on the blob.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public ContainerGetAccessPolicyHeaders getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+            Duration timeout, Context context) {
+        Mono<ContainerGetAccessPolicyHeaders> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
+
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
+    }
+
+    /**
+     * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
+     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
+     * ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * @param accessType
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
+     *         in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers
+     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
+     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     *         for more information. Passing null will clear all access policies.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void setAccessPolicy(PublicAccessType accessType,
+            List<SignedIdentifier> identifiers) {
+        this.setAccessPolicy(accessType, identifiers, null, null,null);
+    }
+
+    /**
+     * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
+     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
+     * ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * @param accessType
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
+     *         in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers
+     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
+     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     *         for more information. Passing null will clear all access policies.
+     * @param accessConditions
+     *         {@link ContainerAccessConditions}
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public void setAccessPolicy(PublicAccessType accessType,
+                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
+                                Duration timeout, Context context) {
+        Mono<Void> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
+        }
+    }
+
+    // TODO : Do we need lease methods?
     /**
      * Acquires a lease on the container for delete operations. The lease duration must be between 15 to
      * 60 seconds, or infinite (-1). For more information, see the
@@ -402,7 +428,7 @@ public final class ContainerSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return containerAsyncRawClient.acquireLease(proposedId, duration, null, null);
+        return containerAsyncClient.acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -434,7 +460,7 @@ public final class ContainerSyncRawClient {
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
+        return containerAsyncClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
     }
 
     /**
@@ -451,7 +477,7 @@ public final class ContainerSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
-        return containerAsyncRawClient.renewLease(leaseID, null, null);
+        return containerAsyncClient.renewLease(leaseID, null, null);
     }
 
     /**
@@ -479,7 +505,7 @@ public final class ContainerSyncRawClient {
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.renewLease(leaseID, modifiedAccessConditions, context);
+        return containerAsyncClient.renewLease(leaseID, modifiedAccessConditions, context);
     }
 
     /**
@@ -496,7 +522,7 @@ public final class ContainerSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
-        return containerAsyncRawClient.releaseLease(leaseID, null, null);
+        return containerAsyncClient.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -524,7 +550,7 @@ public final class ContainerSyncRawClient {
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions, context);
+        return containerAsyncClient.releaseLease(leaseID, modifiedAccessConditions, context);
     }
 
     /**
@@ -539,7 +565,7 @@ public final class ContainerSyncRawClient {
      * @return Emits the successful response.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease() {
-        return containerAsyncRawClient.breakLease(null, null, null);
+        return containerAsyncClient.breakLease(null, null, null);
     }
 
     /**
@@ -570,7 +596,7 @@ public final class ContainerSyncRawClient {
      */
     public Mono<ContainersBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
+        return containerAsyncClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
     }
 
     /**
@@ -589,7 +615,7 @@ public final class ContainerSyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, null, null);
+        return containerAsyncClient.changeLease(leaseID, proposedID, null, null);
     }
 
     /**
@@ -619,7 +645,7 @@ public final class ContainerSyncRawClient {
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, modifiedAccessConditions, context);
+        return containerAsyncClient.changeLease(leaseID, proposedID, modifiedAccessConditions, context);
     }
 
     /**
@@ -643,8 +669,8 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, null);
+    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
+        return this.listBlobsFlatSegment(marker, options, null, null);
     }
 
     /**
@@ -674,9 +700,12 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
-            Context context) {
-        return containerAsyncRawClient.listBlobsFlatSegment(marker, options, context);
+    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout, Context context) {
+        Flux<BlobItem> response = containerAsyncClient.listBlobsFlatSegment(options, context);
+
+        return timeout == null ?
+            response.toIterable():
+            response.timeout(timeout).toIterable();
     }
 
     /**
@@ -704,9 +733,9 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+    public Iterable<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, null);
+        return this.listBlobsHierarchySegment(marker, delimiter, options, null, null);
     }
 
     /**
@@ -740,9 +769,13 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
-            ListBlobsOptions options, Context context) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options, context);
+    public Iterable<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
+            ListBlobsOptions options, Duration timeout, Context context) {
+        Flux<BlobHierarchyListSegment> response = containerAsyncClient.listBlobsHierarchySegment(marker, delimiter, options, context);
+
+        return timeout == null ?
+            response.toIterable():
+            response.timeout(timeout).toIterable();
     }
 
     /**
@@ -755,8 +788,8 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccountInfoResponse> getAccountInfo() {
-        return containerAsyncRawClient.getAccountInfo(null);
+    public ContainerGetAccountInfoHeaders getAccountInfo() {
+        return this.getAccountInfo(null, null);
     }
 
     /**
@@ -776,7 +809,11 @@ public final class ContainerSyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccountInfoResponse> getAccountInfo(Context context) {
-        return containerAsyncRawClient.getAccountInfo(context);
+    public ContainerGetAccountInfoHeaders getAccountInfo(Duration timeout, Context context) {
+        Mono<ContainerGetAccountInfoHeaders> response = containerAsyncClient.getAccountInfo(context);
+
+        return timeout == null ?
+            response.block():
+            response.block(timeout);
     }
 }

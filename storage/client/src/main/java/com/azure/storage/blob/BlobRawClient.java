@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
@@ -27,8 +28,8 @@ class BlobRawClient {
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests.
      */
-    BlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
+    BlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder);
     }
 
     /**

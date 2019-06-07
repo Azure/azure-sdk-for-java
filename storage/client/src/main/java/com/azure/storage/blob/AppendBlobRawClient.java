@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 
 
 /**
@@ -21,7 +23,7 @@ import java.nio.ByteBuffer;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobSyncRawClient extends BlobAsyncRawClient {
+public final class AppendBlobRawClient extends BlobAsyncRawClient {
     AppendBlobAsyncRawClient appendBlobAsyncRawClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -36,15 +38,10 @@ public final class AppendBlobSyncRawClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage append blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    AppendBlobSyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
+    AppendBlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
     }
 
 
@@ -59,7 +56,7 @@ public final class AppendBlobSyncRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobsCreateResponse> create() {
-        return appendBlobAsyncRawClient.create(null, null, null, null);
+        return this.create(null, null, null, null, null);
     }
 
     /**
@@ -86,7 +83,7 @@ public final class AppendBlobSyncRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<AppendBlobsCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
-                BlobAccessConditions accessConditions, Context context) {
+                                                  BlobAccessConditions accessConditions, Duration timeout, Context context) {
             return appendBlobAsyncRawClient.create(headers, metadata, accessConditions, context);
     }
 
