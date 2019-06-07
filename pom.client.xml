@@ -193,7 +193,7 @@
           <docletArtifact>
             <groupId>org.apidesign.javadoc</groupId>
             <artifactId>codesnippet-doclet</artifactId>
-            <version>${doclet.version}</version>
+            <version>${codesnippet4javadoc.version}</version>
           </docletArtifact>
           <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
           <failOnError>true</failOnError>
@@ -539,10 +539,18 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
+
+              <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
+              javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
+              Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
               <failOnWarnings>false</failOnWarnings>
+
+              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
+              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
               <additionalJOptions>
                 <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
               </additionalJOptions>
+
             </configuration>
           </plugin>
         </plugins>
