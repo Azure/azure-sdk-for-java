@@ -195,7 +195,7 @@
             <artifactId>codesnippet-doclet</artifactId>
             <version>${doclet.version}</version>
           </docletArtifact>
-          <additionalOptions>-maxLineLength 120 -snippetpath src/samples/java</additionalOptions>
+          <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
         </configuration>
         <executions>
           <execution>
@@ -511,7 +511,7 @@
     <profile>
       <id>javadoc-no-modules-fix</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <build>
         <plugins>
@@ -525,6 +525,28 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>javadoc-doclet-compatibility</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalJOptions>
+                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
+              </additionalJOptions>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+
 
     <profile>
       <id>non-shipping-modules</id>

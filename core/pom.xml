@@ -76,11 +76,30 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <failOnError>true</failOnError>
-          <failOnWarnings>true</failOnWarnings>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>javadoc-warning-fail-java8</id>
+      <activation>
+        <jdk>8</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <failOnWarnings>true</failOnWarnings>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <modules>
     <module>azure-core</module>

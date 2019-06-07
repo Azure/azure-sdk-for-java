@@ -39,7 +39,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.applicationconfig.configurationclient.addSetting#string-string
         ConfigurationSetting configurationSetting = configurationClient
             .addSetting("prodDBConnection", "db_connection").value();
-        System.out.printf("Key: %s, Value: %s \n", configurationSetting.key(), configurationSetting.value());
+        System.out.printf("Key: %s, Value: %s %n", configurationSetting.key(), configurationSetting.value());
         // END: com.azure.applicationconfig.configurationclient.addSetting#string-string
     }
 
