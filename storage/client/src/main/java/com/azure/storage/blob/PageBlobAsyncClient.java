@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -44,8 +43,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * @return a new client appendBlobClientBuilder instance.
      */
-    public static PageBlobAsyncClientBuilder builder() {
-        return new PageBlobAsyncClientBuilder();
+    public static PageBlobClientBuilder builder() {
+        return new PageBlobClientBuilder();
     }
 
 

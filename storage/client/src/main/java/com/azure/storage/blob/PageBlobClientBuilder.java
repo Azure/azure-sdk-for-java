@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Fluent appendBlobClientBuilder for page blob blob async clients.
  */
-public final class PageBlobAsyncClientBuilder {
+public final class PageBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -41,7 +41,7 @@ public final class PageBlobAsyncClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    PageBlobAsyncClientBuilder() {
+    PageBlobClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
@@ -89,9 +89,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder endpoint(String endpoint) {
+    public PageBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -105,9 +105,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder credentials(SharedKeyCredentials credentials) {
+    public PageBlobClientBuilder credentials(SharedKeyCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -115,18 +115,18 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder credentials(TokenCredentials credentials) {
+    public PageBlobClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
 
     /**
      * Clears the credentials used to authorize requests sent to the service
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder anonymousCredentials() {
+    public PageBlobClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
         return this;
     }
@@ -134,9 +134,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder connectionString(String connectionString) {
+    public PageBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -160,9 +160,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder httpClient(HttpClient httpClient) {
+    public PageBlobClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -170,9 +170,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public PageBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
@@ -180,9 +180,9 @@ public final class PageBlobAsyncClientBuilder {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public PageBlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
@@ -191,9 +191,9 @@ public final class PageBlobAsyncClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
      * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated PageBlobAsyncClientBuilder object
+     * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobAsyncClientBuilder configuration(Configuration configuration) {
+    public PageBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
