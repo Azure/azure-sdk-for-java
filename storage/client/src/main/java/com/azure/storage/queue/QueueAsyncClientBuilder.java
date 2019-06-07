@@ -98,7 +98,7 @@ public final class QueueAsyncClientBuilder {
             }
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = QueueServiceAsyncClientBuilder.getCredentialFromQueryParam(fullURL.getQuery());
+            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
             if (credential != null) {
                 this.sasTokenCredential = credential;
             }
@@ -136,7 +136,7 @@ public final class QueueAsyncClientBuilder {
      */
     public QueueAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = QueueServiceAsyncClientBuilder.getSharedKeyFromConnectionString(connectionString);
+        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
         return this;
     }
 

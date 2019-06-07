@@ -2,10 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue.credentials;
 
+import com.azure.core.implementation.util.ImplUtils;
+
+import java.util.HashMap;
+
 /**
  * Holds a SAS token used for authenticating requests.
  */
 public final class SASTokenCredential {
+    // Required SAS token pieces
+    private static final String SIGNED_VERSION = "sv";
+    private static final String SIGNED_SERVICES = "ss";
+    private static final String SIGNED_RESOURCE_TYPES = "srt";
+    private static final String SIGNED_PERMISSIONS = "sp";
+    private static final String SIGNED_EXPIRY = "se";
+    private static final String SIGNATURE = "sig";
+
+    // Optional SAS token pieces
+    private static final String SIGNED_START = "st";
+    private static final String SIGNED_PROTOCOL = "spr";
+    private static final String SIGNED_IP = "sip";
+
     private final String sasToken;
 
     public SASTokenCredential(String sharedKey) {
@@ -14,5 +31,56 @@ public final class SASTokenCredential {
 
     public String sasToken() {
         return sasToken;
+    }
+
+    /**
+     * Creates a SAS token credential from the passed URL query string
+     * @param query URL query used to build the SAS token
+     * @return A SAS token credential if the query param contains all the necessary pieces
+     */
+    public static SASTokenCredential fromQuery(String query) {
+        if (ImplUtils.isNullOrEmpty(query)) {
+            return null;
+        }
+
+        HashMap<String, String> queryParams = new HashMap<>();
+        for (String queryParam : query.split("&")) {
+            String key = queryParam.split("=", 1)[0];
+            queryParams.put(key, queryParam);
+        }
+
+        if (queryParams.size() < 6
+            || !queryParams.containsKey(SIGNED_VERSION)
+            || !queryParams.containsKey(SIGNED_SERVICES)
+            || !queryParams.containsKey(SIGNED_RESOURCE_TYPES)
+            || !queryParams.containsKey(SIGNED_PERMISSIONS)
+            || !queryParams.containsKey(SIGNED_EXPIRY)
+            || !queryParams.containsKey(SIGNATURE)) {
+            return null;
+        }
+
+        StringBuilder sasTokenBuilder = new StringBuilder(queryParams.get(SIGNED_VERSION))
+            .append("&").append(SIGNED_SERVICES)
+            .append("&").append(SIGNED_RESOURCE_TYPES)
+            .append("&").append(SIGNED_PERMISSIONS)
+            .append("&").append(SIGNED_EXPIRY)
+            .append("&").append(SIGNATURE);
+
+        // SIGNED_IP is optional
+        if (queryParams.containsKey(SIGNED_IP)) {
+            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_IP)));
+        }
+
+        // SIGNED_START is optional
+        if (queryParams.containsKey(SIGNED_START)) {
+            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_START)));
+        }
+
+        // SIGNED_PROTOCOL is optional
+        if (queryParams.containsKey(SIGNED_PROTOCOL)) {
+            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_PROTOCOL)));
+        }
+
+        return new SASTokenCredential(sasTokenBuilder.toString());
     }
 }

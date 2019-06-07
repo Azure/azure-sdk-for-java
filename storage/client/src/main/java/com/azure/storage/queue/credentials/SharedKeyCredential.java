@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue.credentials;
 
+import com.azure.core.implementation.util.ImplUtils;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import javax.crypto.Mac;
@@ -13,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -22,6 +24,10 @@ import java.util.Map;
  */
 public final class SharedKeyCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
+
+    // Pieces of the connection string that are needed.
+    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
+    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
     private final String accountName;
     private final byte[] accountKey;
@@ -36,6 +42,23 @@ public final class SharedKeyCredential {
     public SharedKeyCredential(String accountName, String accountKey) {
         this.accountName = accountName;
         this.accountKey = Base64.getDecoder().decode(accountKey);
+    }
+
+    public static SharedKeyCredential fromConnectionString(String connectionString) {
+        HashMap<String, String> connectionStringPieces = new HashMap<>();
+        for (String connectionStringPiece : connectionString.split(";")) {
+            String[] kvp = connectionStringPiece.split("=", 2);
+            connectionStringPieces.put(kvp[0].toLowerCase(), kvp[1]);
+        }
+
+        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
+        String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
+
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+        }
+
+        return new SharedKeyCredential(accountName, accountKey);
     }
 
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
