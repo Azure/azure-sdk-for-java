@@ -91,10 +91,6 @@ For a queue, the base URI includes the name of the account and the name of the q
 https://myaccount.queue.core.windows.net/myqueue
 ```
 
-### Supported HTTP Operations
-Each resource supports operations based on the HTTP verbs GET, PUT, HEAD, and DELETE. 
-The verb, syntax, and supported HTTP version(s) for each operation appears on the reference page for each operation. 
-
 ### Queue Names
 Every queue within an account must have a unique name. The queue name must be a valid DNS name, and cannot be changed once created. Queue names must confirm to the following rules:
 1. A queue name must start with a letter or number, and can only contain letters, numbers, and the dash (-) character.
