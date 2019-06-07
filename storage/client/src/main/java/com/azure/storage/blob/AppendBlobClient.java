@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 
 
 /**
@@ -38,9 +40,9 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * pipeline to make HTTP requests.
      *
      */
-    AppendBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.appendBlobAsyncClient = new AppendBlobAsyncClient(azureBlobStorage);
+    AppendBlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
+        this.appendBlobAsyncClient = new AppendBlobAsyncClient(azureBlobStorageBuilder);
     }
 
 
@@ -54,8 +56,8 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for appendBlobAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create() {
-        return appendBlobAsyncClient.create(null, null, null, null);
+    public AppendBlobCreateHeaders create() {
+        return this.create(null, null, null, null, null);
     }
 
     /**
@@ -81,9 +83,12 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for appendBlobAsyncClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
-                BlobAccessConditions accessConditions, Context context) {
-            return appendBlobAsyncClient.create(headers, metadata, accessConditions, context);
+    public AppendBlobCreateHeaders create(BlobHTTPHeaders headers, Metadata metadata,
+                                          BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<AppendBlobCreateHeaders> response = appendBlobAsyncClient.create(headers, metadata, accessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 
     /**
@@ -106,8 +111,8 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for appendBlobAsyncClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length) {
-        return appendBlobAsyncClient.appendBlock(data, length, null, null);
+    public AppendBlobAppendBlockHeaders appendBlock(Flux<ByteBuf> data, long length) {
+        return this.appendBlock(data, length, null, null, null);
     }
 
     /**
@@ -138,9 +143,12 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for appendBlobAsyncClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        return appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions, context);
+    public AppendBlobAppendBlockHeaders appendBlock(Flux<ByteBuf> data, long length,
+                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        Mono<AppendBlobAppendBlockHeaders> response = appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 
     /**
@@ -162,9 +170,9 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for appendBlobAsyncClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null);
+    public AppendBlobAppendBlockFromUrlHeaders appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
+                 null, null, null);
     }
 
     /**
@@ -199,9 +207,12 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for appendBlobAsyncClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public AppendBlobAppendBlockFromUrlHeaders appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
-        return appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+        Mono<AppendBlobAppendBlockFromUrlHeaders> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 }

@@ -730,10 +730,10 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-            ListBlobsOptions options) {
-        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
-    }
+//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
+//            ListBlobsOptions options) {
+//        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
+//    }
 
     /**
      * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
@@ -766,12 +766,12 @@ public final class ContainerAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-            ListBlobsOptions options, Context context) {
-        return containerAsyncRawClient
-            .listBlobsHierarchySegment(marker, delimiter, options, context)
-            .flatMapMany();
-    }
+//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
+//            ListBlobsOptions options, Context context) {
+//        return containerAsyncRawClient
+//            .listBlobsHierarchySegment(null, delimiter, options, context)
+//            .flatMapMany();
+//    }
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the

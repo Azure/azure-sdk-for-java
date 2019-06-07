@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 /**
  * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
@@ -37,33 +39,9 @@ public final class PageBlobClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage page blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    public PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-    }
-
-    // TODO: Figure out if this method needs to change to public to access method in wrappers
-    private static String pageRangeToString(PageRange pageRange) {
-        if (pageRange.start() < 0 || pageRange.end() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                    + "0 if specified.");
-        }
-        if (pageRange.start() % PageBlobClient.PAGE_BYTES != 0) {
-            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
-        }
-        if (pageRange.end() % PageBlobClient.PAGE_BYTES != PageBlobClient.PAGE_BYTES - 1) {
-            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
-        }
-        if (pageRange.end() <= pageRange.start()) {
-            throw new IllegalArgumentException("PageRange's End value must be after the start.");
-        }
-        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
+    public PageBlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
     }
 
     /**
@@ -81,8 +59,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsCreateResponse> create(long size) {
-        return pageBlobAsyncClient.create(size, null, null, null, null, null);
+    public PageBlobCreateHeaders create(long size) {
+        return this.create(size, null, null, null, null, null, null);
     }
 
     /**
@@ -115,9 +93,12 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-            Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        return pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
+    public PageBlobCreateHeaders create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+                                        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<PageBlobCreateHeaders> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -142,8 +123,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
-        return pageBlobAsyncClient.uploadPages(pageRange, body, null, null);
+    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+        return this.uploadPages(pageRange, body, null, null, null);
     }
 
     /**
@@ -176,9 +157,12 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
-            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        return pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
+    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
+        Mono<PageBlobUploadPagesHeaders> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -206,9 +190,9 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null, null);
+    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+        return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
+                null, null, null);
     }
 
     /**
@@ -249,11 +233,14 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        return pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        Mono<PageBlobUploadPagesFromURLHeaders> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        return timeout == null ?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -272,8 +259,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsClearPagesResponse> clearPages(PageRange pageRange) {
-        return pageBlobAsyncClient.clearPages(pageRange, null, null);
+    public PageBlobClearPagesHeaders clearPages(PageRange pageRange) {
+        return this.clearPages(pageRange, null, null, null);
     }
 
     /**
@@ -300,9 +287,13 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsClearPagesResponse> clearPages(PageRange pageRange,
-            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        return pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
+    public PageBlobClearPagesHeaders clearPages(PageRange pageRange,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
+        Mono<PageBlobClearPagesHeaders> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
+
+        return timeout == null ?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -318,8 +309,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange) {
-        return pageBlobAsyncClient.getPageRanges(blobRange, null, null);
+    public Iterable<PageRange> getPageRanges(BlobRange blobRange) {
+        return this.getPageRanges(blobRange, null, null, null);
     }
 
     /**
@@ -343,9 +334,12 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange,
-            BlobAccessConditions accessConditions, Context context) {
-        return pageBlobAsyncClient.getPageRanges(blobRange, accessConditions, context);
+    public Iterable<PageRange> getPageRanges(BlobRange blobRange,
+            BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions, context);
+        return timeout == null?
+            response.toIterable():
+            response.timeout(timeout).toIterable();
     }
 
     /**
@@ -365,8 +359,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, null, null);
+    public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null, null);
     }
 
     /**
@@ -394,9 +388,12 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions, Context context) {
-        return pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions, context);
+    public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
+            BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions, context);
+        return timeout == null?
+            response.toIterable():
+            response.timeout(timeout).toIterable();
     }
 
     /**
@@ -413,8 +410,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsResizeResponse> resize(long size) {
-        return pageBlobAsyncClient.resize(size, null, null);
+    public PageBlobResizeHeaders resize(long size) {
+        return this.resize(size, null, null, null);
     }
 
     /**
@@ -439,8 +436,11 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsResizeResponse> resize(long size, BlobAccessConditions accessConditions, Context context) {
-        return pageBlobAsyncClient.resize(size, accessConditions, context);
+    public PageBlobResizeHeaders resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<PageBlobResizeHeaders> response = pageBlobAsyncClient.resize(size, accessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -459,9 +459,9 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
+    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, null, null);
+        return this.updateSequenceNumber(action, sequenceNumber, null, null,null);
     }
 
     /**
@@ -488,9 +488,12 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
-        return pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
+    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
+            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<PageBlobUpdateSequenceNumberHeaders> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -508,8 +511,8 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      *
      * @return Emits the successful response.
      */
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot) {
-        return pageBlobAsyncClient.copyIncremental(source, snapshot, null, null);
+    public CopyStatusType copyIncremental(URL source, String snapshot) {
+        return this.copyIncremental(source, snapshot, null, null, null);
     }
 
     /**
@@ -537,8 +540,11 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      *
      * @return Emits the successful response.
      */
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
+    public CopyStatusType copyIncremental(URL source, String snapshot,
+            ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+        Mono<CopyStatusType> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 }

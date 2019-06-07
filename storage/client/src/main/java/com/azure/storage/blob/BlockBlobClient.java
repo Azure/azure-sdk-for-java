@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -42,16 +44,10 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage block blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    BlockBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        blockBlobAsyncClient = new BlockBlobAsyncClient(azureBlobStorage);
+    BlockBlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
+        blockBlobAsyncClient = new BlockBlobAsyncClient(azureBlobStorageBuilder);
     }
 
     /**
@@ -80,8 +76,8 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsUploadResponse> upload(Flux<ByteBuf> data, long length) {
-        return blockBlobAsyncClient.upload(data, length, null, null, null, null);
+    public BlockBlobUploadHeaders upload(Flux<ByteBuf> data, long length) {
+        return this.upload(data, length, null, null, null, null, null);
     }
 
     /**
@@ -122,9 +118,13 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsUploadResponse> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
-            Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        return blockBlobAsyncClient.upload(data, length, headers, metadata, accessConditions, context);
+    public BlockBlobUploadHeaders upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient.upload(data, length, headers, metadata, accessConditions, context);
+
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -151,9 +151,9 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public void stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
-        return blockBlobAsyncClient.stageBlock(base64BlockID, data, length, null, null);
+        this.stageBlock(base64BlockID, data, length, null, null, null);
     }
 
     /**
@@ -189,9 +189,14 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsStageBlockResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-            LeaseAccessConditions leaseAccessConditions, Context context) {
-        return blockBlobAsyncClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
+    public void stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<Void> response = blockBlobAsyncClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
+        }
     }
 
     /**
@@ -215,10 +220,10 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobAsyncRawClient.stageBlockFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public void stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
-        return blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null, null);
+        this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
+                null, null, null, null);
     }
 
     /**
@@ -256,10 +261,15 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobAsyncRawClient.stageBlockFromURL")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public void stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        return blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
+            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
+        Mono<Void> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
+        if (timeout == null) {
+            response.block();
+        } else {
+            response.block(timeout);
+        }
     }
 
     /**
@@ -276,8 +286,8 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.getBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsGetBlockListResponse> getBlockList(BlockListType listType) {
-        return blockBlobAsyncClient.getBlockList(listType, null, null);
+    public BlockBlobGetBlockListHeaders getBlockList(BlockListType listType) {
+        return this.getBlockList(listType, null, null, null);
     }
 
     /**
@@ -303,9 +313,13 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.getBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsGetBlockListResponse> getBlockList(BlockListType listType,
-            LeaseAccessConditions leaseAccessConditions, Context context) {
-        return blockBlobAsyncClient.getBlockList(listType, leaseAccessConditions, context);
+    public BlockBlobGetBlockListHeaders getBlockList(BlockListType listType,
+            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<BlockBlobGetBlockListHeaders> response = blockBlobAsyncClient.getBlockList(listType, leaseAccessConditions, context);
+
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 
     /**
@@ -328,8 +342,8 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.commitBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs) {
-        return blockBlobAsyncClient.commitBlockList(base64BlockIDs, null, null, null, null);
+    public BlockBlobCommitBlockListHeaders commitBlockList(List<String> base64BlockIDs) {
+        return this.commitBlockList(base64BlockIDs, null, null, null, null, null);
     }
 
     /**
@@ -364,8 +378,11 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.commitBlockList")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        return blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
+    public BlockBlobCommitBlockListHeaders commitBlockList(List<String> base64BlockIDs,
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<BlockBlobCommitBlockListHeaders> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
+        return timeout == null?
+            response.block():
+            response.block(timeout);
     }
 }

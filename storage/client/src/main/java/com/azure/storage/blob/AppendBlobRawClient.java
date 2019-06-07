@@ -55,7 +55,7 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create() {
+    public AppendBlobsCreateResponse create() {
         return this.create(null, null, null, null, null);
     }
 
@@ -82,9 +82,12 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
+    public AppendBlobsCreateResponse create(BlobHTTPHeaders headers, Metadata metadata,
                                                   BlobAccessConditions accessConditions, Duration timeout, Context context) {
-            return appendBlobAsyncRawClient.create(headers, metadata, accessConditions, context);
+        Mono<AppendBlobsCreateResponse> response = appendBlobAsyncRawClient.create(headers, metadata, accessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 
     /**
@@ -107,8 +110,8 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length) {
-        return appendBlobAsyncRawClient.appendBlock(data, length, null, null);
+    public AppendBlobsAppendBlockResponse appendBlock(Flux<ByteBuf> data, long length) {
+        return this.appendBlock(data, length, null, null, null);
     }
 
     /**
@@ -139,9 +142,12 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        return appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions, context);
+    public AppendBlobsAppendBlockResponse appendBlock(Flux<ByteBuf> data, long length,
+                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
+        Mono<AppendBlobsAppendBlockResponse> response = appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 
     /**
@@ -163,9 +169,9 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null);
+    public AppendBlobsAppendBlockFromUrlResponse appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
+                 null, null, null);
     }
 
     /**
@@ -200,9 +206,12 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public AppendBlobsAppendBlockFromUrlResponse appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
-        return appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+        Mono<AppendBlobsAppendBlockFromUrlResponse> response = appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        return timeout == null
+            ? response.block()
+            : response.block(timeout);
     }
 }
