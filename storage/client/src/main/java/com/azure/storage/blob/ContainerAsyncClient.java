@@ -36,13 +36,15 @@ public final class ContainerAsyncClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    }
 
     /**
-     * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
+     * @return a new client builder instance.
      */
-    ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder);
+    public static ContainerAsyncClientBuilder builder() {
+        return new ContainerAsyncClientBuilder();
     }
 
     /**

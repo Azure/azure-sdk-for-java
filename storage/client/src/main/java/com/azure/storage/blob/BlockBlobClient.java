@@ -21,7 +21,7 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobClient extends BlobAsyncRawClient {
+public final class BlockBlobSyncClient {
 
     BlockBlobAsyncClient blockBlobAsyncClient;
     /**
@@ -39,19 +39,15 @@ public final class BlockBlobClient extends BlobAsyncRawClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
+    BlockBlobSyncClient(BlockBlobAsyncClient blockBlobAsyncClient) {
+        this.blockBlobAsyncClient = blockBlobAsyncClient;
+    }
+
     /**
-     * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage block blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     * @return a new client builder instance.
      */
-    BlockBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        blockBlobAsyncClient = new BlockBlobAsyncClient(azureBlobStorage);
+    public static BlockBlobSyncClientBuilder builder() {
+        return new BlockBlobSyncClientBuilder();
     }
 
     /**

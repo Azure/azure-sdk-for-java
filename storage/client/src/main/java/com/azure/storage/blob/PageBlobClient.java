@@ -5,8 +5,20 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
+import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
+import com.azure.storage.blob.models.PageBlobsCreateResponse;
+import com.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse;
+import com.azure.storage.blob.models.PageBlobsGetPageRangesResponse;
+import com.azure.storage.blob.models.PageBlobsResizeResponse;
+import com.azure.storage.blob.models.PageBlobsUpdateSequenceNumberResponse;
+import com.azure.storage.blob.models.PageBlobsUploadPagesFromURLResponse;
+import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
+import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,9 +32,9 @@ import java.net.URL;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobClient extends BlobAsyncRawClient {
+public final class PageBlobSyncClient {
 
-    PageBlobAsyncClient pageBlobAsyncClient;
+    private PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -34,18 +46,15 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    PageBlobSyncClient(PageBlobAsyncClient pageBlobAsyncClient) {
+        this.pageBlobAsyncClient = pageBlobAsyncClient;
+    }
+
     /**
-     * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage page blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     * @return a new client builder instance.
      */
-    public PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
+    public static PageBlobSyncClientBuilder builder() {
+        return new PageBlobSyncClientBuilder();
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers

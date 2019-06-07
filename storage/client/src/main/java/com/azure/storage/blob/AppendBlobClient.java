@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobClient extends BlobAsyncRawClient {
+public final class AppendBlobSyncClient {
     AppendBlobAsyncClient appendBlobAsyncClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -33,16 +33,16 @@ public final class AppendBlobClient extends BlobAsyncRawClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
-    /**
-     * Creates a {@code appendBlobAsyncClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     */
-    AppendBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.appendBlobAsyncClient = new AppendBlobAsyncClient(azureBlobStorage);
+    AppendBlobSyncClient(AppendBlobAsyncClient appendBlobAsyncClient) {
+        this.appendBlobAsyncClient = appendBlobAsyncClient;
     }
 
+    /**
+     * @return a new client builder instance.
+     */
+    public static AppendBlobSyncClientBuilder builder() {
+        return new AppendBlobSyncClientBuilder();
+    }
 
     /**
      * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see

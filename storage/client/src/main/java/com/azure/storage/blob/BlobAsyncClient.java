@@ -25,12 +25,15 @@ public class BlobAsyncClient {
 
     private BlobAsyncRawClient blobAsyncRawClient;
 
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
+    }
+
     /**
-     * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
-     * make HTTP requests.
+     * @return a new client builder instance.
      */
-    BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder);
+    public static BlobAsyncClientBuilder builder() {
+        return new BlobAsyncClientBuilder();
     }
 
     /**
