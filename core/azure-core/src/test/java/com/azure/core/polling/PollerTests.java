@@ -8,12 +8,10 @@ import com.azure.core.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
 import org.junit.Test;
-import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;

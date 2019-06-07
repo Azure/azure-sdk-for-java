@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -81,7 +80,7 @@ public class Poller<T> {
         backgroundFluxHandle = createBackgroundFlux();
         pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
 
-        // auto polling  start here
+        // auto polling start here
         setAutoPollingEnabled(true);
     }
 
@@ -98,7 +97,8 @@ public class Poller<T> {
     }
 
     /**
-     * This will call cancelOperation function if provided. Once cancelOperation is triggered successfully, it can not be called  again.
+     * This will call cancelOperation function if provided. Once cancelOperation is triggered successfully, it can not be called again.
+     * This is to avoid unintentional calls to cancelOperation.
      * It will not call cancelOperation if operation status is not started/Cancelled/Failed/successfully completed.
      *
      * @see com.azure.core.polling.PollResponse.OperationStatus
@@ -122,13 +122,14 @@ public class Poller<T> {
     /**
      * Enable user to subscribe and receive all the responses.
      * The user will start receiving PollResponse When client subscribe to this Flux.
+     * This Flux will not trigger a call to PollOperation.
      * The poller still have its own default polling in action unless, user has  turned off
      * auto polling.
      *
      * @return poll response as Flux that can be subscribed.
      */
     public Flux<PollResponse<T>> getObserver() {
-        return sendPollRequestWithDelay()
+        return listenPollRequestWithDelay()
             .flux()
             .repeat()
             .takeUntil(pollResponse -> pollResponse.isDone());
@@ -190,7 +191,7 @@ public class Poller<T> {
         })));
     }
 
-    private Mono<PollResponse<T>> sendPollRequestWithDelay() {
+    private Mono<PollResponse<T>> listenPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             return Mono.just(pollResponse);
         })));
