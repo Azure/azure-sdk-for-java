@@ -5,18 +5,12 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.Blob;
 import java.util.List;
-
-import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -28,7 +22,7 @@ import static com.azure.storage.blob.Utility.safeURLEncode;
  */
 public final class ContainerAsyncClient {
 
-    ContainerAsyncRawClient containerAsyncRawClient;
+    private ContainerAsyncRawClient containerAsyncRawClient;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -41,10 +35,10 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public static ContainerAsyncClientBuilder builder() {
-        return new ContainerAsyncClientBuilder();
+    public static ContainerClientBuilder containerClientBuilder() {
+        return new ContainerClientBuilder();
     }
 
     /**

@@ -25,7 +25,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobAsyncClient extends BlobAsyncRawClient {
+public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
@@ -41,10 +41,11 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
 
     PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
     public static PageBlobAsyncClientBuilder builder() {
         return new PageBlobAsyncClientBuilder();

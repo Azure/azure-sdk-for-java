@@ -54,13 +54,6 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage page blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
     public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);

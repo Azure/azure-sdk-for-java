@@ -42,8 +42,8 @@ public final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
      * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      */
-    AppendBlobAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    AppendBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
     }
 
     /**

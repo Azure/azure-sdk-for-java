@@ -3,23 +3,15 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 
 /**
@@ -28,8 +20,13 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
+public final class AppendBlobAsyncClient extends BlobAsyncClient {
+
+    /**
+     * The "raw" version of this client.
+     */
     AppendBlobAsyncRawClient appendBlobAsyncRawClient;
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -46,10 +43,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public static AppendBlobAsyncClientBuilder builder() {
-        return new AppendBlobAsyncClientBuilder();
+    public static AppendBlobClientBuilder appendBlobClientBuilder() {
+        return new AppendBlobClientBuilder();
     }
 
     /**

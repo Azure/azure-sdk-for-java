@@ -22,15 +22,13 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 class BlobAsyncRawClient {
 
     protected AzureBlobStorageImpl azureBlobStorage;
-    protected AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests..
      */
-    BlobAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
-        this.azureBlobStorage = this.azureBlobStorageBuilder.build();
+    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**

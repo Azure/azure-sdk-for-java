@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
@@ -32,7 +33,7 @@ import java.net.URL;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobSyncClient {
+public final class PageBlobClient extends BlobClient {
 
     private PageBlobAsyncClient pageBlobAsyncClient;
 
@@ -46,12 +47,13 @@ public final class PageBlobSyncClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
-    PageBlobSyncClient(PageBlobAsyncClient pageBlobAsyncClient) {
-        this.pageBlobAsyncClient = pageBlobAsyncClient;
+    PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.pageBlobAsyncClient = new PageBlobAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
     public static PageBlobSyncClientBuilder builder() {
         return new PageBlobSyncClientBuilder();

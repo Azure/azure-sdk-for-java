@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
@@ -30,14 +31,14 @@ public class BlobClient {
 
     private BlobAsyncClient blobAsyncClient;
 
-    BlobClient(BlobAsyncClient blobAsyncClient) {
-        this.blobAsyncClient = blobAsyncClient;
+    BlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobAsyncClient = new BlobAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public static BlobClientBuilder builder() {
+    public static BlobClientBuilder blobClientBuilder() {
         return new BlobClientBuilder();
     }
 

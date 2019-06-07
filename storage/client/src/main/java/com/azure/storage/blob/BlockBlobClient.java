@@ -21,9 +21,9 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobSyncClient {
+public final class BlockBlobClient extends BlobClient {
 
-    BlockBlobAsyncClient blockBlobAsyncClient;
+    private BlockBlobAsyncClient blockBlobAsyncClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -39,15 +39,16 @@ public final class BlockBlobSyncClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
-    BlockBlobSyncClient(BlockBlobAsyncClient blockBlobAsyncClient) {
-        this.blockBlobAsyncClient = blockBlobAsyncClient;
+    BlockBlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.blockBlobAsyncClient = new BlockBlobAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public static BlockBlobSyncClientBuilder builder() {
-        return new BlockBlobSyncClientBuilder();
+    public static BlockBlobClientBuilder blockBlobClientBuilder() {
+        return new BlockBlobClientBuilder();
     }
 
     /**

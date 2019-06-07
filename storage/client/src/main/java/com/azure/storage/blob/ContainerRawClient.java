@@ -23,7 +23,7 @@ import java.util.List;
  */
 public final class ContainerRawClient {
 
-    ContainerAsyncRawClient containerAsyncRawClient;
+    private ContainerAsyncRawClient containerAsyncRawClient;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -36,8 +36,8 @@ public final class ContainerRawClient {
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      */
-    public ContainerRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder);
+    public ContainerRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
     }
 
     /**

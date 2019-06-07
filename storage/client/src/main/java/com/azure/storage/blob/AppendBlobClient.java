@@ -21,8 +21,10 @@ import java.nio.ByteBuffer;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobSyncClient {
+public final class AppendBlobClient extends BlobClient {
+
     AppendBlobAsyncClient appendBlobAsyncClient;
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -33,15 +35,16 @@ public final class AppendBlobSyncClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
-    AppendBlobSyncClient(AppendBlobAsyncClient appendBlobAsyncClient) {
-        this.appendBlobAsyncClient = appendBlobAsyncClient;
+    AppendBlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.appendBlobAsyncClient = new AppendBlobAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client builder instance.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public static AppendBlobSyncClientBuilder builder() {
-        return new AppendBlobSyncClientBuilder();
+    public static AppendBlobClientBuilder appendBlobClientBuilder() {
+        return new AppendBlobClientBuilder();
     }
 
     /**

@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent builder for page blob blob async clients.
+ * Fluent appendBlobClientBuilder for page blob blob async clients.
  */
 public final class PageBlobAsyncClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -48,10 +48,10 @@ public final class PageBlobAsyncClientBuilder {
     }
 
     /**
-     * Constructs an instance of PageBlobAsyncClient based on the configurations stored in the builder.
+     * Constructs an instance of PageBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    public PageBlobAsyncClient build() {
+    private AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -72,12 +72,18 @@ public final class PageBlobAsyncClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        AzureBlobStorageImpl azureBlobStorage = new AzureBlobStorageBuilder()
+        return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
             .pipeline(pipeline)
             .build();
+    }
 
-        return new PageBlobAsyncClient(azureBlobStorage);
+    public PageBlobClient buildClient() {
+        return new PageBlobClient(buildImpl());
+    }
+
+    public PageBlobAsyncClient buildAsyncClient() {
+        return new PageBlobAsyncClient(buildImpl());
     }
 
     /**
@@ -182,8 +188,8 @@ public final class PageBlobAsyncClientBuilder {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to build the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
+     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
      * @return the updated PageBlobAsyncClientBuilder object
      */

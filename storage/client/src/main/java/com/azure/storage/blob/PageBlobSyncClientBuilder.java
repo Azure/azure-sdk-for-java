@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
 /**
- * Fluent builder for page blob clients.
+ * Fluent appendBlobClientBuilder for page blob clients.
  */
 public final class PageBlobSyncClientBuilder {
     private PageBlobAsyncClientBuilder builder;
@@ -19,11 +19,11 @@ public final class PageBlobSyncClientBuilder {
     }
 
     /**
-     * Constructs an instance of PageBlobSyncClient based on the configurations stored in the builder.
+     * Constructs an instance of PageBlobClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    public PageBlobSyncClient build() {
-        return new PageBlobSyncClient(builder.build());
+    public PageBlobClient build() {
+        return new PageBlobClient(builder.build());
     }
 
     /**
@@ -106,8 +106,8 @@ public final class PageBlobSyncClientBuilder {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to build the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
+     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
      * @return the updated PageBlobSyncClientBuilder object
      */

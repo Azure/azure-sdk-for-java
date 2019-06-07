@@ -28,8 +28,8 @@ class BlobRawClient {
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests.
      */
-    BlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder);
+    BlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
     }
 
     /**

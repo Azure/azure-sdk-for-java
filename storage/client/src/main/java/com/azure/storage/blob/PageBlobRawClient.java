@@ -20,9 +20,9 @@ import java.net.URL;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobRawClient extends BlobAsyncRawClient {
+public final class PageBlobRawClient extends BlobRawClient {
 
-    PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -36,16 +36,10 @@ public final class PageBlobRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage page blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
     public PageBlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers

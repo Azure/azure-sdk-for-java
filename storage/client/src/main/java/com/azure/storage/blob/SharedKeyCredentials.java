@@ -155,7 +155,7 @@ public final class SharedKeyCredentials implements ICredentials {
                 .append(queryParamValuesStr);
         }
 
-        // append to main string builder the join of completed params with new line
+        // append to main string appendBlobClientBuilder the join of completed params with new line
         return canonicalizedResource.toString();
     }
 

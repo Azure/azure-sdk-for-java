@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent builder for append blob async clients.
+ * Fluent appendBlobClientBuilder for append blob async clients.
  */
-public final class AppendBlobAsyncClientBuilder {
+public final class AppendBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -41,17 +41,17 @@ public final class AppendBlobAsyncClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    AppendBlobAsyncClientBuilder() {
+    AppendBlobClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
     /**
-     * Constructs an instance of AppendBlobAsyncClient based on the configurations stored in the builder.
+     * Constructs an instance of AppendBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    public AppendBlobAsyncClient build() {
+    private AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -72,20 +72,26 @@ public final class AppendBlobAsyncClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        AzureBlobStorageImpl azureBlobStorage = new AzureBlobStorageBuilder()
+        return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
             .pipeline(pipeline)
             .build();
+    }
 
-        return new AppendBlobAsyncClient(azureBlobStorage);
+    public AppendBlobClient buildClient() {
+        return new AppendBlobClient(buildImpl());
+    }
+
+    public AppendBlobAsyncClient buildAsyncClient() {
+        return new AppendBlobAsyncClient(buildImpl());
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder endpoint(String endpoint) {
+    public AppendBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -99,9 +105,9 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder credentials(SharedKeyCredentials credentials) {
+    public AppendBlobClientBuilder credentials(SharedKeyCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -109,18 +115,18 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder credentials(TokenCredentials credentials) {
+    public AppendBlobClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
 
     /**
      * Clears the credentials used to authorize requests sent to the service
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder anonymousCredentials() {
+    public AppendBlobClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
         return this;
     }
@@ -128,9 +134,9 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder connectionString(String connectionString) {
+    public AppendBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -154,9 +160,9 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder httpClient(HttpClient httpClient) {
+    public AppendBlobClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -164,9 +170,9 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public AppendBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
@@ -174,20 +180,20 @@ public final class AppendBlobAsyncClientBuilder {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public AppendBlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to build the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
+     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated AppendBlobAsyncClientBuilder object
+     * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobAsyncClientBuilder configuration(Configuration configuration) {
+    public AppendBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }

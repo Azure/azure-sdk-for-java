@@ -77,7 +77,7 @@ public class BlobPocTests {
         blockBlobClient.stageBlock(base64, Flux.just(bb), 4096);
         blockBlobClient.commitBlockList(Arrays.asList(base64));
 
-        BlobClient blobClient = BlobClient.builder()
+        BlobClient blobClient = BlobClient.blobClientBuilder()
             .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
             .build();
 

@@ -5,39 +5,100 @@ package com.azure.storage.blob;
 
 import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent builder for blob clients.
+ * Fluent appendBlobClientBuilder for blob async clients.
  */
 public final class BlobClientBuilder {
-    private BlobAsyncClientBuilder builder;
+    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
+    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+
+    private final List<HttpPipelinePolicy> policies;
+
+    private URL endpoint;
+    private ICredentials credentials = new AnonymousCredentials();
+    private HttpClient httpClient;
+    private HttpLogDetailLevel logLevel;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     BlobClientBuilder() {
-        builder = new BlobAsyncClientBuilder();
+        retryPolicy = new RetryPolicy();
+        logLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
     }
 
     /**
-     * Constructs an instance of BlobClient based on the configurations stored in the builder.
+     * Constructs an instance of BlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    public BlobClient build() {
-        return new BlobClient(builder.build());
+    private AzureBlobStorageImpl buildImpl() {
+        Objects.requireNonNull(endpoint);
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+        policies.add(credentials); // This needs to be a different credential type.
+
+        policies.add(retryPolicy);
+
+        policies.addAll(this.policies);
+        policies.add(new HttpLoggingPolicy(logLevel));
+
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        return new AzureBlobStorageBuilder()
+            .url(endpoint.toString())
+            .pipeline(pipeline)
+            .build();
+    }
+
+    public BlobClient buildClient() {
+        return new BlobClient(buildImpl());
+    }
+
+    public BlobAsyncClient buildAsyncClient() {
+        return new BlobAsyncClient(buildImpl());
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, blob name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder endpoint(String endpoint) {
-        builder.endpoint(endpoint);
+        Objects.requireNonNull(endpoint);
+        try {
+            this.endpoint = new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+        }
+
         return this;
     }
 
@@ -47,7 +108,7 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder credentials(SharedKeyCredentials credentials) {
-        builder.credentials(credentials);
+        this.credentials = credentials;
         return this;
     }
 
@@ -57,7 +118,7 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder credentials(TokenCredentials credentials) {
-        builder.credentials(credentials);
+        this.credentials = credentials;
         return this;
     }
 
@@ -66,7 +127,7 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder anonymousCredentials() {
-        builder.anonymousCredentials();
+        this.credentials = new AnonymousCredentials();
         return this;
     }
 
@@ -76,7 +137,23 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder connectionString(String connectionString) {
-        builder.connectionString(connectionString);
+        Objects.requireNonNull(connectionString);
+
+        Map<String, String> connectionKVPs = new HashMap<>();
+        for (String s : connectionString.split(";")) {
+            String[] kvp = s.split("=", 2);
+            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+        }
+
+        String accountName = connectionKVPs.get(ACCOUNT_NAME);
+        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+        }
+
+        // Use accountName and accountKey to get the SAS token using the credential class.
+
         return this;
     }
 
@@ -86,7 +163,7 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder httpClient(HttpClient httpClient) {
-        builder.httpClient(httpClient);
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -96,7 +173,7 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        builder.addPolicy(pipelinePolicy);
+        this.policies.add(pipelinePolicy);
         return this;
     }
 
@@ -106,18 +183,18 @@ public final class BlobClientBuilder {
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        builder.httpLogDetailLevel(logLevel);
+        this.logLevel = logLevel;
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to build the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
+     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder configuration(Configuration configuration) {
-        builder.configuration(configuration);
+        this.configuration = configuration;
         return this;
     }
 }
