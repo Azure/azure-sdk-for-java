@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Fluent builder for queue service async clients
+ */
 public final class QueueServiceAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
@@ -42,7 +45,11 @@ public final class QueueServiceAsyncClientBuilder {
         configuration = ConfigurationManager.getConfiguration();
     }
 
-    QueueServiceAsyncClient build() {
+    /**
+     * @return a new instance of QueueServiceAsyncClient constructed with options stored in the builder
+     * @throws IllegalArgumentException If the builder doesn't have credentials
+     */
+    public QueueServiceAsyncClient build() {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -73,6 +80,12 @@ public final class QueueServiceAsyncClientBuilder {
         return new QueueServiceAsyncClient(endpoint, pipeline);
     }
 
+    /**
+     * Sets the service endpoint, additionally parses it for information (SAS token)
+     * @param endpoint URL of the service
+     * @return the updated QueueServiceAsyncClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
+     */
     public QueueServiceAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
@@ -89,32 +102,63 @@ public final class QueueServiceAsyncClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the credentials used to authorize requests sent to the service
+     * @param credentials authorization credentials
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder credentials(SASTokenCredential credentials) {
         this.sasTokenCredential = credentials;
         return this;
     }
 
+    /**
+     * Sets the connection string for the service, parses it for authentication information (account name, account key)
+     * @param connectionString connection string from access keys section
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
         this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
         return this;
     }
 
+    /**
+     * Sets the http client used to send service requests
+     * @param httpClient http client to send requests
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
 
+    /**
+     * Adds a pipeline policy to apply on each request sent
+     * @param pipelinePolicy a pipeline policy
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
 
+    /**
+     * Sets the logging level for service requests
+     * @param logLevel logging level
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
 
+    /**
+     * Sets the configuration object used to retrieve environment configuration values used to build the client with
+     * when they are not set in the builder, defaults to Configuration.NONE
+     * @param configuration configuration store
+     * @return the updated QueueServiceAsyncClientBuilder object
+     */
     public QueueServiceAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

@@ -14,11 +14,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Policy that adds the SAS token to the request URL.
+ * Policy that adds the SAS token to the request URL's query.
  */
 public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
     private final SASTokenCredential credential;
 
+    /**
+     * Creates a SAS token credential policy that appends the SAS token to the request URL's query.
+     * @param credential SAS token credential
+     */
     public SASTokenCredentialPolicy(SASTokenCredential credential) {
         this.credential = credential;
     }

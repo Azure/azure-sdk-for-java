@@ -68,13 +68,30 @@
 
   <build>
     <plugins>
+      <!-- For initial implementation all Checkstyle, SpotBugs, and JavaDocs errors will be ignored -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <failOnError>false</failOnError>
-          <failOnWarnings>false</failOnWarnings>
+          <failOnError>true</failOnError>
+          <failOnWarnings>true</failOnWarnings>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <configuration>
+          <failOnError>true</failOnError>
         </configuration>
       </plugin>
     </plugins>

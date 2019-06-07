@@ -44,6 +44,12 @@ public final class SharedKeyCredential {
         this.accountKey = Base64.getDecoder().decode(accountKey);
     }
 
+    /**
+     * Creates a SharedKey credential from the passed connection string.
+     * @param connectionString Connection string used to build the SharedKey credential.
+     * @return a SharedKey credential if the connection string contains AccountName and AccountKey
+     * @throws IllegalArgumentException If {@code connectionString} doesn't have AccountName or AccountKey.
+     */
     public static SharedKeyCredential fromConnectionString(String connectionString) {
         HashMap<String, String> connectionStringPieces = new HashMap<>();
         for (String connectionStringPiece : connectionString.split(";")) {
@@ -61,6 +67,13 @@ public final class SharedKeyCredential {
         return new SharedKeyCredential(accountName, accountKey);
     }
 
+    /**
+     * Generates the SharedKey Authorization value from information in the request.
+     * @param requestURL URL of the request
+     * @param httpMethod HTTP method being used
+     * @param headers Headers on the request
+     * @return the SharedKey authorization value
+     */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
         return computeHMACSHA256(buildStringToSign(requestURL, httpMethod, headers));
     }

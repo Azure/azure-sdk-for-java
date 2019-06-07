@@ -84,6 +84,7 @@ public final class QueueAsyncClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated QueueAsyncClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public QueueAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);

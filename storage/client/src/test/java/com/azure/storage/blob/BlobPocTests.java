@@ -43,7 +43,7 @@ public class BlobPocTests {
                     }
                     return next.process();
                 }
-        }*/.build()).withUrl("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/mycontainer/random223" + System.getenv("AZURE_STORAGE_SAS_TOKEN"));
+        }*/ .build()).withUrl("https://" + System.getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/mycontainer/random223" + System.getenv("AZURE_STORAGE_SAS_TOKEN"));
 
         Random random = new Random();
 

@@ -25,10 +25,17 @@ public final class SASTokenCredential {
 
     private final String sasToken;
 
-    public SASTokenCredential(String sharedKey) {
-        this.sasToken = sharedKey;
+    /**
+     * Creates a SAS token credential from the passed SAS token.
+     * @param sasToken SAS token used to authenticate requests with the service.
+     */
+    public SASTokenCredential(String sasToken) {
+        this.sasToken = sasToken;
     }
 
+    /**
+     * @return the SAS token
+     */
     public String sasToken() {
         return sasToken;
     }
@@ -36,7 +43,7 @@ public final class SASTokenCredential {
     /**
      * Creates a SAS token credential from the passed URL query string
      * @param query URL query used to build the SAS token
-     * @return A SAS token credential if the query param contains all the necessary pieces
+     * @return a SAS token credential if the query param contains all the necessary pieces
      */
     public static SASTokenCredential fromQuery(String query) {
         if (ImplUtils.isNullOrEmpty(query)) {
@@ -45,7 +52,7 @@ public final class SASTokenCredential {
 
         HashMap<String, String> queryParams = new HashMap<>();
         for (String queryParam : query.split("&")) {
-            String key = queryParam.split("=", 1)[0];
+            String key = queryParam.split("=", 2)[0];
             queryParams.put(key, queryParam);
         }
 
