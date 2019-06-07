@@ -48,7 +48,6 @@ class RequestResponseChannel implements Closeable {
     private final Disposable subscription;
 
     RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session) {
-
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
@@ -87,7 +86,7 @@ class RequestResponseChannel implements Closeable {
         }
     }
 
-    public Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
+    Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
         start();
 
         if (message == null) {
