@@ -1,10 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.amqp;
 
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
-
-import java.util.function.Function;
 
 /**
  * An AMQP link that sends information to the remote endpoint.
@@ -12,6 +13,7 @@ import java.util.function.Function;
 public interface AmqpSendLink extends AmqpLink {
     /**
      * Sends a single message to the remote endpoint.
+     *
      * @param message Message to send.
      * @return A Mono that completes when the message has been sent.
      */

@@ -187,7 +187,7 @@ public class EventHubClientTest extends TestBase {
             }
 
             final Instant now = Instant.now();
-            this.properties = new EventHubProperties(eventHubPath, Instant.EPOCH, partitionIds, now);
+            this.properties = new EventHubProperties(eventHubPath, Instant.EPOCH, partitionIds);
             this.partitionPropertiesMap = new HashMap<>();
 
             for (int i = 0; i < partitionIds.length; i++) {

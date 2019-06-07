@@ -14,15 +14,20 @@ public final class EventHubProperties {
     private final String path;
     private final Instant createdAt;
     private final String[] partitionIds;
-    private Instant propertyRetrievalTimeUtc;
 
-    public EventHubProperties(String path, Instant createdAtUtc, String[] partitionIds, Instant propertyRetrievalTimeUtc) {
+    /**
+     * Creates a new instance of EventHubProperties.
+     *
+     * @param path The name of the Event Hub.
+     * @param createdAt The Instant when the Event Hub was created.
+     * @param partitionIds An array of identifiers for all the partitions in the Event Hub.
+     */
+    public EventHubProperties(String path, Instant createdAt, String[] partitionIds) {
         this.path = path;
-        this.createdAt = createdAtUtc;
+        this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
             ? Arrays.copyOf(partitionIds, partitionIds.length)
             : new String[0];
-        this.propertyRetrievalTimeUtc = propertyRetrievalTimeUtc;
     }
 
     /**
@@ -39,7 +44,7 @@ public final class EventHubProperties {
      *
      * @return The time at which the Event Hub was created.
      */
-    public Instant createdAtUtc() {
+    public Instant createdAt() {
         return createdAt;
     }
 
@@ -50,14 +55,5 @@ public final class EventHubProperties {
      */
     public String[] partitionIds() {
         return partitionIds;
-    }
-
-    /**
-     * Gets the date and time, in UTC, that the information was retrieved from the Event Hub.
-     *
-     * @return The instant, in UTC, that the information was retrieved from Event Hub.
-     */
-    public Instant propertyRetrievalTimeUtc() {
-        return propertyRetrievalTimeUtc;
     }
 }
