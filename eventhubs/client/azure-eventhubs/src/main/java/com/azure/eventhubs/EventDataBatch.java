@@ -30,7 +30,7 @@ final class EventDataBatch {
     private final String partitionKey;
     private final List<EventData> events;
     private final byte[] eventBytes;
-    private int currentSize = 0;
+    private int currentSize;
 
     EventDataBatch(final int maxMessageSize, final String partitionKey) {
         this.maxMessageSize = maxMessageSize;
@@ -67,12 +67,10 @@ final class EventDataBatch {
     }
 
     public Iterator<EventData> iterator() {
-
         return this.events.iterator();
     }
 
     Iterable<EventData> getInternalIterable() {
-
         return this.events;
     }
 
