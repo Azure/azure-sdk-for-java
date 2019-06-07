@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc4546913f4abfdd6fb?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc69723760a97c6bc59?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39ABB7C5D\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:26 GMT",
+      "ETag" : "\"0x8D6EAE5483F3478\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:13:00 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9a6f-e01e-0051-27dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:26 GMT"
+      "x-ms-request-id" : "73d01db5-101e-00ee-3ece-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:59 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc963004cf705f08988?restype=container&comp=metadata",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc03888ba027852afde?restype=container&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -32,13 +32,13 @@
       "x-ms-error-code" : "ContainerNotFound",
       "retry-after" : "0",
       "Content-Length" : "225",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:71ed9a78-e01e-0051-2ddc-182e83000000\nTime:2019-06-02T00:45:26.7414083Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:73d01dc9-101e-00ee-4fce-1c3af5000000\nTime:2019-06-07T01:13:00.0376329Z</Message></Error>",
       "StatusCode" : "404",
-      "x-ms-request-id" : "71ed9a78-e01e-0051-2ddc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:26 GMT",
+      "x-ms-request-id" : "73d01dc9-101e-00ee-4fce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:59 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc4546913f4abfdd6fb", "jtc963004cf705f08988" ]
+  "variables" : [ "jtc69723760a97c6bc59", "jtc03888ba027852afde" ]
 }

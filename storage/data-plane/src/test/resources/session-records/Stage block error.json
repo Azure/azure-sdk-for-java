@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerrorc49388591b2?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerror24f3225122c?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F38C5F062C\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:02 GMT",
+      "ETag" : "\"0x8D6EAE53D718C76\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ab41fafe-501e-0103-3adc-187524000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:02 GMT"
+      "x-ms-request-id" : "05403d62-101e-006d-74ce-1c9a58000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:41 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerrorc49388591b2/javablobstageblockerror61a11208",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerror24f3225122c/javablobstageblockerrorbb802406",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F38C68138A\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:02 GMT",
+      "ETag" : "\"0x8D6EAE53D771E8D\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ab41fb03-501e-0103-3ddc-187524000000",
+      "x-ms-request-id" : "05403d76-101e-006d-06ce-1c9a58000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:45:02 GMT",
+      "Date" : "Fri, 07 Jun 2019 01:12:41 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerrorc49388591b2/javablobstageblockerror59484037?blockid=id&comp=block",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcstageblockerror24f3225122c/javablobstageblockerror1be97310?blockid=id&comp=block",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -56,13 +56,13 @@
       "x-ms-error-code" : "InvalidQueryParameterValue",
       "retry-after" : "0",
       "Content-Length" : "409",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:ab41fb05-501e-0103-3fdc-187524000000\nTime:2019-06-02T00:45:02.7003989Z</Message><QueryParameterName>blockid</QueryParameterName><QueryParameterValue>id</QueryParameterValue><Reason>Not a valid base64 string.</Reason></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:05403d8c-101e-006d-1cce-1c9a58000000\nTime:2019-06-07T01:12:41.9466591Z</Message><QueryParameterName>blockid</QueryParameterName><QueryParameterValue>id</QueryParameterValue><Reason>Not a valid base64 string.</Reason></Error>",
       "StatusCode" : "400",
-      "x-ms-request-id" : "ab41fb05-501e-0103-3fdc-187524000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:02 GMT",
+      "x-ms-request-id" : "05403d8c-101e-006d-1cce-1c9a58000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:41 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcstageblockerrorc49388591b2", "javablobstageblockerror61a11208", "javablobstageblockerror59484037" ]
+  "variables" : [ "jtcstageblockerror24f3225122c", "javablobstageblockerrorbb802406", "javablobstageblockerror1be97310" ]
 }

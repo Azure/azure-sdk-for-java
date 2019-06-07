@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186678225df52a4c2?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F432D1DF85\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "ETag" : "\"0x8D6EAE5D49F69A4\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b40195-f01e-00e4-4bdd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT"
+      "x-ms-request-id" : "b50b5463-401e-0090-47ce-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:55 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67/javablob38108e8ab21fff",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186678225df52a4c2/javablob00224b8a59d786",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,20 +29,20 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F432DA9BB7\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "ETag" : "\"0x8D6EAE5D4A4B0A9\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b401ae-f01e-00e4-5cdd-18237c000000",
+      "x-ms-request-id" : "b50b5479-401e-0090-59ce-1ca53a000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT"
+      "Date" : "Fri, 07 Jun 2019 01:16:55 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc616985f35dffffc67/javablob21951130a58128?comp=incrementalcopy",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc186678225df52a4c2/javablob70714cfcf3b1a4?comp=incrementalcopy",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -53,13 +53,13 @@
       "x-ms-error-code" : "InvalidSourceBlobUrl",
       "retry-after" : "0",
       "Content-Length" : "270",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidSourceBlobUrl</Code><Message>The source url for incremental copy request must be valid azure storage blob url.\nRequestId:d5b401c5-f01e-00e4-6edd-18237c000000\nTime:2019-06-02T00:49:41.9608675Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidSourceBlobUrl</Code><Message>The source url for incremental copy request must be valid azure storage blob url.\nRequestId:b50b5491-401e-0090-6fce-1ca53a000000\nTime:2019-06-07T01:16:55.5821941Z</Message></Error>",
       "StatusCode" : "409",
-      "x-ms-request-id" : "d5b401c5-f01e-00e4-6edd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:41 GMT",
+      "x-ms-request-id" : "b50b5491-401e-0090-6fce-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:55 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc616985f35dffffc67", "javablob38108e8ab21fff", "javablob21951130a58128" ]
+  "variables" : [ "jtc186678225df52a4c2", "javablob00224b8a59d786", "javablob70714cfcf3b1a4" ]
 }

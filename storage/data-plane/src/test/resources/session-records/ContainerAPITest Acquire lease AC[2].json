@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc41719f96b704c9c3c?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc14460a4a21c153a88?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3EAB91E57\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:47:40 GMT",
+      "ETag" : "\"0x8D6EAE5966C7389\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:15:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee189b-e01e-0051-3bdc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:47:40 GMT"
+      "x-ms-request-id" : "73d10388-101e-00ee-3bce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:15:11 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc41719f96b704c9c3c?comp=lease&restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc14460a4a21c153a88?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,17 +29,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3EAB91E57\"",
-      "x-ms-lease-id" : "5d21589e-2367-4aa6-acad-34bbbcabaeda",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:47:40 GMT",
+      "ETag" : "\"0x8D6EAE5966C7389\"",
+      "x-ms-lease-id" : "2daaef54-7ddd-4e9e-abed-085444572f7c",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:15:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee18ab-e01e-0051-4adc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:47:40 GMT"
+      "x-ms-request-id" : "73d10396-101e-00ee-45ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:15:11 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc41719f96b704c9c3c" ]
+  "variables" : [ "jtc14460a4a21c153a88" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc70296a074afcf2043?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc5857940132703bf28?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3F5496510\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:47:58 GMT",
+      "ETag" : "\"0x8D6EAE5A0B18F7E\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:15:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee28f8-e01e-0051-70dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:47:57 GMT"
+      "x-ms-request-id" : "73d11dfc-101e-00ee-12ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:15:28 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc70296a074afcf2043?comp=lease&restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc5857940132703bf28?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,20 +29,20 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3F5496510\"",
-      "x-ms-lease-id" : "668f33f3-819c-48aa-bd74-b2d432ab5caa",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:47:58 GMT",
+      "ETag" : "\"0x8D6EAE5A0B18F7E\"",
+      "x-ms-lease-id" : "1b9a2bf3-33b6-4977-8dc7-fd55f3cc17ea",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:15:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee28fe-e01e-0051-74dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:47:57 GMT"
+      "x-ms-request-id" : "73d11e0c-101e-00ee-20ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:15:28 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc70296a074afcf2043?comp=lease&restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc5857940132703bf28?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -53,13 +53,13 @@
       "x-ms-error-code" : "ConditionNotMet",
       "retry-after" : "0",
       "Content-Length" : "252",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:71ee2906-e01e-0051-79dc-182e83000000\nTime:2019-06-02T00:47:58.7074046Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:73d11e15-101e-00ee-29ce-1c3af5000000\nTime:2019-06-07T01:15:28.4525986Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "71ee2906-e01e-0051-79dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:47:57 GMT",
+      "x-ms-request-id" : "73d11e15-101e-00ee-29ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:15:28 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc70296a074afcf2043" ]
+  "variables" : [ "jtc5857940132703bf28" ]
 }

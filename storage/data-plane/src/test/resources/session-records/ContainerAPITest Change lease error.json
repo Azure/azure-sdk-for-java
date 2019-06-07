@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc2624455d2e855fb0e?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc25412f7b1f6ec6455?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F40D867236\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:48:39 GMT",
+      "ETag" : "\"0x8D6EAE5B7C1D2A5\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:07 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee4e1f-e01e-0051-3cdc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:48:38 GMT"
+      "x-ms-request-id" : "73d15aba-101e-00ee-52ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:06 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc69927ccd757da5545?comp=lease&restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc9695931e9f44fc457?comp=lease&restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -32,13 +32,13 @@
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "321",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:71ee4e28-e01e-0051-43dc-182e83000000\nTime:2019-06-02T00:48:39.3287881Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:73d15ace-101e-00ee-63ce-1c3af5000000\nTime:2019-06-07T01:16:07.1327588Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
       "StatusCode" : "400",
-      "x-ms-request-id" : "71ee4e28-e01e-0051-43dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:48:38 GMT",
+      "x-ms-request-id" : "73d15ace-101e-00ee-63ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:07 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc2624455d2e855fb0e", "jtc69927ccd757da5545" ]
+  "variables" : [ "jtc25412f7b1f6ec6455", "jtc9695931e9f44fc457" ]
 }

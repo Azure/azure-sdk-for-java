@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetstatsmin75782217f9812?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcgetstatsmin6eb70895ef899?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F466DC96E3\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:09 GMT",
+      "ETag" : "\"0x8D6EAE614478391\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:18:42 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b4bb16-f01e-00e4-0bdd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:08 GMT"
+      "x-ms-request-id" : "0ebf0f9f-001e-00d3-25ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:41 GMT"
     },
     "Errors" : null
   }, {
@@ -34,8 +34,8 @@
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "202",
-      "x-ms-request-id" : "d5b4bb41-f01e-00e4-34dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:08 GMT"
+      "x-ms-request-id" : "0ebf0fb2-001e-00d3-35ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:41 GMT"
     },
     "Errors" : null
   }, {
@@ -52,10 +52,10 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceStats><GeoReplication><Status>live</Status><LastSyncTime>Sun, 02 Jun 2019 00:48:54 GMT</LastSyncTime></GeoReplication></StorageServiceStats>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceStats><GeoReplication><Status>live</Status><LastSyncTime>Fri, 07 Jun 2019 01:15:47 GMT</LastSyncTime></GeoReplication></StorageServiceStats>",
       "StatusCode" : "200",
-      "x-ms-request-id" : "94d9e9a9-901e-007f-15dd-183b26000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:08 GMT",
+      "x-ms-request-id" : "1fb23949-e01e-007b-08ce-1ccea4000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:42 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
@@ -74,10 +74,10 @@
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "202",
-      "x-ms-request-id" : "d5b4bbc9-f01e-00e4-3bdd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:08 GMT"
+      "x-ms-request-id" : "0ebf0fee-001e-00d3-6dce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:41 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcgetstatsmin75782217f9812" ]
+  "variables" : [ "jtcgetstatsmin6eb70895ef899" ]
 }

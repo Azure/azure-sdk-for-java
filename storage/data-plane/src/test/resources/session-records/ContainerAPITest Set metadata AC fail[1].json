@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc1478151b12b627f6a?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc43546ac7eb7e027ff?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39A7FC471\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:26 GMT",
+      "ETag" : "\"0x8D6EAE5481162BD\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:59 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9a2b-e01e-0051-78dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:25 GMT"
+      "x-ms-request-id" : "73d01d22-101e-00ee-3ece-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:58 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc1478151b12b627f6a?restype=container&comp=metadata",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc43546ac7eb7e027ff?restype=container&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -32,13 +32,13 @@
       "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
       "retry-after" : "0",
       "Content-Length" : "251",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:71ed9a39-e01e-0051-03dc-182e83000000\nTime:2019-06-02T00:45:26.4070914Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:73d01d2f-101e-00ee-4ace-1c3af5000000\nTime:2019-06-07T01:12:59.7873995Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "71ed9a39-e01e-0051-03dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:25 GMT",
+      "x-ms-request-id" : "73d01d2f-101e-00ee-4ace-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:58 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc1478151b12b627f6a" ]
+  "variables" : [ "jtc43546ac7eb7e027ff" ]
 }

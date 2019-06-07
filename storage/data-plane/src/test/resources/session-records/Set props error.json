@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror7533286119ad?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcsetpropserror5dc46564ff68?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F464264001\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:04 GMT",
+      "ETag" : "\"0x8D6EAE610ED4FFE\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:18:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b4b173-f01e-00e4-37dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:03 GMT"
+      "x-ms-request-id" : "0ebf07af-001e-00d3-50ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:36 GMT"
     },
     "Errors" : null
   }, {
@@ -34,8 +34,8 @@
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "202",
-      "x-ms-request-id" : "d5b4b195-f01e-00e4-58dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:04 GMT"
+      "x-ms-request-id" : "0ebf07c1-001e-00d3-60ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:36 GMT"
     },
     "Errors" : null
   }, {
@@ -51,10 +51,10 @@
       "x-ms-error-code" : "AuthenticationFailed",
       "retry-after" : "0",
       "Content-Length" : "472",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:ed0a0a88-e01e-0084-0cdd-180f2b000000\nTime:2019-06-02T00:51:05.1653052Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account azstoragesdkaccount.</AuthenticationErrorDetail></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:4b3a8843-701e-0002-69ce-1c5bf9000000\nTime:2019-06-07T01:18:38.4118784Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account azstoragesdkaccount.</AuthenticationErrorDetail></Error>",
       "StatusCode" : "403",
-      "x-ms-request-id" : "ed0a0a88-e01e-0084-0cdd-180f2b000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:05 GMT",
+      "x-ms-request-id" : "4b3a8843-701e-0002-69ce-1c5bf9000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
@@ -73,10 +73,10 @@
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "202",
-      "x-ms-request-id" : "d5b4b2aa-f01e-00e4-58dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:04 GMT"
+      "x-ms-request-id" : "0ebf09f4-001e-00d3-35ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:37 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcsetpropserror7533286119ad" ]
+  "variables" : [ "jtcsetpropserror5dc46564ff68" ]
 }

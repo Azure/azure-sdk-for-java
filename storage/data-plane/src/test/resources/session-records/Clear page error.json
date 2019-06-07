@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerror4b158722b7b?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerrore6569195d15?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F423599411\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:15 GMT",
+      "ETag" : "\"0x8D6EAE5C80C4D25\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:34 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b3d1d5-f01e-00e4-5bdd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:15 GMT"
+      "x-ms-request-id" : "b50b2b25-401e-0090-41ce-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:34 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerror4b158722b7b/javablobclearpageerror08a46171f",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerrore6569195d15/javablobclearpageerror609044296",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,20 +29,20 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F42362DC43\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:15 GMT",
+      "ETag" : "\"0x8D6EAE5C8149B62\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:34 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b3d1f4-f01e-00e4-73dd-18237c000000",
+      "x-ms-request-id" : "b50b2b3a-401e-0090-51ce-1ca53a000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:49:15 GMT"
+      "Date" : "Fri, 07 Jun 2019 01:16:34 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerror4b158722b7b/javablobclearpageerrorf51644539?comp=page",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcclearpageerrore6569195d15/javablobclearpageerrore0429523d?comp=page",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -53,13 +53,13 @@
       "x-ms-error-code" : "BlobNotFound",
       "retry-after" : "0",
       "Content-Length" : "215",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:d5b3d208-f01e-00e4-03dd-18237c000000\nTime:2019-06-02T00:49:16.0096821Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:b50b2b4d-401e-0090-62ce-1ca53a000000\nTime:2019-06-07T01:16:34.5114510Z</Message></Error>",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d5b3d208-f01e-00e4-03dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:15 GMT",
+      "x-ms-request-id" : "b50b2b4d-401e-0090-62ce-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:34 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcclearpageerror4b158722b7b", "javablobclearpageerror08a46171f", "javablobclearpageerrorf51644539" ]
+  "variables" : [ "jtcclearpageerrore6569195d15", "javablobclearpageerror609044296", "javablobclearpageerrore0429523d" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfail7d173249c?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfailb77346496?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F47AF6E14F\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:42 GMT",
+      "ETag" : "\"0x8D6EAE62672D001\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:19:12 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b507d0-f01e-00e4-05dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:42 GMT"
+      "x-ms-request-id" : "0ebf41e9-001e-00d3-29cf-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:19:12 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfail7d173249c/javablob74766a91b977f7",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfailb77346496/javablob2507257412a942",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F47B02CC6F\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:42 GMT",
+      "ETag" : "\"0x8D6EAE6267AA91A\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:19:12 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b507f3-f01e-00e4-24dd-18237c000000",
+      "x-ms-request-id" : "0ebf420e-001e-00d3-45cf-1c8fd3000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:51:42 GMT",
-      "Content-MD5" : "VbRLV6CX1d/VvpAmhVMKzw=="
+      "Date" : "Fri, 07 Jun 2019 01:19:12 GMT",
+      "Content-MD5" : "1Q7HsHbRjlcL7nqa/mRJHQ=="
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfail7d173249c/javablob74766a91b977f7",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileacfailb77346496/javablob2507257412a942",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -55,13 +55,13 @@
       "x-ms-error-code" : "ConditionNotMet",
       "retry-after" : "0",
       "Content-Length" : "252",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:d5b50823-f01e-00e4-4edd-18237c000000\nTime:2019-06-02T00:51:43.0373891Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:0ebf4226-001e-00d3-58cf-1c8fd3000000\nTime:2019-06-07T01:19:12.8820930Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "d5b50823-f01e-00e4-4edd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:42 GMT",
+      "x-ms-request-id" : "0ebf4226-001e-00d3-58cf-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:19:12 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcdownloadfileacfail7d173249c", "javablob74766a91b977f7", "a3f89645f3184fdfb321fe613323ac18", "LgIuKTATKw==", "22699fbeaa694fe2a531db8f27832e05", "" ]
+  "variables" : [ "jtcdownloadfileacfailb77346496", "javablob2507257412a942", "ODg1MzgwODQtNzYzNy00MGY1LTg5M2ItNGIzOTk2YWY2ZTk0", "CAc4JkAWAw==", "ODhjYTJiYTEtYTM5OC00MDdmLTg5ZDAtZTA0MTM4ZDI5OWEw", "" ]
 }

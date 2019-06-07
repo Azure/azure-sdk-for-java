@@ -43,7 +43,7 @@ public class TestResourceNamer {
         if (interceptorManager.isPlaybackMode()) {
             return interceptorManager.popVariable();
         }
-        String randomString = new String(Base64.getEncoder().encode(randomStringWithLength(32).getBytes()));
+        String randomString = new String(Base64.getEncoder().encode(UUID.randomUUID().toString().getBytes()));
         if (interceptorManager.isRecordMode()) {
             interceptorManager.pushVariable(randomString);
         }

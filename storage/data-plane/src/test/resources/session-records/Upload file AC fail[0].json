@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail1514995073?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail8fd9508389?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F46DF142FF\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:21 GMT",
+      "ETag" : "\"0x8D6EAE61A749838\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:18:52 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b4d598-f01e-00e4-7cdd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT"
+      "x-ms-request-id" : "0ebf1ea5-001e-00d3-78ce-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:52 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail1514995073/javablob70996e9d40a699",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail8fd9508389/javablob364094f5f83a32",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F46DF96C5D\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:21 GMT",
+      "ETag" : "\"0x8D6EAE61A7A42B6\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:18:52 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b4d5c1-f01e-00e4-21dd-18237c000000",
+      "x-ms-request-id" : "0ebf1ebb-001e-00d3-0ace-1c8fd3000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT",
+      "Date" : "Fri, 07 Jun 2019 01:18:52 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail1514995073/javablob70996e9d40a699",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploadfileacfail8fd9508389/javablob364094f5f83a32",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -56,13 +56,13 @@
       "x-ms-error-code" : "ConditionNotMet",
       "retry-after" : "0",
       "Content-Length" : "252",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:d5b4d5e9-f01e-00e4-48dd-18237c000000\nTime:2019-06-02T00:51:21.1831790Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:0ebf1ecb-001e-00d3-1ace-1c8fd3000000\nTime:2019-06-07T01:18:52.7571086Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "d5b4d5e9-f01e-00e4-48dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:20 GMT",
+      "x-ms-request-id" : "0ebf1ecb-001e-00d3-1ace-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:18:52 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcuploadfileacfail1514995073", "javablob70996e9d40a699", "7c097a44f70645548b9cd317db90d799", "PzQHNSEVAw4gEg==" ]
+  "variables" : [ "jtcuploadfileacfail8fd9508389", "javablob364094f5f83a32", "NzIwNzM3Y2UtMmUxMS00OTNjLTlmMDctYzM0NGE2NzM0NmQ2", "MQYKDR4FHxIcCw==" ]
 }

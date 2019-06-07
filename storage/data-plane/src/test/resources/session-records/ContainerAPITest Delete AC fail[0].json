@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc323607c1542e1c2db?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc891302a92857d9e66?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39D0FE7A6\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:30 GMT",
+      "ETag" : "\"0x8D6EAE549CA51F1\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:13:02 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9df8-e01e-0051-55dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:30 GMT"
+      "x-ms-request-id" : "73d02256-101e-00ee-5fce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:13:01 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc323607c1542e1c2db?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc891302a92857d9e66?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -32,13 +32,13 @@
       "x-ms-error-code" : "ConditionNotMet",
       "retry-after" : "0",
       "Content-Length" : "252",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:71ed9e05-e01e-0051-5ddc-182e83000000\nTime:2019-06-02T00:45:30.6511007Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:73d0226d-101e-00ee-75ce-1c3af5000000\nTime:2019-06-07T01:13:02.6400713Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "71ed9e05-e01e-0051-5ddc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:30 GMT",
+      "x-ms-request-id" : "73d0226d-101e-00ee-75ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:13:01 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc323607c1542e1c2db" ]
+  "variables" : [ "jtc891302a92857d9e66" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderrorcb356676bce3c?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderror8e55564013c15?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F395AF37E2\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:18 GMT",
+      "ETag" : "\"0x8D6EAE544BC3B1D\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:54 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9117-e01e-0051-1ddc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:17 GMT"
+      "x-ms-request-id" : "73d0111d-101e-00ee-0ace-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:53 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderrorcb356676bce3c/javablobuploaderror85c2106046",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderror8e55564013c15/javablobuploaderror7564529048",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F395BFE12B\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:18 GMT",
+      "ETag" : "\"0x8D6EAE544C1FD2A\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:54 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9140-e01e-0051-43dc-182e83000000",
+      "x-ms-request-id" : "73d01139-101e-00ee-22ce-1c3af5000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:45:17 GMT",
+      "Date" : "Fri, 07 Jun 2019 01:12:53 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderrorcb356676bce3c/javablobuploaderrorfdf4909927",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcuploaderror8e55564013c15/javablobuploaderror4c99585740",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -56,13 +56,13 @@
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "321",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:71ed9157-e01e-0051-56dc-182e83000000\nTime:2019-06-02T00:45:18.3915154Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:73d01161-101e-00ee-46ce-1c3af5000000\nTime:2019-06-07T01:12:54.1831519Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
       "StatusCode" : "400",
-      "x-ms-request-id" : "71ed9157-e01e-0051-56dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:17 GMT",
+      "x-ms-request-id" : "73d01161-101e-00ee-46ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:53 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcuploaderrorcb356676bce3c", "javablobuploaderror85c2106046", "javablobuploaderrorfdf4909927" ]
+  "variables" : [ "jtcuploaderror8e55564013c15", "javablobuploaderror7564529048", "javablobuploaderror4c99585740" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc17139031e880588f0?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc876817499a971a09e?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39C37C9FD\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "ETag" : "\"0x8D6EAE549373D57\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:13:01 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9cd9-e01e-0051-71dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT"
+      "x-ms-request-id" : "73d020b8-101e-00ee-76ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:13:00 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc17139031e880588f0?restype=container&comp=acl",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc876817499a971a09e?restype=container&comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,19 +30,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39C3FFD21\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "ETag" : "\"0x8D6EAE5493CA0AD\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:13:01 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "200",
-      "x-ms-request-id" : "71ed9ce7-e01e-0051-7bdc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT"
+      "x-ms-request-id" : "73d020c9-101e-00ee-05ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:13:00 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc17139031e880588f0?restype=container&comp=acl",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc876817499a971a09e?restype=container&comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -51,17 +51,17 @@
       "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F39C3FFD21\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:29 GMT",
+      "ETag" : "\"0x8D6EAE5493CA0AD\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:13:01 GMT",
       "retry-after" : "0",
       "x-ms-blob-public-access" : "blob",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>0000</Id><AccessPolicy><Start>2019-06-02T00:45:28.0000000Z</Start><Expiry>2019-06-03T00:45:28.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>0000</Id><AccessPolicy><Start>2019-06-07T01:13:01.0000000Z</Start><Expiry>2019-06-08T01:13:01.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
       "StatusCode" : "200",
-      "x-ms-request-id" : "71ed9cfb-e01e-0051-0bdc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:28 GMT",
+      "x-ms-request-id" : "73d020d7-101e-00ee-12ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:13:00 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc17139031e880588f0", "2019-06-01T17:45:28.701-07:00", "2019-06-01T17:45:28.701-07:00" ]
+  "variables" : [ "jtc876817499a971a09e", "2019-06-06T18:13:01.669-07:00", "2019-06-06T18:13:01.669-07:00" ]
 }

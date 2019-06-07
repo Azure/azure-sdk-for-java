@@ -568,6 +568,7 @@ class TransferManagerTest extends APISpec {
         compareFiles(channel, 0, channel.size(), outChannel)
 
         cleanup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
         channel.close()
         outChannel.close()
 
@@ -665,7 +666,7 @@ class TransferManagerTest extends APISpec {
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10
-        //500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5    * An existing connection was forcibly closed by the remote host, ignore for now
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5
         100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
         10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7
     }

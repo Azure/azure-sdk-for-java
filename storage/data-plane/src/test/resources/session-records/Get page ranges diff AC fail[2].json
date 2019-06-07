@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc9364144b22b3d2e83?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc718209b399f402817?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F426D20B63\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:21 GMT",
+      "ETag" : "\"0x8D6EAE5CAAE747F\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b3daaf-f01e-00e4-30dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:21 GMT"
+      "x-ms-request-id" : "b50b3424-401e-0090-0ece-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:38 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc9364144b22b3d2e83/javablob82275a4e34cc0f",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc718209b399f402817/javablob89470d9892dbd5",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,42 +29,42 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F426DA795C\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:21 GMT",
+      "ETag" : "\"0x8D6EAE5CAB3DB3D\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b3dac8-f01e-00e4-45dd-18237c000000",
+      "x-ms-request-id" : "b50b3434-401e-0090-1ace-1ca53a000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 02 Jun 2019 00:49:21 GMT"
+      "Date" : "Fri, 07 Jun 2019 01:16:38 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc9364144b22b3d2e83/javablob82275a4e34cc0f?comp=snapshot",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc718209b399f402817/javablob89470d9892dbd5?comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
-      "x-ms-snapshot" : "2019-06-02T00:49:21.8285211Z",
+      "x-ms-snapshot" : "2019-06-07T01:16:38.9059273Z",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F426DA795C\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:49:21 GMT",
+      "ETag" : "\"0x8D6EAE5CAB3DB3D\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5b3dadc-f01e-00e4-59dd-18237c000000",
+      "x-ms-request-id" : "b50b343c-401e-0090-21ce-1ca53a000000",
       "x-ms-request-server-encrypted" : "false",
-      "Date" : "Sun, 02 Jun 2019 00:49:21 GMT"
+      "Date" : "Fri, 07 Jun 2019 01:16:38 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc9364144b22b3d2e83/javablob82275a4e34cc0f?prevsnapshot=2019-06-02T00%3a49%3a21.8285211Z&comp=pagelist",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc718209b399f402817/javablob89470d9892dbd5?prevsnapshot=2019-06-07T01%3a16%3a38.9059273Z&comp=pagelist",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -75,13 +75,13 @@
       "x-ms-error-code" : "ConditionNotMet",
       "retry-after" : "0",
       "Content-Length" : "252",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:d5b3daf8-f01e-00e4-73dd-18237c000000\nTime:2019-06-02T00:49:21.8843836Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:b50b3447-401e-0090-2cce-1ca53a000000\nTime:2019-06-07T01:16:38.9486034Z</Message></Error>",
       "StatusCode" : "412",
-      "x-ms-request-id" : "d5b3daf8-f01e-00e4-73dd-18237c000000",
-      "Date" : "Sun, 02 Jun 2019 00:49:21 GMT",
+      "x-ms-request-id" : "b50b3447-401e-0090-2cce-1ca53a000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc9364144b22b3d2e83", "javablob82275a4e34cc0f" ]
+  "variables" : [ "jtc718209b399f402817", "javablob89470d9892dbd5" ]
 }

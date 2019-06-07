@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc26738b3bd8ea8e02e?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc31540d91852a0a993?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,14 +9,14 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F40F2A0058\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:48:42 GMT",
+      "ETag" : "\"0x8D6EAE5B8F71A4D\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ee5030-e01e-0051-70dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:48:41 GMT"
+      "x-ms-request-id" : "73d15def-101e-00ee-71ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:09 GMT"
     },
     "Errors" : null
   }, {
@@ -32,10 +32,10 @@
       "x-ms-error-code" : "ContainerAlreadyExists",
       "retry-after" : "0",
       "Content-Length" : "230",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:71ee504a-e01e-0051-02dc-182e83000000\nTime:2019-06-02T00:48:42.0793872Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:73d15dfe-101e-00ee-7ece-1c3af5000000\nTime:2019-06-07T01:16:09.1726687Z</Message></Error>",
       "StatusCode" : "409",
-      "x-ms-request-id" : "71ee504a-e01e-0051-02dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:48:41 GMT",
+      "x-ms-request-id" : "73d15dfe-101e-00ee-7ece-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:09 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
@@ -50,16 +50,16 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F40F371D67\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:48:42 GMT",
+      "ETag" : "\"0x8D6EAE5B905CE70\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:16:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "200",
-      "x-ms-request-id" : "71ee505b-e01e-0051-0edc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:48:41 GMT"
+      "x-ms-request-id" : "73d15e0a-101e-00ee-06ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:16:09 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc26738b3bd8ea8e02e" ]
+  "variables" : [ "jtc31540d91852a0a993" ]
 }

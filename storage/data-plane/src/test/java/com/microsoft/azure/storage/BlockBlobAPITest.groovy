@@ -176,15 +176,11 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL IA with BlockID"() {
         when:
-        bu.stageBlockFromURL(blockID, null, null, null, null, null, null)
+        bu.stageBlockFromURL(getBlockID(), null, null, null, null, null, null)
             .blockingGet()
 
         then:
         thrown(IllegalArgumentException)
-
-        where:
-        blockID | _
-        getBlockID() | _
     }
 
     def "Stage block from URL range"() {

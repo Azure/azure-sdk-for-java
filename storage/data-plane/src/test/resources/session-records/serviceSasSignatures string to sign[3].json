@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc7677723bc451effdc?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc51123d0c2ca32ba37?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,16 +9,16 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F484DF98F2\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:51:59 GMT",
+      "ETag" : "\"0x8D6EAE62E94B3BF\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:19:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "134faa85-e01e-0096-31dd-185242000000",
-      "Date" : "Sun, 02 Jun 2019 00:51:59 GMT"
+      "x-ms-request-id" : "0ebf592b-001e-00d3-6acf-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:19:25 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc7677723bc451effdc" ]
+  "variables" : [ "jtc51123d0c2ca32ba37" ]
 }

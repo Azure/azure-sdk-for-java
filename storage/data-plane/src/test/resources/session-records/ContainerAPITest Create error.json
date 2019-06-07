@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc24903a8a2e3a81f26?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc84385ca5ee08e9bfd?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3993C6EC3\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:24 GMT",
+      "ETag" : "\"0x8D6EAE547365EAD\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed97f1-e01e-0051-18dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:23 GMT"
+      "x-ms-request-id" : "73d01a39-101e-00ee-19ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:57 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc24903a8a2e3a81f26?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc84385ca5ee08e9bfd?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -32,13 +32,13 @@
       "x-ms-error-code" : "ContainerAlreadyExists",
       "retry-after" : "0",
       "Content-Length" : "230",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:71ed9803-e01e-0051-27dc-182e83000000\nTime:2019-06-02T00:45:24.2260259Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:73d01a47-101e-00ee-23ce-1c3af5000000\nTime:2019-06-07T01:12:58.2980054Z</Message></Error>",
       "StatusCode" : "409",
-      "x-ms-request-id" : "71ed9803-e01e-0051-27dc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:23 GMT",
+      "x-ms-request-id" : "73d01a47-101e-00ee-23ce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:57 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc24903a8a2e3a81f26" ]
+  "variables" : [ "jtc84385ca5ee08e9bfd" ]
 }

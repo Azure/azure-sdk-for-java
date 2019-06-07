@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc40834f7200e50fb16?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc54686326df27414ca?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F4905AECA0\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:52:18 GMT",
+      "ETag" : "\"0x8D6EAE636D20BC2\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:19:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "3dde2b4f-d01e-001d-27dd-18e99c000000",
-      "Date" : "Sun, 02 Jun 2019 00:52:18 GMT"
+      "x-ms-request-id" : "9d8ae5d8-a01e-0134-10cf-1cd98b000000",
+      "Date" : "Fri, 07 Jun 2019 01:19:39 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc788738bc768a5f9f5?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc414812e94fec00eb0?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -29,16 +29,16 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F490652312\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:52:18 GMT",
+      "ETag" : "\"0x8D6EAE636D6F856\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:19:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "5d7289dd-101e-010f-47dd-189bd5000000",
-      "Date" : "Sun, 02 Jun 2019 00:52:18 GMT"
+      "x-ms-request-id" : "0ebf6dc0-001e-00d3-45cf-1c8fd3000000",
+      "Date" : "Fri, 07 Jun 2019 01:19:39 GMT"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc40834f7200e50fb16", "jtc788738bc768a5f9f5" ]
+  "variables" : [ "jtc54686326df27414ca", "jtc414812e94fec00eb0" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc751409572016dafca?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc19171e717dc9f1412?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6E6F3996B2B30\"",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:24 GMT",
+      "ETag" : "\"0x8D6EAE54753FFEC\"",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71ed9843-e01e-0051-5bdc-182e83000000",
-      "Date" : "Sun, 02 Jun 2019 00:45:24 GMT"
+      "x-ms-request-id" : "73d01a73-101e-00ee-4cce-1c3af5000000",
+      "Date" : "Fri, 07 Jun 2019 01:12:57 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc751409572016dafca?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtc19171e717dc9f1412?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -31,18 +31,18 @@
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Sun, 02 Jun 2019 00:45:24 GMT",
+      "Last-Modified" : "Fri, 07 Jun 2019 01:12:58 GMT",
       "retry-after" : "0",
       "body" : "",
       "StatusCode" : "200",
-      "Date" : "Sun, 02 Jun 2019 00:45:24 GMT",
+      "Date" : "Fri, 07 Jun 2019 01:12:57 GMT",
       "x-ms-has-legal-hold" : "false",
-      "ETag" : "\"0x8D6E6F3996B2B30\"",
+      "ETag" : "\"0x8D6EAE54753FFEC\"",
       "x-ms-has-immutability-policy" : "false",
       "Content-Length" : "0",
-      "x-ms-request-id" : "71ed984a-e01e-0051-61dc-182e83000000"
+      "x-ms-request-id" : "73d01a83-101e-00ee-5bce-1c3af5000000"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtc751409572016dafca" ]
+  "variables" : [ "jtc19171e717dc9f1412" ]
 }
