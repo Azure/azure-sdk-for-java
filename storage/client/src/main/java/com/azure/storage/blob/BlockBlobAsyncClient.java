@@ -3,16 +3,22 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
+import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
+import com.azure.storage.blob.models.BlockBlobsStageBlockFromURLResponse;
+import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
+import com.azure.storage.blob.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -23,8 +29,8 @@ import java.util.List;
  * for more information on block blobs.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
+    private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 
-    BlockBlobAsyncRawClient blockBlobAsyncRawClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -40,19 +46,16 @@ public final class BlockBlobAsyncClient extends BlobAsyncRawClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
-    /**
-     * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage block blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
-     */
     BlockBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
         blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorage);
+    }
+
+    /**
+     * @return a new client builder instance.
+     */
+    public static BlockBlobAsyncClientBuilder builder() {
+        return new BlockBlobAsyncClientBuilder();
     }
 
     /**

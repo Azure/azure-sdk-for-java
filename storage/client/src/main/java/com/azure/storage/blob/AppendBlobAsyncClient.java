@@ -37,21 +37,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncRawClient {
      */
     public static final int MAX_BLOCKS = 50000;
 
-    /**
-     * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage append blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
-     */
     AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
         appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorage);
     }
 
+    /**
+     * @return a new client builder instance.
+     */
+    public static AppendBlobAsyncClientBuilder builder() {
+        return new AppendBlobAsyncClientBuilder();
+    }
 
     /**
      * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see

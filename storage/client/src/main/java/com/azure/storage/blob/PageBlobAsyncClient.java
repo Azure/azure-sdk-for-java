@@ -27,7 +27,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  */
 public final class PageBlobAsyncClient extends BlobAsyncRawClient {
 
-    PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -39,18 +39,15 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
-    /**
-     * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage page blob.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
-     */
-    public PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
+    }
+
+    /**
+     * @return a new client builder instance.
+     */
+    public static PageBlobAsyncClientBuilder builder() {
+        return new PageBlobAsyncClientBuilder();
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers

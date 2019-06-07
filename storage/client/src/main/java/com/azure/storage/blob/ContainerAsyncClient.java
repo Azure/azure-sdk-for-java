@@ -41,19 +41,15 @@ public final class ContainerAsyncClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    }
 
     /**
-     * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
-     * @param url
-     *         A {@code URL} to an Azure Storage container.
-     * @param pipeline
-     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     * @return a new client builder instance.
      */
-    public ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    public static ContainerAsyncClientBuilder builder() {
+        return new ContainerAsyncClientBuilder();
     }
 
     /**
