@@ -12,6 +12,9 @@ import com.azure.storage.queue.models.StorageServiceStats;
 
 import java.util.Map;
 
+/**
+ * Queue service client
+ */
 public final class QueueServiceClient {
     private final QueueServiceAsyncClient client;
 
@@ -48,7 +51,7 @@ public final class QueueServiceClient {
      * @return the client to interact with the new queue
      */
     public QueueClient createQueue(String queueName) {
-        return createQueue(queueName);
+        return createQueue(queueName, null);
     }
 
     /**
