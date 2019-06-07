@@ -3,9 +3,6 @@
 
 package com.azure.core.polling;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -124,7 +121,7 @@ public class Poller<T> {
     }
 
     /**
-     * Returns everything and client need to subscribe.
+     * Enable client to subscribe and receive all the responses.
      * @return Return poll response as Flux
      */
     public Flux<PollResponse<T>> getObserver() {
@@ -133,11 +130,11 @@ public class Poller<T> {
     }
 
     /**
-     *
+     * Calls poll operation once in sync.
      * @return  Mono of poll response
      */
     public Mono<PollResponse<T>> poll() {
-        updatePollOperationSynch();
+        updatePollOperationSync();
         return Mono.just(pollResponse);
     }
 
@@ -152,7 +149,7 @@ public class Poller<T> {
     /*
      * Calls poll operation function and update pollResponse.
      */
-    private  void updatePollOperationSynch() {
+    private  void updatePollOperationSync() {
         pollResponse = pollOperation.apply(pollResponse);
     }
 
@@ -163,7 +160,7 @@ public class Poller<T> {
     private Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             if (!isTerminalState()) {
-                updatePollOperationSynch();
+                updatePollOperationSync();
             } else if (!isTerminalState()) {
                 return Mono.empty();
             }
@@ -221,7 +218,7 @@ public class Poller<T> {
     }
     
     private boolean valid(Disposable disposable) {
-    	return (fluxDisposable == null || fluxDisposable.isDisposed());
+    	return (fluxDisposable != null && fluxDisposable.isDisposed());
     		  
     	 
     	

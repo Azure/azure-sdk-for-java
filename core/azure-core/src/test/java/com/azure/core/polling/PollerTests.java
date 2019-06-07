@@ -55,7 +55,7 @@ public class PollerTests {
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
-        int totalTimeoutInMilliSeconds = 1000 * 6;
+        int totalTimeoutInMilliSeconds = 1000 * 7;
         Duration pollInterval = Duration.ofMillis(500);
 
         Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
@@ -69,9 +69,10 @@ public class PollerTests {
         createCertPoller.setAutoPollingEnabled(false);
         new Thread().sleep(1000);
         debug("Going to create subscriber ");
-        createCertPoller.poll().subscribe(createCertificateResponsePollResponse -> {
+        createCertPoller.getObserver().subscribe(createCertificateResponsePollResponse -> {
             debug(" got Response " + createCertificateResponsePollResponse.getStatus().toString());
         });
+        debug ( " poll. Block ",createCertPoller.poll().block().getStatus().toString());
 
         new Thread().sleep( totalTimeoutInMilliSeconds);
         debug("Final poller status " +createCertPoller.getStatus());
