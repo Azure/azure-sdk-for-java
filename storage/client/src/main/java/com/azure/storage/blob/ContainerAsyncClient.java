@@ -54,8 +54,7 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new BlockBlobAsyncClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -71,8 +70,7 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new PageBlobAsyncClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -88,8 +86,7 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new AppendBlobAsyncClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -105,8 +102,7 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient createBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new BlobAsyncClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**

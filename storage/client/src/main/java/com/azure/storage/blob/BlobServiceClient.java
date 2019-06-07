@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  */
 public final class BlobServiceClient {
 
-    BlobServiceAsyncClient blobServiceAsyncClient;
+    private BlobServiceAsyncClient blobServiceAsyncClient;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -49,13 +49,7 @@ public final class BlobServiceClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerClient createContainerClient(String containerName) {
-        try {
-            ContainerClient containerClient = new ContainerClient(this.blobServiceAsyncClient.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.blobServiceAsyncClient.blobServiceAsyncRawClient.azureBlobStorage.url()), containerName).toString()));
-            this.blobServiceAsyncClient.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(this.blobServiceAsyncClient.blobServiceAsyncRawClient.azureBlobStorage.url());
-            return containerClient;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     /**

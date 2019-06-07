@@ -24,7 +24,7 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobRawClient extends BlobAsyncRawClient {
+final class BlockBlobRawClient extends BlobAsyncRawClient {
 
     private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
     /**

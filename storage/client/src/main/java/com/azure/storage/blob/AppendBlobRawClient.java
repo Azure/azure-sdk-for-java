@@ -23,7 +23,7 @@ import java.time.Duration;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobRawClient extends BlobRawClient {
+final class AppendBlobRawClient extends BlobRawClient {
 
     AppendBlobAsyncRawClient appendBlobAsyncRawClient;
 

@@ -64,9 +64,9 @@ public class BlobPocTests {
 
     @Test
     public void testCreateBlob() {
-        BlockBlobSyncClient blockBlobClient = BlockBlobSyncClient.builder()
+        BlockBlobClient blockBlobClient = BlockBlobClient.blockBlobClientBuilder()
             .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
-            .build();
+            .buildClient();
 
         Random random = new Random();
 
@@ -79,7 +79,7 @@ public class BlobPocTests {
 
         BlobClient blobClient = BlobClient.blobClientBuilder()
             .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
-            .build();
+            .buildClient();
 
         blobClient.setMetadata(new Metadata(Collections.singletonMap("foo", "bar")));
         BlobGetPropertiesHeaders res = blobClient.getProperties();

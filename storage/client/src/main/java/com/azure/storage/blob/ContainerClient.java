@@ -56,8 +56,7 @@ public final class ContainerClient {
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient createBlockBlobClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new BlockBlobClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -73,8 +72,7 @@ public final class ContainerClient {
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient createPageBlobClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new PageBlobClient(newAzureBlobStorage);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -89,9 +87,8 @@ public final class ContainerClient {
      *
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public AppendBlobClient createAppendBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new AppendBlobClient(newAzureBlobStorage);
+    public AppendBlobClient createAppendBlobClient(String blobName) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -106,9 +103,8 @@ public final class ContainerClient {
      *
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
-    public BlobClient createBlobAsyncClient(String blobName) {
-        AzureBlobStorageImpl newAzureBlobStorage = containerAsyncClient.containerAsyncRawClient.createNewAzureBlobStorage(blobName);
-        return new BlobClient(newAzureBlobStorage);
+    public BlobClient createBlobClient(String blobName) {
+        throw new UnsupportedOperationException();
     }
 
     /**

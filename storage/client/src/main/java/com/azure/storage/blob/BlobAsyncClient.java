@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
  */
 public class BlobAsyncClient {
 
-    private BlobAsyncRawClient blobAsyncRawClient;
+    protected BlobAsyncRawClient blobAsyncRawClient;
 
     BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
@@ -33,6 +33,18 @@ public class BlobAsyncClient {
      */
     public static BlobClientBuilder blobClientBuilder() {
         return new BlobClientBuilder();
+    }
+
+    public BlockBlobAsyncClient asBlockBlobClient() {
+        return new BlockBlobAsyncClient(this.blobAsyncRawClient.azureBlobStorage);
+    }
+
+    public AppendBlobAsyncClient asAppendBlobClient() {
+        return new AppendBlobAsyncClient(this.blobAsyncRawClient.azureBlobStorage);
+    }
+
+    public PageBlobAsyncClient asPageBlobClient() {
+        return new PageBlobAsyncClient(this.blobAsyncRawClient.azureBlobStorage);
     }
 
     /**

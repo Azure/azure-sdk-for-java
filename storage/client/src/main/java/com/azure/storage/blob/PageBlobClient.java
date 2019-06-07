@@ -5,22 +5,8 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
-import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
-import com.azure.storage.blob.models.PageBlobsCreateResponse;
-import com.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.models.PageBlobsGetPageRangesResponse;
-import com.azure.storage.blob.models.PageBlobsResizeResponse;
-import com.azure.storage.blob.models.PageBlobsUpdateSequenceNumberResponse;
-import com.azure.storage.blob.models.PageBlobsUploadPagesFromURLResponse;
-import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
-import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,17 +41,10 @@ public final class PageBlobClient extends BlobClient {
     }
 
     /**
-<<<<<<< HEAD
-     * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     */
-    public PageBlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
-=======
      * @return a new client appendBlobClientBuilder instance.
      */
-    public static PageBlobSyncClientBuilder builder() {
-        return new PageBlobSyncClientBuilder();
+    public static PageBlobClientBuilder pageBlobClientBuilder() {
+        return new PageBlobClientBuilder();
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers
@@ -84,7 +63,6 @@ public final class PageBlobClient extends BlobClient {
             throw new IllegalArgumentException("PageRange's End value must be after the start.");
         }
         return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
->>>>>>> jianghaolu-storage-proto-builder
     }
 
     /**

@@ -30,7 +30,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class BlobServiceAsyncRawClient {
+final class BlobServiceAsyncRawClient {
 
     AzureBlobStorageImpl azureBlobStorage;
     AzureBlobStorageBuilder azureBlobStorageBuilder;
@@ -46,25 +46,6 @@ public final class BlobServiceAsyncRawClient {
     public BlobServiceAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
         this.azureBlobStorageBuilder = azureBlobStorageBuilder;
         this.azureBlobStorage = azureBlobStorageBuilder.build();
-    }
-
-    /**
-     * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
-     * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
-     *
-     * @param containerName
-     *     The name of the container to point to.
-     * @return
-     *     A {@link ContainerAsyncClient} object pointing to the specified container
-     */
-    public ContainerAsyncRawClient createContainerAsyncRawClient(String containerName) {
-        try {
-            ContainerAsyncRawClient containerAsyncRawClient = new ContainerAsyncRawClient(this.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.azureBlobStorage.url()), containerName).toString()));
-            this.azureBlobStorageBuilder.url(this.azureBlobStorage.url());
-            return containerAsyncRawClient;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**

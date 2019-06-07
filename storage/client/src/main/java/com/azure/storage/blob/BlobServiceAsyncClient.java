@@ -49,13 +49,7 @@ public final class BlobServiceAsyncClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient createContainerAsyncClient(String containerName) {
-        try {
-            ContainerAsyncClient containerAsyncClient = new ContainerAsyncClient(this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.blobServiceAsyncRawClient.azureBlobStorage.url()), containerName).toString()));
-            this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(this.blobServiceAsyncRawClient.azureBlobStorage.url());
-            return containerAsyncClient;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -79,8 +73,7 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Flux<ContainerItem> listContainersSegment(String marker,
-                                                                             ListContainersOptions options) {
+    public Flux<ContainerItem> listContainersSegment(String marker, ListContainersOptions options) {
         return this.listContainersSegment(marker, options, null);
     }
 

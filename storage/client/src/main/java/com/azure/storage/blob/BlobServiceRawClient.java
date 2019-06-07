@@ -40,25 +40,6 @@ public final class BlobServiceRawClient {
     }
 
     /**
-     * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
-     * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
-     *
-     * @param containerName
-     *     The name of the container to point to.
-     * @return
-     *     A {@link ContainerAsyncClient} object pointing to the specified container
-     */
-    public ContainerRawClient createContainerRawClient(String containerName) {
-        try {
-            ContainerRawClient containerRawClient = new ContainerRawClient(this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(StorageURL.appendToURLPath(new URL(this.blobServiceAsyncRawClient.azureBlobStorage.url()), containerName).toString()));
-            this.blobServiceAsyncRawClient.azureBlobStorageBuilder.url(this.blobServiceAsyncRawClient.azureBlobStorage.url());
-            return containerRawClient;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Returns a Mono segment of containers starting from the specified Marker.
      * Use an empty marker to start enumeration from the beginning. Container names are returned in lexicographic order.
      * After getting a segment, process it, and then call ListContainers again (passing the the previously-returned

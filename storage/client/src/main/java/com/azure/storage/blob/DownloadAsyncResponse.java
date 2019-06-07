@@ -107,9 +107,9 @@ public final class DownloadAsyncResponse {
                     Update how much data we have received in case we need to retry and propagate to the user the data we
                     have received.
                      */
-                    this.info.withOffset(this.info.offset() + buffer.remaining());
+                    this.info.withOffset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
                     if (this.info.count() != null) {
-                        this.info.withCount(this.info.count() - buffer.remaining());
+                        this.info.withCount(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
                     }
                 })
                 .onErrorResume(t2 -> {
@@ -130,7 +130,7 @@ public final class DownloadAsyncResponse {
         return this.rawResponse.headers().toMap();
     }
 
-    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse() {
+    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse() {
         return this.rawResponse;
     }
 }

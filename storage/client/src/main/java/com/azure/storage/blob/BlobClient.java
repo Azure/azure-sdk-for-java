@@ -42,6 +42,18 @@ public class BlobClient {
         return new BlobClientBuilder();
     }
 
+    public BlockBlobClient asBlockBlobClient() {
+        return new BlockBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+    }
+
+    public AppendBlobClient asAppendBlobClient() {
+        return new AppendBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+    }
+
+    public PageBlobClient asPageBlobClient() {
+        return new PageBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+    }
+
     /**
      * Copies the data at the source URL to a blob. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
