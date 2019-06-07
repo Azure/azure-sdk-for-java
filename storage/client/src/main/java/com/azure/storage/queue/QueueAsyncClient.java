@@ -178,6 +178,15 @@ public final class QueueAsyncClient {
     }
 
     /**
+     * Retrieves a maximum number of messages from the queue
+     * @param maxMessages Maximum number of messages to get, must be in the range (0, 32], default is 1
+     * @return dequeued message information
+     */
+    public Flux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
+        return dequeueMessages(maxMessages, Duration.ofSeconds(30));
+    }
+
+    /**
      * Retrieves messages from the queue
      * @param maxMessages Maximum number of messages to get, must be in the range (0, 32], default is 1
      * @param visibilityTimeout How long the message is invisible in the queue in seconds, default is 30 seconds
