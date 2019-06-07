@@ -34,7 +34,7 @@ az group create \
 ### Authenticate the client
 
 In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class. 
-To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token] [sas_token]
+To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
 
 #### Get Credentials
 
@@ -333,7 +333,7 @@ queueClient.setMetadata(metadata);
 
 ## Troubleshooting
 
-### General
+## General
 
 When you interact with queue using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][storage_rest] requests. For example, if you try to retrieve a queue that doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
