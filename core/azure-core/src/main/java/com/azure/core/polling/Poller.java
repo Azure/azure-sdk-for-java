@@ -124,12 +124,21 @@ public class Poller<T> {
     }
 
     /**
-     *
+     * Returns everything and client need to subscribe.
      * @return Return poll response as Flux
      */
-    public Flux<PollResponse<T>> poll() {
+    public Flux<PollResponse<T>> getObserver() {
          createFlux();
          return fluxHandle;
+    }
+
+    /**
+     *
+     * @return  Mono of poll response
+     */
+    public Mono<PollResponse<T>> poll() {
+        updatePollOperationSynch();
+        return Mono.just(pollResponse);
     }
 
     /**
@@ -137,7 +146,14 @@ public class Poller<T> {
      * @return returns poll response
      */
     public PollResponse<T> block() {
-        return poll().blockLast();
+        return getObserver().blockLast();
+    }
+
+    /*
+     * Calls poll operation function and update pollResponse.
+     */
+    private  void updatePollOperationSynch() {
+        pollResponse = pollOperation.apply(pollResponse);
     }
 
     /*
@@ -147,7 +163,7 @@ public class Poller<T> {
     private Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             if (!isTerminalState()) {
-                pollResponse = pollOperation.apply(pollResponse);
+                updatePollOperationSynch();
             } else if (!isTerminalState()) {
                 return Mono.empty();
             }
@@ -195,7 +211,6 @@ public class Poller<T> {
         if (this.autoPollingEnabled) {
             if (valid(fluxDisposable)) {
                 fluxDisposable = fluxHandle.subscribe(pr ->  pollResponse = pr );
-
             }
         } else {
         	if (valid(fluxDisposable)) {
