@@ -50,10 +50,9 @@ public class Poller<T> {
     private Flux<PollResponse<T>> fluxHandle;
 
     /*
-     * Since constructor create a subscriber and start autopoll.
-     * This subscriber will be duplicate when client call subscriber on Flux.
-     * Thus this handle will be used to dispose the subscriber when
-     * client invoke poll function
+     * Since constructor create a subscriber and start auto polling.
+     * This handle will be used to dispose the subscriber when
+     * client disable auto polling.
      */
     private Disposable fluxDisposable;
 
@@ -67,8 +66,9 @@ public class Poller<T> {
         this.pollerOptions = pollerOptions;
         this.pollOperation = pollOperation;
         fluxHandle = createFlux();
-        //autopolling  start here
-        pollResponse = new PollResponse(PollResponse.OperationStatus.NOT_STARTED, null, null);
+
+        // auto polling  start here
+        pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
         setAutoPollingEnabled(true);
     }
 
@@ -84,20 +84,17 @@ public class Poller<T> {
     }
 
     /*
-     * We will maintain single instance of fluxHandle for one poller.
+     * We will maintain one instance of fluxHandle per poller.
+     * This handle will be set to null when autopolling is disabled.
      */
     private Flux<PollResponse<T>> createFlux() {
         if (fluxHandle == null) {
             fluxHandle = sendPollRequestWithDelay()
                 .flux()
                 .repeat()
-                .takeUntil(pollResponse -> needsPolling(pollResponse));
+                .takeUntil(pollResponse -> pollResponse.isDone());
         }
         return fluxHandle;
-    }
-
-    private boolean needsPolling(PollResponse<T> pollResponse) {
-        return (  pollResponse.isDone());
     }
 
     /**
@@ -122,7 +119,12 @@ public class Poller<T> {
 
     /**
      * Enable client to subscribe and receive all the responses.
-     * @return Return poll response as Flux
+     * The client will start receiving PollResponse When client subscribe to this Flux.
+     * The poller still have its own default polling in action unless, client has  turned off
+     * auto polling.
+     * It is recommended to turn off Auto polling when client want to subscribe to this Flux.
+     *
+     * @return Returns poll response as Flux that can be subscribed.
      */
     public Flux<PollResponse<T>> getObserver() {
          createFlux();
@@ -131,10 +133,13 @@ public class Poller<T> {
 
     /**
      * Calls poll operation once in sync.
-     * @return  Mono of poll response
+     * @return a Mono of {@link PollResponse}
      */
     public Mono<PollResponse<T>> poll() {
-        updatePollOperationSync();
+
+        if (!isTerminalState()) {
+            updatePollOperationSync();
+        }
         return Mono.just(pollResponse);
     }
 
@@ -206,29 +211,29 @@ public class Poller<T> {
 
     	this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
-            if (valid(fluxDisposable)) {
+            if (fluxHandle != null && !activeSubscriber()) {
                 fluxDisposable = fluxHandle.subscribe(pr ->  pollResponse = pr );
             }
         } else {
-        	if (valid(fluxDisposable)) {
+            if (activeSubscriber()) {
                 fluxDisposable.dispose();
             }
             fluxHandle = null;
         }
     }
-    
-    private boolean valid(Disposable disposable) {
+
+    /*
+     * Determine if subscriber exists and  still active.
+     */
+    private boolean activeSubscriber() {
     	return (fluxDisposable != null && fluxDisposable.isDisposed());
-    		  
-    	 
-    	
     }
 
     /**
      * @return true if polling is stopped.
      */
     public boolean isAutoPollingEnabled() {
-        return !this.autoPollingEnabled;
+        return this.autoPollingEnabled;
     }
 
     /**

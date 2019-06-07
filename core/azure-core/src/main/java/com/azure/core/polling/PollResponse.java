@@ -12,8 +12,8 @@ import java.util.Map;
  *    <li>NOT-STARTED </li>
  *    <li>IN-PROGRESS</li>
  *    <li>Successfully Complete</li>
- *    <ul>User Cancelled</ul>
- *    <ul>Failed</ul>
+ *    <li>User Cancelled</li>
+ *    <li>Failed</li>
  * </ul>
  */
 public final class PollResponse<T> {
