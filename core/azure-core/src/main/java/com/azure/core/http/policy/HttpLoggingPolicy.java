@@ -70,12 +70,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private Mono<Void> logRequest(final ServiceLogger logger, final HttpRequest request) {
         if (detailLevel.shouldLogURL()) {
-            logger.asInformational().log("--> {} {}", request.httpMethod(), request.url());
+            logger.asInfo().log("--> {} {}", request.httpMethod(), request.url());
         }
 
         if (detailLevel.shouldLogHeaders()) {
             for (HttpHeader header : request.headers()) {
-                logger.asInformational().log(header.toString());
+                logger.asInfo().log(header.toString());
             }
         }
         //
@@ -83,8 +83,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         //
         if (detailLevel.shouldLogBody()) {
             if (request.body() == null) {
-                logger.asInformational().log("(empty body)");
-                logger.asInformational().log("--> END {}", request.httpMethod());
+                logger.asInfo().log("(empty body)");
+                logger.asInfo().log("--> END {}", request.httpMethod());
             } else {
                 boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.headers().value("Content-Type"));
                 final long contentLength = getContentLength(request.headers());
@@ -95,16 +95,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
-                            logger.asInformational().log("{}-byte body:%n{}", contentLength, bodyString);
-                            logger.asInformational().log("--> END {}", request.httpMethod());
+                            logger.asInfo().log("{}-byte body:%n{}", contentLength, bodyString);
+                            logger.asInfo().log("--> END {}", request.httpMethod());
                             return Mono.empty();
                         });
                     } catch (Exception e) {
                         reqBodyLoggingMono = Mono.error(e);
                     }
                 } else {
-                    logger.asInformational().log("{}-byte body: (content not logged)", contentLength);
-                    logger.asInformational().log("--> END {}", request.httpMethod());
+                    logger.asInfo().log("{}-byte body: (content not logged)", contentLength);
+                    logger.asInfo().log("--> END {}", request.httpMethod());
                 }
             }
         }
@@ -125,12 +125,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
             if (detailLevel.shouldLogURL()) {
-                logger.asInformational().log("<-- {} {} {} ({} ms, {} body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize);
+                logger.asInfo().log("<-- {} {} {} ({} ms, {} body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize);
             }
 
             if (detailLevel.shouldLogHeaders()) {
                 for (HttpHeader header : response.headers()) {
-                    logger.asInformational().log(header.toString());
+                    logger.asInfo().log(header.toString());
                 }
             }
 
@@ -142,16 +142,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.bodyAsString().map(bodyStr -> {
                         bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
-                        logger.asInformational().log("Response body:\n{}", bodyStr);
-                        logger.asInformational().log("<-- END HTTP");
+                        logger.asInfo().log("Response body:\n{}", bodyStr);
+                        logger.asInfo().log("<-- END HTTP");
                         return bufferedResponse;
                     });
                 } else {
-                    logger.asInformational().log("(body content not logged)");
-                    logger.asInformational().log("<-- END HTTP");
+                    logger.asInfo().log("(body content not logged)");
+                    logger.asInfo().log("<-- END HTTP");
                 }
             } else {
-                logger.asInformational().log("<-- END HTTP");
+                logger.asInfo().log("<-- END HTTP");
             }
             return Mono.just(response);
         };
