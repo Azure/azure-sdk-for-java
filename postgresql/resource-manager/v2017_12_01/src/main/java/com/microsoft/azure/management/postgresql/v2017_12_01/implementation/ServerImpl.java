@@ -93,6 +93,21 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public String masterServerId() {
+        return this.inner().masterServerId();
+    }
+
+    @Override
+    public Integer replicaCapacity() {
+        return this.inner().replicaCapacity();
+    }
+
+    @Override
+    public String replicationRole() {
+        return this.inner().replicationRole();
+    }
+
+    @Override
     public Sku sku() {
         return this.inner().sku();
     }
@@ -126,6 +141,12 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     @Override
     public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {
         this.updateParameter.withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    @Override
+    public ServerImpl withReplicationRole(String replicationRole) {
+        this.updateParameter.withReplicationRole(replicationRole);
         return this;
     }
 

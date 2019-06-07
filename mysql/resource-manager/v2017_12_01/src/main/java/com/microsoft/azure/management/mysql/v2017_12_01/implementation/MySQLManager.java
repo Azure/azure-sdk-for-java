@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.mysql.v2017_12_01.Servers;
+import com.microsoft.azure.management.mysql.v2017_12_01.Replicas;
 import com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules;
 import com.microsoft.azure.management.mysql.v2017_12_01.VirtualNetworkRules;
 import com.microsoft.azure.management.mysql.v2017_12_01.Databases;
@@ -24,6 +25,7 @@ import com.microsoft.azure.management.mysql.v2017_12_01.Configurations;
 import com.microsoft.azure.management.mysql.v2017_12_01.LogFiles;
 import com.microsoft.azure.management.mysql.v2017_12_01.LocationBasedPerformanceTiers;
 import com.microsoft.azure.management.mysql.v2017_12_01.CheckNameAvailabilitys;
+import com.microsoft.azure.management.mysql.v2017_12_01.ServerSecurityAlertPolicies;
 import com.microsoft.azure.management.mysql.v2017_12_01.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -33,6 +35,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class MySQLManager extends ManagerCore<MySQLManager, MySQLManagementClientImpl> {
     private Servers servers;
+    private Replicas replicas;
     private FirewallRules firewallRules;
     private VirtualNetworkRules virtualNetworkRules;
     private Databases databases;
@@ -40,6 +43,7 @@ public final class MySQLManager extends ManagerCore<MySQLManager, MySQLManagemen
     private LogFiles logFiles;
     private LocationBasedPerformanceTiers locationBasedPerformanceTiers;
     private CheckNameAvailabilitys checkNameAvailabilitys;
+    private ServerSecurityAlertPolicies serverSecurityAlertPolicies;
     private Operations operations;
     /**
     * Get a Configurable instance that can be used to create MySQLManager with optional configuration.
@@ -96,6 +100,16 @@ public final class MySQLManager extends ManagerCore<MySQLManager, MySQLManagemen
             this.servers = new ServersImpl(this);
         }
         return this.servers;
+    }
+
+    /**
+     * @return Entry point to manage Replicas.
+     */
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(this);
+        }
+        return this.replicas;
     }
 
     /**
@@ -166,6 +180,16 @@ public final class MySQLManager extends ManagerCore<MySQLManager, MySQLManagemen
             this.checkNameAvailabilitys = new CheckNameAvailabilitysImpl(this);
         }
         return this.checkNameAvailabilitys;
+    }
+
+    /**
+     * @return Entry point to manage ServerSecurityAlertPolicies.
+     */
+    public ServerSecurityAlertPolicies serverSecurityAlertPolicies() {
+        if (this.serverSecurityAlertPolicies == null) {
+            this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesImpl(this);
+        }
+        return this.serverSecurityAlertPolicies;
     }
 
     /**
