@@ -584,7 +584,7 @@
   </profiles>
 
   <modules>
-    <module>./applicationconfig/client</module>
+    <module>./appconfiguration/client</module>
     <module>./core</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
