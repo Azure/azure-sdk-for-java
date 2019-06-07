@@ -5,8 +5,6 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;

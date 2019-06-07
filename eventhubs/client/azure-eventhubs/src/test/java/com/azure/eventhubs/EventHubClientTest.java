@@ -4,20 +4,16 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
-import com.azure.eventhubs.implementation.AmqpErrorCode;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import com.azure.eventhubs.implementation.TokenProvider;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
