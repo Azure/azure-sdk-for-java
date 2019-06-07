@@ -20,6 +20,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
+import org.apache.qpid.proton.message.MessageError;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
@@ -71,7 +72,7 @@ class RequestResponseChannel implements Closeable {
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
-            logger.asInfo().log("Setting message: {}", message.getCorrelationId());
+            logger.asVerbose().log("Settling message: {}", message.getCorrelationId());
             settleMessage(message);
         }, this::handleException);
     }
@@ -108,10 +109,9 @@ class RequestResponseChannel implements Closeable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
             Mono.create(sink -> {
                 try {
-                    logger.asInformational().log("Scheduling work on dispatcher...");
+                    logger.asTrace().log("Scheduling on dispatcher. Message Id {}", messageId);
 
                     dispatcher.invoke(() -> {
-                        logger.asInformational().log("Invoking message on dispatcher.");
                         unconfirmedSends.putIfAbsent(messageId, sink);
                         send(message);
                     });
