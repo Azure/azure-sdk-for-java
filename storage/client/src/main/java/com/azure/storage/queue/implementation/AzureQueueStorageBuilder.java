@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
- * A builder for creating a new instance of the AzureQueueStorage type.
+ * A appendBlobClientBuilder for creating a new instance of the AzureQueueStorage type.
  */
 public final class AzureQueueStorageBuilder {
     /*

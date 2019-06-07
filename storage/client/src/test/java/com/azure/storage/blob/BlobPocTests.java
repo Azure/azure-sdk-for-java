@@ -10,6 +10,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
 import com.azure.storage.blob.models.BlockLookupList;
 import io.netty.buffer.ByteBuf;
@@ -27,7 +28,7 @@ import java.util.Random;
 public class BlobPocTests {
 
     @Test
-    public void testCreateBlob() {
+    public void testCreateBlobWithAutoRestClient() {
         AzureBlobStorageImpl client = new AzureBlobStorageBuilder().pipeline(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
             new HttpPipelinePolicy() {
                 @Override
@@ -59,5 +60,29 @@ public class BlobPocTests {
         client.blobs().setMetadataWithRestResponseAsync(null, null, null, Collections.singletonMap("foo", "bar"), null, null, null, null, null, null, null).block();
         BlobsGetPropertiesResponse res = client.blobs().getPropertiesWithRestResponseAsync(null, null, null).block();
         System.out.println(res.deserializedHeaders().metadata().size());
+    }
+
+    @Test
+    public void testCreateBlob() {
+        BlockBlobSyncClient blockBlobClient = BlockBlobSyncClient.builder()
+            .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
+            .build();
+
+        Random random = new Random();
+
+        byte[] randomBytes = new byte[4096];
+        random.nextBytes(randomBytes);
+        ByteBuf bb = Unpooled.wrappedBuffer(randomBytes);
+        String base64 = Base64.encodeBase64String("0001".getBytes(StandardCharsets.UTF_8));
+        blockBlobClient.stageBlock(base64, Flux.just(bb), 4096);
+        blockBlobClient.commitBlockList(Arrays.asList(base64));
+
+        BlobClient blobClient = BlobClient.blobClientBuilder()
+            .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
+            .build();
+
+        blobClient.setMetadata(new Metadata(Collections.singletonMap("foo", "bar")));
+        BlobGetPropertiesHeaders res = blobClient.getProperties();
+        System.out.println(res.metadata().size());
     }
 }

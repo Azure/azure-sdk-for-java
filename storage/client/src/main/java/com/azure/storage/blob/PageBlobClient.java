@@ -7,7 +7,20 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
+import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
+import com.azure.storage.blob.models.PageBlobsCreateResponse;
+import com.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse;
+import com.azure.storage.blob.models.PageBlobsGetPageRangesResponse;
+import com.azure.storage.blob.models.PageBlobsResizeResponse;
+import com.azure.storage.blob.models.PageBlobsUpdateSequenceNumberResponse;
+import com.azure.storage.blob.models.PageBlobsUploadPagesFromURLResponse;
+import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
+import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,9 +35,9 @@ import java.time.Duration;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobClient extends BlobAsyncRawClient {
+public final class PageBlobClient extends BlobClient {
 
-    PageBlobAsyncClient pageBlobAsyncClient;
+    private PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -36,12 +49,42 @@ public final class PageBlobClient extends BlobAsyncRawClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.pageBlobAsyncClient = new PageBlobAsyncClient(azureBlobStorage);
+    }
+
     /**
+<<<<<<< HEAD
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      */
     public PageBlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
         super(azureBlobStorageBuilder);
+=======
+     * @return a new client appendBlobClientBuilder instance.
+     */
+    public static PageBlobSyncClientBuilder builder() {
+        return new PageBlobSyncClientBuilder();
+    }
+
+    // TODO: Figure out if this method needs to change to public to access method in wrappers
+    private static String pageRangeToString(PageRange pageRange) {
+        if (pageRange.start() < 0 || pageRange.end() <= 0) {
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                    + "0 if specified.");
+        }
+        if (pageRange.start() % PageBlobClient.PAGE_BYTES != 0) {
+            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
+        }
+        if (pageRange.end() % PageBlobClient.PAGE_BYTES != PageBlobClient.PAGE_BYTES - 1) {
+            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
+        }
+        if (pageRange.end() <= pageRange.start()) {
+            throw new IllegalArgumentException("PageRange's End value must be after the start.");
+        }
+        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
+>>>>>>> jianghaolu-storage-proto-builder
     }
 
     /**

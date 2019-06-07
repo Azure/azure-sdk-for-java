@@ -20,8 +20,8 @@ public class QueueAsyncClient extends ServiceClient {
     }
 
     /**
-     * Creates a builder that can configure options for the SecretAsyncClient before creating an instance of it.
-     * @return A new builder to create a SecretAsyncClient from.
+     * Creates a appendBlobClientBuilder that can configure options for the SecretAsyncClient before creating an instance of it.
+     * @return A new appendBlobClientBuilder to create a SecretAsyncClient from.
      */
     public static QueueAsyncClientBuilder builder() {
         return new QueueAsyncClientBuilder();

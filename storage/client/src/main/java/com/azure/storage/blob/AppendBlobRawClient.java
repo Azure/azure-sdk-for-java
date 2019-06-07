@@ -23,8 +23,10 @@ import java.time.Duration;
  * convenient way of sending off appropriate requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  */
-public final class AppendBlobRawClient extends BlobAsyncRawClient {
+public final class AppendBlobRawClient extends BlobRawClient {
+
     AppendBlobAsyncRawClient appendBlobAsyncRawClient;
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -40,8 +42,9 @@ public final class AppendBlobRawClient extends BlobAsyncRawClient {
      * pipeline to make HTTP requests.
      *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
-    AppendBlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    AppendBlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorage);
     }
 
 

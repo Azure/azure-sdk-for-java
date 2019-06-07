@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * A BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You may parse an
  * existing URL into its parts with the {@link URLParser} class. You may construct a URL from parts by calling toURL().
- * It is also possible to use the empty constructor to build a blobURL from scratch.
+ * It is also possible to use the empty constructor to buildClient a blobURL from scratch.
  * NOTE: Changing any SAS-related field requires computing a new SAS signature.
  *
  * @apiNote ## Sample Code \n

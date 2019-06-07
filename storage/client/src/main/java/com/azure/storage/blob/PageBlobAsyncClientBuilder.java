@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for blob async clients.
+ * Fluent appendBlobClientBuilder for page blob blob async clients.
  */
-public final class BlobClientBuilder {
+public final class PageBlobAsyncClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -41,14 +41,14 @@ public final class BlobClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    BlobClientBuilder() {
+    PageBlobAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
     /**
-     * Constructs an instance of BlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
+     * Constructs an instance of PageBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
     private AzureBlobStorageImpl buildImpl() {
@@ -78,20 +78,20 @@ public final class BlobClientBuilder {
             .build();
     }
 
-    public BlobClient buildClient() {
-        return new BlobClient(buildImpl());
+    public PageBlobClient buildClient() {
+        return new PageBlobClient(buildImpl());
     }
 
-    public BlobAsyncClient buildAsyncClient() {
-        return new BlobAsyncClient(buildImpl());
+    public PageBlobAsyncClient buildAsyncClient() {
+        return new PageBlobAsyncClient(buildImpl());
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder endpoint(String endpoint) {
+    public PageBlobAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -105,9 +105,9 @@ public final class BlobClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder credentials(SharedKeyCredentials credentials) {
+    public PageBlobAsyncClientBuilder credentials(SharedKeyCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -115,18 +115,18 @@ public final class BlobClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder credentials(TokenCredentials credentials) {
+    public PageBlobAsyncClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
 
     /**
      * Clears the credentials used to authorize requests sent to the service
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder anonymousCredentials() {
+    public PageBlobAsyncClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
         return this;
     }
@@ -134,9 +134,9 @@ public final class BlobClientBuilder {
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder connectionString(String connectionString) {
+    public PageBlobAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -160,9 +160,9 @@ public final class BlobClientBuilder {
     /**
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder httpClient(HttpClient httpClient) {
+    public PageBlobAsyncClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -170,9 +170,9 @@ public final class BlobClientBuilder {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public PageBlobAsyncClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
@@ -180,9 +180,9 @@ public final class BlobClientBuilder {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public PageBlobAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
@@ -191,9 +191,9 @@ public final class BlobClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
      * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated BlobClientBuilder object
+     * @return the updated PageBlobAsyncClientBuilder object
      */
-    public BlobClientBuilder configuration(Configuration configuration) {
+    public PageBlobAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }

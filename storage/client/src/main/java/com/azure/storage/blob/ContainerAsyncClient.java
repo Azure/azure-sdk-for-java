@@ -5,18 +5,12 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.Blob;
 import java.util.List;
-
-import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -36,13 +30,15 @@ public final class ContainerAsyncClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    }
 
     /**
-     * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder);
+    public static ContainerClientBuilder containerClientBuilder() {
+        return new ContainerClientBuilder();
     }
 
     /**

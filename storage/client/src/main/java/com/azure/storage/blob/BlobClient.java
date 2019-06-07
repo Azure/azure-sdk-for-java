@@ -3,9 +3,15 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobGetAccountInfoHeaders;
+import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,12 +31,15 @@ public class BlobClient {
 
     private BlobAsyncClient blobAsyncClient;
 
+    BlobClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobAsyncClient = new BlobAsyncClient(azureBlobStorage);
+    }
+
     /**
-     * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
-     * make HTTP requests.
+     * @return a new client appendBlobClientBuilder instance.
      */
-    BlobClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        blobAsyncClient = new BlobAsyncClient(azureBlobStorageBuilder);
+    public static BlobClientBuilder blobClientBuilder() {
+        return new BlobClientBuilder();
     }
 
     /**

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
@@ -21,9 +22,9 @@ import java.net.URL;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobAsyncClient extends BlobAsyncRawClient {
+public final class PageBlobAsyncClient extends BlobAsyncClient {
 
-    PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -35,13 +36,16 @@ public final class PageBlobAsyncClient extends BlobAsyncRawClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
+    }
+
     /**
-     * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
+     * @return a new client appendBlobClientBuilder instance.
      */
-    public PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    public static PageBlobAsyncClientBuilder builder() {
+        return new PageBlobAsyncClientBuilder();
     }
 
 

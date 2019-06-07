@@ -26,7 +26,7 @@ import java.util.List;
  */
 public final class BlockBlobRawClient extends BlobAsyncRawClient {
 
-    BlockBlobAsyncRawClient blockBlobAsyncRawClient;
+    private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -44,12 +44,10 @@ public final class BlockBlobRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
-     *
      */
-    BlockBlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
-        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder);
+    BlockBlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorage);
     }
 
     /**

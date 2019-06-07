@@ -55,11 +55,14 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
+<<<<<<< HEAD
      * pipeline to make HTTP requests.
      *
+=======
+>>>>>>> jianghaolu-storage-proto-builder
      */
-    public PageBlobAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
     }
 
     private static String pageRangeToString(PageRange pageRange) {

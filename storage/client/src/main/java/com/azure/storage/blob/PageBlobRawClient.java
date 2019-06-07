@@ -24,9 +24,9 @@ import java.time.Duration;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobRawClient extends BlobAsyncRawClient {
+public final class PageBlobRawClient extends BlobRawClient {
 
-    PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -40,10 +40,28 @@ public final class PageBlobRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
      */
-    public PageBlobRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    public PageBlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
+    }
+
+    // TODO: Figure out if this method needs to change to public to access method in wrappers
+    private static String pageRangeToString(PageRange pageRange) {
+        if (pageRange.start() < 0 || pageRange.end() <= 0) {
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                    + "0 if specified.");
+        }
+        if (pageRange.start() % PageBlobRawClient.PAGE_BYTES != 0) {
+            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
+        }
+        if (pageRange.end() % PageBlobRawClient.PAGE_BYTES != PageBlobRawClient.PAGE_BYTES - 1) {
+            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
+        }
+        if (pageRange.end() <= pageRange.start()) {
+            throw new IllegalArgumentException("PageRange's End value must be after the start.");
+        }
+        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
     }
 
     /**

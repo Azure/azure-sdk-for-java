@@ -46,10 +46,9 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-     * pipeline to make HTTP requests.
      */
-    public BlockBlobAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    public BlockBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        super(azureBlobStorage);
     }
 
 
