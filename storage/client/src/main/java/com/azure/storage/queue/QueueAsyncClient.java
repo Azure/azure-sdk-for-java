@@ -86,7 +86,7 @@ public final class QueueAsyncClient {
      * @return an empty response
      */
     public Mono<VoidResponse> create(Map<String, String> metadata) {
-        return client.queues().createWithRestResponseAsync(queueName, Context.NONE)
+        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null, Context.NONE)
             .map(VoidResponse::new);
     }
 

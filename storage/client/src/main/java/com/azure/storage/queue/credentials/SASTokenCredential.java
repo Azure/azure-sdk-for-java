@@ -67,26 +67,28 @@ public final class SASTokenCredential {
         }
 
         StringBuilder sasTokenBuilder = new StringBuilder(queryParams.get(SIGNED_VERSION))
-            .append("&").append(SIGNED_SERVICES)
-            .append("&").append(SIGNED_RESOURCE_TYPES)
-            .append("&").append(SIGNED_PERMISSIONS)
-            .append("&").append(SIGNED_EXPIRY)
-            .append("&").append(SIGNATURE);
-
-        // SIGNED_IP is optional
-        if (queryParams.containsKey(SIGNED_IP)) {
-            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_IP)));
-        }
+            .append("&").append(queryParams.get(SIGNED_SERVICES))
+            .append("&").append(queryParams.get(SIGNED_RESOURCE_TYPES))
+            .append("&").append(queryParams.get(SIGNED_PERMISSIONS));
 
         // SIGNED_START is optional
         if (queryParams.containsKey(SIGNED_START)) {
-            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_START)));
+            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_START));
+        }
+
+        sasTokenBuilder.append("&").append(queryParams.get(SIGNED_EXPIRY));
+
+        // SIGNED_IP is optional
+        if (queryParams.containsKey(SIGNED_IP)) {
+            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_IP));
         }
 
         // SIGNED_PROTOCOL is optional
         if (queryParams.containsKey(SIGNED_PROTOCOL)) {
-            sasTokenBuilder.append("&").append(queryParams.get(queryParams.get(SIGNED_PROTOCOL)));
+            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_PROTOCOL));
         }
+
+        sasTokenBuilder.append("&").append(queryParams.get(SIGNATURE));
 
         return new SASTokenCredential(sasTokenBuilder.toString());
     }

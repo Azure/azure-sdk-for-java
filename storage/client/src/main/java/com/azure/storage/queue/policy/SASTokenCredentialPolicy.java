@@ -29,11 +29,10 @@ public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        URL requestURL = context.httpRequest().url();
-        boolean urlHasQueryParams = !ImplUtils.isNullOrEmpty(requestURL.getQuery());
-
         try {
-            String delimiter = (urlHasQueryParams) ? "&" : "?";
+            URL requestURL = context.httpRequest().url();
+            String delimiter = !ImplUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
+
             String newURL = requestURL.toString() + delimiter + credential.sasToken();
             context.httpRequest().withUrl(new URL(newURL));
         } catch (MalformedURLException ex) {

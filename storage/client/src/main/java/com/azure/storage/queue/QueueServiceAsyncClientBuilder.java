@@ -91,8 +91,10 @@ public final class QueueServiceAsyncClientBuilder {
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+
+            // Attempt to get the SAS token from the URL passed
             SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) { // Should the SASTokenCredential only update if it isn't set as well?
+            if (credential != null) {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
