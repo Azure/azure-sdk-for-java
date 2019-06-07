@@ -86,28 +86,21 @@ public class PollerTests {
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
-        long totalTimeoutInMillis = 1000 * 2;
-        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
+        long totalTimeoutInMillis = 1000 * 1;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 10);
 
         Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse, totalTimeoutInMillis - pollInterval.toMillis() * 5);
+                successPollResponse, pollInterval.toMillis() * 2);
 
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-
-        StepVerifier.create(createCertPoller.getObserver())
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(PollResponse -> (PollResponse.getStatus() == OperationStatus.IN_PROGRESS))
-            .consumeRecordedWith(results -> {
-                assertTrue(results.contains(successPollResponse));
-            })
-            .verifyComplete();
-
+        Thread.sleep(totalTimeoutInMillis);
+        Assert.assertTrue(createCertPoller.block() == successPollResponse);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-        Assert.assertTrue(createCertPoller.block() == successPollResponse);
+
     }
 
     /* Test where SDK Client is subscribed to only final/last response.

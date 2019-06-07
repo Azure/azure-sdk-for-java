@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -20,8 +21,10 @@ import java.util.function.Function;
  *     It can be done by calling setAutoPollingEnabled(false) function.
  *
  * <p><strong>Implementation of Long Running Operations</strong></p>
- * .
+ *
+ * @param <T>
  */
+
 public class Poller<T> {
 
     /*
