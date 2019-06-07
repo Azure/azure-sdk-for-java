@@ -5,6 +5,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.interceptor.TestResourceNamer
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -502,7 +503,8 @@ class TransferManagerTest extends APISpec {
 
     def "Download file etag lock"() {
         setup:
-        bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
+        ByteBuffer dataBuffer = ByteBuffer.wrap(new TestResourceNamer(testName.getMethodName(), interceptorManager).randomByte(1 * 1024 * 1024));
+        bu.upload(Flowable.just(dataBuffer), 1 * 1024 * 1024, null, null,
                 null, null).blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
