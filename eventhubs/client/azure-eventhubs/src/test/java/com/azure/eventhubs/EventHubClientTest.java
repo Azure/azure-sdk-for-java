@@ -3,16 +3,24 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
+import com.azure.eventhubs.implementation.AmqpErrorCode;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
+import com.azure.eventhubs.implementation.TokenProvider;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -27,7 +35,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventHubClientTest extends TestBase {
+/**
+ * Tests scenarios on {@link EventHubClient}.
+ */
+public class EventHubClientTest extends ApiTestBase {
+    private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
+
     private ConnectionStringBuilder builder;
     private Scheduler scheduler;
     private ReactorProvider provider;
@@ -36,22 +49,32 @@ public class EventHubClientTest extends TestBase {
     private EventHubClient client;
     private ExpectedData data;
 
-    @Before
-    public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
-        final String connectionString = getTestMode() == TestMode.RECORD ? getConnectionString() : TestBase.TEST_CONNECTION_STRING;
+    @Rule
+    public TestName testName = new TestName();
+
+    @Override
+    protected void beforeTest() {
+        logger.asInformational().log("[{}]: Performing test set-up.", testName.getMethodName());
+
+        final String connectionString = getTestMode() == TestMode.RECORD ? getConnectionString() : ApiTestBase.TEST_CONNECTION_STRING;
 
         builder = new ConnectionStringBuilder(connectionString);
         scheduler = Schedulers.newElastic("AMQPConnection");
         provider = new ReactorProvider();
         handlerProvider = new ReactorHandlerProvider(provider);
-        tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
+        try {
+            tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            Assert.fail("Could not create tokenProvider :" + e.toString());
+        }
         client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
 
         data = new ExpectedData(getTestMode(), builder);
     }
 
-    @After
-    public void teardown() {
+    @Override
+    protected void afterTest() {
+        logger.asInformational().log("[{}]: Performing test clean-up.", testName.getMethodName());
         client.close();
     }
 
@@ -93,7 +116,7 @@ public class EventHubClientTest extends TestBase {
      * Verifies that we can get partition information for each of the partitions in an Event Hub.
      */
     @Test
-    public void getPartitionInformation() {
+    public void getPartitionProperties() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
 
         // Act & Assert
@@ -116,7 +139,7 @@ public class EventHubClientTest extends TestBase {
      * 2. Queries for partition information about each partition.
      */
     @Test
-    public void getPartitionInformationMultipleCalls() {
+    public void getPartitionPropertiesMultipleCalls() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
 
         // Act
@@ -143,6 +166,59 @@ public class EventHubClientTest extends TestBase {
                 Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
             })
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that error conditions are handled for fetching Event Hub metadata.
+     */
+    @Test
+    public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
+        // Arrange
+        builder.sasKey("invalid-sas-key-value");
+
+        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
+        final ConnectionStringBuilder badBuilder = new ConnectionStringBuilder(builder.toString());
+        client = new EventHubClient(badBuilder, badTokenProvider, provider, handlerProvider, scheduler);
+
+        // Act & Assert
+        StepVerifier.create(client.getProperties())
+            .expectErrorSatisfies(error -> {
+                Assert.assertTrue(error instanceof AmqpException);
+
+                AmqpException exception = (AmqpException) error;
+                Assert.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assert.assertFalse(exception.isTransient());
+                Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
+            })
+            .verify();
+    }
+
+    /**
+     * Verifies that error conditions are handled for fetching partition metadata.
+     */
+    @Test
+    public void getPartitionPropertiesNonExistentHub() {
+        // Arrange
+        builder.eventHubName("nonExistentEventhub");
+        final ConnectionStringBuilder badBuilder = new ConnectionStringBuilder(builder.toString());
+        client = new EventHubClient(badBuilder, tokenProvider, provider, handlerProvider, scheduler);
+
+        // Act & Assert
+        StepVerifier.create(client.getPartitionIds())
+            .expectErrorSatisfies(error -> {
+                Assert.assertTrue(error instanceof AmqpException);
+
+                AmqpException exception = (AmqpException) error;
+                Assert.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assert.assertFalse(exception.isTransient());
+                Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
+            })
+            .verify();
+    }
+
+    @Override
+    protected String testName() {
+        return testName.getMethodName();
     }
 
     /**
