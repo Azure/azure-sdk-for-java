@@ -120,6 +120,10 @@
     "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "mariadb/resource-manager": {
+    "source": "specification/mariadb/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "marketplaceordering/resource-manager": {
     "source": "specification/marketplaceordering/resource-manager/readme.md",
     "args": "--multiapi --fluent"
