@@ -3,6 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -13,14 +14,15 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.queue.credentials.SASTokenCredential;
+import com.azure.storage.queue.credentials.SharedKeyCredential;
 import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -31,17 +33,19 @@ public final class QueueAsyncClientBuilder {
 
     private URL endpoint;
     private String queueName;
-    private SASTokenCredential credentials;
+    private SASTokenCredential sasTokenCredential;
+    private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
-    private Map<String, String> connectionStringPieces;
     private Configuration configuration;
 
     QueueAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
+
+        configuration = ConfigurationManager.getConfiguration();
     }
 
     /**
@@ -50,7 +54,7 @@ public final class QueueAsyncClientBuilder {
      */
     public QueueAsyncClient build() {
         Objects.requireNonNull(endpoint);
-        Objects.requireNonNull(credentials);
+        Objects.requireNonNull(sasTokenCredential);
         Objects.requireNonNull(queueName);
 
         // Closest to API goes first, closest to wire goes last.
@@ -59,7 +63,7 @@ public final class QueueAsyncClientBuilder {
         policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new SASTokenCredentialPolicy(credentials));
+        policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -84,11 +88,19 @@ public final class QueueAsyncClientBuilder {
     public QueueAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
-            String[] urlPieces = endpoint.split("\\?");
-            this.endpoint = new URL(urlPieces[0]);
-            SASTokenCredential credential = QueueServiceAsyncClientBuilder.getCredentialFromQueryParam(urlPieces[1]);
+            URL fullURL = new URL(endpoint);
+            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+
+            // Attempt to get the queue name from the URL passed
+            String[] pathSegments = fullURL.getPath().split("/", 2);
+            if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                this.queueName = pathSegments[1];
+            }
+
+            // Attempt to get the SAS token from the URL passed
+            SASTokenCredential credential = QueueServiceAsyncClientBuilder.getCredentialFromQueryParam(fullURL.getQuery());
             if (credential != null) {
-                this.credentials = credential;
+                this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
@@ -113,7 +125,7 @@ public final class QueueAsyncClientBuilder {
      * @return the updated QueueAsyncClientBuilder object
      */
     public QueueAsyncClientBuilder credentials(SASTokenCredential credentials) {
-        this.credentials = credentials;
+        this.sasTokenCredential = credentials;
         return this;
     }
 
@@ -124,7 +136,7 @@ public final class QueueAsyncClientBuilder {
      */
     public QueueAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-        this.connectionStringPieces = QueueServiceAsyncClientBuilder.parseConnectionString(connectionString);
+        this.sharedKeyCredential = QueueServiceAsyncClientBuilder.getSharedKeyFromConnectionString(connectionString);
         return this;
     }
 

@@ -16,7 +16,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.queue.credentials.SASTokenCredential;
+import com.azure.storage.queue.credentials.SharedKeyCredential;
 import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.QueryStringEncoder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,46 +35,48 @@ public final class QueueServiceAsyncClientBuilder {
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
     // Pieces of the URL query parameters that are part of the SAS token
-    private static final String SV = "sv";
-    private static final String SS = "ss";
-    private static final String SRT = "srt";
-    private static final String SP = "sp";
-    private static final String SE = "se";
-    private static final String ST = "st";
-    private static final String SPR = "spr";
-    private static final String SIG = "sig";
-    private static final String SIP = "sip";
+    private static final String SIGNED_VERSION = "sv";
+    private static final String SIGNED_SERVICES = "ss";
+    private static final String SIGNED_RESOURCE_TYPES = "srt";
+    private static final String SIGNED_PERMISSIONS = "sp";
+    private static final String SIGNED_EXPIRY = "se";
+    private static final String SIGNED_START = "st"; // Optional
+    private static final String SIGNED_PROTOCOL = "spr"; // Optional
+    private static final String SIGNATURE = "sig";
+    private static final String SIGNED_IP = "sip"; // Optional
 
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
-    private SASTokenCredential credentials;
+    private SASTokenCredential sasTokenCredential;
+    private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
-    private Map<String, String> connectionStringPieces;
     private Configuration configuration;
 
     QueueServiceAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
+        configuration = ConfigurationManager.getConfiguration();
     }
 
     QueueServiceAsyncClient build() {
-        // TODO alzimmer: Attempt to find the credential information in the configuration
         Objects.requireNonNull(endpoint);
-        Objects.requireNonNull(credentials);
 
-        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+        if (sasTokenCredential == null && sharedKeyCredential == null) {
+            throw new IllegalArgumentException("Credentials are required for authorization");
+        }
+        Objects.requireNonNull(sasTokenCredential);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new SASTokenCredentialPolicy(credentials)); // This needs to be a different credential type.
+        policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -91,11 +96,11 @@ public final class QueueServiceAsyncClientBuilder {
     public QueueServiceAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
-            String[] urlPieces = endpoint.split("\\?");
-            this.endpoint = new URL(urlPieces[0]);
-            SASTokenCredential credential = getCredentialFromQueryParam(urlPieces[1]);
-            if (credential != null) {
-                this.credentials = credential;
+            URL fullURL = new URL(endpoint);
+            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+            SASTokenCredential credential = getCredentialFromQueryParam(fullURL.getQuery());
+            if (credential != null) { // Should the SASTokenCredential only update if it isn't set as well?
+                this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
@@ -105,13 +110,13 @@ public final class QueueServiceAsyncClientBuilder {
     }
 
     public QueueServiceAsyncClientBuilder credentials(SASTokenCredential credentials) {
-        this.credentials = credentials;
+        this.sasTokenCredential = credentials;
         return this;
     }
 
     public QueueServiceAsyncClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-        this.connectionStringPieces = parseConnectionString(connectionString);
+        this.sharedKeyCredential = getSharedKeyFromConnectionString(connectionString);
         return this;
     }
 
@@ -135,7 +140,7 @@ public final class QueueServiceAsyncClientBuilder {
         return this;
     }
 
-    static Map<String, String> parseConnectionString(String connectionString) {
+    static SharedKeyCredential getSharedKeyFromConnectionString(String connectionString) {
         Map<String, String> connectionStringPieces = new HashMap<>();
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
@@ -149,7 +154,7 @@ public final class QueueServiceAsyncClientBuilder {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
-        return connectionStringPieces;
+        return new SharedKeyCredential(accountName, accountKey);
     }
 
     static SASTokenCredential getCredentialFromQueryParam(String queryParam) {
@@ -157,66 +162,44 @@ public final class QueueServiceAsyncClientBuilder {
             return null;
         }
 
-        Map<String, String> queryParamPieces = new HashMap<>();
-        for (String queryParamPiece : queryParam.split("&")) {
-            String[] kvp = queryParamPiece.split("=", 2);
-            queryParamPieces.put(kvp[0], kvp[1]);
-        }
-
-        if (queryParamPieces.size() < 8) {
+        QueryStringDecoder queryStringDecoder = new QueryStringDecoder("?" + queryParam);
+        Map<String, List<String>> queryParams = queryStringDecoder.parameters();
+        if (queryParams.size() < 6) {
             return null;
         }
 
-        String sv = queryParamPieces.get(SV);
-        String ss = queryParamPieces.get(SS);
-        String srt = queryParamPieces.get(SRT);
-        String sp = queryParamPieces.get(SP);
-        String se = queryParamPieces.get(SE);
-        String st = queryParamPieces.get(ST);
-        String spr = queryParamPieces.get(SPR);
-        String sig = queryParamPieces.get(SIG);
-        String sip = queryParamPieces.get(SIP); // SIP is an optional allowed IP range
-
-        // If any SAS token pieces are missing we cannot create the credential
-        if (ImplUtils.isNullOrEmpty(sv)
-            || ImplUtils.isNullOrEmpty(ss)
-            || ImplUtils.isNullOrEmpty(srt)
-            || ImplUtils.isNullOrEmpty(sp)
-            || ImplUtils.isNullOrEmpty(se)
-            || ImplUtils.isNullOrEmpty(st)
-            || ImplUtils.isNullOrEmpty(spr)
-            || ImplUtils.isNullOrEmpty(sig)) {
+        if (!queryParams.containsKey(SIGNED_VERSION)
+            || !queryParams.containsKey(SIGNED_SERVICES)
+            || !queryParams.containsKey(SIGNED_RESOURCE_TYPES)
+            || !queryParams.containsKey(SIGNED_PERMISSIONS)
+            || !queryParams.containsKey(SIGNED_EXPIRY)
+            || !queryParams.containsKey(SIGNATURE)) {
             return null;
         }
 
-        StringBuilder sb = new StringBuilder();
-        addQueryParam(sb, SV, sv);
-        sb.append('&');
-        addQueryParam(sb, SS, ss);
-        sb.append('&');
-        addQueryParam(sb, SRT, srt);
-        sb.append('&');
-        addQueryParam(sb, SP, sp);
-        sb.append('&');
-        addQueryParam(sb, SE, se);
-        sb.append('&');
-        addQueryParam(sb, ST, st);
-        sb.append('&');
-        addQueryParam(sb, SPR, spr);
-        sb.append('&');
-        addQueryParam(sb, SIG, sig);
+        QueryStringEncoder queryStringEncoder = new QueryStringEncoder("");
+        queryStringEncoder.addParam(SIGNED_VERSION, String.join(",", queryParams.get(SIGNED_VERSION)));
+        queryStringEncoder.addParam(SIGNED_SERVICES, String.join(",", queryParams.get(SIGNED_SERVICES)));
+        queryStringEncoder.addParam(SIGNED_RESOURCE_TYPES, String.join(",", queryParams.get(SIGNED_RESOURCE_TYPES)));
+        queryStringEncoder.addParam(SIGNED_PERMISSIONS, String.join(",", queryParams.get(SIGNED_PERMISSIONS)));
+        queryStringEncoder.addParam(SIGNED_EXPIRY, String.join(",", queryParams.get(SIGNED_EXPIRY)));
+        queryStringEncoder.addParam(SIGNATURE, String.join(",", queryParams.get(SIGNATURE)));
 
-        if (!ImplUtils.isNullOrEmpty(sip)) {
-            sb.append('&');
-            addQueryParam(sb, SIP, sip);
+        // SIGNED_IP is optional
+        if (queryParams.containsKey(SIGNED_IP)) {
+            queryStringEncoder.addParam(SIGNED_IP, String.join(",", queryParams.get(SIGNED_IP)));
         }
 
-        return new SASTokenCredential(sb.toString());
-    }
+        // SIGNED_START is optional
+        if (queryParams.containsKey(SIGNED_START)) {
+            queryStringEncoder.addParam(SIGNED_START, String.join(",", queryParams.get(SIGNED_START)));
+        }
 
-    private static void addQueryParam(StringBuilder sb, String paramName, String paramValue) {
-        sb.append(paramName);
-        sb.append('=');
-        sb.append(paramValue);
+        // SIGNED_PROTOCOL is optional
+        if (queryParams.containsKey(SIGNED_PROTOCOL)) {
+            queryStringEncoder.addParam(SIGNED_PROTOCOL, String.join(",", queryParams.get(SIGNED_PROTOCOL)));
+        }
+
+        return new SASTokenCredential(queryStringEncoder.toString().substring(1));
     }
 }
