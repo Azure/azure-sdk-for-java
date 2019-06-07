@@ -69,7 +69,7 @@ public class Poller<T> {
 
         this.pollerOptions = pollerOptions;
         this.pollOperation = pollOperation;
-        createFlux();
+        fluxHandle = createFlux();
         //autopolling  start here
         pollResponse = new PollResponse(PollResponse.OperationStatus.NOT_STARTED, null, null);
         setAutoPollingEnabled(true);
@@ -89,17 +89,18 @@ public class Poller<T> {
     /*
      * We will maintain single instance of fluxHandle for one poller.
      */
-    private void createFlux() {
+    private Flux<PollResponse<T>> createFlux() {
         if (fluxHandle == null) {
             fluxHandle = sendPollRequestWithDelay()
                 .flux()
                 .repeat()
                 .takeUntil(pollResponse -> needsPolling(pollResponse));
         }
+        return fluxHandle;
     }
 
     private boolean needsPolling(PollResponse<T> pollResponse) {
-        return (  !pollResponse.isDone());
+        return (  pollResponse.isDone());
     }
 
     /**
@@ -145,7 +146,7 @@ public class Poller<T> {
      */
     private Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
-            if (!isAutoPollingEnabled() && !isTerminalState()) {
+            if (!isTerminalState()) {
                 pollResponse = pollOperation.apply(pollResponse);
             } else if (!isTerminalState()) {
                 return Mono.empty();
@@ -183,18 +184,32 @@ public class Poller<T> {
      *                             false : Ensures that polling is not happening in background.
      */
     public void setAutoPollingEnabled(boolean autoPollingEnabled) {
-        this.autoPollingEnabled = autoPollingEnabled;
+    	
+    	// setting same auto polling status would not require any action.
+    	
+    	if (this.autoPollingEnabled == autoPollingEnabled ) {
+    		return;
+    	}
+
+    	this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
-            if (fluxDisposable == null || fluxDisposable.isDisposed()) {
+            if (valid(fluxDisposable)) {
                 fluxDisposable = fluxHandle.subscribe(pr ->  pollResponse = pr );
 
             }
         } else {
-            if (fluxDisposable != null && !fluxDisposable.isDisposed()) {
+        	if (valid(fluxDisposable)) {
                 fluxDisposable.dispose();
-                fluxHandle = null;
             }
+            fluxHandle = null;
         }
+    }
+    
+    private boolean valid(Disposable disposable) {
+    	return (fluxDisposable == null || fluxDisposable.isDisposed());
+    		  
+    	 
+    	
     }
 
     /**
