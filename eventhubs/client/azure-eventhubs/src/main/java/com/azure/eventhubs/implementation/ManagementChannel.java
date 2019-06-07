@@ -41,8 +41,6 @@ public class ManagementChannel implements EventHubManagementNode {
     private static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
     private static final String MANAGEMENT_OPERATION_KEY = "operation";
     private static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
-    private static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
-    private static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
 
     // Well-known values for the service request.
     private static final String READ_OPERATION_VALUE = "READ";

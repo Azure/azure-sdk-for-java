@@ -29,8 +29,6 @@ class CBSChannel implements CBSNode {
     private static final String PUT_TOKEN_TYPE = "type";
     private static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
     private static final String PUT_TOKEN_AUDIENCE = "name";
-    private static final String PUT_TOKEN_STATUS_CODE = "status-code";
-    private static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
 
     private final ServiceLogger logger = new ServiceLogger(CBSChannel.class);
     private final AmqpConnection connection;
@@ -71,18 +69,7 @@ class CBSChannel implements CBSNode {
 
         request.setBody(new AmqpValue(token));
 
-        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).flatMap(response -> {
-            final int statusCode = (int) response.getApplicationProperties().getValue()
-                .get(PUT_TOKEN_STATUS_CODE);
-            final String statusDescription = (String) response.getApplicationProperties().getValue()
-                .get(PUT_TOKEN_STATUS_DESCRIPTION);
-
-            if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-            } else {
-                return Mono.empty();
-            }
-        });
+        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).then();
     }
 
     @Override

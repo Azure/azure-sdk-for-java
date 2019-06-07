@@ -4,6 +4,8 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
@@ -34,6 +36,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class RequestResponseChannel implements Closeable {
+    private static final String STATUS_CODE = "status-code";
+    private static final String STATUS_DESCRIPTION = "status-description";
+
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends = new ConcurrentSkipListMap<>();
     private final ServiceLogger logger = new ServiceLogger(RequestResponseChannel.class);
 
@@ -158,10 +163,18 @@ class RequestResponseChannel implements Closeable {
         final UnsignedLong correlationId = UnsignedLong.valueOf(id);
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
-        if (sink != null) {
-            sink.success(message);
-        } else {
+        if (sink == null) {
             logger.asWarning().log("Received a delivery that was not a known pending message: {}", id);
+            return;
+        }
+
+        final int statusCode = (int) message.getApplicationProperties().getValue().get(STATUS_CODE);
+        final String statusDescription = (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
+
+        if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
+            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+        } else {
+            sink.success(message);
         }
     }
 
