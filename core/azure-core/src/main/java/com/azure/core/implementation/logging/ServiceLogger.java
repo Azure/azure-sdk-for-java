@@ -3,15 +3,34 @@
 
 package com.azure.core.implementation.logging;
 
-import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.configuration.BaseConfigurations;
+import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
 /**
- * This helper class that wraps a {@link Logger} and contains convenience methods for logging.
+ * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
+ *
+ * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
+ * argument of the format varargs and the logger is enabled for {@link ServiceLogger#asVerbose() verbose} logging the
+ * stack trace for the throwable will be included in the log message.</p>
+ *
+ * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
+ * environment configuration, by default logging is disabled. The default logging level for messages is
+ * {@link ServiceLogger#asInfo() info}.</p>
+ *
+ * <p><strong>Log level hierarchy</strong></p>
+ * <ol>
+ *     <li>{@link ServiceLogger#asError() Error}</li>
+ *     <li>{@link ServiceLogger#asWarning() Warning}</li>
+ *     <li>{@link ServiceLogger#asInfo() Info}</li>
+ *     <li>{@link ServiceLogger#asVerbose() Verbose}</li>
+ * </ol>
+ *
+ * @see Configuration
  */
 public class ServiceLogger implements ServiceLoggerAPI {
     private static final NoopServiceLogger NOOP_LOGGER = new NoopServiceLogger();
@@ -75,7 +94,32 @@ public class ServiceLogger implements ServiceLoggerAPI {
     }
 
     /**
-     * Format-able message to be logged, if an exception needs to be logged it must be the last argument.
+     * Logs a format-able message that uses {@code {}} as the placeholder.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * Logging a message with the default log level
+     * <pre>
+     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * logger.log("A message");
+     * </pre>
+     *
+     * Logging a format-able warning
+     * <pre>
+     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * logger.asWarning().log("A format-able message. Hello, {}", name);
+     * </pre>
+     *
+     * Logging an error with stack trace
+     * <pre>
+     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * try {
+     *    upload(resource);
+     * } catch (Throwable ex) {
+     *    logger.asError().log("Failed to upload {}", resource.name(), ex);
+     * }
+     * </pre>
+     *
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
