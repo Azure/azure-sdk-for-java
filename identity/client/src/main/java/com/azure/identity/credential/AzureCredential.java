@@ -29,5 +29,6 @@ public final class AzureCredential extends ChainedCredential {
     public AzureCredential(IdentityClientOptions identityClientOptions) {
         super();
         addLast(new EnvironmentCredential(identityClientOptions));
+        addLast(new ManagedIdentityCredential(identityClientOptions));
     }
 }
