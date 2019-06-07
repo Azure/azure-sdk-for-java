@@ -13,8 +13,11 @@ import java.util.function.Function;
 
 /**
  * This class provides implementation of long running operations. The poller starts polling by default in background.
- * It has function for normal operation of poller for example listen to poll responses, stop auto polling,
+ * It has function for normal operation of poller. For example listen to poll responses, stop auto polling,
  * manual polling, wait for polling to complete and get status of current polling.
+ * <p>
+ *     Since auto polling is turned on by default. If some scenario requires to disable this feature.
+ *     It can be done by calling setAutoPollingEnabled(false) function.
  *
  * <p><strong>Implementation of Long Running Operations</strong></p>
  * .

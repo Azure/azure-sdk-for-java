@@ -101,7 +101,6 @@ public class PollerTests {
             .recordWith(ArrayList::new)
             .thenConsumeWhile(PollResponse -> (PollResponse.getStatus() == OperationStatus.IN_PROGRESS))
             .consumeRecordedWith(results -> {
-                assertTrue(results.contains(inProgressPollResponse));
                 assertTrue(results.contains(successPollResponse));
             })
             .verifyComplete();
@@ -175,58 +174,6 @@ public class PollerTests {
         Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
     }
 
-    /* Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate successful response returned
-     * after few in-progress response. But the sdk client will stop polling in between
-     * and activate polling in between. The client will miss few in progress response and
-     * subscriber will get get final successful response.
-     **/
-    /*@Test
-    public void subscribeToAllPollEventStopPollingAfterNSecondsAndRestartedTest() throws Exception {
-
-        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A "));
-        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-
-        int totalTimeoutInMilliSeconds = 1000 * 8;
-        int pollIntervalInMillis = 1000 * 1;
-        float poolIntervalGrowthFactor = 1.0f;
-
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
-            createPollOperation(inProgressPollResponse,
-                successPollResponse,
-                pollIntervalInMillis,
-                (totalTimeoutInMilliSeconds - pollIntervalInMillis) / 1000);
-
-        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    debug("Thread .. Sleeping ");
-                    Thread.sleep(pollIntervalInMillis + (pollIntervalInMillis / 2));
-                    debug("Thread wake up and stop polling. ");
-                    createCertPoller.stopPolling();
-                    Thread.sleep(2000);
-                    debug("Thread to enable Polling .. Sleeping ");
-                    createCertPoller.enablePolling();
-                } catch (Exception e) {
-                }
-            }
-        };
-        t.start();
-        debug("Poll and wait for it to complete  ");
-        StepVerifier.create(createCertPoller.poll())
-            .recordWith(ArrayList<PollResponse<CreateCertificateResponse>>::new)
-            .thenConsumeWhile(PollResponse -> PollResponse.status() == OperationStatus.IN_PROGRESS)
-            .consumeRecordedWith(results -> {
-                assertTrue(results.contains(inProgressPollResponse));
-                assertTrue(results.contains(successPollResponse));
-            })
-            .verifyComplete();
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertFalse(createCertPoller.isPollingStopped());
-    }*/
 
     /* Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate successful response returned
@@ -259,53 +206,6 @@ public class PollerTests {
         Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
 
     }
-
-    /* Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate successful response returned
-     * after few in-progress responses. But the sdk client will cancel polling in between
-     * and subscriber should never get final successful response.
-     **/
-    /*@Test
-    public void subscribeToAllPollEventCancelPollingAfterNSecondsTest() throws Exception {
-
-        PollResponse<CreateCertificateResponse> cancelPollResponse = new PollResponse<>(OperationStatus.USER_CANCELLED, new CreateCertificateResponse("Cancelled Created : Cert A "));
-        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-
-        int totalTimeoutInMilliSeconds = 1000 * 8;
-        int pollIntervalInMillis = 1000 * 1;
-        float poolIntervalGrowthFactor = 1.0f;
-
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
-            createPollOperation(inProgressPollResponse,
-                cancelPollResponse,
-                pollIntervalInMillis,
-                (totalTimeoutInMilliSeconds - pollIntervalInMillis) / 1000);
-
-        PollerOptions pollerOptions = new PollerOptions(totalTimeoutInMilliSeconds, pollIntervalInMillis, poolIntervalGrowthFactor);
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(pollIntervalInMillis + (pollIntervalInMillis / 2));
-                    createCertPoller.cancelOperation();
-                } catch (Exception e) {
-                }
-            }
-        };
-        t.start();
-        StepVerifier.create(createCertPoller.poll())
-            .recordWith(ArrayList<PollResponse<CreateCertificateResponse>>::new)
-            .thenConsumeWhile(PollResponse -> PollResponse.status() == OperationStatus.IN_PROGRESS)
-            .consumeRecordedWith(results -> {
-                assertTrue(results.contains(inProgressPollResponse));
-                assertTrue(results.contains(cancelPollResponse));
-                assertTrue(results.size() > 2); //
-            })
-            .verifyComplete();
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
-        Assert.assertFalse(createCertPoller.isPollingStopped());
-    }*/
 
     private void showResults(Collection<PollResponse<CreateCertificateResponse>> al) {
         for (PollResponse<CreateCertificateResponse> pr : al) {
