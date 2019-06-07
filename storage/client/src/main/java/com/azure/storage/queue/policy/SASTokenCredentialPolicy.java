@@ -7,12 +7,15 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.queue.models.SASTokenCredential;
+import com.azure.storage.queue.credentials.SASTokenCredential;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Policy that adds the SAS token to the request URL.
+ */
 public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
     private final SASTokenCredential credential;
 
@@ -27,7 +30,7 @@ public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
 
         try {
             String delimiter = (urlHasQueryParams) ? "&" : "?";
-            String newURL = requestURL.toString() + delimiter + credential.sharedKey();
+            String newURL = requestURL.toString() + delimiter + credential.sasToken();
             context.httpRequest().withUrl(new URL(newURL));
         } catch (MalformedURLException ex) {
             throw new IllegalStateException(ex);

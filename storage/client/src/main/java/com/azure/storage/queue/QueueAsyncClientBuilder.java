@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.storage.queue.models.SASTokenCredential;
+import com.azure.storage.queue.credentials.SASTokenCredential;
 import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
 
 import java.net.MalformedURLException;

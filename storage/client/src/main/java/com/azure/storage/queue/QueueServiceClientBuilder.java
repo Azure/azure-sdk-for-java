@@ -6,7 +6,7 @@ import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.queue.models.SASTokenCredential;
+import com.azure.storage.queue.credentials.SASTokenCredential;
 
 public final class QueueServiceClientBuilder {
     private final QueueServiceAsyncClientBuilder builder;
