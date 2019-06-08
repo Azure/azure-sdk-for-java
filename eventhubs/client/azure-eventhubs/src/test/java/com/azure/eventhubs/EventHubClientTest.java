@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -25,6 +26,7 @@ import reactor.test.StepVerifier;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +67,10 @@ public class EventHubClientTest extends ApiTestBase {
         }
         client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
 
-        data = new ExpectedData(getTestMode(), builder);
+        connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP,
+            Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+        client = new EventHubClient(connectionParameters, provider, handlerProvider);
+        data = new ExpectedData(getTestMode(), credentialInfo);
     }
 
     @Override
@@ -172,9 +177,10 @@ public class EventHubClientTest extends ApiTestBase {
         // Arrange
         builder.sasKey("invalid-sas-key-value");
 
-        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
-        final ConnectionStringBuilder badBuilder = new ConnectionStringBuilder(builder.toString());
-        client = new EventHubClient(badBuilder, badTokenProvider, provider, handlerProvider, scheduler);
+        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
+        connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+            TransportType.AMQP_WEB_SOCKETS, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+        client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
@@ -193,11 +199,16 @@ public class EventHubClientTest extends ApiTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
-    public void getPartitionPropertiesNonExistentHub() {
+    public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
-        builder.eventHubName("nonExistentEventhub");
-        final ConnectionStringBuilder badBuilder = new ConnectionStringBuilder(builder.toString());
-        client = new EventHubClient(badBuilder, tokenProvider, provider, handlerProvider, scheduler);
+        final CredentialInfo credentials = connectionParameters.credentials();
+        final CredentialInfo invalidCredentials = getCredentials(credentials.endpoint(), "nonExistentEventhub",
+            credentials.sharedAccessKeyName(), credentials.sharedAccessKey());
+
+        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
+        connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+            TransportType.AMQP_WEB_SOCKETS, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+        client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())

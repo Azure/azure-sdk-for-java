@@ -11,9 +11,7 @@ import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.StringUtil;
-import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -29,24 +27,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EventHubClient implements Closeable {
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
+    private final ConnectionParameters connectionParameters;
+    private final String eventHubName;
     private final String host;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-
     private final Duration timeout;
-    private final String eventHubName;
-    private final Scheduler scheduler;
-    private final TokenProvider tokenProvider;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
+        Objects.requireNonNull(connectionParameters);
+        Objects.requireNonNull(provider);
+        Objects.requireNonNull(handlerProvider);
+
+        this.connectionParameters = connectionParameters;
+        this.timeout = connectionParameters.timeout();
         this.eventHubName = connectionParameters.credentials().eventHubPath();
         this.host = connectionParameters.credentials().endpoint().getHost();
         this.timeout = connectionParameters.timeout();
         this.tokenProvider = connectionParameters.tokenProvider();
         this.scheduler = connectionParameters.scheduler();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> (EventHubConnection) new ReactorConnection(connectionId, host, eventHubName, this.tokenProvider, provider, handlerProvider, this.scheduler))
-            .doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Mono.fromCallable(() -> {
+            return (EventHubConnection) new ReactorConnection(connectionId, host, eventHubName,
+                this.connectionParameters.tokenProvider(), provider, handlerProvider, this.connectionParameters.scheduler());
+        }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
 
