@@ -171,7 +171,7 @@ public class EventHubClientBuilder {
         ConnectionParameters connectionParameters = new ConnectionParameters(credentials, timeout, tokenProvider,
             transport, retry, proxyConfiguration, scheduler);
 
-        return new EventHubClient(connectionParameters, provider, handlerProvider);
+        return new EventHubClient(connectionParameters, tokenProvider, provider, handlerProvider, scheduler);
     }
 
     private ProxyConfiguration constructDefaultProxyConfiguration(Configuration configuration) {

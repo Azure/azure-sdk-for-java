@@ -39,7 +39,6 @@ public class EventHubClient implements Closeable {
     private final Duration timeout = Duration.ofSeconds(45);
     private final String eventHubName;
 
-
     EventHubClient(ConnectionParameters connectionParameters, TokenProvider tokenProvider, ReactorProvider provider,
                    ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
         Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
