@@ -56,6 +56,7 @@ public final class ClientConstants {
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
+    public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     public static final String COMMUNICATION_EXCEPTION_GENERIC_MESSAGE = "A communication error has occurred. "
         + "This may be due to an incorrect host name in your connection string or a problem with your network connection.";
