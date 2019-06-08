@@ -41,7 +41,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -195,7 +195,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId, boolean isNameBased) throws Exception {
-        Date before = new Date();
+        OffsetDateTime before = OffsetDateTime.now();
         Document docDefinition = getDocumentDefinition(documentId);
         Thread.sleep(1000);
         Document document = client
@@ -208,10 +208,10 @@ public class DocumentCrudTest extends TestSuiteBase {
         Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
         Document readDocument = readObservable.toBlocking().single().getResource();
         Thread.sleep(1000);
-        Date after = new Date();
+        OffsetDateTime after = OffsetDateTime.now();
 
-        assertThat(readDocument.getTimestamp()).isAfterOrEqualsTo(before);
-        assertThat(readDocument.getTimestamp()).isBeforeOrEqualsTo(after);
+        assertThat(readDocument.getTimestamp()).isAfterOrEqualTo(before);
+        assertThat(readDocument.getTimestamp()).isBeforeOrEqualTo(after);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")

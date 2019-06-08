@@ -23,8 +23,9 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -143,10 +144,10 @@ public class Resource extends JsonSerializable {
      *
      * @return the timestamp.
      */
-    public Date getTimestamp() {
-        Double seconds = super.getDouble(Constants.Properties.LAST_MODIFIED);
+    public OffsetDateTime getTimestamp() {
+        Long seconds = super.getLong(Constants.Properties.LAST_MODIFIED);
         if (seconds == null) return null;
-        return new Date(TimeUnit.SECONDS.toMillis(seconds.longValue()));
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds.longValue()), ZoneOffset.UTC);
     }
 
     /**
@@ -154,9 +155,9 @@ public class Resource extends JsonSerializable {
      *
      * @param timestamp the timestamp.
      */
-    void setTimestamp(Date timestamp) {
-        double millisec = timestamp.getTime();
-        super.set(Constants.Properties.LAST_MODIFIED, TimeUnit.MILLISECONDS.toSeconds((long) millisec));
+    void setTimestamp(OffsetDateTime timestamp) {
+        long seconds = timestamp.toEpochSecond();
+        super.set(Constants.Properties.LAST_MODIFIED, seconds);
     }
 
     /**

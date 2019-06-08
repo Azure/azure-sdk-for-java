@@ -25,8 +25,8 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,6 +51,7 @@ import com.microsoft.azure.cosmosdb.TriggerOperation;
 import com.microsoft.azure.cosmosdb.TriggerType;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 import com.microsoft.azure.cosmosdb.SpatialType;
+import org.assertj.core.data.Offset;
 
 public interface ResourceResponseValidator<T extends Resource> {
 
@@ -133,7 +134,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
-                    Date d = resourceResponse.getResource().getTimestamp();
+                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
                     System.out.println(d.toString());
                     assertThat(d.toInstant()).isAfterOrEqualTo(time);
                 }
@@ -148,7 +149,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
-                    Date d = resourceResponse.getResource().getTimestamp();
+                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
                     assertThat(d.toInstant()).isBeforeOrEqualTo(time);
                 }
             });
