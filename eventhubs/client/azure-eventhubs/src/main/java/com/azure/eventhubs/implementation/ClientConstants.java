@@ -13,12 +13,8 @@ public final class ClientConstants {
     public static final int MAX_PARTITION_KEY_LENGTH = 128;
 
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
-    public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
-    public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
-    public static final Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
     public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(5); // renew every 5 minutes, which expires 20 minutes
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
-    public static final int DEFAULT_MAX_RETRY_COUNT = 10;
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
     public static final int MGMT_CHANNEL_MIN_RETRY_IN_MILLIS = 5;
     public static final String NO_RETRY = "NoRetry";
@@ -60,6 +56,7 @@ public final class ClientConstants {
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
+    public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     public static final String COMMUNICATION_EXCEPTION_GENERIC_MESSAGE = "A communication error has occurred. "
         + "This may be due to an incorrect host name in your connection string or a problem with your network connection.";
