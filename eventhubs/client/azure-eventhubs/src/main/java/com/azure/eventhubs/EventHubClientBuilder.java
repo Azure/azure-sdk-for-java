@@ -40,7 +40,7 @@ public class EventHubClientBuilder {
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
      */
     public EventHubClientBuilder() {
-        this.transport = TransportType.AMQP;
+        transport = TransportType.AMQP;
     }
 
     /**
