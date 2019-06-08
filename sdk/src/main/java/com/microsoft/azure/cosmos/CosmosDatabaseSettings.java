@@ -39,8 +39,6 @@ import java.util.stream.Collectors;
  */
 public class CosmosDatabaseSettings extends Resource {
 
-    ResourceResponse<Database> databaseResourceResponse;
-
     /**
      * Constructor
      * @param id id of the database

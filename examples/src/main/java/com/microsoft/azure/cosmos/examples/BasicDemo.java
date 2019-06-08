@@ -52,7 +52,10 @@ public class BasicDemo {
 
     private void start(){
         // Get client
-        client = CosmosClient.create(AccountSettings.HOST, AccountSettings.MASTER_KEY);
+        client = CosmosClient.builder()
+                .endpoint(AccountSettings.HOST)
+                .key(AccountSettings.MASTER_KEY)
+                .build();
 
         //Create a database and a container
         createDbAndContainerBlocking();

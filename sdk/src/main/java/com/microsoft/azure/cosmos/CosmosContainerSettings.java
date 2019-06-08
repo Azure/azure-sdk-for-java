@@ -104,7 +104,8 @@ public class CosmosContainerSettings extends Resource {
 
     /**
      * Sets the container's indexing policy
-     * @param indexingPolicy
+     *
+     * @param indexingPolicy {@link IndexingPolicy} the indexing policy
      */
     public void setIndexingPolicy(IndexingPolicy indexingPolicy) {
         if (indexingPolicy == null) {

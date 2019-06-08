@@ -38,11 +38,11 @@ public class CosmosDatabaseCrudTest extends CosmosTestSuiteBase {
     private final static String DATABASE_ID2 = getDatabaseId(CosmosDatabaseCrudTest.class) + "2";
 
     private CosmosClient client;
-    private CosmosConfiguration.Builder configBuilder;
+    private CosmosClientBuilder clientBuilder;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosDatabaseCrudTest(CosmosConfiguration.Builder configBuilder) {
-        this.configBuilder = configBuilder;
+    public CosmosDatabaseCrudTest(CosmosClientBuilder clientBuilder) {
+        this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "cosmosv3" }, timeOut = TIMEOUT)
@@ -120,7 +120,7 @@ public class CosmosDatabaseCrudTest extends CosmosTestSuiteBase {
 
     @BeforeClass(groups = { "cosmosv3" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = CosmosClient.create(configBuilder.build());
+        client = clientBuilder.build();
     }
 
     @AfterClass(groups = { "cosmosv3" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

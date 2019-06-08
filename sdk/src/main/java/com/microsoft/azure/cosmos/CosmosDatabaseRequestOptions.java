@@ -43,9 +43,11 @@ public class CosmosDatabaseRequestOptions extends CosmosRequestOptions{
      * Sets the throughput in the form of Request Units per second when creating a cosmos database.
      *
      * @param offerThroughput the throughput value.
+     * @return the current request options
      */
-    public void setOfferThroughput(Integer offerThroughput) {
+    public CosmosDatabaseRequestOptions offerThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
+        return this;
     }
 
     @Override

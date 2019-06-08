@@ -40,7 +40,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseSetting
 
     /**
      * Gets the CosmosDatabase object
-     * @return
+     *
+     * @return {@link CosmosDatabase}
      */
     public CosmosDatabase getDatabase() {
         return database;
@@ -48,6 +49,7 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseSetting
 
     /**
      * Gets the cosmos database settings
+     *
      * @return the cosmos database settings
      */
     public CosmosDatabaseSettings getCosmosDatabaseSettings() {
