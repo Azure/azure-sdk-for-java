@@ -134,18 +134,18 @@ public class EventHubClientBuilder {
      * @throws AzureException If the token provider cannot be created for authorizing requests.
      */
     public EventHubClient build() {
-        this.configuration = this.configuration == null ? ConfigurationManager.getConfiguration().clone() : this.configuration;
+        configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
 
-        if (this.credentials == null) {
-            String connectionString = this.configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
+        if (credentials == null) {
+            String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
             if (ImplUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException("Connection string is null or empty.");
             }
-            this.credentials = CredentialInfo.from(connectionString);
+            credentials = CredentialInfo.from(connectionString);
         }
 
-        if (this.timeout == null) {
-            this.timeout = Duration.ofSeconds(60);
+        if (timeout == null) {
+            timeout = Duration.ofSeconds(60);
         }
 
         final ReactorProvider provider = new ReactorProvider();
@@ -158,26 +158,26 @@ public class EventHubClientBuilder {
             throw new AzureException("Could not create token provider.");
         }
 
-        if (this.retry == null) {
-            this.retry = Retry.getDefaultRetry();
+        if (retry == null) {
+            retry = Retry.getDefaultRetry();
         }
 
-        this.proxyConfiguration = constructDefaultProxyConfiguration(this.configuration);
+        proxyConfiguration = constructDefaultProxyConfiguration(configuration);
 
-        if (this.scheduler == null) {
-            this.scheduler = Schedulers.elastic();
+        if (scheduler == null) {
+            scheduler = Schedulers.elastic();
         }
 
-        ConnectionParameters connectionParameters = new ConnectionParameters(this.credentials, this.timeout,
-            tokenProvider, this.transport, this.retry, this.proxyConfiguration, this.scheduler);
+        ConnectionParameters connectionParameters = new ConnectionParameters(credentials, timeout, tokenProvider,
+            transport, retry, proxyConfiguration, scheduler);
 
         return new EventHubClient(connectionParameters, provider, handlerProvider);
     }
 
     private ProxyConfiguration constructDefaultProxyConfiguration(Configuration configuration) {
         ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (this.proxyConfiguration != null) {
-            authentication = this.proxyConfiguration.authentication();
+        if (proxyConfiguration != null) {
+            authentication = proxyConfiguration.authentication();
         }
 
         String proxyAddress = configuration.get(BaseConfigurations.HTTP_PROXY);

@@ -40,15 +40,14 @@ public class EventHubClient implements Closeable {
     private final String eventHubName;
 
 
-    EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+    EventHubClient(ConnectionParameters connectionParameters, TokenProvider tokenProvider, ReactorProvider provider,
+                   ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
         Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
         this.connectionParameters = connectionParameters;
         this.eventHubName = connectionParameters.credentials().eventHubPath();
         this.host = connectionParameters.credentials().endpoint().getHost();
         this.connectionId = StringUtil.getRandomString("MF");
 
-        TokenProvider tokenProvider = connectionParameters.tokenProvider();
-        Scheduler scheduler = connectionParameters.scheduler();
         this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, provider, handlerProvider, scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();

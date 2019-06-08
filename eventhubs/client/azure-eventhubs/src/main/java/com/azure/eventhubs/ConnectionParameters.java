@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A wrap class that contains all parameters that need to establish a connection to an event hub.
+ * A wrapper class that contains all parameters that are needed to establish a connection to an Event Hub.
  */
 class ConnectionParameters {
     private final CredentialInfo credentials;
