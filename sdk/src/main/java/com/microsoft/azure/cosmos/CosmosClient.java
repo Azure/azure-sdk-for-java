@@ -70,6 +70,14 @@ public class CosmosClient {
                 .build();
     }
 
+    AsyncDocumentClient getContextClient() {
+        return this.asyncDocumentClient;
+    }
+
+    public static AsyncDocumentClient getContextClient(CosmosClient cosmosClient) {
+        return cosmosClient.asyncDocumentClient;
+    }
+
     /**
      * Instantiate the cosmos client builder to build cosmos client
      * @return {@link CosmosClientBuilder}

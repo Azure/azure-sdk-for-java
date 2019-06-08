@@ -36,6 +36,11 @@ public class CosmosItemSettings extends Resource {
     private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
     /**
+     * Initialize an empty CosmosItemSettings object.
+     */
+    public CosmosItemSettings() {}
+
+    /**
      * Initialize a CosmosItemSettings object from json string.
      *
      * @param jsonString the json string that represents the document object.
@@ -45,7 +50,7 @@ public class CosmosItemSettings extends Resource {
     }
 
     /**
-     * fromObject retuns Document for compatibility with V2 sdk
+     * fromObject returns Document for compatibility with V2 sdk
      *
      * @param cosmosItem
      * @return
