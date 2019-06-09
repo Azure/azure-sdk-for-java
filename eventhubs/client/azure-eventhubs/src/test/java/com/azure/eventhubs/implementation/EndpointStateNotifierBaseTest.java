@@ -76,11 +76,7 @@ public class EndpointStateNotifierBaseTest {
 
         StepVerifier.create(notifier.getConnectionStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> {
-                // Even though we are notifying twice, since these are the same, we'll only get one update.
-                notifier.notifyEndpointState(EndpointState.ACTIVE);
-                notifier.notifyEndpointState(EndpointState.ACTIVE);
-            })
+            .then(() -> notifier.notifyEndpointState(EndpointState.ACTIVE))
             .assertNext(state -> {
                 Assert.assertEquals(AmqpEndpointState.ACTIVE, state);
                 Assert.assertEquals(AmqpEndpointState.ACTIVE, notifier.getCurrentState());

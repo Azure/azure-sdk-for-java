@@ -45,7 +45,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
 
     @Override
     public Flux<AmqpEndpointState> getConnectionStates() {
-        return connectionStateProcessor.distinct();
+        return connectionStateProcessor;
     }
 
     @Override
