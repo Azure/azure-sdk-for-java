@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -254,7 +255,7 @@ public class ReactorConnectionTest {
         final Event event = mock(Event.class);
         final Connection connectionProtonJ = mock(Connection.class);
         final Transport transport = mock(Transport.class);
-        final ErrorCondition errorCondition = mock(ErrorCondition.class);
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("amqp:not-found"), "Not found");
 
         when(event.getTransport()).thenReturn(transport);
         when(event.getConnection()).thenReturn(connectionProtonJ);
