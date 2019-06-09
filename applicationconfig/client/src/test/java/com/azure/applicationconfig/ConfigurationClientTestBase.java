@@ -40,7 +40,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
-    private static final String AZCONFIG_CONNECTION_STRING = "AZCONFIG_CONNECTION_STRING";
+    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
@@ -69,7 +69,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.getConfiguration().get(AZCONFIG_CONNECTION_STRING);
+                : ConfigurationManager.getConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
