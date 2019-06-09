@@ -148,6 +148,33 @@ public class CosmosContainerCrudTest extends CosmosTestSuiteBase {
         validateSuccess(replaceMono, validator);
     }
 
+    @Test(groups = { "cosmosv3" }, timeOut = TIMEOUT)
+    public void testGetThroughput(){
+        CosmosDatabase database = client.getDatabase(PRE_EXISTING_DATABASE_ID);
+
+        Mono<CosmosContainerResponse> containerMono = database.createContainer(getContainerSettings());
+        
+        CosmosContainerResponse containerResponse = containerMono.block();
+        CosmosContainer container = containerResponse.getContainer();
+
+        Integer throughput = container.readProvisionedThroughput().block();
+    }
+
+    @Test(groups = { "cosmosv3" }, timeOut = TIMEOUT)
+    public void testReplaceThroughput(){
+        CosmosDatabase database = client.getDatabase(PRE_EXISTING_DATABASE_ID);
+        int newThroughput = 1000;
+
+        Mono<CosmosContainerResponse> containerMono = database.createContainer(getContainerSettings());
+
+        CosmosContainerResponse containerResponse = containerMono.block();
+        CosmosContainer container = containerResponse.getContainer();
+
+        Integer throughput = container.replaceProvisionedThroughputAsync(newThroughput).block();
+        assertThat(throughput).isEqualTo(newThroughput);
+    }
+    
+
     @BeforeClass(groups = { "cosmosv3" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();

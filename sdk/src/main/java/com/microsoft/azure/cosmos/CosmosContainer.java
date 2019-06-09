@@ -24,14 +24,17 @@ package com.microsoft.azure.cosmos;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
+import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.Offer;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
 import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.Paths;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
@@ -679,6 +682,62 @@ public class CosmosContainer extends CosmosResource {
      */
     public CosmosTrigger getTrigger(String id){
         return new CosmosTrigger(id, this);
+    }
+
+    /**
+     * Gets the throughput of the container
+     *
+     * @return a {@link Mono} containing throughput or an error.
+     */
+    public Mono<Integer> readProvisionedThroughput(){
+        return this.read()
+                .flatMap(cosmosContainerResponse ->
+                        RxJava2Adapter.singleToMono(
+                                RxJavaInterop.toV2Single(database.getDocClientWrapper()
+                                        .queryOffers("select * from c where c.offerResourceId = '" +
+                                                cosmosContainerResponse.getResourceSettings().getResourceId()
+                                                + "'", new FeedOptions()).toSingle()))
+                                .flatMap(offerFeedResponse -> {
+                                    if(offerFeedResponse.getResults().isEmpty()){
+                                        return Mono.error(new DocumentClientException(HttpConstants.StatusCodes.BADREQUEST,
+                                                "No offers found for the resource"));
+                                    }
+                                    return RxJava2Adapter.singleToMono(
+                                            RxJavaInterop.toV2Single(database.getDocClientWrapper()
+                                                    .readOffer(offerFeedResponse.getResults()
+                                                            .get(0)
+                                                            .getSelfLink()).toSingle()));
+                                })
+                                .map(cosmosOfferResponse -> cosmosOfferResponse
+                                        .getResource()
+                                        .getThroughput()));
+    }
+
+    /**
+     * Sets throughput provisioned for a container in measurement of Requests-per-Unit in the Azure Cosmos service.
+     *
+     * @param requestUnitsPerSecond the cosmos container throughput, expressed in Request Units per second
+     * @return a {@link Mono} containing throughput or an error.
+     */
+    public Mono<Integer> replaceProvisionedThroughputAsync(int requestUnitsPerSecond){
+        return this.read()
+                .flatMap(cosmosContainerResponse ->
+                        RxJava2Adapter.singleToMono(
+                                RxJavaInterop.toV2Single(database.getDocClientWrapper()
+                                        .queryOffers("select * from c where c.offerResourceId = '" +
+                                                cosmosContainerResponse.getResourceSettings().getResourceId()
+                                                + "'", new FeedOptions()).toSingle()))
+                                .flatMap(offerFeedResponse -> {
+                                    if(offerFeedResponse.getResults().isEmpty()){
+                                        return Mono.error(new DocumentClientException(HttpConstants.StatusCodes.BADREQUEST,
+                                                "No offers found for the resource"));
+                                    }
+                                    Offer offer = offerFeedResponse.getResults().get(0);
+                                    offer.setThroughput(requestUnitsPerSecond);
+                                    return RxJava2Adapter.singleToMono(
+                                            RxJavaInterop.toV2Single(database.getDocClientWrapper()
+                                                    .replaceOffer(offer).toSingle()));
+                                }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput()));
     }
 
     /**
