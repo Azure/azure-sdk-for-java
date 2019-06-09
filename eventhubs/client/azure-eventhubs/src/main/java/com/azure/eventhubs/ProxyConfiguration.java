@@ -56,7 +56,7 @@ public class ProxyConfiguration implements AutoCloseable {
         if (username != null && password != null) {
             this.credentials = new PasswordAuthentication(username, password.toCharArray());
         } else {
-            logger.asInformational().log("Username or password is null. Using system-wide authentication.");
+            logger.asInfo().log("Username or password is null. Using system-wide authentication.");
             this.credentials = null;
         }
     }

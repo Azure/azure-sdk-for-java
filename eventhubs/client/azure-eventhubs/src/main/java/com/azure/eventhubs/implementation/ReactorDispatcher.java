@@ -100,7 +100,7 @@ public final class ReactorDispatcher {
                 oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-            serviceLogger.asInformational().log("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+            serviceLogger.asInfo().log("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
         }
     }
 
@@ -115,7 +115,7 @@ public final class ReactorDispatcher {
                     oneKbByteBuffer = ByteBuffer.allocate(1024);
                 }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-                serviceLogger.asInformational().log("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+                serviceLogger.asInfo().log("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
             } catch (IOException ioException) {
                 serviceLogger.asError().log("WorkScheduler.run() failed with an error: %s", ioException);
                 throw new RuntimeException(ioException);
