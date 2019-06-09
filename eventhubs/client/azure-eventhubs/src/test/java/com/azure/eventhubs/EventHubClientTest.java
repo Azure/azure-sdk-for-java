@@ -24,6 +24,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -31,6 +32,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -39,43 +41,43 @@ import java.util.Map;
 public class EventHubClientTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
 
-    private ConnectionStringBuilder builder;
     private Scheduler scheduler;
     private ReactorProvider provider;
     private ReactorHandlerProvider handlerProvider;
     private SharedAccessSignatureTokenProvider tokenProvider;
     private EventHubClient client;
     private ExpectedData data;
+    private CredentialInfo credentialInfo;
+    private ConnectionParameters connectionParameters;
 
     @Rule
     public TestName testName = new TestName();
 
     @Override
     protected void beforeTest() {
-        logger.asInformational().log("[{}]: Performing test set-up.", testName.getMethodName());
+        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
 
         final String connectionString = getTestMode() == TestMode.RECORD ? getConnectionString() : ApiTestBase.TEST_CONNECTION_STRING;
 
-        builder = new ConnectionStringBuilder(connectionString);
+        credentialInfo = CredentialInfo.from(connectionString);
         scheduler = Schedulers.newElastic("AMQPConnection");
         provider = new ReactorProvider();
         handlerProvider = new ReactorHandlerProvider(provider);
         try {
-            tokenProvider = new SharedAccessSignatureTokenProvider(builder.sasKeyName(), builder.sasKey());
+            tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             Assert.fail("Could not create tokenProvider :" + e.toString());
         }
-        client = new EventHubClient(builder, tokenProvider, provider, handlerProvider, scheduler);
 
-        connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP,
-            Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+        connectionParameters = new ConnectionParameters(credentialInfo, Duration.ofSeconds(45), tokenProvider,
+            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
         client = new EventHubClient(connectionParameters, provider, handlerProvider);
         data = new ExpectedData(getTestMode(), credentialInfo);
     }
 
     @Override
     protected void afterTest() {
-        logger.asInformational().log("[{}]: Performing test clean-up.", testName.getMethodName());
+        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
         client.close();
     }
 
@@ -177,8 +179,8 @@ public class EventHubClientTest extends ApiTestBase {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
 
         // Arrange
-        builder.sasKey("invalid-sas-key-value");
-
+        final CredentialInfo invalidCredentials = getCredentials(credentialInfo.endpoint(), credentialInfo.eventHubPath(),
+            credentialInfo.sharedAccessKeyName(), "invalid-sas-key-value");
         final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
         connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
             TransportType.AMQP_WEB_SOCKETS, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
@@ -247,7 +249,7 @@ public class EventHubClientTest extends ApiTestBase {
         private final EventHubProperties properties;
         private final Map<String, PartitionProperties> partitionPropertiesMap;
 
-        ExpectedData(TestMode testMode, ConnectionStringBuilder builder) {
+        ExpectedData(TestMode testMode, CredentialInfo credentialInfo) {
             final String eventHubPath;
             final String[] partitionIds;
             switch (testMode) {
@@ -256,7 +258,7 @@ public class EventHubClientTest extends ApiTestBase {
                     partitionIds = new String[]{"test-1", "test-2"};
                     break;
                 case RECORD:
-                    eventHubPath = builder.eventHubName();
+                    eventHubPath = credentialInfo.eventHubPath();
                     partitionIds = new String[]{"0", "1"};
                     break;
                 default:

@@ -63,6 +63,7 @@ public class HandlerTest {
 
     private static class TestHandler extends Handler {
         TestHandler() {
+            super("test-connection-id", "test-hostname");
         }
     }
 }
