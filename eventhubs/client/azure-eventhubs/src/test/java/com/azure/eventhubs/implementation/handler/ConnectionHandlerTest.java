@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
@@ -35,8 +37,12 @@ public class ConnectionHandlerTest {
     private static final String HOSTNAME = "hostname-random";
     private ConnectionHandler handler;
 
+    @Captor
+    ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
+
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
     }
 
@@ -78,8 +84,6 @@ public class ConnectionHandlerTest {
         verify(transport, times(1)).ssl(any());
     }
 
-
-    @SuppressWarnings("unchecked")
     @Test
     public void onConnectionInit() {
         // Arrange
@@ -97,7 +101,6 @@ public class ConnectionHandlerTest {
         verify(connection, times(1)).setContainer(CONNECTION_ID);
         verify(connection, times(1)).open();
 
-        ArgumentCaptor<Map> argumentCaptor = ArgumentCaptor.forClass(Map.class);
         verify(connection).setProperties(argumentCaptor.capture());
         Map<Symbol, Object> actualProperties = argumentCaptor.getValue();
         Assert.assertEquals(expectedProperties.size(), actualProperties.size());

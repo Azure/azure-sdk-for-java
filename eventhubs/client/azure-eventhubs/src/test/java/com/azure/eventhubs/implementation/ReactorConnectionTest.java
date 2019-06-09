@@ -21,7 +21,9 @@ import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -31,7 +33,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,21 +47,24 @@ public class ReactorConnectionTest {
 
     private AmqpConnection connection;
     private ConnectionHandler handler;
-    private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
     private ReactorHandlerProvider reactorHandlerProvider;
     private ReactorProvider reactorProvider;
     private Scheduler scheduler;
-    private Selectable selectable;
     private SessionHandler sessionHandler;
+
+    @Mock
+    private Reactor reactor;
+    @Mock
+    private Selectable selectable;
+    @Mock
     private TokenProvider tokenProvider;
 
     @Before
     public void initialize() throws IOException {
+        MockitoAnnotations.initMocks(this);
+
         scheduler = Schedulers.newSingle(SCHEDULER_NAME);
-        tokenProvider = mock(TokenProvider.class);
-        reactor = mock(Reactor.class);
-        selectable = mock(Selectable.class);
         when(reactor.selectable()).thenReturn(selectable);
 
         reactorDispatcher = new ReactorDispatcher(reactor);
