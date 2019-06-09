@@ -24,92 +24,52 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.Trigger;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosRequestOptions;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosTriggerResponse;
+import com.microsoft.azure.cosmos.CosmosTriggerSettings;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.TriggerOperation;
 import com.microsoft.azure.cosmosdb.TriggerType;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
-
+import reactor.core.publisher.Mono;
 
 public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
+    private CosmosContainer createdCollection;
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public TriggerUpsertReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
+    public TriggerUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertTrigger() throws Exception {
-
-        // create a trigger
-        Trigger trigger = new Trigger();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
-        trigger.setTriggerOperation(TriggerOperation.Create);
-        trigger.setTriggerType(TriggerType.Pre);
-        Trigger readBackTrigger = client.upsertTrigger(getCollectionLink(), trigger, null).toBlocking().single().getResource();
-        
-        // read trigger to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<Trigger>> readObservable = client.readTrigger(readBackTrigger.getSelfLink(), null);
-
-        // validate trigger creation
-        ResourceResponseValidator<Trigger> validatorForRead = new ResourceResponseValidator.Builder<Trigger>()
-                .withId(readBackTrigger.getId())
-                .withTriggerBody("function() {var x = 10;}")
-                .withTriggerInternals(TriggerType.Pre, TriggerOperation.Create)
-                .notNullEtag()
-                .build();
-        validateSuccess(readObservable, validatorForRead);
-        
-        //update trigger
-        readBackTrigger.setBody("function() {var x = 11;}");
-
-        Observable<ResourceResponse<Trigger>> updateObservable = client.upsertTrigger(getCollectionLink(), readBackTrigger, null);
-
-        // validate trigger update
-        ResourceResponseValidator<Trigger> validatorForUpdate = new ResourceResponseValidator.Builder<Trigger>()
-                .withId(readBackTrigger.getId())
-                .withTriggerBody("function() {var x = 11;}")
-                .withTriggerInternals(TriggerType.Pre, TriggerOperation.Create)
-                .notNullEtag()
-                .build();
-        validateSuccess(updateObservable, validatorForUpdate);   
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceTrigger() throws Exception {
 
         // create a trigger
-        Trigger trigger = new Trigger();
+        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
         trigger.setId(UUID.randomUUID().toString());
         trigger.setBody("function() {var x = 10;}");
         trigger.setTriggerOperation(TriggerOperation.Create);
         trigger.setTriggerType(TriggerType.Pre);
-        Trigger readBackTrigger = client.createTrigger(getCollectionLink(), trigger, null).toBlocking().single().getResource();
+        CosmosTriggerSettings readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().getCosmosTriggerSettings();
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<Trigger>> readObservable = client.readTrigger(readBackTrigger.getSelfLink(), null);
+        Mono<CosmosTriggerResponse> readObservable = createdCollection.getTrigger(readBackTrigger.getId()).read(new RequestOptions());
 
         // validate trigger creation
-        ResourceResponseValidator<Trigger> validatorForRead = new ResourceResponseValidator.Builder<Trigger>()
+        CosmosResponseValidator<CosmosTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
                 .withId(readBackTrigger.getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.Pre, TriggerOperation.Create)
@@ -120,10 +80,10 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         //update trigger
         readBackTrigger.setBody("function() {var x = 11;}");
 
-        Observable<ResourceResponse<Trigger>> updateObservable = client.replaceTrigger(readBackTrigger, null);
+        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getTrigger(readBackTrigger.getId()).replace(readBackTrigger, new RequestOptions());
 
         // validate trigger replace
-        ResourceResponseValidator<Trigger> validatorForUpdate = new ResourceResponseValidator.Builder<Trigger>()
+        CosmosResponseValidator<CosmosTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
                 .withId(readBackTrigger.getId())
                 .withTriggerBody("function() {var x = 11;}")
                 .withTriggerInternals(TriggerType.Pre, TriggerOperation.Create)
@@ -135,17 +95,12 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
     }
     
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
     }
 }

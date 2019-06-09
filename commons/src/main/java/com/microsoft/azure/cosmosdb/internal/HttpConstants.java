@@ -265,7 +265,7 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-09-17";
+        public static final String CURRENT_VERSION = "2018-12-31";
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven

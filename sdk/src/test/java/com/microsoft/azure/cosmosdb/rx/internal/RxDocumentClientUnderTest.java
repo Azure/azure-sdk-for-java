@@ -22,6 +22,7 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.microsoft.azure.cosmos.ClientUnderTestBuilder;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.ISessionContainer;
@@ -46,7 +47,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
 
 /**
- * This class in conjunction with {@link com.microsoft.azure.cosmosdb.rx.ClientUnderTestBuilder}
+ * This class in conjunction with {@link ClientUnderTestBuilder}
  * provides the functionality for spying the client behavior and the http requests sent.
  */
 public class RxDocumentClientUnderTest extends RxDocumentClientImpl {

@@ -22,38 +22,38 @@
  */
 package com.microsoft.azure.cosmos;
 
-import com.microsoft.azure.cosmosdb.AccessCondition;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 
 /**
- * Encapsulates options that can be specified for a request
+ * Encapsulates options that can be specified for a request issued to cosmos database.
  */
-public  class CosmosRequestOptions {
-    protected RequestOptions requestOptions = new RequestOptions();
-    private AccessCondition accessCondition;
+public class CosmosDatabaseRequestOptions extends CosmosRequestOptions{
+    private Integer offerThroughput;
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the throughput in the form of Request Units per second when creating a cosmos database.
      *
-     * @return the access condition.
+     * @return the throughput value.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public Integer getOfferThroughput() {
+        return offerThroughput;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the throughput in the form of Request Units per second when creating a cosmos database.
      *
-     * @param accessCondition the access condition.
+     * @param offerThroughput the throughput value.
      * @return the current request options
      */
-    public CosmosRequestOptions accessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosDatabaseRequestOptions offerThroughput(Integer offerThroughput) {
+        this.offerThroughput = offerThroughput;
         return this;
     }
 
-    protected RequestOptions toRequestOptions(){
-        requestOptions.setAccessCondition(accessCondition);
+    @Override
+    protected RequestOptions toRequestOptions() {
+        super.toRequestOptions();
+        requestOptions.setOfferThroughput(offerThroughput);
         return requestOptions;
     }
 }

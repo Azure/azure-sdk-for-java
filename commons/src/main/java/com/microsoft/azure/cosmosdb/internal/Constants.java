@@ -157,6 +157,7 @@ public final class Constants {
         public static final String PARTITION_KEY_PATHS = "paths";
         public static final String PARTITION_KIND = "kind";
         public static final String PARTITION_KEY_DEFINITION_VERSION = "version";
+        public static final String SYSTEM_KEY = "systemKey";
 
         public static final String RESOURCE_PARTITION_KEY = "resourcePartitionKey";
         public static final String PARTITION_KEY_RANGE_ID = "partitionKeyRangeId";

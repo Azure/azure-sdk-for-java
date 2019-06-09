@@ -45,6 +45,7 @@ import com.microsoft.azure.cosmosdb.StoredProcedureResponse;
 import com.microsoft.azure.cosmosdb.TokenResolver;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -63,6 +64,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Map;
 
+//TODO: change to use external TestSuiteBase
 public class TokenResolverTest extends TestSuiteBase {
 
     private class UserClass {

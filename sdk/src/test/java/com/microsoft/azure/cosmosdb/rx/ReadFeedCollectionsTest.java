@@ -27,21 +27,23 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerRequestOptions;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
+import reactor.core.publisher.Flux;
 
 public class ReadFeedCollectionsTest extends TestSuiteBase {
 
@@ -49,15 +51,15 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private Database createdDatabase;
-    private List<DocumentCollection> createdCollections = new ArrayList<>();
+    private CosmosDatabase createdDatabase;
+    private List<CosmosContainer> createdCollections = new ArrayList<>();
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public ReadFeedCollectionsTest(AsyncDocumentClient.Builder clientBuilder) {
+    public ReadFeedCollectionsTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -67,15 +69,15 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
 
-        Observable<FeedResponse<DocumentCollection>> feedObservable = client.readCollections(getDatabaseLink(), options);
+        Flux<FeedResponse<CosmosContainerSettings>> feedObservable = createdDatabase.listContainers(options);
 
         int expectedPageSize = (createdCollections.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
+        FeedResponseListValidator<CosmosContainerSettings> validator = new FeedResponseListValidator.Builder<CosmosContainerSettings>()
                 .totalSize(createdCollections.size())
-                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.read().block().getCosmosContainerSettings().getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -89,23 +91,22 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 3; i++) {
-            createdCollections.add(createCollections(client));
+            createdCollections.add(createCollections(createdDatabase));
         }
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase);
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
     }
 
-    public DocumentCollection createCollections(AsyncDocumentClient client) {
-        DocumentCollection collection = new DocumentCollection();
-        collection.setId(UUID.randomUUID().toString());
-        return client.createCollection(getDatabaseLink(), collection, null).toBlocking().single().getResource();
-    }
-
-    private String getDatabaseLink() {
-        return "dbs/" + createdDatabase.getId();
+    public CosmosContainer createCollections(CosmosDatabase database) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        CosmosContainerSettings collection = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        return database.createContainer(collection, new CosmosContainerRequestOptions()).block().getContainer();
     }
 }

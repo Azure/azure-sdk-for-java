@@ -83,7 +83,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
  */
 public class DocumentQueryAsyncAPITest {
-    private final static int TIMEOUT = 60000;
+    private final static int TIMEOUT = 3 * 60000;
     private AsyncDocumentClient asyncClient;
     private DocumentCollection createdCollection;
     private Database createdDatabase;
@@ -102,6 +102,11 @@ public class DocumentQueryAsyncAPITest {
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // Create database
 
@@ -136,6 +141,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -182,6 +188,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -231,6 +238,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<Double> totalChargeObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -256,6 +264,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<FeedResponse<Document>> requestChargeObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -300,6 +309,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Func1<Document, Boolean> isPrimeNumber = new Func1<Document, Boolean>() {
 
@@ -359,6 +369,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -448,6 +459,7 @@ public class DocumentQueryAsyncAPITest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);

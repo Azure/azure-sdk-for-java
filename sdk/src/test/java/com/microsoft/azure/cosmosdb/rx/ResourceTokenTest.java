@@ -47,6 +47,7 @@ import com.microsoft.azure.cosmosdb.PermissionMode;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 
 import rx.Observable;
 
@@ -55,6 +56,8 @@ import rx.Observable;
  * resources from resource token directly or via permission feed .
  *
  */
+
+// TODO: change to use external TestSuiteBase
 public class ResourceTokenTest extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
 
@@ -84,7 +87,8 @@ public class ResourceTokenTest extends TestSuiteBase {
     private final static String DOCUMENT_DEFINITION = "{ 'id': 'doc%d', 'counter': '%d'}";
     private final static String DOCUMENT_DEFINITION_WITH_PERMISSION_KEY = "{ " + "\"id\": \"%s\", "
             + "\"mypk\": \"%s\", " + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]" + "}";
-    private final static String PARTITION_KEY_PATH = "/mypk";
+    private final static String PARTITION_KEY_PATH_1 = "/mypk";
+    private final static String PARTITION_KEY_PATH_2 = "/mypk2";
 
     private static final String PARTITION_KEY_VALUE = "1";
     private static final String PARTITION_KEY_VALUE_2 = "2";
@@ -110,11 +114,11 @@ public class ResourceTokenTest extends TestSuiteBase {
         d.setId(databaseId);
         createdDatabase = createDatabase(client, d);
         // Create collection
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinitionWithPartitionKey(PARTITION_KEY_PATH_2));
         // Create document
         createdDocument = createDocument(client, createdDatabase.getId(),createdCollection.getId(), getDocument());
         // Create collection with partition key
-        createdCollectionWithPartitionKey = createCollection(client, createdDatabase.getId(), getCollectionDefinitionWithPartitionKey());
+        createdCollectionWithPartitionKey = createCollection(client, createdDatabase.getId(), getCollectionDefinitionWithPartitionKey(PARTITION_KEY_PATH_1));
         // Create document with partition key
         createdDocumentWithPartitionKey = createDocument(client, createdDatabase.getId(), createdCollectionWithPartitionKey.getId(),
                 getDocumentDefinitionWithPartitionKey());
@@ -281,10 +285,11 @@ public class ResourceTokenTest extends TestSuiteBase {
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = null;
-            if(StringUtils.isNotEmpty(partitionKey)) {
-                options = new RequestOptions();
-                options.setPartitionKey(new PartitionKey(partitionKey));
+            RequestOptions options = new RequestOptions();
+            if (StringUtils.isNotEmpty(partitionKey)) {
+                options.setPartitionKey(new PartitionKey((String)partitionKey));
+            } else {
+                options.setPartitionKey(PartitionKey.None);
             }
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
@@ -309,8 +314,10 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withMasterKeyOrResourceToken(resourceToken)
                     .withConnectionPolicy(ConnectionPolicy.GetDefault()).withConsistencyLevel(ConsistencyLevel.Session)
                     .build();
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(PartitionKey.None);
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), null);
+                    .readDocument(createdDocument.getSelfLink(), options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId()).build();
             validateSuccess(readObservable, validator);
@@ -515,12 +522,6 @@ public class ResourceTokenTest extends TestSuiteBase {
         return createdUser.getSelfLink();
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        return collectionDefinition;
-    }
-
     private Document getDocumentDefinitionWithPartitionKey() {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document(String.format(DOCUMENT_DEFINITION_WITH_PERMISSION_KEY, uuid, PARTITION_KEY_VALUE));
@@ -532,10 +533,10 @@ public class ResourceTokenTest extends TestSuiteBase {
             return doc;
         }
 
-    private DocumentCollection getCollectionDefinitionWithPartitionKey() {
+    private DocumentCollection getCollectionDefinitionWithPartitionKey(String pkDefPath) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
-        paths.add(PARTITION_KEY_PATH);
+        paths.add(pkDefPath);
         partitionKeyDef.setPaths(paths);
 
         DocumentCollection collectionDefinition = new DocumentCollection();

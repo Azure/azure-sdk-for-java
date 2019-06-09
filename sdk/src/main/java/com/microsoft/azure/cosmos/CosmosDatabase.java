@@ -282,15 +282,19 @@ public class CosmosDatabase extends CosmosResource {
     public CosmosContainer getContainer(String id) {
         return new CosmosContainer(id, this);
     }
-    
+
     /** User operations **/
+
+    public Mono<CosmosUserResponse> createUser(CosmosUserSettings settings) {
+        return this.createUser(settings, null);
+    }
 
     /**
      * Creates a user
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the created user.
      * In case of failure the {@link Mono} will error.
-     * 
+     *
      * @param settings the cosmos user settings
      * @param options the request options
      * @return an {@link Mono} containing the single resource response with the created cosmos user or an error.
@@ -298,7 +302,11 @@ public class CosmosDatabase extends CosmosResource {
     public Mono<CosmosUserResponse> createUser(CosmosUserSettings settings, RequestOptions options){
         return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().createUser(this.getLink(),
                 settings.getV2User(), options).map(response ->
-                new CosmosUserResponse(response, this)).toSingle())); 
+                new CosmosUserResponse(response, this)).toSingle()));
+    }
+
+    public Mono<CosmosUserResponse> upsertUser(CosmosUserSettings settings) {
+        return this.upsertUser(settings, null);
     }
 
     /**
@@ -306,7 +314,7 @@ public class CosmosDatabase extends CosmosResource {
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the created user.
      * In case of failure the {@link Mono} will error.
-     *  
+     *
      * @param settings the cosmos user settings
      * @param options the request options
      * @return an {@link Mono} containing the single resource response with the upserted user or an error.
@@ -315,6 +323,10 @@ public class CosmosDatabase extends CosmosResource {
         return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().upsertUser(this.getLink(),
                 settings.getV2User(), options).map(response ->
                 new CosmosUserResponse(response, this)).toSingle()));
+    }
+
+    public Flux<FeedResponse<CosmosUserSettings>> listUsers() {
+        return listUsers(new FeedOptions());
     }
 
     /**
@@ -335,10 +347,14 @@ public class CosmosDatabase extends CosmosResource {
                                 response.getResponseHeaders()))));
     }
 
+    public Flux<FeedResponse<CosmosUserSettings>> queryUsers(String query, FeedOptions options){
+        return queryUsers(new SqlQuerySpec(query), options);
+    }
+
     /**
      * Query for cosmos users in a database.
      *
-     * After subscription the operation will be performed. 
+     * After subscription the operation will be performed.
      * The {@link Flux} will contain one or several feed response of the obtained users.
      * In case of failure the {@link Flux} will error.
      *
@@ -353,6 +369,10 @@ public class CosmosDatabase extends CosmosResource {
                         .map(response-> BridgeInternal.createFeedResponseWithQueryMetrics(
                                 CosmosUserSettings.getFromV2Results(response.getResults(), this),
                                 response.getResponseHeaders(), response.getQueryMetrics()))));
+    }
+
+    public CosmosUser getUser(String id) {
+        return new CosmosUser(id, this);
     }
 
     CosmosClient getClient() {

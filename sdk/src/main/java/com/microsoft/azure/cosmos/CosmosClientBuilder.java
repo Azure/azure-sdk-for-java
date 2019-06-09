@@ -25,6 +25,8 @@ package com.microsoft.azure.cosmos;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Permission;
+import com.microsoft.azure.cosmosdb.TokenResolver;
+import com.microsoft.azure.cosmosdb.rx.internal.Configs;
 
 import java.util.List;
 
@@ -47,13 +49,35 @@ import java.util.List;
  */
 public class CosmosClientBuilder {
 
+    private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
     private List<Permission> permissions;
+    private TokenResolver tokenResolver;
 
     CosmosClientBuilder() {
+    }
+
+    /**
+     * Configs
+     * @param configs
+     * @return current builder
+     */
+    public CosmosClientBuilder configs(Configs configs) {
+        this.configs = configs;
+        return this;
+    }
+
+    /**
+     * Token Resolver
+     * @param tokenResolver
+     * @return current builder
+     */
+    public CosmosClientBuilder tokenResolver(TokenResolver tokenResolver) {
+        this.tokenResolver = tokenResolver;
+        return this;
     }
 
     /**
@@ -138,15 +162,23 @@ public class CosmosClientBuilder {
         return keyOrResourceToken;
     }
 
-    ConnectionPolicy getConnectionPolicy() {
+    public ConnectionPolicy getConnectionPolicy() {
         return connectionPolicy;
     }
 
-    ConsistencyLevel getDesiredConsistencyLevel() {
+    public ConsistencyLevel getDesiredConsistencyLevel() {
         return desiredConsistencyLevel;
     }
 
     List<Permission> getPermissions() {
         return permissions;
+    }
+
+    public Configs getConfigs() {
+        return configs;
+    }
+
+    public TokenResolver getTokenResolver() {
+        return tokenResolver;
     }
 }

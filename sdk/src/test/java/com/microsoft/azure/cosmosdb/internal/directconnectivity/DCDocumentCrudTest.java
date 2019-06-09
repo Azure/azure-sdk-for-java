@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.microsoft.azure.cosmosdb.rx;
+package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
 import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
@@ -38,10 +38,15 @@ import com.microsoft.azure.cosmosdb.StoredProcedureResponse;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import com.microsoft.azure.cosmosdb.rx.DocumentServiceRequestValidator;
+import com.microsoft.azure.cosmosdb.rx.FeedResponseListValidator;
+import com.microsoft.azure.cosmosdb.rx.ResourceResponseValidator;
+import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import com.microsoft.azure.cosmosdb.rx.internal.Configs;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.SpyClientUnderTestFactory;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 import org.mockito.stubbing.Answer;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -67,6 +72,7 @@ import static org.mockito.Mockito.spy;
  * The tests in other test classes validate the actual behaviour and different scenarios.
  */
 public class DCDocumentCrudTest extends TestSuiteBase {
+    
     private final static int QUERY_TIMEOUT = 40000;
     private final static String PARTITION_KEY_FIELD_NAME = "mypk";
 
@@ -249,8 +255,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             // validates only the first query for fetching query plan goes to gateway.
             assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
         } catch (Throwable error) {
-            if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -340,4 +346,5 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         doc.set("name", "Hafez");
         return doc;
     }
+    
 }

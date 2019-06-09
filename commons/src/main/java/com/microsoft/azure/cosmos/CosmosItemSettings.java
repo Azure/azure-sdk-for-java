@@ -49,6 +49,17 @@ public class CosmosItemSettings extends Resource {
         super(jsonString);
     }
 
+
+    /**
+     * Initialize an CosmosItemSettings object from json string.
+     *
+     * @param jsonString the json string that represents the item object.
+     * @param objectMapper the custom object mapper
+     */
+    public CosmosItemSettings(String jsonString, ObjectMapper objectMapper) {
+        super(jsonString, objectMapper);
+    }
+
     /**
      * fromObject returns Document for compatibility with V2 sdk
      *

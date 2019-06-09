@@ -24,43 +24,44 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.UserDefinedFunction;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosRequestOptions;
+import com.microsoft.azure.cosmos.CosmosResponse;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosUserDefinedFunction;
+import com.microsoft.azure.cosmos.CosmosUserDefinedFunctionResponse;
+import com.microsoft.azure.cosmos.CosmosUserDefinedFunctionSettings;
 
-import rx.Observable;
-
+import reactor.core.publisher.Mono;
 
 public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-
-    private AsyncDocumentClient client;
+    private CosmosContainer createdCollection;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public UserDefinedFunctionCrudTest(AsyncDocumentClient.Builder clientBuilder) {
+    public UserDefinedFunctionCrudTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUserDefinedFunction() throws Exception {
         // create udf
-        UserDefinedFunction udf = new UserDefinedFunction();
+        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
 
-        Observable<ResourceResponse<UserDefinedFunction>> createObservable = client.createUserDefinedFunction(getCollectionLink(), udf, null);
+        Mono<CosmosUserDefinedFunctionResponse> createObservable = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions());
 
         // validate udf creation
-        ResourceResponseValidator<UserDefinedFunction> validator = new ResourceResponseValidator.Builder<UserDefinedFunction>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(udf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -71,18 +72,17 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readUserDefinedFunction() throws Exception {
         // create a udf
-        UserDefinedFunction udf = new UserDefinedFunction();
+        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
-        UserDefinedFunction readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
-
+        CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().getCosmosUserDefinedFunction();
 
         // read udf
         waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
+        Mono<CosmosUserDefinedFunctionResponse> readObservable = readBackUdf.read(null);
 
         //validate udf read
-        ResourceResponseValidator<UserDefinedFunction> validator = new ResourceResponseValidator.Builder<UserDefinedFunction>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(udf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -93,16 +93,16 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteUserDefinedFunction() throws Exception {
         // create a udf
-        UserDefinedFunction udf = new UserDefinedFunction();
+        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
-        UserDefinedFunction readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
+        CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().getCosmosUserDefinedFunction();
 
         // delete udf
-        Observable<ResourceResponse<UserDefinedFunction>> deleteObservable = client.deleteUserDefinedFunction(readBackUdf.getSelfLink(), null);
+        Mono<CosmosResponse> deleteObservable = readBackUdf.delete(new CosmosRequestOptions());
 
         // validate udf delete
-        ResourceResponseValidator<UserDefinedFunction> validator = new ResourceResponseValidator.Builder<UserDefinedFunction>()
+        CosmosResponseValidator<CosmosResponse> validator = new CosmosResponseValidator.Builder<CosmosResponse>()
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
@@ -111,16 +111,12 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
-
+    
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
-    }
 }

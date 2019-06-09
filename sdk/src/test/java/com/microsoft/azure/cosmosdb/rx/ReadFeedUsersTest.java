@@ -27,32 +27,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosUserSettings;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
+import reactor.core.publisher.Flux;
 
 public class ReadFeedUsersTest extends TestSuiteBase {
 
-    public final String databaseId = DatabaseForTest.generateId();
-    private Database createdDatabase;
+    public final String databaseId = CosmosDatabaseForTest.generateId();
+    private CosmosDatabase createdDatabase;
 
-    private AsyncDocumentClient client;
-    private List<User> createdUsers = new ArrayList<>();
+    private CosmosClient client;
+    private List<CosmosUserSettings> createdUsers = new ArrayList<>();
 
     @Factory(dataProvider = "clientBuilders")
-    public ReadFeedUsersTest(AsyncDocumentClient.Builder clientBuilder) {
+    public ReadFeedUsersTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -62,15 +62,15 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
 
-        Observable<FeedResponse<User>> feedObservable = client.readUsers(getDatabaseLink(), options);
+        Flux<FeedResponse<CosmosUserSettings>> feedObservable = createdDatabase.listUsers(options);
 
         int expectedPageSize = (createdUsers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<User> validator = new FeedResponseListValidator.Builder<User>()
+        FeedResponseListValidator<CosmosUserSettings> validator = new FeedResponseListValidator.Builder<CosmosUserSettings>()
                 .totalSize(createdUsers.size())
                 .exactlyContainsInAnyOrder(createdUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<User>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -79,12 +79,10 @@ public class ReadFeedUsersTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(databaseId);
-        createdDatabase = createDatabase(client, d);
+        createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 5; i++) {
-            createdUsers.add(createUsers(client));
+            createdUsers.add(createUsers(createdDatabase));
         }
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
@@ -92,17 +90,13 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
     }
 
-    public User createUsers(AsyncDocumentClient client) {
-        User user = new User();
+    public CosmosUserSettings createUsers(CosmosDatabase cosmosDatabase) {
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
-        return client.createUser(getDatabaseLink(), user, null).toBlocking().single().getResource();
-    }
-
-    private String getDatabaseLink() {
-        return "dbs/" + createdDatabase.getId();
+        return cosmosDatabase.createUser(user, new RequestOptions()).block().getCosmosUserSettings();
     }
 }

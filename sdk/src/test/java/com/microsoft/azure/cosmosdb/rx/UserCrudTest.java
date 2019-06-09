@@ -22,49 +22,48 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
-import com.microsoft.azure.cosmosdb.Permission;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosUser;
+import com.microsoft.azure.cosmos.CosmosUserResponse;
+import com.microsoft.azure.cosmos.CosmosUserSettings;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
-
+import reactor.core.publisher.Mono;
 
 public class UserCrudTest extends TestSuiteBase {
 
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private Database createdDatabase;
+    private CosmosDatabase createdDatabase;
     
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public UserCrudTest(AsyncDocumentClient.Builder clientBuilder) {
+    public UserCrudTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         //create user
-        User user = new User();
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
         
-        Observable<ResourceResponse<User>> createObservable = client.createUser(getDatabaseLink(), user, null);
+        Mono<CosmosUserResponse> createObservable = createdDatabase.createUser(user, null);
 
         // validate user creation
-        ResourceResponseValidator<User> validator = new ResourceResponseValidator.Builder<User>()
+        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
                 .withId(user.getId())
                 .notNullEtag()
                 .build();
@@ -75,16 +74,16 @@ public class UserCrudTest extends TestSuiteBase {
     public void readUser() throws Exception {
  
         //create user
-        User user = new User();
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
        
-        User readBackUser = client.createUser(getDatabaseLink(), user, null).toBlocking().single().getResource();
+        CosmosUser readBackUser = createdDatabase.createUser(user, null).block().getUser();
 
         // read user
-        Observable<ResourceResponse<User>> readObservable = client.readUser(readBackUser.getSelfLink(), null);
+        Mono<CosmosUserResponse> readObservable = readBackUser.read(null);
         
         //validate user read
-        ResourceResponseValidator<User> validator = new ResourceResponseValidator.Builder<User>()
+        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
                 .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
@@ -95,22 +94,22 @@ public class UserCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         //create user
-        User user = new User();
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
         
-        User readBackUser = client.createUser(getDatabaseLink(), user, null).toBlocking().single().getResource();
+        CosmosUser readBackUser = createdDatabase.createUser(user, null).block().getUser();
 
         // delete user
-        Observable<ResourceResponse<User>> deleteObservable = client.deleteUser(readBackUser.getSelfLink(), null);
+        Mono<CosmosUserResponse> deleteObservable = readBackUser.delete(null);
 
         // validate user delete
-        ResourceResponseValidator<User> validator = new ResourceResponseValidator.Builder<User>()
+        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
 
         // attempt to read the user which was deleted
-        Observable<ResourceResponse<User>> readObservable = client.readUser(readBackUser.getSelfLink(), null);
+        Mono<CosmosUserResponse> readObservable = readBackUser.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
@@ -119,76 +118,48 @@ public class UserCrudTest extends TestSuiteBase {
     public void upsertUser() throws Exception {
 
         //create user
-        User user = new User();
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
         
-        User readBackUser = client.upsertUser(getDatabaseLink(), user, null).toBlocking().single().getResource();
+        Mono<CosmosUserResponse> upsertObservable = createdDatabase.upsertUser(user, null);
         
-        // read user to validate creation
-        Observable<ResourceResponse<User>> readObservable = client.readUser(readBackUser.getSelfLink(), null);
-        
-        //validate user read
-        ResourceResponseValidator<User> validatorForRead = new ResourceResponseValidator.Builder<User>()
-                .withId(readBackUser.getId())
+        //validate user upsert
+        CosmosResponseValidator<CosmosUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+                .withId(user.getId())
                 .notNullEtag()
                 .build();
         
-        validateSuccess(readObservable, validatorForRead);
-        
-        client.readUsers(getDatabaseLink(), null).toBlocking().subscribe(users -> {
-            try {
-                int initialNumberOfUsers = users.getResults().size();
-                //update user
-                readBackUser.setId(UUID.randomUUID().toString());
-
-                Observable<ResourceResponse<User>> updateObservable = client.upsertUser(getDatabaseLink(), readBackUser, null);
-
-                // validate user upsert
-                ResourceResponseValidator<User> validatorForUpdate = new ResourceResponseValidator.Builder<User>()
-                        .withId(readBackUser.getId())
-                        .notNullEtag()
-                        .build();
-                
-                validateSuccess(updateObservable, validatorForUpdate);
-                
-                //verify that new user is added due to upsert with changed id
-                client.readUsers(getDatabaseLink(), null).toBlocking().subscribe(newUsers ->{
-                    int finalNumberOfUsers = newUsers.getResults().size();
-                    assertThat(finalNumberOfUsers).isEqualTo(initialNumberOfUsers + 1);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }); 
+        validateSuccess(upsertObservable, validatorForUpsert);
     }
-    
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceUser() throws Exception {
 
         //create user
-        User user = new User();
+        CosmosUserSettings user = new CosmosUserSettings();
         user.setId(UUID.randomUUID().toString());
         
-        User readBackUser = client.createUser(getDatabaseLink(), user, null).toBlocking().single().getResource();
+        CosmosUserSettings readBackUser = createdDatabase.createUser(user, null).block().getCosmosUserSettings();
         
         // read user to validate creation
-        Observable<ResourceResponse<User>> readObservable = client.readUser(readBackUser.getSelfLink(), null);
+        Mono<CosmosUserResponse> readObservable = createdDatabase.getUser(user.getId()).read();
         
         //validate user read
-        ResourceResponseValidator<User> validatorForRead = new ResourceResponseValidator.Builder<User>()
-                .withId(readBackUser.getId())
+        CosmosResponseValidator<CosmosUserResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
         
         validateSuccess(readObservable, validatorForRead);
         
         //update user
+        String oldId = readBackUser.getId();
         readBackUser.setId(UUID.randomUUID().toString());
 
-        Observable<ResourceResponse<User>> updateObservable = client.replaceUser(readBackUser, null);
+        Mono<CosmosUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser, null);
 
         // validate user replace
-        ResourceResponseValidator<User> validatorForUpdate = new ResourceResponseValidator.Builder<User>()
+        CosmosResponseValidator<CosmosUserResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosUserResponse>()
                 .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
@@ -199,18 +170,12 @@ public class UserCrudTest extends TestSuiteBase {
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(databaseId);
-        createdDatabase = createDatabase(client, d);
+        createdDatabase = createDatabase(client, databaseId);
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
-    }
-
-    private String getDatabaseLink() {
-        return createdDatabase.getSelfLink();
     }
 }

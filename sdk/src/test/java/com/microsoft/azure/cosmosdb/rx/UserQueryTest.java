@@ -29,35 +29,33 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosUserSettings;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.User;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 public class UserQueryTest extends TestSuiteBase {
 
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private List<User> createdUsers = new ArrayList<>();
+    private List<CosmosUserSettings> createdUsers = new ArrayList<>();
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
+    private CosmosDatabase createdDatabase;
 
-    private String getDatabaseLink() {
-        return Utils.getDatabaseNameLink(databaseId);
-    }
-    
     @Factory(dataProvider = "clientBuilders")
-    public UserQueryTest(Builder clientBuilder) {
+    public UserQueryTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -69,20 +67,20 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
-        Observable<FeedResponse<User>> queryObservable = client.queryUsers(getDatabaseLink(), query, options);
+        Flux<FeedResponse<CosmosUserSettings>> queryObservable = createdDatabase.queryUsers(query, options);
 
-        List<User> expectedUsers = createdUsers.stream()
+        List<CosmosUserSettings> expectedUsers = createdUsers.stream()
                 .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
 
         assertThat(expectedUsers).isNotEmpty();
 
         int expectedPageSize = (expectedUsers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<User> validator = new FeedResponseListValidator.Builder<User>()
+        FeedResponseListValidator<CosmosUserSettings> validator = new FeedResponseListValidator.Builder<CosmosUserSettings>()
                 .totalSize(expectedUsers.size())
                 .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<User>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -97,19 +95,19 @@ public class UserQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
         String databaseLink = Utils.getDatabaseNameLink(databaseId);
-        Observable<FeedResponse<User>> queryObservable = client.queryUsers(databaseLink, query, options);
+        Flux<FeedResponse<CosmosUserSettings>> queryObservable = createdDatabase.queryUsers(query, options);
 
-        List<User> expectedUsers = createdUsers;
+        List<CosmosUserSettings> expectedUsers = createdUsers;
 
         assertThat(expectedUsers).isNotEmpty();
 
         int expectedPageSize = (expectedUsers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<User> validator = new FeedResponseListValidator.Builder<User>()
+        FeedResponseListValidator<CosmosUserSettings> validator = new FeedResponseListValidator.Builder<CosmosUserSettings>()
                 .totalSize(expectedUsers.size())
                 .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<User>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -121,12 +119,12 @@ public class UserQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Observable<FeedResponse<User>> queryObservable = client.queryUsers(getDatabaseLink(), query, options);
+        Flux<FeedResponse<CosmosUserSettings>> queryObservable = createdDatabase.queryUsers(query, options);
 
-        FeedResponseListValidator<User> validator = new FeedResponseListValidator.Builder<User>()
+        FeedResponseListValidator<CosmosUserSettings> validator = new FeedResponseListValidator.Builder<CosmosUserSettings>()
                 .containsExactly(new ArrayList<>())
                 .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<User>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(queryObservable, validator);
@@ -136,14 +134,12 @@ public class UserQueryTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
 
-        Database d1 = new Database();
-        d1.setId(databaseId);
-        createDatabase(client, d1);
+        createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 5; i++) {
-            User user = new User();
+            CosmosUserSettings user = new CosmosUserSettings();
             user.setId(UUID.randomUUID().toString());
-            createdUsers.add(createUser(client, databaseId, user));
+            createdUsers.add(createUser(client, databaseId, user).read().block().getCosmosUserSettings());
         }
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
@@ -151,7 +147,7 @@ public class UserQueryTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
     }
 }

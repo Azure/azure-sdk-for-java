@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
@@ -43,11 +43,13 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Permission;
 import com.microsoft.azure.cosmosdb.PermissionMode;
 import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 
 import rx.Observable;
 
 import javax.net.ssl.SSLException;
 
+//TODO: change to use external TestSuiteBase 
 public class PermissionQueryTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();

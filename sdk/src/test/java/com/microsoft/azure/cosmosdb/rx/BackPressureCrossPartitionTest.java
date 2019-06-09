@@ -22,21 +22,29 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import com.microsoft.azure.cosmos.ClientUnderTestBuilder;
+import com.microsoft.azure.cosmos.CosmosBridgeInternal;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerRequestOptions;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.DataType;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.IncludedPath;
 import com.microsoft.azure.cosmosdb.Index;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientUnderTest;
+
+import io.reactivex.subscribers.TestSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
@@ -45,10 +53,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.util.concurrent.Queues;
 import rx.Observable;
-import rx.internal.util.RxRingBuffer;
-import rx.observers.TestSubscriber;
-import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,18 +71,18 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private static final int SETUP_TIMEOUT = 60000;
 
     private int numberOfDocs = 4000;
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private List<Document> createdDocuments;
+    private CosmosDatabase createdDatabase;
+    private CosmosContainer createdCollection;
+    private List<CosmosItemSettings> createdDocuments;
 
-    private RxDocumentClientUnderTest client;
+    private CosmosClient client;
     private int numberOfPartitions;
 
     public String getCollectionLink() {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
+    static protected CosmosContainerSettings getCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -98,16 +104,16 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        collectionDefinition.setPartitionKey(partitionKeyDef);
+        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(
+                UUID.randomUUID().toString(),
+                partitionKeyDef);
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
         return collectionDefinition;
     }
 
     @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
-    public BackPressureCrossPartitionTest(Builder clientBuilder) {
+    public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -115,19 +121,19 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         // ensure collection is cached
-        client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options).first().toBlocking().single();
+        createdCollection.queryItems("SELECT * FROM r", options).blockFirst();
     }
 
     @DataProvider(name = "queryProvider")
     public Object[][] queryProvider() {
         return new Object[][] {
                 // query, maxItemCount, max expected back pressure buffered, total number of expected query results
-                { "SELECT * FROM r", 1, 2 * RxRingBuffer.SIZE, numberOfDocs},
-                { "SELECT * FROM r", 100, 2 * RxRingBuffer.SIZE, numberOfDocs},
-                { "SELECT * FROM r ORDER BY r.prop", 100, 2 * RxRingBuffer.SIZE + 3 * numberOfPartitions, numberOfDocs},
-                { "SELECT TOP 1000 * FROM r", 1, 2 * RxRingBuffer.SIZE, 1000},
-                { "SELECT TOP 1000 * FROM r", 100, 2 * RxRingBuffer.SIZE, 1000},
-                { "SELECT TOP 1000 * FROM r ORDER BY r.prop", 100, 2 * RxRingBuffer.SIZE + 3 * numberOfPartitions , 1000},
+                { "SELECT * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+                { "SELECT * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+                { "SELECT * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions, numberOfDocs},
+                { "SELECT TOP 1000 * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, 1000},
+                { "SELECT TOP 1000 * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, 1000},
+                { "SELECT TOP 1000 * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions , 1000},
         };
     }
 
@@ -140,20 +146,20 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.setMaxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
-        Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+        Flux<FeedResponse<CosmosItemSettings>> queryObservable = createdCollection.queryItems(query, options);
 
-        client.httpRequests.clear();
+        RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
+        rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
-        TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>(1);
-        queryObservable.observeOn(Schedulers.io(), 1).subscribe(subscriber);
+        TestSubscriber<FeedResponse<CosmosItemSettings>> subscriber = new TestSubscriber<>(1);
+        queryObservable.publishOn(Schedulers.elastic()).subscribe(subscriber);
         int sleepTimeInMillis = 40000;
         int i = 0;
 
         // use a test subscriber and request for more result and sleep in between
         try {
-            while(subscriber.getCompletions() == 0 && subscriber.getOnErrorEvents().isEmpty()) {
+            while(subscriber.completions() == 0 && subscriber.errorCount() == 0) {
                 log.debug("loop " + i);
 
                 TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
@@ -161,15 +167,14 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
                 if (sleepTimeInMillis > 4000) {
                     // validate that only one item is returned to subscriber in each iteration
-                    assertThat(subscriber.getValueCount() - i).isEqualTo(1);
+                    assertThat(subscriber.valueCount() - i).isEqualTo(1);
                 }
 
-                log.debug("subscriber.getValueCount(): " + subscriber.getValueCount());
-                log.debug("client.httpRequests.size(): " + client.httpRequests.size());
+                log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
+                log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
                 // validate that the difference between the number of requests to backend
                 // and the number of returned results is always less than a fixed threshold
-
-                assertThat(client.httpRequests.size() - subscriber.getValueCount())
+                assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
                         .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
 
                 log.debug("requesting more");
@@ -177,8 +182,8 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
                 i++;
             }
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -187,11 +192,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
         try {
             subscriber.assertNoErrors();
-            subscriber.assertCompleted();
-            assertThat(subscriber.getOnNextEvents().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
+            subscriber.assertComplete();
+            assertThat(subscriber.values().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -201,27 +206,22 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        RequestOptions options = new RequestOptions();
-        options.setOfferThroughput(20000);
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = createCollection(createdDatabase.getId(), getCollectionDefinition(), options);
-
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        options.offerThroughput(20000);
         client = new ClientUnderTestBuilder(clientBuilder).build();
+        createdDatabase = getSharedCosmosDatabase(client);
+        createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options);
 
-        ArrayList<Document> docDefList = new ArrayList<>();
+        ArrayList<CosmosItemSettings> docDefList = new ArrayList<>();
         for(int i = 0; i < numberOfDocs; i++) {
             docDefList.add(getDocumentDefinition(i));
         }
 
-        Observable<ResourceResponse<Document>> documentBulkInsertObs = bulkInsert(
-                client,
-                getCollectionLink(),
-                docDefList,
-                1000);
+        createdDocuments = bulkInsertBlocking(
+                createdCollection,
+                docDefList);
 
-        createdDocuments = documentBulkInsertObs.map(ResourceResponse::getResource).toList().toBlocking().single();
-
-        numberOfPartitions = client.readPartitionKeyRanges(getCollectionLink(), null)
+        numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.getResults())).toList().toBlocking().single().size();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
@@ -233,13 +233,13 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteCollection(client, createdCollection);
+        safeDeleteCollection(createdCollection);
         safeClose(client);
     }
 
-    private static Document getDocumentDefinition(int cnt) {
+    private static CosmosItemSettings getDocumentDefinition(int cnt) {
         String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
+        CosmosItemSettings doc = new CosmosItemSettings(String.format("{ "
             + "\"id\": \"%s\", "
             + "\"prop\" : %d, "
             + "\"mypk\": \"%s\", "

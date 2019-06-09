@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.RetryAnalyzer;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.SkipException;
@@ -38,36 +39,35 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
 import com.microsoft.azure.cosmosdb.rx.internal.query.TakeContinuationToken;
 
-import rx.Observable;
+import io.reactivex.subscribers.TestSubscriber;
+import reactor.core.publisher.Flux;
 
 public class TopQueryTests extends TestSuiteBase {
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private ArrayList<Document> docs = new ArrayList<Document>();
+    private CosmosContainer createdCollection;
+    private ArrayList<CosmosItemSettings> docs = new ArrayList<CosmosItemSettings>();
 
     private String partitionKey = "mypk";
     private int firstPk = 0;
     private int secondPk = 1;
     private String field = "field";
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public TopQueryTests(AsyncDocumentClient.Builder clientBuilder) {
+    public TopQueryTests(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class
-    )
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
@@ -81,36 +81,33 @@ public class TopQueryTests extends TestSuiteBase {
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            Observable<FeedResponse<Document>> queryObservable1 = client.queryDocuments(createdCollection.getSelfLink(),
-                    "SELECT TOP 0 value AVG(c.field) from c", options);
+            Flux<FeedResponse<CosmosItemSettings>> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c", options);
 
-            FeedResponseListValidator<Document> validator1 = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<CosmosItemSettings> validator1 = new FeedResponseListValidator.Builder<CosmosItemSettings>()
                     .totalSize(0).build();
 
             try {
                 validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
             } catch (Throwable error) {
-                if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
                     String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s",
-                            this.clientBuilder.desiredConsistencyLevel);
+                            this.clientBuilder.getDesiredConsistencyLevel());
                     logger.info(message, error);
                     throw new SkipException(message, error);
                 }
                 throw error;
             }
 
-            Observable<FeedResponse<Document>> queryObservable2 = client.queryDocuments(createdCollection.getSelfLink(),
-                    "SELECT TOP 1 value AVG(c.field) from c", options);
+            Flux<FeedResponse<CosmosItemSettings>> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c", options);
 
-            FeedResponseListValidator<Document> validator2 = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<CosmosItemSettings> validator2 = new FeedResponseListValidator.Builder<CosmosItemSettings>()
                     .totalSize(1).build();
 
             validateQuerySuccess(queryObservable2, validator2, TIMEOUT);
 
-            Observable<FeedResponse<Document>> queryObservable3 = client.queryDocuments(createdCollection.getSelfLink(),
-                    "SELECT TOP 20 * from c", options);
+            Flux<FeedResponse<CosmosItemSettings>> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options);
 
-            FeedResponseListValidator<Document> validator3 = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<CosmosItemSettings> validator3 = new FeedResponseListValidator.Builder<CosmosItemSettings>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
                     .hasValidQueryMetrics(qmEnabled).build();
 
@@ -160,9 +157,9 @@ public class TopQueryTests extends TestSuiteBase {
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int topCount) {
         for (int pageSize : pageSizes) {
-            List<Document> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
+            List<CosmosItemSettings> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
             Set<String> actualIds = new HashSet<String>();
-            for (Document document : receivedDocuments) {
+            for (CosmosItemSettings document : receivedDocuments) {
                 actualIds.add(document.getResourceId());
             }
 
@@ -170,10 +167,10 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    private List<Document> queryWithContinuationTokens(String query, int pageSize) {
+    private List<CosmosItemSettings> queryWithContinuationTokens(String query, int pageSize) {
         String requestContinuation = null;
         List<String> continuationTokens = new ArrayList<String>();
-        List<Document> receivedDocuments = new ArrayList<Document>();
+        List<CosmosItemSettings> receivedDocuments = new ArrayList<CosmosItemSettings>();
 
         do {
             FeedOptions options = new FeedOptions();
@@ -181,17 +178,16 @@ public class TopQueryTests extends TestSuiteBase {
             options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(2);
             options.setRequestContinuation(requestContinuation);
-            Observable<FeedResponse<Document>> queryObservable = client.queryDocuments(createdCollection.getSelfLink(),
-                    query, options);
+            Flux<FeedResponse<CosmosItemSettings>> queryObservable = createdCollection.queryItems(query, options);
 
-            Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
-            VerboseTestSubscriber<FeedResponse<Document>> testSubscriber = new VerboseTestSubscriber<>();
-            firstPageObservable.subscribe(testSubscriber);
+            //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
+            TestSubscriber<FeedResponse<CosmosItemSettings>> testSubscriber = new TestSubscriber<>();
+            queryObservable.subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
-            testSubscriber.assertCompleted();
+            testSubscriber.assertComplete();
 
-            FeedResponse<Document> firstPage = testSubscriber.getOnNextEvents().get(0);
+            FeedResponse<CosmosItemSettings> firstPage = (FeedResponse<CosmosItemSettings>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getResponseContinuation();
             receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);
@@ -200,18 +196,18 @@ public class TopQueryTests extends TestSuiteBase {
         return receivedDocuments;
     }
 
-    public void bulkInsert(AsyncDocumentClient client) {
+    public void bulkInsert(CosmosClient client) {
         generateTestData();
 
         for (int i = 0; i < docs.size(); i++) {
-            createDocument(client, createdDatabase.getId(), createdCollection.getId(), docs.get(i));
+            createDocument(createdCollection, docs.get(i));
         }
     }
 
     public void generateTestData() {
 
         for (int i = 0; i < 10; i++) {
-            Document d = new Document();
+            CosmosItemSettings d = new CosmosItemSettings();
             d.setId(Integer.toString(i));
             d.set(field, i);
             d.set(partitionKey, firstPk);
@@ -219,7 +215,7 @@ public class TopQueryTests extends TestSuiteBase {
         }
 
         for (int i = 10; i < 20; i++) {
-            Document d = new Document();
+            CosmosItemSettings d = new CosmosItemSettings();
             d.setId(Integer.toString(i));
             d.set(field, i);
             d.set(partitionKey, secondPk);
@@ -235,9 +231,8 @@ public class TopQueryTests extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
+        createdCollection = getSharedSinglePartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
         bulkInsert(client);
 

@@ -32,22 +32,26 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.apache.commons.collections4.ComparatorUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
-import rx.Observable;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.CompositePath;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+
+import reactor.core.publisher.Flux;
+
 import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
 import com.microsoft.azure.cosmosdb.Document;
 
@@ -66,12 +70,12 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     private static final String MEDIUM_STRING_FIELD = "mediumStringField";
     private static final String LONG_STRING_FIELD = "longStringField";
     private static final String PARTITION_KEY = "pk";
-    private ArrayList<Document> documents = new ArrayList<Document>();
-    private DocumentCollection documentCollection;
-    private Builder clientBuilder;
-    private AsyncDocumentClient client;
+    private ArrayList<CosmosItemSettings> documents = new ArrayList<CosmosItemSettings>();
+    private CosmosContainer documentCollection;
+    private CosmosClientBuilder clientBuilder;
+    private CosmosClient client;
 
-    class CustomComparator implements Comparator<Document> {
+    class CustomComparator implements Comparator<CosmosItemSettings> {
         String path;
         CompositePathSortOrder order;
         boolean isNumericPath = false;
@@ -94,7 +98,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
 
         @Override
-        public int compare(Document doc1, Document doc2) {
+        public int compare(CosmosItemSettings doc1, CosmosItemSettings doc2) {
             boolean isAsc = order == CompositePathSortOrder.Ascending;
             if (isNumericPath) {
                 if (doc1.getInt(path) < doc2.getInt(path))
@@ -105,7 +109,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     return 0;
             } else if (isStringPath) {
                 if (!isAsc) {
-                    Document temp = doc1;
+                    CosmosItemSettings temp = doc1;
                     doc1 = doc2;
                     doc2 = temp;
                 }
@@ -127,7 +131,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuilders")
-    public MultiOrderByQueryTests(Builder clientBuilder) {
+    public MultiOrderByQueryTests(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -139,8 +143,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        documentCollection = SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
-        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES);
+        documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
+        truncateCollection(documentCollection);
 
         int numberOfDocuments = 4;
 
@@ -152,35 +156,35 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
             for (int j = 0; j < numberOfDuplicates; j++) {
                 // Add the document itself for exact duplicates
-                Document initialDocument = new Document(multiOrderByDocumentString);
+                CosmosItemSettings initialDocument = new CosmosItemSettings(multiOrderByDocumentString);
                 initialDocument.setId(UUID.randomUUID().toString());
                 this.documents.add(initialDocument);
 
                 // Permute all the fields so that there are duplicates with tie breaks
-                Document numberClone = new Document(multiOrderByDocumentString);
+                CosmosItemSettings numberClone = new CosmosItemSettings(multiOrderByDocumentString);
                 numberClone.set(NUMBER_FIELD, random.nextInt(5));
                 numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
-                Document stringClone = new Document(multiOrderByDocumentString);
+                CosmosItemSettings stringClone = new CosmosItemSettings(multiOrderByDocumentString);
                 stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
                 stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
-                Document boolClone = new Document(multiOrderByDocumentString);
+                CosmosItemSettings boolClone = new CosmosItemSettings(multiOrderByDocumentString);
                 boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0);
                 boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
-                Document partitionClone = new Document(multiOrderByDocumentString);
+                CosmosItemSettings partitionClone = new CosmosItemSettings(multiOrderByDocumentString);
                 partitionClone.set(PARTITION_KEY, random.nextInt(5));
                 partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
         }
 
-        bulkInsertBlocking(client, documentCollection.getSelfLink(), documents);
+        bulkInsertBlocking(documentCollection, documents);
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
@@ -210,7 +214,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         feedOptions.setEnableCrossPartitionQuery(true);
 
         boolean[] booleanValues = new boolean[] {true, false};
-        Iterator<ArrayList<CompositePath>> compositeIndexesIterator = documentCollection.getIndexingPolicy().getCompositeIndexes().iterator();
+        CosmosContainerSettings containerSettings = documentCollection.read().block().getCosmosContainerSettings();
+        Iterator<ArrayList<CompositePath>> compositeIndexesIterator = containerSettings.getIndexingPolicy().getCompositeIndexes().iterator();
         while (compositeIndexesIterator.hasNext()) {
         ArrayList<CompositePath> compositeIndex = compositeIndexesIterator.next();
             // for every order
@@ -260,13 +265,12 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 "FROM root " + whereString + " " +
                                 "ORDER BY " + orderByItemStringBuilder.toString();
                         
-                        ArrayList<Document> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
+                        ArrayList<CosmosItemSettings> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
                         
-                        Observable<FeedResponse<Document>> queryObservable = client
-                                .queryDocuments(documentCollection.getSelfLink(), query, feedOptions);
+                        Flux<FeedResponse<CosmosItemSettings>> queryObservable = documentCollection.queryItems(query, feedOptions);
 
-                        FeedResponseListValidator<Document> validator = new FeedResponseListValidator
-                                .Builder<Document>()
+                        FeedResponseListValidator<CosmosItemSettings> validator = new FeedResponseListValidator
+                                .Builder<CosmosItemSettings>()
                                 .withOrderedResults(expectedOrderedList, compositeIndex)
                                 .build();
 
@@ -280,10 +284,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         // This query would then be invalid.
         Document documentWithEmptyField = generateMultiOrderByDocument();
         documentWithEmptyField.remove(NUMBER_FIELD);
-        client.createDocument(documentCollection.getSelfLink(), documentWithEmptyField, null, false).toBlocking().single();
+        documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(documentCollection.getSelfLink(), query, feedOptions);
+        Flux<FeedResponse<CosmosItemSettings>> queryObservable = documentCollection.queryItems(query, feedOptions);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)
@@ -292,23 +295,23 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    private ArrayList<Document> top(ArrayList<Document> documents, boolean hasTop, int topCount) {
-        ArrayList<Document> result = new ArrayList<Document>();
+    private ArrayList<CosmosItemSettings> top(ArrayList<CosmosItemSettings> arrayList, boolean hasTop, int topCount) {
+        ArrayList<CosmosItemSettings> result = new ArrayList<CosmosItemSettings>();
         int counter = 0;
         if (hasTop) {
-            while (counter < topCount && counter < documents.size()) {
-                result.add(documents.get(counter));
+            while (counter < topCount && counter < arrayList.size()) {
+                result.add(arrayList.get(counter));
                 counter++;
             }
         } else {
-            result.addAll(documents);
+            result.addAll(arrayList);
         }
         return result;
     }
 
-    private ArrayList<Document> sort(ArrayList<Document> documents, ArrayList<CompositePath> compositeIndex,
+    private ArrayList<CosmosItemSettings> sort(ArrayList<CosmosItemSettings> arrayList, ArrayList<CompositePath> compositeIndex,
             boolean invert) {
-        Collection<Comparator<Document>> comparators = new ArrayList<Comparator<Document>>();
+        Collection<Comparator<CosmosItemSettings>> comparators = new ArrayList<Comparator<CosmosItemSettings>>();
         Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
         while (compositeIndexIterator.hasNext()) {
             CompositePath compositePath = compositeIndexIterator.next();
@@ -323,20 +326,20 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
             String path = compositePath.getPath().replace("/", "");
             comparators.add(new CustomComparator(path, order));
         }
-        Collections.sort(documents, ComparatorUtils.chainedComparator(comparators));
-        return documents;
+        Collections.sort(arrayList, ComparatorUtils.chainedComparator(comparators));
+        return arrayList;
     }
 
-    private ArrayList<Document> filter(ArrayList<Document> documents, boolean hasFilter) {
-        ArrayList<Document> result = new ArrayList<Document>();
+    private ArrayList<CosmosItemSettings> filter(ArrayList<CosmosItemSettings> cosmosItemSettings, boolean hasFilter) {
+        ArrayList<CosmosItemSettings> result = new ArrayList<CosmosItemSettings>();
         if (hasFilter) {
-            for (Document document : documents) {
+            for (CosmosItemSettings document : cosmosItemSettings) {
                 if (document.getInt(NUMBER_FIELD) % 2 == 0) {
                     result.add(document);
                 }
             }
         } else {
-            result.addAll(documents);
+            result.addAll(cosmosItemSettings);
         }
         return result;
     }

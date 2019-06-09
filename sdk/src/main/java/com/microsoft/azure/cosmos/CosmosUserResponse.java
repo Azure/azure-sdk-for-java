@@ -34,5 +34,5 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserSettings> {
         return getResourceSettings();
     }
     
-    
+
 }

@@ -24,17 +24,14 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
@@ -48,7 +45,6 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.RetryOptions;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
@@ -57,7 +53,6 @@ import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.ResourceResponseValidator;
 import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
-import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
 
 import rx.Observable;
 
@@ -162,7 +157,7 @@ public class RetryThrottleTest extends TestSuiteBase {
     public void beforeClass() {
         // set up the client
         database = SHARED_DATABASE;
-        collection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
 
     private Document getDocumentDefinition() {

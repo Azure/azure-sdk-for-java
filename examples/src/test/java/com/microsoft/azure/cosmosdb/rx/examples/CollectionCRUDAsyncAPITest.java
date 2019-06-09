@@ -106,6 +106,11 @@ public class CollectionCRUDAsyncAPITest {
     public void before() {
         collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)

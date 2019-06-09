@@ -62,6 +62,9 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
     private static final String MAX_STRING = "MaxString";
     private static final String INFINITY = "Infinity";
 
+    public static final PartitionKeyInternal NonePartitionKey =
+            new PartitionKeyInternal();
+
     public static final PartitionKeyInternal EmptyPartitionKey =
             new PartitionKeyInternal(new ArrayList<>());
 
@@ -71,9 +74,16 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                 add(new InfinityPartitionKeyComponent());
             }});
 
+    @SuppressWarnings("serial")
+    public static final PartitionKeyInternal UndefinedPartitionKey =
+            new PartitionKeyInternal(new ArrayList<IPartitionKeyComponent>() {{
+                add(new UndefinedPartitionKeyComponent());
+            }});
+
     public static final PartitionKeyInternal InclusiveMinimum = PartitionKeyInternal.EmptyPartitionKey;
     public static final PartitionKeyInternal ExclusiveMaximum = PartitionKeyInternal.InfinityPartitionKey;
     public static final PartitionKeyInternal Empty = PartitionKeyInternal.EmptyPartitionKey;
+    public static final PartitionKeyInternal None = PartitionKeyInternal.NonePartitionKey;
 
     final List<IPartitionKeyComponent> components;
 
@@ -83,6 +93,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         this.components = values;
+    }
+
+    public PartitionKeyInternal() {
+        this.components = null;
     }
 
     public static PartitionKeyInternal fromJsonString(String partitionKey) {
@@ -178,6 +192,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
     public int compareTo(PartitionKeyInternal other) {
         if (other == null) {
             throw new IllegalArgumentException("other");
+        } else if (other.components == null || this.components == null) {
+            int otherComponentsCount = other.components == null ? 0 : other.components.size();
+            int thisComponentsCount = this.components == null ? 0 : this.components.size();
+            return (int) Math.signum(thisComponentsCount - otherComponentsCount);
         }
 
         for (int i = 0; i < Math.min(this.components.size(), other.components.size()); i++) {

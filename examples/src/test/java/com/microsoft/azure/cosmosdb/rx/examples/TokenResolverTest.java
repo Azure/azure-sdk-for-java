@@ -31,6 +31,8 @@ import com.microsoft.azure.cosmosdb.CosmosResourceType;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.PartitionKey;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.Permission;
 import com.microsoft.azure.cosmosdb.PermissionMode;
 import com.microsoft.azure.cosmosdb.RequestOptions;
@@ -86,6 +88,11 @@ public class TokenResolverTest {
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // Create database
         createdDatabase = Utils.createDatabaseForTest(asyncClient);
@@ -163,6 +170,7 @@ public class TokenResolverTest {
                         .build();
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.setProperties(properties);
+                requestOptions.setPartitionKey(PartitionKey.None);
                 Observable<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
                         .readDocument(documentLink, requestOptions);
                 readDocumentObservable.subscribe(resourceResponse -> {
@@ -204,6 +212,7 @@ public class TokenResolverTest {
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.setProperties(properties);
+                requestOptions.setPartitionKey(PartitionKey.None);
                 Observable<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
                         .deleteDocument(documentLink, requestOptions);
                 readDocumentObservable.subscribe(resourceResponse -> {

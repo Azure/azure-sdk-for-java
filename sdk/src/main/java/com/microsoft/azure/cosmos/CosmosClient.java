@@ -26,13 +26,17 @@ import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DatabaseAccount;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Permission;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
+import com.microsoft.azure.cosmosdb.TokenResolver;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.rx.internal.Configs;
+
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
@@ -48,25 +52,31 @@ import java.util.List;
 public class CosmosClient {
 
     //Document client wrapper
+    private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
     private final String keyOrResourceToken;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<Permission> permissions;
+    private final TokenResolver tokenResolver;
 
 
      CosmosClient(CosmosClientBuilder builder) {
-        this.serviceEndpoint = builder.getServiceEndpoint();
+         this.configs = builder.getConfigs();
+         this.serviceEndpoint = builder.getServiceEndpoint();
         this.keyOrResourceToken = builder.getKeyOrResourceToken();
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getDesiredConsistencyLevel();
         this.permissions = builder.getPermissions();
+        this.tokenResolver = builder.getTokenResolver();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(this.serviceEndpoint)
                 .withMasterKeyOrResourceToken(this.keyOrResourceToken)
                 .withConnectionPolicy(this.connectionPolicy)
                 .withConsistencyLevel(this.desiredConsistencyLevel)
+                .withConfigs(this.configs)
+                .withTokenResolver(this.tokenResolver)
                 .build();
     }
 
@@ -128,6 +138,22 @@ public class CosmosClient {
 
     AsyncDocumentClient getDocClientWrapper(){
         return asyncDocumentClient;
+    }
+
+    /**
+     * Gets the configs
+     * @return the configs
+     */
+    public Configs getConfigs() {
+        return configs;
+    }
+
+    /**
+     * Gets the token resolver
+     * @return the token resolver
+     */
+    public TokenResolver getTokenResolver() {
+        return tokenResolver;
     }
 
     /**
@@ -281,6 +307,10 @@ public class CosmosClient {
                 .map(response-> BridgeInternal.createFeedResponse(
                         CosmosDatabaseSettings.getFromV2Results(response.getResults()),
                         response.getResponseHeaders()))));
+    }
+
+    Mono<DatabaseAccount> getDatabaseAccount() {
+        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(asyncDocumentClient.getDatabaseAccount().toSingle()));
     }
 
     /**

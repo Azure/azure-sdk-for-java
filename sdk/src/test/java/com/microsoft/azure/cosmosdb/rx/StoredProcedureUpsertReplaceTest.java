@@ -26,86 +26,53 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+
+import reactor.core.publisher.Mono;
+
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.StoredProcedure;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
-
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosStoredProcedure;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureRequestOptions;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureResponse;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureSettings;
+import com.microsoft.azure.cosmosdb.PartitionKey;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 
 public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
+    private CosmosContainer createdCollection;
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public StoredProcedureUpsertReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
+    public StoredProcedureUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertStoredProcedure() throws Exception {
-        
-        // create a stored procedure
-        StoredProcedure storedProcedureDef = new StoredProcedure();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
-        StoredProcedure readBackSp = client.upsertStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
-
-        //read back stored procedure
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(readBackSp.getSelfLink(), null);
-
-        // validate stored procedure creation
-        ResourceResponseValidator<StoredProcedure> validatorForRead = new ResourceResponseValidator.Builder<StoredProcedure>()
-                .withId(readBackSp.getId())
-                .withStoredProcedureBody("function() {var x = 10;}")
-                .notNullEtag()
-                .build();
-        validateSuccess(readObservable, validatorForRead);
-        
-        //update stored procedure
-        readBackSp.setBody("function() {var x = 11;}");
-
-        Observable<ResourceResponse<StoredProcedure>> updateObservable = client.upsertStoredProcedure(getCollectionLink(), readBackSp, null);
-
-        // validate stored procedure update
-        ResourceResponseValidator<StoredProcedure> validatorForUpdate = new ResourceResponseValidator.Builder<StoredProcedure>()
-                .withId(readBackSp.getId())
-                .withStoredProcedureBody("function() {var x = 11;}")
-                .notNullEtag()
-                .build();
-        validateSuccess(updateObservable, validatorForUpdate);   
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
-        StoredProcedure storedProcedureDef = new StoredProcedure();
+        CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
         storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");        
-        StoredProcedure readBackSp = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
+        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureSettings readBackSp = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedureSettings();
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(readBackSp.getSelfLink(), null);
+        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getStoredProcedure(readBackSp.getId()).read(null);
 
         // validate stored procedure creation
-        ResourceResponseValidator<StoredProcedure> validatorForRead = new ResourceResponseValidator.Builder<StoredProcedure>()
+        CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
                 .withId(readBackSp.getId())
                 .withStoredProcedureBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -115,10 +82,10 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         //update stored procedure
         readBackSp.setBody("function() {var x = 11;}");
 
-        Observable<ResourceResponse<StoredProcedure>> replaceObservable = client.replaceStoredProcedure(readBackSp, null);
+        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getStoredProcedure(readBackSp.getId()).replace(readBackSp, new RequestOptions());
 
         //validate stored procedure replace
-        ResourceResponseValidator<StoredProcedure> validatorForReplace = new ResourceResponseValidator.Builder<StoredProcedure>()
+        CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
                 .withId(readBackSp.getId())
                 .withStoredProcedureBody("function() {var x = 11;}")
                 .notNullEtag()
@@ -129,7 +96,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
-        StoredProcedure storedProcedureDef = new StoredProcedure(
+        CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings(
                 "{" +
                         "  'id': '" +UUID.randomUUID().toString() + "'," +
                         "  'body':" +
@@ -140,13 +107,13 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                         "    }'" +
                         "}");
 
-        StoredProcedure storedProcedure = null;
+        CosmosStoredProcedure storedProcedure = null;
 
         try {
-            storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
+            storedProcedure = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedure();
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -156,10 +123,12 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         String result = null;
 
         try {
-            result = client.executeStoredProcedure(storedProcedure.getSelfLink(), null).toBlocking().single().getResponseAsString();
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(PartitionKey.None);
+            result = storedProcedure.execute(null, options).block().getResponseAsString();
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -172,17 +141,11 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
     }
 }

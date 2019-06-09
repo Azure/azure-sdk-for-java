@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.azure.cosmosdb.CompositePath;
@@ -72,7 +73,7 @@ public interface FeedResponseListValidator<T extends Resource> {
             return this;
         }
 
-        public Builder<T> containsExactly(List<String> expectedIds) {
+        public Builder<T> containsExactly(List<String> expectedRids) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
@@ -83,6 +84,23 @@ public interface FeedResponseListValidator<T extends Resource> {
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
+                    .containsExactlyElementsOf(expectedRids);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> containsExactlyIds(List<String> expectedIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                            .stream()
+                            .flatMap(f -> f.getResults().stream())
+                            .map(r -> r.getId())
+                            .collect(Collectors.toList());
+                    assertThat(actualIds)
+                    .describedAs("IDs of results")
                     .containsExactlyElementsOf(expectedIds);
                 }
             });
@@ -186,11 +204,11 @@ public interface FeedResponseListValidator<T extends Resource> {
         }
 
         public Builder<T> withAggregateValue(Object value) {
-            validators.add(new FeedResponseListValidator<Document>() {
+            validators.add(new FeedResponseListValidator<CosmosItemSettings>() {
                 @Override
-                public void validate(List<FeedResponse<Document>> feedList) {
-                    List<Document> list = feedList.get(0).getResults();
-                    Document result = list.size() > 0 ? list.get(0) : null;
+                public void validate(List<FeedResponse<CosmosItemSettings>> feedList) {
+                    List<CosmosItemSettings> list = feedList.get(0).getResults();
+                    CosmosItemSettings result = list.size() > 0 ? list.get(0) : null;
 
                     if (result != null) {
                         if (value instanceof Double) {
@@ -223,13 +241,13 @@ public interface FeedResponseListValidator<T extends Resource> {
             return this;
         }
 
-        public Builder<T> withOrderedResults(ArrayList<Document> expectedOrderedList,
+        public Builder<T> withOrderedResults(ArrayList<CosmosItemSettings> expectedOrderedList,
                 ArrayList<CompositePath> compositeIndex) {
-            validators.add(new FeedResponseListValidator<Document>() {
+            validators.add(new FeedResponseListValidator<CosmosItemSettings>() {
                 @Override
-                public void validate(List<FeedResponse<Document>> feedList) {
+                public void validate(List<FeedResponse<CosmosItemSettings>> feedList) {
 
-                    List<Document> resultOrderedList = feedList.stream()
+                    List<CosmosItemSettings> resultOrderedList = feedList.stream()
                             .flatMap(f -> f.getResults().stream())
                             .collect(Collectors.toList());
                     assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());

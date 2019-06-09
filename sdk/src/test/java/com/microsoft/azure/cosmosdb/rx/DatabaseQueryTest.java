@@ -28,31 +28,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseSettings;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 public class DatabaseQueryTest extends TestSuiteBase {
 
-    public final String databaseId1 = DatabaseForTest.generateId();
-    public final String databaseId2 = DatabaseForTest.generateId();
+    public final String databaseId1 = CosmosDatabaseForTest.generateId();
+    public final String databaseId2 = CosmosDatabaseForTest.generateId();
 
-    private List<Database> createdDatabases = new ArrayList<>();
+    private List<CosmosDatabase> createdDatabases = new ArrayList<>();
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
     
     @Factory(dataProvider = "clientBuilders")
-    public DatabaseQueryTest(Builder clientBuilder) {
+    public DatabaseQueryTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
     
@@ -62,20 +64,20 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
-        Observable<FeedResponse<Database>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseSettings>> queryObservable = client.queryDatabases(query, options);
 
-        List<Database> expectedDatabases = createdDatabases.stream()
-                .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).collect(Collectors.toList());
+        List<CosmosDatabaseSettings> expectedDatabases = createdDatabases.stream()
+                .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).map(d -> d.read().block().getCosmosDatabaseSettings()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
         int expectedPageSize = (expectedDatabases.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<Database> validator = new FeedResponseListValidator.Builder<Database>()
+        FeedResponseListValidator<CosmosDatabaseSettings> validator = new FeedResponseListValidator.Builder<CosmosDatabaseSettings>()
                 .totalSize(expectedDatabases.size())
                 .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<Database>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -91,19 +93,19 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
-        Observable<FeedResponse<Database>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseSettings>> queryObservable = client.queryDatabases(query, options);
 
-        List<Database> expectedDatabases = createdDatabases;
+        List<CosmosDatabaseSettings> expectedDatabases = createdDatabases.stream().map(d -> d.read().block().getCosmosDatabaseSettings()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
         int expectedPageSize = (expectedDatabases.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<Database> validator = new FeedResponseListValidator.Builder<Database>()
+        FeedResponseListValidator<CosmosDatabaseSettings> validator = new FeedResponseListValidator.Builder<CosmosDatabaseSettings>()
                 .totalSize(expectedDatabases.size())
                 .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<Database>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -116,12 +118,12 @@ public class DatabaseQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Observable<FeedResponse<Database>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseSettings>> queryObservable = client.queryDatabases(query, options);
 
-        FeedResponseListValidator<Database> validator = new FeedResponseListValidator.Builder<Database>()
+        FeedResponseListValidator<CosmosDatabaseSettings> validator = new FeedResponseListValidator.Builder<CosmosDatabaseSettings>()
                 .containsExactly(new ArrayList<>())
                 .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<Database>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(queryObservable, validator);
@@ -130,20 +132,14 @@ public class DatabaseQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-
-        Database d1 = new Database();
-        d1.setId(databaseId1);
-        createdDatabases.add(createDatabase(client, d1));
-
-        Database d2 = new Database();
-        d2.setId(databaseId2);
-        createdDatabases.add(createDatabase(client, d2));
+        createdDatabases.add(createDatabase(client, databaseId1));
+        createdDatabases.add(createDatabase(client, databaseId2));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId1);
-        safeDeleteDatabase(client, databaseId2);
+        safeDeleteDatabase(createdDatabases.get(0));
+        safeDeleteDatabase(createdDatabases.get(1));
 
         safeClose(client);
     }

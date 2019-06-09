@@ -22,6 +22,7 @@
  */
 package com.microsoft.azure.cosmos;
 
+import com.microsoft.azure.cosmosdb.ConflictResolutionPolicy;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
@@ -179,6 +180,30 @@ public class CosmosContainerSettings extends Resource {
         this.partitionKeyDefinition = partitionKeyDefinition;
     }
     
+    /**
+     * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
+     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     *
+     * @return ConflictResolutionPolicy
+     */
+    public ConflictResolutionPolicy getConflictResolutionPolicy() {
+        return super.getObject(Constants.Properties.CONFLICT_RESOLUTION_POLICY, ConflictResolutionPolicy.class);
+    }
+
+    /**
+     * Sets the conflictResolutionPolicy that is used for resolving conflicting writes
+     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     *
+     * @param value ConflictResolutionPolicy to be used.
+     */
+    public void setConflictResolutionPolicy(ConflictResolutionPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
+        }
+
+        super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+    }
+
     DocumentCollection getV2Collection(){
         DocumentCollection collection = new DocumentCollection(this.toJson());
         collection.setPartitionKey(this.getPartitionKey());

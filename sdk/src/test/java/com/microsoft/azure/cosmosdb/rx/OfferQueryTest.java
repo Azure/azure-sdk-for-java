@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.assertj.core.util.Strings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -37,14 +36,18 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Offer;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 
 import rx.Observable;
 
+//TODO: change to use external TestSuiteBase 
 public class OfferQueryTest extends TestSuiteBase {
 
     public final static int SETUP_TIMEOUT = 40000;
@@ -147,6 +150,13 @@ public class OfferQueryTest extends TestSuiteBase {
         for(int i = 0; i < 3; i++) {
             DocumentCollection collection = new DocumentCollection();
             collection.setId(UUID.randomUUID().toString());
+            
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            ArrayList<String> paths = new ArrayList<String>();
+            paths.add("/mypk");
+            partitionKeyDef.setPaths(paths);
+            collection.setPartitionKey(partitionKeyDef);
+            
             createdCollections.add(createCollection(client, databaseId, collection));
         }        
     }

@@ -33,29 +33,25 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.WriterAppender;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import com.microsoft.azure.cosmosdb.rx.proxy.HttpProxyServer;
 
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
+import reactor.core.publisher.Mono;
 
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
+import com.microsoft.azure.cosmos.CosmosItemResponse;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
-import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,10 +63,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ProxyHostTest extends TestSuiteBase {
 
-    private static Database createdDatabase;
-    private static DocumentCollection createdCollection;
+    private static CosmosDatabase createdDatabase;
+    private static CosmosContainer createdCollection;
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
     private final String PROXY_HOST = "localhost";
     private final int PROXY_PORT = 8080;
     private HttpProxyServer httpProxyServer;
@@ -82,8 +78,8 @@ public class ProxyHostTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
+        createdDatabase = getSharedCosmosDatabase(client);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
         httpProxyServer = new HttpProxyServer();
         httpProxyServer.start();
         // wait for proxy server to be ready
@@ -97,18 +93,18 @@ public class ProxyHostTest extends TestSuiteBase {
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxy() throws Exception {
-        AsyncDocumentClient clientWithRightProxy = null;
+        CosmosClient clientWithRightProxy = null;
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = new Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = clientWithRightProxy
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            clientWithRightProxy = CosmosClient.builder().endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .connectionPolicy(connectionPolicy)
+                    .consistencyLevel(ConsistencyLevel.Session).build();
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -126,7 +122,7 @@ public class ProxyHostTest extends TestSuiteBase {
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).setLevel(Level.TRACE);
-        AsyncDocumentClient clientWithRightProxy = null;
+        CosmosClient clientWithRightProxy = null;
         try {
             StringWriter consoleWriter = new StringWriter();
             WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
@@ -134,14 +130,14 @@ public class ProxyHostTest extends TestSuiteBase {
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = new Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = clientWithRightProxy
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            clientWithRightProxy = CosmosClient.builder().endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .connectionPolicy(connectionPolicy)
+                    .consistencyLevel(ConsistencyLevel.Session).build();
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -178,13 +174,9 @@ public class ProxyHostTest extends TestSuiteBase {
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
-    }
-
-    private Document getDocumentDefinition() {
+    private CosmosItemSettings getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
+        CosmosItemSettings doc = new CosmosItemSettings(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"

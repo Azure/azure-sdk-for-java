@@ -29,39 +29,33 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+
+import reactor.core.publisher.Flux;
+
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureSettings;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.StoredProcedure;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
-import rx.Observable;
-
 
 public class StoredProcedureQueryTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private List<StoredProcedure> createdStoredProcs = new ArrayList<>();
+    private CosmosContainer createdCollection;
+    private List<CosmosStoredProcedureSettings> createdStoredProcs = new ArrayList<>();
 
-    private AsyncDocumentClient client;
-
-    public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
-    }
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public StoredProcedureQueryTest(Builder clientBuilder) {
+    public StoredProcedureQueryTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -73,27 +67,26 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
-        Observable<FeedResponse<StoredProcedure>> queryObservable = client
-                .queryStoredProcedures(getCollectionLink(), query, options);
+        Flux<FeedResponse<CosmosStoredProcedureSettings>> queryObservable = createdCollection.queryStoredProcedures(query, options);
 
-        List<StoredProcedure> expectedDocs = createdStoredProcs.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
+        List<CosmosStoredProcedureSettings> expectedDocs = createdStoredProcs.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<StoredProcedure> validator = new FeedResponseListValidator.Builder<StoredProcedure>()
+        FeedResponseListValidator<CosmosStoredProcedureSettings> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureSettings>()
                 .totalSize(expectedDocs.size())
                 .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<StoredProcedure>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
         try {
             validateQuerySuccess(queryObservable, validator, 10000);
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -107,13 +100,12 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Observable<FeedResponse<StoredProcedure>> queryObservable = client
-                .queryStoredProcedures(getCollectionLink(), query, options);
+        Flux<FeedResponse<CosmosStoredProcedureSettings>> queryObservable = createdCollection.queryStoredProcedures(query, options);
 
-        FeedResponseListValidator<StoredProcedure> validator = new FeedResponseListValidator.Builder<StoredProcedure>()
+        FeedResponseListValidator<CosmosStoredProcedureSettings> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureSettings>()
                 .containsExactly(new ArrayList<>())
                 .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<StoredProcedure>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(queryObservable, validator);
@@ -126,29 +118,28 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(3);
         options.setEnableCrossPartitionQuery(true);
-        Observable<FeedResponse<StoredProcedure>> queryObservable = client
-            .queryStoredProcedures(getCollectionLink(), query, options);
+        Flux<FeedResponse<CosmosStoredProcedureSettings>> queryObservable = createdCollection.queryStoredProcedures(query, options);
 
-        List<StoredProcedure> expectedDocs = createdStoredProcs;
+        List<CosmosStoredProcedureSettings> expectedDocs = createdStoredProcs;
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<StoredProcedure> validator = new FeedResponseListValidator
-            .Builder<StoredProcedure>()
+        FeedResponseListValidator<CosmosStoredProcedureSettings> validator = new FeedResponseListValidator
+            .Builder<CosmosStoredProcedureSettings>()
             .exactlyContainsInAnyOrder(expectedDocs
                 .stream()
                 .map(d -> d.getResourceId())
                 .collect(Collectors.toList()))
             .numberOfPages(expectedPageSize)
-            .allPagesSatisfy(new FeedResponseValidator.Builder<StoredProcedure>()
+            .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureSettings>()
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
         try {
             validateQuerySuccess(queryObservable, validator);
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -161,8 +152,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Observable<FeedResponse<StoredProcedure>> queryObservable = client
-                .queryStoredProcedures(getCollectionLink(), query, options);
+        Flux<FeedResponse<CosmosStoredProcedureSettings>> queryObservable = createdCollection.queryStoredProcedures(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(DocumentClientException.class)
@@ -172,20 +162,19 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public StoredProcedure createStoredProc(AsyncDocumentClient client) {
-        StoredProcedure storedProcedure = getStoredProcedureDef();
-        return client.createStoredProcedure(getCollectionLink(), storedProcedure, null).toBlocking().single().getResource();
+    public CosmosStoredProcedureSettings createStoredProc(CosmosContainer cosmosContainer) {
+        CosmosStoredProcedureSettings storedProcedure = getStoredProcedureDef();
+        return cosmosContainer.createStoredProcedure(storedProcedure).block().getStoredProcedureSettings();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
         for(int i = 0; i < 5; i++) {
-            createdStoredProcs.add(createStoredProc(client));
+            createdStoredProcs.add(createStoredProc(createdCollection));
         }
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
@@ -196,8 +185,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private static StoredProcedure getStoredProcedureDef() {
-        StoredProcedure storedProcedureDef = new StoredProcedure();
+    private static CosmosStoredProcedureSettings getStoredProcedureDef() {
+        CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 10;}");
         return storedProcedureDef;

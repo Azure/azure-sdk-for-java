@@ -45,7 +45,7 @@ import com.microsoft.azure.cosmosdb.internal.BaseAuthorizationTokenProvider;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
-import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
+import com.microsoft.azure.cosmosdb.rx.internal.TestSuiteBase;
 import com.microsoft.azure.cosmosdb.rx.internal.SpyClientUnderTestFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.SpyClientUnderTestFactory.ClientUnderTest;
 

@@ -22,11 +22,15 @@
  */
 package com.microsoft.azure.cosmos;
 
+import com.microsoft.azure.cosmosdb.ClientSideRequestStatistics;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.StoredProcedureResponse;
 
+import java.time.Duration;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosResponse<T extends Resource> {
     private T resourceSettings;
@@ -134,5 +138,21 @@ public class CosmosResponse<T extends Resource> {
         return resourceResponseWrapper.getResponseHeaders();
     }
     
-    
+    /**
+     * Gets the diagnostics information for the current request to Azure Cosmos DB service.
+     *
+     * @return diagnostics information for the current request to Azure Cosmos DB service.
+     */
+    public String getRequestDiagnosticsString() {
+        return resourceResponseWrapper.getRequestDiagnosticsString();
+    }
+
+    /**
+     * Gets the end-to-end request latency for the current request to Azure Cosmos DB service.
+     *
+     * @return end-to-end request latency for the current request to Azure Cosmos DB service.
+     */
+    public Duration getRequestLatency() {
+        return resourceResponseWrapper.getRequestLatency();
+    }    
 }

@@ -159,5 +159,4 @@ public class CosmosItem extends CosmosResource{
     protected String getParentLink() {
         return this.container.getLink();
     }
-
 }

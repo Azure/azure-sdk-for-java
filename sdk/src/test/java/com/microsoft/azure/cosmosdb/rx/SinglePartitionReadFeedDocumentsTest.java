@@ -22,16 +22,19 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+
+import reactor.core.publisher.Flux;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,29 +42,30 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private List<Document> createdDocuments;
 
-    private AsyncDocumentClient client;
+    private CosmosContainer createdCollection;
+    private List<CosmosItemSettings> createdDocuments;
+
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public SinglePartitionReadFeedDocumentsTest(AsyncDocumentClient.Builder clientBuilder) {
+    public SinglePartitionReadFeedDocumentsTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         final FeedOptions options = new FeedOptions();
+        options.setEnableCrossPartitionQuery(true);
         options.setMaxItemCount(2);
-        final Observable<FeedResponse<Document>> feedObservable = client.readDocuments(getCollectionLink(), options);
+        final Flux<FeedResponse<CosmosItemSettings>> feedObservable = createdCollection.listItems(options);
         final int expectedPageSize = (createdDocuments.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+        FeedResponseListValidator<CosmosItemSettings> validator = new FeedResponseListValidator.Builder<CosmosItemSettings>()
                 .totalSize(createdDocuments.size())
                 .numberOfPages(expectedPageSize)
                 .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -70,17 +74,16 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        createdCollection = getSharedSinglePartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
-        List<Document> docDefList = new ArrayList<>();
+        List<CosmosItemSettings> docDefList = new ArrayList<>();
 
         for(int i = 0; i < 5; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments = bulkInsertBlocking(client, getCollectionLink(), docDefList);
+        createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
         waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
@@ -89,26 +92,14 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private Document getDocumentDefinition() {
+    private CosmosItemSettings getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
+        CosmosItemSettings doc = new CosmosItemSettings(String.format("{ "
             + "\"id\": \"%s\", "
             + "\"mypk\": \"%s\", "
             + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
             + "}"
             , uuid, uuid));
         return doc;
-    }
-
-    public String getCollectionLink() {
-        return "dbs/" + getDatabaseId() + "/colls/" + getCollectionId();
-    }
-
-    private String getCollectionId() {
-        return createdCollection.getId();
-    }
-
-    private String getDatabaseId() {
-        return createdDatabase.getId();
     }
 }

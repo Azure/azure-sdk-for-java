@@ -20,28 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.microsoft.azure.cosmosdb.rx;
+package com.microsoft.azure.cosmos;
 
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientUnderTest;
+import com.microsoft.azure.cosmosdb.rx.internal.directconnectivity.ReflectionUtils;
 
-public class ClientUnderTestBuilder extends Builder {
+public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
-    public ClientUnderTestBuilder(Builder builder) {
-        this.configs = builder.configs;
-        this.connectionPolicy = builder.connectionPolicy;
-        this.desiredConsistencyLevel = builder.desiredConsistencyLevel;
-        this.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
-        this.serviceEndpoint = builder.serviceEndpoint;
+    public ClientUnderTestBuilder(CosmosClientBuilder builder) {
+        this.configs(builder.getConfigs());
+        this.connectionPolicy(builder.getConnectionPolicy());
+        this.consistencyLevel(builder.getDesiredConsistencyLevel());
+        this.key(builder.getKeyOrResourceToken());
+        this.endpoint(builder.getServiceEndpoint());
     }
 
     @Override
-    public RxDocumentClientUnderTest build() {
-        return new RxDocumentClientUnderTest(
-            this.serviceEndpoint,
-            this.masterKeyOrResourceToken,
-            this.connectionPolicy,
-            this.desiredConsistencyLevel,
-            this.configs);
+    public CosmosClient build() {
+        RxDocumentClientUnderTest rxClient;
+        try {
+            rxClient = new RxDocumentClientUnderTest(
+                new URI(this.getServiceEndpoint()),
+                this.getKeyOrResourceToken(),
+                this.getConnectionPolicy(),
+                this.getDesiredConsistencyLevel(),
+                this.getConfigs());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        CosmosClient cosmosClient = super.build();
+        ReflectionUtils.setAsyncDocumentClient(cosmosClient, rxClient);
+        return cosmosClient;
     }
 }

@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -31,91 +32,42 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.UserDefinedFunction;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosRequestOptions;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosUserDefinedFunctionResponse;
+import com.microsoft.azure.cosmos.CosmosUserDefinedFunctionSettings;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
-
+import reactor.core.publisher.Mono;
 
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
+    private CosmosContainer createdCollection;
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public UserDefinedFunctionUpsertReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
+    public UserDefinedFunctionUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertUserDefinedFunction() throws Exception {
-
-        // create a udf
-        UserDefinedFunction udf = new UserDefinedFunction();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
-
-        UserDefinedFunction readBackUdf = null;
-
-        try {
-            readBackUdf = client.upsertUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
-                logger.info(message, error);
-                throw new SkipException(message, error);
-            }
-            throw error;
-        }
-
-        // read udf to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
-
-        // validate udf create
-        ResourceResponseValidator<UserDefinedFunction> validatorForRead = new ResourceResponseValidator.Builder<UserDefinedFunction>()
-                .withId(readBackUdf.getId())
-                .withUserDefinedFunctionBody("function() {var x = 10;}")
-                .notNullEtag()
-                .build();
-        validateSuccess(readObservable, validatorForRead);
-        
-        //update udf
-        readBackUdf.setBody("function() {var x = 11;}");
-
-        Observable<ResourceResponse<UserDefinedFunction>> updateObservable = client.upsertUserDefinedFunction(getCollectionLink(), readBackUdf, null);
-
-        // validate udf update
-        ResourceResponseValidator<UserDefinedFunction> validatorForUpdate = new ResourceResponseValidator.Builder<UserDefinedFunction>()
-                .withId(readBackUdf.getId())
-                .withUserDefinedFunctionBody("function() {var x = 11;}")
-                .notNullEtag()
-                .build();
-        validateSuccess(updateObservable, validatorForUpdate);   
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceUserDefinedFunction() throws Exception {
 
         // create a udf
-        UserDefinedFunction udf = new UserDefinedFunction();
+        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
 
-        UserDefinedFunction readBackUdf = null;
+        CosmosUserDefinedFunctionSettings readBackUdf = null;
 
         try {
-            readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
+            readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().getCosmosUserDefinedFunctionSettings();
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                 logger.info(message, error);
                 throw new SkipException(message, error);
             }
@@ -124,10 +76,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder);
-        Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
+        Mono<CosmosUserDefinedFunctionResponse> readObservable = createdCollection.getUserDefinedFunction(readBackUdf.getId()).read(new RequestOptions());
 
         // validate udf creation
-        ResourceResponseValidator<UserDefinedFunction> validatorForRead = new ResourceResponseValidator.Builder<UserDefinedFunction>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -137,10 +89,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         //update udf
         readBackUdf.setBody("function() {var x = 11;}");
 
-        Observable<ResourceResponse<UserDefinedFunction>> replaceObservable = client.replaceUserDefinedFunction(readBackUdf, null);
+        Mono<CosmosUserDefinedFunctionResponse> replaceObservable = createdCollection.getUserDefinedFunction(readBackUdf.getId()).replace(readBackUdf, new RequestOptions());
 
         //validate udf replace
-        ResourceResponseValidator<UserDefinedFunction> validatorForReplace = new ResourceResponseValidator.Builder<UserDefinedFunction>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
@@ -151,16 +103,12 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        truncateCollection(createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
     }
 }

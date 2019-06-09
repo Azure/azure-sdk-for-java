@@ -909,10 +909,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.OFFER_TYPE, options.getOfferType());
         }
 
-        if (options.getPartitionKey() != null) {
-            headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, options.getPartitionKey().toString());
-        }
-
         if (options.isPopulateQuotaInfo()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
@@ -972,7 +968,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
         PartitionKeyInternal partitionKeyInternal = null;
-        if (options != null && options.getPartitionKey() != null) {
+        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.None)){
+            partitionKeyInternal = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+        } else if (options != null && options.getPartitionKey() != null) {
             partitionKeyInternal = options.getPartitionKey().getInternalPartitionKey();
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
@@ -1009,10 +1007,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (parts.size() >= 1) {
                 Object value = document.getObjectByPath(parts);
                 if (value == null || value.getClass() == ObjectNode.class) {
-                    value = Undefined.Value();
+                    value = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
                 }
 
-                return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
+                if (value instanceof PartitionKeyInternal) {
+                    return (PartitionKeyInternal) value;
+                } else {
+                    return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
+                }
             }
         }
 

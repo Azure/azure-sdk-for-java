@@ -35,19 +35,18 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.WriterAppender;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
+import com.microsoft.azure.cosmos.CosmosItemResponse;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
 
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,8 +58,8 @@ public class LogLevelTest extends TestSuiteBase {
     public final static String LOG_PATTERN_3 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
     public final static String LOG_PATTERN_4 = "CONNECT: ";
 
-    private static Database createdDatabase;
-    private static DocumentCollection createdCollection;
+    private static CosmosContainer createdCollection;
+    private static CosmosClient client;
 
     public LogLevelTest() {
         this.clientBuilder = createGatewayRxDocumentClient();
@@ -68,8 +67,8 @@ public class LogLevelTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+        client = clientBuilder.build();
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
     /**
@@ -84,12 +83,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -114,12 +112,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -143,12 +140,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -171,12 +167,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -198,12 +193,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -227,12 +221,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -256,12 +249,11 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        AsyncDocumentClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder.build();
         try {
-            Document docDefinition = getDocumentDefinition();
-            Observable<ResourceResponse<Document>> createObservable = client
-                    .createDocument(getCollectionLink(), docDefinition, null, false);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            CosmosItemSettings docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+            CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
@@ -272,9 +264,9 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-    private Document getDocumentDefinition() {
+    private CosmosItemSettings getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
+        CosmosItemSettings doc = new CosmosItemSettings(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
@@ -300,9 +292,5 @@ public class LogLevelTest extends TestSuiteBase {
     public void afterClass() {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
-    }
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
     }
 }

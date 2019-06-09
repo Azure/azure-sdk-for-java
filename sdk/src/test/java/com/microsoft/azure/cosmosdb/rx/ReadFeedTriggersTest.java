@@ -27,32 +27,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosRequestOptions;
+import com.microsoft.azure.cosmos.CosmosTriggerSettings;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.TriggerOperation;
 import com.microsoft.azure.cosmosdb.TriggerType;
 
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 public class ReadFeedTriggersTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private List<Trigger> createdTriggers = new ArrayList<>();
+    private CosmosContainer createdCollection;
+    private List<CosmosTriggerSettings> createdTriggers = new ArrayList<>();
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public ReadFeedTriggersTest(AsyncDocumentClient.Builder clientBuilder) {
+    public ReadFeedTriggersTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -62,19 +62,19 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
 
-        Observable<FeedResponse<Trigger>> feedObservable = client.readTriggers(getCollectionLink(), options);
+        Flux<FeedResponse<CosmosTriggerSettings>> feedObservable = createdCollection.listTriggers(options);
 
         int expectedPageSize = (createdTriggers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<Trigger> validator = new FeedResponseListValidator
-                .Builder<Trigger>()
+        FeedResponseListValidator<CosmosTriggerSettings> validator = new FeedResponseListValidator
+                .Builder<CosmosTriggerSettings>()
                 .totalSize(createdTriggers.size())
                 .exactlyContainsInAnyOrder(createdTriggers
                         .stream()
                         .map(d -> d.getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Trigger>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -82,17 +82,15 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-
-        this.client = clientBuilder.build();
-        this.createdDatabase = SHARED_DATABASE;
-        this.createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        this.truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        client = clientBuilder.build();
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
         for(int i = 0; i < 5; i++) {
-            this.createdTriggers.add(this.createTriggers(client));
+            this.createdTriggers.add(this.createTriggers(createdCollection));
         }
 
-        this.waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -100,24 +98,12 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public Trigger createTriggers(AsyncDocumentClient client) {
-        Trigger trigger = new Trigger();
+    public CosmosTriggerSettings createTriggers(CosmosContainer cosmosContainer) {
+        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
         trigger.setId(UUID.randomUUID().toString());
         trigger.setBody("function() {var x = 10;}");
         trigger.setTriggerOperation(TriggerOperation.Create);
         trigger.setTriggerType(TriggerType.Pre);
-        return client.createTrigger(getCollectionLink(), trigger, null).toBlocking().single().getResource();
-    }
-
-    private String getCollectionLink() {
-        return "dbs/" + getDatabaseId() + "/colls/" + getCollectionId();
-    }
-
-    private String getCollectionId() {
-        return createdCollection.getId();
-    }
-
-    private String getDatabaseId() {
-        return createdDatabase.getId();
+        return cosmosContainer.createTrigger(trigger, new CosmosRequestOptions()).block().getCosmosTriggerSettings();
     }
 }

@@ -58,6 +58,8 @@ public class PartitionKey {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
+    public static PartitionKey None = new PartitionKey(PartitionKeyInternal.None);
+
     /**
      * Serialize the PartitionKey object to a JSON string.
      *

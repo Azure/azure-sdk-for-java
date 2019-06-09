@@ -221,9 +221,11 @@ public class DocumentCRUDAsyncAPITest {
                 .createDocument(getCollectionLink(), documentDefinition, null, false).toBlocking().single()
                 .getResource();
 
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(PartitionKey.None);
         // Read the created document
         Observable<ResourceResponse<Document>> readDocumentObservable = asyncClient
-                .readDocument(getDocumentLink(createdDocument), null);
+                .readDocument(getDocumentLink(createdDocument), options);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 

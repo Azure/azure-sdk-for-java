@@ -33,6 +33,7 @@ public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerSettings>
     CosmosTriggerResponse(ResourceResponse<Trigger> response, CosmosContainer container) {
         super(response);
         if(response.getResource() != null) {
+            super.setResourceSettings(new CosmosTriggerSettings(response));
             cosmosTriggerSettings = new CosmosTriggerSettings(response);
             cosmosTrigger = new CosmosTrigger(cosmosTriggerSettings.getId(), container);
         }

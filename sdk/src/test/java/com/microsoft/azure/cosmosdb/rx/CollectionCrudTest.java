@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.RetryAnalyzer;
 import org.testng.annotations.AfterClass;
@@ -37,30 +37,40 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerRequestOptions;
+import com.microsoft.azure.cosmos.CosmosContainerResponse;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosItem;
+import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
+import com.microsoft.azure.cosmos.CosmosItemResponse;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
+import com.microsoft.azure.cosmos.CosmosResponseValidator;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
 import com.microsoft.azure.cosmosdb.CompositePath;
 import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
 import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IndexingMode;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.SpatialSpec;
 import com.microsoft.azure.cosmosdb.SpatialType;
 
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 public class CollectionCrudTest extends TestSuiteBase {
     private static final int TIMEOUT = 50000;
     private static final int SETUP_TIMEOUT = 20000;
     private static final int SHUTDOWN_TIMEOUT = 20000;
-    private final String databaseId = DatabaseForTest.generateId();
+    private final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private AsyncDocumentClient client;
-    private Database database;
+    private CosmosClient client;
+    private CosmosDatabase database;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public CollectionCrudTest(AsyncDocumentClient.Builder clientBuilder) {
+    public CollectionCrudTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
         this.subscriberValidationTimeout = TIMEOUT;
     }
@@ -69,44 +79,50 @@ public class CollectionCrudTest extends TestSuiteBase {
     public Object[][] collectionCrudArgProvider() {
         return new Object[][] {
                 // collection name, is name base
-                {UUID.randomUUID().toString(), false } ,
-                {UUID.randomUUID().toString(), true  } ,
+                {UUID.randomUUID().toString()} ,
 
                 // with special characters in the name.
-                {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~", true  } ,
+                {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~"} ,
         };
     }
 
-    private DocumentCollection getCollectionDefinition(String collectionName) {
+    private CosmosContainerSettings getCollectionDefinition(String collectionName) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(collectionName);
-        collectionDefinition.setPartitionKey(partitionKeyDef);
+        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(
+                collectionName,
+                partitionKeyDef);
 
         return collectionDefinition;
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void createCollection(String collectionName, boolean isNameBased) {
-        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
+    public void createCollection(String collectionName) throws InterruptedException {
+        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        
+        Mono<CosmosContainerResponse> createObservable = database
+                .createContainer(collectionDefinition);
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client
-                .createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
-
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collectionDefinition.getId()).build();
 
         validateSuccess(createObservable, validator);
-        safeDeleteAllCollections(client, database);
+        safeDeleteAllCollections(database);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createCollectionWithCompositeIndexAndSpatialSpec() {
-        DocumentCollection collection = new DocumentCollection();
+    public void createCollectionWithCompositeIndexAndSpatialSpec() throws InterruptedException {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        CosmosContainerSettings collection = new CosmosContainerSettings(
+                UUID.randomUUID().toString(),
+                partitionKeyDef);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         CompositePath compositePath1 = new CompositePath();
@@ -163,152 +179,141 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         indexingPolicy.setSpatialIndexes(spatialIndexes);
 
-        collection.setId(UUID.randomUUID().toString());
         collection.setIndexingPolicy(indexingPolicy);
+        
+        Mono<CosmosContainerResponse> createObservable = database
+                .createContainer(collection, new CosmosContainerRequestOptions());
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client
-                .createCollection(database.getSelfLink(), collection, null);
-
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collection.getId())
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
                 .build();
 
         validateSuccess(createObservable, validator);
-        safeDeleteAllCollections(client, database);
+        safeDeleteAllCollections(database);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void readCollection(String collectionName, boolean isNameBased) {
-        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
+    public void readCollection(String collectionName) throws InterruptedException {
+        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosContainer collection = createObservable.block().getContainer();
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
-                                                                                                    null);
-        DocumentCollection collection = createObservable.toBlocking().single().getResource();
+        Mono<CosmosContainerResponse> readObservable = collection.read();
 
-        Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(getCollectionLink(database, collection, isNameBased), null);
-
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
-        safeDeleteAllCollections(client, database);
+        safeDeleteAllCollections(database);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void readCollection_NameBase(String collectionName, boolean isNameBased) {
-        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
+    public void readCollection_DoesntExist(String collectionName) throws Exception {
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
-                                                                                                    null);
-        DocumentCollection collection = createObservable.toBlocking().single().getResource();
-
-        Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(
-                getCollectionLink(database, collection, isNameBased), null);
-
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
-                .withId(collection.getId()).build();
-        validateSuccess(readObservable, validator);
-        safeDeleteAllCollections(client, database);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void readCollection_DoesntExist(String collectionName, boolean isNameBased) throws Exception {
-
-        Observable<ResourceResponse<DocumentCollection>> readObservable = client
-                .readCollection(Utils.getCollectionNameLink(database.getId(), "I don't exist"), null);
+        Mono<CosmosContainerResponse> readObservable = database
+                .getContainer("I don't exist").read();
 
         FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, validator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void deleteCollection(String collectionName, boolean isNameBased) {
-        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
+    public void deleteCollection(String collectionName) throws InterruptedException {
+        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosContainer collection = createObservable.block().getContainer();
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
-        DocumentCollection collection = createObservable.toBlocking().single().getResource();
+        Mono<CosmosContainerResponse> deleteObservable = collection.delete();
 
-        Observable<ResourceResponse<DocumentCollection>> deleteObservable = client.deleteCollection(getCollectionLink(database, collection, isNameBased),
-                                                                                                    null);
-
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
-    public void replaceCollection(String collectionName, boolean isNameBased)  {
+    public void replaceCollection(String collectionName) throws InterruptedException  {
         // create a collection
-        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
-        DocumentCollection collection = createObservable.toBlocking().single().getResource();
+        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosContainer collection = createObservable.block().getContainer();
+        CosmosContainerSettings collectionSettings = collection.read().block().getCosmosContainerSettings();
         // sanity check
-        assertThat(collection.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.Consistent);
-
+        assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.Consistent);
+        
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.Lazy);
-        collection.setIndexingPolicy(indexingMode);
-        Observable<ResourceResponse<DocumentCollection>> readObservable = client.replaceCollection(collection, null);
-
+        collectionSettings.setIndexingPolicy(indexingMode);
+        Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+        
         // validate
-        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
-                .indexingMode(IndexingMode.Lazy).build();
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                        .indexingMode(IndexingMode.Lazy).build();
         validateSuccess(readObservable, validator);
-        safeDeleteAllCollections(client, database);
+        safeDeleteAllCollections(database);
     }
 
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
-        AsyncDocumentClient client1 = clientBuilder.build();
-        AsyncDocumentClient client2 = clientBuilder.build();
+        CosmosClient client1 = clientBuilder.build();
+        CosmosClient client2 = clientBuilder.build();
 
-        String dbId = DatabaseForTest.generateId();
+        String dbId = CosmosDatabaseForTest.generateId();
         String collectionId = "coll";
+        CosmosDatabase db = null;
         try {
             Database databaseDefinition = new Database();
             databaseDefinition.setId(dbId);
-            createDatabase(client1, dbId);
+            db = createDatabase(client1, dbId);
 
-            DocumentCollection collectionDefinition = new DocumentCollection();
-            collectionDefinition.setId(collectionId);
-            DocumentCollection collection = createCollection(client1, dbId, collectionDefinition);
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            ArrayList<String> paths = new ArrayList<String>();
+            paths.add("/mypk");
+            partitionKeyDef.setPaths(paths);
 
-            Document document = new Document();
+            CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(collectionId, partitionKeyDef);
+            CosmosContainer collection = createCollection(db, collectionDefinition, new CosmosContainerRequestOptions());
+
+            CosmosItemSettings document = new CosmosItemSettings();
             document.setId("doc");
             document.set("name", "New Document");
-            createDocument(client1, dbId, collectionId, document);
-            ResourceResponse<Document> readDocumentResponse = client1.readDocument(Utils.getDocumentNameLink(dbId, collectionId, document.getId()), null).toBlocking().single();
+            document.set("mypk", "mypkValue");
+            CosmosItem item = createDocument(collection, document);
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            options.setPartitionKey(new PartitionKey("mypkValue"));
+            CosmosItemResponse readDocumentResponse = item.read(options).block();
             logger.info("Client 1 Read Document Client Side Request Statistics {}", readDocumentResponse.getRequestDiagnosticsString());
             logger.info("Client 1 Read Document Latency {}", readDocumentResponse.getRequestLatency());
 
             document.set("name", "New Updated Document");
-            ResourceResponse<Document> upsertDocumentResponse = client1.upsertDocument(collection.getSelfLink(), document, null,
-                                                                                       true).toBlocking().single();
+            CosmosItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getRequestDiagnosticsString());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
             //  Delete the existing collection
-            deleteCollection(client2, Utils.getCollectionNameLink(dbId, collectionId));
+            deleteCollection(client2, dbId, collectionId);
             //  Recreate the collection with the same name but with different client
-            createCollection(client2, dbId, collectionDefinition);
+            CosmosContainer collection2 = createCollection(client2, dbId, collectionDefinition);
 
-            Document newDocument = new Document();
+            CosmosItemSettings newDocument = new CosmosItemSettings();
             newDocument.setId("doc");
             newDocument.set("name", "New Created Document");
-            createDocument(client2, dbId, collectionId, newDocument);
+            newDocument.set("mypk", "mypk");
+            createDocument(collection2, newDocument);
 
-            readDocumentResponse = client1.readDocument(Utils.getDocumentNameLink(dbId, collectionId, newDocument.getId()), null).toBlocking().single();
+            readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.getId(), newDocument.get("mypk")).read().block();
             logger.info("Client 2 Read Document Client Side Request Statistics {}", readDocumentResponse.getRequestDiagnosticsString());
             logger.info("Client 2 Read Document Latency {}", readDocumentResponse.getRequestLatency());
 
-            Document readDocument = readDocumentResponse.getResource();
+            CosmosItemSettings readDocument = readDocumentResponse.getCosmosItemSettings();
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
         } finally {
-            safeDeleteDatabase(client1, dbId);
+            safeDeleteDatabase(db);
             safeClose(client1);
             safeClose(client2);
         }
@@ -322,15 +327,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        safeDeleteDatabase(database);
         safeClose(client);
-    }
-
-    private static String getDatabaseLink(Database db, boolean isNameLink) {
-        return isNameLink ? "dbs/" + db.getId() : db.getSelfLink();
-    }
-
-    private static String getCollectionLink(Database db, DocumentCollection documentCollection, boolean isNameLink) {
-        return isNameLink ? "dbs/" + db.getId() + "/colls/" + documentCollection.getId() : documentCollection.getSelfLink();
     }
 }

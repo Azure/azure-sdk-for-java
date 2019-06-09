@@ -33,6 +33,7 @@ public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUser
     CosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response, CosmosContainer container) {
         super(response);
         if(response.getResource() != null) {
+            super.setResourceSettings(new CosmosUserDefinedFunctionSettings(response));
             cosmosUserDefinedFunctionSettings = new CosmosUserDefinedFunctionSettings(response);
             cosmosUserDefinedFunction = new CosmosUserDefinedFunction(cosmosUserDefinedFunctionSettings.getId(), container);
         }

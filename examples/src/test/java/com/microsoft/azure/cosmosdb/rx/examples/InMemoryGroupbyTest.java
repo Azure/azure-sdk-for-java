@@ -29,6 +29,7 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.SqlParameter;
 import com.microsoft.azure.cosmosdb.SqlParameterCollection;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
@@ -40,6 +41,7 @@ import rx.Observable;
 import rx.observables.GroupedObservable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +68,11 @@ public class InMemoryGroupbyTest {
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // Create collection
         createdCollection = asyncClient
@@ -112,6 +119,7 @@ public class InMemoryGroupbyTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<Document> documentsObservable = asyncClient
                 .queryDocuments(getCollectionLink(),
@@ -144,7 +152,7 @@ public class InMemoryGroupbyTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
-
+        options.setEnableCrossPartitionQuery(true);
 
         Observable<Document> documentsObservable = asyncClient
                 .queryDocuments(getCollectionLink(),

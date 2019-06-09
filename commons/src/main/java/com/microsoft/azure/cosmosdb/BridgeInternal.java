@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
@@ -281,5 +282,13 @@ public class BridgeInternal {
             return null;
         }
         return documentClientException.getInnerErrorMessage();
+    }
+    
+    public static PartitionKeyInternal getNonePartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
+        return partitionKeyDefinition.getNonePartitionKeyValue();
+    }
+    
+    public static PartitionKey getPartitionKey(PartitionKeyInternal partitionKeyInternal) {
+        return new PartitionKey(partitionKeyInternal);
     }
 }

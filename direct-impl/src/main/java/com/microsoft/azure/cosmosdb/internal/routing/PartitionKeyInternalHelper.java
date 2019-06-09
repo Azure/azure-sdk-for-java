@@ -140,6 +140,10 @@ public class PartitionKeyInternalHelper {
     }
 
     public static String getEffectivePartitionKeyString(PartitionKeyInternal partitionKeyInternal, PartitionKeyDefinition partitionKeyDefinition, boolean strict) {
+        if (partitionKeyInternal.components == null) {
+            throw new IllegalArgumentException(RMResources.TooFewPartitionKeyComponents);
+        }
+
         if (partitionKeyInternal.equals(PartitionKeyInternal.EmptyPartitionKey)) {
             return MinimumInclusiveEffectivePartitionKey;
         }

@@ -30,6 +30,7 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.UniqueKey;
 import com.microsoft.azure.cosmosdb.UniqueKeyPolicy;
@@ -40,6 +41,7 @@ import org.testng.annotations.Test;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -62,6 +64,11 @@ public class UniqueIndexAsyncAPITest {
         uniqueKey.setPaths(ImmutableList.of("/name", "/field"));
         uniqueKeyPolicy.setUniqueKeys(Collections.singleton(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
 
         DocumentCollection collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single().getResource();
 

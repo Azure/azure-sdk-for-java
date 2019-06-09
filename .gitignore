@@ -19,3 +19,6 @@ hs_err_pid*
 
 doc
 docs
+target
+bin
+test-output

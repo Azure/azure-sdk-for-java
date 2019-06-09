@@ -25,59 +25,63 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import javax.net.ssl.SSLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
+
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerRequestOptions;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
+import com.microsoft.azure.cosmos.CosmosItem;
+import com.microsoft.azure.cosmos.CosmosItemRequestOptions;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.DataType;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.ExcludedPath;
 import com.microsoft.azure.cosmosdb.HashIndex;
 import com.microsoft.azure.cosmosdb.IncludedPath;
 import com.microsoft.azure.cosmosdb.IndexingMode;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.PartitionKey;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.UniqueKey;
 import com.microsoft.azure.cosmosdb.UniqueKeyPolicy;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-
-import rx.Observable;
-import rx.observers.TestSubscriber;
 
 public class UniqueIndexTest extends TestSuiteBase {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
-    private final String databaseId = DatabaseForTest.generateId();
-    private AsyncDocumentClient client;
-    private Database database;
+    private final String databaseId = CosmosDatabaseForTest.generateId();
+    private CosmosClient client;
+    private CosmosDatabase database;
 
-    private DocumentCollection collection;
+    private CosmosContainer collection;
 
     @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void insertWithUniqueIndex() throws Exception {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
@@ -98,59 +102,66 @@ public class UniqueIndexTest extends TestSuiteBase {
         includedPath2.setPath("/description/?");
         includedPath2.setIndexes(Collections.singletonList(new HashIndex(DataType.String, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
 
         ObjectMapper om = new ObjectMapper();
 
-        JsonNode doc1 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"poet\"}", JsonNode.class);
-        JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\"}", JsonNode.class);
-        JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\"}", JsonNode.class);
+        JsonNode doc1 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", JsonNode.class);
+        JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
+        JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
 
-        collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single().getResource();
+        collection = database.createContainer(collectionDefinition).block().getContainer();
 
-        Document dd = client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single().getResource();
+        CosmosItem item = collection.createItem(doc1).block().getCosmosItem();
 
-        client.readDocument(dd.getSelfLink(), null).toBlocking().single();
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setPartitionKey(PartitionKey.None);
+        CosmosItemSettings itemSettings = item.read(options).block().getCosmosItemSettings();
+        assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
 
         try {
-            client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single();
+            collection.createItem(doc1).block();
             fail("Did not throw due to unique constraint (create)");
         } catch (RuntimeException e) {
             assertThat(getDocumentClientException(e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
 
-        client.createDocument(getCollectionLink(collection), doc2, null, false).toBlocking().single();
-        client.createDocument(getCollectionLink(collection), doc3, null, false).toBlocking().single();
+        collection.createItem(doc2).block();
+        collection.createItem(doc3).block();    
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT * 1000)
     public void replaceAndDeleteWithUniqueIndex() throws Exception {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Collections.singleton(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
-        collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single().getResource();
+        collection = database.createContainer(collectionDefinition).block().getContainer();
 
         ObjectMapper om = new ObjectMapper();
 
-        ObjectNode doc1 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"poet\"}", ObjectNode.class);
-        ObjectNode doc3 = om.readValue("{\"name\":\"Rabindranath Tagore\",\"description\":\"poet\"}", ObjectNode.class);
-        ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\"}", ObjectNode.class);
+        ObjectNode doc1 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
+        ObjectNode doc3 = om.readValue("{\"name\":\"Rabindranath Tagore\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
+        ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
 
-        Document doc1Inserted =  client.createDocument(
-                getCollectionLink(collection), doc1, null, false).toBlocking().single().getResource();
+        CosmosItemSettings doc1Inserted = collection.createItem(doc1, new CosmosItemRequestOptions()).block().getCosmosItemSettings();
 
-        client.replaceDocument(doc1Inserted.getSelfLink(), doc1Inserted, null).toBlocking().single();     // Replace with same values -- OK.
+        collection.getItem(doc1.get("id").asText(), PartitionKey.None).replace(doc1Inserted, new CosmosItemRequestOptions()).block().getCosmosItemSettings();     // Replace with same values -- OK.
 
-        Document doc2Inserted =  client.createDocument(getCollectionLink(collection), doc2, null, false).toBlocking().single().getResource();
-        Document doc2Replacement = new Document(doc1Inserted.toJson());
+        CosmosItemSettings doc2Inserted =  collection.createItem(doc2, new CosmosItemRequestOptions()).block().getCosmosItemSettings();
+        CosmosItemSettings doc2Replacement = new CosmosItemSettings(doc1Inserted.toJson());
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {
-            client.replaceDocument(doc2Inserted.getSelfLink(), doc2Replacement, null).toBlocking().single(); // Replace doc2 with values from doc1 -- Conflict.
+            collection.getItem(doc2Inserted.getId(), PartitionKey.None).replace(doc2Replacement, new CosmosItemRequestOptions()).block(); // Replace doc2 with values from doc1 -- Conflict.
             fail("Did not throw due to unique constraint");
         }
         catch (RuntimeException ex) {
@@ -158,16 +169,20 @@ public class UniqueIndexTest extends TestSuiteBase {
         }
 
         doc3.put("id", doc1Inserted.getId());
-        client.replaceDocument(doc1Inserted.getSelfLink(), doc3, null).toBlocking().single();             // Replace with values from doc3 -- OK.
+        collection.getItem(doc1Inserted.getId(), PartitionKey.None).replace(doc3).block();             // Replace with values from doc3 -- OK.
 
-        client.deleteDocument(doc1Inserted.getSelfLink(), null).toBlocking().single();
-        client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single();
+        collection.getItem(doc1Inserted.getId(), PartitionKey.None).delete().block();
+        collection.createItem(doc1, new CosmosItemRequestOptions()).block();
     }
 
     @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void uniqueKeySerializationDeserialization() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
@@ -191,11 +206,9 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        DocumentCollection createdCollection = client.createCollection(database.getSelfLink(), collectionDefinition,
-                null).toBlocking().single().getResource();
+        CosmosContainer createdCollection = database.createContainer(collectionDefinition).block().getContainer();
 
-        DocumentCollection collection = client.readCollection(getCollectionLink(createdCollection), null)
-                .toBlocking().single().getResource();
+        CosmosContainerSettings collection = createdCollection.read().block().getCosmosContainerSettings();
 
         assertThat(collection.getUniqueKeyPolicy()).isNotNull();
         assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()).isNotNull();
@@ -213,29 +226,21 @@ public class UniqueIndexTest extends TestSuiteBase {
         return dce;
     }
 
-    private String getDatabaseLink() {
-        return database.getSelfLink();
-    }
-
-    public String getCollectionLink() {
-        return "dbs/" + database.getId() + "/colls/" + collection.getId();
-    }
-
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client
-        client = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
-                .withConsistencyLevel(ConsistencyLevel.Session).build();
+        client = CosmosClient.builder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .connectionPolicy(ConnectionPolicy.GetDefault())
+                .consistencyLevel(ConsistencyLevel.Session).build();
 
         database = createDatabase(client, databaseId);
     }
 
     @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        safeDeleteDatabase(database);
         safeClose(client);
     }
 }

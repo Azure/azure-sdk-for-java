@@ -23,23 +23,25 @@
 package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+
+import reactor.core.publisher.Flux;
+
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosItemSettings;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
-import rx.Observable;
 
 public class AggregateQueryTests extends TestSuiteBase {
 
@@ -67,9 +69,8 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
     }
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private ArrayList<Document> docs = new ArrayList<Document>();
+    private CosmosContainer createdCollection;
+    private ArrayList<CosmosItemSettings> docs = new ArrayList<CosmosItemSettings>();
     private ArrayList<QueryConfig> queryConfigs = new ArrayList<QueryConfig>();
 
     private String partitionKey = "mypk";
@@ -80,10 +81,10 @@ public class AggregateQueryTests extends TestSuiteBase {
     private int numberOfDocumentsWithNumericId;
     private int numberOfDocsWithSamePartitionKey = 400;
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public AggregateQueryTests(Builder clientBuilder) {
+    public AggregateQueryTests(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -105,10 +106,9 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         for (QueryConfig queryConfig : queryConfigs) {    
 
-            Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(createdCollection.getSelfLink(), queryConfig.query, options);
+            Flux<FeedResponse<CosmosItemSettings>> queryObservable = createdCollection.queryItems(queryConfig.query, options);
 
-            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<CosmosItemSettings> validator = new FeedResponseListValidator.Builder<CosmosItemSettings>()
                 .withAggregateValue(queryConfig.expected)
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
@@ -117,8 +117,8 @@ public class AggregateQueryTests extends TestSuiteBase {
             try {
                 validateQuerySuccess(queryObservable, validator);
             } catch (Throwable error) {
-                if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                if (this.clientBuilder.getConfigs().getProtocol() == Protocol.Tcp) {
+                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
                     logger.info(message, error);
                     throw new SkipException(message, error);
                 }
@@ -127,38 +127,35 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
     }
 
-    public void bulkInsert(AsyncDocumentClient client) {
+    public void bulkInsert() {
         generateTestData();
-
-        ArrayList<Observable<ResourceResponse<Document>>> result = new ArrayList<Observable<ResourceResponse<Document>>>();
-        for (int i = 0; i < docs.size(); i++) {
-            result.add(client.createDocument("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), docs.get(i), null, false));
-        }
-
-        Observable.merge(result, 100).toList().toBlocking().single();
+        bulkInsertBlocking(createdCollection, docs);
     }
 
     public void generateTestData() {
 
         Object[] values = new Object[]{null, false, true, "abc", "cdfg", "opqrs", "ttttttt", "xyz", "oo", "ppp"};
         for (int i = 0; i < values.length; i++) {
-            Document d = new Document();
+            CosmosItemSettings d = new CosmosItemSettings();
+            d.setId(UUID.randomUUID().toString());
             d.set(partitionKey, values[i]);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
-            Document d = new Document();
+            CosmosItemSettings d = new CosmosItemSettings();
             d.set(partitionKey, uniquePartitionKey);
             d.set("resourceId", Integer.toString(i));
             d.set(field, i + 1);
+            d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
 
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
-            Document d = new Document();
+            CosmosItemSettings d = new CosmosItemSettings();
             d.set(partitionKey, i + 1);
+            d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
 
@@ -223,14 +220,13 @@ public class AggregateQueryTests extends TestSuiteBase {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
-        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
-        bulkInsert(client);
+        bulkInsert();
         generateTestConfigs();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);

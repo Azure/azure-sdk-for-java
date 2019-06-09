@@ -15,7 +15,14 @@ public class CosmosUser extends CosmosResource {
 
     /**
      * Reads a cosmos user
-     *
+     * @return an {@link Mono} containing the single cosmos user response with the read user or an error.
+     */
+    public Mono<CosmosUserResponse> read() {
+        return this.read(null);
+    }
+
+    /**
+     * Reads a cosmos user
      * @param options the request options
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */

@@ -655,7 +655,7 @@ public class AddressResolver implements IAddressResolver {
             throw new InternalServerErrorException(String.format("partition key is null '%s'", partitionKeyString));
         }
 
-        if (partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
+        if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
             // Although we can compute effective partition key here, in general case this Gateway can have outdated
             // partition key definition cached - like if collection with same name but with Range partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.

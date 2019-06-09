@@ -22,22 +22,28 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosContainerRequestOptions;
+import com.microsoft.azure.cosmos.CosmosContainerResponse;
+import com.microsoft.azure.cosmos.CosmosContainerSettings;
+import com.microsoft.azure.cosmos.CosmosDatabase;
+import com.microsoft.azure.cosmos.CosmosDatabaseForTest;
 import com.microsoft.azure.cosmosdb.BridgeUtils;
 import com.microsoft.azure.cosmosdb.ConflictResolutionMode;
 import com.microsoft.azure.cosmosdb.ConflictResolutionPolicy;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.Resource;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+
+import reactor.core.publisher.Mono;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
 
-import javax.net.ssl.SSLException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,33 +53,33 @@ import static org.assertj.core.api.Assertions.fail;
 public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     private static final int TIMEOUT = 40000;
 
-    private final String databaseId = DatabaseForTest.generateId();
+    private final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private AsyncDocumentClient client;
-    private Database database;
+    private PartitionKeyDefinition partitionKeyDef;
+    private CosmosClient client;
+    private CosmosDatabase database;
 
     @Factory(dataProvider = "clientBuilders")
-    public MultiMasterConflictResolutionTest(AsyncDocumentClient.Builder clientBuilder) {
+    public MultiMasterConflictResolutionTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = "multi-master", timeOut = TIMEOUT)
+    @Test(groups = "multi-master", timeOut = 10 * TIMEOUT)
     public void conflictResolutionPolicyCRUD() {
 
         // default last writer wins, path _ts
-        DocumentCollection collection = new DocumentCollection();
-        collection.setId(UUID.randomUUID().toString());
-        collection = getResource(client.createCollection(getDatabaseLink(database), collection, null));
+        CosmosContainerSettings collectionSettings = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getContainer();
+        collectionSettings = collection.read().block().getCosmosContainerSettings();
 
-        assertThat(collection.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(ConflictResolutionMode.LastWriterWins);
+        assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(ConflictResolutionMode.LastWriterWins);
 
         // LWW without path specified, should default to _ts
-        collection.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
-        collection = getResource(client.replaceCollection(collection, null));
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
+        collectionSettings = collection.replace(collectionSettings, null).block().getCosmosContainerSettings();
 
-
-        assertThat(collection.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(ConflictResolutionMode.LastWriterWins);
-        assertThat(collection.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo("/_ts");
+        assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(ConflictResolutionMode.LastWriterWins);
+        assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo("/_ts");
 
         // Tests the following scenarios
         // 1. LWW with valid path
@@ -83,10 +89,10 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 new String[] { "/a", null, "" }, new String[] { "/a", "/_ts", "/_ts" });
 
         // LWW invalid path
-        collection.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
 
         try {
-            collection = getResource(client.replaceCollection(collection, null));
+            collectionSettings = collection.replace(collectionSettings, null).block().getCosmosContainerSettings();
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
 
@@ -101,10 +107,10 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         // LWW invalid path
 
-        collection.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
 
         try {
-            collection = getResource(client.replaceCollection(collection, null));
+            collectionSettings = collection.replace(collectionSettings, null).block().getCosmosContainerSettings();
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
@@ -127,29 +133,27 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     private void testConflictResolutionPolicyRequiringPath(ConflictResolutionMode conflictResolutionMode,
             String[] paths, String[] expectedPaths) {
         for (int i = 0; i < paths.length; i++) {            
-            DocumentCollection collection = new DocumentCollection();
-            collection.setId(UUID.randomUUID().toString());
+            CosmosContainerSettings collectionSettings = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
             
             if (conflictResolutionMode == ConflictResolutionMode.LastWriterWins) {
-                collection.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy(paths[i]));
+                collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy(paths[i]));
             } else {
-                collection.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy(paths[i]));
+                collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy(paths[i]));
             }
-            collection = getResource(client.createCollection("dbs/" + database.getId(), collection, null));
-            assertThat(collection.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(conflictResolutionMode);
+            collectionSettings = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getCosmosContainerSettings();
+            assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionMode()).isEqualTo(conflictResolutionMode);
             
             if (conflictResolutionMode == ConflictResolutionMode.LastWriterWins) {
-                assertThat(collection.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo(expectedPaths[i]);
+                assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo(expectedPaths[i]);
             } else {
-                assertThat(collection.getConflictResolutionPolicy().getConflictResolutionProcedure()).isEqualTo(expectedPaths[i]);
+                assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionProcedure()).isEqualTo(expectedPaths[i]);
             }
         }
     }
     
     @Test(groups = "multi-master", timeOut = TIMEOUT)
     public void invalidConflictResolutionPolicy_LastWriterWinsWithStoredProc() throws Exception {
-        DocumentCollection collection = new DocumentCollection();
-        collection.setId(UUID.randomUUID().toString());
+        CosmosContainerSettings collection = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
 
         // LWW without path specified, should default to _ts
         ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
@@ -157,10 +161,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         BridgeUtils.setStoredProc(policy,"randomSprocName");
         collection.setConflictResolutionPolicy(policy);
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(
-                getDatabaseLink(database),
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(
                 collection,
-                null);
+                new CosmosContainerRequestOptions());
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(DocumentClientException.class)
@@ -172,8 +175,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
     @Test(groups = "multi-master", timeOut = TIMEOUT)
     public void invalidConflictResolutionPolicy_CustomWithPath() throws Exception {
-        DocumentCollection collection = new DocumentCollection();
-        collection.setId(UUID.randomUUID().toString());
+        CosmosContainerSettings collection = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
 
         // LWW without path specified, should default to _ts
         ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
@@ -181,10 +183,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         BridgeUtils.setPath(policy,"/mypath");
         collection.setConflictResolutionPolicy(policy);
 
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(
-                getDatabaseLink(database),
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(
                 collection,
-                null);
+                new CosmosContainerRequestOptions());
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(DocumentClientException.class)
@@ -200,15 +201,15 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         client = clientBuilder.build();
         database = createDatabase(client, databaseId);
-    }
-
-    private <T extends Resource> T getResource(Observable<ResourceResponse<T>> obs) {
-        return obs.toBlocking().single().getResource();
+        partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
     }
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, database);
+        safeDeleteDatabase(database);
         safeClose(client);
     }
 }

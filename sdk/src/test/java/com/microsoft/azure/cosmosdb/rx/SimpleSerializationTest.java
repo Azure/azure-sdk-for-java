@@ -24,31 +24,29 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
+import com.microsoft.azure.cosmos.CosmosContainer;
+
 import org.apache.commons.lang3.NotImplementedException;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
 
-import java.io.IOException;
-import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleSerializationTest extends TestSuiteBase {
 
-    private DocumentCollection createdCollection;
-    private AsyncDocumentClient client;
+    private CosmosContainer createdCollection;
+    private CosmosClient client;
 
     private static class TestObject {
         public static class BadSerializer extends JsonSerializer<String> {
@@ -70,39 +68,35 @@ public class SimpleSerializationTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public SimpleSerializationTest(Builder clientBuilder) {
+    public SimpleSerializationTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void createDocument() {
+    public void createDocument() throws InterruptedException {
         TestObject testObject = new TestObject();
         testObject.id = UUID.randomUUID().toString();
         testObject.mypk = UUID.randomUUID().toString();
         testObject.prop = UUID.randomUUID().toString();
 
-        Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), testObject, null, false);
-
-        FailureValidator failureValidator = FailureValidator.builder().instanceOf(IllegalArgumentException.class)
-                .causeOfCauseInstanceOf(NotImplementedException.class)
-                .errorMessageContains("Can't serialize the object into the json string").build();
-
-        validateFailure(createObservable, failureValidator);
+        try {
+            createdCollection.createItem(testObject);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("Can't serialize the object into the json string");
+            assertThat(e.getCause()).isInstanceOf(JsonMappingException.class);
+            assertThat(e.getCause().getMessage()).contains("bad");
+        }
     }
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
         client = clientBuilder.build();
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
     }
 }

@@ -31,8 +31,11 @@ import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
 import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
+import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.Paths;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
+
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
@@ -87,11 +90,11 @@ public class CosmosContainer extends CosmosResource {
      * Reads the document container
      *
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cossmos container response with the read 
+     * The {@link Mono} upon successful completion will contain a single cosmos container response with the read
      * container.
      * In case of failure the {@link Mono} will error.
      *
-     * @return an {@link Mono} containing the single cossmos container response with the read container or an error.
+     * @return an {@link Mono} containing the single cosmos container response with the read container or an error.
      */
     public Mono<CosmosContainerResponse> read() {
         return read(new CosmosContainerRequestOptions());
@@ -101,10 +104,11 @@ public class CosmosContainer extends CosmosResource {
      * Reads the document container by the container link.
      *
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cossmos container response with the read container.
+     * The {@link Mono} upon successful completion will contain a single cosmos container response with the read container.
      * In case of failure the {@link Mono} will error.
-     * @param options the cosmos container request options
-     * @return an {@link Mono} containing the single cossmos container response with the read container or an error.
+     *
+     * @param options        The cosmos container request options.
+     * @return an {@link Mono} containing the single cosmos container response with the read container or an error.
      */
     public Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options) {
         if (options == null) {
@@ -119,11 +123,11 @@ public class CosmosContainer extends CosmosResource {
      * Deletes the item container
      *
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cossmos container response for the deleted database.
+     * The {@link Mono} upon successful completion will contain a single cosmos container response for the deleted database.
      * In case of failure the {@link Mono} will error.
      *
      * @param options        the request options.
-     * @return an {@link Mono} containing the single cossmos container response for the deleted database or an error.
+     * @return an {@link Mono} containing the single cosmos container response for the deleted database or an error.
      */
     public Mono<CosmosContainerResponse> delete(CosmosContainerRequestOptions options) {
         if (options == null) {
@@ -143,7 +147,7 @@ public class CosmosContainer extends CosmosResource {
      * The {@link Mono} upon successful completion will contain a single cosmos container response for the deleted container.
      * In case of failure the {@link Mono} will error.
      *
-     * @return an {@link Mono} containing the single cossmos container response for the deleted container or an error.
+     * @return an {@link Mono} containing the single cosmos container response for the deleted container or an error.
      */
     public Mono<CosmosContainerResponse> delete() {
         return delete(new CosmosContainerRequestOptions());
@@ -153,12 +157,12 @@ public class CosmosContainer extends CosmosResource {
      * Replaces a document container.
      *
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cossmos container response with the replaced document container.
+     * The {@link Mono} upon successful completion will contain a single cosmos container response with the replaced document container.
      * In case of failure the {@link Mono} will error.
      *
      * @param containerSettings the item container settings
      * @param options    the cosmos container request options.
-     * @return an {@link Mono} containing the single cossmos container response with the replaced document container or an error.
+     * @return an {@link Mono} containing the single cosmos container response with the replaced document container or an error.
      */
     public Mono<CosmosContainerResponse> replace(CosmosContainerSettings containerSettings,
                                                    CosmosContainerRequestOptions options) {
@@ -186,7 +190,7 @@ public class CosmosContainer extends CosmosResource {
      * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
      */
     public Mono<CosmosItemResponse> createItem(Object item){
-        return createItem(item, null);
+        return createItem(item, new CosmosItemRequestOptions());
     }
 
     /**
@@ -230,6 +234,35 @@ public class CosmosContainer extends CosmosResource {
                                                          requestOptions.getPartitionKey(),
                                                          this))
                                                  .toSingle()));
+    }
+
+    /**
+     * Upserts an item.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted item.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param item                         the item represented as a POJO or Item object to upsert.
+     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
+     */
+    public Mono<CosmosItemResponse> upsertItem(Object item) {
+        return upsertItem(item, new CosmosItemRequestOptions());
+    }
+
+    /**
+     * Upserts an item.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted item.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param item                         the item represented as a POJO or Item object to upsert.
+     * @param partitionKey                 the partitionKey to be used.
+     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
+     */
+    public Mono<CosmosItemResponse> upsertItem(Object item, Object partitionKey) {
+        return upsertItem(item, new CosmosItemRequestOptions(partitionKey));
     }
 
     /**
@@ -361,6 +394,21 @@ public class CosmosContainer extends CosmosResource {
     }
 
     /* CosmosStoredProcedure operations */
+
+    /**
+     * Creates a cosmos stored procedure.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single cosmos stored procedure response with the
+     * created cosmos stored procedure.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param settings  the cosmos stored procedure settings.
+     * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
+     */
+    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureSettings settings){
+        return this.createStoredProcedure(settings, new CosmosStoredProcedureRequestOptions());
+    }
 
     /**
      * Creates a cosmos stored procedure.

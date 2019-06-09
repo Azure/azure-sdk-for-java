@@ -23,10 +23,12 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal.directconnectivity;
 
+import com.microsoft.azure.cosmos.CosmosClient;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpTransportClient;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.ServerStoreModel;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreClient;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.TransportClient;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
@@ -88,5 +90,13 @@ public class ReflectionUtils {
         TransportClient transportClient = getTransportClient(client);
         assert transportClient instanceof HttpTransportClient;
         set(transportClient, newHttpClient, "httpClient");
+    }
+    
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
+        return get(AsyncDocumentClient.class, client, "asyncDocumentClient");
+    }
+    
+    public static void setAsyncDocumentClient(CosmosClient client, RxDocumentClientImpl rxClient) {
+        set(client, rxClient, "asyncDocumentClient");
     }
 }

@@ -27,32 +27,30 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmos.CosmosClientBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmos.CosmosClient;
+import com.microsoft.azure.cosmos.CosmosContainer;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureRequestOptions;
+import com.microsoft.azure.cosmos.CosmosStoredProcedureSettings;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.StoredProcedure;
 
-import rx.Observable;
-
-import javax.net.ssl.SSLException;
+import reactor.core.publisher.Flux;
 
 public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private List<StoredProcedure> createdStoredProcedures = new ArrayList<>();
+    private CosmosContainer createdCollection;
+    private List<CosmosStoredProcedureSettings> createdStoredProcedures = new ArrayList<>();
 
-    private AsyncDocumentClient client;
+    private CosmosClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public ReadFeedStoredProceduresTest(AsyncDocumentClient.Builder clientBuilder) {
+    public ReadFeedStoredProceduresTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
@@ -62,19 +60,19 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
 
-        Observable<FeedResponse<StoredProcedure>> feedObservable = client.readStoredProcedures(getCollectionLink(), options);
+        Flux<FeedResponse<CosmosStoredProcedureSettings>> feedObservable = createdCollection.listStoredProcedures(options);
 
         int expectedPageSize = (createdStoredProcedures.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
-        FeedResponseListValidator<StoredProcedure> validator = new FeedResponseListValidator
-                .Builder<StoredProcedure>()
+        FeedResponseListValidator<CosmosStoredProcedureSettings> validator = new FeedResponseListValidator
+                .Builder<CosmosStoredProcedureSettings>()
                 .totalSize(createdStoredProcedures.size())
                 .exactlyContainsInAnyOrder(createdStoredProcedures
                         .stream()
                         .map(d -> d.getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<StoredProcedure>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -83,12 +81,11 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        truncateCollection(createdCollection);
 
         for(int i = 0; i < 5; i++) {
-            createdStoredProcedures.add(createStoredProcedures(client));
+            createdStoredProcedures.add(createStoredProcedures(createdCollection));
         }
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
@@ -99,22 +96,10 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public StoredProcedure createStoredProcedures(AsyncDocumentClient client) {
-        StoredProcedure sproc = new StoredProcedure();
+    public CosmosStoredProcedureSettings createStoredProcedures(CosmosContainer cosmosContainer) {
+        CosmosStoredProcedureSettings sproc = new CosmosStoredProcedureSettings();
         sproc.setId(UUID.randomUUID().toString());
         sproc.setBody("function() {var x = 10;}");
-        return client.createStoredProcedure(getCollectionLink(), sproc, null).toBlocking().single().getResource();
-    }
-
-    private String getCollectionLink() {
-        return "dbs/" + getDatabaseId() + "/colls/" + getCollectionId();
-    }
-
-    private String getCollectionId() {
-        return createdCollection.getId();
-    }
-
-    private String getDatabaseId() {
-        return createdDatabase.getId();
+        return cosmosContainer.createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedureSettings();
     }
 }
