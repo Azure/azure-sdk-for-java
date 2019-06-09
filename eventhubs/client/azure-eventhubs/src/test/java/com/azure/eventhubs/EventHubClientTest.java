@@ -24,7 +24,7 @@ public class EventHubClientTest extends TestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() {
-        new EventHubClient(null, null, null, null, null);
+        new EventHubClient(null, null, null);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class EventHubClientTest extends TestBase {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final SharedAccessSignatureTokenProvider tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
         final ConnectionParameters connectionParameters = new ConnectionParameters(credentialInfo, timeout, tokenProvider, TransportType.AMQP, Retry.getDefaultRetry(), new ProxyConfiguration(), scheduler);
-        EventHubClient client = new EventHubClient(connectionParameters, null, provider, handlerProvider, null);
+        final EventHubClient client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
