@@ -167,7 +167,7 @@ public class ManagementChannel implements EventHubManagementNode {
         }
 
         if (!connection.removeSession(SESSION_NAME)) {
-            logger.asInformational().log("Unable to remove CBSChannel {} from connection", SESSION_NAME);
+            logger.asInfo().log("Unable to remove CBSChannel {} from connection", SESSION_NAME);
         }
     }
 }
