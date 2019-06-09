@@ -42,13 +42,13 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
 
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
-                this::notifyAndSetConnectionState,
-                error -> notifyException(handler.getContext(error)),
-                () -> notifyAndSetConnectionState(EndpointState.CLOSED)),
+                this::notifyEndpointState,
+                error -> notifyError(handler.getContext(error)),
+                () -> notifyEndpointState(EndpointState.CLOSED)),
             this.handler.getErrors().subscribe(
-                this::notifyException,
-                error -> notifyException(handler.getContext(error)),
-                () -> notifyAndSetConnectionState(EndpointState.CLOSED)));
+                this::notifyError,
+                error -> notifyError(handler.getContext(error)),
+                () -> notifyEndpointState(EndpointState.CLOSED)));
 
         session.open();
     }
