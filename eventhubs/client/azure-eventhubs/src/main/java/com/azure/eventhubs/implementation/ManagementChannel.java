@@ -60,7 +60,7 @@ public class ManagementChannel implements EventHubManagementNode {
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
-    private final ReactorDispatcher dispatcher;
+    private final ReactorProvider provider;
     private final String eventHubPath;
 
     /**
@@ -69,16 +69,16 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param connection The AMQP connection to the parent Event Hub.
      * @param eventHubPath The name of the Event Hub.
      * @param tokenProvider A provider that generates authorisation tokens.
-     * @param dispatcher The dispatcher to execute work on Reactor.
+     * @param provider The dispatcher to execute work on Reactor.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider, ReactorDispatcher dispatcher) {
+    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider, ReactorProvider provider) {
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
-        Objects.requireNonNull(dispatcher);
+        Objects.requireNonNull(provider);
 
         this.connection = connection;
         this.tokenProvider = tokenProvider;
-        this.dispatcher = dispatcher;
+        this.provider = provider;
         this.eventHubPath = eventHubPath;
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
@@ -140,7 +140,7 @@ public class ManagementChannel implements EventHubManagementNode {
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return channelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).map(message -> {
+        return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
             if (!(message.getBody() instanceof AmqpValue)) {
                 throw new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody());
             }

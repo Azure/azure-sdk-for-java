@@ -32,16 +32,16 @@ class CBSChannel implements CBSNode {
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> cbsChannelMono;
-    private final ReactorDispatcher dispatcher;
+    private final ReactorProvider provider;
 
-    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorDispatcher dispatcher) {
+    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider) {
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
-        Objects.requireNonNull(dispatcher);
+        Objects.requireNonNull(provider);
 
         this.connection = connection;
         this.tokenProvider = tokenProvider;
-        this.dispatcher = dispatcher;
+        this.provider = provider;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
@@ -67,7 +67,7 @@ class CBSChannel implements CBSNode {
 
         request.setBody(new AmqpValue(token));
 
-        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).then();
+        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
     }
 
     @Override
