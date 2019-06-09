@@ -8,6 +8,7 @@ import com.azure.core.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,28 +21,114 @@ import java.util.function.Function;
 public class PollerTests {
 
     private boolean debug = true;
+    int count;
 
-    private Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> createPollOperation(
+    private Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> createPollOperation(
         PollResponse<CreateCertificateResponse> intermediateProgressPollResponse,
         PollResponse<CreateCertificateResponse> finalPollResponse,
         long sendFinalResponseInMillis
     ) {
-        return new Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>>() {
+        return new Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>>() {
 
             // Will return success after this time.
             LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(sendFinalResponseInMillis));
 
             @Override
-            public PollResponse<CreateCertificateResponse> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
+            public Mono<PollResponse<CreateCertificateResponse>> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
+                ++count;
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                     debug(" Service poll function called ", " returning intermediate response ");
-                    return intermediateProgressPollResponse;
+                    return Mono.just(intermediateProgressPollResponse);
                 } else {
-                    debug(" Final Service poll function called ", " returning final response ");
-                    return finalPollResponse;
+                    debug(count + " Final Service poll function called ", " returning final response ");
+                    return Mono.just(finalPollResponse);
                 }
             }
         };
+    }
+
+    /* Test where SDK Client is subscribed all responses.
+     * This scenario is setup where source will generate successful response returned
+     * after few in-progress response. But the sdk client will stop polling in between
+     * and activate polling in between. The client will miss few in progress response and
+     * subscriber will get get final successful response.
+     **/
+    @Test
+    public void subscribeToAllPollEventStopPollingAfterNSecondsAndRestartedTest() throws Exception {
+
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+
+        long totalTimeoutInMillis = 1000 * 2;
+        Duration pollInterval = Duration.ofMillis(100);
+
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                successPollResponse, 800);
+
+        PollerOptions pollerOptions = new PollerOptions(pollInterval);
+
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    debug("Thread .. Sleeping ");
+                    Thread.sleep(pollInterval.toMillis() + (pollInterval.toMillis() / 2));
+                    debug("Thread wake up and stop polling. ");
+                    createCertPoller.setAutoPollingEnabled(false);
+                    Thread.sleep(1000);
+                    debug("Thread to enable Polling .. Sleeping ");
+                    createCertPoller.setAutoPollingEnabled(true);
+                } catch (Exception e) {
+                }
+            }
+        };
+        t.start();
+        debug("Poll and wait for it to complete  ");
+        Thread.sleep(totalTimeoutInMillis);
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+    }
+
+    /*
+     * The test is setup where user will disable auto polling after creating poller.
+     * The user will enable polling after LRO is expected to complete.
+     * We want to ensure that if user enable polling after LRO is complete, user can
+     * final polling status.
+     */
+    @Test
+    public void disableAutoPollAndEnableAfterCompletionSuccessfullyDone() throws Exception {
+
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+        
+        int totalTileInSeconds = 5;
+        long totalTimeoutInMillis = 1000 * totalTileInSeconds;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
+
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                successPollResponse, 1800);
+
+        PollerOptions pollerOptions = new PollerOptions(pollInterval);
+
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+
+        new Thread().sleep(6 * pollInterval.toMillis());
+        debug("Try to disable autopolling..");
+        createCertPoller.setAutoPollingEnabled(false);
+        
+        Thread.sleep(totalTimeoutInMillis);
+        debug("Try to enable autopolling..");
+        createCertPoller.setAutoPollingEnabled(true);
+        Thread.sleep(5 * pollInterval.toMillis());
+        debug(createCertPoller.getStatus().toString());
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        Thread.sleep(5 * pollInterval.toMillis());
+        Assert.assertTrue(createCertPoller.block() == successPollResponse);
+
     }
 
     /*
@@ -58,7 +145,7 @@ public class PollerTests {
         long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
 
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
 
@@ -87,7 +174,7 @@ public class PollerTests {
         long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 10);
 
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, pollInterval.toMillis() * 2);
 
@@ -116,7 +203,7 @@ public class PollerTests {
         long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
 
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
 
@@ -142,7 +229,7 @@ public class PollerTests {
         long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(100);
 
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
 
@@ -180,7 +267,7 @@ public class PollerTests {
         long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
 
-        Function<PollResponse<CreateCertificateResponse>, PollResponse<CreateCertificateResponse>> pollOperation =
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
 
@@ -226,4 +313,6 @@ public class PollerTests {
             response = st;
         }
     }
+
+  
 }

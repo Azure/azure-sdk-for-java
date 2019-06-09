@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class PollResponse<T> {
 
-    private String nullValueNotAllowedFormat = "Null %s value not allowed.";
+    private String nullValueNotAllowedFormat = "Null value for %s not allowed.";
 
     private OperationStatus status;
     private T value;

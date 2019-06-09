@@ -4,6 +4,7 @@
 package com.azure.core.polling;
 
 import reactor.core.Disposable;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,12 +13,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * This class provides implementation of long running operations. The poller starts polling by default in background.
- * It has function for normal operation of poller. For example listen to poll responses, stop auto polling,
+ * This class provides implementation of long running operations. The poller starts polling by <b>automatically in background</b>.
+ * It has function for usual operation of a poller. For example listen to poll responses, enable/disable auto polling,
  * manual polling, wait for polling to complete and get status of current polling.
  * <p>
- *     Since auto polling is turned on by default. If some scenario requires to disable this feature.
- *     It can be done by calling setAutoPollingEnabled(false) function.
+ * Since auto polling is turned <b>on</b> by default. If some scenario requires to disable this feature.
+ * It can be done by calling setAutoPollingEnabled(false) function.
  *
  * <p><strong>Implementation of Long Running Operations</strong></p>
  *
@@ -26,11 +27,13 @@ import java.util.function.Function;
 
 public class Poller<T> {
 
+    private String nullValueNotAllowedFormat = "Null value for %s not allowed.";
+
     /*
      * pollOperation is a Function that takes the previous PollResponse, and
      * returns a new PollResponse to represent the current state
      */
-    private Function<PollResponse<T>, PollResponse<T>> pollOperation;
+    private Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
 
     /*
      * Various configuration options to create poller object.
@@ -58,40 +61,61 @@ public class Poller<T> {
      */
     private boolean cancelInitiated;
 
-    private Flux<PollResponse<T>> backgroundFluxHandle;
+    private final Flux<PollResponse<T>> fluxHandle;
 
     /*
      * Since constructor create a subscriber and start auto polling.
      * This handle will be used to dispose the subscriber when
      * client disable auto polling.
      */
-    private Disposable backgroundFluxDisposable;
+    private Disposable fluxDisposable;
 
     /**
-     * Create a Poller object. Auto polling is turned on by default. The background thread will start immediately
-     * and invoke pollOperation.
-     * @param pollerOptions configuration options for poller.
-     * @param pollOperation to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
+     * Create a Poller object. The polling starts immediately by default.
+     * The poll interval would defined by retryAfter value in {@link PollResponse}.
+     * In absence of retryAfter, the poller will use pollInterval defined in {@link PollerOptions}.
+     *
+     * @param pollerOptions Not null configuration options for poller.
+     * @param pollOperation to be called by poller. It should never return {@code null}. The response should always have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
+     * @see PollerOptions
+     * @see PollResponse
      */
-    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, PollResponse<T>> pollOperation) {
+    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
+
+        validateAndThrow(pollerOptions, "pollerOptions");
+        validateAndThrow(pollOperation, "pollOperation");
 
         this.pollerOptions = pollerOptions;
         this.pollOperation = pollOperation;
-        backgroundFluxHandle = createBackgroundFlux();
         pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
+
+        fluxHandle = sendPollRequestWithDelay()
+            .flux()
+            .repeat()
+            .takeUntil(pollResponse -> pollResponse.isDone())
+            .share();
 
         // auto polling start here
         setAutoPollingEnabled(true);
     }
 
+    /*
+     * Validatations for null values
+     */
+    private void validateAndThrow(Object object, String name) throws IllegalArgumentException {
+        if (object == null) {
+            throw new IllegalArgumentException(String.format(nullValueNotAllowedFormat, name));
+        }
+    }
     /**
      * Create a Poller object. Auto polling is turned on by default. The background thread will start immediately
      * and invoke pollOperation.
-     * @param pollerOptions configuration options for poller.
-     * @param pollOperation to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
+     *
+     * @param pollerOptions   configuration options for poller.
+     * @param pollOperation   to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
      * @param cancelOperation cancel operation
      */
-    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, PollResponse<T>> pollOperation, Consumer<Poller> cancelOperation) {
+    public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
         this(pollerOptions, pollOperation);
         this.cancelOperation = cancelOperation;
     }
@@ -101,8 +125,8 @@ public class Poller<T> {
      * This is to avoid unintentional calls to cancelOperation.
      * It will not call cancelOperation if operation status is not started/Cancelled/Failed/successfully completed.
      *
-     * @see com.azure.core.polling.PollResponse.OperationStatus
      * @throws UnsupportedOperationException when cancel operation is not provided.
+     * @see com.azure.core.polling.PollResponse.OperationStatus
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (cancelOperation == null) {
@@ -119,6 +143,7 @@ public class Poller<T> {
         cancelOperation.accept(this);
         cancelInitiated = true;
     }
+
     /**
      * Enable user to subscribe and receive all the responses.
      * The user will start receiving PollResponse When client subscribe to this Flux.
@@ -129,70 +154,54 @@ public class Poller<T> {
      * @return poll response as Flux that can be subscribed.
      */
     public Flux<PollResponse<T>> getObserver() {
-        return listenPollRequestWithDelay()
-            .flux()
-            .repeat()
-            .takeUntil(pollResponse -> pollResponse.isDone());
-    }
-
-    /*
-     * We will maintain one instance of backgroundFluxHandle per poller.
-     * This handle will be set to null when autopolling is disabled.
-     */
-    private Flux<PollResponse<T>> createBackgroundFlux() {
-        if (backgroundFluxHandle == null) {
-            backgroundFluxHandle = sendPollRequestWithDelayBackground()
-                .flux()
-                .repeat()
-                .takeUntil(pollResponse -> pollResponse.isDone());
-        }
-        return backgroundFluxHandle;
+        return fluxHandle;
     }
 
     /**
      * Calls poll operation once in sync if Pool operation is not completed.
+     *
      * @return a Mono of {@link PollResponse}
      */
     public Mono<PollResponse<T>> poll() {
 
         if (!isTerminalState()) {
-            updatePollOperationSync();
+            updatePollOperationAsync();
         }
         return Mono.just(pollResponse);
     }
 
     /**
      * This will block till poll operation is complete
+     *
      * @return returns poll response
      */
     public PollResponse<T> block() {
-        return backgroundFluxHandle.blockLast();
+        return fluxHandle.blockLast();
     }
 
     /*
      * Calls poll operation function and update pollResponse.
      */
-    private  void updatePollOperationSync() {
-        pollResponse = pollOperation.apply(pollResponse);
+    private void updatePollOperationAsync() {
+        pollOperation.apply(pollResponse).subscribe(pResponse -> {
+            processAsynchPollResponse(pResponse);
+        });
     }
 
+    private void processAsynchPollResponse(PollResponse response) {
+        this.pollResponse = response;
+    }
     /*
      * Get whether or not this PollStrategy's long running operation is done.
      * @return Whether or not this PollStrategy's long running operation is done.
      */
-    private Mono<PollResponse<T>> sendPollRequestWithDelayBackground() {
+    private Mono<PollResponse<T>> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             if (!isTerminalState()) {
-                updatePollOperationSync();
+                updatePollOperationAsync();
             } else if (!isTerminalState()) {
                 return Mono.empty();
             }
-            return Mono.just(pollResponse);
-        })));
-    }
-
-    private Mono<PollResponse<T>> listenPollRequestWithDelay() {
-        return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             return Mono.just(pollResponse);
         })));
     }
@@ -214,23 +223,24 @@ public class Poller<T> {
     private Mono<Void> delayAsync() {
         Mono<Void> result = Mono.empty();
         if (getCurrentDelay().toNanos() > 0) {
-            result = result.delaySubscription(this.pollerOptions.pollInterval());
+            result = result.delaySubscription(getCurrentDelay());
         }
         return result;
     }
 
     private Duration getCurrentDelay() {
-        return ((pollResponse != null && pollResponse.getRetryAfter() != null) ?  pollResponse.getRetryAfter() :  this.pollerOptions.pollInterval());
+        return ((pollResponse != null && pollResponse.getRetryAfter() != null) ? pollResponse.getRetryAfter() : this.pollerOptions.pollInterval());
     }
 
     /**
      * Function to tun auto poll on or off. Once auto polling is turned off, it is user's responsibility
-     *  to turn it back on.
+     * to turn it back on.
      *
-     * @param  autoPollingEnabled  true  Ensures the polling is happening in background.
-     *                             false  Ensures that polling is not happening in background.
+     * @param autoPollingEnabled true  Ensures the polling is happening in background.
+     *                           false  Ensures that polling is not happening in background.
      */
     public void setAutoPollingEnabled(boolean autoPollingEnabled) {
+
         // setting same auto polling status would not require any action.
         if (this.autoPollingEnabled == autoPollingEnabled) {
             return;
@@ -238,18 +248,13 @@ public class Poller<T> {
 
         this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
-
-            if (backgroundFluxHandle == null) {
-                backgroundFluxHandle = createBackgroundFlux();
-            }
             if (!activeSubscriber()) {
-                backgroundFluxDisposable = backgroundFluxHandle.subscribe(pr ->  pollResponse = pr);
+                fluxDisposable = fluxHandle.subscribe(pr -> pollResponse = pr);
             }
         } else {
             if (activeSubscriber()) {
-                backgroundFluxDisposable.dispose();
+                fluxDisposable.dispose();
             }
-            backgroundFluxHandle = null;
         }
     }
 
@@ -257,7 +262,7 @@ public class Poller<T> {
      * Determine if subscriber exists and  still active.
      */
     private boolean activeSubscriber() {
-        return (backgroundFluxHandle != null && backgroundFluxDisposable != null && !backgroundFluxDisposable.isDisposed());
+        return (fluxDisposable != null && !fluxDisposable.isDisposed());
     }
 
     /**
