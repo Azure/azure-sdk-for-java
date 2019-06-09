@@ -37,8 +37,6 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
     @Override
     public void close() {
-        onNext(EndpointState.CLOSED);
-
         endpointSink.complete();
         errorSink.complete();
     }
