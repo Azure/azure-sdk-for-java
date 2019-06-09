@@ -174,6 +174,8 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
+        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+
         // Arrange
         builder.sasKey("invalid-sas-key-value");
 
@@ -200,6 +202,8 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
+        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+
         // Arrange
         final CredentialInfo credentials = connectionParameters.credentials();
         final CredentialInfo invalidCredentials = getCredentials(credentials.endpoint(), "nonExistentEventhub",
