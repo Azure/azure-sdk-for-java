@@ -28,11 +28,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <artifactId>azure-cosmos-parent</artifactId>
+    <version>3.0.0-a1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>azure-cosmosdb-examples</artifactId>
+  <artifactId>azure-cosmos-examples</artifactId>
   <name>Async SDK for SQL API of Azure Cosmos DB Service - Examples</name>
   <description>Examples for Async SDK for SQL API of Azure Cosmos DB Service</description>
 
@@ -95,22 +95,37 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <phase>none</phase>
+            <id>default-cli</id>
+          </execution>
+        </executions>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-cosmosdb</artifactId>
-            </dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-commons-test-utils</artifactId>
+      <artifactId>azure-cosmos-commons-test-utils</artifactId>
     </dependency>
-      <dependency>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-          <version>${guava.version}</version>
-      </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxjava-guava</artifactId>

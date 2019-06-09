@@ -26,10 +26,10 @@ SOFTWARE.
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <artifactId>azure-cosmos-parent</artifactId>
+    <version>3.0.0-a1-SNAPSHOT</version>
   </parent>
-  <artifactId>azure-cosmosdb</artifactId>
+  <artifactId>azure-cosmos</artifactId>
   <name>Async SDK for SQL API of Azure Cosmos DB Service</name>
   <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -68,6 +68,21 @@ SOFTWARE.
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <phase>none</phase>
+            <id>default-cli</id>
+          </execution>
+        </executions>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -146,19 +161,19 @@ SOFTWARE.
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-commons</artifactId>
+      <artifactId>azure-cosmos-commons</artifactId>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-gateway</artifactId>
+      <artifactId>azure-cosmos-gateway</artifactId>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-direct</artifactId>
+      <artifactId>azure-cosmos-direct</artifactId>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-commons-test-utils</artifactId>
+      <artifactId>azure-cosmos-commons-test-utils</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

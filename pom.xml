@@ -25,8 +25,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-cosmosdb-parent</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <artifactId>azure-cosmos-parent</artifactId>
+  <version>3.0.0-a1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Azure Cosmos DB SQL API</name>
   <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
@@ -66,7 +66,10 @@
     <commons-validator-version>1.6</commons-validator-version>
     <reactor-bom.version>Bismuth-RELEASE</reactor-bom.version>
     <test.groups>unit</test.groups>
-    <cosmosdb-sdk-direct-impl.version>3.0.0-SNAPSHOT</cosmosdb-sdk-direct-impl.version>
+    <sdk-version>3.0.0-a1-SNAPSHOT</sdk-version>
+    <direct-connectivity-version>3.0.0-a1-SNAPSHOT</direct-connectivity-version>
+    <cosmosdb-sdk-direct-impl.version>3.0.0-a1-SNAPSHOT</cosmosdb-sdk-direct-impl.version>
+    <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
   </properties>
   <profiles>
@@ -305,6 +308,84 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
+        <configuration>
+          <classpathContainers>
+            <classpathContainer>
+              org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8
+            </classpathContainer>
+          </classpathContainers>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <phase></phase>
+            <id>default-cli</id>
+            <configuration>
+              <target>
+                <copy file="sdk/pom.xml"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.pom"/>
+                <copy file="pom.xml"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-parent-${sdk-version}.pom"/>
+
+                 <copy file="sdk/target/azure-cosmos-${sdk-version}-sources.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-sources.jar"/>
+                <copy file="sdk/target/azure-cosmos-${sdk-version}-javadoc.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-javadoc.jar"/>
+                <copy file="sdk/target/azure-cosmos-${sdk-version}.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.jar"/>
+
+                <copy file="commons/pom.xml"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}.pom"/>
+                <copy file="commons/target/azure-cosmos-commons-${sdk-version}-sources.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}-sources.jar"/>
+                <copy file="commons/target/azure-cosmos-commons-${sdk-version}-javadoc.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}-javadoc.jar"/>
+                <copy file="commons/target/azure-cosmos-commons-${sdk-version}.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}.jar"/>
+
+                 <copy file="gateway/pom.xml"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}.pom"/>
+                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}-sources.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}-sources.jar"/>
+                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}-javadoc.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}-javadoc.jar"/>
+                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}.jar"/>
+
+                 <copy file="direct-impl/pom.xml"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}.pom"/>
+                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}.jar"/>
+
+                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}-empty-sources.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}-sources.jar"/>
+                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}-empty-javadoc.jar"
+                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}-javadoc.jar"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
     <reporting>
@@ -330,27 +411,27 @@
     <dependencies>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmosdb</artifactId>
+        <artifactId>azure-cosmos</artifactId>
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmosdb-commons</artifactId>
+        <artifactId>azure-cosmos-commons</artifactId>
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmosdb-gateway</artifactId>
+        <artifactId>azure-cosmos-gateway</artifactId>
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmosdb-direct</artifactId>
+        <artifactId>azure-cosmos-direct</artifactId>
         <version>${cosmosdb-sdk-direct-impl.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmosdb-commons-test-utils</artifactId>
+        <artifactId>azure-cosmos-commons-test-utils</artifactId>
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>

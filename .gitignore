@@ -22,3 +22,5 @@ docs
 target
 bin
 test-output
+
+.vscode
