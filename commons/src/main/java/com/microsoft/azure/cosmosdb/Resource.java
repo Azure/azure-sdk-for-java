@@ -72,7 +72,8 @@ public class Resource extends JsonSerializable {
      * @param jsonString the json string that represents the resource.
      * @param objectMapper the custom object mapper
      */
-    protected Resource(String jsonString, ObjectMapper objectMapper) {
+    Resource(String jsonString, ObjectMapper objectMapper) {
+        // TODO: Made package private due to #153. #171 adding custom serialization options back.
         super(jsonString, objectMapper);
     }
     

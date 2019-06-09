@@ -24,15 +24,9 @@
 package com.microsoft.azure.cosmosdb;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -64,7 +58,8 @@ public class JsonSerializable {
      * @param jsonString the json string that represents the JsonSerializable.
      * @param objectMapper the custom object mapper
      */
-    protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
+    JsonSerializable(String jsonString, ObjectMapper objectMapper) {
+        // TODO: Made package private due to #153. #171 adding custom serialization options back.
         this.propertyBag = fromJson(jsonString);
         this.om = objectMapper;
     }
@@ -87,8 +82,9 @@ public class JsonSerializable {
         this.propertyBag = objectNode;
     }
 
-    protected ObjectMapper getMapper() {
-    if (this.om != null) { return this.om; }
+    ObjectMapper getMapper() {
+        // TODO: Made package private due to #153. #171 adding custom serialization options back.
+        if (this.om != null) { return this.om; }
         return OBJECT_MAPPER;
     }
         
@@ -115,7 +111,7 @@ public class JsonSerializable {
      *
      * @return the HashMap.
      */
-    public HashMap<String, Object> getHashMap() {
+    public Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 

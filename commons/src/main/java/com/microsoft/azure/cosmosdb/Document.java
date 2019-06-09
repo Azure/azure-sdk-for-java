@@ -50,7 +50,8 @@ public class Document extends Resource {
      * @param jsonString the json string that represents the document object.
      * @param objectMapper the custom object mapper
      */
-    public Document(String jsonString, ObjectMapper objectMapper) {
+    Document(String jsonString, ObjectMapper objectMapper) {
+        // TODO: Made package private due to #153. #171 adding custom serialization options back.
         super(jsonString, objectMapper);
     }
 

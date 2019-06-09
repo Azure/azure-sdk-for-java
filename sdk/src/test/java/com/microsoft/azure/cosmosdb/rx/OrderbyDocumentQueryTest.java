@@ -261,7 +261,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<CosmosItemSettings, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                .filter(d -> d.getHashMap().containsKey(propName)) // removes undefined
+                .filter(d -> d.getMap().containsKey(propName)) // removes undefined
                 .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
                 .map(d -> d.getResourceId()).collect(Collectors.toList());
     }

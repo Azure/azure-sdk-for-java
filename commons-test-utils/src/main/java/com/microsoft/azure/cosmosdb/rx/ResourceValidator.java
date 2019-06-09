@@ -54,11 +54,11 @@ interface ResourceValidator<T extends Resource> {
                 @Override
                 public void validate(T v) {
                     
-                    assertThat(v.getHashMap().keySet())
+                    assertThat(v.getMap().keySet())
                     .describedAs("number of fields").
-                    hasSize(expectedValue.getHashMap().keySet().size());
-                    expectedValue.getHashMap().keySet();
-                    for(String key: expectedValue.getHashMap().keySet()) {
+                    hasSize(expectedValue.getMap().keySet().size());
+                    expectedValue.getMap().keySet();
+                    for(String key: expectedValue.getMap().keySet()) {
                         assertThat(expectedValue.get(key))
                         .describedAs("value for " + key)
                         .isEqualTo(expectedValue.get(key));
