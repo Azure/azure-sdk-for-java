@@ -228,6 +228,14 @@ public class EventHubClientTest extends ApiTestBase {
         return testName.getMethodName();
     }
 
+    private static CredentialInfo getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
+        final String connectionString = String.format(Locale.ROOT,
+            "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s;", endpoint.toString(),
+            sasKeyName, sasKeyValue, eventHubPath);
+
+        return CredentialInfo.from(connectionString);
+    }
+
     /**
      * Holds expected data based on the test-mode.
      */
