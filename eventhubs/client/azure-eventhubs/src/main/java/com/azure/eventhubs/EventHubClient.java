@@ -33,21 +33,22 @@ public class EventHubClient implements Closeable {
     private final String host;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
 
-    //TODO (conniey): Can we remove this and replace with an TokenProvider?
-    private final ConnectionParameters connectionParameters;
-    //TODO (conniey): Replace with configured values in EventHubClientBuilder.
-    private final Duration timeout = Duration.ofSeconds(45);
+    private final Duration timeout;
     private final String eventHubName;
+    private final Scheduler scheduler;
+    private final TokenProvider tokenProvider;
 
-    EventHubClient(ConnectionParameters connectionParameters, TokenProvider tokenProvider, ReactorProvider provider,
-                   ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
+    EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
-        this.connectionParameters = connectionParameters;
         this.eventHubName = connectionParameters.credentials().eventHubPath();
         this.host = connectionParameters.credentials().endpoint().getHost();
+        this.timeout = connectionParameters.timeout();
+        this.tokenProvider = connectionParameters.tokenProvider();
+        this.scheduler = connectionParameters.scheduler();
         this.connectionId = StringUtil.getRandomString("MF");
 
-        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, tokenProvider, provider, handlerProvider, scheduler))
+        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, this.tokenProvider,
+            provider, handlerProvider, this.scheduler))
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }

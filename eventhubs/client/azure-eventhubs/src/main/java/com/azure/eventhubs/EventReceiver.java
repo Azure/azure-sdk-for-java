@@ -27,7 +27,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubClient#createReceiver(String, ReceiverOptions)
  */
 public class EventReceiver {
-    private PartitionProperties partitionInformation;
+    private PartitionProperties partitionInformation = null;
 
     /**
      * Gets the most recent information about a partition by the current receiver.

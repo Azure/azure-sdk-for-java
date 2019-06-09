@@ -73,13 +73,13 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             }).cache();
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
-                this::notifyAndSetConnectionState,
-                error -> notifyException(new ErrorContext(error, getHost())),
-                () -> notifyAndSetConnectionState(EndpointState.CLOSED)),
+                this::notifyEndpointState,
+                error -> notifyError(new ErrorContext(error, getHost())),
+                () -> notifyEndpointState(EndpointState.CLOSED)),
             this.handler.getErrors().subscribe(
-                this::notifyException,
-                error -> notifyException(new ErrorContext(error, getHost())),
-                () -> notifyAndSetConnectionState(EndpointState.CLOSED)));
+                this::notifyError,
+                error -> notifyError(new ErrorContext(error, getHost())),
+                () -> notifyEndpointState(EndpointState.CLOSED)));
 
         this.cbsChannelMono = connectionMono.then(
             Mono.fromCallable(() -> new CBSChannel(this, tokenProvider, reactorProvider.getReactorDispatcher())));
