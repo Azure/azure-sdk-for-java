@@ -69,7 +69,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-          <mainClass>com.microsoft.azure.cosmosdb.benchmark.Main</mainClass>
+          <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -81,7 +81,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.microsoft.azure.cosmosdb.rx.examples.multimaster.samples.Main</mainClass>
+              <mainClass>com.azure.data.cosmos.rx.examples.multimaster.samples.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
