@@ -79,6 +79,8 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Test
     public void successfullyAuthorizes() {
+        skipIfNotRecordMode();
+
         // Arrange
         final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
         final Duration duration = Duration.ofMinutes(10);
@@ -90,6 +92,8 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Test
     public void unsuccessfulAuthorize() {
+        skipIfNotRecordMode();
+
         // Arrange
         final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
         final Duration duration = Duration.ofMinutes(10);
