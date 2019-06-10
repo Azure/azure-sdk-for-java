@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Options when receiving events from Event Hubs.
  */
-public class ReceiverOptions {
+public class EventReceiverOptions {
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -42,7 +42,7 @@ public class ReceiverOptions {
      * Creates a new instance with a position at the beginning of the partition stream, consumer group set to
      * {@link #DEFAULT_CONSUMER_GROUP_NAME},and the default prefetch amount.
      */
-    public ReceiverOptions() {
+    public EventReceiverOptions() {
         this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;
         this.beginReceivingAt = EventPosition.firstAvailableEvent();
@@ -54,7 +54,7 @@ public class ReceiverOptions {
      * @param identifier The receiver name.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions identifier(String identifier) {
+    public EventReceiverOptions identifier(String identifier) {
         validateIdentifier(identifier);
         this.identifier = identifier;
         return this;
@@ -70,7 +70,7 @@ public class ReceiverOptions {
      * @param position Position within the partition where the receiver should begin reading events.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions beginReceivingAt(EventPosition position) {
+    public EventReceiverOptions beginReceivingAt(EventPosition position) {
         this.beginReceivingAt = position;
         return this;
     }
@@ -81,7 +81,7 @@ public class ReceiverOptions {
      * @param consumerGroup The name of the consumer group.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions consumerGroup(String consumerGroup) {
+    public EventReceiverOptions consumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
         return this;
     }
@@ -91,7 +91,7 @@ public class ReceiverOptions {
      * the only reader of events for the requested partition and an associated consumer group.
      * To do so, this receiver will attempt to assert ownership over the partition; in the case where more than one
      * exclusive receiver attempts to assert ownership for the same partition/consumer group pair, the one having a
-     * larger {@link ReceiverOptions#exclusiveReceiverPriority()} value will "win".
+     * larger {@link EventReceiverOptions#exclusiveReceiverPriority()} value will "win".
      *
      * <p>
      * When an exclusive receiver is used, those receivers which are not exclusive or which have a lower priority will
@@ -103,7 +103,7 @@ public class ReceiverOptions {
      * should be {@code null}.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions exclusiveReceiverPriority(Long priority) {
+    public EventReceiverOptions exclusiveReceiverPriority(Long priority) {
         this.priority = priority;
         return this;
     }
@@ -115,7 +115,7 @@ public class ReceiverOptions {
      * @param retryPolicy The retry policy to use when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
+    public EventReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -127,7 +127,7 @@ public class ReceiverOptions {
      * @param duration The timeout when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions defaultMaximumReceiveWaitTime(Duration duration) {
+    public EventReceiverOptions defaultMaximumReceiveWaitTime(Duration duration) {
         this.receiveTimeout = duration;
         return this;
     }
@@ -141,7 +141,7 @@ public class ReceiverOptions {
      * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
      * greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
-    public ReceiverOptions prefetchCount(int prefetchCount) {
+    public EventReceiverOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT));
@@ -164,7 +164,7 @@ public class ReceiverOptions {
      * otherwise, false.
      * @return The updated ReceiverOptions object.
      */
-    public ReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
+    public EventReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
         this.keepUpdated = keepUpdated;
         return this;
     }
@@ -176,7 +176,7 @@ public class ReceiverOptions {
      * @param scheduler The scheduler for receiving events.
      * @return The updated EventHubClientBuilder object.
      */
-    public ReceiverOptions scheduler(Scheduler scheduler) {
+    public EventReceiverOptions scheduler(Scheduler scheduler) {
         Objects.requireNonNull(scheduler);
         this.scheduler = scheduler;
         return this;

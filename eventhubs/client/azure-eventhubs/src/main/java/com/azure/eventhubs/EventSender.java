@@ -34,7 +34,7 @@ public class EventSender {
      */
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
-    private static final SenderOptions DEFAULT_OPTIONS = new SenderOptions();
+    private static final EventSenderOptions DEFAULT_OPTIONS = new EventSenderOptions();
     private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
@@ -42,7 +42,7 @@ public class EventSender {
     //TODO (conniey): Remove this after I verify it all works.
     private final AtomicInteger number = new AtomicInteger(0);
     private final AtomicInteger totalEvents = new AtomicInteger(0);
-    private final SenderOptions senderOptions;
+    private final EventSenderOptions senderOptions;
 
     /**
      * Creates a new instance of the EventSender.
@@ -56,7 +56,7 @@ public class EventSender {
      *
      * @code partitionId}.
      */
-    EventSender(SenderOptions options) {
+    EventSender(EventSenderOptions options) {
         Objects.requireNonNull(options);
 
         this.senderOptions = options;
