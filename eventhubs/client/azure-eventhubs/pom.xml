@@ -12,7 +12,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.microsoft.azure</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-eventhubs</artifactId>
 
   <name>Microsoft Azure client library for Event Hubs</name>

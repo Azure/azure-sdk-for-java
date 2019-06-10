@@ -30,7 +30,7 @@ class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        logger.asInformational().log("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.asInfo().log("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             connectionId, link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
@@ -43,7 +43,7 @@ class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
-        logger.asInformational().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.asInfo().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             connectionId, link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
@@ -56,7 +56,7 @@ class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        logger.asInformational().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.asInfo().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             connectionId, link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
@@ -66,12 +66,12 @@ class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        logger.asInformational().log("onLinkFinal clientName[{}],  linkName[{}]", connectionId, event.getLink().getName());
+        logger.asInfo().log("onLinkFinal clientName[{}],  linkName[{}]", connectionId, event.getLink().getName());
         close();
     }
 
     private void processOnClose(Link link, ErrorCondition condition) {
-        logger.asInformational().log("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.asInfo().log("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             connectionId, link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
@@ -88,7 +88,7 @@ class LinkHandler extends Handler {
         final Session session = link.getSession();
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.asInformational().log("closeSession connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+            logger.asInfo().log("closeSession connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
                 connectionId, link.getName(),
                 condition != null ? condition.getCondition() : NOT_APPLICABLE,
                 condition != null ? condition.getDescription() : NOT_APPLICABLE);

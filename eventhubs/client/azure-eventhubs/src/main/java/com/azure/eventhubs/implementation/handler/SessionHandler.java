@@ -43,7 +43,7 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        logger.asInformational().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
+        logger.asInfo().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
             connectionId, this.entityName,
             e.getSession().getCondition() == null ? NOT_APPLICABLE : e.getSession().getCondition().toString());
 
@@ -70,7 +70,7 @@ public class SessionHandler extends Handler {
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
 
-        logger.asInformational().log(
+        logger.asInfo().log(
             "onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}], sessionOutgoingWindow[{}]",
             connectionId, entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
 
@@ -85,7 +85,7 @@ public class SessionHandler extends Handler {
     public void onSessionLocalClose(Event e) {
         final ErrorCondition condition = e.getSession().getCondition();
 
-        logger.asInformational().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
+        logger.asInfo().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, connectionId,
             condition == null ? NOT_APPLICABLE : condition.toString());
     }
@@ -94,14 +94,14 @@ public class SessionHandler extends Handler {
     public void onSessionRemoteClose(Event e) {
         final Session session = e.getSession();
 
-        logger.asInformational().log("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
+        logger.asInfo().log("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, connectionId,
             session == null || session.getRemoteCondition() == null ? NOT_APPLICABLE : session.getRemoteCondition().toString());
 
         ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.asInformational().log(
+            logger.asInfo().log(
                 "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], description[{}]",
                 connectionId, entityName,
                 condition != null ? condition.getCondition() : NOT_APPLICABLE,
@@ -126,7 +126,7 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        logger.asInformational().log("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
+        logger.asInfo().log("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
             connectionId, entityName,
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);

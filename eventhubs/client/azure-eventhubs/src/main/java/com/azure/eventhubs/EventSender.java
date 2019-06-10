@@ -135,7 +135,7 @@ public class EventSender {
             .doOnError(error -> {
                 logger.asError().log(error.toString());
             }).doOnComplete(() -> {
-                logger.asInformational().log(String.format("TOTAL BATCHES: %s. EVENTS: %s", number.get(), totalEvents.get()));
+                logger.asInfo().log(String.format("TOTAL BATCHES: %s. EVENTS: %s", number.get(), totalEvents.get()));
             }).then();
     }
 

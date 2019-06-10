@@ -41,7 +41,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.asInformational().log("onLinkLocalOpen receiverName[{}], linkName[{}], localSource[{}]",
+            logger.asInfo().log("onLinkLocalOpen receiverName[{}], linkName[{}], localSource[{}]",
                 receiverName, link.getName(), link.getSource());
         }
     }
@@ -51,14 +51,14 @@ public class ReceiveLinkHandler extends LinkHandler {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
             if (link.getRemoteSource() != null) {
-                logger.asInformational().log("onLinkRemoteOpen receiverName[{}], linkName[{}], remoteSource[{}]",
+                logger.asInfo().log("onLinkRemoteOpen receiverName[{}], linkName[{}], remoteSource[{}]",
                     receiverName, link.getName(), link.getRemoteSource());
 
                 if (isFirstResponse.getAndSet(false)) {
                     onNext(EndpointState.ACTIVE);
                 }
             } else {
-                logger.asInformational().log("onLinkRemoteOpen receiverName[{}], linkName[{}], action[waitingForError]",
+                logger.asInfo().log("onLinkRemoteOpen receiverName[{}], linkName[{}], action[waitingForError]",
                     receiverName, link.getName());
             }
         }
@@ -82,7 +82,7 @@ public class ReceiveLinkHandler extends LinkHandler {
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
             if (delivery.isSettled()) {
                 if (link != null) {
-                    logger.asInformational().log("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
+                    logger.asInfo().log("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
                             + "remoteCondition[{}], delivery.isSettled[{}]",
                         receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(), delivery.isSettled());
                 } else {
@@ -94,7 +94,7 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link != null) {
-            logger.asTrace().log("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
+            logger.asVerbose().log("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
                     + "remoteCondition[{}], delivery.isPartial[{}]",
                 receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(), delivery.isPartial());
         }

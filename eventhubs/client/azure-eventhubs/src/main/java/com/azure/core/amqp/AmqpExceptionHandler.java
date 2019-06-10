@@ -55,6 +55,6 @@ public abstract class AmqpExceptionHandler {
      * @param shutdownSignal The shutdown signal that was received.
      */
     public void onConnectionShutdown(AmqpShutdownSignal shutdownSignal) {
-        logger.asInformational().log("Shutdown received: {}", shutdownSignal);
+        logger.asInfo().log("Shutdown received: {}", shutdownSignal);
     }
 }

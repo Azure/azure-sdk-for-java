@@ -58,7 +58,7 @@ class ReactorExecutor implements Closeable {
             return;
         }
 
-        logger.asInformational().log(LOG_MESSAGE, connectionId, "Starting reactor.");
+        logger.asInfo().log(LOG_MESSAGE, connectionId, "Starting reactor.");
 
         hasStarted.set(true);
         synchronized (lock) {
@@ -136,7 +136,7 @@ class ReactorExecutor implements Closeable {
                 } else {
                     final String reason = "Stopping the reactor because thread was interrupted or the reactor has no more events to process.";
 
-                    logger.asInformational().log(LOG_MESSAGE, connectionId, reason);
+                    logger.asInfo().log(LOG_MESSAGE, connectionId, reason);
                     close(false, reason);
                 }
             }
@@ -147,7 +147,7 @@ class ReactorExecutor implements Closeable {
         hasStarted.set(false);
 
         this.scheduler.schedule(() -> {
-            logger.asInformational().log(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
+            logger.asInfo().log(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
                 reactor.stop();
                 reactor.process();
@@ -167,7 +167,7 @@ class ReactorExecutor implements Closeable {
 
     private void close(boolean isUserInitialized, String reason) {
         if (hasStarted.getAndSet(false)) {
-            logger.asInformational().log(LOG_MESSAGE, connectionId, "Stopping the reactor.");
+            logger.asInfo().log(LOG_MESSAGE, connectionId, "Stopping the reactor.");
 
             synchronized (lock) {
                 this.reactor.stop();

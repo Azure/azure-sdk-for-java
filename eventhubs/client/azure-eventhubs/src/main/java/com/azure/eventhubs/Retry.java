@@ -14,9 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * An abstract representation of a policy to govern retrying of messaging operations.
  */
 public abstract class Retry {
-
+    /**
+     * Default for the minimum time between retry attempts.
+     */
     public static final Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
+    /**
+     * Default for the maximum time between retry attempts.
+     */
     public static final Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
+    /**
+     * Default for the maximum number of retry attempts.
+     */
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
 
     private final AtomicInteger retryCount = new AtomicInteger();
@@ -104,11 +112,11 @@ public abstract class Retry {
     public Duration getNextRetryInterval(Exception lastException, Duration remainingTime) {
         int baseWaitTime = 0;
 
-        if (!isRetriableException(lastException)) {
+        if (!isRetriableException(lastException) || retryCount.get() >= maxRetryCount) {
             return null;
         }
 
-        if (retryCount.get() >= maxRetryCount) {
+        if (!(lastException instanceof AmqpException)) {
             return null;
         }
 

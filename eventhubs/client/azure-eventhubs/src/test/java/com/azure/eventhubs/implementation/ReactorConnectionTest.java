@@ -7,18 +7,23 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -29,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,21 +47,24 @@ public class ReactorConnectionTest {
 
     private AmqpConnection connection;
     private ConnectionHandler handler;
-    private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
     private ReactorHandlerProvider reactorHandlerProvider;
     private ReactorProvider reactorProvider;
     private Scheduler scheduler;
-    private Selectable selectable;
     private SessionHandler sessionHandler;
+
+    @Mock
+    private Reactor reactor;
+    @Mock
+    private Selectable selectable;
+    @Mock
     private TokenProvider tokenProvider;
 
     @Before
     public void initialize() throws IOException {
+        MockitoAnnotations.initMocks(this);
+
         scheduler = Schedulers.newSingle(SCHEDULER_NAME);
-        tokenProvider = mock(TokenProvider.class);
-        reactor = mock(Reactor.class);
-        selectable = mock(Selectable.class);
         when(reactor.selectable()).thenReturn(selectable);
 
         reactorDispatcher = new ReactorDispatcher(reactor);
@@ -72,7 +81,7 @@ public class ReactorConnectionTest {
      */
     @Test
     public void createConnection() {
-        // Act
+        // Arrange
         final Map<String, Object> expectedProperties = new HashMap<>(handler.getConnectionProperties());
 
         // Assert
@@ -227,5 +236,45 @@ public class ReactorConnectionTest {
                 }
             })
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can get the CBS node.
+     */
+    @Test
+    public void createCBSNode() {
+        // Act and Assert
+        StepVerifier.create(connection.getCBSNode())
+            .assertNext(node -> {
+                Assert.assertTrue(node instanceof CBSChannel);
+            }).verifyComplete();
+    }
+
+    /**
+     * Verifies if the ConnectionHandler transport fails, then we are unable to create the CBS node or sessions.
+     */
+    @Test
+    public void cannotCreateResourcesWhenErrored() {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Connection connectionProtonJ = mock(Connection.class);
+        final Transport transport = mock(Transport.class);
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("amqp:not-found"), "Not found");
+
+        when(event.getTransport()).thenReturn(transport);
+        when(event.getConnection()).thenReturn(connectionProtonJ);
+        when(transport.getCondition()).thenReturn(errorCondition);
+        when(connectionProtonJ.getHostname()).thenReturn(HOSTNAME);
+        when(connectionProtonJ.getRemoteContainer()).thenReturn("remote-container");
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        handler.onTransportError(event);
+
+        StepVerifier.create(connection.getCBSNode())
+            .assertNext(node -> {
+                Assert.assertTrue(node instanceof CBSChannel);
+            }).verifyComplete();
+
+        verify(transport, times(1)).unbind();
     }
 }

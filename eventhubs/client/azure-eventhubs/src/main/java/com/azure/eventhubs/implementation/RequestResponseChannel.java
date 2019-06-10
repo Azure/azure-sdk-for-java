@@ -71,7 +71,7 @@ class RequestResponseChannel implements Closeable {
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
-            logger.asInformational().log("Setting message: {}", message.getCorrelationId());
+            logger.asInfo().log("Setting message: {}", message.getCorrelationId());
             settleMessage(message);
         }, this::handleException);
     }

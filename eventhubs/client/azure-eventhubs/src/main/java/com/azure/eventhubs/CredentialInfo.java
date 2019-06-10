@@ -59,11 +59,11 @@ public final class CredentialInfo {
     }
 
     URI endpoint() {
-        return this.endpoint;
+        return endpoint;
     }
 
     String sharedAccessKeyName() {
-        return this.sharedAccessKeyName;
+        return sharedAccessKeyName;
     }
 
     String sharedAccessKey() {
@@ -78,16 +78,18 @@ public final class CredentialInfo {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalArgumentException("Connection string is null or empty");
         }
-        CredentialInfo credentialInfo = new CredentialInfo();
-        String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
+
+        final CredentialInfo credentialInfo = new CredentialInfo();
+        final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
+
         for (String tokenValuePair : tokenValuePairs) {
-            String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPERATOR);
+            final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPERATOR, 2);
             if (pair.length != 2) {
                 throw new IllegalArgumentException(String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
             }
 
-            String pairKey = pair[0].trim();
-            String pairValue = pair[1].trim();
+            final String pairKey = pair[0].trim();
+            final String pairValue = pair[1].trim();
 
             if (pairKey.equalsIgnoreCase(ENDPOINT)) {
                 try {

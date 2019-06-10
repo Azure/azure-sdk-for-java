@@ -24,11 +24,11 @@ import java.util.Map;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class ConnectionHandler extends Handler {
-    private static final Symbol PRODUCT = Symbol.valueOf("product");
-    private static final Symbol VERSION = Symbol.valueOf("version");
-    private static final Symbol PLATFORM = Symbol.valueOf("platform");
-    private static final Symbol FRAMEWORK = Symbol.valueOf("framework");
-    private static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
+    static final Symbol PRODUCT = Symbol.valueOf("product");
+    static final Symbol VERSION = Symbol.valueOf("version");
+    static final Symbol PLATFORM = Symbol.valueOf("platform");
+    static final Symbol FRAMEWORK = Symbol.valueOf("framework");
+    static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
     static final int MAX_USER_AGENT_LENGTH = 128;
     static final int AMQPS_PORT = 5671;
@@ -92,7 +92,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.asInformational().log("onConnectionInit hostname[{}], connectionId[{}]", hostname, this.connectionId);
+        logger.asInfo().log("onConnectionInit hostname[{}], connectionId[{}]", hostname, this.connectionId);
 
         final Connection connection = event.getConnection();
         final String hostName = hostname + ":" + getProtocolPort();
@@ -127,7 +127,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionBound(Event event) {
-        logger.asInformational().log("onConnectionBound hostname[{}], connectionId[{}]", hostname, connectionId);
+        logger.asInfo().log("onConnectionBound hostname[{}], connectionId[{}]", hostname, connectionId);
 
         final Transport transport = event.getTransport();
 
@@ -142,7 +142,7 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
-        logger.asInformational().log("onConnectionUnbound hostname[{}], connectionId[{}], state[{}], remoteState[{}]",
+        logger.asInfo().log("onConnectionUnbound hostname[{}], connectionId[{}], state[{}], remoteState[{}]",
             connection.getHostname(), connectionId, connection.getLocalState(), connection.getRemoteState());
 
         // if failure happened while establishing transport - nothing to free up.
@@ -179,7 +179,7 @@ public class ConnectionHandler extends Handler {
         final Transport transport = event.getTransport();
         final ErrorCondition condition = transport.getCondition();
 
-        logger.asInformational().log("onTransportClosed hostname[{}], connectionId[{}], error[{}]",
+        logger.asInfo().log("onTransportClosed hostname[{}], connectionId[{}], error[{}]",
             connection != null ? connection.getHostname() : NOT_APPLICABLE,
             connectionId,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
@@ -202,7 +202,7 @@ public class ConnectionHandler extends Handler {
     public void onConnectionRemoteOpen(Event event) {
         final Connection connection = event.getConnection();
 
-        logger.asInformational().log("onConnectionRemoteOpen hostname[{}], connectionId[{}], remoteContainer[{}]",
+        logger.asInfo().log("onConnectionRemoteOpen hostname[{}], connectionId[{}], remoteContainer[{}]",
             connection.getHostname(), connectionId, connection.getRemoteContainer());
 
         onNext(connection.getRemoteState());
@@ -274,7 +274,7 @@ public class ConnectionHandler extends Handler {
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        logger.asInformational().log("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
+        logger.asInfo().log("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
             eventName,
             connection.getHostname(),
             connectionId,

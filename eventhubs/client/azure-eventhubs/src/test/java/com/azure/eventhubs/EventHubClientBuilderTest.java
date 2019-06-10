@@ -26,7 +26,7 @@ public class EventHubClientBuilderTest {
 
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, ENTITY_PATH);
-    private static Proxy proxyAddress = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
     private static final CredentialInfo VALID_CREDENTIAL_INFO = CredentialInfo.from(CORRECT_CONNECTION_STRING);
 
@@ -46,7 +46,7 @@ public class EventHubClientBuilderTest {
     public void customNoneProxyConfigurationBuilder() {
         EventHubClientBuilder builder = new EventHubClientBuilder();
         ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE,
-            this.proxyAddress, null, null);
+            PROXY_ADDRESS, null, null);
         builder.credentials(VALID_CREDENTIAL_INFO)
             .proxyConfiguration(proxyConfig)
             .build();
