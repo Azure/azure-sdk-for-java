@@ -6,7 +6,6 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
@@ -19,12 +18,9 @@ import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +42,6 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
     private ReactorExceptionHandler reactorExceptionHandler;
-
 
     /**
      * Creates a new AMQP connection that uses proton-j.
