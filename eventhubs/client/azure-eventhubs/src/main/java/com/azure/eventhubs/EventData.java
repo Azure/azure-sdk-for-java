@@ -350,8 +350,8 @@ public class EventData implements Comparable<EventData> {
     @Override
     public int compareTo(EventData other) {
         return Long.compare(
-            this.systemProperties().sequenceNumber(),
-            other.systemProperties().sequenceNumber()
+            this.sequenceNumber(),
+            other.sequenceNumber()
         );
     }
 

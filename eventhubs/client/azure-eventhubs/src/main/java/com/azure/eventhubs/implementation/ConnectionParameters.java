@@ -7,7 +7,6 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.CredentialInfo;
 import com.azure.eventhubs.ProxyConfiguration;
-import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
