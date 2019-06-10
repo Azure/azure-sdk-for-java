@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for page blob blob async clients.
+ * Fluent PageBlobClientBuilder for page blob clients.
  */
 public final class PageBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

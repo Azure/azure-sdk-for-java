@@ -39,7 +39,7 @@ public final class PageBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
-     * @param azureBlobStorage
+     * @param azureBlobStorage the API client for blob storage API
      */
     PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);

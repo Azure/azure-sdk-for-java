@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for block blob async clients.
+ * Fluent BlockBlobClientBuilder for block blob clients.
  */
 public final class BlockBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

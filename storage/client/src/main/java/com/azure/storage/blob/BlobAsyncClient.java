@@ -32,7 +32,7 @@ public class BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorage
+     * @param azureBlobStorage the API client for blob storage API
      */
     BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);

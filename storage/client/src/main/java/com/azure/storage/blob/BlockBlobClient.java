@@ -52,7 +52,7 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link BlockBlobClientBuilder}.
-     * @param azureBlobStorage
+     * @param azureBlobStorage the API client for blob storage API
      */
     BlockBlobClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);

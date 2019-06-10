@@ -45,7 +45,7 @@ public final class ContainerClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param azureBlobStorage
+     * @param azureBlobStorage the API client for blob storage API
      */
     ContainerClient(AzureBlobStorageImpl azureBlobStorage) {
         this.containerAsyncClient  = new ContainerAsyncClient(azureBlobStorage);
