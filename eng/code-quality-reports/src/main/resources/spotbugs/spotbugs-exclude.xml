@@ -257,6 +257,12 @@
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
+  <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.FluxUtil"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <Match>
     <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
