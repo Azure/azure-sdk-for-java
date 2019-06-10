@@ -41,6 +41,7 @@ public final class ExceptionUtil {
             case SERVER_BUSY_ERROR:
             case INTERNAL_ERROR:
             case LINK_DETACH_FORCED:
+            case CONNECTION_FORCED:
                 isTransient = true;
                 break;
             case ENTITY_DISABLED_ERROR:
