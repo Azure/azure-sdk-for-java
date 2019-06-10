@@ -430,31 +430,13 @@
 
   <!-- Jackson property setter method is private -->
   <Match>
-    <Class name="com.azure.keyvault.models.DeletedSecret"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Class name="com.azure.keyvault.models.SecretBase"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Class name="com.azure.keyvault.keys.models.Key"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Class name="com.azure.keyvault.keys.models.KeyBase"/>
+    <Or>
+      <Class name="com.azure.keyvault.models.DeletedSecret"/>
+      <Class name="com.azure.keyvault.models.SecretBase"/>
+      <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.keyvault.keys.models.Key"/>
+      <Class name="com.azure.keyvault.keys.models.KeyBase"/>
+    </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
@@ -464,4 +446,18 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize" />
+      </And>
+      <And>
+        <Class name="com.azure.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Method name="clone" />
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
 </FindBugsFilter>
