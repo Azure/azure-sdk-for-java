@@ -89,9 +89,9 @@ public final class PartitionProperties {
     }
 
     /**
-     * Gets the date time, in UTC, of the last enqueued message in the partition's stream.
+     * Gets the instant, in UTC, of the last enqueued message in the partition's stream.
      *
-     * @return the time, in UTC, of the last enqueued message in the partition's stream.
+     * @return the instant, in UTC, of the last enqueued message in the partition's stream.
      */
     public Instant lastEnqueuedTime() {
         return this.lastEnqueuedTime;
