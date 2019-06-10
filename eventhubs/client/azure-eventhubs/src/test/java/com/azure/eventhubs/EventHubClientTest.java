@@ -92,7 +92,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getEventHubProperties() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
@@ -108,7 +108,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionIds() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
@@ -121,7 +121,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionProperties() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Act & Assert
         for (String partitionId : data.properties.partitionIds()) {
@@ -144,7 +144,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesMultipleCalls() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Act
         final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
@@ -177,7 +177,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Arrange
         final CredentialInfo invalidCredentials = getCredentials(credentialInfo.endpoint(), credentialInfo.eventHubPath(),
@@ -205,7 +205,7 @@ public class EventHubClientTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        skipIfNotRecordMode();
 
         // Arrange
         final CredentialInfo credentials = connectionParameters.credentials();
