@@ -16,7 +16,7 @@ public final class PartitionProperties {
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTimeUtc;
     private final boolean isEmpty;
-    private Instant propertyRetrievalTimeUtc;
+    private Instant propertyRetrievalTime;
 
     PartitionProperties(
             final String eventHubPath,
@@ -26,7 +26,7 @@ public final class PartitionProperties {
             final String lastEnqueuedOffset,
             final Instant lastEnqueuedTimeUtc,
             final boolean isEmpty,
-            final Instant propertyRetrievalTimeUtc) {
+            final Instant propertyRetrievalTime) {
         this.eventHubPath = eventHubPath;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;
@@ -34,7 +34,7 @@ public final class PartitionProperties {
         this.lastEnqueuedOffset = lastEnqueuedOffset;
         this.lastEnqueuedTimeUtc = lastEnqueuedTimeUtc;
         this.isEmpty = isEmpty;
-        this.propertyRetrievalTimeUtc = propertyRetrievalTimeUtc;
+        this.propertyRetrievalTime = propertyRetrievalTime;
     }
 
     /**
@@ -83,9 +83,9 @@ public final class PartitionProperties {
     }
 
     /**
-     * Gets the time of the last enqueued message in the partition's stream.
+     * Gets the instant, in UTC, of the last enqueued message in the partition's stream.
      *
-     * @return the time of the last enqueued message in the partition's stream.
+     * @return the instant, in UTC, of the last enqueued message in the partition's stream.
      */
     public Instant lastEnqueuedTimeUtc() {
         return this.lastEnqueuedTimeUtc;
@@ -106,6 +106,6 @@ public final class PartitionProperties {
      * @return Instant, in UTC, that the partition information was retrieved.
      */
     public Instant propertyRetrievalTimeUtc() {
-        return this.propertyRetrievalTimeUtc;
+        return this.propertyRetrievalTime;
     }
 }
