@@ -3,6 +3,8 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.Retry;
+
 import java.time.Duration;
 
 /**

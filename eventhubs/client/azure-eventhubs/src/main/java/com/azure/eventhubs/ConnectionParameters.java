@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.scheduler.Scheduler;
