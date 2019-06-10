@@ -34,7 +34,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorProvider provider;
 
-    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider) {
+    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         super(new ServiceLogger(CBSChannel.class));
 
         Objects.requireNonNull(connection);
@@ -47,7 +47,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                CBS_ADDRESS, session.session()));
+                CBS_ADDRESS, session.session(), handlerProvider));
     }
 
     @Override

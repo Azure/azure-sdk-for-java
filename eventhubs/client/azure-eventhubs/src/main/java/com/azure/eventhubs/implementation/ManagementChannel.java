@@ -69,7 +69,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * @param provider The dispatcher to execute work on Reactor.
      */
     ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider,
-                      ReactorProvider provider, AmqpResponseMapper mapper) {
+                      ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ServiceLogger(ManagementChannel.class));
 
         Objects.requireNonNull(connection);
@@ -84,7 +84,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                ADDRESS, session.session()))
+                ADDRESS, session.session(), handlerProvider))
             .cache();
     }
 
