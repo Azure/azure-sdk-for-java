@@ -66,7 +66,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String jobId = getStringIdWithUserNamePrefix("-canCRUDTest");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePoolId);
+        poolInfo.withPoolId(liveIaasPoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
