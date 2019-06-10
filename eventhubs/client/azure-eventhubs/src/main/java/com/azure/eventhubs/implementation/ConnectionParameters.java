@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.eventhubs;
+package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
+import com.azure.eventhubs.CredentialInfo;
+import com.azure.eventhubs.ProxyConfiguration;
 import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.scheduler.Scheduler;
 
@@ -14,7 +16,7 @@ import java.util.Objects;
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an Event Hub.
  */
-class ConnectionParameters {
+public class ConnectionParameters {
     private final CredentialInfo credentials;
     private final Duration timeout;
     private final TokenProvider tokenProvider;
@@ -23,7 +25,7 @@ class ConnectionParameters {
     private final ProxyConfiguration proxyConfiguration;
     private final Scheduler scheduler;
 
-    ConnectionParameters(final CredentialInfo credentials, final Duration timeout, final TokenProvider tokenProvider,
+    public ConnectionParameters(final CredentialInfo credentials, final Duration timeout, final TokenProvider tokenProvider,
                          final TransportType transport, final Retry retryPolicy,
                          final ProxyConfiguration proxyConfiguration, final Scheduler scheduler) {
         Objects.requireNonNull(credentials);
@@ -43,31 +45,31 @@ class ConnectionParameters {
         this.scheduler = scheduler;
     }
 
-    CredentialInfo credentials() {
+    public CredentialInfo credentials() {
         return credentials;
     }
 
-    Duration timeout() {
+    public Duration timeout() {
         return timeout;
     }
 
-    TokenProvider tokenProvider() {
+    public TokenProvider tokenProvider() {
         return tokenProvider;
     }
 
-    TransportType transportType() {
+    public TransportType transportType() {
         return transport;
     }
 
-    Retry retryPolicy() {
+    public Retry retryPolicy() {
         return retryPolicy;
     }
 
-    ProxyConfiguration proxyConfiguration() {
+    public ProxyConfiguration proxyConfiguration() {
         return proxyConfiguration;
     }
 
-    Scheduler scheduler() {
+    public Scheduler scheduler() {
         return scheduler;
     }
 }
