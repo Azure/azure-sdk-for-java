@@ -7,15 +7,19 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 
-abstract class ApiTestBase extends TestBase {
+/**
+ * Test base for running live and offline tests.
+ */
+public abstract class ApiTestBase extends TestBase {
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
-    static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
+    public static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
 
-    String getConnectionString() {
+    public String getConnectionString() {
         return CONNECTION_STRING;
     }
 
@@ -44,5 +48,9 @@ abstract class ApiTestBase extends TestBase {
         }
 
         return ImplUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
+    }
+
+    protected void skipIfNotRecordMode() {
+        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 }
