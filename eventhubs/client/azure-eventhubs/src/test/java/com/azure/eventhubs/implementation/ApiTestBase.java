@@ -18,6 +18,7 @@ import org.junit.Before;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -30,25 +31,23 @@ import static org.mockito.Mockito.mock;
 public abstract class ApiTestBase extends TestBase {
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-
-    public static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
+    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
 
     private CredentialInfo credentialInfo;
-    private ReactorHandlerProvider handlerProvider;
     private Reactor reactor = mock(Reactor.class);
-    private ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
     private TokenProvider tokenProvider = mock(TokenProvider.class);
+    private ReactorProvider reactorProvider;
     private ConnectionParameters connectionParameters;
 
     @Override
     @Before
     public void setupTest() {
         final String connectionString;
-        final ReactorProvider provider;
 
         if (getTestMode() == TestMode.RECORD) {
             connectionString = CONNECTION_STRING;
-            provider = new ReactorProvider();
+            credentialInfo = CredentialInfo.from(connectionString);
+            reactorProvider = new ReactorProvider();
 
             try {
                 tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
@@ -57,13 +56,18 @@ public abstract class ApiTestBase extends TestBase {
             }
         } else {
             connectionString = TEST_CONNECTION_STRING;
-            provider = new MockReactorProvider(reactor, reactorDispatcher);
+            credentialInfo = CredentialInfo.from(connectionString);
+
+            ReactorDispatcher reactorDispatcher = null;
+            try {
+                reactorDispatcher = new ReactorDispatcher(reactor);
+            } catch (IOException e) {
+                Assert.fail("Could not create dispatcher.");
+            }
+            reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
-        credentialInfo = CredentialInfo.from(connectionString);
-
         Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
-        handlerProvider = new ReactorHandlerProvider(provider);
 
         connectionParameters = new ConnectionParameters(credentialInfo, Duration.ofSeconds(45), tokenProvider,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
@@ -116,11 +120,7 @@ public abstract class ApiTestBase extends TestBase {
         return reactor;
     }
 
-    protected ReactorDispatcher getReactorDispatcher() {
-        return reactorDispatcher;
-    }
-
-    protected ReactorHandlerProvider handlerProvider() {
-        return handlerProvider;
+    protected ReactorProvider getReactorProvider() {
+        return reactorProvider;
     }
 }

@@ -136,7 +136,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider.getReactorDispatcher(), parameters.timeout());
+            return new ReactorSession(session, handler, sessionName, reactorProvider, parameters.timeout());
         }));
     }
 

@@ -75,7 +75,7 @@ public class ReactorConnectionTest {
         reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
-        reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler);
+        reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler, null, null);
 
         ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, TEST_DURATION, tokenProvider,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);

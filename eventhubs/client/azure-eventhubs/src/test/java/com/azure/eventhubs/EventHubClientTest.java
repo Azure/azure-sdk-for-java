@@ -9,20 +9,17 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
+import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
-import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import com.azure.eventhubs.implementation.TokenProvider;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -42,14 +39,9 @@ import java.util.Map;
 public class EventHubClientTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
 
-    private Scheduler scheduler;
-    private ReactorProvider provider;
-    private ReactorHandlerProvider handlerProvider;
-    private SharedAccessSignatureTokenProvider tokenProvider;
     private EventHubClient client;
     private ExpectedData data;
-    private CredentialInfo credentialInfo;
-    private ConnectionParameters connectionParameters;
+    private ReactorHandlerProvider handlerProvider;
 
     @Rule
     public TestName testName = new TestName();
@@ -58,22 +50,9 @@ public class EventHubClientTest extends ApiTestBase {
     protected void beforeTest() {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
 
-        final String connectionString = getTestMode() == TestMode.RECORD ? getConnectionString() : ApiTestBase.TEST_CONNECTION_STRING;
-
-        credentialInfo = CredentialInfo.from(connectionString);
-        scheduler = Schedulers.newElastic("AMQPConnection");
-        provider = new ReactorProvider();
-        handlerProvider = new ReactorHandlerProvider(provider);
-        try {
-            tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assert.fail("Could not create tokenProvider :" + e.toString());
-        }
-
-        connectionParameters = new ConnectionParameters(credentialInfo, Duration.ofSeconds(45), tokenProvider,
-            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
-        client = new EventHubClient(connectionParameters, provider, handlerProvider);
-        data = new ExpectedData(getTestMode(), credentialInfo);
+        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        client = new EventHubClient(getConnectionParameters(), getReactorProvider(), handlerProvider);
+        data = new ExpectedData(getTestMode(), getCredentialInfo());
     }
 
     @Override
@@ -180,12 +159,13 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final CredentialInfo invalidCredentials = getCredentials(credentialInfo.endpoint(), credentialInfo.eventHubPath(),
-            credentialInfo.sharedAccessKeyName(), "invalid-sas-key-value");
+        final CredentialInfo original = getCredentialInfo();
+        final CredentialInfo invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
+            original.sharedAccessKeyName(), "invalid-sas-key-value");
         final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
-        connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
-        client = new EventHubClient(connectionParameters, provider, handlerProvider);
+        final ConnectionParameters connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionParameters().scheduler());
+        final EventHubClient client = new EventHubClient(connectionParameters, getReactorProvider(), handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
@@ -208,14 +188,14 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final CredentialInfo credentials = connectionParameters.credentials();
+        final CredentialInfo credentials = getConnectionParameters().credentials();
         final CredentialInfo invalidCredentials = getCredentials(credentials.endpoint(), "nonExistentEventhub",
             credentials.sharedAccessKeyName(), credentials.sharedAccessKey());
 
         final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
-        connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
-            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
-        client = new EventHubClient(connectionParameters, provider, handlerProvider);
+        final ConnectionParameters connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionParameters().scheduler());
+        final EventHubClient client = new EventHubClient(connectionParameters, getReactorProvider(), handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
