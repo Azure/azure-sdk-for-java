@@ -11,8 +11,12 @@ import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.ByteBufFlux;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 
@@ -79,7 +83,7 @@ public final class BlockBlobClient extends BlobClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlockBlobUploadHeaders upload(Flux<ByteBuf> data, long length) {
+    public BlockBlobUploadHeaders upload(InputStream data, long length) throws IOException {
         return this.upload(data, length, null, null, null, null, null);
     }
 
@@ -121,9 +125,15 @@ public final class BlockBlobClient extends BlobClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlockBlobUploadHeaders upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
-                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient.upload(data, length, headers, metadata, accessConditions, context);
+    public BlockBlobUploadHeaders upload(InputStream data, long length, BlobHTTPHeaders headers,
+        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
+
+        // buffer strategy for UX study only
+        byte[] bufferedData = new byte[(int)length];
+        data.read(bufferedData);
+
+        Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient
+            .upload(ByteBufFlux.fromInbound(Flux.just(ByteBuffer.wrap(bufferedData))), length, headers, metadata, accessConditions, context);
 
         return timeout == null?
             response.block():
@@ -154,8 +164,7 @@ public final class BlockBlobClient extends BlobClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public void stageBlock(String base64BlockID, Flux<ByteBuf> data,
-                                                         long length) {
+    public void stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
         this.stageBlock(base64BlockID, data, length, null, null, null);
     }
 
@@ -192,9 +201,15 @@ public final class BlockBlobClient extends BlobClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobAsyncRawClient.stageBlock")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public void stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<Void> response = blockBlobAsyncClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
+    public void stageBlock(String base64BlockID, InputStream data, long length,
+            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) throws IOException {
+
+        // buffer strategy for UX study only
+        byte[] bufferedData = new byte[(int)length];
+        data.read(bufferedData);
+
+        Mono<Void> response = blockBlobAsyncClient.stageBlock(base64BlockID,
+            ByteBufFlux.fromInbound(Flux.just(ByteBuffer.wrap(bufferedData))), length, leaseAccessConditions, context);
         if (timeout == null) {
             response.block();
         } else {
