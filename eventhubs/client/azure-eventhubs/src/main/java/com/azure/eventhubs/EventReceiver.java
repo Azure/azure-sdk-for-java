@@ -39,8 +39,7 @@ public class EventReceiver {
     }
 
     /**
-     * Begin receiving events until there are no longer any events emitted specified by
-     * {@link EventReceiverOptions#defaultMaximumReceiveWaitTime(Duration)}, are no longer any subscribers, or the parent
+     * Begin receiving events until there are no longer any subscribers, or the parent
      * {@link EventHubClient#close() EventHubClient.close()} is called.
      *
      * @return A stream of events for this receiver.
