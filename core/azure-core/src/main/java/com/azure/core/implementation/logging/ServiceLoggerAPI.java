@@ -10,21 +10,17 @@ public interface ServiceLoggerAPI {
     int DEFAULT_LOG_LEVEL = 2;
 
     int TRACE_LEVEL = 0;
-    int DEBUG_LEVEL = 1;
-    int INFO_LEVEL = 2;
-    int WARN_LEVEL = 3;
+    int VERBOSE_LEVEL = 1;
+    int INFORMATIONAL_LEVEL = 2;
+    int WARNING_LEVEL = 3;
     int ERROR_LEVEL = 4;
     int DISABLED_LEVEL = 5;
 
-    default ServiceLoggerAPI asTrace() {
+    default ServiceLoggerAPI asVerbose() {
         return this;
     }
 
-    default ServiceLoggerAPI asDebug() {
-        return this;
-    }
-
-    default ServiceLoggerAPI asInformational() {
+    default ServiceLoggerAPI asInfo() {
         return this;
     }
 
