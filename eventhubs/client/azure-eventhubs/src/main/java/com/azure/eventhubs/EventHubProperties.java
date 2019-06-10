@@ -22,7 +22,7 @@ public final class EventHubProperties {
      * @param createdAt The Instant when the Event Hub was created.
      * @param partitionIds An array of identifiers for all the partitions in the Event Hub.
      */
-    public EventHubProperties(String path, Instant createdAt, String[] partitionIds) {
+    EventHubProperties(String path, Instant createdAt, String[] partitionIds) {
         this.path = path;
         this.createdAt = createdAt;
         this.partitionIds = partitionIds != null

@@ -30,9 +30,9 @@ public final class PartitionProperties {
      * @param isEmpty {@code true} if there are no events in the partition; {@code false} otherwise.
      * @param propertyRetrievalTime A date time (UTC) representing when the partition's properties were retrieved.
      */
-    public PartitionProperties(String eventHubPath, String id, long beginningSequenceNumber,
-                               long lastEnqueuedSequenceNumber, String lastEnqueuedOffset, Instant lastEnqueuedTime,
-                               boolean isEmpty, Instant propertyRetrievalTime) {
+    PartitionProperties(String eventHubPath, String id, long beginningSequenceNumber,
+                        long lastEnqueuedSequenceNumber, String lastEnqueuedOffset, Instant lastEnqueuedTime,
+                        boolean isEmpty, Instant propertyRetrievalTime) {
         this.eventHubPath = eventHubPath;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;
