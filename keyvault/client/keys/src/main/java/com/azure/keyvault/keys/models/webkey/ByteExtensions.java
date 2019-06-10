@@ -11,7 +11,7 @@ class ByteExtensions {
      */
     static byte[] clone(byte[] source) {
         if (source == null) {
-            return null;
+            return new byte[0];
         }
 
         byte[] copy = new byte[source.length];

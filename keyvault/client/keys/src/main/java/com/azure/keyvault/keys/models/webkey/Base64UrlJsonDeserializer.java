@@ -24,7 +24,7 @@ class Base64UrlJsonDeserializer extends JsonDeserializer<byte[]> {
         if (text != null) {
             return BASE64.decode(text);
         }
-        return null;
+        return new byte[0];
     }
 
 }

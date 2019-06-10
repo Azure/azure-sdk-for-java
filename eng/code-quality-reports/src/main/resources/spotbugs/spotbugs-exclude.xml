@@ -421,4 +421,41 @@
     <Class name="com.azure.core.configuration.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Class name="com.azure.keyvault.models.DeletedSecret"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Class name="com.azure.keyvault.models.SecretBase"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Class name="com.azure.keyvault.keys.models.Key"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Class name="com.azure.keyvault.keys.models.KeyBase"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Field initialized by jackson property annotation -->
+  <Match>
+    <Class name="com.azure.keyvault.keys.models.webkey.JsonWebKey"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
 </FindBugsFilter>
