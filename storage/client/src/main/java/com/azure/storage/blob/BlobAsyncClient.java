@@ -195,10 +195,6 @@ public class BlobAsyncClient {
      *
      * @return
      *      A reactive response containing the copy ID for the long running operation.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=sync_copy "Sample code for BlobAsyncRawClient.syncCopyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<String> syncCopyFromURL(URL copySource, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
@@ -615,7 +611,7 @@ public class BlobAsyncClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease.
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Integer> breakLease() {
         return this.breakLease(null, null, null);
@@ -643,7 +639,7 @@ public class BlobAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease.
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -685,11 +681,7 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return A reactive response containing the new lease ID.
      */
     public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -701,11 +693,7 @@ public class BlobAsyncClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobAsyncRawClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return a reactor response containing the sku name and account kind.
      */
     public Mono<BlobGetAccountInfoHeaders> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -721,11 +709,7 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobAsyncRawClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return a reactor response containing the sku name and account kind.
      */
     // TODO determine this return type
     public Mono<BlobGetAccountInfoHeaders> getAccountInfo(Context context) {
