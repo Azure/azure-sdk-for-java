@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfilerangeb142587366?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileranged398538098?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6EAE6252A706C\"",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3E4318B0\"",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ebf3e5c-001e-00d3-64cf-1c8fd3000000",
-      "Date" : "Fri, 07 Jun 2019 01:19:10 GMT"
+      "x-ms-request-id" : "47b16845-e01e-0073-4ee8-1f40b5000000",
+      "Date" : "Mon, 10 Jun 2019 23:56:23 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfilerangeb142587366/javablob45282cbe0a305f",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileranged398538098/javablob34285e2cc58ae4",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6EAE62534B9D2\"",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3E4AEDA5\"",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ebf3e7b-001e-00d3-01cf-1c8fd3000000",
+      "x-ms-request-id" : "47b16850-e01e-0073-58e8-1f40b5000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 07 Jun 2019 01:19:10 GMT",
-      "Content-MD5" : "TbUcCA6cvW9wc91Qfsbuwg=="
+      "Date" : "Mon, 10 Jun 2019 23:56:23 GMT",
+      "Content-MD5" : "3LWww8cMLPo6Rld/nPwwEA=="
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfilerangeb142587366/javablob45282cbe0a305f",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileranged398538098/javablob34285e2cc58ae4",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -56,22 +56,22 @@
       "x-ms-tag-count" : "0",
       "Content-Range" : "bytes 3-4/7",
       "x-ms-lease-state" : "available",
-      "x-ms-blob-content-md5" : "TbUcCA6cvW9wc91Qfsbuwg==",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "x-ms-blob-content-md5" : "3LWww8cMLPo6Rld/nPwwEA==",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "retry-after" : "0",
-      "body" : "?\b",
+      "body" : "\r\u001A",
       "StatusCode" : "206",
-      "Date" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "Date" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
-      "ETag" : "\"0x8D6EAE62534B9D2\"",
-      "x-ms-creation-time" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3E4AEDA5\"",
+      "x-ms-creation-time" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "Content-Length" : "2",
-      "x-ms-request-id" : "0ebf3e87-001e-00d3-0ccf-1c8fd3000000",
+      "x-ms-request-id" : "47b16856-e01e-0073-5ee8-1f40b5000000",
       "Content-Type" : "application/octet-stream"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcdownloadfilerangeb142587366", "javablob45282cbe0a305f", "MzJmZTJjZjgtMmU1NC00MmVmLTgwMjQtYjBlMjliYmM1MDlh", "LB8CPwgxNg==", "NTUzNWQ2ZGUtMzYxMC00MTFlLTk4YzQtZjhjMzc5ODgwZmEy", "" ]
+  "variables" : [ "jtcdownloadfileranged398538098", "javablob34285e2cc58ae4", "YTBmZjY4YjYtNTBiYS00NGU3LTlhZjgtYzEzYjY4YWI4NmFj", "LCgBDRoUOg==", "Yjk3YzA1N2EtZmRmZS00YzYyLTlmNDMtMDY1MDhjM2IwZTlj", "" ]
 }

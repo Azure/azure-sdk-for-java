@@ -100,7 +100,7 @@ class HelperTest extends APISpec {
         when:
         def parts = URLParser.parse(cu.createBlobURL(blobName).toURL())
         SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         parts.withSasQueryParameters(parameters).withScheme("https")
         def bu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
@@ -157,7 +157,7 @@ class HelperTest extends APISpec {
         when:
         def parts = URLParser.parse(bu.toURL())
         SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         parts.withSasQueryParameters(parameters).withScheme("https")
         // base blob with snapshot SAS
         def bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
@@ -220,7 +220,7 @@ class HelperTest extends APISpec {
 
         when:
         SASQueryParameters parameters = v.generateSASQueryParameters(primaryCreds)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         def parts = URLParser.parse(cu.toURL())
                 .withSasQueryParameters(parameters)
                 .withScheme("https")
@@ -228,7 +228,7 @@ class HelperTest extends APISpec {
                 new PipelineOptions()))
 
         SASQueryParameters parameters2 = v2.generateSASQueryParameters(primaryCreds)
-        setSASQueryParametersSignature(parameters2)
+        prepareSignatureForRecording(parameters2)
         parts.withSasQueryParameters(parameters2)
         def cuSAS2 = new ContainerURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
@@ -273,7 +273,7 @@ class HelperTest extends APISpec {
         when:
         def parts = URLParser.parse(cu.createBlobURL(blobName).toURL())
         SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         parts.withSasQueryParameters(parameters).withScheme("https")
         def bu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
@@ -331,7 +331,7 @@ class HelperTest extends APISpec {
         when:
         def parts = URLParser.parse(bu.toURL())
         SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         parts.withSasQueryParameters(parameters).withScheme("https")
         // base blob with snapshot SAS
         def bsu = new AppendBlobURL(parts.toURL(), createPipeline(new AnonymousCredentials(),
@@ -387,7 +387,7 @@ class HelperTest extends APISpec {
 
         when:
         SASQueryParameters parameters = v.generateSASQueryParameters(key, primaryCreds.accountName)
-        setSASQueryParametersSignature(parameters)
+        prepareSignatureForRecording(parameters)
         def parts = URLParser.parse(cu.toURL())
                 .withSasQueryParameters(parameters)
                 .withScheme("http")

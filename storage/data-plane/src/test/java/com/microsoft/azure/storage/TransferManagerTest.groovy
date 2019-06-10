@@ -40,6 +40,9 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file"() {
         setup:
+        if (liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         def file = getRandomFile(fileSize)
         def channel = AsynchronousFileChannel.open(file.toPath())
 
@@ -56,15 +59,20 @@ class TransferManagerTest extends APISpec {
                 .blockingGet().body(null), file)
 
         cleanup:
+        if (liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         channel.close()
 
         where:
-        fileSize                               | responseType
-        0                                      | BlockBlobUploadResponse // Empty file
-        10                                     | BlockBlobUploadResponse // Single shot
+        fileSize                               | responseType                      | liveOnly
+        0                                      | BlockBlobUploadResponse           | false       // Empty file
+        10                                     | BlockBlobUploadResponse           | false       // Single shot
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1 | BlockBlobCommitBlockListResponse  | true        // Multi part
     }
 
     def "Upload file illegal arguments null"() {
+
         when:
         TransferManager.uploadFileToBlockBlob(null, new BlockBlobURL(new URL("http://account.com"), createPipeline(primaryCreds, new PipelineOptions())), 5, null, null).blockingGet()
 
@@ -78,18 +86,31 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Unroll
     def "Upload file illegal arguments blocks"() {
         setup:
-        def channel = AsynchronousFileChannel.open(getRandomFile(10).toPath())
+        if (liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
+        def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath())
 
         when:
-        TransferManager.uploadFileToBlockBlob(channel, bu, -1, null, null).blockingGet() //-1 is invalid.
+        TransferManager.uploadFileToBlockBlob(channel, bu, blockLength, null, null).blockingGet() //-1 is invalid.
 
         then:
         thrown(IllegalArgumentException)
 
         cleanup:
+        if (liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         channel.close()
+
+        where:
+        blockLength                            | fileSize                                   | liveOnly
+        -1                                     | 10                                         | false  // -1 is invalid
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 10    | true  // Block size too big.
+        10                                     | BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10    | true  // Too many blocks.
     }
 
     @Unroll
@@ -134,6 +155,9 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file metadata"() {
         setup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -153,17 +177,25 @@ class TransferManagerTest extends APISpec {
         response.headers().metadata() == metadata
 
         cleanup:
+        if (liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         channel.close()
 
         where:
-        dataSize                                | key1  | value1 | key2   | value2
-        10                                      | null  | null   | null   | null
-        10                                      | "foo" | "bar"  | "fizz" | "buzz"
+        dataSize                                | key1  | value1 | key2   | value2   | liveOnly
+        10                                      | null  | null   | null   | null     | false
+        10                                      | "foo" | "bar"  | "fizz" | "buzz"   | false
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null  | null   | null   | null     | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | "foo" | "bar"  | "fizz" | "buzz"   | true
     }
 
     @Unroll
     def "Upload file AC"() {
         setup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -179,21 +211,33 @@ class TransferManagerTest extends APISpec {
                 .blockingGet().statusCode() == 201
 
         cleanup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         channel.close()
 
         where:
-        dataSize                                | modified | unmodified | match        | noneMatch   | leaseID
-        10                                      | null     | null       | null         | null        | null
-        10                                      | oldDate  | null       | null         | null        | null
-        10                                      | null     | newDate    | null         | null        | null
-        10                                      | null     | null       | receivedEtag | null        | null
-        10                                      | null     | null       | null         | garbageEtag | null
-        10                                      | null     | null       | null         | null        | receivedLeaseID
+        dataSize                                | modified | unmodified | match        | noneMatch   | leaseID          | liveOnly
+        10                                      | null     | null       | null         | null        | null             | false
+        10                                      | oldDate  | null       | null         | null        | null             | false
+        10                                      | null     | newDate    | null         | null        | null             | false
+        10                                      | null     | null       | receivedEtag | null        | null             | false
+        10                                      | null     | null       | null         | garbageEtag | null             | false
+        10                                      | null     | null       | null         | null        | receivedLeaseID  | false
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | oldDate  | null       | null         | null        | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | newDate    | null         | null        | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | receivedEtag | null        | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | garbageEtag | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | receivedLeaseID  | true
     }
 
     @Unroll
     def "Upload file AC fail"() {
         setup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
@@ -213,15 +257,67 @@ class TransferManagerTest extends APISpec {
                 e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
 
         cleanup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        }
         channel.close()
 
         where:
-        dataSize                                | modified | unmodified | match       | noneMatch    | leaseID
-        10                                      | newDate  | null       | null        | null         | null
-        10                                      | null     | oldDate    | null        | null         | null
-        10                                      | null     | null       | garbageEtag | null         | null
-        10                                      | null     | null       | null        | receivedEtag | null
-        10                                      | null     | null       | null        | null         | garbageLeaseID
+        dataSize                                | modified | unmodified | match       | noneMatch    | leaseID          | liveOnly
+        10                                      | newDate  | null       | null        | null         | null             | false
+        10                                      | null     | oldDate    | null        | null         | null             | false
+        10                                      | null     | null       | garbageEtag | null         | null             | false
+        10                                      | null     | null       | null        | receivedEtag | null             | false
+        10                                      | null     | null       | null        | null         | garbageLeaseID   | false
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | newDate  | null       | null        | null         | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | oldDate    | null        | null         | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | garbageEtag | null         | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | receivedEtag | null             | true
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | null         | garbageLeaseID   | true
+    }
+
+
+    /*
+    Here we're testing that progress is properly added to a single upload. The size of the file must be less than
+    the max upload value.
+     */
+    def "Upload file progress sequential"() {
+        setup:
+        Assume.assumeTrue("This test class only run in live mode.", testMode == null)
+        def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1).toPath())
+        def mockReceiver = Mock(IProgressReceiver)
+        def prevCount = 0
+
+        when:
+        // Block length will be ignored for single shot.
+        CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
+            bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+            new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
+
+        then:
+        /*
+        The best we can do here is to check that the total is reported at the end. It is unclear how many ByteBuffers
+        will be needed to break up the file, so we can't check intermediary values.
+         */
+        1 * mockReceiver.reportProgress(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1)
+
+        /*
+        We may receive any number of intermediary calls depending on the implementation. For any of these notifications,
+        we assert that they are strictly increasing.
+         */
+        _ * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        0 * mockReceiver.reportProgress({ it > BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1 })
+
+        cleanup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        channel.close()
     }
 
     /*
@@ -581,8 +677,74 @@ class TransferManagerTest extends APISpec {
         null      | null        | 1
     }
 
+    def "Upload file progress parallel"() {
+        setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1).toPath())
+        def numBlocks = channel.size() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
+        long prevCount = 0
+        def mockReceiver = Mock(IProgressReceiver)
+
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel,
+            bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+            new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(channel.size())
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({ it > channel.size() })
+        notThrown(IllegalArgumentException)
+
+        cleanup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        channel.close()
+    }
+
+    def "Download file medium file in several chunks"() {
+        setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        def channel = AsynchronousFileChannel.open(getRandomFile(16 * 1024 * 1024).toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
+            .blockingGet()
+        when:
+        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+            StandardOpenOption.READ)
+        def headers = TransferManager.downloadBlobToFile(outChannel, bu, null,
+            new TransferManagerDownloadFromBlobOptions(4 * 1024 * 1024L, null, null, null, null)).blockingGet()
+
+        then:
+        compareFiles(channel, 0, channel.size(), outChannel)
+        headers.blobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        channel.close() == null
+        outChannel.close() == null
+    }
+
+    @Unroll
     def "Download file progress receiver"() {
-        def fileSize = 100
+        setup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        }
         def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath(),
                 StandardOpenOption.READ, StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
@@ -621,7 +783,38 @@ class TransferManagerTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > fileSize })
 
         cleanup:
+        if(liveOnly) {
+            Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        }
         channel.close()
+
+        where:
+        fileSize                | liveOnly
+        100                     | false
+        8 * 1026 * 1024 + 10    | true
+    }
+
+    def "Download file small medium file not aligned to block"() {
+        setup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        def channel = AsynchronousFileChannel.open(getRandomFile(8 * 1026 * 1024 + 10).toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
+            .blockingGet()
+        when:
+        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+            StandardOpenOption.READ)
+        def headers = TransferManager.downloadBlobToFile(outChannel, bu, null,
+            new TransferManagerDownloadFromBlobOptions(4 * 1024 * 1024L, null, null, null, null)).blockingGet()
+
+        then:
+        compareFiles(channel, 0, channel.size(), outChannel)
+        headers.blobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        Assume.assumeTrue("This test only runs under live mode", testMode == null)
+        channel.close() == null
+        outChannel.close() == null
+
     }
 
     /*

@@ -16,7 +16,6 @@ public class TestResourceNamer {
     private static final Random RANDOM = new Random();
 
     public TestResourceNamer(String name, InterceptorManager interceptorManager) {
-
         this.randName = name.split("\\[")[0].replace(" ", "").toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
         this.interceptorManager = interceptorManager;
     }

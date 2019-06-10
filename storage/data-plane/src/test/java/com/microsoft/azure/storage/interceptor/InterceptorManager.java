@@ -388,7 +388,6 @@ public final class InterceptorManager {
         }
     }
 
-
     private Object getDefaultValue(Class<?> type) throws Exception {
         // Get default value of non-primitive type
         if (!type.isPrimitive()) {

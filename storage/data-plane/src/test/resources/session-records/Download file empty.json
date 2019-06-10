@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileempty527305911d?restype=container",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileemptyef43778911?restype=container",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -9,19 +9,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6EAE624CF4213\"",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3DDA5222\"",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:22 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ebf3d75-001e-00d3-0fcf-1c8fd3000000",
-      "Date" : "Fri, 07 Jun 2019 01:19:09 GMT"
+      "x-ms-request-id" : "47b16796-e01e-0073-33e8-1f40b5000000",
+      "Date" : "Mon, 10 Jun 2019 23:56:22 GMT"
     },
     "Errors" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileempty527305911d/javablob8352342b9bcea8",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileemptyef43778911/javablob43852da92bd3af",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)",
@@ -30,21 +30,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D6EAE624D85261\"",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3DE13CF8\"",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "body" : "",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ebf3d8c-001e-00d3-25cf-1c8fd3000000",
+      "x-ms-request-id" : "47b1679d-e01e-0073-39e8-1f40b5000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 07 Jun 2019 01:19:09 GMT",
+      "Date" : "Mon, 10 Jun 2019 23:56:22 GMT",
       "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg=="
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileempty527305911d/javablob8352342b9bcea8",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileemptyef43778911/javablob43852da92bd3af",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -56,16 +56,16 @@
       "x-ms-error-code" : "InvalidRange",
       "retry-after" : "0",
       "Content-Length" : "249",
-      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:0ebf3d9b-001e-00d3-31cf-1c8fd3000000\nTime:2019-06-07T01:19:10.1505182Z</Message></Error>",
+      "body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:47b167ab-e01e-0073-44e8-1f40b5000000\nTime:2019-06-10T23:56:23.0756351Z</Message></Error>",
       "StatusCode" : "416",
-      "x-ms-request-id" : "0ebf3d9b-001e-00d3-31cf-1c8fd3000000",
-      "Date" : "Fri, 07 Jun 2019 01:19:09 GMT",
+      "x-ms-request-id" : "47b167ab-e01e-0073-44e8-1f40b5000000",
+      "Date" : "Mon, 10 Jun 2019 23:56:22 GMT",
       "Content-Type" : "application/xml"
     },
     "Errors" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileempty527305911d/javablob8352342b9bcea8",
+    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdownloadfileemptyef43778911/javablob43852da92bd3af",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : " Azure-Storage/11.0.1 (JavaJRE 1.8.0_201; Windows10 10.0)"
@@ -76,22 +76,22 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-tag-count" : "0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "Last-Modified" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "retry-after" : "0",
       "body" : "",
       "StatusCode" : "200",
-      "Date" : "Fri, 07 Jun 2019 01:19:09 GMT",
+      "Date" : "Mon, 10 Jun 2019 23:56:22 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
-      "ETag" : "\"0x8D6EAE624D85261\"",
-      "x-ms-creation-time" : "Fri, 07 Jun 2019 01:19:10 GMT",
+      "ETag" : "\"0x8D6EDFF3DE13CF8\"",
+      "x-ms-creation-time" : "Mon, 10 Jun 2019 23:56:23 GMT",
       "Content-Length" : "0",
-      "x-ms-request-id" : "0ebf3da6-001e-00d3-3acf-1c8fd3000000",
+      "x-ms-request-id" : "47b167b8-e01e-0073-50e8-1f40b5000000",
       "Content-Type" : "application/octet-stream"
     },
     "Errors" : null
   } ],
-  "variables" : [ "jtcdownloadfileempty527305911d", "javablob8352342b9bcea8", "MTU1OTA4OWItZDM0Ni00Y2E5LWE5MTEtOWIwODc0OWYxMmY5", "", "NTE0ZTRiYTYtYjY1NS00ZTViLTlkZWEtNDE2MWUxYzJmYmY2", "" ]
+  "variables" : [ "jtcdownloadfileemptyef43778911", "javablob43852da92bd3af", "NWI0OGVkMDktNDRjMi00MWIzLTgzYWQtM2JjN2NjZjZmZGEw", "", "M2RjNzM1MTEtMDI4ZC00ZWE4LTk5ZmEtODRhYmM5ZjUzYzcy", "" ]
 }

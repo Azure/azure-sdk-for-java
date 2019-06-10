@@ -31,6 +31,10 @@ import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
 class APISpec extends Specification {
+    // Set the following string into environment variable for different modes:
+    // Live mode: any string other that 'recording' and 'playback'.
+    // Recode mode: RECORDING (case does not matter)
+    // Playback mode: PLAYBACK (case does not matter)
     static final String RECORD_MODE = "RECORDING"
     static final String PLAYBACK_MODE = "PLAYBACK"
     // Prefixes for blobs and containers
@@ -647,7 +651,7 @@ class APISpec extends Specification {
         return new TestResourceNamer(testName.getMethodName(), interceptorManager).getCurrentTime()
     }
 
-    def setSASQueryParametersSignature(SASQueryParameters parameters) {
+    def prepareSignatureForRecording(SASQueryParameters parameters) {
         String signature
         if (testMode == TestBase.TestMode.PLAYBACK) {
             signature = interceptorManager.popVariable()
