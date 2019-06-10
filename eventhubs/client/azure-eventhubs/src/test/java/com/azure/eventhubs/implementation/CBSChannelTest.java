@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
@@ -5,35 +8,22 @@ import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.test.TestMode;
 import com.azure.eventhubs.CredentialInfo;
-import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
-import com.azure.eventhubs.implementation.handler.SendLinkHandler;
-import com.azure.eventhubs.implementation.handler.SessionHandler;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Receiver;
-import org.apache.qpid.proton.engine.Record;
-import org.apache.qpid.proton.engine.Sender;
-import org.apache.qpid.proton.engine.Session;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class CBSChannelTest extends ApiTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     private AmqpResponseMapper mapper = mock(AmqpResponseMapper.class);
-    private Session mockSession;
 
     @Rule
     public TestName testName = new TestName();
@@ -41,9 +31,6 @@ public class CBSChannelTest extends ApiTestBase {
     private AmqpConnection connection;
     private CBSChannel cbsChannel;
     private CredentialInfo credentials;
-    private SessionHandler mockSessionHandler;
-    private SendLinkHandler mockSendLinkHandler;
-    private ReceiveLinkHandler mockReceiveLinkHandler;
     private ReactorHandlerProvider handlerProvider;
 
     @Override
@@ -53,15 +40,12 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        skipIfNotRecordMode();
+
         credentials = getCredentialInfo();
 
-        if (getTestMode() == TestMode.RECORD) {
-            handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-            connection = new ReactorConnection(CONNECTION_ID, getConnectionParameters(), getReactorProvider(), handlerProvider, mapper);
-        } else {
-            setupMocks();
-            handlerProvider = new MockReactorHandlerProvider(getReactorProvider(), null, null, mockSendLinkHandler, mockReceiveLinkHandler);
-        }
+        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        connection = new ReactorConnection(CONNECTION_ID, getConnectionParameters(), getReactorProvider(), handlerProvider, mapper);
 
         cbsChannel = new CBSChannel(connection, getTokenProvider(), getReactorProvider(), handlerProvider);
     }
@@ -79,8 +63,6 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Test
     public void successfullyAuthorizes() {
-        skipIfNotRecordMode();
-
         // Arrange
         final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
         final Duration duration = Duration.ofMinutes(10);
@@ -92,8 +74,6 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Test
     public void unsuccessfulAuthorize() {
-        skipIfNotRecordMode();
-
         // Arrange
         final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
         final Duration duration = Duration.ofMinutes(10);
@@ -118,41 +98,5 @@ public class CBSChannelTest extends ApiTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
-    }
-
-    private void setupMocks() {
-        final String host = credentials.endpoint().getHost();
-        final Duration duration = Duration.ofSeconds(30);
-        final ReactorProvider provider = getReactorProvider();
-
-        connection = mock(AmqpConnection.class);
-        when(connection.getIdentifier()).thenReturn(CONNECTION_ID);
-        when(connection.getHost()).thenReturn(host);
-
-        mockSessionHandler = new SessionHandler(CONNECTION_ID, host, CBSChannel.SESSION_NAME, provider.getReactorDispatcher(), duration);
-
-        when(connection.createSession(CBSChannel.SESSION_NAME)).thenReturn(
-            Mono.just(new ReactorSession(mockSession, mockSessionHandler, CBSChannel.SESSION_NAME, provider, duration)));
-
-        // These are for setting up the RequestResponse Channel.
-        mockSession = mock(Session.class);
-        Sender sender = mock(Sender.class);
-        when(mockSession.sender(any())).thenReturn(sender);
-        when(sender.attachments()).thenReturn(mock(Record.class));
-
-        Receiver receiver = mock(Receiver.class);
-        when(mockSession.receiver(any())).thenReturn(receiver);
-        when(receiver.attachments()).thenReturn(mock(Record.class));
-
-        // Setting up the connection status for the send and receive links as opened.
-        mockSendLinkHandler = new SendLinkHandler(CONNECTION_ID, host, "test-sender-cbs");
-        Event openSendEvent = mock(Event.class);
-        when(openSendEvent.getLink()).thenReturn(sender);
-        mockSendLinkHandler.onLinkRemoteOpen(openSendEvent);
-
-        mockReceiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, host, "test-receiver-cbs");
-        Event openReceiveEvent = mock(Event.class);
-        when(openReceiveEvent.getLink()).thenReturn(receiver);
-        mockReceiveLinkHandler.onLinkRemoteOpen(openReceiveEvent);
     }
 }
