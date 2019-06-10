@@ -48,6 +48,6 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
         if (clientSecret == null) {
             return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential"));
         }
-        return identityClient.activeDirectory().authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
+        return identityClient.authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
     }
 }

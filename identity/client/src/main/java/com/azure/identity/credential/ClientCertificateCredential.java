@@ -60,9 +60,9 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
             return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential"));
         }
         if (clientCertificatePassword != null) {
-            return identityClient.activeDirectory().authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
+            return identityClient.authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
         } else {
-            return identityClient.activeDirectory().authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
+            return identityClient.authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
         }
     }
 }

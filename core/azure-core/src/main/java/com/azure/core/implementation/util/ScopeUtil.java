@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.implementation.util;
+package com.azure.core.implementation.util;
 
 import java.util.Objects;
 

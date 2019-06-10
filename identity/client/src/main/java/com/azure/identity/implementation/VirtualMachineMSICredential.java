@@ -86,6 +86,6 @@ public final class VirtualMachineMSICredential {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.managedIdentityClient().authenticateToIMDSEndpoint(clientId(), objectId(), identityId(), scopes);
+        return identityClient.authenticateToIMDSEndpoint(clientId(), objectId(), identityId(), scopes);
     }
 }

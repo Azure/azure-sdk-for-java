@@ -6,6 +6,7 @@ package com.azure.core.auth.credentials;
 import com.azure.core.AzureEnvironment;
 import com.azure.core.AzureEnvironment.Endpoint;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.util.ScopeUtil;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -85,8 +86,7 @@ public abstract class AzureTokenCredentials implements TokenCredential {
 
     @Override
     public Mono<String> getToken(String... scopes) {
-        String scope = scopes[0];
-        String resource = scope.substring(0, scope.lastIndexOf('.'));
+        String resource = ScopeUtil.scopesToResource(scopes);
         return getTokenFromUri(resource).map(token -> SCHEME + token);
     }
 
