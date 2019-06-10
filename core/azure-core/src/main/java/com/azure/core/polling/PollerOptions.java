@@ -31,14 +31,6 @@ public class PollerOptions {
         this.pollInterval = pollInterval;
     }
 
-    /*
-     * Validatations for non negative values and other validations
-     */
-    private void validateValuesAndThrow(Duration pollInterval) {
-
-
-    }
-
     /**
      * get poll interval
      *

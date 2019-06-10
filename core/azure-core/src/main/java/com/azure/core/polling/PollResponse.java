@@ -45,7 +45,7 @@ public final class PollResponse<T> {
         this(status, result, retryAfter);
         this.properties = properties;
     }
-    
+
     /**
      * Constructor
      *

@@ -32,8 +32,6 @@ import java.util.function.Function;
 
 public class Poller<T> {
 
-    private String nullValueNotAllowedFormat = "Null value for %s not allowed.";
-
     /*
      * pollOperation is a Function that takes the previous PollResponse, and
      * returns a new PollResponse to represent the current state
