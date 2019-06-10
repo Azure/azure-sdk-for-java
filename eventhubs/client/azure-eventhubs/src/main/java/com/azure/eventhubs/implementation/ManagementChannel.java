@@ -28,7 +28,7 @@ import static com.azure.eventhubs.implementation.ClientConstants.TOKEN_REFRESH_I
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
  * include another partition, increasing quotas, etc.
  */
-public class ManagementChannel implements EventHubManagementNode {
+public class ManagementChannel extends EndpointStateNotifierBase implements EventHubManagementNode {
     // Well-known keys from the management service responses and requests.
     public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
     public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
@@ -54,7 +54,6 @@ public class ManagementChannel implements EventHubManagementNode {
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
-    private final ServiceLogger logger = new ServiceLogger(ManagementChannel.class);
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
@@ -65,14 +64,14 @@ public class ManagementChannel implements EventHubManagementNode {
     /**
      * Creates an instance that is connected to the {@code eventHubPath}'s management node.
      *
-     * @param connection The AMQP connection to the parent Event Hub.
      * @param eventHubPath The name of the Event Hub.
      * @param tokenProvider A provider that generates authorisation tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
     ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider,
                       ReactorProvider provider, AmqpResponseMapper mapper) {
-        this.mapper = mapper;
+        super(new ServiceLogger(ManagementChannel.class));
+
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
         Objects.requireNonNull(provider);
@@ -81,6 +80,7 @@ public class ManagementChannel implements EventHubManagementNode {
         this.tokenProvider = tokenProvider;
         this.provider = provider;
         this.eventHubPath = eventHubPath;
+        this.mapper = mapper;
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
