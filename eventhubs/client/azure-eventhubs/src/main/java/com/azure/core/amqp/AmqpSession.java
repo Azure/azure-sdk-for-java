@@ -9,7 +9,7 @@ import java.io.Closeable;
 import java.time.Duration;
 
 /**
- * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink}.
+ * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
 public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
