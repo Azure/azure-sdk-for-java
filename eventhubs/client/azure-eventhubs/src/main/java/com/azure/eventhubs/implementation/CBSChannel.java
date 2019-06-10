@@ -18,23 +18,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-class CBSChannel implements CBSNode {
-    private static final String SESSION_NAME = "cbs-session";
+class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
+    static final String SESSION_NAME = "cbs-session";
+    static final String CBS_ADDRESS = "$cbs";
+
     private static final String LINK_NAME = "cbs";
-    private static final String CBS_ADDRESS = "$cbs";
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     private static final String PUT_TOKEN_TYPE = "type";
     private static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
     private static final String PUT_TOKEN_AUDIENCE = "name";
 
-    private final ServiceLogger logger = new ServiceLogger(CBSChannel.class);
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorProvider provider;
 
     CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider) {
+        super(new ServiceLogger(CBSChannel.class));
+
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
         Objects.requireNonNull(provider);
