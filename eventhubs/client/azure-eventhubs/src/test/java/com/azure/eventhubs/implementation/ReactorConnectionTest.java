@@ -74,7 +74,8 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler);
 
-        connection = new ReactorConnection(CONNECTION_ID, HOSTNAME, EVENT_HUB_NAME, tokenProvider, reactorProvider, reactorHandlerProvider, scheduler);
+        connection = new ReactorConnection(CONNECTION_ID, HOSTNAME, EVENT_HUB_NAME, tokenProvider, reactorProvider,
+            reactorHandlerProvider, scheduler, mock(AmqpResponseMapper.class));
     }
 
     /**

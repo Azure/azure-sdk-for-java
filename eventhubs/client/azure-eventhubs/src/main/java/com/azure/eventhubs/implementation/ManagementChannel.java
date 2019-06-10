@@ -15,8 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -31,14 +29,23 @@ import static com.azure.eventhubs.implementation.ClientConstants.TOKEN_REFRESH_I
  * include another partition, increasing quotas, etc.
  */
 public class ManagementChannel implements EventHubManagementNode {
+    // Well-known keys from the management service responses and requests.
+    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
+    public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
+    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
+    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
+    public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
+    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
+    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
+    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
+    public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
+
     private static final String SESSION_NAME = "mgmt-session";
     private static final String LINK_NAME = "mgmt";
     private static final String ADDRESS = "$management";
 
     // Well-known keys for management plane service requests.
     private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
-    private static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
-    private static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
     private static final String MANAGEMENT_OPERATION_KEY = "operation";
     private static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
 
@@ -47,21 +54,13 @@ public class ManagementChannel implements EventHubManagementNode {
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
-    // Well-known keys from the management service response.
-    private static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
-    private static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
-    private static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
-    private static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
-    private static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
-    private static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
-    private static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
-
     private final ServiceLogger logger = new ServiceLogger(ManagementChannel.class);
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final ReactorProvider provider;
     private final String eventHubPath;
+    private final AmqpResponseMapper mapper;
 
     /**
      * Creates an instance that is connected to the {@code eventHubPath}'s management node.
@@ -71,7 +70,9 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param tokenProvider A provider that generates authorisation tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider, ReactorProvider provider) {
+    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider,
+                      ReactorProvider provider, AmqpResponseMapper mapper) {
+        this.mapper = mapper;
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
         Objects.requireNonNull(provider);
@@ -97,10 +98,7 @@ public class ManagementChannel implements EventHubManagementNode {
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubPath);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, map -> new EventHubProperties(
-            (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
-            ((Date) map.get(MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
-            (String[]) map.get(MANAGEMENT_RESULT_PARTITION_IDS)));
+        return getProperties(properties, mapper::toEventHubProperties);
     }
 
     /**
@@ -114,15 +112,7 @@ public class ManagementChannel implements EventHubManagementNode {
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, map -> new PartitionProperties(
-            (String) map.get(MANAGEMENT_ENTITY_NAME_KEY),
-            (String) map.get(MANAGEMENT_PARTITION_NAME_KEY),
-            (Long) map.get(MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-            (Long) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-            (String) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-            ((Date) map.get(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-            (Boolean) map.get(MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
-            Instant.now()));
+        return getProperties(properties, mapper::toPartitionProperties);
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {

@@ -62,7 +62,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param tokenProvider Provider to generate authorisation tokens to connect to Event Hub.
      */
     public ReactorConnection(String connectionId, String hostname, String eventHubName, TokenProvider tokenProvider,
-                             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, Scheduler scheduler) {
+                             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+                             Scheduler scheduler, AmqpResponseMapper mapper) {
         super(new ServiceLogger(ReactorConnection.class));
 
         Objects.requireNonNull(connectionId);
@@ -95,7 +96,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         this.cbsChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (CBSNode) new CBSChannel(this, tokenProvider, reactorProvider))).cache();
         this.managementChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this, eventHubName, tokenProvider, reactorProvider))).cache();
+            Mono.fromCallable(() -> {
+                return (EventHubManagementNode) new ManagementChannel(this, eventHubName, tokenProvider,
+                    reactorProvider, mapper);
+            })).cache();
     }
 
     /**

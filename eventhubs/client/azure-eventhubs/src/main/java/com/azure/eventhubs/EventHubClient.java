@@ -5,8 +5,10 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
+import com.azure.eventhubs.implementation.ManagementChannel;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -18,6 +20,9 @@ import reactor.core.scheduler.Scheduler;
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -49,7 +54,7 @@ public class EventHubClient implements Closeable {
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, host, eventHubName, this.tokenProvider,
-                provider, handlerProvider, this.scheduler);
+                provider, handlerProvider, this.scheduler, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -155,6 +160,29 @@ public class EventHubClient implements Closeable {
             } catch (IOException exception) {
                 throw new AmqpException(false, "Unable to close connection to service", exception);
             }
+        }
+    }
+
+    private static class ResponseMapper implements AmqpResponseMapper {
+        @Override
+        public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
+            return new EventHubProperties(
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+                (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
+        }
+
+        @Override
+        public PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
+            return new PartitionProperties(
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
+                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
+                Instant.now());
         }
     }
 }
