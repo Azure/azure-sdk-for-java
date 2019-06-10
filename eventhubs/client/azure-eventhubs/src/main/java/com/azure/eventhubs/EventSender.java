@@ -162,9 +162,9 @@ public class EventSender {
         EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
-            this.batchLabel = options.batchLabel();
+            this.batchLabel = options.partitionKey();
 
-            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.batchLabel());
+            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey());
         }
 
         @Override
