@@ -5,8 +5,6 @@ package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.eventhubs.ExponentialRetry;
-import com.azure.eventhubs.implementation.ClientConstants;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,6 +25,11 @@ public abstract class Retry {
      * Default for the maximum number of retry attempts.
      */
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
+
+    /**
+     * Base sleep wait time.
+     */
+    private static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 
     private final AtomicInteger retryCount = new AtomicInteger();
     private final int maxRetryCount;
@@ -122,7 +125,7 @@ public abstract class Retry {
         }
 
         if (((AmqpException) lastException).getErrorCondition() == ErrorCondition.SERVER_BUSY_ERROR) {
-            baseWaitTime += ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
+            baseWaitTime += SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
         }
 
         return this.calculateNextRetryInterval(lastException, remainingTime, baseWaitTime, this.getRetryCount());

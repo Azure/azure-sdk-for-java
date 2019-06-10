@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.eventhubs;
-
-import com.azure.core.amqp.Retry;
+package com.azure.core.amqp;
 
 import java.time.Duration;
 
@@ -12,8 +10,7 @@ import java.time.Duration;
  * will grow in an exponential manner, allowing more time to recover as the number of retries increases.
  */
 public final class ExponentialRetry extends Retry {
-
-    public static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
+    private static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
 
     private final Duration minBackoff;
     private final Duration maxBackoff;
