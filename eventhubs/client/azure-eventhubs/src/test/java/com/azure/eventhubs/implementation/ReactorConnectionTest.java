@@ -5,6 +5,10 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.TransportType;
+import com.azure.eventhubs.CredentialInfo;
+import com.azure.eventhubs.ProxyConfiguration;
+import com.azure.eventhubs.Retry;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -40,18 +44,17 @@ import static org.mockito.Mockito.when;
 
 public class ReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
-    private static final String HOSTNAME = "test-host-name";
     private static final String SCHEDULER_NAME = "test-scheduler";
     private static final String SESSION_NAME = "test-session-name";
-    private static final String EVENT_HUB_NAME = "test-event-hub";
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
+    private static final CredentialInfo CREDENTIAL_INFO = CredentialInfo.from("Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
+    private static final String HOSTNAME = CREDENTIAL_INFO.endpoint().getHost();
 
     private AmqpConnection connection;
     private ConnectionHandler handler;
     private ReactorDispatcher reactorDispatcher;
     private ReactorHandlerProvider reactorHandlerProvider;
     private ReactorProvider reactorProvider;
-    private Scheduler scheduler;
     private SessionHandler sessionHandler;
 
     @Mock
@@ -65,7 +68,7 @@ public class ReactorConnectionTest {
     public void initialize() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        scheduler = Schedulers.newSingle(SCHEDULER_NAME);
+        Scheduler scheduler = Schedulers.newSingle(SCHEDULER_NAME);
         when(reactor.selectable()).thenReturn(selectable);
 
         reactorDispatcher = new ReactorDispatcher(reactor);
@@ -74,8 +77,10 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler);
 
-        connection = new ReactorConnection(CONNECTION_ID, HOSTNAME, EVENT_HUB_NAME, tokenProvider, reactorProvider,
-            reactorHandlerProvider, scheduler, mock(AmqpResponseMapper.class));
+        ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, TEST_DURATION, tokenProvider,
+            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+
+        connection = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, mock(AmqpResponseMapper.class));
     }
 
     /**

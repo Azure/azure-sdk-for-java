@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
+import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
@@ -183,7 +184,7 @@ public class EventHubClientTest extends ApiTestBase {
             credentialInfo.sharedAccessKeyName(), "invalid-sas-key-value");
         final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
         connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
-            TransportType.AMQP_WEB_SOCKETS, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
         client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         // Act & Assert
@@ -213,7 +214,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
         connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
-            TransportType.AMQP_WEB_SOCKETS, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+            TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
         client = new EventHubClient(connectionParameters, provider, handlerProvider);
 
         // Act & Assert

@@ -6,6 +6,7 @@ package com.azure.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.eventhubs.implementation.AmqpResponseMapper;
+import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
 import com.azure.eventhubs.implementation.ManagementChannel;
@@ -13,13 +14,10 @@ import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.StringUtil;
-import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -34,27 +32,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EventHubClient implements Closeable {
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
-    private final String eventHubName;
-    private final String host;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-    private final Duration timeout;
-    private final TokenProvider tokenProvider;
-    private final Scheduler scheduler;
+    private final ConnectionParameters connectionParameters;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionParameters);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
 
-        this.timeout = connectionParameters.timeout();
-        this.eventHubName = connectionParameters.credentials().eventHubPath();
-        this.host = connectionParameters.credentials().endpoint().getHost();
-        this.tokenProvider = connectionParameters.tokenProvider();
-        this.scheduler = connectionParameters.scheduler();
+        this.connectionParameters = connectionParameters;
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, host, eventHubName, this.tokenProvider,
-                provider, handlerProvider, this.scheduler, new ResponseMapper());
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -153,7 +142,7 @@ public class EventHubClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(timeout);
+                final AmqpConnection connection = connectionMono.block(connectionParameters.timeout());
                 if (connection != null) {
                     connection.close();
                 }
