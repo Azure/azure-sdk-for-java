@@ -154,7 +154,7 @@ public class EventSender {
      * collector throws a PayloadSizeExceededException.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
-        private final String batchLabel;
+        private final String partitionKey;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private volatile EventDataBatch currentBatch;
@@ -162,7 +162,7 @@ public class EventSender {
         EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
-            this.batchLabel = options.partitionKey();
+            this.partitionKey = options.partitionKey();
 
             currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey());
         }
@@ -185,7 +185,7 @@ public class EventSender {
                         "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, batchLabel);
+                currentBatch = new EventDataBatch(maxMessageSize, partitionKey);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };
