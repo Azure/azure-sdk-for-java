@@ -74,12 +74,12 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     }
 
     @Override
-    public Mono<AmqpLink> createSender(String linkName, Duration timeout) {
+    public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout) {
         return null;
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, Duration timeout) {
+    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout) {
         return null;
     }
 

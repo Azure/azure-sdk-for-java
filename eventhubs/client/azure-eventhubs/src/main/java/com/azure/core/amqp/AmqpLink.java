@@ -15,4 +15,11 @@ public interface AmqpLink extends EndpointStateNotifier, Closeable {
      * @return The name of the link.
      */
     String getLinkName();
+
+    /**
+     * The remote endpoint path this link is connected to.
+     *
+     * @return The remote endpoint path this link is connected to.
+     */
+    String getEntityPath();
 }
