@@ -3,11 +3,10 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,9 +30,8 @@ public class EventReceiverOptions {
     private String identifier;
     private String consumerGroup;
     private Long priority;
-    private RetryPolicy retryPolicy;
+    private Retry retryPolicy;
     private boolean keepUpdated;
-    private Duration receiveTimeout;
     private Scheduler scheduler;
     private EventPosition beginReceivingAt;
     private int prefetchCount;
@@ -115,20 +113,8 @@ public class EventReceiverOptions {
      * @param retryPolicy The retry policy to use when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public EventReceiverOptions retryPolicy(RetryPolicy retryPolicy) {
+    public EventReceiverOptions retryPolicy(Retry retryPolicy) {
         this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /**
-     * Sets the timeout to apply when receiving events. If not specified, the timeout configured with the associated
-     * {@link EventHubClient} is used.
-     *
-     * @param duration The timeout when receiving events.
-     * @return The updated ReceiverOptions object.
-     */
-    public EventReceiverOptions defaultMaximumReceiveWaitTime(Duration duration) {
-        this.receiveTimeout = duration;
         return this;
     }
 
@@ -189,7 +175,7 @@ public class EventReceiverOptions {
      *
      * @return The identifier of the receiver.
      */
-    String identifier() {
+    public String identifier() {
         return identifier;
     }
 
@@ -198,7 +184,7 @@ public class EventReceiverOptions {
      *
      * @return The position within the partition where the receiver should begin reading events.
      */
-    EventPosition beginReceivingAt() {
+    public EventPosition beginReceivingAt() {
         return this.beginReceivingAt;
     }
 
@@ -207,7 +193,7 @@ public class EventReceiverOptions {
      *
      * @return The name of the consumer group.
      */
-    String consumerGroup() {
+    public String consumerGroup() {
         return consumerGroup;
     }
 
@@ -217,7 +203,7 @@ public class EventReceiverOptions {
      *
      * @return The retry policy when receiving events.
      */
-    RetryPolicy retryPolicy() {
+    public Retry retryPolicy() {
         return retryPolicy;
     }
 
@@ -228,7 +214,7 @@ public class EventReceiverOptions {
      *
      * @return An optional priority for this receiver.
      */
-    Optional<Long> exclusiveReceiverPriority() {
+    public Optional<Long> exclusiveReceiverPriority() {
         return Optional.ofNullable(priority);
     }
 
@@ -239,18 +225,8 @@ public class EventReceiverOptions {
      * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,
      * false.
      */
-    boolean keepPartitionInformationUpdated() {
+    public boolean keepPartitionInformationUpdated() {
         return this.keepUpdated;
-    }
-
-    /**
-     * Gets the timeout to apply when receiving events. If not specified, the timeout configured with the associated
-     * {@link EventHubClient} is used.
-     *
-     * @return The timeout when receiving events.
-     */
-    Duration receiveTimeout() {
-        return this.receiveTimeout;
     }
 
     /**
@@ -259,7 +235,7 @@ public class EventReceiverOptions {
      *
      * @return The scheduler for receiving events.
      */
-    Scheduler scheduler() {
+    public Scheduler scheduler() {
         return scheduler;
     }
 
@@ -270,7 +246,7 @@ public class EventReceiverOptions {
      * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
      * operation is active.
      */
-    int prefetchCount() {
+    public int prefetchCount() {
         return prefetchCount;
     }
 
