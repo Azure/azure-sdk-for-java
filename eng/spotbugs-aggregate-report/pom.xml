@@ -84,6 +84,16 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Added to override the -snippetpath arg which is not applicable here-->
+          <additionalOptions>-maxLineLength 120</additionalOptions>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
