@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
 import org.junit.Assert;
 import org.junit.Test;

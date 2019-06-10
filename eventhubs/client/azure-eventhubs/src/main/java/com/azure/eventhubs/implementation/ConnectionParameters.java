@@ -3,10 +3,10 @@
 
 package com.azure.eventhubs.implementation;
 
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.CredentialInfo;
 import com.azure.eventhubs.ProxyConfiguration;
-import com.azure.eventhubs.Retry;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
@@ -25,8 +25,8 @@ public class ConnectionParameters {
     private final Scheduler scheduler;
 
     public ConnectionParameters(final CredentialInfo credentials, final Duration timeout, final TokenProvider tokenProvider,
-                                final TransportType transport, final Retry retryPolicy,
-                                final ProxyConfiguration proxyConfiguration, final Scheduler scheduler) {
+                         final TransportType transport, final Retry retryPolicy,
+                         final ProxyConfiguration proxyConfiguration, final Scheduler scheduler) {
         Objects.requireNonNull(credentials);
         Objects.requireNonNull(timeout);
         Objects.requireNonNull(tokenProvider);

@@ -29,22 +29,22 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
      * Creates a new AMQP sender link.
      *
-     * @param linkName Name of the link.
-     * @param path The entity path this link connects to send events.
+     * @param linkName Name of the sender link.
+     * @param entityPath The entity path this link connects to send events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpSendLink> createSender(String linkName, String path, Duration timeout);
+    Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout);
 
     /**
      * Creates a new AMQP receiver link.
      *
-     * @param linkName Name of the link.
-     * @param path The entity path this link connects to receive events.
+     * @param linkName Name of the sender link.
+     * @param entityPath The entity path this link connects to receive events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpReceiveLink> createReceiver(String linkName, String path, Duration timeout);
+    Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout);
 
     /**
      * Removes a {@link AmqpLink} with the given {@code linkName}.

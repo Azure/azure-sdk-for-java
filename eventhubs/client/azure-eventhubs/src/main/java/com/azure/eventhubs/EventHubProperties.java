@@ -8,21 +8,17 @@ import java.util.Arrays;
 
 /**
  * Holds information about Event Hubs which can come handy while performing data-plane operations like
- * {@link EventHubClient#createReceiver(String)} and {@link EventHubClient#createReceiver(String, ReceiverOptions)}.
+ * {@link EventHubClient#createReceiver(String)} and {@link EventHubClient#createReceiver(String, EventReceiverOptions)}.
  */
 public final class EventHubProperties {
     private final String path;
     private final Instant createdAt;
     private final String[] partitionIds;
 
-    /**
-     * Creates a new instance of EventHubProperties.
-     *
-     * @param path The name of the Event Hub.
-     * @param createdAt The Instant when the Event Hub was created.
-     * @param partitionIds An array of identifiers for all the partitions in the Event Hub.
-     */
-    EventHubProperties(String path, Instant createdAt, String[] partitionIds) {
+    EventHubProperties(
+        final String path,
+        final Instant createdAt,
+        final String[] partitionIds) {
         this.path = path;
         this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
@@ -40,9 +36,9 @@ public final class EventHubProperties {
     }
 
     /**
-     * Gets the time at which Event Hub was created at.
+     * Gets the instant, in UTC, at which Event Hub was created at.
      *
-     * @return The time at which the Event Hub was created.
+     * @return The instant, in UTC, at which the Event Hub was created.
      */
     public Instant createdAt() {
         return createdAt;

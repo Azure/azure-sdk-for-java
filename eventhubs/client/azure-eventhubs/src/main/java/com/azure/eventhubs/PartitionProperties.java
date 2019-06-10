@@ -18,21 +18,15 @@ public final class PartitionProperties {
     private final boolean isEmpty;
     private Instant propertyRetrievalTime;
 
-    /**
-     * Creates an instance with all of the partition's properties set.
-     *
-     * @param eventHubPath Name of the Event Hub this partition belongs to.
-     * @param id Identifier of the partition, unique to the Event Hub which contains it.
-     * @param beginningSequenceNumber The first sequence number available for events in the partition.
-     * @param lastEnqueuedSequenceNumber The sequence number of the most recent event enqueued to this partition.
-     * @param lastEnqueuedOffset The offset of the most recent event enqueued to this partition.
-     * @param lastEnqueuedTime The date time (UTC) of the most recent event enqueued to this partition.
-     * @param isEmpty {@code true} if there are no events in the partition; {@code false} otherwise.
-     * @param propertyRetrievalTime A date time (UTC) representing when the partition's properties were retrieved.
-     */
-    PartitionProperties(String eventHubPath, String id, long beginningSequenceNumber,
-                        long lastEnqueuedSequenceNumber, String lastEnqueuedOffset, Instant lastEnqueuedTime,
-                        boolean isEmpty, Instant propertyRetrievalTime) {
+    PartitionProperties(
+            final String eventHubPath,
+            final String id,
+            final long beginningSequenceNumber,
+            final long lastEnqueuedSequenceNumber,
+            final String lastEnqueuedOffset,
+            final Instant lastEnqueuedTime,
+            final boolean isEmpty,
+            final Instant propertyRetrievalTime) {
         this.eventHubPath = eventHubPath;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;

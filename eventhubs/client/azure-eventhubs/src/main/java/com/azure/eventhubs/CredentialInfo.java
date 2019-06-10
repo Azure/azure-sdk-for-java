@@ -59,9 +59,9 @@ public final class CredentialInfo {
     }
 
     /**
-     * Gets the Event Hubs endpoint.
+     * Gets the Event Hubs namespace endpoint.
      *
-     * @return The Event Hubs endpoint.
+     * @return The Event Hubs namespace endpoint.
      */
     public URI endpoint() {
         return endpoint;
