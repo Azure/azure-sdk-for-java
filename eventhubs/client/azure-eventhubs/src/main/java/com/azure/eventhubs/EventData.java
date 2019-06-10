@@ -182,7 +182,7 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Gets the offset of the the event when it was received from the associated Event Hub partition.
+     * Gets the offset of the event when it was received from the associated Event Hub partition.
      *
      * @return The offset within the Event Hub partition.
      */

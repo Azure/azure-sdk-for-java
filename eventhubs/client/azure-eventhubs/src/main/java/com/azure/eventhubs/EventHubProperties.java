@@ -16,11 +16,11 @@ public final class EventHubProperties {
     private final String[] partitionIds;
 
     EventHubProperties(
-            final String path,
-            final Instant createdAtUtc,
-            final String[] partitionIds) {
+        final String path,
+        final Instant createdAt,
+        final String[] partitionIds) {
         this.path = path;
-        this.createdAt = createdAtUtc;
+        this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
             ? Arrays.copyOf(partitionIds, partitionIds.length)
             : new String[0];

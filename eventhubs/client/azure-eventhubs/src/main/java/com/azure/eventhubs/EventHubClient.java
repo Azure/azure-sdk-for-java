@@ -74,7 +74,7 @@ public class EventHubClient implements Closeable {
             final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
             return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
         }).then(Mono.fromCallable(() -> {
-            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
+            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"});
         }));
     }
 
