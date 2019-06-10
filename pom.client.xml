@@ -421,6 +421,12 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
+               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
+               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
