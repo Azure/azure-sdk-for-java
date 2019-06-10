@@ -10,6 +10,7 @@ import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -54,29 +55,32 @@ public class EventHubClientTest extends TestBase {
         Thread.sleep(1000);
     }
 
+    @Ignore
     @Test
     public void parallelEventHubClients() {
         final String partitionId = "0";
         final int noOfClients = 4;
+        final String consumerGroupName = TestBase.getConsumerGroupName();
 
-//        @SuppressWarnings("unchecked")
         EventHubClient[] ehClients = new EventHubClient[noOfClients];
-
         for (int i = 0; i < noOfClients; i++) {
             ehClients[i] = getEventHubClientBuilder().build();
         }
 
-        boolean firstOne = true;
-        for (EventHubClient ehClient : ehClients) {
-            if (firstOne) {
-                // TODO: send 0 events, but it should sent 10 events
-                TestBase.pushEventsToPartition(ehClient, partitionId, 10);
-                firstOne = false;
-            }
+        ReceiverOptions receiverOptions = new ReceiverOptions()
+            .consumerGroup(consumerGroupName)
+            .beginReceivingAt(EventPosition.newEventsOnly());
 
-            EventReceiver receiver = ehClient.createReceiver(partitionId);
+        EventHubClient senderClient = getEventHubClientBuilder().build();
+
+        for (EventHubClient ehClient : ehClients) {
+            EventReceiver receiver = ehClient.createReceiver(partitionId, receiverOptions);
             Flux<EventData> eventReceived = receiver.receive();
-            // TODO: how do we make sure received all event for each partition receiver
+
+            StepVerifier.create(eventReceived)
+                .then(() -> TestBase.pushEventsToPartition(senderClient, partitionId, 10))
+                .expectNextCount(10)
+                .verifyComplete();
         }
     }
 }

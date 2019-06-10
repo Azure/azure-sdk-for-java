@@ -17,6 +17,11 @@ public abstract class TestBase {
         return CONNECTION_STRING;
     }
 
+    public static String getConsumerGroupName() {
+        return "$Default";
+    }
+
+
     public boolean isTestConfigurationSet() {
         return CONNECTION_STRING != null;
     }
@@ -27,9 +32,9 @@ public abstract class TestBase {
 
     public static Mono<Void> pushEventsToPartition(final EventHubClient client, final String partitionId, final int noOfEvents) {
         EventSender sender = client.createSender(new SenderOptions().partitionId(partitionId));
-        final Flux<EventData> map = Flux.range(0, noOfEvents).flatMap(number -> {
+        final Flux<EventData> map = Flux.range(0, noOfEvents).map(number -> {
             final EventData data = new EventData("testString".getBytes(UTF_8));
-            return Flux.just(data);
+            return data;
         });
         return sender.send(map);
     }
