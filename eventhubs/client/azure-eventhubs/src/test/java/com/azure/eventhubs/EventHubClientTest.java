@@ -11,6 +11,7 @@ import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -51,5 +52,31 @@ public class EventHubClientTest extends TestBase {
         client.close();
 
         Thread.sleep(1000);
+    }
+
+    @Test
+    public void parallelEventHubClients() {
+        final String partitionId = "0";
+        final int noOfClients = 4;
+
+//        @SuppressWarnings("unchecked")
+        EventHubClient[] ehClients = new EventHubClient[noOfClients];
+
+        for (int i = 0; i < noOfClients; i++) {
+            ehClients[i] = getEventHubClientBuilder().build();
+        }
+
+        boolean firstOne = true;
+        for (EventHubClient ehClient : ehClients) {
+            if (firstOne) {
+                // TODO: send 0 events, but it should sent 10 events
+                TestBase.pushEventsToPartition(ehClient, partitionId, 10);
+                firstOne = false;
+            }
+
+            EventReceiver receiver = ehClient.createReceiver(partitionId);
+            Flux<EventData> eventReceived = receiver.receive();
+            // TODO: how do we make sure received all event for each partition receiver
+        }
     }
 }
