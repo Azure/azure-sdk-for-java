@@ -51,7 +51,8 @@ class RequestResponseChannel implements Closeable {
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable subscription;
 
-    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session) {
+    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
+                           ReactorHandlerProvider handlerProvider) {
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
@@ -59,7 +60,7 @@ class RequestResponseChannel implements Closeable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = new SendLinkHandler(connectionId, host, linkName);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
@@ -71,7 +72,7 @@ class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = new ReceiveLinkHandler(connectionId, host, linkName);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
