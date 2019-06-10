@@ -5,9 +5,20 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
+import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
+import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
+import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
+import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
+import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
+import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.SignedIdentifier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,10 +26,10 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
- * {@link BlobServiceAsyncRawClient} object. This class does not hold any state about a particular blob but is instead a convenient way
- * of sending off appropriate requests to the resource on the service. It may also be used to construct URLs to blobs.
- * Please refer to the
+ * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
+ * {@link BlobServiceClient#createContainerClient(String)}. This class does not hold any
+ * state about a particular blob but is instead a convenient way of sending off appropriate requests to
+ * the resource on the service. It may also be used to construct URLs to blobs. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
@@ -32,76 +43,80 @@ public final class ContainerClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    /**
+     * Package-private constructor for use by {@link ContainerClientBuilder}.
+     * @param azureBlobStorage
+     */
     ContainerClient(AzureBlobStorageImpl azureBlobStorage) {
         this.containerAsyncClient  = new ContainerAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client appendBlobClientBuilder instance.
+     * @return a new client {@link ContainerClientBuilder} instance.
      */
     public static ContainerClientBuilder containerClientBuilder() {
         return new ContainerClientBuilder();
     }
 
     /**
-     * Creates a new {@link BlockBlobAsyncRawClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlockBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of
+     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
      * NewBlockBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient createBlockBlobClient(String blobName) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Creates creates a new PageBlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the PageBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates creates a new PageBlobClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the PageBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
      * NewPageBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient createPageBlobClient(String blobName) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Creates creates a new AppendBlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new AppendBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the AppendBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates creates a new AppendBlobClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobClient createAppendBlobClient(String blobName) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Creates a new BlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new BlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates a new BlobClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's createBlobAsyncClient instead of calling this object's
      * createBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient createBlobClient(String blobName) {
         throw new UnsupportedOperationException();
@@ -111,12 +126,6 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void create() {
         this.create(null, null, null, null);
@@ -132,18 +141,14 @@ public final class ContainerClient {
      * @param accessType
      *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
         Mono<Void> response = containerAsyncClient.create(metadata, accessType, context);
@@ -159,12 +164,6 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void delete() {
         this.delete(null, null, null);
@@ -177,18 +176,14 @@ public final class ContainerClient {
      *
      * @param accessConditions
      *         {@link ContainerAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Void> response = containerAsyncClient.delete(accessConditions, context);
@@ -204,11 +199,8 @@ public final class ContainerClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The container properties.
      */
     public ContainerGetPropertiesHeaders getProperties() {
         return this.getProperties(null, null, null);
@@ -221,18 +213,17 @@ public final class ContainerClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The container properties.
      */
     public ContainerGetPropertiesHeaders getProperties(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
@@ -249,12 +240,6 @@ public final class ContainerClient {
      *
      * @param metadata
      *         {@link Metadata}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void setMetadata(Metadata metadata) {
         this.setMetadata(metadata, null, null, null);
@@ -268,18 +253,14 @@ public final class ContainerClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link ContainerAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Duration timeout, Context context) {
@@ -297,11 +278,8 @@ public final class ContainerClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The container access policy.
      */
     public ContainerGetAccessPolicyHeaders getAccessPolicy() {
         return this.getAccessPolicy(null, null, null);
@@ -315,18 +293,17 @@ public final class ContainerClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The container access policy.
      */
     public ContainerGetAccessPolicyHeaders getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
@@ -350,12 +327,6 @@ public final class ContainerClient {
      *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
      *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *         for more information. Passing null will clear all access policies.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
@@ -377,18 +348,14 @@ public final class ContainerClient {
      *         for more information. Passing null will clear all access policies.
      * @param accessConditions
      *         {@link ContainerAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public void setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
@@ -419,11 +386,8 @@ public final class ContainerClient {
      *         The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
      *         A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The acquired lease.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
         return containerAsyncClient.acquireLease(proposedId, duration, null, null);
@@ -445,16 +409,13 @@ public final class ContainerClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The acquired lease.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -468,11 +429,8 @@ public final class ContainerClient {
      * @param leaseID
      *         The leaseId of the active lease on the container.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The renewed lease.
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
         return containerAsyncClient.renewLease(leaseID, null, null);
@@ -490,16 +448,13 @@ public final class ContainerClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The renewed lease.
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -513,11 +468,8 @@ public final class ContainerClient {
      * @param leaseID
      *         The leaseId of the active lease on the container.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The released lease.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
         return containerAsyncClient.releaseLease(leaseID, null, null);
@@ -535,16 +487,13 @@ public final class ContainerClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The released lease.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -555,12 +504,8 @@ public final class ContainerClient {
      * Breaks the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @return Emits the successful response.
+     * @return
+     *      The broken lease.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease() {
         return containerAsyncClient.breakLease(null, null, null);
@@ -575,22 +520,19 @@ public final class ContainerClient {
      *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
      *         remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
      *         available before the break period has expired, but the lease may be held for longer than the break period.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      * @param modifiedAccessConditions
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The broken lease.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -606,11 +548,8 @@ public final class ContainerClient {
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The updated lease.
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
         return containerAsyncClient.changeLease(leaseID, proposedID, null, null);
@@ -630,16 +569,13 @@ public final class ContainerClient {
      *         will fail if the specified condition is not satisfied.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The updated lease.
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -653,19 +589,11 @@ public final class ContainerClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
         return this.listBlobsFlatSegment(marker, options, null, null);
@@ -678,25 +606,19 @@ public final class ContainerClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout, Context context) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsFlatSegment(options, context);
@@ -780,11 +702,8 @@ public final class ContainerClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The account info.
      */
     public ContainerGetAccountInfoHeaders getAccountInfo() {
         return this.getAccountInfo(null, null);
@@ -794,18 +713,17 @@ public final class ContainerClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The account info.
      */
     public ContainerGetAccountInfoHeaders getAccountInfo(Duration timeout, Context context) {
         Mono<ContainerGetAccountInfoHeaders> response = containerAsyncClient.getAccountInfo(context);

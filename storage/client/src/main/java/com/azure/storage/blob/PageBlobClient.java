@@ -339,7 +339,7 @@ public final class PageBlobClient extends BlobClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response emitting all the page ranges.
+     *      All the page ranges.
      */
     public Iterable<PageRange> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -361,7 +361,7 @@ public final class PageBlobClient extends BlobClient {
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      *
      * @return
-     *      A reactive response emitting all the different page ranges.
+     *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null, null);
@@ -389,7 +389,7 @@ public final class PageBlobClient extends BlobClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response emitting all the different page ranges.
+     *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -408,7 +408,7 @@ public final class PageBlobClient extends BlobClient {
      *         blob, then all pages above the specified value are cleared.
      *
      * @return
-     *      A reactive response emitting the resized page blob.
+     *      The resized page blob.
      */
     public PageBlobResizeHeaders resize(long size) {
         return this.resize(size, null, null, null);
@@ -433,7 +433,7 @@ public final class PageBlobClient extends BlobClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response emitting the resized page blob.
+     *      The resized page blob.
      */
     public PageBlobResizeHeaders resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<PageBlobResizeHeaders> response = pageBlobAsyncClient.resize(size, accessConditions, context);
@@ -453,7 +453,7 @@ public final class PageBlobClient extends BlobClient {
      *         requests and manage concurrency issues.
      *
      * @return
-     *      A reactive response emitting the updated page blob.
+     *      The updated page blob.
      */
     public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
@@ -481,7 +481,7 @@ public final class PageBlobClient extends BlobClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response emitting the updated page blob.
+     *      The updated page blob.
      */
     public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -505,7 +505,7 @@ public final class PageBlobClient extends BlobClient {
      *         The snapshot on the copy source.
      *
      * @return
-     *      A reactive response emitting the copy status.
+     *      The copy status.
      */
     public CopyStatusType copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null, null);
@@ -537,7 +537,7 @@ public final class PageBlobClient extends BlobClient {
      *         parent, forming a linked list.
      *
      * @return
-     *      A reactive response emitting the copy status.
+     *      The copy status.
      */
     public CopyStatusType copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {

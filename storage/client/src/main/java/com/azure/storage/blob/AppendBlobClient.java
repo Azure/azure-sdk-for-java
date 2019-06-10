@@ -143,7 +143,7 @@ public final class AppendBlobClient extends BlobClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the information of the append blob operation.
+     *      The information of the append blob operation.
      */
     public AppendBlobAppendBlockHeaders appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
