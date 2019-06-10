@@ -2,199 +2,127 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.storage.queue.models.StorageErrorException;
+import reactor.test.StepVerifier;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
+    QueueServiceAsyncClient serviceClient;
+    String queueName;
+
     @Override
-    public void createWithSharedKey() {
+    protected void beforeTest() {
+        queueName = getQueueName();
+
+        if (interceptorManager.isPlaybackMode()) {
+            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
+                .connectionString(connectionString)
+                .endpoint(endpoint)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .build());
+        } else {
+            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
+                .connectionString(connectionString)
+                .endpoint(endpoint)
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .build());
+        }
+    }
+
+    @Override
+    protected void afterTest() {
+        try {
+            serviceClient.deleteQueue(queueName);
+        } catch (StorageErrorException ex) {
+            // Queue already delete, that's what we wanted anyways.
+        }
+    }
+
+    @Override
+    public void getQueueDoesNotCreateAQueue() {
+        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"))
+            .verifyErrorSatisfies(throwable -> assertTrue(throwable instanceof StorageErrorException));
+    }
+
+    @Override
+    public void createQueue() {
+        QueueAsyncClient client = serviceClient.createQueue(queueName);
+        client.enqueueMessage("Testing service client creating a queue");
+    }
+
+    @Override
+    public void createQueueWithMetadata() {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("metadata1", "value1");
+        metadata.put("metadata2", "value2");
+        QueueAsyncClient client = serviceClient.createQueue(queueName, metadata);
+
+        StepVerifier.create(client.getProperties())
+            .assertNext(response -> {
+                assertEquals(metadata.size(), response.value().metadata().size());
+                assertEquals(metadata, response.value().metadata());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void createQueueTwiceSameMetadata() {
+        final String messageText = "Testing service client creating the same queue twice does not modify the queue";
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("metadata1", "value1");
+        metadata.put("metadata2", "value2");
+
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).enqueueMessage(messageText))
+            .assertNext(response -> assertNotNull(response.value()))
+            .verifyComplete();
+
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).peekMessages())
+            .assertNext(response -> assertEquals(messageText, response.messageText()))
+            .verifyComplete();
+    }
+
+    @Override
+    public void createQueueTwiceDifferentMetadata() {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("metadata1", "value1");
+        metadata.put("metadata2", "value2");
+
+        try {
+            serviceClient.createQueue(queueName);
+            serviceClient.createQueue(queueName, metadata);
+        } catch (Throwable throwable) {
+            assertTrue(throwable instanceof StorageErrorException);
+        }
+    }
+
+    @Override
+    public void deleteExistingQueue() {
 
     }
 
     @Override
-    public void createWithSASToken() {
+    public void deleteNonExistentQueue() {
 
     }
 
     @Override
-    public void createWithMetadata() {
+    public void listQueues() {
 
     }
 
     @Override
-    public void createTwiceSameMetadata() {
-
-    }
-
-    @Override
-    public void createTwiceDifferentMetadata() {
-
-    }
-
-    @Override
-    public void deleteExisting() {
-
-    }
-
-    @Override
-    public void deleteNonExistent() {
-
-    }
-
-    @Override
-    public void getProperties() {
-
-    }
-
-    @Override
-    public void getPropertiesQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void setMetadata() {
-
-    }
-
-    @Override
-    public void setMetadataQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void setInvalidMetadata() {
-
-    }
-
-    @Override
-    public void deleteMetadata() {
-
-    }
-
-    @Override
-    public void getAccessPolicy() {
-
-    }
-
-    @Override
-    public void getAccessPolicyQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void setAccessPolicy() {
-
-    }
-
-    @Override
-    public void setAccessPolicyQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void setInvalidAccessPolicy() {
-
-    }
-
-    @Override
-    public void enqueueMessage() {
-
-    }
-
-    @Override
-    public void enqueueEmptyMessage() {
-
-    }
-
-    @Override
-    public void enqueueTooLargeMessage() {
-
-    }
-
-    @Override
-    public void enqueueShortTimeToLiveMessage() {
-
-    }
-
-    @Override
-    public void enqueueQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void dequeueMessage() {
-
-    }
-
-    @Override
-    public void dequeueMultipleMessages() {
-
-    }
-
-    @Override
-    public void dequeueTooManyMessages() {
-
-    }
-
-    @Override
-    public void dequeueQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void peekMessage() {
-
-    }
-
-    @Override
-    public void peekMultipleMessages() {
-
-    }
-
-    @Override
-    public void peekTooManyMessages() {
-
-    }
-
-    @Override
-    public void peekQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void clearMessages() {
-
-    }
-
-    @Override
-    public void clearMessagesQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void deleteMessage() {
-
-    }
-
-    @Override
-    public void deleteMessageInvalidPopReceipt() {
-
-    }
-
-    @Override
-    public void deleteMessageQueueDoesNotExist() {
-
-    }
-
-    @Override
-    public void updateMessage() {
-
-    }
-
-    @Override
-    public void updateMessageInvalidPopReceipt() {
-
-    }
-
-    @Override
-    public void updateMessageQueueDoesNotExist() {
+    public void setProperties() {
 
     }
 }

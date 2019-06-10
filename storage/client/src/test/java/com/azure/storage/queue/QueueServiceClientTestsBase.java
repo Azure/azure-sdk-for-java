@@ -2,12 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import java.util.function.BiFunction;
+
+import static org.junit.Assert.fail;
+
 public abstract class QueueServiceClientTestsBase extends TestBase {
+    private final ServiceLogger logger = new ServiceLogger(QueueServiceClientTestsBase.class);
+
+    final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
+    final String azureStorageQueueEndpoint = "AZURE_STORAGE_QUEUE_ENDPOINT";
+
     @Rule
     public TestName testName = new TestName();
 
@@ -16,120 +28,47 @@ public abstract class QueueServiceClientTestsBase extends TestBase {
         return testName.getMethodName();
     }
 
-    @Test
-    public abstract void createWithSharedKey();
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
+        String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+        String queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
+
+        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
+            fail(String.format("%s and %s must be set to build the testing client", azureStorageConnectionString, azureStorageQueueEndpoint));
+            return null;
+        }
+
+        return clientBuilder.apply(connectionString, queueEndpoint);
+    }
+    String getQueueName() {
+        return testResourceNamer.randomName("queue", 16).toLowerCase();
+    }
 
     @Test
-    public abstract void createWithSASToken();
+    public abstract void getQueueDoesNotCreateAQueue();
 
     @Test
-    public abstract void createWithMetadata();
+    public abstract void createQueue();
 
     @Test
-    public abstract void createTwiceSameMetadata();
+    public abstract void createQueueWithMetadata();
 
     @Test
-    public abstract void createTwiceDifferentMetadata();
+    public abstract void createQueueTwiceSameMetadata();
 
     @Test
-    public abstract void deleteExisting();
+    public abstract void createQueueTwiceDifferentMetadata();
 
     @Test
-    public abstract void deleteNonExistent();
+    public abstract void deleteExistingQueue();
 
     @Test
-    public abstract void getProperties();
+    public abstract void deleteNonExistentQueue();
 
     @Test
-    public abstract void getPropertiesQueueDoesNotExist();
+    public abstract void listQueues();
 
     @Test
-    public abstract void setMetadata();
+    public abstract void setProperties();
 
-    @Test
-    public abstract void setMetadataQueueDoesNotExist();
-
-    @Test
-    public abstract void setInvalidMetadata();
-
-    @Test
-    public abstract void deleteMetadata();
-
-    @Test
-    public abstract void getAccessPolicy();
-
-    @Test
-    public abstract void getAccessPolicyQueueDoesNotExist();
-
-    @Test
-    public abstract void setAccessPolicy();
-
-    @Test
-    public abstract void setAccessPolicyQueueDoesNotExist();
-
-    @Test
-    public abstract void setInvalidAccessPolicy(); // max name length is 64
-
-    @Test
-    public abstract void enqueueMessage();
-
-    @Test
-    public abstract void enqueueEmptyMessage();
-
-    @Test
-    public abstract void enqueueTooLargeMessage();
-
-    @Test
-    public abstract void enqueueShortTimeToLiveMessage();
-
-    @Test
-    public abstract void enqueueQueueDoesNotExist();
-
-    @Test
-    public abstract void dequeueMessage();
-
-    @Test
-    public abstract void dequeueMultipleMessages();
-
-    @Test
-    public abstract void dequeueTooManyMessages();
-
-    @Test
-    public abstract void dequeueQueueDoesNotExist();
-
-    @Test
-    public abstract void peekMessage();
-
-    @Test
-    public abstract void peekMultipleMessages();
-
-    @Test
-    public abstract void peekTooManyMessages();
-
-    @Test
-    public abstract void peekQueueDoesNotExist();
-
-    @Test
-    public abstract void clearMessages();
-
-    @Test
-    public abstract void clearMessagesQueueDoesNotExist();
-
-    @Test
-    public abstract void deleteMessage();
-
-    @Test
-    public abstract void deleteMessageInvalidPopReceipt();
-
-    @Test
-    public abstract void deleteMessageQueueDoesNotExist();
-
-    @Test
-    public abstract void updateMessage();
-
-    @Test
-    public abstract void updateMessageInvalidPopReceipt();
-
-    @Test
-    public abstract void updateMessageQueueDoesNotExist();
+    // TODO (alzimmer): determine how, or if, to test getting statistics
 }

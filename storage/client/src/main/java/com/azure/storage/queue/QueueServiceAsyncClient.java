@@ -8,6 +8,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageErrorCode;
@@ -18,6 +19,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,7 +83,7 @@ public final class QueueServiceAsyncClient {
         try {
             queueAsyncClient.create(metadata).block();
         } catch (StorageErrorException ex) {
-            if (!StorageErrorCode.QUEUE_ALREADY_EXISTS.equals(ex.value().message())) {
+            if (!StorageErrorCode.QUEUE_ALREADY_EXISTS.toString().equals(ex.value().message())) {
                 throw ex;
             }
         }
@@ -97,11 +100,19 @@ public final class QueueServiceAsyncClient {
         try {
             new QueueAsyncClient(client, queueName).delete();
         } catch (StorageErrorException ex) {
-            if (!StorageErrorCode.QUEUE_NOT_FOUND.equals(ex.value().message())
-                && !StorageErrorCode.QUEUE_BEING_DELETED.equals(ex.value().message())) {
+            if (!StorageErrorCode.QUEUE_NOT_FOUND.toString().equals(ex.value().message())
+                && !StorageErrorCode.QUEUE_BEING_DELETED.toString().equals(ex.value().message())) {
                 throw ex;
             }
         }
+    }
+
+    public Flux<QueueItem> listQueuesSegment() {
+        return listQueuesSegment(null, null);
+    }
+
+    public Flux<QueueItem> listQueuesSegment(QueuesSegmentOptions options) {
+        return listQueuesSegment(null, options);
     }
 
     /**
@@ -110,8 +121,20 @@ public final class QueueServiceAsyncClient {
      * @param options Filter for queue selection
      * @return Queues in the storage account that passed the filter and metadata to continue listing more queues
      */
-    public Flux<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.services().listQueuesSegmentWithRestResponseAsync(options.prefix(), marker, options.maxResults(), options.includes(), null, null, Context.NONE)
+    Flux<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+        String prefix = null;
+        Integer maxResults = null;
+        List<ListQueuesIncludeType> include = null;
+
+        if (options != null) {
+            prefix = options.prefix();
+            maxResults = options.maxResults();
+            if (options.includeMetadata()) {
+                include = Collections.singletonList(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
+            }
+        }
+
+        return client.services().listQueuesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, null, Context.NONE)
             .flatMapMany(response -> Flux.fromIterable(response.value().queueItems()));
     }
 

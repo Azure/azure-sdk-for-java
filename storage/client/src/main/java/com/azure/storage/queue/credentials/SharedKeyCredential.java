@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * SharedKey credential policy that is put into a header to authorize requests.
@@ -87,9 +88,9 @@ public final class SharedKeyCredential {
             headers.getOrDefault("Content-Encoding", ""),
             headers.getOrDefault("Content-Language", ""),
             contentLength,
-            "",
             headers.getOrDefault("Content-MD5", ""),
             headers.getOrDefault("Content-Type", ""),
+            headers.getOrDefault("Date", ""),
             headers.getOrDefault("If-Modified-Since", ""),
             headers.getOrDefault("If-Match", ""),
             headers.getOrDefault("If-None-Match", ""),
@@ -101,13 +102,11 @@ public final class SharedKeyCredential {
 
     private String getAdditionalXmsHeaders(Map<String, String> headers) {
         // Add only headers that begin with 'x-ms-'
-        final List<String> xmsHeaderNameArray = new ArrayList<>();
-        for (Map.Entry<String, String> header : headers.entrySet()) {
-            String lowerCaseHeader = header.getKey().toLowerCase(Locale.ROOT);
-            if (lowerCaseHeader.startsWith("x-ms-")) {
-                xmsHeaderNameArray.add(lowerCaseHeader);
-            }
-        }
+        final List<String> xmsHeaderNameArray = headers.entrySet().stream()
+            .filter(entry -> entry.getKey().toLowerCase(Locale.ROOT).startsWith("x-ms-"))
+            .filter(entry -> entry.getValue() != null)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
 
         if (xmsHeaderNameArray.isEmpty()) {
             return "";
@@ -121,9 +120,9 @@ public final class SharedKeyCredential {
                 canonicalizedHeaders.append('\n');
             }
 
-            canonicalizedHeaders.append(key);
-            canonicalizedHeaders.append(':');
-            canonicalizedHeaders.append(headers.get(key));
+            canonicalizedHeaders.append(key)
+                .append(':')
+                .append(headers.get(key));
         }
 
         return canonicalizedHeaders.toString();
@@ -157,8 +156,10 @@ public final class SharedKeyCredential {
         for (String queryParamName : queryParamNames) {
             final List<String> queryParamValues = queryParams.get(queryParamName);
             Collections.sort(queryParamValues);
-            String queryParamValuesStr = String.join(",", queryParamValues.toArray(new String[]{}));
-            canonicalizedResource.append("\n").append(queryParamName.toLowerCase(Locale.ROOT)).append(":")
+            String queryParamValuesStr = String.join(",", queryParamValues);
+            canonicalizedResource.append("\n")
+                .append(queryParamName.toLowerCase(Locale.ROOT))
+                .append(":")
                 .append(queryParamValuesStr);
         }
 

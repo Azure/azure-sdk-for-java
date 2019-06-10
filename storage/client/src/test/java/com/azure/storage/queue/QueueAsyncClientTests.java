@@ -4,47 +4,197 @@ package com.azure.storage.queue;
 
 public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
-    public void getQueueDoesNotCreateAQueue() {
+    public void createWithSharedKey() {
 
     }
 
     @Override
-    public void createQueue() {
+    public void createWithSASToken() {
 
     }
 
     @Override
-    public void createQueueWithMetadata() {
+    public void createWithMetadata() {
 
     }
 
     @Override
-    public void createQueueTwiceSameMetadata() {
+    public void createTwiceSameMetadata() {
 
     }
 
     @Override
-    public void createQueueTwiceDifferentMetadata() {
+    public void createTwiceDifferentMetadata() {
 
     }
 
     @Override
-    public void deleteExistingQueue() {
+    public void deleteExisting() {
 
     }
 
     @Override
-    public void deleteNonExistentQueue() {
+    public void deleteNonExistent() {
 
     }
 
     @Override
-    public void listQueues() {
+    public void getProperties() {
 
     }
 
     @Override
-    public void setProperties() {
+    public void getPropertiesQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void setMetadata() {
+
+    }
+
+    @Override
+    public void setMetadataQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void setInvalidMetadata() {
+
+    }
+
+    @Override
+    public void deleteMetadata() {
+
+    }
+
+    @Override
+    public void getAccessPolicy() {
+
+    }
+
+    @Override
+    public void getAccessPolicyQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void setAccessPolicy() {
+
+    }
+
+    @Override
+    public void setAccessPolicyQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void setInvalidAccessPolicy() {
+
+    }
+
+    @Override
+    public void enqueueMessage() {
+
+    }
+
+    @Override
+    public void enqueueEmptyMessage() {
+
+    }
+
+    @Override
+    public void enqueueTooLargeMessage() {
+
+    }
+
+    @Override
+    public void enqueueShortTimeToLiveMessage() {
+
+    }
+
+    @Override
+    public void enqueueQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void dequeueMessage() {
+
+    }
+
+    @Override
+    public void dequeueMultipleMessages() {
+
+    }
+
+    @Override
+    public void dequeueTooManyMessages() {
+
+    }
+
+    @Override
+    public void dequeueQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void peekMessage() {
+
+    }
+
+    @Override
+    public void peekMultipleMessages() {
+
+    }
+
+    @Override
+    public void peekTooManyMessages() {
+
+    }
+
+    @Override
+    public void peekQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void clearMessages() {
+
+    }
+
+    @Override
+    public void clearMessagesQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void deleteMessage() {
+
+    }
+
+    @Override
+    public void deleteMessageInvalidPopReceipt() {
+
+    }
+
+    @Override
+    public void deleteMessageQueueDoesNotExist() {
+
+    }
+
+    @Override
+    public void updateMessage() {
+
+    }
+
+    @Override
+    public void updateMessageInvalidPopReceipt() {
+
+    }
+
+    @Override
+    public void updateMessageQueueDoesNotExist() {
 
     }
 }

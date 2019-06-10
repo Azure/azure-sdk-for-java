@@ -74,13 +74,21 @@ public final class QueueServiceClient {
         client.deleteQueue(queueName);
     }
 
+    public Iterable<QueueItem> listQueuesSegment() {
+        return listQueuesSegment(null, null);
+    }
+
+    public Iterable<QueueItem> listQueuesSegment(QueuesSegmentOptions options) {
+        return listQueuesSegment(null, options);
+    }
+
     /**
      * Lists the queues in the storage account
      * @param marker Starting point to list the queues
      * @param options Filter for queue selection
      * @return Queues in the storage account that passed the filter and metadata to continue listing more queues
      */
-    public Iterable<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+    Iterable<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
         return client.listQueuesSegment(marker, options).collectList().block();
     }
 
