@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -23,6 +24,10 @@ import java.util.function.Function;
  * <p><strong>Implementation of Long Running Operations</strong></p>
  *
  * @param <T>
+ *
+ * @see PollerOptions
+ * @see PollResponse
+ * @see com.azure.core.polling.PollResponse.OperationStatus
  */
 
 public class Poller<T> {
@@ -33,12 +38,12 @@ public class Poller<T> {
      * pollOperation is a Function that takes the previous PollResponse, and
      * returns a new PollResponse to represent the current state
      */
-    private Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
+    private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
 
     /*
      * Various configuration options to create poller object.
      */
-    private PollerOptions pollerOptions;
+    private final PollerOptions pollerOptions;
 
     /*
      * This will save last poll response.
@@ -77,13 +82,11 @@ public class Poller<T> {
      *
      * @param pollerOptions Not null configuration options for poller.
      * @param pollOperation to be called by poller. It should never return {@code null}. The response should always have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
-     * @see PollerOptions
-     * @see PollResponse
      */
     public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
 
-        validateAndThrow(pollerOptions, "pollerOptions");
-        validateAndThrow(pollOperation, "pollOperation");
+        Objects.requireNonNull(pollerOptions, "The PollerOptions input parameter cannot be null.");
+        Objects.requireNonNull(pollOperation, "The poll operation input parameter cannot be null.");
 
         this.pollerOptions = pollerOptions;
         this.pollOperation = pollOperation;
@@ -96,17 +99,10 @@ public class Poller<T> {
             .share();
 
         // auto polling start here
-        setAutoPollingEnabled(true);
+        fluxDisposable = fluxHandle.subscribe(pr -> pollResponse = pr);
+        autoPollingEnabled = true;
     }
 
-    /*
-     * Validatations for null values
-     */
-    private void validateAndThrow(Object object, String name) throws IllegalArgumentException {
-        if (object == null) {
-            throw new IllegalArgumentException(String.format(nullValueNotAllowedFormat, name));
-        }
-    }
     /**
      * Create a Poller object. Auto polling is turned on by default. The background thread will start immediately
      * and invoke pollOperation.
@@ -126,7 +122,6 @@ public class Poller<T> {
      * It will not call cancelOperation if operation status is not started/Cancelled/Failed/successfully completed.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
-     * @see com.azure.core.polling.PollResponse.OperationStatus
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (cancelOperation == null) {
@@ -184,13 +179,10 @@ public class Poller<T> {
      */
     private void updatePollOperationAsync() {
         pollOperation.apply(pollResponse).subscribe(pResponse -> {
-            processAsynchPollResponse(pResponse);
+            this.pollResponse = pResponse;
         });
     }
 
-    private void processAsynchPollResponse(PollResponse response) {
-        this.pollResponse = response;
-    }
     /*
      * Get whether or not this PollStrategy's long running operation is done.
      * @return Whether or not this PollStrategy's long running operation is done.
@@ -199,8 +191,6 @@ public class Poller<T> {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             if (!isTerminalState()) {
                 updatePollOperationAsync();
-            } else if (!isTerminalState()) {
-                return Mono.empty();
             }
             return Mono.just(pollResponse);
         })));
@@ -239,7 +229,7 @@ public class Poller<T> {
      * @param autoPollingEnabled true  Ensures the polling is happening in background.
      *                           false  Ensures that polling is not happening in background.
      */
-    public void setAutoPollingEnabled(boolean autoPollingEnabled) {
+    public final void setAutoPollingEnabled(boolean autoPollingEnabled) {
 
         // setting same auto polling status would not require any action.
         if (this.autoPollingEnabled == autoPollingEnabled) {

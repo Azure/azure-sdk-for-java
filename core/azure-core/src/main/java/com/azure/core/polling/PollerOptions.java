@@ -4,6 +4,7 @@
 package com.azure.core.polling;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * This class provide configuration options needed to create Poller.
@@ -12,7 +13,7 @@ import java.time.Duration;
  */
 public class PollerOptions {
 
-    private String negativeValueFormat = "Null, negative or zero poll interval not allowed.";
+    private String negativeValueFormat = "Negative or zero poll interval not allowed.";
     private Duration pollInterval;
 
     /**
@@ -22,7 +23,11 @@ public class PollerOptions {
      * @throws IllegalArgumentException for {@code null} , zero and negative values.
      */
     public PollerOptions(Duration pollInterval) throws IllegalArgumentException {
-        validateValuesAndThrow(pollInterval);
+
+        Objects.requireNonNull(pollInterval, "The poll interval input parameter cannot be null.");
+        if (pollInterval.toNanos() <= 0) {
+            throw new IllegalArgumentException(negativeValueFormat);
+        }
         this.pollInterval = pollInterval;
     }
 
@@ -31,9 +36,7 @@ public class PollerOptions {
      */
     private void validateValuesAndThrow(Duration pollInterval) {
 
-        if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            throw new IllegalArgumentException(negativeValueFormat);
-        }
+
     }
 
     /**
