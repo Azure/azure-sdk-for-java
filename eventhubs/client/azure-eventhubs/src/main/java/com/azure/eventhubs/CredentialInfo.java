@@ -58,19 +58,19 @@ public final class CredentialInfo {
         return createCredentialInfo(connectionString, eventHubPath);
     }
 
-    URI endpoint() {
+    public URI endpoint() {
         return endpoint;
     }
 
-    String sharedAccessKeyName() {
+    public String sharedAccessKeyName() {
         return sharedAccessKeyName;
     }
 
-    String sharedAccessKey() {
+    public String sharedAccessKey() {
         return sharedAccessKey;
     }
 
-    String eventHubPath() {
+    public String eventHubPath() {
         return eventHubPath;
     }
 
