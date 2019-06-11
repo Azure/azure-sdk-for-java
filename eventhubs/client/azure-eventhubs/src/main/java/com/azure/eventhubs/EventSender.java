@@ -6,6 +6,10 @@ package com.azure.eventhubs;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.eventhubs.implementation.AmqpSendLink;
+import com.azure.eventhubs.implementation.EventDataUtil;
+import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +20,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -34,31 +37,20 @@ public class EventSender {
      */
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
-    private static final EventSenderOptions DEFAULT_OPTIONS = new EventSenderOptions();
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
-
-    //TODO (conniey): Remove this after I verify it all works.
-    private final AtomicInteger number = new AtomicInteger(0);
-    private final AtomicInteger totalEvents = new AtomicInteger(0);
     private final EventSenderOptions senderOptions;
-
-    /**
-     * Creates a new instance of the EventSender.
-     */
-    EventSender() {
-        this(DEFAULT_OPTIONS);
-    }
+    private final Mono<AmqpSendLink> amqpSendLinkMono;
 
     /**
      * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
      *
      * @code partitionId}.
      */
-    EventSender(EventSenderOptions options) {
-        Objects.requireNonNull(options);
-
+    EventSender(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
+        this.amqpSendLinkMono = amqpSendLinkMono;
         this.senderOptions = options;
     }
 
@@ -122,30 +114,38 @@ public class EventSender {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, EventBatchingOptions options) {
-        final String partitionId = senderOptions.partitionId();
+        final String partitionKey = options.partitionKey();
+        if (!ImplUtils.isNullOrEmpty(partitionKey) && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            throw new IllegalArgumentException(
+                String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", MAX_PARTITION_KEY_LENGTH));
+        }
 
         //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
         return events.collect(new EventDataCollector(options, 1))
-            .flatMap(list -> sendBatch(partitionId, Flux.fromIterable(list)));
+            .flatMap(list -> sendBatch(Flux.fromIterable(list)));
     }
 
-    private Mono<Void> sendBatch(String partitionId, Flux<EventDataBatch> eventBatches) {
+    private Mono<Void> sendBatch(Flux<EventDataBatch> eventBatches) {
         return eventBatches
-            .flatMap(batch -> sendBatch(partitionId, batch))
+            .flatMap(this::sendBatch)
             .doOnError(error -> {
-                logger.asError().log(error.toString());
-            }).doOnComplete(() -> {
-                logger.asInfo().log(String.format("TOTAL BATCHES: %s. EVENTS: %s", number.get(), totalEvents.get()));
+                logger.asError().log("Error sending batch.", error);
             }).then();
     }
 
-    //TODO (conniey): Add implementation to push through proton-j link.
-    private Mono<Void> sendBatch(String partitionId, EventDataBatch batch) {
-        number.incrementAndGet();
-        final int totals = totalEvents.addAndGet(batch.getSize());
-        logger.asWarning().log(String.format("[%s], size: %s, total: %s", batch.getPartitionKey(), batch.getSize(), totals));
+    private Mono<Void> sendBatch(EventDataBatch batch) {
+        if (batch.getEvents().isEmpty()) {
+            logger.asInfo().log("Cannot send an EventBatch that is empty.");
+            return Mono.empty();
+        }
 
-        return Mono.empty();
+        logger.asInfo().log("Sending to [{}], size: {}", batch.getPartitionKey(), batch.getSize());
+
+        final List<Message> messages = EventDataUtil.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
+
+        return amqpSendLinkMono.flatMap(link -> messages.size() == 1
+            ? link.send(messages.get(0))
+            : link.sendBatch(messages));
     }
 
     /*
