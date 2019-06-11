@@ -107,10 +107,19 @@ public final class QueueServiceAsyncClient {
         }
     }
 
+    /**
+     * Lists the queues in the storage account
+     * @return queues in the storage account
+     */
     public Flux<QueueItem> listQueuesSegment() {
         return listQueuesSegment(null, null);
     }
 
+    /**
+     * Lists the queues in the storage account
+     * @param options Filter for queue selection
+     * @return queues in the storage account that satisfy the filter requirements
+     */
     public Flux<QueueItem> listQueuesSegment(QueuesSegmentOptions options) {
         return listQueuesSegment(null, options);
     }
@@ -119,7 +128,7 @@ public final class QueueServiceAsyncClient {
      * Lists the queues in the storage account
      * @param marker Starting point to list the queues
      * @param options Filter for queue selection
-     * @return Queues in the storage account that passed the filter and metadata to continue listing more queues
+     * @return queues in the storage account that satisfy the filter requirements
      */
     Flux<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
         String prefix = null;
