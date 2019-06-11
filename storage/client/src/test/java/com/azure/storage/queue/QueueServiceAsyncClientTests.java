@@ -7,7 +7,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
 import com.azure.storage.queue.models.QueueItem;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.RetentionPolicy;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
@@ -50,12 +49,13 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
     @Override
     protected void afterTest() {
-        serviceClient.listQueuesSegment(new QueuesSegmentOptions().prefix(queueName))
+        serviceClient.listQueuesSegment()
             .collectList()
             .block()
-            .forEach(queueToDelete -> {
+            .forEach(queue -> {
+                QueueAsyncClient client = serviceClient.getQueueAsyncClient(queue.name());
                 try {
-                    serviceClient.deleteQueue(queueToDelete.name());
+                    client.clearMessages().then(client.delete()).block();
                 } catch (StorageErrorException ex) {
                     // Queue already delete, that's what we wanted anyways.
                 }
@@ -251,5 +251,20 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         StepVerifier.create(serviceClient.getProperties())
             .assertNext(response -> assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
             .verifyComplete();
+    }
+
+    //@Test
+    public void deleteAllQueues() {
+        serviceClient.listQueuesSegment()
+            .collectList()
+            .block()
+            .forEach(queue -> {
+                QueueAsyncClient client = serviceClient.getQueueAsyncClient(queue.name());
+                try {
+                    client.clearMessages().then(client.delete()).block();
+                } catch (StorageErrorException ex) {
+                    // Queue already delete, that's what we wanted anyways.
+                }
+            });
     }
 }

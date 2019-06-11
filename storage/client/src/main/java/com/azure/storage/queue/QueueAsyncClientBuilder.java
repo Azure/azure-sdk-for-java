@@ -18,6 +18,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.queue.credentials.SASTokenCredential;
 import com.azure.storage.queue.credentials.SharedKeyCredential;
 import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
+import com.azure.storage.queue.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,8 +55,11 @@ public final class QueueAsyncClientBuilder {
      */
     public QueueAsyncClient build() {
         Objects.requireNonNull(endpoint);
-        Objects.requireNonNull(sasTokenCredential);
         Objects.requireNonNull(queueName);
+
+        if (sasTokenCredential == null && sharedKeyCredential == null) {
+            throw new IllegalArgumentException("Credentials are required for authorization");
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -63,7 +67,13 @@ public final class QueueAsyncClientBuilder {
         policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        }
+
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);

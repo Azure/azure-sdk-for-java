@@ -57,7 +57,9 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         serviceClient.listQueuesSegment(new QueuesSegmentOptions().prefix(queueName))
             .forEach(queueToDelete -> {
                 try {
-                    serviceClient.deleteQueue(queueToDelete.name());
+                    QueueClient client = serviceClient.getQueueClient(queueToDelete.name());
+                    client.clearMessages();
+                    client.delete();
                 } catch (StorageErrorException ex) {
                     // Queue already delete, that's what we wanted anyways.
                 }

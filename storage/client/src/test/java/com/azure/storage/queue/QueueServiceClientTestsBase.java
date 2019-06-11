@@ -52,6 +52,7 @@ public abstract class QueueServiceClientTestsBase extends TestBase {
 
         return clientBuilder.apply(connectionString, queueEndpoint);
     }
+
     String getQueueName() {
         return testResourceNamer.randomName("queue", 16).toLowerCase();
     }

@@ -104,11 +104,6 @@ public class QueueClientTests extends QueueClientTestsBase {
     }
 
     @Override
-    public void enqueueTooLargeMessage() {
-
-    }
-
-    @Override
     public void enqueueShortTimeToLiveMessage() {
 
     }
