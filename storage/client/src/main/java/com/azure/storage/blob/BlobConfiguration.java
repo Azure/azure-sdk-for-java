@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
-public class BlobConfiguration {
+class BlobConfiguration {
     static final String NAME = "storage-blob";
     static final String VERSION = "1.0.0-SNAPSHOT";
 }

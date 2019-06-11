@@ -17,7 +17,7 @@ import java.util.UUID;
  * allow the default pipeline to add this factory automatically and assume that it works. The factory and policy must
  * only be used directly when creating a custom pipeline.
  */
-public final class RequestIDPolicy implements HttpPipelinePolicy {
+final class RequestIDPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

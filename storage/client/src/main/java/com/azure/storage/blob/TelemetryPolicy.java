@@ -17,7 +17,7 @@ import java.util.Locale;
  * a field on a {@link PipelineOptions} object to configure a default pipeline. The factory and policy must only be used
  * directly when creating a custom pipeline.
  */
-public final class TelemetryPolicy implements HttpPipelinePolicy {
+final class TelemetryPolicy implements HttpPipelinePolicy {
 
     private final String userAgent;
 

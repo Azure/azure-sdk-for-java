@@ -20,7 +20,7 @@ import java.util.Map;
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")] \n
  * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
-public final class BlobURLParts {
+final class BlobURLParts {
 
     private String scheme;
 

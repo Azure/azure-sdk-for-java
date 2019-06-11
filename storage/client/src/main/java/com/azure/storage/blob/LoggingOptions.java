@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 /**
  * Options to configure the {@link LoggingPolicy}. Please refer to the Factory for more information.
  */
-public final class LoggingOptions {
+final class LoggingOptions {
 
     /**
      * Default logging options. {@code MinDurationToLogSlowRequestsInMs} is set to 3000;
