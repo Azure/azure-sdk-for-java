@@ -260,14 +260,14 @@
             <linksource>false</linksource>
             <excludePackageNames>
               com.microsoft.azure.template:
-              *.impl.*:
-              *.implementation.*:
+              *.impl*:
+              *.implementation*:
               com.azure.tracing.opencensus*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
+                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util</packages>
               </group>
               <group>
                 <title>Azure Core - Management</title>
