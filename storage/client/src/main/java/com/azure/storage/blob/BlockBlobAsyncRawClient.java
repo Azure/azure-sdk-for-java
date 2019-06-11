@@ -126,8 +126,6 @@ public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        byte[] buf = data.blockLast().array();
-
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, metadata, null, null,
             null, null, headers, accessConditions.leaseAccessConditions(),

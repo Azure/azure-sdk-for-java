@@ -34,6 +34,7 @@ public final class ContainerAsyncClient {
     public static final String LOG_CONTAINER_NAME = "$logs";
 
     ContainerAsyncClient(ContainerClientBuilder builder) {
+        this.builder = builder;
         this.containerAsyncRawClient = new ContainerAsyncRawClient(builder.buildImpl());
     }
 
