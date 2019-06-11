@@ -38,11 +38,16 @@ class APISpec extends Specification {
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
-    static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
+    static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
     static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData)
 
-    static final InputStream defaultInputStream = new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+        @Override
+        InputStream get() {
+            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+        }
+    }
 
     static defaultDataSize = defaultData.remaining()
 
