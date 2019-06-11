@@ -436,15 +436,6 @@ public class EventData implements Comparable<EventData> {
             return sequenceNumber;
         }
 
-        /**
-         * Gets the name of the publisher if this was sent to a publisher endpoint.
-         *
-         * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
-         */
-        private String publisher() {
-            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME.getValue());
-        }
-
         @SuppressWarnings("unchecked")
         private <T> T getSystemProperty(final String key) {
             if (this.containsKey(key)) {
