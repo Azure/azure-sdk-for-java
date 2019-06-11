@@ -38,7 +38,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 #### Get Credentials
 
-- SAS Token
+- **SAS Token**
  
 a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
@@ -63,7 +63,8 @@ b. Alternatively, get the Account SAS Token from the Azure Portal.
 Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
 ```
 
-- Shared Key Credential
+- **Shared Key Credential**
+
 a. Use account name and account key. Account name is your storage account name.
 ```
 // Here is where we get the key
@@ -91,18 +92,18 @@ For a queue, the base URI includes the name of the account and the name of the q
 https://myaccount.queue.core.windows.net/myqueue
 ```
 
+### Handling Exceptions
+
+```java
+TODO
+```
+
 ### Queue Names
 Every queue within an account must have a unique name. The queue name must be a valid DNS name, and cannot be changed once created. Queue names must confirm to the following rules:
 1. A queue name must start with a letter or number, and can only contain letters, numbers, and the dash (-) character.
 1. The first and last letters in the queue name must be alphanumeric. The dash (-) character cannot be the first or last character. Consecutive dash characters are not permitted in the queue name.
 1. All letters in a queue name must be lowercase.
 1. A queue name must be from 3 through 63 characters long.
-
-### Metadata Names
-Metadata for a queue resource is stored as name-value pairs. 
-Note that metadata names preserve the case with which they were created, but are case-insensitive when set or read. 
-If two or more metadata headers with the same name are submitted for a resource, the Queue service returns status code 400 (Bad Request).
-
 
 ### Queue Services
 The queue service do operations on the queues in the storage account and manage the queue properties. 
