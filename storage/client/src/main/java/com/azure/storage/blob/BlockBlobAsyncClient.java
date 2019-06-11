@@ -9,10 +9,12 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -79,7 +81,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuf> data, long length) {
+    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
     }
 
@@ -121,10 +123,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobAsyncRawClient.upload")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
-            .upload(data, length, headers, metadata, accessConditions, context)
+            .upload(data.map(nettyBuf -> Unpooled.wrappedBuffer(nettyBuf.array())), length, headers, metadata, accessConditions, context)
             .map(ResponseBase::deserializedHeaders);
     }
 

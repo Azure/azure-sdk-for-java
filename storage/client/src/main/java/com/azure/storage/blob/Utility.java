@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
@@ -12,6 +13,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -305,5 +308,29 @@ final class Utility {
         } catch (final NoSuchAlgorithmException e) {
             throw new Error(e);
         }
+    }
+
+    /**
+     * Appends a string to the end of a URL's path (prefixing the string with a '/' if required).
+     *
+     * @param baseURL
+     *         The url to which the name should be appended.
+     * @param name
+     *         The name to be appended.
+     *
+     * @return A url with the name appended.
+     *
+     * @throws MalformedURLException
+     *         Appending the specified name produced an invalid URL.
+     */
+    static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
+        UrlBuilder url = UrlBuilder.parse(baseURL.toString());
+        if (url.path() == null) {
+            url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
+        } else if (url.path().charAt(url.path().length() - 1) != '/') {
+            url.withPath(url.path() + '/');
+        }
+        url.withPath(url.path() + name);
+        return new URL(url.toString());
     }
 }

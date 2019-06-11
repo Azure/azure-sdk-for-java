@@ -9,6 +9,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -68,7 +69,6 @@ public final class BlockBlobClient extends BlobClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flowable} must produce the same data each time it is subscribed to.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
      *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
@@ -98,7 +98,6 @@ public final class BlockBlobClient extends BlobClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flowable} must produce the same data each time it is subscribed to.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
      *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
@@ -133,7 +132,7 @@ public final class BlockBlobClient extends BlobClient {
         data.read(bufferedData);
 
         Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient
-            .upload(ByteBufFlux.fromInbound(Flux.just(ByteBuffer.wrap(bufferedData))), length, headers, metadata, accessConditions, context);
+            .upload(Flux.just(ByteBuffer.wrap(bufferedData)), length, headers, metadata, accessConditions, context);
 
         return timeout == null?
             response.block():

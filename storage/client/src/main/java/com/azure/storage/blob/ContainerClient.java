@@ -11,6 +11,8 @@ import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public final class ContainerClient {
 
     private ContainerAsyncClient containerAsyncClient;
+    private ContainerClientBuilder builder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -32,8 +35,9 @@ public final class ContainerClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
-    ContainerClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncClient  = new ContainerAsyncClient(azureBlobStorage);
+    ContainerClient(ContainerClientBuilder builder) {
+        this.builder = builder;
+        this.containerAsyncClient  = new ContainerAsyncClient(builder);
     }
 
     /**
@@ -56,7 +60,11 @@ public final class ContainerClient {
      * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient createBlockBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlockBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -72,7 +80,11 @@ public final class ContainerClient {
      * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient createPageBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new PageBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -88,7 +100,11 @@ public final class ContainerClient {
      * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobClient createAppendBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new AppendBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -104,7 +120,11 @@ public final class ContainerClient {
      * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
      */
     public BlobClient createBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -653,10 +673,6 @@ public final class ContainerClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      *
@@ -667,8 +683,8 @@ public final class ContainerClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
-        return this.listBlobsFlatSegment(marker, options, null, null);
+    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options) {
+        return this.listBlobsFlat(options, null, null);
     }
 
     /**
@@ -678,10 +694,6 @@ public final class ContainerClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      * @param context
@@ -698,8 +710,8 @@ public final class ContainerClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout, Context context) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsFlatSegment(options, context);
+    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout, Context context) {
+        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options, context);
 
         return timeout == null ?
             response.toIterable():

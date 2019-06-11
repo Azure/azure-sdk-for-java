@@ -33,7 +33,6 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 final class BlobServiceAsyncRawClient {
 
     AzureBlobStorageImpl azureBlobStorage;
-    AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -43,9 +42,8 @@ final class BlobServiceAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlobServiceAsyncRawClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
-        this.azureBlobStorage = azureBlobStorageBuilder.build();
+    public BlobServiceAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**

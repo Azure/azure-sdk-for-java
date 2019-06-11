@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
 public final class BlobServiceAsyncClient {
 
     BlobServiceAsyncRawClient blobServiceAsyncRawClient;
+    private BlobServiceClientBuilder builder;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
@@ -35,8 +36,9 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlobServiceAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorageBuilder);
+    public BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
+        this.builder = builder;
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(builder.buildImpl());
     }
 
     /**
@@ -49,7 +51,11 @@ public final class BlobServiceAsyncClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient createContainerAsyncClient(String containerName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new ContainerAsyncClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

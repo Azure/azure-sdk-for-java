@@ -27,6 +27,10 @@ public final class AzureBlobStorageBuilder {
         return this;
     }
 
+    String getURL() {
+        return this.url;
+    }
+
     /*
      * Specifies the version of the operation to use for this request.
      */

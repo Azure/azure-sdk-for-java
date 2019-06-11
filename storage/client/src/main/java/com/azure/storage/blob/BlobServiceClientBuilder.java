@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Fluent appendBlobClientBuilder for container async clients.
  */
-public final class ContainerClientBuilder {
+public final class BlobServiceClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -41,14 +41,14 @@ public final class ContainerClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    ContainerClientBuilder() {
+    BlobServiceClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
-    ContainerClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
-            HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
+    private BlobServiceClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
+        HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
         this.policies = policies;
         this.endpoint = endpoint;
         this.credentials = credentials;
@@ -58,7 +58,11 @@ public final class ContainerClientBuilder {
         this.configuration = configuration;
     }
 
-    ContainerClientBuilder copyBuilder() {
+    BlobServiceClientBuilder copyBuilder() {
+        return new BlobServiceClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
+    }
+
+    ContainerClientBuilder copyAsContainerBuilder() {
         return new ContainerClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
     }
 
@@ -93,12 +97,12 @@ public final class ContainerClientBuilder {
             .build();
     }
 
-    public ContainerClient buildClient() {
-        return new ContainerClient(this);
+    public BlobServiceClient buildClient() {
+        return new BlobServiceClient(this);
     }
 
-    public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(this);
+    public BlobServiceAsyncClient buildAsyncClient() {
+        return new BlobServiceAsyncClient(this);
     }
 
     /**
@@ -106,7 +110,7 @@ public final class ContainerClientBuilder {
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder endpoint(String endpoint) {
+    public BlobServiceClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -126,7 +130,7 @@ public final class ContainerClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(SharedKeyCredentials credentials) {
+    public BlobServiceClientBuilder credentials(SharedKeyCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -136,7 +140,7 @@ public final class ContainerClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(TokenCredentials credentials) {
+    public BlobServiceClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -145,7 +149,7 @@ public final class ContainerClientBuilder {
      * Clears the credentials used to authorize requests sent to the service
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder anonymousCredentials() {
+    public BlobServiceClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
         return this;
     }
@@ -155,7 +159,7 @@ public final class ContainerClientBuilder {
      * @param connectionString connection string from access keys section
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder connectionString(String connectionString) {
+    public BlobServiceClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -181,7 +185,7 @@ public final class ContainerClientBuilder {
      * @param httpClient http client to send requests
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder httpClient(HttpClient httpClient) {
+    public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -191,7 +195,7 @@ public final class ContainerClientBuilder {
      * @param pipelinePolicy a pipeline policy
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
@@ -201,7 +205,7 @@ public final class ContainerClientBuilder {
      * @param logLevel logging level
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public BlobServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
@@ -212,7 +216,7 @@ public final class ContainerClientBuilder {
      * @param configuration configuration store
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder configuration(Configuration configuration) {
+    public BlobServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
