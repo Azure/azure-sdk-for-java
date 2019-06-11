@@ -14,16 +14,61 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * This class provides implementation of long running operations. The poller starts polling <b>automatically in background</b>.
- * It uses {@link Flux} from reactive programming model and subscribe to achieve auto polling.
- * It has function for usual operation of a poller. For example listen to poll responses, enable/disable auto polling,
+ * This class provides implementation of long running operations. The poller starts polling <b>automatically</b> when Poller instance is created.
+ * It uses {@link Flux} from reactive programming model to achieve auto polling.
+ * It has function for usual operation of a poller. For example listen/observe poll responses, enable/disable auto polling,
  * manual polling, wait for polling to complete and get status of current polling.
- * <p>
- * Since auto polling is turned <b>on</b> by default. If some scenario requires to disable this feature.
- * It can be done by following code
- * <pre><code>
- *     myPollerInstance.setAutoPollingEnabled(false)
- * </code></pre>
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <p><strong>Instantiating and Subscribing to Poll Response</strong></p>
+ *
+ * <pre>
+ *     // Assumption : Our task is to create Certificate and the return CreateCertificateResponse in Poll Response. CreateCertificateResponse is user defined custom class.
+ *
+ * <p>     class CreateCertificateResponse {
+ *              String myresponse;
+ *              CreateCertificateResponse(String respone) {
+ *                  this.myresponse = respone;
+ *              }
+ *              public String toString() {
+ *                  return this.myresponse;
+ *              }
+ *          }
+ *<p>  // 1. Create your poll Operation Function
+ *
+ *<p>  Function&lt;PollResponse&lt;CreateCertificateResponse&gt;, Mono&lt;PollResponse&lt;CreateCertificateResponse&gt;&gt;&gt; pollOperation = ....
+ *<p>  PollerOptions pollerOptions = new PollerOptions(Duration.ofMillis(1000));
+ *<p>  // 2. Create your poller instance, Replace T with your Custom Response
+ *<p>  Poller&lt;CreateCertificateResponse&gt; myPoller = new Poller&lt;&gt;(pollerOptions, pollOperation);
+ *     myPoller.getObserver().subscribe(pollResponse -&gt; {
+ *          // process poll response here
+ *          System.out.println("Got Response " + pollResponse.getStatus().toString() + " " + pollResponse.getValue());
+ *          });
+ *      // Do something else</pre>
+ *
+ * <p><strong>Wait/Block for Polling to complete</strong></p>
+ *
+ * <pre>
+ *    PollResponse&lt;CreateCertificateResponse&gt;  myFinalResponse = myPoller.block();
+ *    System.out.println(("Polling complete final status , value=  " + myFinalResponse.getStatus().toString() + "," + myFinalResponse.pr.getValue());</pre>
+ *
+ * <p><strong>Disable auto polling</strong></p>
+ *
+ * <pre>
+ *     myPoller.setAutoPollingEnabled(false);</pre>
+ *
+ * <p><strong>Disable auto polling and manual polling</strong></p>
+ * <p> We assume that we get SUCCESSFULLY_COMPLETED status from pollOperation when polling is done.
+ * <pre>
+ *     myPoller.setAutoPollingEnabled(false);
+ *     while (myPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
+ *           PollResponse&lt;CreateCertificateResponse> pollResponse = myPoller.poll().block(); //this will poll once
+ *           // Wait in between each poll
+ *           Thread.sleep(Duration.ofMillis(5000));
+ *     }
+ *     System.out.println(("Polling complete.");</pre>
+ *
  * <p><strong>Implementation of Long Running Operations</strong></p>
  *
  * @param <T> type of poll response value
@@ -62,11 +107,6 @@ public class Poller<T> {
      */
     private boolean autoPollingEnabled;
 
-    /*
-     * Indicate if cancel is initiated.
-     */
-    private boolean cancelInitiated;
-
     private Flux<PollResponse<T>> fluxHandle;
 
     /*
@@ -77,12 +117,14 @@ public class Poller<T> {
     private Disposable fluxDisposable;
 
     /**
-     * Create a Poller object. The polling starts immediately by default and invoke pollOperation.
+     * Create a Poller object. The polling starts immediately by default and it will invoke pollOperation.
      * The poll interval would defined by retryAfter value in {@link PollResponse}.
      * In absence of retryAfter, the poller will use pollInterval defined in {@link PollerOptions}.
      *
      * @param pollerOptions Not null configuration options for poller.
      * @param pollOperation to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
+     * @throws NullPointerException If {@code pollerOptions} is {@code null}.
+     * @throws NullPointerException If {@code pollOperation} is {@code null}.
      */
     public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
 
@@ -105,11 +147,13 @@ public class Poller<T> {
     }
 
     /**
-     * Create a Poller object. The polling starts immediately by default and invoke pollOperation.
+     * Create a Poller object with cancel operation. The polling starts immediately by default and invoke pollOperation.
      *
      * @param pollerOptions   configuration options for poller.
      * @param pollOperation   to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
      * @param cancelOperation cancel operation
+     * @throws NullPointerException If {@code pollerOptions} is {@code null}.
+     * @throws NullPointerException If {@code pollOperation} is {@code null}.
      */
     public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
         this(pollerOptions, pollOperation);
@@ -117,9 +161,8 @@ public class Poller<T> {
     }
 
     /**
-     * This will call cancelOperation function if provided. Once cancelOperation is triggered successfully, it can not be called again.
-     * This is to avoid unintentional calls to cancelOperation.
-     * It will only call cancelOperation if {@link com.azure.core.polling.PollResponse.OperationStatus} is IN_PROGRESS.
+     * Calls cancelOperation function if provided.
+     * It will only call cancelOperation if {@link com.azure.core.polling.PollResponse.OperationStatus} is IN_PROGRESS otherwise does nothing.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
      */
@@ -129,20 +172,18 @@ public class Poller<T> {
         }
 
         // We can not cancel an operation if it was never started
-        // or it is in its terminal state.
-        // Check cancelInitiated: to protect against multiple time call to cancel operation
-        if (cancelInitiated || (pollResponse != null && pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS)) {
+        // It only make sense to call cancel operation if current status IN_PROGRESS.
+        if (pollResponse != null && pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
             return;
         }
         //Time to call cancel
         cancelOperation.accept(this);
-        cancelInitiated = true;
     }
 
     /**
      * Enable user to subscribe and listen on all the poll responses.
      * The user will start receiving PollResponse when client subscribe to this Flux.
-     * The poller still have its own auto polling in action unless user has turned off
+     * The poller could still have its own auto polling in action unless user has turned off
      * auto polling.
      *
      * @return poll response as Flux that can be subscribed.
@@ -152,21 +193,25 @@ public class Poller<T> {
     }
 
     /**
-     * This is function for manual poll. It will perform one poll.
+     * Enable user to take control of polling and trigger manual poll operation. It will perform one call to poll operation.
+     * This will not turn off auto polling.
      *
      * @return a Mono of {@link PollResponse}
      */
     public Mono<PollResponse<T>> poll() {
         return pollOperation.apply(pollResponse)
             .doOnEach(pollResponseSignal -> {
-                if (pollResponseSignal.get() != null) pollResponse = pollResponseSignal.get();
+                if (pollResponseSignal.get() != null) {
+                    pollResponse = pollResponseSignal.get();
+                }
             });
     }
 
     /**
-     * This will block till poll operation is complete.
+     * Blocks execution and wait for polling to complete.
+     * Auto polling must be turned on for poller to continuously poll in background.
      *
-     * @return returns last poll response.
+     * @return returns last poll response when polling is done.
      */
     public PollResponse<T> block() {
         return fluxHandle.blockLast();
@@ -191,11 +236,11 @@ public class Poller<T> {
     }
 
     /**
-     * Function to tun auto poll on or off. Once auto polling is turned off, it is user's responsibility
+     * Turn auto poll <strong>on or off</strong>. Once auto polling is turned off, it is <strong>user's responsibility</strong>
      * to turn it back on.
      *
      * @param autoPollingEnabled true  Ensures the polling is happening in background.
-     *                           false  Ensures that polling is not happening in background.
+     *                           false  Ensures that polling is <strong>not</strong> happening in background.
      */
     public final void setAutoPollingEnabled(boolean autoPollingEnabled) {
 
@@ -219,7 +264,7 @@ public class Poller<T> {
     }
 
     /**
-     * Indicate if auto polling is on/off . By default auto polling is turned on.
+     * Indicate if auto polling is on/off . By default auto polling is turned <strong>on</strong>.
      *
      * @return false if polling is stopped.
      */
@@ -229,7 +274,7 @@ public class Poller<T> {
 
     /**
      * Current known status as a result of last poll event.
-     * @return status {@code null} if no status is available.
+     * @return current status {@code null} if no status is available.
      */
     public PollResponse.OperationStatus getStatus() {
         return pollResponse != null ? pollResponse.getStatus() : null;

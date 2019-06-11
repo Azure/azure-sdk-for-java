@@ -64,14 +64,14 @@ public class PollerTests {
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse, 800);
+            successPollResponse, 800);
 
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
-        createCertPoller.getObserver().subscribe( pr -> {
-           debug("Got Response "+pr.getStatus().toString()+" " +pr.getValue().response);
+        createCertPoller.getObserver().subscribe(pr -> {
+            debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
+
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -88,6 +88,7 @@ public class PollerTests {
             }
         };
         t.start();
+
         debug("Poll and wait for it to complete  ");
         Thread.sleep(totalTimeoutInMillis);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
@@ -189,7 +190,6 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-
     }
 
     /* Test where SDK Client is subscribed to only final/last response.
@@ -205,11 +205,11 @@ public class PollerTests {
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
         long totalTimeoutInMillis = 1000 * 10;
-        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis/10);
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 10);
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse, totalTimeoutInMillis/2);
+                successPollResponse, totalTimeoutInMillis / 2);
 
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
        
@@ -282,12 +282,51 @@ public class PollerTests {
         createCertPoller.setAutoPollingEnabled(false);
         while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
             PollResponse<CreateCertificateResponse> pollResponse = createCertPoller.poll().block();
-            new Thread().sleep(pollInterval.toMillis());
+            Thread.sleep(pollInterval.toMillis());
         }
 
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
 
+    }
+
+    /* Test where SDK Client is subscribed all responses.
+     * This scenario is setup where source will generate user cancelled response returned
+     * after few in-progress response. The sdk client will wait for it to cancel get final USER_CANCELLED response.
+     **/
+    @Test
+    public void subscribeToAllPollEventCancelOperatopnTest() throws Exception {
+
+        PollResponse<CreateCertificateResponse> cancelPollResponse = new PollResponse<>(OperationStatus.USER_CANCELLED, new CreateCertificateResponse("Cancelled : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+
+        long totalTimeoutInMillis = 1000 * 1;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 10);
+
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
+            createPollOperation(inProgressPollResponse,
+                cancelPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
+
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(new PollerOptions(pollInterval), pollOperation);
+        createCertPoller.getObserver().subscribe(pr -> {
+            debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
+        });
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(totalTimeoutInMillis / 2);
+                    debug("Cancelling operation");
+                    createCertPoller.cancelOperation();
+                } catch (Exception e) {
+                }
+            }
+        };
+        t.start();
+
+        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.USER_CANCELLED);
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     private void showResults(Collection<PollResponse<CreateCertificateResponse>> al) {

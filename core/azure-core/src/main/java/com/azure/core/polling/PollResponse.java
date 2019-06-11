@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class is container of information related to polling and poll response.
+ * Container of information related to polling and poll response. It will hold current polling status {@link OperationStatus} , T value,
+ * retry after duration and various configuration properties.
  *
  * <p><strong>Container of PollResponse and related information.</strong></p>
  * @param <T> type of poll response value
@@ -22,7 +23,7 @@ public final class PollResponse<T> {
 
     /**
      * Represent various state of poll operation.
-     * The poll operation is considered complete when status is one of SUCCESSFULLY_COMPLETED/FAILED/USER_CANCELLED
+     * The poll operation is considered complete/done when status is one of SUCCESSFULLY_COMPLETED/FAILED/USER_CANCELLED.
      **/
     public enum OperationStatus {
         NOT_STARTED,
@@ -38,8 +39,8 @@ public final class PollResponse<T> {
      * @param status Mandatory operation status
      * @param result the result
      * @param retryAfter How long to wait before next retry.
-     * @param properties the map of perperties which user want to store in poller. This could be used by Poll Operation function
-     *                   when it gets called by {@link Poller}
+     * @param properties the map of perperties which user might need in poll operation. This could be used by Poll Operation function
+     *                   when it gets called by {@link Poller}, since this Poll Response object will be supplied to poll operation in next polling cycle.
      */
     public PollResponse(OperationStatus status, T result, Duration retryAfter, Map<Object, Object> properties) {
         this(status, result, retryAfter);
@@ -92,7 +93,7 @@ public final class PollResponse<T> {
      *     <li>Failed</li>
      * </ul>
      *
-     * @return true if operation is done.
+     * @return true if operation is done/complete.
      */
     public boolean isDone() {
         return status == OperationStatus.SUCCESSFULLY_COMPLETED
@@ -110,7 +111,7 @@ public final class PollResponse<T> {
     }
 
     /**
-     *
+     * retry after durtion
      * @return Duration how long before next retry.
      */
     public Duration getRetryAfter() {
@@ -118,7 +119,7 @@ public final class PollResponse<T> {
     }
 
     /**
-     *
+     * various config properties which could be used by poll operation  in {@link Poller}
      * @return Map of properties
      */
     public Map<Object, Object> getProperties() {
