@@ -5,16 +5,15 @@ package com.azure.core.polling;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class is container of information related to polling and poll response.
  *
  * <p><strong>Container of PollResponse and related information.</strong></p>
- * @param <T>
+ * @param <T> type of poll response value
  */
 public final class PollResponse<T> {
-
-    private String nullValueNotAllowedFormat = "Null value for %s not allowed.";
 
     private OperationStatus status;
     private T value;
@@ -23,7 +22,7 @@ public final class PollResponse<T> {
 
     /**
      * Represent various state of poll operation.
-     * The poll operation is considered complete when status is one of SUCCESSFULLY_COMPLETED/FAILEDUSER_CANCELLED
+     * The poll operation is considered complete when status is one of SUCCESSFULLY_COMPLETED/FAILED/USER_CANCELLED
      **/
     public enum OperationStatus {
         NOT_STARTED,
@@ -34,12 +33,13 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Constructor
+     * Create a Poll Response
      *
-     * @param status : operation status
-     * @param result : the result
-     * @param retryAfter : How long before next retry.
-     * @param properties : the map of perperties which user want to store.
+     * @param status Mandatory operation status
+     * @param result the result
+     * @param retryAfter How long to wait before next retry.
+     * @param properties the map of perperties which user want to store in poller. This could be used by Poll Operation function
+     *                   when it gets called by {@link Poller}
      */
     public PollResponse(OperationStatus status, T result, Duration retryAfter, Map<Object, Object> properties) {
         this(status, result, retryAfter);
@@ -47,11 +47,11 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Constructor
+     * Create a Poll Response
      *
-     * @param status : operation status
-     * @param value : the value
-     * @param retryAfter : How long before next retry.
+     * @param status Mandatory operation status
+     * @param value the value
+     * @param retryAfter How long before next retry.
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter) {
         this(status, value);
@@ -59,23 +59,15 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Constructor
+     * Create a Poll Response
      *
-     * @param status : operation status
-     * @param value : the value
-     *
-     * @throws IllegalArgumentException for null status
-     */
-    public PollResponse(OperationStatus status, T value) throws IllegalArgumentException {
-        validateAndThrow(status, "status");
+     * @param status Mandatory operation status
+     * @param value the value
+     **/
+    public PollResponse(OperationStatus status, T value) {
+        Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
         this.value = value;
-    }
-
-    private void validateAndThrow(Object object, String name) throws IllegalArgumentException {
-        if (object == null) {
-            throw new IllegalArgumentException(String.format(nullValueNotAllowedFormat, name));
-        }
     }
 
     /**
@@ -93,7 +85,7 @@ public final class PollResponse<T> {
     }
 
     /**
-     * An operation will be done if it is
+     * An operation will be done/complete if it is of of the following.
      * <ul>
      *     <li>Successfully Complete</li>
      *     <li>Cancelled</li>

@@ -9,22 +9,24 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * This class provides implementation of long running operations. The poller starts polling by <b>automatically in background</b>.
+ * This class provides implementation of long running operations. The poller starts polling <b>automatically in background</b>.
+ * It uses {@link Flux} from reactive programming model and subscribe to achieve auto polling.
  * It has function for usual operation of a poller. For example listen to poll responses, enable/disable auto polling,
  * manual polling, wait for polling to complete and get status of current polling.
  * <p>
  * Since auto polling is turned <b>on</b> by default. If some scenario requires to disable this feature.
- * It can be done by calling setAutoPollingEnabled(false) function.
- *
+ * It can be done by following code
+ * <pre><code>
+ *     myPollerInstance.setAutoPollingEnabled(false)
+ * </code></pre>
  * <p><strong>Implementation of Long Running Operations</strong></p>
  *
- * @param <T>
+ * @param <T> type of poll response value
  *
  * @see PollerOptions
  * @see PollResponse
@@ -35,7 +37,7 @@ public class Poller<T> {
 
     /*
      * pollOperation is a Function that takes the previous PollResponse, and
-     * returns a new PollResponse to represent the current state
+     * returns a new Mono of PollResponse to represent the current state
      */
     private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
 
@@ -74,14 +76,13 @@ public class Poller<T> {
      */
     private Disposable fluxDisposable;
 
-
     /**
-     * Create a Poller object. The polling starts immediately by default.
+     * Create a Poller object. The polling starts immediately by default and invoke pollOperation.
      * The poll interval would defined by retryAfter value in {@link PollResponse}.
      * In absence of retryAfter, the poller will use pollInterval defined in {@link PollerOptions}.
      *
      * @param pollerOptions Not null configuration options for poller.
-     * @param pollOperation to be called by poller. It should never return {@code null}. The response should always have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
+     * @param pollOperation to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
      */
     public Poller(PollerOptions pollerOptions, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
 
@@ -92,7 +93,6 @@ public class Poller<T> {
         this.pollOperation = pollOperation;
         pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
 
-        debug(" Poller fluxHandle created      ");
         fluxHandle = asyncPollRequestWithDelay()
             .flux()
             .repeat()
@@ -100,18 +100,12 @@ public class Poller<T> {
             .share();
 
         // auto polling start here
-        fluxDisposable = fluxHandle.subscribe(
-            pr -> {
-                pollResponse = pr;
-                debug(" Constructor Got Response =" + pollResponse.getValue());
-            });
+        fluxDisposable = fluxHandle.subscribe();
         autoPollingEnabled = true;
-        debug(" Poller fluxHandle subscribed  exit constructor");
     }
 
     /**
-     * Create a Poller object. Auto polling is turned on by default. The background thread will start immediately
-     * and invoke pollOperation.
+     * Create a Poller object. The polling starts immediately by default and invoke pollOperation.
      *
      * @param pollerOptions   configuration options for poller.
      * @param pollOperation   to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.polling.PollResponse.OperationStatus}
@@ -125,7 +119,7 @@ public class Poller<T> {
     /**
      * This will call cancelOperation function if provided. Once cancelOperation is triggered successfully, it can not be called again.
      * This is to avoid unintentional calls to cancelOperation.
-     * It will not call cancelOperation if operation status is not started/Cancelled/Failed/successfully completed.
+     * It will only call cancelOperation if {@link com.azure.core.polling.PollResponse.OperationStatus} is IN_PROGRESS.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
      */
@@ -146,10 +140,9 @@ public class Poller<T> {
     }
 
     /**
-     * Enable user to subscribe and receive all the responses.
-     * The user will start receiving PollResponse When client subscribe to this Flux.
-     * This Flux will not trigger a call to PollOperation.
-     * The poller still have its own default polling in action unless, user has  turned off
+     * Enable user to subscribe and listen on all the poll responses.
+     * The user will start receiving PollResponse when client subscribe to this Flux.
+     * The poller still have its own auto polling in action unless user has turned off
      * auto polling.
      *
      * @return poll response as Flux that can be subscribed.
@@ -165,18 +158,18 @@ public class Poller<T> {
      */
     public Mono<PollResponse<T>> poll() {
         return pollOperation.apply(pollResponse)
-            .doOnSuccess(pr -> pollResponse = pr);
+            .doOnEach(pollResponseSignal -> {
+                if (pollResponseSignal.get() != null) pollResponse = pollResponseSignal.get();
+            });
     }
 
     /**
-     * This will block till poll operation is complete
+     * This will block till poll operation is complete.
      *
-     * @return returns poll response
+     * @return returns last poll response.
      */
     public PollResponse<T> block() {
-        debug(" Poller block waiting for last ");
         return fluxHandle.blockLast();
-       
     }
 
     /*
@@ -184,35 +177,13 @@ public class Poller<T> {
      * @return mono of poll response
      */
     private Mono<PollResponse<T>> asyncPollRequestWithDelay() {
-        return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
-            return pollOperation.apply(pollResponse)
-                .doOnSuccess(pr -> pollResponse = pr);
-        })));
-    }
-
-    private boolean  debug = true;
-    private void debug(String... messages) {
-        if (debug) {
-            StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ");
-            for (String m : messages) {
-                sb.append(m);
-            }
-            System.out.println(sb.toString());
-        }
-    }
-
-    /*
-     * If pol operation's poll response have defined retryAfter , we will use that as delay. In absence of that we will use
-     * PollerOption's poll interval.
-     *
-     * @return A Mono with delay.
-     */
-    private Mono<Void> delayAsync() {
-        Mono<Void> result = Mono.empty();
-        if (getCurrentDelay().toNanos() > 0) {
-            result = result.delaySubscription(getCurrentDelay());
-        }
-        return result;
+        return  Mono.defer(() -> pollOperation.apply(pollResponse)
+            .delaySubscription(getCurrentDelay())
+            .doOnEach(pollResponseSignal -> {
+                if (pollResponseSignal.get() != null) {
+                    pollResponse = pollResponseSignal.get();
+                }
+            }));
     }
 
     private Duration getCurrentDelay() {
@@ -248,13 +219,16 @@ public class Poller<T> {
     }
 
     /**
-     * @return true if polling is stopped.
+     * Indicate if auto polling is on/off . By default auto polling is turned on.
+     *
+     * @return false if polling is stopped.
      */
     public boolean isAutoPollingEnabled() {
         return this.autoPollingEnabled;
     }
 
     /**
+     * Current known status as a result of last poll event.
      * @return status {@code null} if no status is available.
      */
     public PollResponse.OperationStatus getStatus() {

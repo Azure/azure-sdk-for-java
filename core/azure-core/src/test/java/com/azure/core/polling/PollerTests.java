@@ -37,7 +37,7 @@ public class PollerTests {
             public Mono<PollResponse<CreateCertificateResponse>> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
                 ++count;
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
-                    debug(" Service poll function called ", " returning intermediate response " + finalPollResponse.getValue().response);
+                    debug(" Service poll function called ", " returning intermediate response " + intermediateProgressPollResponse.getValue().response);
                     return Mono.just(intermediateProgressPollResponse);
                 } else {
                     debug(" Service poll function called ", " returning final response " + finalPollResponse.getValue().response);
@@ -69,6 +69,9 @@ public class PollerTests {
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        createCertPoller.getObserver().subscribe( pr -> {
+           debug("Got Response "+pr.getStatus().toString()+" " +pr.getValue().response);
+        });
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -201,12 +204,12 @@ public class PollerTests {
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
 
-        long totalTimeoutInMillis = 1000 * 2;
-        Duration pollInterval = Duration.ofMillis(1000);
+        long totalTimeoutInMillis = 1000 * 10;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis/10);
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
-                successPollResponse, 900);
+                successPollResponse, totalTimeoutInMillis/2);
 
         PollerOptions pollerOptions = new PollerOptions(pollInterval);
        
@@ -295,7 +298,7 @@ public class PollerTests {
 
     private void debug(String... messages) {
         if (debug) {
-            StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ");
+            StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
             for (String m : messages) {
                 sb.append(m);
             }
@@ -318,6 +321,4 @@ public class PollerTests {
             return response;
         }
     }
-
-  
 }
