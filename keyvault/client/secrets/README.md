@@ -235,56 +235,47 @@ When you interact with Azure Key Vault Secrets service using this Java client li
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Sync API Samples
-* [HelloWorld.java](TODO) - Contains sync api snippets found in this article.
+### Hello World Samples
+* [HelloWorld.java](TODO) - Contains sync api scenarios found in this article.
+* [HelloWorldAsync.java](TODO) - Contains async api scenarios found in this article.
 
-* [ListOperations.java](TODO) 
+### List Operations Samples
+Contains samples for following scenarios:
     * Creating Secrets
     * Listing Secrets
     * Create new version of existing secret.
     * List secret versions
 
-* [BackupAndRestoreOperations.java](TODO)
+1. [ListOperations.java](TODO) 
+2. [ListOperationsAsync.java](TODO)
+
+### Backup And Restore Operations Samples
+Contains samples for following scenarios:
     * Create a Secret
     * Backup a Secret -- Write it to a file.
     * Delete a secret
     * Restore a secret
+1. [BackupAndRestoreOperations.java](TODO)
+2. [BackupAndRestoreOperationsAsync.java](TODO)
 
-* [ManagingDeletedSecrets.java](TODO)
+
+### Managing Deleted Secrets Samples:
+Contains samples for following scenarios:
     * Create a Secret
     * Delete a secret
     * List deleted secrets
     * Recover a deleted secret
     * Purge Deleted secret
+1. [ManagingDeletedSecrets.java](TODO)
+2. [ManagingDeletedSecretsAsync.java](TODO) 
     
-### Async API Samples
-* [HelloWorldAsync.java] (TODO) - Contains async api snippets found in this article.
-* [ListOperationsAsync.java](TODO)
-    * Creating Secrets
-    * Listing Secrets
-    * Create new version of existing secret.
-    * List secret versions
-* [BackupAndRestoreOperationsAsync.java](TODO) - Java code to backup and restore a deleted secret:
-    * Create a Secret
-    * Backup a Secret -- Write it to a file.
-    * Delete a secret
-    * Restore a secret
-* [ManagingDeletedSecretsAsync.java](TODO) - Java code for working with deleted secrets:
-    * Create a Secret
-    * Delete a secret
-    * List deleted secrets
-    * Recover a deleted secret
-    * Purge Deleted secret
 
 ## Contributing
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src
