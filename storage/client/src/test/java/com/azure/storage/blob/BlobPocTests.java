@@ -19,6 +19,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayInputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -63,7 +64,7 @@ public class BlobPocTests {
     }
 
     @Test
-    public void testCreateBlob() {
+    public void testCreateBlob() throws Exception {
         BlockBlobClient blockBlobClient = BlockBlobClient.blockBlobClientBuilder()
             .connectionString(System.getenv("AZURE_STORAGE_CONNECTION_STRING"))
             .buildClient();
@@ -72,9 +73,8 @@ public class BlobPocTests {
 
         byte[] randomBytes = new byte[4096];
         random.nextBytes(randomBytes);
-        ByteBuf bb = Unpooled.wrappedBuffer(randomBytes);
         String base64 = Base64.encodeBase64String("0001".getBytes(StandardCharsets.UTF_8));
-        blockBlobClient.stageBlock(base64, Flux.just(bb), 4096);
+        blockBlobClient.stageBlock(base64, new ByteArrayInputStream(randomBytes), 4096);
         blockBlobClient.commitBlockList(Arrays.asList(base64));
 
         BlobClient blobClient = BlobClient.blobClientBuilder()
