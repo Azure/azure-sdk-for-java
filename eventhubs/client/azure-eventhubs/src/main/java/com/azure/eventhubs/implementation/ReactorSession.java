@@ -5,7 +5,10 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.eventhubs.EventSender;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Session;
@@ -14,40 +17,39 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     private final Session session;
-    private final SessionHandler handler;
+    private final SessionHandler sessionHandler;
     private final String sessionName;
     private final ReactorProvider provider;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
+    private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
+    private final ReactorHandlerProvider handlerProvider;
+    private final Mono<CBSNode> cbsNodeMono;
 
-    ReactorSession(Session session, SessionHandler handler, String sessionName, ReactorProvider provider,
-                   Duration openTimeout) {
+    ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
+                   ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeMono, Duration openTimeout) {
         super(new ServiceLogger(ReactorSession.class));
-
-        Objects.requireNonNull(session);
-        Objects.requireNonNull(handler);
-        Objects.requireNonNull(sessionName);
-        Objects.requireNonNull(provider);
-        Objects.requireNonNull(openTimeout);
-
         this.session = session;
-        this.handler = handler;
+        this.sessionHandler = sessionHandler;
+        this.handlerProvider = handlerProvider;
         this.sessionName = sessionName;
         this.provider = provider;
+        this.cbsNodeMono = cbsNodeMono;
         this.openTimeout = openTimeout;
 
         this.subscriptions = Disposables.composite(
-            this.handler.getEndpointStates().subscribe(
+            this.sessionHandler.getEndpointStates().subscribe(
                 this::notifyEndpointState,
-                error -> notifyError(handler.getContext(error)),
+                error -> notifyError(sessionHandler.getContext(error)),
                 () -> notifyEndpointState(EndpointState.CLOSED)),
-            this.handler.getErrors().subscribe(
+            this.sessionHandler.getErrors().subscribe(
                 this::notifyError,
-                error -> notifyError(handler.getContext(error)),
+                error -> notifyError(sessionHandler.getContext(error)),
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         session.open();
@@ -74,12 +76,20 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     }
 
     @Override
-    public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout) {
-        return null;
+    public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout, Retry retry) {
+        return sessionHandler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE)
+            .then(Mono.fromCallable(() -> openSendLinks.computeIfAbsent(linkName, key -> {
+                return new ReactorSender(entityPath,
+                    session.sender(linkName),
+                    handlerProvider.createSendLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName),
+                    provider,
+                    new ActiveClientTokenManager(cbsNodeMono, entityPath, ClientConstants.TOKEN_VALIDITY, ClientConstants.TOKEN_REFRESH_INTERVAL),
+                    timeout, retry, EventSender.MAX_MESSAGE_LENGTH_BYTES);
+            })));
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout) {
+    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry) {
         return null;
     }
 
