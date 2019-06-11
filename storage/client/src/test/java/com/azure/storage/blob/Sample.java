@@ -16,7 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public class Sample {git
+public class Sample {
 
     @Test
     public void sample() throws IOException {
