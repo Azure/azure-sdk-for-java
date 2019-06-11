@@ -29,38 +29,9 @@ public class EventDataUtil {
     }
 
     /**
-     * Creates the AMQP message represented by this EventData.
-     *
-     * @return A new AMQP message for this EventData.
-     */
-    public static Message toAmqpMessage(String partitionKey, EventData eventData) {
-        final Message message = Proton.message();
-
-        if (eventData.properties() != null && !eventData.properties().isEmpty()) {
-            message.setApplicationProperties(new ApplicationProperties(eventData.properties()));
-        }
-
-        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
-            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                ? new MessageAnnotations(new HashMap<>())
-                : message.getMessageAnnotations();
-            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-            message.setMessageAnnotations(messageAnnotations);
-        }
-
-        setSystemProperties(eventData, message);
-
-        if (eventData.body() != null) {
-            message.setBody(new Data(Binary.create(eventData.body())));
-        }
-
-        return message;
-    }
-
-    /**
      * Gets the serialized size of the AMQP message.
      */
-    public static int getDataSerializedSize(Message amqpMessage) {
+    static int getDataSerializedSize(Message amqpMessage) {
 
         if (amqpMessage == null) {
             return 0;
@@ -96,6 +67,35 @@ public class EventDataUtil {
         }
 
         return annotationsSize + applicationPropertiesSize + payloadSize;
+    }
+
+    /**
+     * Creates the AMQP message represented by this EventData.
+     *
+     * @return A new AMQP message for this EventData.
+     */
+    private static Message toAmqpMessage(String partitionKey, EventData eventData) {
+        final Message message = Proton.message();
+
+        if (eventData.properties() != null && !eventData.properties().isEmpty()) {
+            message.setApplicationProperties(new ApplicationProperties(eventData.properties()));
+        }
+
+        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
+            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+                ? new MessageAnnotations(new HashMap<>())
+                : message.getMessageAnnotations();
+            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+            message.setMessageAnnotations(messageAnnotations);
+        }
+
+        setSystemProperties(eventData, message);
+
+        if (eventData.body() != null) {
+            message.setBody(new Data(Binary.create(eventData.body())));
+        }
+
+        return message;
     }
 
     /*
