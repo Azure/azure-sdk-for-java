@@ -1,6 +1,6 @@
 # Azure Key Vault Secret client library for Java
 Azure Key Vault is a tool for securely storing and accessing secrets. A secret is anything that you want to tightly control access to, such as API keys or passwords. A vault is logical group of secrets.
-Secret client library allows you to securely store and tightly control access to tokens, passwords, API keys, and other secrets. THe library offers operations to create, retrieve, update, delete, purge, backup, restore and and list the secrets.
+Secret client library allows you to securely store and tightly control access to tokens, passwords, API keys, and other secrets. The library offers operations to create, retrieve, update, delete, purge, backup, restore and and list the secrets.
 
 Use the secret client library to create and manage secrets.
 
@@ -12,9 +12,9 @@ Use the secret client library to create and manage secrets.
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Azure KeyVault][azure_keyvault]
+- An existing [Azure KeyVault][azure_keyvault] : Note that this document shows how to create one.
 
-### Adding the package to your product
+### Adding the package to your project
 
 ```xml
 <dependency>
@@ -24,18 +24,13 @@ Use the secret client library to create and manage secrets.
 </dependency>
 ```
 
-### Create a Secret in the Azure Key Vault.
+### Create an Azure Key Vault.
 
 To create an Azure Key Vault Store you can use the Azure Portal or [Azure CLI][azure_cli].
 
 Create the Azure Key Vault:
 ```Powershell
 az keyvault create --name <keyvault-name> --resource-group <resource-group-name> --location eastus
-```
-
-After that, create the secret in the Azure Key Vault:
-```Powershell
-az keyvault secret set --vault-name <keyvault-name> --name "<secret-name>" --value "<secret-value>"
 ```
 
 ### Authenticate the client
@@ -57,7 +52,8 @@ az ad sp create-for-rbac -n <application-name> --password <application-password>
 
 To authorize the same application to perform secret operarions in your vault, type the following command:
 ```Powershell
-az keyvault set-policy --name <keyvault-name> --spn 8f8c4bbd-485b-45fd-98f7-ec6300b7b4ed --secret-permissions <secret-permissions>
+az keyvault set-policy --name <keyvault-name> --spn <your-service-principal-id> --secret-permissions <secret-permissions>
+# 
 ```
 
 #### Create Client
