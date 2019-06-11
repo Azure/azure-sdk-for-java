@@ -1085,5 +1085,6 @@
     <module>./keyvault/data-plane</module>
     <module>./servicebus/data-plane</module>
     <module>./storage/data-plane</module>
+    <module>./storage/client</module>
   </modules>
 </project>
