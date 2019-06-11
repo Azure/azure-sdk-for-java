@@ -3,8 +3,6 @@
 
 package com.azure.eventhubs.implementation;
 
-import org.apache.qpid.proton.amqp.Symbol;
-
 import java.time.Duration;
 
 public final class ClientConstants {
@@ -17,8 +15,6 @@ public final class ClientConstants {
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
     public static final int MGMT_CHANNEL_MIN_RETRY_IN_MILLIS = 5;
-    public static final String NO_RETRY = "NoRetry";
-    public static final String DEFAULT_RETRY = "Default";
     public static final String PRODUCT_NAME = "MSJavaClient";
     public static final String CURRENT_JAVACLIENT_VERSION = "2.3.1";
     public static final String PLATFORM_INFO = getOSInformation();
@@ -31,29 +27,10 @@ public final class ClientConstants {
      */
     public static final String USER_AGENT = String.format("azsdk-java-eventhubs/%s %s;%s",
         CURRENT_JAVACLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
-    public static final String MANAGEMENT_ADDRESS = "$management";
-    public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
-    public static final String MANAGEMENT_OPERATION_KEY = "operation";
-    public static final String READ_OPERATION_VALUE = "READ";
-    public static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
-    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
-    public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
-    public static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
-    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
-    public static final String MANAGEMENT_RESULT_PARTITION_COUNT = "partition_count";
-    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
-    public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
-    public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
     public static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
     public static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
     public static final String MANAGEMENT_RESPONSE_ERROR_CONDITION = "error-condition";
-    public static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
-    public static final Symbol LAST_ENQUEUED_OFFSET = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
-    public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";

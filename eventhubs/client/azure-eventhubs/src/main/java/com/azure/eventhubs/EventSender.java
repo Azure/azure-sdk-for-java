@@ -34,7 +34,7 @@ public class EventSender {
      */
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
-    private static final SenderOptions DEFAULT_OPTIONS = new SenderOptions();
+    private static final EventSenderOptions DEFAULT_OPTIONS = new EventSenderOptions();
     private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
@@ -42,7 +42,7 @@ public class EventSender {
     //TODO (conniey): Remove this after I verify it all works.
     private final AtomicInteger number = new AtomicInteger(0);
     private final AtomicInteger totalEvents = new AtomicInteger(0);
-    private final SenderOptions senderOptions;
+    private final EventSenderOptions senderOptions;
 
     /**
      * Creates a new instance of the EventSender.
@@ -56,7 +56,7 @@ public class EventSender {
      *
      * @code partitionId}.
      */
-    EventSender(SenderOptions options) {
+    EventSender(EventSenderOptions options) {
         Objects.requireNonNull(options);
 
         this.senderOptions = options;
@@ -154,7 +154,7 @@ public class EventSender {
      * collector throws a PayloadSizeExceededException.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
-        private final String batchLabel;
+        private final String partitionKey;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private volatile EventDataBatch currentBatch;
@@ -162,9 +162,9 @@ public class EventSender {
         EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
-            this.batchLabel = options.batchLabel();
+            this.partitionKey = options.partitionKey();
 
-            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.batchLabel());
+            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey());
         }
 
         @Override
@@ -185,7 +185,7 @@ public class EventSender {
                         "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, batchLabel);
+                currentBatch = new EventDataBatch(maxMessageSize, partitionKey);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

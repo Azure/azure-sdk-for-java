@@ -9,7 +9,7 @@ import java.io.Closeable;
 import java.time.Duration;
 
 /**
- * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink}.
+ * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
 public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
@@ -29,20 +29,22 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
      * Creates a new AMQP sender link.
      *
-     * @param linkName Name of the link.
-     * @param timeout Timeout required for creating and opening AMPQ link.
+     * @param linkName Name of the sender link.
+     * @param entityPath The entity path this link connects to send events.
+     * @param timeout Timeout required for creating and opening AMQP link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createSender(String linkName, Duration timeout);
+    Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout);
 
     /**
      * Creates a new AMQP receiver link.
      *
-     * @param linkName Name of the link.
-     * @param timeout Timeout required for creating and opening AMPQ link.
+     * @param linkName Name of the sender link.
+     * @param entityPath The entity path this link connects to receive events.
+     * @param timeout Timeout required for creating and opening AMQP link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createReceiver(String linkName, Duration timeout);
+    Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout);
 
     /**
      * Removes a {@link AmqpLink} with the given {@code linkName}.

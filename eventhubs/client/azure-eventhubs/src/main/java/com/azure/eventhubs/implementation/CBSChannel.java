@@ -5,8 +5,6 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -20,36 +18,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-class CBSChannel implements CBSNode {
-    private static final String SESSION_NAME = "cbs-session";
+class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
+    static final String SESSION_NAME = "cbs-session";
+    static final String CBS_ADDRESS = "$cbs";
+
     private static final String LINK_NAME = "cbs";
-    private static final String CBS_ADDRESS = "$cbs";
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     private static final String PUT_TOKEN_TYPE = "type";
     private static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
     private static final String PUT_TOKEN_AUDIENCE = "name";
-    private static final String PUT_TOKEN_STATUS_CODE = "status-code";
-    private static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
 
-    private final ServiceLogger logger = new ServiceLogger(CBSChannel.class);
     private final AmqpConnection connection;
     private final TokenProvider tokenProvider;
     private final Mono<RequestResponseChannel> cbsChannelMono;
-    private final ReactorDispatcher dispatcher;
+    private final ReactorProvider provider;
 
-    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorDispatcher dispatcher) {
+    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+        super(new ServiceLogger(CBSChannel.class));
+
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenProvider);
-        Objects.requireNonNull(dispatcher);
+        Objects.requireNonNull(provider);
 
         this.connection = connection;
         this.tokenProvider = tokenProvider;
-        this.dispatcher = dispatcher;
+        this.provider = provider;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                CBS_ADDRESS, session.session()));
+                CBS_ADDRESS, session.session(), handlerProvider));
     }
 
     @Override
@@ -71,18 +69,7 @@ class CBSChannel implements CBSNode {
 
         request.setBody(new AmqpValue(token));
 
-        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, dispatcher)).flatMap(response -> {
-            final int statusCode = (int) response.getApplicationProperties().getValue()
-                .get(PUT_TOKEN_STATUS_CODE);
-            final String statusDescription = (String) response.getApplicationProperties().getValue()
-                .get(PUT_TOKEN_STATUS_DESCRIPTION);
-
-            if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-            } else {
-                return Mono.empty();
-            }
-        });
+        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
     }
 
     @Override

@@ -8,25 +8,22 @@ import java.util.Arrays;
 
 /**
  * Holds information about Event Hubs which can come handy while performing data-plane operations like
- * {@link EventHubClient#createReceiver(String)} and {@link EventHubClient#createReceiver(String, ReceiverOptions)}.
+ * {@link EventHubClient#createReceiver(String)} and {@link EventHubClient#createReceiver(String, EventReceiverOptions)}.
  */
 public final class EventHubProperties {
     private final String path;
     private final Instant createdAt;
     private final String[] partitionIds;
-    private Instant propertyRetrievalTimeUtc;
 
     EventHubProperties(
-            final String path,
-            final Instant createdAtUtc,
-            final String[] partitionIds,
-            final Instant propertyRetrievalTimeUtc) {
+        final String path,
+        final Instant createdAt,
+        final String[] partitionIds) {
         this.path = path;
-        this.createdAt = createdAtUtc;
+        this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
             ? Arrays.copyOf(partitionIds, partitionIds.length)
             : new String[0];
-        this.propertyRetrievalTimeUtc = propertyRetrievalTimeUtc;
     }
 
     /**
@@ -39,11 +36,11 @@ public final class EventHubProperties {
     }
 
     /**
-     * Gets the time at which Event Hub was created at.
+     * Gets the instant, in UTC, at which Event Hub was created at.
      *
-     * @return The time at which the Event Hub was created.
+     * @return The instant, in UTC, at which the Event Hub was created.
      */
-    public Instant createdAtUtc() {
+    public Instant createdAt() {
         return createdAt;
     }
 
@@ -54,14 +51,5 @@ public final class EventHubProperties {
      */
     public String[] partitionIds() {
         return partitionIds;
-    }
-
-    /**
-     * Gets the date and time, in UTC, that the information was retrieved from the Event Hub.
-     *
-     * @return The instant, in UTC, that the information was retrieved from Event Hub.
-     */
-    public Instant propertyRetrievalTimeUtc() {
-        return propertyRetrievalTimeUtc;
     }
 }

@@ -5,20 +5,22 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.eventhubs.implementation.AmqpResponseMapper;
+import com.azure.eventhubs.implementation.ConnectionParameters;
+import com.azure.eventhubs.implementation.EventHubConnection;
+import com.azure.eventhubs.implementation.EventHubManagementNode;
+import com.azure.eventhubs.implementation.ManagementChannel;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.StringUtil;
-import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.Period;
-import java.util.Locale;
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -29,27 +31,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class EventHubClient implements Closeable {
     private final String connectionId;
-    private final Mono<AmqpConnection> connectionMono;
-    private final String host;
+    private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-
-    private final Duration timeout;
-    private final String eventHubName;
-    private final Scheduler scheduler;
-    private final TokenProvider tokenProvider;
+    private final ConnectionParameters connectionParameters;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
-        this.eventHubName = connectionParameters.credentials().eventHubPath();
-        this.host = connectionParameters.credentials().endpoint().getHost();
-        this.timeout = connectionParameters.timeout();
-        this.tokenProvider = connectionParameters.tokenProvider();
-        this.scheduler = connectionParameters.scheduler();
-        this.connectionId = StringUtil.getRandomString("MF");
+        Objects.requireNonNull(connectionParameters);
+        Objects.requireNonNull(provider);
+        Objects.requireNonNull(handlerProvider);
 
-        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, this.tokenProvider,
-            provider, handlerProvider, this.scheduler))
-            .doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionParameters = connectionParameters;
+        this.connectionId = StringUtil.getRandomString("MF");
+        this.connectionMono = Mono.fromCallable(() -> {
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());
+        }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
 
@@ -68,13 +63,7 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.flatMap(connection -> {
-            //TODO (conniey): Replace with management plane call.
-            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
-            return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
-        }).then(Mono.fromCallable(() -> {
-            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
-        }));
+        return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
 
     /**
@@ -94,7 +83,10 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return Mono.empty();
+        return connectionMono.flatMap(
+            connection -> connection.getManagementNode().flatMap(node -> {
+                return node.getPartitionProperties(partitionId);
+            }));
     }
 
     /**
@@ -109,19 +101,19 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates a sender that can push events to an Event Hub. If
-     * {@link SenderOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
+     * {@link EventSenderOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
      * specific partition. Otherwise, events are automatically routed to an available partition.
      *
      * @param options The set of options to apply when creating the sender.
      * @return A new {@link EventSender}.
      */
-    public EventSender createSender(SenderOptions options) {
+    public EventSender createSender(EventSenderOptions options) {
         return new EventSender(options);
     }
 
     /**
      * Creates a receiver that listens to the Event Hub {@code partitionId} starting from the moment it was created. The
-     * consumer group used is the {@link ReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
+     * consumer group used is the {@link EventReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
@@ -138,7 +130,7 @@ public class EventHubClient implements Closeable {
      * @param options Additional options for the receiver.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventReceiver createReceiver(String partitionId, ReceiverOptions options) {
+    public EventReceiver createReceiver(String partitionId, EventReceiverOptions options) {
         return new EventReceiver();
     }
 
@@ -150,13 +142,36 @@ public class EventHubClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(timeout);
+                final AmqpConnection connection = connectionMono.block(connectionParameters.timeout());
                 if (connection != null) {
                     connection.close();
                 }
             } catch (IOException exception) {
                 throw new AmqpException(false, "Unable to close connection to service", exception);
             }
+        }
+    }
+
+    private static class ResponseMapper implements AmqpResponseMapper {
+        @Override
+        public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
+            return new EventHubProperties(
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+                (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
+        }
+
+        @Override
+        public PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
+            return new PartitionProperties(
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
+                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
+                Instant.now());
         }
     }
 }

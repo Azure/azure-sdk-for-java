@@ -58,19 +58,39 @@ public final class CredentialInfo {
         return createCredentialInfo(connectionString, eventHubPath);
     }
 
-    URI endpoint() {
+    /**
+     * Gets the Event Hubs namespace endpoint.
+     *
+     * @return The Event Hubs namespace endpoint.
+     */
+    public URI endpoint() {
         return endpoint;
     }
 
-    String sharedAccessKeyName() {
+    /**
+     * Gets the name of the shared access key.
+     *
+     * @return The name of the shared access key.
+     */
+    public String sharedAccessKeyName() {
         return sharedAccessKeyName;
     }
 
-    String sharedAccessKey() {
+    /**
+     * Gets the value of the shared access key.
+     *
+     * @return Value of the shared access key.
+     */
+    public String sharedAccessKey() {
         return sharedAccessKey;
     }
 
-    String eventHubPath() {
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return Name of the Event Hub.
+     */
+    public String eventHubPath() {
         return eventHubPath;
     }
 

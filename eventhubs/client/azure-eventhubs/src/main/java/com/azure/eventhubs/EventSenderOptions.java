@@ -8,7 +8,7 @@ import com.azure.core.http.policy.RetryPolicy;
 /**
  * The set of options that can be specified when creating an {@link EventSender} to configure its behavior.
  */
-public class SenderOptions {
+public class EventSenderOptions {
     private String partitionId;
     private RetryPolicy retry;
 
@@ -19,7 +19,7 @@ public class SenderOptions {
      * @param partitionId The identifier of the Event Hub partition that the {@link EventSender} will be bound to.
      * @return The updated SenderOptions object.
      */
-    public SenderOptions partitionId(String partitionId) {
+    public EventSenderOptions partitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
     }
@@ -30,7 +30,7 @@ public class SenderOptions {
      * @param retry The retry policy used to govern retry attempts when an issue is encountered while sending.
      * @return The updated SenderOptions object.
      */
-    public SenderOptions retry(RetryPolicy retry) {
+    public EventSenderOptions retry(RetryPolicy retry) {
         this.retry = retry;
         return this;
     }

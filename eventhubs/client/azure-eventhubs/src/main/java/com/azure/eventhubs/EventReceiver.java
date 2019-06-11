@@ -6,8 +6,6 @@ package com.azure.eventhubs;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -17,14 +15,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * A {@link EventReceiver#receive()} is tied to a Event Hub PartitionId + consumer group combination.
  *
  * <ul>
- *      <li>If the {@link EventReceiver} is created where {@link ReceiverOptions#exclusiveReceiverPriority()} has a
+ *      <li>If the {@link EventReceiver} is created where {@link EventReceiverOptions#exclusiveReceiverPriority()} has a
  *      value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
  *      combination. This is the recommended approach to create a {@link EventReceiver}.</li>
  *      <li>Multiple receivers per partitionId and consumer group combination can be created using non-epoch receivers.</li>
  * </ul>
  *
  * @see EventHubClient#createReceiver(String)
- * @see EventHubClient#createReceiver(String, ReceiverOptions)
+ * @see EventHubClient#createReceiver(String, EventReceiverOptions)
  */
 public class EventReceiver {
     private PartitionProperties partitionInformation = null;
@@ -32,15 +30,14 @@ public class EventReceiver {
     /**
      * Gets the most recent information about a partition by the current receiver.
      *
-     * @return If {@link ReceiverOptions}
+     * @return If {@link EventReceiverOptions}
      */
     public PartitionProperties partitionInformation() {
         return partitionInformation;
     }
 
     /**
-     * Begin receiving events until there are no longer any events emitted specified by
-     * {@link ReceiverOptions#defaultMaximumReceiveWaitTime(Duration)}, are no longer any subscribers, or the parent
+     * Begin receiving events until there are no longer any subscribers, or the parent
      * {@link EventHubClient#close() EventHubClient.close()} is called.
      *
      * @return A stream of events for this receiver.

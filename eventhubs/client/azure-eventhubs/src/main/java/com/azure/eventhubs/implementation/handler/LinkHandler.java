@@ -15,14 +15,12 @@ import org.apache.qpid.proton.engine.Session;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 class LinkHandler extends Handler {
-    private final String connectionId;
-    private final String hostname;
 
-    ServiceLogger logger = new ServiceLogger(LinkHandler.class);
+    ServiceLogger logger;
 
-    LinkHandler(final String connectionId, final String hostname) {
-        this.connectionId = connectionId;
-        this.hostname = hostname;
+    LinkHandler(final String connectionId, final String hostname, ServiceLogger logger) {
+        super(connectionId, hostname);
+        this.logger = logger;
     }
 
     @Override
@@ -31,7 +29,7 @@ class LinkHandler extends Handler {
         final ErrorCondition condition = link.getCondition();
 
         logger.asInfo().log("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            connectionId, link.getName(),
+            getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
@@ -44,7 +42,7 @@ class LinkHandler extends Handler {
         final ErrorCondition condition = link.getRemoteCondition();
 
         logger.asInfo().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            connectionId, link.getName(),
+            getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
@@ -57,7 +55,7 @@ class LinkHandler extends Handler {
         final ErrorCondition condition = link.getCondition();
 
         logger.asInfo().log("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            connectionId, link.getName(),
+            getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
@@ -66,19 +64,19 @@ class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        logger.asInfo().log("onLinkFinal clientName[{}],  linkName[{}]", connectionId, event.getLink().getName());
+        logger.asInfo().log("onLinkFinal clientName[{}],  linkName[{}]", getConnectionId(), event.getLink().getName());
         close();
     }
 
     private void processOnClose(Link link, ErrorCondition condition) {
         logger.asInfo().log("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            connectionId, link.getName(),
+            getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
         if (condition != null) {
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(), condition.getDescription());
-            onNext(new ErrorContext(exception, hostname));
+            onNext(new ErrorContext(exception, getHostname()));
         }
 
         onNext(EndpointState.CLOSED);
@@ -89,7 +87,7 @@ class LinkHandler extends Handler {
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             logger.asInfo().log("closeSession connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-                connectionId, link.getName(),
+                getConnectionId(), link.getName(),
                 condition != null ? condition.getCondition() : NOT_APPLICABLE,
                 condition != null ? condition.getDescription() : NOT_APPLICABLE);
 

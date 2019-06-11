@@ -31,7 +31,6 @@ public class ReactorSessionTest {
     private static final String NAME = "test-session-name";
     private static final Duration TIMEOUT = Duration.ofSeconds(45);
 
-    private ReactorDispatcher dispatcher;
     private SessionHandler handler;
     private ReactorSession reactorSession;
 
@@ -50,10 +49,9 @@ public class ReactorSessionTest {
         when(reactor.selectable()).thenReturn(selectable);
         when(event.getSession()).thenReturn(session);
 
-        this.dispatcher = new ReactorDispatcher(reactor);
+        ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60));
-        this.reactorSession = new ReactorSession(session, handler, NAME, dispatcher, TIMEOUT);
-
+        this.reactorSession = new ReactorSession(session, handler, NAME, new MockReactorProvider(reactor, dispatcher), TIMEOUT);
     }
 
     @Test

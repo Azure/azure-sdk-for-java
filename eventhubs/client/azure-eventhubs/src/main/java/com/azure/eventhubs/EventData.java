@@ -63,8 +63,7 @@ public class EventData implements Comparable<EventData> {
 
     private final Map<String, Object> properties;
     private final ByteBuffer body;
-
-    private SystemProperties systemProperties = new SystemProperties(Collections.emptyMap());
+    private final SystemProperties systemProperties;
 
     /**
      * Creates an event containing the {@code data}.
@@ -86,6 +85,7 @@ public class EventData implements Comparable<EventData> {
 
         this.body = body;
         this.properties = new HashMap<>();
+        this.systemProperties = new SystemProperties(Collections.emptyMap());
     }
 
     EventData(Message message) {
@@ -161,21 +161,11 @@ public class EventData implements Comparable<EventData> {
     /**
      * Properties that are populated by EventHubService. As these are populated by Service, they are only present on a
      * <b>received</b> EventData.
-     * <p>
-     * Usage:
-     * <code>
-     * final String offset = eventData.systemProperties().offset();
-     * </code>
-     * </p>
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
      * the {@link EventData} is not received and is created by the public constructors.
-     * @see SystemProperties#offset()
-     * @see SystemProperties#sequenceNumber()
-     * @see SystemProperties#partitionKey()
-     * @see SystemProperties#enqueuedTime()
      */
-    public EventData.SystemProperties systemProperties() {
+    public Map<String, Object> systemProperties() {
         return systemProperties;
     }
 
@@ -186,6 +176,46 @@ public class EventData implements Comparable<EventData> {
      */
     public ByteBuffer body() {
         return body;
+    }
+
+    /**
+     * Gets the offset of the event when it was received from the associated Event Hub partition.
+     *
+     * @return The offset within the Event Hub partition.
+     */
+    public String offset() {
+        return systemProperties.offset();
+    }
+
+    /**
+     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
+     * select a partition to send the message to.
+     *
+     * @return A partition key for this Event Data.
+     */
+    public String partitionKey() {
+        return systemProperties.partitionKey();
+    }
+
+    /**
+     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
+     *
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition.
+     */
+    public Instant enqueuedTime() {
+        return systemProperties.enqueuedTime();
+    }
+
+    /**
+     * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
+     * is unique for every message received in the Event Hub partition.
+     *
+     * @return Sequence number for this event.
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
+     * event.
+     */
+    public long sequenceNumber() {
+        return systemProperties.sequenceNumber();
     }
 
     /**
@@ -317,8 +347,8 @@ public class EventData implements Comparable<EventData> {
     @Override
     public int compareTo(EventData other) {
         return Long.compare(
-            this.systemProperties().sequenceNumber(),
-            other.systemProperties().sequenceNumber()
+            this.sequenceNumber(),
+            other.sequenceNumber()
         );
     }
 
@@ -349,7 +379,7 @@ public class EventData implements Comparable<EventData> {
     /**
      * A collection of properties populated by Azure Event Hubs service.
      */
-    public static class SystemProperties extends HashMap<String, Object> {
+    private static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
         SystemProperties(final Map<String, Object> map) {
@@ -361,7 +391,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The offset within the Event Hubs stream.
          */
-        public String offset() {
+        private String offset() {
             return this.getSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
         }
 
@@ -371,7 +401,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return A partition key for this Event Data.
          */
-        public String partitionKey() {
+        private String partitionKey() {
             return this.getSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
         }
 
@@ -380,7 +410,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The time this was enqueued in the service.
          */
-        public Instant enqueuedTime() {
+        private Instant enqueuedTime() {
             final Date enqueuedTimeValue = this.getSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             return enqueuedTimeValue != null ? enqueuedTimeValue.toInstant() : null;
         }
@@ -393,7 +423,7 @@ public class EventData implements Comparable<EventData> {
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
          * event.
          */
-        public long sequenceNumber() {
+        private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
             if (sequenceNumber == null) {
@@ -401,15 +431,6 @@ public class EventData implements Comparable<EventData> {
             }
 
             return sequenceNumber;
-        }
-
-        /**
-         * Gets the name of the publisher if this was sent to a publisher endpoint.
-         *
-         * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
-         */
-        public String publisher() {
-            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")

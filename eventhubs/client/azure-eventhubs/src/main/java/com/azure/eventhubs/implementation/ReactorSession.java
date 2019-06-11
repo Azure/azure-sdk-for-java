@@ -20,24 +20,24 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     private final Session session;
     private final SessionHandler handler;
     private final String sessionName;
-    private final ReactorDispatcher dispatcher;
+    private final ReactorProvider provider;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
 
-    ReactorSession(Session session, SessionHandler handler, String sessionName, ReactorDispatcher dispatcher,
+    ReactorSession(Session session, SessionHandler handler, String sessionName, ReactorProvider provider,
                    Duration openTimeout) {
         super(new ServiceLogger(ReactorSession.class));
 
         Objects.requireNonNull(session);
         Objects.requireNonNull(handler);
         Objects.requireNonNull(sessionName);
-        Objects.requireNonNull(dispatcher);
+        Objects.requireNonNull(provider);
         Objects.requireNonNull(openTimeout);
 
         this.session = session;
         this.handler = handler;
         this.sessionName = sessionName;
-        this.dispatcher = dispatcher;
+        this.provider = provider;
         this.openTimeout = openTimeout;
 
         this.subscriptions = Disposables.composite(
@@ -74,12 +74,12 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     }
 
     @Override
-    public Mono<AmqpLink> createSender(String linkName, Duration timeout) {
+    public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout) {
         return null;
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, Duration timeout) {
+    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout) {
         return null;
     }
 
