@@ -62,7 +62,7 @@ az keyvault set-policy --name <keyvault-name> --spn <your-service-principal-id> 
 In order to interact with the Azure Key Vault Secrets service you'll need to create an instance of the Secret Client class. To do this you'll need the application id and application key of an application in Azure Active Directory authorized with access to key vault.
 
 Once you have the values of the application id, application key and tenant id you can create the secret client.
-The following environment varaibles need to be configured for authorizing with your key vault via default credentials.
+The following environment varaibles need to be configured to authorize with your key vault via default credentials.
 1. AZURE_CLIENT_ID - The application id.
 2. AZURE_CLIENT_KEY - The application key.
 3. AZURE_TENANT_ID - The id of the Azure Active Directory under which your application is registered.
@@ -241,31 +241,33 @@ Several KeyVault Java SDK samples are available to you in the SDK's GitHub repos
 
 ### List Operations Samples
 Contains samples for following scenarios:
-    * Creating Secrets
-    * Listing Secrets
-    * Create new version of existing secret.
-    * List secret versions
+* Creating Secrets
+* Listing Secrets
+* Create new version of existing secret.
+* List secret versions
 
 1. [ListOperations.java](TODO) 
 2. [ListOperationsAsync.java](TODO)
 
 ### Backup And Restore Operations Samples
 Contains samples for following scenarios:
-    * Create a Secret
-    * Backup a Secret -- Write it to a file.
-    * Delete a secret
-    * Restore a secret
+* Create a Secret
+* Backup a Secret -- Write it to a file.
+* Delete a secret
+* Restore a secret
+
 1. [BackupAndRestoreOperations.java](TODO)
 2. [BackupAndRestoreOperationsAsync.java](TODO)
 
 
 ### Managing Deleted Secrets Samples:
 Contains samples for following scenarios:
-    * Create a Secret
-    * Delete a secret
-    * List deleted secrets
-    * Recover a deleted secret
-    * Purge Deleted secret
+* Create a Secret
+* Delete a secret
+* List deleted secrets
+* Recover a deleted secret
+* Purge Deleted secret
+
 1. [ManagingDeletedSecrets.java](TODO)
 2. [ManagingDeletedSecretsAsync.java](TODO) 
     
