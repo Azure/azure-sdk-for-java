@@ -18,6 +18,21 @@ public abstract class Handler extends BaseHandler implements Closeable {
     private final UnicastProcessor<ErrorContext> errorContextProcessor = UnicastProcessor.create();
     private final FluxSink<EndpointState> endpointSink = endpointStateProcessor.sink();
     private final FluxSink<ErrorContext> errorSink = errorContextProcessor.sink();
+    private final String connectionId;
+    private final String hostname;
+
+    Handler(final String connectionId, final String hostname) {
+        this.connectionId = connectionId;
+        this.hostname = hostname;
+    }
+
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
 
     public Flux<EndpointState> getEndpointStates() {
         return endpointStateProcessor.distinct();

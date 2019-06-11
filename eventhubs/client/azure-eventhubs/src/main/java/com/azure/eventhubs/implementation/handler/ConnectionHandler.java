@@ -35,8 +35,6 @@ public class ConnectionHandler extends Handler {
     static final int MAX_FRAME_SIZE = 65536;
 
     private final ServiceLogger logger;
-    private final String connectionId;
-    private final String hostname;
     private final Map<String, Object> connectionProperties;
 
     /**
@@ -59,9 +57,9 @@ public class ConnectionHandler extends Handler {
      * @param logger The service logger to use.
      */
     protected ConnectionHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
+        super(connectionId, hostname);
+
         add(new Handshaker());
-        this.connectionId = connectionId;
-        this.hostname = hostname;
         this.logger = logger;
 
         this.connectionProperties = new HashMap<>();
@@ -77,10 +75,6 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 
-    public String getHostname() {
-        return this.hostname;
-    }
-
     public Map<String, Object> getConnectionProperties() {
         return connectionProperties;
     }
@@ -92,13 +86,13 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.asInfo().log("onConnectionInit hostname[{}], connectionId[{}]", hostname, this.connectionId);
+        logger.asInfo().log("onConnectionInit hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
 
         final Connection connection = event.getConnection();
-        final String hostName = hostname + ":" + getProtocolPort();
+        final String hostName = getHostname() + ":" + getProtocolPort();
 
         connection.setHostname(hostName);
-        connection.setContainer(this.connectionId);
+        connection.setContainer(getConnectionId());
 
         final Map<Symbol, Object> properties = new HashMap<>();
         connectionProperties.forEach((key, value) -> properties.put(Symbol.getSymbol(key), value));
@@ -127,7 +121,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionBound(Event event) {
-        logger.asInfo().log("onConnectionBound hostname[{}], connectionId[{}]", hostname, connectionId);
+        logger.asInfo().log("onConnectionBound hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
 
         final Transport transport = event.getTransport();
 
@@ -143,7 +137,7 @@ public class ConnectionHandler extends Handler {
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
         logger.asInfo().log("onConnectionUnbound hostname[{}], connectionId[{}], state[{}], remoteState[{}]",
-            connection.getHostname(), connectionId, connection.getLocalState(), connection.getRemoteState());
+            connection.getHostname(), getConnectionId(), connection.getLocalState(), connection.getRemoteState());
 
         // if failure happened while establishing transport - nothing to free up.
         if (connection.getRemoteState() != EndpointState.UNINITIALIZED) {
@@ -161,7 +155,7 @@ public class ConnectionHandler extends Handler {
 
         logger.asWarning().log("onTransportError hostname[{}], connectionId[{}], error[{}]",
             connection != null ? connection.getHostname() : NOT_APPLICABLE,
-            connectionId,
+            getConnectionId(),
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
         if (connection != null) {
@@ -181,7 +175,7 @@ public class ConnectionHandler extends Handler {
 
         logger.asInfo().log("onTransportClosed hostname[{}], connectionId[{}], error[{}]",
             connection != null ? connection.getHostname() : NOT_APPLICABLE,
-            connectionId,
+            getConnectionId(),
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
         if (connection != null) {
@@ -203,7 +197,7 @@ public class ConnectionHandler extends Handler {
         final Connection connection = event.getConnection();
 
         logger.asInfo().log("onConnectionRemoteOpen hostname[{}], connectionId[{}], remoteContainer[{}]",
-            connection.getHostname(), connectionId, connection.getRemoteContainer());
+            connection.getHostname(), getConnectionId(), connection.getRemoteContainer());
 
         onNext(connection.getRemoteState());
     }
@@ -277,7 +271,7 @@ public class ConnectionHandler extends Handler {
         logger.asInfo().log("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
             eventName,
             connection.getHostname(),
-            connectionId,
+            getConnectionId(),
             error != null ? error.getCondition() : NOT_APPLICABLE,
             error != null ? error.getDescription() : NOT_APPLICABLE);
     }
