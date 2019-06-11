@@ -5,7 +5,9 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.AmqpResponseMapper;
+import com.azure.eventhubs.implementation.AmqpSendLink;
 import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
@@ -20,6 +22,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,10 +33,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Event Hub.
  */
 public class EventHubClient implements Closeable {
+
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionParameters connectionParameters;
+    private final String eventHubPath;
+    private final String host;
+    private final EventSenderOptions defaultSenderOptions;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionParameters);
@@ -41,11 +48,17 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(handlerProvider);
 
         this.connectionParameters = connectionParameters;
+        this.eventHubPath = connectionParameters.credentials().eventHubPath();
+        this.host = connectionParameters.credentials().endpoint().getHost();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
+
+        this.defaultSenderOptions = new EventSenderOptions()
+            .retry(connectionParameters.retryPolicy())
+            .timeout(connectionParameters.timeout());
     }
 
     /**
@@ -96,7 +109,7 @@ public class EventHubClient implements Closeable {
      * @return A new {@link EventSender}.
      */
     public EventSender createSender() {
-        return new EventSender();
+        return createSender(defaultSenderOptions);
     }
 
     /**
@@ -108,7 +121,22 @@ public class EventHubClient implements Closeable {
      * @return A new {@link EventSender}.
      */
     public EventSender createSender(EventSenderOptions options) {
-        return new EventSender(options);
+        final String entityPath;
+        final String linkName;
+
+        if (ImplUtils.isNullOrEmpty(options.partitionId())) {
+            entityPath = eventHubPath;
+            linkName = StringUtil.getRandomString("EC");
+        } else {
+            entityPath = String.format(Locale.US, "%s/Partitions/%s", eventHubPath, options.partitionId());
+            linkName = StringUtil.getRandomString("PS");
+        }
+
+        final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
+            .flatMap(session -> session.createSender(linkName, entityPath, options.timeout(), options.retry()))
+            .cast(AmqpSendLink.class);
+
+        return new EventSender(amqpLinkMono, options);
     }
 
     /**
