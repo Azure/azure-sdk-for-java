@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -56,7 +57,13 @@ public final class BlobServiceClient {
      *     A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient createContainerClient(String containerName) {
-        throw new UnsupportedOperationException();
+        AzureBlobStorageImpl azureBlobStorage = blobServiceAsyncClient.blobServiceAsyncRawClient.azureBlobStorage;
+        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+        urlBuilder.withPath(urlBuilder.path() + "/" + containerName);
+        return new ContainerClient(new AzureBlobStorageBuilder()
+            .url(urlBuilder.toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**

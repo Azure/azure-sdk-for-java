@@ -4,7 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
@@ -58,7 +60,13 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        AzureBlobStorageImpl azureBlobStorage = containerAsyncRawClient.azureBlobStorage;
+        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+        urlBuilder.withPath(urlBuilder.path() + "/" + blobName);
+        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(urlBuilder.toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**
@@ -74,7 +82,13 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        AzureBlobStorageImpl azureBlobStorage = containerAsyncRawClient.azureBlobStorage;
+        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+        urlBuilder.withPath(urlBuilder.path() + "/" + blobName);
+        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(urlBuilder.toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**
@@ -90,7 +104,13 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        AzureBlobStorageImpl azureBlobStorage = containerAsyncRawClient.azureBlobStorage;
+        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+        urlBuilder.withPath(urlBuilder.path() + "/" + blobName);
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(urlBuilder.toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**
@@ -106,7 +126,13 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient createBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        AzureBlobStorageImpl azureBlobStorage = containerAsyncRawClient.azureBlobStorage;
+        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
+        urlBuilder.withPath(urlBuilder.path() + "/" + blobName);
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(urlBuilder.toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**
