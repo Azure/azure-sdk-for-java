@@ -52,25 +52,25 @@ public class ConnectionStringBuilder {
     private static final String ENTITY_PATH_CONFIG_NAME = "EntityPath";
     private static final String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
     private static final String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
-	private static final String AUTHENTICATION_CONFIG_NAME = "Authentication";
+    private static final String AUTHENTICATION_CONFIG_NAME = "Authentication";
     private static final String KEY_VALUE_SEPARATOR = "=";
     private static final String KEY_VALUE_PAIR_DELIMITER = ";";
 
-    private static final String ALL_KEY_ENUMERATE_REGEX = "(" + 
-			String.join("|", 
-				HOSTNAME_CONFIG_NAME,
-				ENDPOINT_CONFIG_NAME,
-				SHARED_ACCESS_KEY_NAME_CONFIG_NAME,
-				SHARED_ACCESS_KEY_CONFIG_NAME,
-				SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME,
-				ENTITY_PATH_CONFIG_NAME,
-				OPERATION_TIMEOUT_CONFIG_NAME,
-				RETRY_POLICY_CONFIG_NAME,
-				ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME,
-				TRANSPORT_TYPE_CONFIG_NAME,
-				AUTHENTICATION_CONFIG_NAME,
-				")"
-			);
+    private static final String ALL_KEY_ENUMERATE_REGEX = "("
+        + String.join("|", 
+                HOSTNAME_CONFIG_NAME,
+                ENDPOINT_CONFIG_NAME,
+                SHARED_ACCESS_KEY_NAME_CONFIG_NAME,
+                SHARED_ACCESS_KEY_CONFIG_NAME,
+                SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME,
+                ENTITY_PATH_CONFIG_NAME,
+                OPERATION_TIMEOUT_CONFIG_NAME,
+                RETRY_POLICY_CONFIG_NAME,
+                ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME,
+                TRANSPORT_TYPE_CONFIG_NAME,
+                AUTHENTICATION_CONFIG_NAME,
+            ")"
+    );
 
     private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX    + KEY_VALUE_SEPARATOR;
 
@@ -329,11 +329,11 @@ public class ConnectionStringBuilder {
     }
 
     /**
-	 * @return Returns the authentication method.
-	 */
+     * @return Returns the authentication method.
+     */
     public String getAuthentication() {
-		return this.authentication;
-	}
+        return this.authentication;
+    }
 
     /**
      * Returns an inter-operable connection string that can be used to connect to ServiceBus Namespace
@@ -385,10 +385,10 @@ public class ConnectionStringBuilder {
             
             if (this.authentication != null)
             {
-            	connectionStringBuilder.append(String.format(Locale.US,"%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, 
-            			AUTHENTICATION_CONFIG_NAME, KEY_VALUE_SEPARATOR, this.authentication.toString()));
+                connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER,
+                        AUTHENTICATION_CONFIG_NAME, KEY_VALUE_SEPARATOR, this.authentication));
             }
-            
+
             this.connectionString = connectionStringBuilder.toString();
         }
 
@@ -457,33 +457,33 @@ public class ConnectionStringBuilder {
                             exception);
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME)) {
-            	if (this.authentication != null) {
-            		throw new IllegalConnectionStringFormatException(
-            				String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
-            						SHARED_ACCESS_KEY_NAME_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
-            	}
+                if (this.authentication != null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
+                            SHARED_ACCESS_KEY_NAME_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
+                }
                 this.sharedAccessKeyName = values[valueIndex];
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME)) {
-            	if (this.authentication != null) {
-            		throw new IllegalConnectionStringFormatException(
-            				String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
-            						SHARED_ACCESS_KEY_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
-            	}
+                if (this.authentication != null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
+                            SHARED_ACCESS_KEY_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
+                }
                 this.sharedAccessKey = values[valueIndex];
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
-            	if (this.authentication != null) {
-            		throw new IllegalConnectionStringFormatException(
-            				String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
-            						SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
-            	}
+                if (this.authentication != null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
+                            SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
+                }
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
             } else if (key.equalsIgnoreCase(ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME)) {
-            	if (this.authentication != null) {
-            		throw new IllegalConnectionStringFormatException(
-            				String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
-            						ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
-            	}
+                if (this.authentication != null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format("Cannot have values specified for properties '%s' and '%s' at the same time",
+                            ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME, AUTHENTICATION_CONFIG_NAME));
+                }
                 this.sharedAccessSingatureToken = values[valueIndex];
                 this.sharedAccessSignatureTokenKeyName = ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME;
             } else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME)) {
@@ -513,11 +513,11 @@ public class ConnectionStringBuilder {
                             exception);
                 }
             } else if (key.equalsIgnoreCase(AUTHENTICATION_CONFIG_NAME)) {
-            	if (this.sharedAccessKeyName != null || this.sharedAccessKey != null || this.sharedAccessSingatureToken != null) {
-            		throw new IllegalConnectionStringFormatException(
-            				String.format("Cannot have values specified for properties '%s' and Shared Access Token at the same time", AUTHENTICATION_CONFIG_NAME));
-            	}
-            	this.authentication = values[valueIndex];
+                if (this.sharedAccessKeyName != null || this.sharedAccessKey != null || this.sharedAccessSingatureToken != null) {
+                    throw new IllegalConnectionStringFormatException(
+                        String.format("Cannot have values specified for properties '%s' and Shared Access Token at the same time", AUTHENTICATION_CONFIG_NAME));
+                }
+                this.authentication = values[valueIndex];
             } else {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));

@@ -23,25 +23,25 @@ public class ConnectionStringBuilderTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void InvalidAadAndSasKeyConnectionStringTest() {
-    	String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
-    	new ConnectionStringBuilder(connecitionString);
+    public void invalidAadAndSasKeyConnectionStringTest() {
+        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
+        new ConnectionStringBuilder(connecitionString);
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void InvalidAadAndSasTokenConnectionStringTest() {
-    	String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
-    	new ConnectionStringBuilder(connecitionString);
+    public void invalidAadAndSasTokenConnectionStringTest() {
+        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
+        new ConnectionStringBuilder(connecitionString);
     }
     
     @Test
-    public void TokenProviderFromConnectionStringTest() {
-    	String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity";
-    	ClientSettings settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
-    	assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
-    	
-    	connecitionString = "Endpoint=sb://test.servicebus.windows.net/;SHAREDACCESSKEYNAME=keyname;SharedAccessKey=key";
-    	settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
-    	assertTrue(settings.getTokenProvider() instanceof SharedAccessSignatureTokenProvider);
+    public void tokenProviderFromConnectionStringTest() {
+        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity";
+        ClientSettings settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
+
+        connecitionString = "Endpoint=sb://test.servicebus.windows.net/;SHAREDACCESSKEYNAME=keyname;SharedAccessKey=key";
+        settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof SharedAccessSignatureTokenProvider);
     }
 }

@@ -19,25 +19,25 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider {
     private final Object authCallbackState;
     
     AzureActiveDirectoryTokenProvider(AuthenticationCallback callback, String authority, Object callbackState) {
-    	this.authCallback = callback;
-    	this.authority = (StringUtil.isNullOrEmpty(authority)) ? "https://login.microsoftonline.com/common" : authority;
-    	this.authCallbackState = callbackState;
+        this.authCallback = callback;
+        this.authority = (StringUtil.isNullOrEmpty(authority)) ? "https://login.microsoftonline.com/common" : authority;
+        this.authCallbackState = callbackState;
     }
-    
+
     @Override
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
-    	return this.authCallback.acquireTokenAsync(audience, this.authority, this.authCallbackState);
+        return this.authCallback.acquireTokenAsync(audience, this.authority, this.authCallbackState);
     }
     
     @FunctionalInterface
     public interface AuthenticationCallback {
-    	/**
-    	 * A user defined method for obtaining an access token.
-    	 * @param audience The target resource that the access token will be granted for.
-    	 * @param authority The resource that will validate the the access token.
-    	 * @param state Parameter that may be used as part of the custom acquireToken process.
-    	 * @return A CompletableFuture which returns a valid security token.
-    	 */
-    	CompletableFuture<SecurityToken> acquireTokenAsync(final String audience, final String authority, final Object state);
+        /**
+         * A user defined method for obtaining an access token.
+         * @param audience The target resource that the access token will be granted for.
+         * @param authority The resource that will validate the the access token.
+         * @param state Parameter that may be used as part of the custom acquireToken process.
+         * @return A CompletableFuture which returns a valid security token.
+         */
+        CompletableFuture<SecurityToken> acquireTokenAsync(String audience, String authority, Object state);
     }
 }

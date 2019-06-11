@@ -45,19 +45,19 @@ public abstract class TokenProvider {
 
     /**
      * Creates a Azure Active Directory token provider that creates a token with the user defined AuthenticationCallback. This is a utility method.
-	 * @param callback A custom AuthenticationCallback that takes in the target resource and address of the authority 
-	 * 				   to issue token and provides a security token for the target url
-	 * @param authority URL of the Azure Active Directory instance
-	 * @param callbackState Custom parameter that may be provided to the AuthenticationCallback
-	 * @return an instance of Azure Active Directory token provider
-	 */
-	public static TokenProvider createAzureActiveDirectoryTokenProvider(AuthenticationCallback callback, String authority, Object callbackState) {
-		if (callback == null) {
-			throw new IllegalArgumentException("The callback provided cannot be null.");
-		}
-		return new AzureActiveDirectoryTokenProvider(callback, authority, callbackState);
-	}
-    
+     * @param callback A custom AuthenticationCallback that takes in the target resource and address of the authority 
+     *            to issue token and provides a security token for the target url
+     * @param authority URL of the Azure Active Directory instance
+     * @param callbackState Custom parameter that may be provided to the AuthenticationCallback
+     * @return an instance of Azure Active Directory token provider
+     */
+    public static TokenProvider createAzureActiveDirectoryTokenProvider(AuthenticationCallback callback, String authority, Object callbackState) {
+        if (callback == null) {
+            throw new IllegalArgumentException("The callback provided cannot be null.");
+        }
+        return new AzureActiveDirectoryTokenProvider(callback, authority, callbackState);
+    }
+
     /**
      * Creates a Managed Identity token provider. This is a utility method.
      * @return an instance of Managed Identity token provider
