@@ -48,6 +48,10 @@ public class ConnectionParameters {
         return credentials;
     }
 
+    public String host() {
+        return credentials.endpoint().getHost();
+    }
+
     public Duration timeout() {
         return timeout;
     }
