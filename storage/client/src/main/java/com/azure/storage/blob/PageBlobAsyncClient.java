@@ -7,7 +7,18 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PageBlobClearPagesHeaders;
+import com.azure.storage.blob.models.PageBlobCreateHeaders;
+import com.azure.storage.blob.models.PageBlobResizeHeaders;
+import com.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders;
+import com.azure.storage.blob.models.PageBlobUploadPagesFromURLHeaders;
+import com.azure.storage.blob.models.PageBlobUploadPagesHeaders;
+import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,11 +26,19 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 /**
- * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
- * {@link ContainerAsyncClient} object. This class does not hold any state about a particular blob but is instead a convenient
- * way of sending off appropriate requests to the resource on the service. Please refer to the
+ * Client to a page blob. It may be obtained through a {@link PageBlobClientBuilder}, via
+ * the method {@link BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
+ * {@link ContainerAsyncClient#createPageBlobAsyncClient(String)}. This class does not hold
+ * any state about a particular blob, but is instead a convenient way of sending appropriate
+ * requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class PageBlobAsyncClient extends BlobAsyncClient {
 
@@ -35,13 +54,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    /**
+     * Package-private constructor for use by {@link PageBlobClientBuilder}.
+     * @param azureBlobStorage the API client for blob storage API
+     */
     PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
         this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client appendBlobClientBuilder instance.
+     * @return a new client {@link PageBlobClientBuilder} instance.
      */
     public static PageBlobClientBuilder builder() {
         return new PageBlobClientBuilder();
@@ -57,11 +80,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      *         512-byte boundary.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobCreateHeaders> create(long size) {
         return this.create(size, null, null, null, null, null);
@@ -91,11 +111,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobCreateHeaders> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
@@ -120,11 +137,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         The data to upload. Note that this {@code Flowable} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return this.uploadPages(pageRange, body, null, null);
@@ -154,11 +168,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
@@ -186,11 +197,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param sourceOffset
      *          The source offset to copy from.  Pass null or 0 to copy from the beginning of source page blob.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
@@ -229,11 +237,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *          its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
@@ -254,11 +259,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the cleared pages.
      */
     public Mono<PageBlobClearPagesHeaders> clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null);
@@ -282,11 +284,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the cleared pages.
      */
     public Mono<PageBlobClearPagesHeaders> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
@@ -302,11 +301,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param blobRange
      *         {@link BlobRange}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the information of the cleared pages.
      */
     public Flux<PageRange> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null);
@@ -327,11 +323,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting all the page ranges.
      */
     public Flux<PageRange> getPageRanges(BlobRange blobRange,
                                                             BlobAccessConditions accessConditions, Context context) {
@@ -351,11 +344,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         snapshot. Changed pages include both updated and cleared pages. The target
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting all the different page ranges.
      */
     public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
@@ -380,11 +370,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting all the different page ranges.
      */
     public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Context context) {
@@ -401,11 +388,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         Resizes a page blob to the specified size. If the specified value is less than the current size of the
      *         blob, then all pages above the specified value are cleared.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the resized page blob.
      */
     public Mono<PageBlobResizeHeaders> resize(long size) {
         return this.resize(size, null, null);
@@ -427,11 +411,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the resized page blob.
      */
     public Mono<PageBlobResizeHeaders> resize(long size, BlobAccessConditions accessConditions, Context context) {
         return pageBlobAsyncRawClient
@@ -449,11 +430,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         The blob's sequence number. The sequence number is a user-controlled property that you can use to track
      *         requests and manage concurrency issues.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the updated page blob.
      */
     public Mono<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
@@ -478,11 +456,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the updated page blob.
      */
     public Mono<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
@@ -504,7 +479,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param snapshot
      *         The snapshot on the copy source.
      *
-     * @return Emits the successful response.
+     * @return
+     *      A reactive response emitting the copy status.
      */
     public Mono<CopyStatusType> copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null);
@@ -533,7 +509,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
+     * @return
+     *      A reactive response emitting the copy status.
      */
     public Mono<CopyStatusType> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {

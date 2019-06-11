@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for container async clients.
+ * Fluent ContainerClientBuilder for container clients.
  */
 public final class ContainerClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -93,16 +93,22 @@ public final class ContainerClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link ContainerClient} created from the configurations in this builder.
+     */
     public ContainerClient buildClient() {
         return new ContainerClient(this);
     }
 
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
     public ContainerAsyncClient buildAsyncClient() {
         return new ContainerAsyncClient(this);
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
      */

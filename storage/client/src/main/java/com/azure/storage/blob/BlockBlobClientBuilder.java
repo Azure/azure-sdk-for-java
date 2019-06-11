@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for block blob async clients.
+ * Fluent BlockBlobClientBuilder for block blob clients.
  */
 public final class BlockBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -78,16 +78,22 @@ public final class BlockBlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link BlockBlobClient} created from the configurations in this builder.
+     */
     public BlockBlobClient buildClient() {
         return new BlockBlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
+     */
     public BlockBlobAsyncClient buildAsyncClient() {
         return new BlockBlobAsyncClient(buildImpl());
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated BlockBlobClientBuilder object
      */

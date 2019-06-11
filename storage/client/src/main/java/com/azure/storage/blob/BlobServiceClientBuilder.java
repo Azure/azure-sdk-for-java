@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for container async clients.
+ * Fluent BlobServiceClientBuilder for blob service clients.
  */
 public final class BlobServiceClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -97,10 +97,16 @@ public final class BlobServiceClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     */
     public BlobServiceClient buildClient() {
         return new BlobServiceClient(this);
     }
 
+    /**
+     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     */
     public BlobServiceAsyncClient buildAsyncClient() {
         return new BlobServiceAsyncClient(this);
     }
@@ -108,7 +114,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -138,7 +144,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
@@ -147,7 +153,7 @@ public final class BlobServiceClientBuilder {
 
     /**
      * Clears the credentials used to authorize requests sent to the service
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
@@ -157,7 +163,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -183,7 +189,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
@@ -193,7 +199,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
@@ -203,7 +209,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
@@ -214,7 +220,7 @@ public final class BlobServiceClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
      * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated ContainerClientBuilder object
+     * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

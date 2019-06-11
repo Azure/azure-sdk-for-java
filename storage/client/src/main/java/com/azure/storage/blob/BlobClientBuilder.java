@@ -78,16 +78,22 @@ public final class BlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link BlobClient} created from the configurations in this builder.
+     */
     public BlobClient buildClient() {
         return new BlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link BlobAsyncClient} created from the configurations in this builder.
+     */
     public BlobAsyncClient buildAsyncClient() {
         return new BlobAsyncClient(buildImpl());
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      */

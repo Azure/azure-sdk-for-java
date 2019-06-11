@@ -17,7 +17,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
+ * Client to a blob service. It may be obtained through a {@link BlobServiceClientBuilder}.
+ * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -29,26 +30,40 @@ public final class BlobServiceClient {
     private BlobServiceClientBuilder builder;
 
     /**
-     * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
-     * to make HTTP requests.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param azureBlobStorage the API client for blob storage API
      */
-    public BlobServiceClient(BlobServiceClientBuilder builder) {
+    BlobServiceClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobServiceAsyncClient = new BlobServiceAsyncClient(azureBlobStorage);
+    }
+
+    /**
+     * Static method for getting a new builder for this class.
+     *
+     * @return
+     *      A new {@link BlobServiceClientBuilder} instance.
+     */
+    public static BlobServiceClientBuilder builder() {
+        return new BlobServiceClientBuilder();
+    }
+
+    /**
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param builder the blob service client builder
+     */
+    BlobServiceClient(BlobServiceClientBuilder builder) {
         this.builder = builder;
         this.blobServiceAsyncClient = new BlobServiceAsyncClient(builder);
     }
 
     /**
-     * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
+     * Creates a {@link ContainerClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
      * @param containerName
      *     The name of the container to point to.
      * @return
-     *     A {@link ContainerAsyncClient} object pointing to the specified container
+     *     A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient createContainerClient(String containerName) {
         try {
@@ -72,12 +87,8 @@ public final class BlobServiceClient {
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The list of containers.
      */
     public Iterable<ContainerItem> listContainersSegment(String marker,
                                                                              ListContainersOptions options) {
@@ -97,6 +108,8 @@ public final class BlobServiceClient {
      *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -104,12 +117,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The list of containers.
      */
     public Iterable<ContainerItem> listContainersSegment(String marker,
                                                          ListContainersOptions options, Duration timeout, Context context) {
@@ -124,11 +133,8 @@ public final class BlobServiceClient {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service properties.
      */
     public ServiceGetPropertiesHeaders getProperties() {
         return this.getProperties(null, null);
@@ -138,6 +144,8 @@ public final class BlobServiceClient {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -145,11 +153,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service properties.
      */
     public ServiceGetPropertiesHeaders getProperties(Duration timeout, Context context) {
 
@@ -169,11 +174,8 @@ public final class BlobServiceClient {
      * @param properties
      *         Configures the service.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service properties.
      */
     public ServiceSetPropertiesHeaders setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null, null);
@@ -187,6 +189,8 @@ public final class BlobServiceClient {
      *
      * @param properties
      *         Configures the service.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -194,11 +198,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service properties.
      */
     public ServiceSetPropertiesHeaders setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
         Mono<ServiceSetPropertiesHeaders> response = blobServiceAsyncClient.setProperties(properties, context);
@@ -217,7 +218,8 @@ public final class BlobServiceClient {
      * @param expiry
      *         Expiration of the key's validity.
      *
-     * @return Emits the successful response.
+     * @return
+     *      The user delegation key.
      */
     public ServiceGetUserDelegationKeyHeaders getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null, null);
@@ -231,6 +233,8 @@ public final class BlobServiceClient {
      *         Start time for the key's validity. Null indicates immediate start.
      * @param expiry
      *         Expiration of the key's validity.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -238,7 +242,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
+     * @return
+     *      The user delegation key.
      */
     public ServiceGetUserDelegationKeyHeaders getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Duration timeout, Context context) {
@@ -255,11 +260,8 @@ public final class BlobServiceClient {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service statistics.
      */
     public ServiceGetStatisticsHeaders getStatistics() {
         return this.getStatistics(null, null);
@@ -271,6 +273,8 @@ public final class BlobServiceClient {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -278,11 +282,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service statistics.
      */
     public ServiceGetStatisticsHeaders getStatistics(Duration timeout, Context context) {
         Mono<ServiceGetStatisticsHeaders> response = blobServiceAsyncClient.getStatistics(context);
@@ -296,11 +297,8 @@ public final class BlobServiceClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service account info.
      */
     public ServiceGetAccountInfoHeaders getAccountInfo() {
         return this.getAccountInfo(null, null);
@@ -310,6 +308,8 @@ public final class BlobServiceClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -317,11 +317,8 @@ public final class BlobServiceClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The blob service account info.
      */
     public ServiceGetAccountInfoHeaders getAccountInfo(Duration timeout, Context context) {
         Mono<ServiceGetAccountInfoHeaders> response = blobServiceAsyncClient.getAccountInfo(context);

@@ -6,7 +6,14 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobGetAccountInfoHeaders;
+import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -17,7 +24,18 @@ import java.nio.ByteBuffer;
 /**
  * Client to a blob of any type: block, append, or page. It may be obtained through a {@link BlobClientBuilder} or via
  * the method {@link ContainerAsyncClient#createBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.  Please refer
+ * to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ *
+ * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
+ * refer to the {@link BlockBlobAsyncClient}, {@link PageBlobAsyncClient}, or {@link AppendBlobAsyncClient} for upload
+ * options.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public class BlobAsyncClient {
 
@@ -25,7 +43,7 @@ public class BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorage
+     * @param azureBlobStorage the API client for blob storage API
      */
     BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
         blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorage);
@@ -76,7 +94,8 @@ public class BlobAsyncClient {
 
 
     /**
-     * Copies the data at the source URL to a blob.
+     * Copies the data at the source URL to a blob. For more information, see the <a
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -89,7 +108,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob.
+     * Copies the data at the source URL to a blob. For more information, see the <a
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -168,8 +188,8 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> syncCopyFromURL(URL copySource) {
-        return this.syncCopyFromURL(copySource, null, null, null, null);
+    public Mono<String> copyFromURL(URL copySource) {
+        return this.copyFromURL(copySource, null, null, null, null);
     }
 
     /**
@@ -195,21 +215,17 @@ public class BlobAsyncClient {
      *
      * @return
      *      A reactive response containing the copy ID for the long running operation.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=sync_copy "Sample code for BlobAsyncRawClient.syncCopyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<String> syncCopyFromURL(URL copySource, Metadata metadata,
-            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-            Context context) {
+    public Mono<String> copyFromURL(URL copySource, Metadata metadata,
+                                    ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+                                    Context context) {
         return blobAsyncRawClient
             .syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context)
             .map(response -> response.deserializedHeaders().copyId());
     }
 
     /**
-     * Reads the entire blob.
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @return
      *      A reactive response containing the blob data.
@@ -219,7 +235,7 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Reads a range of bytes from a blob.
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param range
      *         {@link BlobRange}
@@ -313,7 +329,10 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Changes a blob's HTTP header properties.
+     * Changes a blob's HTTP header properties. if only one HTTP header is updated, the
+     * others will all be erased. In order to preserve existing values, they must be
+     * passed alongside the header being changed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
      * @param headers
      *         {@link BlobHTTPHeaders}
@@ -326,7 +345,10 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Changes a blob's HTTP header properties.
+     * Changes a blob's HTTP header properties. if only one HTTP header is updated, the
+     * others will all be erased. In order to preserve existing values, they must be
+     * passed alongside the header being changed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
      * @param headers
      *         {@link BlobHTTPHeaders}
@@ -349,7 +371,9 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Changes a blob's metadata.
+     * Changes a blob's metadata. The specified metadata in this method will replace existing
+     * metadata. If old values must be preserved, they must be downloaded and included in the
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
@@ -362,7 +386,9 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Changes a blob's metadata.
+     * Changes a blob's metadata. The specified metadata in this method will replace existing
+     * metadata. If old values must be preserved, they must be downloaded and included in the
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
@@ -615,7 +641,7 @@ public class BlobAsyncClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease.
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Integer> breakLease() {
         return this.breakLease(null, null, null);
@@ -643,7 +669,7 @@ public class BlobAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease.
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -685,11 +711,7 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return A reactive response containing the new lease ID.
      */
     public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -701,11 +723,7 @@ public class BlobAsyncClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobAsyncRawClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return a reactor response containing the sku name and account kind.
      */
     public Mono<BlobGetAccountInfoHeaders> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -721,11 +739,7 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobAsyncRawClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return a reactor response containing the sku name and account kind.
      */
     // TODO determine this return type
     public Mono<BlobGetAccountInfoHeaders> getAccountInfo(Context context) {

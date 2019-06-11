@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for page blob blob async clients.
+ * Fluent PageBlobClientBuilder for page blob clients.
  */
 public final class PageBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -78,16 +78,22 @@ public final class PageBlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link PageBlobClient} created from the configurations in this builder.
+     */
     public PageBlobClient buildClient() {
         return new PageBlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
+     */
     public PageBlobAsyncClient buildAsyncClient() {
         return new PageBlobAsyncClient(buildImpl());
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated PageBlobClientBuilder object
      */

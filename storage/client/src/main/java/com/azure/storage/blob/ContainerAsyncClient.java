@@ -15,12 +15,18 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
- * {@link BlobServiceAsyncRawClient} object. This class does not hold any state about a particular blob but is instead a convenient way
- * of sending off appropriate requests to the resource on the service. It may also be used to construct URLs to blobs.
- * Please refer to the
+ * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
+ * {@link BlobServiceAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
+ * state about a particular blob but is instead a convenient way of sending off appropriate requests to
+ * the resource on the service. It may also be used to construct URLs to blobs. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class ContainerAsyncClient {
 
@@ -33,29 +39,33 @@ public final class ContainerAsyncClient {
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+    /**
+     * Package-private constructor for use by {@link ContainerClientBuilder}.
+     * @param builder the container client builder
+     */
     ContainerAsyncClient(ContainerClientBuilder builder) {
         this.builder = builder;
         this.containerAsyncRawClient = new ContainerAsyncRawClient(builder.buildImpl());
     }
 
     /**
-     * @return a new client appendBlobClientBuilder instance.
+     * @return a new client {@link ContainerClientBuilder} instance.
      */
     public static ContainerClientBuilder containerClientBuilder() {
         return new ContainerClientBuilder();
     }
 
     /**
-     * Creates a new {@link BlockBlobAsyncRawClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlockBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
+     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
      * NewBlockBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link BlockBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
         try {
@@ -66,16 +76,16 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates creates a new PageBlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the PageBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
      * NewPageBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link PageBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
         try {
@@ -86,16 +96,16 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates creates a new AppendBlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new AppendBlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the AppendBlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link AppendBlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
         try {
@@ -106,16 +116,16 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates a new BlobAsyncRawClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new BlobAsyncRawClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlobAsyncRawClient and then call its WithPipeline method passing in the
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's createBlobAsyncClient instead of calling this object's
      * createBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link BlobAsyncRawClient} object which references the blob with the specified name in this container.
+     * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient createBlobAsyncClient(String blobName) {
         try {
@@ -130,11 +140,8 @@ public final class ContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> create() {
         return this.create(null, null, null);
@@ -157,11 +164,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
         return containerAsyncRawClient
@@ -174,11 +178,8 @@ public final class ContainerAsyncClient {
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> delete() {
         return this.delete(null, null);
@@ -198,11 +199,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
         return containerAsyncRawClient
@@ -214,11 +212,8 @@ public final class ContainerAsyncClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the container properties.
      */
     public Mono<ContainerGetPropertiesHeaders> getProperties() {
         return this.getProperties(null, null);
@@ -238,11 +233,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the container properties.
      */
     public Mono<ContainerGetPropertiesHeaders> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
@@ -258,11 +250,8 @@ public final class ContainerAsyncClient {
      * @param metadata
      *         {@link Metadata}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
@@ -283,11 +272,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Context context) {
@@ -301,11 +287,8 @@ public final class ContainerAsyncClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the container access policy.
      */
     public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy() {
         return this.getAccessPolicy(null, null);
@@ -326,11 +309,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the container access policy.
      */
     public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
@@ -353,11 +333,8 @@ public final class ContainerAsyncClient {
      *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *         for more information. Passing null will clear all access policies.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
@@ -386,11 +363,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
@@ -424,11 +398,8 @@ public final class ContainerAsyncClient {
      *         The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
      *         A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the acquired lease.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
         return containerAsyncRawClient.acquireLease(proposedId, duration, null, null);
@@ -455,11 +426,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the acquired lease.
      */
     public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -473,11 +441,8 @@ public final class ContainerAsyncClient {
      * @param leaseID
      *         The leaseId of the active lease on the container.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the renewed lease.
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
         return containerAsyncRawClient.renewLease(leaseID, null, null);
@@ -500,11 +465,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the renewed lease.
      */
     public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -518,11 +480,8 @@ public final class ContainerAsyncClient {
      * @param leaseID
      *         The leaseId of the active lease on the container.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the released lease.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
         return containerAsyncRawClient.releaseLease(leaseID, null, null);
@@ -545,11 +504,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the released lease.
      */
     public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -560,12 +516,8 @@ public final class ContainerAsyncClient {
      * Breaks the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @return Emits the successful response.
+     * @return
+     *      A reactive response containing the broken lease.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease() {
         return containerAsyncRawClient.breakLease(null, null, null);
@@ -591,11 +543,8 @@ public final class ContainerAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the broken lease.
      */
     public Mono<ContainersBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -611,11 +560,8 @@ public final class ContainerAsyncClient {
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the updated lease.
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
         return containerAsyncRawClient.changeLease(leaseID, proposedID, null, null);
@@ -640,11 +586,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the updated lease.
      */
     public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -661,12 +604,8 @@ public final class ContainerAsyncClient {
      * @param options
      *         {@link ListBlobsOptions}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the flattened blobs.
      */
     public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
         return this.listBlobsFlat(options, null);
@@ -688,14 +627,9 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the listed blobs, flattened.
      */
-
     public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options, Context context) {
         return containerAsyncRawClient
             .listBlobsFlatSegment(null, options, context)
@@ -789,11 +723,8 @@ public final class ContainerAsyncClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the account info.
      */
     public Mono<ContainerGetAccountInfoHeaders> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -810,11 +741,8 @@ public final class ContainerAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerAsyncClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the account info.
      */
     public Mono<ContainerGetAccountInfoHeaders> getAccountInfo(Context context) {
         return containerAsyncRawClient

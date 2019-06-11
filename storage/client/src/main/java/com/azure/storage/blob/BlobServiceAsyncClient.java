@@ -6,9 +6,15 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.ServiceGetAccountInfoHeaders;
+import com.azure.storage.blob.models.ServiceGetPropertiesHeaders;
+import com.azure.storage.blob.models.ServiceGetStatisticsHeaders;
+import com.azure.storage.blob.models.ServiceGetUserDelegationKeyHeaders;
+import com.azure.storage.blob.models.ServiceSetPropertiesHeaders;
+import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.models.StorageServiceProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,11 +23,18 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
- * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
+ * Client to a blob service. It may be obtained through a {@link BlobServiceClientBuilder}.
+ * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class BlobServiceAsyncClient {
 
@@ -29,14 +42,28 @@ public final class BlobServiceAsyncClient {
     private BlobServiceClientBuilder builder;
 
     /**
-     * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
-     * to make HTTP requests.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param azureBlobStorage the API client for blob storage API
      */
-    public BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
+    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorage);
+    }
+
+    /**
+     * Static method for getting a new builder for this class.
+     *
+     * @return
+     *      A new {@link BlobServiceClientBuilder} instance.
+     */
+    public static BlobServiceClientBuilder builder() {
+        return new BlobServiceClientBuilder();
+    }
+
+    /**
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param builder the blob service client builder
+     */
+    BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
         this.builder = builder;
         this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(builder.buildImpl());
     }
@@ -72,12 +99,8 @@ public final class BlobServiceAsyncClient {
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the list of containers.
      */
     public Flux<ContainerItem> listContainersSegment(String marker, ListContainersOptions options) {
         return this.listContainersSegment(marker, options, null);
@@ -103,14 +126,9 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the list of containers.
      */
-
     public Flux<ContainerItem> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
         return blobServiceAsyncRawClient
@@ -136,11 +154,8 @@ public final class BlobServiceAsyncClient {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service properties.
      */
     public Mono<ServiceGetPropertiesHeaders> getProperties() {
         return this.getProperties(null);
@@ -157,11 +172,8 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service properties.
      */
     public Mono<ServiceGetPropertiesHeaders> getProperties(Context context) {
         return blobServiceAsyncRawClient
@@ -178,11 +190,8 @@ public final class BlobServiceAsyncClient {
      * @param properties
      *         Configures the service.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service properties.
      */
     public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
@@ -203,11 +212,8 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service properties.
      */
     public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties, Context context) {
         return blobServiceAsyncRawClient
@@ -224,7 +230,8 @@ public final class BlobServiceAsyncClient {
      * @param expiry
      *         Expiration of the key's validity.
      *
-     * @return Emits the successful response.
+     * @return
+     *      A reactive response containing the user delegation key.
      */
     public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null);
@@ -245,7 +252,8 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
+     * @return
+     *      A reactive response containing the user delegation key.
      */
     public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
@@ -260,11 +268,8 @@ public final class BlobServiceAsyncClient {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service statistics.
      */
     public Mono<ServiceGetStatisticsHeaders> getStatistics() {
         return this.getStatistics(null);
@@ -283,11 +288,8 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service statistics.
      */
     public Mono<ServiceGetStatisticsHeaders> getStatistics(Context context) {
         return blobServiceAsyncRawClient
@@ -299,11 +301,8 @@ public final class BlobServiceAsyncClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service account info.
      */
     public Mono<ServiceGetAccountInfoHeaders> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -320,11 +319,8 @@ public final class BlobServiceAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response containing the blob service account info.
      */
     public Mono<ServiceGetAccountInfoHeaders> getAccountInfo(Context context) {
         return blobServiceAsyncRawClient

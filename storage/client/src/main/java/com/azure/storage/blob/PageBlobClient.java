@@ -15,9 +15,11 @@ import java.net.URL;
 import java.time.Duration;
 
 /**
- * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
- * {@link ContainerAsyncClient} object. This class does not hold any state about a particular blob but is instead a convenient
- * way of sending off appropriate requests to the resource on the service. Please refer to the
+ * Client to a page blob. It may be obtained through a {@link PageBlobClientBuilder}, via
+ * the method {@link BlobClient#asPageBlobClient()}, or via the method
+ * {@link ContainerClient#createPageBlobClient(String)}. This class does not hold
+ * any state about a particular blob, but is instead a convenient way of sending appropriate
+ * requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
@@ -35,13 +37,17 @@ public final class PageBlobClient extends BlobClient {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
+    /**
+     * Package-private constructor for use by {@link PageBlobClientBuilder}.
+     * @param azureBlobStorage the API client for blob storage API
+     */
     PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
         this.pageBlobAsyncClient = new PageBlobAsyncClient(azureBlobStorage);
     }
 
     /**
-     * @return a new client appendBlobClientBuilder instance.
+     * @return a new client {@link PageBlobClientBuilder} instance.
      */
     public static PageBlobClientBuilder pageBlobClientBuilder() {
         return new PageBlobClientBuilder();
@@ -74,11 +80,8 @@ public final class PageBlobClient extends BlobClient {
      *         Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      *         512-byte boundary.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the created page blob.
      */
     public PageBlobCreateHeaders create(long size) {
         return this.create(size, null, null, null, null, null, null);
@@ -101,6 +104,8 @@ public final class PageBlobClient extends BlobClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -108,11 +113,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the created page blob.
      */
     public PageBlobCreateHeaders create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -138,11 +140,8 @@ public final class PageBlobClient extends BlobClient {
      *         The data to upload. Note that this {@code Flowable} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the uploaded pages.
      */
     public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return this.uploadPages(pageRange, body, null, null, null);
@@ -165,6 +164,8 @@ public final class PageBlobClient extends BlobClient {
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -172,11 +173,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the uploaded pages.
      */
     public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
@@ -205,11 +203,8 @@ public final class PageBlobClient extends BlobClient {
      * @param sourceOffset
      *          The source offset to copy from.  Pass null or 0 to copy from the beginning of source page blob.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the uploaded pages.
      */
     public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
@@ -241,6 +236,8 @@ public final class PageBlobClient extends BlobClient {
      *          {@link PageBlobAccessConditions}
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *          {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -248,11 +245,8 @@ public final class PageBlobClient extends BlobClient {
      *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *          its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the uploaded pages.
      */
     public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
@@ -274,11 +268,8 @@ public final class PageBlobClient extends BlobClient {
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the cleared pages.
      */
     public PageBlobClearPagesHeaders clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null, null);
@@ -293,6 +284,8 @@ public final class PageBlobClient extends BlobClient {
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -302,11 +295,8 @@ public final class PageBlobClient extends BlobClient {
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the cleared pages.
      */
     public PageBlobClearPagesHeaders clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
@@ -324,11 +314,8 @@ public final class PageBlobClient extends BlobClient {
      * @param blobRange
      *         {@link BlobRange}
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The information of the cleared pages.
      */
     public Iterable<PageRange> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null, null);
@@ -342,6 +329,8 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobRange}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -349,11 +338,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      All the page ranges.
      */
     public Iterable<PageRange> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -374,11 +360,8 @@ public final class PageBlobClient extends BlobClient {
      *         snapshot. Changed pages include both updated and cleared pages. The target
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null, null);
@@ -396,6 +379,8 @@ public final class PageBlobClient extends BlobClient {
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -403,11 +388,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -425,11 +407,8 @@ public final class PageBlobClient extends BlobClient {
      *         Resizes a page blob to the specified size. If the specified value is less than the current size of the
      *         blob, then all pages above the specified value are cleared.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The resized page blob.
      */
     public PageBlobResizeHeaders resize(long size) {
         return this.resize(size, null, null, null);
@@ -444,6 +423,8 @@ public final class PageBlobClient extends BlobClient {
      *         blob, then all pages above the specified value are cleared.
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -451,11 +432,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The resized page blob.
      */
     public PageBlobResizeHeaders resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<PageBlobResizeHeaders> response = pageBlobAsyncClient.resize(size, accessConditions, context);
@@ -474,11 +452,8 @@ public final class PageBlobClient extends BlobClient {
      *         The blob's sequence number. The sequence number is a user-controlled property that you can use to track
      *         requests and manage concurrency issues.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The updated page blob.
      */
     public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
@@ -496,6 +471,8 @@ public final class PageBlobClient extends BlobClient {
      *         requests and manage concurrency issues.
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -503,11 +480,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      The updated page blob.
      */
     public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -530,7 +504,8 @@ public final class PageBlobClient extends BlobClient {
      * @param snapshot
      *         The snapshot on the copy source.
      *
-     * @return Emits the successful response.
+     * @return
+     *      The copy status.
      */
     public CopyStatusType copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null, null);
@@ -552,6 +527,8 @@ public final class PageBlobClient extends BlobClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -559,7 +536,8 @@ public final class PageBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      *
-     * @return Emits the successful response.
+     * @return
+     *      The copy status.
      */
     public CopyStatusType copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {

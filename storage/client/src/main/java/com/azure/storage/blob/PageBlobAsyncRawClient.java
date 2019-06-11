@@ -3,12 +3,9 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.PageBlobsImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
@@ -23,14 +20,12 @@ import com.azure.storage.blob.models.PageBlobsUploadPagesResponse;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.core.http.HttpPipeline;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
@@ -55,11 +50,8 @@ public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Creates a {@code PageBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
-<<<<<<< HEAD
      * pipeline to make HTTP requests.
      *
-=======
->>>>>>> jianghaolu-storage-proto-builder
      */
     public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
