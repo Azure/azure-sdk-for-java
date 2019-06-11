@@ -5,7 +5,7 @@ public final class QueuesSegmentOptions {
 
     private String prefix;
 
-    private int maxResults;
+    private Integer maxResults;
 
     public boolean includeMetadata() {
         return includeMetadata;

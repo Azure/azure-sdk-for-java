@@ -98,7 +98,7 @@ public final class QueueServiceAsyncClient {
      */
     public void deleteQueue(String queueName) {
         try {
-            new QueueAsyncClient(client, queueName).delete();
+            new QueueAsyncClient(client, queueName).delete().block();
         } catch (StorageErrorException ex) {
             if (!StorageErrorCode.QUEUE_NOT_FOUND.toString().equals(ex.value().message())
                 && !StorageErrorCode.QUEUE_BEING_DELETED.toString().equals(ex.value().message())) {
