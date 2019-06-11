@@ -1,4 +1,8 @@
 {
+  "advisor/resource-manager": {
+    "source": "specification/advisor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "apimanagement/resource-manager": {
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
