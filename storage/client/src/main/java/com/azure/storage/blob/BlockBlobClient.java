@@ -76,17 +76,12 @@ public final class BlockBlobClient extends BlobClient {
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     *         The data to write to the blob.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
+     *         provided in the {@link InputStream}.
      *
      * @return
      *      The information of the uploaded block blob.
@@ -102,17 +97,12 @@ public final class BlockBlobClient extends BlobClient {
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     *         The data to write to the blob.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
+     *         provided in the {@link InputStream}.
      * @param headers
      *         {@link BlobHTTPHeaders}
      * @param metadata
@@ -150,19 +140,15 @@ public final class BlockBlobClient extends BlobClient {
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param data
-     *         The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     *         The data to write to the block.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
+     *         provided in the {@link InputStream}.
      */
     public void stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
         this.stageBlock(base64BlockID, data, length, null, null, null);
@@ -172,19 +158,15 @@ public final class BlockBlobClient extends BlobClient {
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param data
-     *         The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     *         The data to write to the block.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flux}.
+     *         provided in the {@link InputStream}.
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
