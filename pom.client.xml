@@ -289,6 +289,15 @@
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
             <isOffline>false</isOffline>
+            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>${codesnippet4javadoc.version}</version>
+            </docletArtifact>
+            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
           </configuration>
         </plugin>
 
@@ -309,11 +318,19 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-            <!-- TODO soon - enable this failure mode -->
-            <failOnError>false</failOnError>
+            <failOnError>true</failOnError>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
@@ -348,10 +365,6 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -408,6 +421,12 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
+               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
+               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -502,7 +521,7 @@
     <profile>
       <id>javadoc-no-modules-fix</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <build>
         <plugins>
@@ -511,6 +530,35 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <additionalJOption>--no-module-directories</additionalJOption>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>javadoc-doclet-compatibility</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+
+              <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
+              javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
+              Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
+              <failOnWarnings>false</failOnWarnings>
+
+              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
+              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
+              <additionalJOptions>
+                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
+              </additionalJOptions>
+
             </configuration>
           </plugin>
         </plugins>

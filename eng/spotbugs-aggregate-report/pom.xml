@@ -43,8 +43,9 @@
             <configuration>
               <sources>
                 <source>..\..\applicationconfig\client\src\main\java</source>
+                <source>..\..\applicationconfig\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
-                <source>..\..\core\azure-core-auth\src\main\jasva</source>
+                <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
               </sources>
@@ -83,6 +84,16 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Added to override the -snippetpath arg which is not applicable here-->
+          <additionalOptions>-maxLineLength 120</additionalOptions>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 

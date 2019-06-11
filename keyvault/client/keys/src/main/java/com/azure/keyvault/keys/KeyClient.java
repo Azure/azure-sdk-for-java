@@ -43,12 +43,7 @@ import java.util.Objects;
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * KeyClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
- *   .build()
- * </pre>
+ * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
  */
@@ -91,10 +86,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
-     * <pre>
-     * Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
-     * System.out.printf("Key is created with name %s and id %s \n", retKey.name(), retKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createKey#string-keyType}
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
@@ -396,7 +388,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
-    public Response<Key> updateKey(KeyBase key, KeyOperation ... keyOperations) {
+    public Response<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())
@@ -591,10 +583,7 @@ public final class KeyClient extends ServiceClient {
      *
      * <p>It is possible to get full keys with values for each version from this information. Loop over the {@link KeyBase key} and
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with values included of the specified versions.</p>
-     * <pre>
-     * keyClient.listKeyVersions("keyName").stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Received key's version with name %s and id %s", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
