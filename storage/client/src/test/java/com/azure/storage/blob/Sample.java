@@ -50,7 +50,7 @@ public class Sample {
     public void asyncSample() throws IOException {
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint("http://jamesschreppler.blob.core.windows.net")
             .credentials(new SharedKeyCredentials("jamesschreppler", "8lw98WpdBjDmdCkcUc3PRc8VKx0t58cTDKCdJ9SifKzH9Ef54pNIvDQKyluSpcicjx3P1P9KRZNykPTMb7RSVw=="))
-            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
         ContainerAsyncClient containerClient = serviceClient.createContainerAsyncClient("uxtesting" + UUID.randomUUID());
