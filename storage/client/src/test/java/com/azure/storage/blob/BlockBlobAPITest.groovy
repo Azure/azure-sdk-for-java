@@ -3,7 +3,8 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.HttpPipeline
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -81,7 +82,7 @@ class BlockBlobAPITest extends APISpec {
 //        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 //
 //        expect:
-//        bu.stageBlock(getBlockID(), defaultFlux, defaultDataSize, new LeaseAccessConditions().withLeaseId(leaseID),
+//        bu.stageBlock(getBlockID(), defaultInputStream, defaultDataSize, new LeaseAccessConditions().withLeaseId(leaseID),
 //            null).blockingGet().statusCode() == 201
 //    }
 //
@@ -90,7 +91,7 @@ class BlockBlobAPITest extends APISpec {
 //        setupBlobLeaseCondition(bu, receivedLeaseID)
 //
 //        when:
-//        bu.stageBlock(getBlockID(), defaultFlux, defaultDataSize, new LeaseAccessConditions()
+//        bu.stageBlock(getBlockID(), defaultInputStream, defaultDataSize, new LeaseAccessConditions()
 //            .withLeaseId(garbageLeaseID), null).blockingGet()
 //
 //        then:
@@ -98,32 +99,30 @@ class BlockBlobAPITest extends APISpec {
 //        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
 //    }
 //
-//    def "Stage block error"() {
-//        setup:
-//        bu = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        bu.stageBlock("id", defaultFlux, defaultDataSize, null, null)
-//            .blockingGet()
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
-//    def "Stage block context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockHeaders)))
-//
-//        bu = bu.withPipeline(pipeline)
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.stageBlock("id", defaultFlux, defaultDataSize, null, defaultContext).blockingGet()
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
+    def "Stage block error"() {
+        setup:
+        bu = cu.createBlockBlobClient(generateBlobName())
 
+        when:
+        bu.stageBlock("id", defaultInputStream, defaultDataSize)
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block context"() {
+        setup:
+        bu = BlockBlobClient.blockBlobClientBuilder().addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.stageBlock("id", defaultInputStream, defaultDataSize, null, null, defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+    //TODO: Add back the following 12 tests once BlockBlobClient.toURL() is implemented
 //    def "Stage block from url"() {
 //        setup:
 //        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -148,11 +147,11 @@ class BlockBlobAPITest extends APISpec {
 //        FluxUtil.collectBytesInBuffer(bu2.download(null, null, false, null)
 //            .blockingGet().body(null)).blockingGet() == defaultData
 //    }
-//
+
 //    def "Stage block from url min"() {
 //        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
-//        def bu2 = cu.createBlockBlobURL(generateBlobName())
+//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+//        def bu2 = cu.createBlockBlobClient(generateBlobName())
 //        def blockID = getBlockID()
 //
 //        expect:
@@ -272,7 +271,7 @@ class BlockBlobAPITest extends APISpec {
 //        def blockID = getBlockID()
 //
 //        def sourceURL = cu.createBlockBlobURL(generateBlobName())
-//        sourceURL.upload(defaultFlux, defaultDataSize).blockingGet()
+//        sourceURL.upload(defaultInputStream, defaultDataSize).blockingGet()
 //
 //        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
 //        def smac = new SourceModifiedAccessConditions()
@@ -300,7 +299,7 @@ class BlockBlobAPITest extends APISpec {
 //        def blockID = getBlockID()
 //
 //        def sourceURL = cu.createBlockBlobURL(generateBlobName())
-//        sourceURL.upload(defaultFlux, defaultDataSize).blockingGet()
+//        sourceURL.upload(defaultInputStream, defaultDataSize).blockingGet()
 //
 //        sourceIfNoneMatch = setupBlobMatchCondition(sourceURL, sourceIfNoneMatch)
 //        def smac = new SourceModifiedAccessConditions()
@@ -362,7 +361,7 @@ class BlockBlobAPITest extends APISpec {
 //    def "Commit block list headers"() {
 //        setup:
 //        String blockID = getBlockID()
-//        bu.stageBlock(blockID, defaultFlux, defaultDataSize,
+//        bu.stageBlock(blockID, defaultInputStream, defaultDataSize,
 //            null, null).blockingGet()
 //        ArrayList<String> ids = new ArrayList<>()
 //        ids.add(blockID)
@@ -630,7 +629,7 @@ class BlockBlobAPITest extends APISpec {
 
 //    def "Upload min"() {
 //        expect:
-//        bu.upload(defaultFlux, defaultDataSize).blockingGet().statusCode() == 201
+//        bu.upload(defaultInputStream, defaultDataSize).blockingGet().statusCode() == 201
 //    }
 
 //    @Unroll
@@ -645,8 +644,8 @@ class BlockBlobAPITest extends APISpec {
 //        where:
 //        data            | dataSize            | exceptionType
 //        null            | defaultDataSize     | IllegalArgumentException
-//        defaultFlux | defaultDataSize + 1 | UnexpectedLengthException
-//        defaultFlux | defaultDataSize - 1 | UnexpectedLengthException
+//        defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
+//        defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
 //    }
 //
 //    def "Upload empty body"() {
@@ -728,7 +727,7 @@ class BlockBlobAPITest extends APISpec {
 //            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 //
 //        expect:
-//        bu.upload(defaultFlux, defaultDataSize,
+//        bu.upload(defaultInputStream, defaultDataSize,
 //            null, null, bac, null).blockingGet().statusCode() == 201
 //
 //        where:
@@ -752,7 +751,7 @@ class BlockBlobAPITest extends APISpec {
 //            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 //
 //        when:
-//        bu.upload(defaultFlux, defaultDataSize, null, null, bac, null).blockingGet()
+//        bu.upload(defaultInputStream, defaultDataSize, null, null, bac, null).blockingGet()
 //
 //        then:
 //        def e = thrown(StorageException)
@@ -773,7 +772,7 @@ class BlockBlobAPITest extends APISpec {
 //        bu = cu.createBlockBlobURL(generateBlobName())
 //
 //        when:
-//        bu.upload(defaultFlux, defaultDataSize, null, null,
+//        bu.upload(defaultInputStream, defaultDataSize, null, null,
 //            new BlobAccessConditions().withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId("id")),
 //            null).blockingGet()
 //
@@ -789,7 +788,7 @@ class BlockBlobAPITest extends APISpec {
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
-//        bu.upload(defaultFlux, defaultDataSize, null, null, null, defaultContext).blockingGet()
+//        bu.upload(defaultInputStream, defaultDataSize, null, null, null, defaultContext).blockingGet()
 //
 //        then:
 //        notThrown(RuntimeException)
