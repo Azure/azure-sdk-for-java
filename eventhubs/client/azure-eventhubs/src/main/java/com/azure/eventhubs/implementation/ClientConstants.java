@@ -8,7 +8,6 @@ import java.time.Duration;
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final int HTTPS_PORT = 443;
-    public static final int MAX_PARTITION_KEY_LENGTH = 128;
 
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
     public static final Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(5); // renew every 5 minutes, which expires 20 minutes
