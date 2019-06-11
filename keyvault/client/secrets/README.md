@@ -12,7 +12,7 @@ Use the secret client library to create and manage secrets.
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- An existing [Azure KeyVault][azure_keyvault] : Note that this document shows how to create one.
+- An existing [Azure Key Vault][azure_keyvault] : Note that this document shows how to create one.
 
 ### Adding the package to your project
 
@@ -26,7 +26,7 @@ Use the secret client library to create and manage secrets.
 
 ### Create an Azure Key Vault.
 
-To create an Azure Key Vault Store you can use the Azure Portal or [Azure CLI][azure_cli].
+To create an Azure Key Vault you can use the Azure Portal or [Azure Keyvault_CLI][azure_keyvault_cli].
 
 Create the Azure Key Vault:
 ```Powershell
@@ -44,23 +44,28 @@ The application must present both these values to Azure Active Directory, to get
 
 #### Create/Get Credentials
 
-Create an application in the Azure Active Directory.
+To create an application/service-principal you can use the [Azure Portal][azure_create_application_in_portal] or [Azure CLI][azure_cli].
+
+Create an application/service-principal in the Azure Active Directory.
 ```Powershell
 az ad sp create-for-rbac -n <application-name> --password <application-password> --skip-assignment
 # If you don't specify a password, one will be created for you.
 ```
 
-To authorize the same application to perform secret operarions in your vault, type the following command:
+To authorize the same application to perform secret operations in your vault, type the following command:
 ```Powershell
 az keyvault set-policy --name <keyvault-name> --spn <your-service-principal-id> --secret-permissions <secret-permissions>
-# 
 ```
 
 #### Create Client
 
-In order to interact with the Azure Key Vault Secrets service you'll need to create an instance of the Secret Client class. To make this possible you'll need the application id and application key of an application in Azure Active Directory authorized with access to key vault.
+In order to interact with the Azure Key Vault Secrets service you'll need to create an instance of the Secret Client class. To do this you'll need the application id and application key of an application in Azure Active Directory authorized with access to key vault.
 
-Once you have the values of the appliication id and application key you can create the secret client:
+Once you have the values of the application id, application key and tenant id you can create the secret client.
+The following environment varaibles need to be configured for authorizing with your key vault via default credentials.
+1. AZURE_CLIENT_ID - The application id.
+2. AZURE_CLIENT_KEY - The application key.
+3. AZURE_TENANT_ID - The id of the Azure Active Directory under which your application is registered.
 
 ```Java
 SecretClient client = SecretClient.builder()
@@ -82,8 +87,11 @@ SecretAsyncClient client = SecretAsyncClient.builder()
 
 ### Secret
 
-A secret is the fundamental resource within an Azure KeyVault. In its simplest form it is a name and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
-The expires property of a Secret provides a way to specify a UTC time at which it will no loger be active. The notBefore property of a Secret allows to specify a UTC time after which secret will be active.
+A secret is the fundamental resource within an Azure Key Vault. In its simplest form it is a name and a value. However, there are additional properties such as:
+   1. content type : Type of the secret value such as a password.
+   2. tags : Application specific metadata in the form of key-value pairs.
+   3. expires : Specifies a UTC time at which secret will no loger be active.
+   4. notBefore : Specifies a UTC time after which secret will be active.
 
 ### Secret Client
 
@@ -161,7 +169,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Secret
 
-Create a Secret to be stored in the Azure Key Vault. There are two ways to store a Secret:
+Create a Secret to be stored in the Azure Key Vault.
 - setSecret creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
@@ -224,6 +232,38 @@ secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
 
 When you interact with Azure Key Vault Secrets service using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azkeyvault_rest] requests. For example, if you try to retrieve a Secret that doesn't exist in your Key Vault, a `404` error is returned, indicating `Not Found`.
 
+## Next steps
+Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
+
+* [HelloWorld.java](TODO: Add link) - Contains sync api snippets found in this article.
+* [HelloWorldAsync.java] (TODO: Add link) - Contains async api snippets found in this article.
+
+* [ListOperations.java](TODO) 
+* [ListOperationsAsync.java](TODO) 
+ - Java code for working with Key Vault secrets, including:
+    * Creating Secrets
+    * Listing Secrets
+    * Create new version of existing secret.
+    * List secret versions
+
+* [BackupAndRestoreOperations.java](TODO)
+* [BackupAndRestoreOperationsAsync.java](TODO) 
+ - Java code to backup and restore a deleted secret:
+    * Create a Secret
+    * Backup a Secret -- Write it to a file.
+    * Delete a secret
+    * Restore a secret
+
+* [ManagingDeletedSecrets.java](TODO)
+* [ManagingDeletedSecretsAsync.java](TODO)  
+- Java code for working with deleted secrets:
+    * Create a Secret
+    * Delete a secret
+    * List deleted secrets
+    * Recover a deleted secret
+    * Purge Deleted secret
+
+
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
@@ -246,3 +286,5 @@ If you would like to become an active contributor to this project please follow 
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/keyvault/
 [azkeyvault_rest]: https://docs.microsoft.com/en-us/rest/api/keyvault/
+[azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
+[azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
