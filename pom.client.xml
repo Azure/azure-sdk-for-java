@@ -267,7 +267,7 @@
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util</packages>
+                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
               </group>
               <group>
                 <title>Azure Core - Management</title>
