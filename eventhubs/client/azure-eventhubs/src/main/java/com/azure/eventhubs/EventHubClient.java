@@ -119,8 +119,12 @@ public class EventHubClient implements Closeable {
      *
      * @param options The set of options to apply when creating the sender.
      * @return A new {@link EventSender}.
+     * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventSender createSender(EventSenderOptions options) {
+        Objects.requireNonNull(options);
+
+        final EventSenderOptions clonedOptions = options.clone();
         final String entityPath;
         final String linkName;
 
@@ -136,7 +140,7 @@ public class EventHubClient implements Closeable {
             .flatMap(session -> session.createSender(linkName, entityPath, options.timeout(), options.retry()))
             .cast(AmqpSendLink.class);
 
-        return new EventSender(amqpLinkMono, options);
+        return new EventSender(amqpLinkMono, clonedOptions);
     }
 
     /**

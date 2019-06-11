@@ -10,7 +10,7 @@ import java.time.Duration;
 /**
  * The set of options that can be specified when creating an {@link EventSender} to configure its behavior.
  */
-public class EventSenderOptions {
+public class EventSenderOptions implements Cloneable {
     private String partitionId;
     private Retry retry;
     private Duration timeout;
@@ -81,5 +81,20 @@ public class EventSenderOptions {
      */
     public Duration timeout() {
         return timeout;
+    }
+
+    public EventSenderOptions clone() {
+        EventSenderOptions clone;
+        try {
+            clone = (EventSenderOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new EventSenderOptions();
+        }
+
+        clone.partitionId(this.partitionId);
+        clone.retry(this.retry);
+        clone.timeout(this.timeout);
+
+        return clone;
     }
 }
