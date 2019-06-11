@@ -27,6 +27,7 @@ import java.time.OffsetDateTime;
 public final class BlobServiceClient {
 
     private BlobServiceAsyncClient blobServiceAsyncClient;
+    private BlobServiceClientBuilder builder;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -47,6 +48,15 @@ public final class BlobServiceClient {
     }
 
     /**
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param builder the blob service client builder
+     */
+    BlobServiceClient(BlobServiceClientBuilder builder) {
+        this.builder = builder;
+        this.blobServiceAsyncClient = new BlobServiceAsyncClient(builder);
+    }
+
+    /**
      * Creates a {@link ContainerClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
@@ -56,7 +66,11 @@ public final class BlobServiceClient {
      *     A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient createContainerClient(String containerName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new ContainerClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

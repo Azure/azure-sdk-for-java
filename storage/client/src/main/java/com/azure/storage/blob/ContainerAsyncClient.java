@@ -10,6 +10,8 @@ import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ import java.util.List;
 public final class ContainerAsyncClient {
 
     ContainerAsyncRawClient containerAsyncRawClient;
+    private ContainerClientBuilder builder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -38,10 +41,10 @@ public final class ContainerAsyncClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param builder the container client builder
      */
-    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
+    ContainerAsyncClient(ContainerClientBuilder builder) {
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(builder.buildImpl());
     }
 
     /**
@@ -64,7 +67,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlockBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -80,7 +87,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new PageBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -96,7 +107,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new AppendBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -112,7 +127,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient createBlobAsyncClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -587,8 +606,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response emitting the flattened blobs.
      */
-    public Flux<BlobItem> listBlobsFlatSegment(ListBlobsOptions options) {
-        return this.listBlobsFlatSegment(options, null);
+    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
+        return this.listBlobsFlat(options, null);
     }
 
     /**
@@ -610,13 +629,13 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response emitting the listed blobs, flattened.
      */
-    public Flux<BlobItem> listBlobsFlatSegment(ListBlobsOptions options, Context context) {
+    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options, Context context) {
         return containerAsyncRawClient
             .listBlobsFlatSegment(null, options, context)
-            .flatMapMany(response -> listBlobsFlatSegmentHelper(response.value().marker(), options, context, response));
+            .flatMapMany(response -> listBlobsFlatHelper(response.value().marker(), options, context, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatSegmentHelper(String marker, ListBlobsOptions options,
+    private Flux<BlobItem> listBlobsFlatHelper(String marker, ListBlobsOptions options,
                                                       Context context, ContainersListBlobFlatSegmentResponse response){
         Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems());
 
@@ -625,7 +644,7 @@ public final class ContainerAsyncClient {
             result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(marker, options,
                 context)
                 .flatMapMany((r) ->
-                    listBlobsFlatSegmentHelper(response.value().nextMarker(), options, context, r)));
+                    listBlobsFlatHelper(response.value().nextMarker(), options, context, r)));
         }
 
         return result;

@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
@@ -22,6 +21,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import java.util.List;
 public final class ContainerClient {
 
     private ContainerAsyncClient containerAsyncClient;
+    private ContainerClientBuilder builder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -45,10 +47,11 @@ public final class ContainerClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param builder the container client builder
      */
-    ContainerClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.containerAsyncClient  = new ContainerAsyncClient(azureBlobStorage);
+    ContainerClient(ContainerClientBuilder builder) {
+        this.builder = builder;
+        this.containerAsyncClient  = new ContainerAsyncClient(builder);
     }
 
     /**
@@ -71,7 +74,11 @@ public final class ContainerClient {
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient createBlockBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlockBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -87,7 +94,11 @@ public final class ContainerClient {
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient createPageBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new PageBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -103,7 +114,11 @@ public final class ContainerClient {
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobClient createAppendBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new AppendBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -119,7 +134,11 @@ public final class ContainerClient {
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient createBlobClient(String blobName) {
-        throw new UnsupportedOperationException();
+        try {
+            return new BlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -595,8 +614,8 @@ public final class ContainerClient {
      * @return
      *      The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options) {
-        return this.listBlobsFlatSegment(marker, options, null, null);
+    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options) {
+        return this.listBlobsFlat(options, null, null);
     }
 
     /**
@@ -620,8 +639,8 @@ public final class ContainerClient {
      * @return
      *      The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout, Context context) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsFlatSegment(options, context);
+    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout, Context context) {
+        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options, context);
 
         return timeout == null ?
             response.toIterable():
