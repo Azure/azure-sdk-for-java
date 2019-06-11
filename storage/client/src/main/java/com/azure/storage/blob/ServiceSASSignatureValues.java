@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")] \n
  * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
-public final class ServiceSASSignatureValues {
+final class ServiceSASSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 

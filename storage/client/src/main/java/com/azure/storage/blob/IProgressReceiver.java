@@ -10,7 +10,7 @@ package com.azure.storage.blob;
  * that this type be used in conjunction with
  * {@link ProgressReporter#addProgressReporting(reactor.core.publisher.Flux, IProgressReceiver)}.
  */
-public interface IProgressReceiver {
+interface IProgressReceiver {
 
     /**
      * The callback function invoked as progress is reported.

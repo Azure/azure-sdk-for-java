@@ -14,10 +14,12 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -95,7 +97,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuf> data, long length) {
+    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
     }
 
@@ -133,10 +135,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
+    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
-            .upload(data, length, headers, metadata, accessConditions, context)
+            .upload(data.map(nettyBuf -> Unpooled.wrappedBuffer(nettyBuf.array())), length, headers, metadata, accessConditions, context)
             .map(ResponseBase::deserializedHeaders);
     }
 

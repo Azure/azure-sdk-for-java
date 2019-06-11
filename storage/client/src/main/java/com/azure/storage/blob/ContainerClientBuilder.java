@@ -47,11 +47,26 @@ public final class ContainerClientBuilder {
         policies = new ArrayList<>();
     }
 
+    ContainerClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
+            HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
+        this.policies = policies;
+        this.endpoint = endpoint;
+        this.credentials = credentials;
+        this.httpClient = httpClient;
+        this.logLevel = logLevel;
+        this.retryPolicy = retryPolicy;
+        this.configuration = configuration;
+    }
+
+    ContainerClientBuilder copyBuilder() {
+        return new ContainerClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
+    }
+
     /**
      * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    private AzureBlobStorageImpl buildImpl() {
+    AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -78,12 +93,18 @@ public final class ContainerClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link ContainerClient} created from the configurations in this builder.
+     */
     public ContainerClient buildClient() {
-        return new ContainerClient(buildImpl());
+        return new ContainerClient(this);
     }
 
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
     public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(buildImpl());
+        return new ContainerAsyncClient(this);
     }
 
     /**
@@ -100,6 +121,10 @@ public final class ContainerClientBuilder {
         }
 
         return this;
+    }
+
+    String endpoint() {
+        return this.endpoint.toString();
     }
 
     /**

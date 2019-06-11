@@ -78,10 +78,16 @@ public final class PageBlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link PageBlobClient} created from the configurations in this builder.
+     */
     public PageBlobClient buildClient() {
         return new PageBlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
+     */
     public PageBlobAsyncClient buildAsyncClient() {
         return new PageBlobAsyncClient(buildImpl());
     }

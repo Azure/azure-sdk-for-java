@@ -78,10 +78,16 @@ public final class AppendBlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link AppendBlobClient} created from the configurations in this builder.
+     */
     public AppendBlobClient buildClient() {
         return new AppendBlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
+     */
     public AppendBlobAsyncClient buildAsyncClient() {
         return new AppendBlobAsyncClient(buildImpl());
     }

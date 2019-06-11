@@ -12,7 +12,7 @@ import java.util.Locale;
  * {@link AccountSASSignatureValues} object. It is possible to construct the services string without this class, but
  * the order of the services is particular and this class guarantees correctness.
  */
-public final class AccountSASService {
+final class AccountSASService {
 
     private boolean blob;
 

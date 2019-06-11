@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 /**
  * Configures the parallel upload behavior for methods on the {@link TransferManager}.
  */
-public class TransferManagerUploadToBlockBlobOptions {
+class TransferManagerUploadToBlockBlobOptions {
 
     private final IProgressReceiver progressReceiver;
 

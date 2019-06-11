@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * class. The methods there return this type because they represent composite operations which may conclude with any of
  * several possible REST calls depending on the data provided.
  */
-public final class CommonRestResponse {
+final class CommonRestResponse {
 
     private BlockBlobsUploadResponse uploadBlobResponse;
 

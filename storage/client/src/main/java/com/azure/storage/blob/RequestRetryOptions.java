@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * that there is no option for overall operation timeout. This is because Rx object have a timeout field which provides
  * this functionality.
  */
-public final class RequestRetryOptions {
+final class RequestRetryOptions {
 
     private final int maxTries;
     private final int tryTimeout;

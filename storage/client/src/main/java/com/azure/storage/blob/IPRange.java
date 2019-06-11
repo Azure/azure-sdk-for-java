@@ -8,7 +8,7 @@ package com.azure.storage.blob;
  * set if it is not desired to confine the sas permissions to an IP range. Please refer to
  * {@link AccountSASSignatureValues} or {@link ServiceSASSignatureValues} for more information.
  */
-public final class IPRange {
+final class IPRange {
 
     private String ipMin;
 

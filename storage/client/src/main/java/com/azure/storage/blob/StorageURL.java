@@ -37,29 +37,7 @@
 //        this.storageClient.withUrl(url.toString());
 //    }
 //
-//    /**
-//     * Appends a string to the end of a URL's path (prefixing the string with a '/' if required).
-//     *
-//     * @param baseURL
-//     *         The url to which the name should be appended.
-//     * @param name
-//     *         The name to be appended.
-//     *
-//     * @return A url with the name appended.
-//     *
-//     * @throws MalformedURLException
-//     *         Appending the specified name produced an invalid URL.
-//     */
-//    protected static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
-//        UrlBuilder url = UrlBuilder.parse(baseURL.toString());
-//        if (url.path() == null) {
-//            url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
-//        } else if (url.path().charAt(url.path().length() - 1) != '/') {
-//            url.withPath(url.path() + '/');
-//        }
-//        url.withPath(url.path() + name);
-//        return new URL(url.toString());
-//    }
+//
 //
 //    /**
 //     * Creates an pipeline to process the HTTP requests and Responses.

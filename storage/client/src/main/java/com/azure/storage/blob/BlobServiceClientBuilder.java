@@ -50,11 +50,30 @@ public final class BlobServiceClientBuilder {
         policies = new ArrayList<>();
     }
 
+    private BlobServiceClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
+        HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
+        this.policies = policies;
+        this.endpoint = endpoint;
+        this.credentials = credentials;
+        this.httpClient = httpClient;
+        this.logLevel = logLevel;
+        this.retryPolicy = retryPolicy;
+        this.configuration = configuration;
+    }
+
+    BlobServiceClientBuilder copyBuilder() {
+        return new BlobServiceClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
+    }
+
+    ContainerClientBuilder copyAsContainerBuilder() {
+        return new ContainerClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
+    }
+
     /**
-     * Constructs an instance of BlobServiceAsyncClient based on the configurations stored in the appendBlobClientBuilder.
+     * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    private AzureBlobStorageImpl buildImpl() {
+    AzureBlobStorageImpl buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -86,16 +105,22 @@ public final class BlobServiceClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     */
     public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildImpl());
-    }
-
-    public BlobServiceAsyncClient buildAsyncClient() {
-        return new BlobServiceAsyncClient(buildImpl());
+        return new BlobServiceClient(this);
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     */
+    public BlobServiceAsyncClient buildAsyncClient() {
+        return new BlobServiceAsyncClient(this);
+    }
+
+    /**
+     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated BlobServiceClientBuilder object
      */
@@ -110,10 +135,14 @@ public final class BlobServiceClientBuilder {
         return this;
     }
 
+    String endpoint() {
+        return this.endpoint.toString();
+    }
+
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated ContainerClientBuilder object
      */
     public BlobServiceClientBuilder credentials(SharedKeyCredential sharedKeyCredential) {
         this.sharedKeyCredential = sharedKeyCredential;

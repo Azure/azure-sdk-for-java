@@ -13,7 +13,7 @@ import java.util.Locale;
  * {@link ServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
  * the order of the permissions is particular and this class guarantees correctness.
  */
-public final class ContainerSASPermission {
+final class ContainerSASPermission {
     private boolean read;
 
     private boolean add;

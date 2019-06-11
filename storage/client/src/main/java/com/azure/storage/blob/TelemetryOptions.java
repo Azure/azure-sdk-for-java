@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 /**
  * Options for configuring the {@link TelemetryPolicy}. Please refer to the Factory for more information.
  */
-public final class TelemetryOptions {
+final class TelemetryOptions {
 
     private final String userAgentPrefix;
 

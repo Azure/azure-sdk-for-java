@@ -78,10 +78,16 @@ public final class BlobClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link BlobClient} created from the configurations in this builder.
+     */
     public BlobClient buildClient() {
         return new BlobClient(buildImpl());
     }
 
+    /**
+     * @return a {@link BlobAsyncClient} created from the configurations in this builder.
+     */
     public BlobAsyncClient buildAsyncClient() {
         return new BlobAsyncClient(buildImpl());
     }

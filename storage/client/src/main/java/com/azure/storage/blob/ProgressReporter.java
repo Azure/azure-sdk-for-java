@@ -13,7 +13,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * {@code ProgressReporterImpl} offers a convenient way to add progress tracking to a given Flowable.
  */
-public final class ProgressReporter {
+final class ProgressReporter {
 
     private abstract static class ProgressReporterImpl implements IProgressReceiver {
         long blockProgress;

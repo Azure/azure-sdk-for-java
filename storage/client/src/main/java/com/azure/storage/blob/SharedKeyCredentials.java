@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * SharedKeyCredentials are a means of signing and authenticating storage requests. The key can be obtained from the
@@ -88,13 +90,20 @@ public final class SharedKeyCredentials implements ICredentials {
 
     private String getAdditionalXmsHeaders(final HttpHeaders headers) {
         // Add only headers that begin with 'x-ms-'
-        final ArrayList<String> xmsHeaderNameArray = new ArrayList<>();
-        for (HttpHeader header : headers) {
-            String lowerCaseHeader = header.name().toLowerCase(Locale.ROOT);
-            if (lowerCaseHeader.startsWith(Constants.PREFIX_FOR_STORAGE_HEADER)) {
-                xmsHeaderNameArray.add(lowerCaseHeader);
-            }
-        }
+        final List<String> xmsHeaderNameArray = StreamSupport.stream(headers.spliterator(), false)
+            .filter(header -> header.value() != null)
+            .map(header -> header.name().toLowerCase(Locale.ROOT))
+            .filter(lowerCaseHeader -> lowerCaseHeader.startsWith(Constants.PREFIX_FOR_STORAGE_HEADER))
+            .collect(Collectors.toList()); // ArrayList under hood
+
+        // TODO the stream filter solves an issue where we are adding null value headers. We should not add them in the first place, this filter is a perf hit, especially on large metadata collections
+
+//        for (HttpHeader header : headers) {
+//            String lowerCaseHeader = header.name().toLowerCase(Locale.ROOT);
+//            if (lowerCaseHeader.startsWith(Constants.PREFIX_FOR_STORAGE_HEADER)) {
+//                xmsHeaderNameArray.add(lowerCaseHeader);
+//            }
+//        }
 
         if (xmsHeaderNameArray.isEmpty()) {
             return Constants.EMPTY_STRING;

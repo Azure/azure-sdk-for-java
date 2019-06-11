@@ -20,6 +20,8 @@ import com.azure.storage.blob.models.StorageServiceProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
@@ -39,6 +41,7 @@ import java.time.OffsetDateTime;
 public final class BlobServiceAsyncClient {
 
     BlobServiceAsyncRawClient blobServiceAsyncRawClient;
+    private BlobServiceClientBuilder builder;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -59,6 +62,15 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param builder the blob service client builder
+     */
+    BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
+        this.builder = builder;
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(builder.buildImpl());
+    }
+
+    /**
      * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
@@ -68,13 +80,11 @@ public final class BlobServiceAsyncClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient createContainerAsyncClient(String containerName) {
-        AzureBlobStorageImpl azureBlobStorage = blobServiceAsyncRawClient.azureBlobStorage;
-        UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
-        urlBuilder.withPath("/" + containerName);
-        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(urlBuilder.toString())
-            .pipeline(azureBlobStorage.httpPipeline())
-            .build());
+        try {
+            return new ContainerAsyncClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -130,7 +130,7 @@ public final class BlockBlobClient extends BlobClient {
         data.read(bufferedData);
 
         Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient
-            .upload(Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, headers, metadata, accessConditions, context);
+            .upload(Flux.just(ByteBuffer.wrap(bufferedData)), length, headers, metadata, accessConditions, context);
 
         return timeout == null?
             response.block():

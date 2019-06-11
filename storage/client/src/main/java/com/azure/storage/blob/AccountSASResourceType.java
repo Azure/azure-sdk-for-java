@@ -12,7 +12,7 @@ import java.util.Locale;
  * {@link AccountSASSignatureValues} object. It is possible to construct the resources string without this class, but
  * the order of the resources is particular and this class guarantees correctness.
  */
-public final class AccountSASResourceType {
+final class AccountSASResourceType {
 
     private boolean service;
 
