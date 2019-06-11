@@ -21,13 +21,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
+    private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, AmqpReceiveLink> openReceiveLinks = new ConcurrentHashMap<>();
+
     private final Session session;
     private final SessionHandler sessionHandler;
     private final String sessionName;
     private final ReactorProvider provider;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
-    private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<CBSNode> cbsNodeMono;
 
@@ -93,8 +95,11 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean removeLink(String linkName) {
-        return false;
+        return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
     }
 }
