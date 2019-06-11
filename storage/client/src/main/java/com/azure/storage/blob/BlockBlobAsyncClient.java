@@ -138,7 +138,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
-            .upload(data.map(nettyBuf -> Unpooled.wrappedBuffer(nettyBuf.array())), length, headers, metadata, accessConditions, context)
+            .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
             .map(ResponseBase::deserializedHeaders);
     }
 

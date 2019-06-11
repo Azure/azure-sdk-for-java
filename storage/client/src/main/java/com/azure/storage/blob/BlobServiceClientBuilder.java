@@ -144,8 +144,8 @@ public final class BlobServiceClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public BlobServiceClientBuilder credentials(SharedKeyCredential sharedKeyCredential) {
-        this.sharedKeyCredential = sharedKeyCredential;
+    public BlobServiceClientBuilder credentials(SharedKeyCredentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 

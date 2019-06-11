@@ -188,7 +188,7 @@ public final class BlockBlobClient extends BlobClient {
         data.read(bufferedData);
 
         Mono<Void> response = blockBlobAsyncClient.stageBlock(base64BlockID,
-            ByteBufFlux.fromInbound(Flux.just(ByteBuffer.wrap(bufferedData))), length, leaseAccessConditions, context);
+            Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions, context);
         if (timeout == null) {
             response.block();
         } else {
