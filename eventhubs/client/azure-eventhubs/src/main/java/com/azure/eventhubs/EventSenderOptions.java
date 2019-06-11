@@ -3,14 +3,17 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.amqp.Retry;
+
+import java.time.Duration;
 
 /**
  * The set of options that can be specified when creating an {@link EventSender} to configure its behavior.
  */
 public class EventSenderOptions {
     private String partitionId;
-    private RetryPolicy retry;
+    private Retry retry;
+    private Duration timeout;
 
     /**
      * Sets The identifier of the Event Hub partition that the {@link EventSender} will be bound to, limiting it to
@@ -30,8 +33,21 @@ public class EventSenderOptions {
      * @param retry The retry policy used to govern retry attempts when an issue is encountered while sending.
      * @return The updated SenderOptions object.
      */
-    public EventSenderOptions retry(RetryPolicy retry) {
+    public EventSenderOptions retry(Retry retry) {
         this.retry = retry;
+        return this;
+    }
+
+    /**
+     * Sets the default timeout to apply when sending events. If the timeout is reached, before the Event Hub
+     * acknowledges receipt of the event data being sent, the attempt will be considered failed and considered to be
+     * retried.
+     *
+     * @param timeout The timeout to apply when sedning events.
+     * @return The updated EventSenderOptions object.
+     */
+    public EventSenderOptions timeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 
@@ -41,7 +57,7 @@ public class EventSenderOptions {
      * @return the retry policy used to govern retry attempts when an issue is encountered while sending. If
      * {@code null}, then the retry policy configured on the associated {@link EventHubClient} is used.
      */
-    public RetryPolicy retry() {
+    public Retry retry() {
         return retry;
     }
 
@@ -58,4 +74,12 @@ public class EventSenderOptions {
         return partitionId;
     }
 
+    /**
+     * Gets the default timeout when sending events.
+     *
+     * @return The default timeout when sending events.
+     */
+    public Duration timeout() {
+        return timeout;
+    }
 }
