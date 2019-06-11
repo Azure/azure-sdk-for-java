@@ -40,8 +40,15 @@ class ActiveClientTokenManager implements Closeable {
      *
      * @return A Flux of authorisation results from the CBS node.
      */
-    public Flux<AmqpResponseCode> getAuthorizationResults() {
+    Flux<AmqpResponseCode> getAuthorizationResults() {
         return authorizationResults;
+    }
+
+    /**
+     * Invokes an authorisation call on the CBS node.
+     */
+    Mono<Void> authorize() {
+        return cbsNodeMono.map(cbsNode -> cbsNode.authorize(tokenAudience, tokenValidity)).then();
     }
 
     @Override
@@ -53,13 +60,10 @@ class ActiveClientTokenManager implements Closeable {
     private class RefreshAuthorizationToken extends TimerTask {
         @Override
         public void run() {
-            cbsNodeMono.map(cbsNode -> {
-                cbsNode.authorize(tokenAudience, tokenValidity).subscribe(
-                    (Void response) -> sink.next(AmqpResponseCode.ACCEPTED),
-                    error -> sink.error(error),
-                    () -> sink.next(AmqpResponseCode.ACCEPTED));
-                return 0;
-            });
+            authorize().subscribe(
+                (Void response) -> sink.next(AmqpResponseCode.ACCEPTED),
+                error -> sink.error(error),
+                () -> sink.next(AmqpResponseCode.ACCEPTED));
         }
     }
 }
