@@ -11,6 +11,7 @@ import com.azure.core.test.TestMode;
 import com.azure.eventhubs.CredentialInfo;
 import com.azure.eventhubs.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
+import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -24,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test base for running live and offline tests.
@@ -58,6 +60,7 @@ public abstract class ApiTestBase extends TestBase {
             connectionString = TEST_CONNECTION_STRING;
             credentialInfo = CredentialInfo.from(connectionString);
 
+            when(reactor.selectable()).thenReturn(mock(Selectable.class));
             ReactorDispatcher reactorDispatcher = null;
             try {
                 reactorDispatcher = new ReactorDispatcher(reactor);

@@ -59,7 +59,10 @@ public class EventHubClientTest extends ApiTestBase {
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        client.close();
+
+        if (client != null) {
+            client.close();
+        }
     }
 
     @Test(expected = NullPointerException.class)
