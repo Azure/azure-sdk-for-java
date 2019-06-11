@@ -10,9 +10,7 @@ import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.StringUtil;
-import com.azure.eventhubs.implementation.TokenProvider;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -31,25 +29,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EventHubClient implements Closeable {
     private final String connectionId;
     private final Mono<AmqpConnection> connectionMono;
-    private final String host;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
 
+    private final String eventHubPath;
     private final Duration timeout;
-    private final String eventHubName;
-    private final Scheduler scheduler;
-    private final TokenProvider tokenProvider;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionParameters, "'connectionParameters' is null");
-        this.eventHubName = connectionParameters.credentials().eventHubPath();
-        this.host = connectionParameters.credentials().endpoint().getHost();
+
+        this.eventHubPath = connectionParameters.credentials().eventHubPath();
         this.timeout = connectionParameters.timeout();
-        this.tokenProvider = connectionParameters.tokenProvider();
-        this.scheduler = connectionParameters.scheduler();
         this.connectionId = StringUtil.getRandomString("MF");
 
-        this.connectionMono = Mono.fromCallable(() -> ReactorConnection.create(connectionId, host, this.tokenProvider,
-            provider, handlerProvider, this.scheduler))
+        this.connectionMono = Mono.fromCallable(() -> {
+            return (AmqpConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider);
+        })
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -71,7 +65,7 @@ public class EventHubClient implements Closeable {
     public Mono<EventHubProperties> getProperties() {
         return connectionMono.flatMap(connection -> {
             //TODO (conniey): Replace with management plane call.
-            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
+            final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubPath);
             return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
         }).then(Mono.fromCallable(() -> {
             return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"});
