@@ -65,7 +65,7 @@ final class EventDataBatch {
         return true;
     }
 
-    public Iterable<EventData> getEvents() {
+    List<EventData> getEvents() {
         return events;
     }
 
