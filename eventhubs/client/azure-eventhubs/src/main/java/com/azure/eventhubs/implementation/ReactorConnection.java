@@ -34,10 +34,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final Mono<Connection> connectionMono;
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
+    private final ConnectionParameters connectionParameters;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
     private final Mono<EventHubManagementNode> managementChannelMono;
-    private final ConnectionParameters parameters;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -47,24 +47,26 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * Creates a new AMQP connection that uses proton-j.
      *
      * @param connectionId Identifier for the connection.
-     * @param reactorProvider Provider that creates Reactor instances.
-     * @param handlerProvider Provider that creates proton-j Handlers.
+     * @param connectionParameters A set of options used to create the AMQP connection.
+     * @param reactorProvider Provides proton-j Reactor instances.
+     * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      */
-    public ReactorConnection(String connectionId, ConnectionParameters parameters,
+    public ReactorConnection(String connectionId, ConnectionParameters connectionParameters,
                              ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ServiceLogger(ReactorConnection.class));
 
-        this.parameters = parameters;
+        this.connectionParameters = connectionParameters;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
-        this.handler = handlerProvider.createConnectionHandler(connectionId, parameters.credentials().endpoint().getHost(), parameters.transportType());
+        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionParameters.host(), connectionParameters.transportType());
 
         this.connectionMono = Mono.fromCallable(this::createConnectionAndStart)
             .doOnSubscribe(c -> {
                 logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
                 hasConnection.set(true);
             }).cache();
+
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
                 this::notifyEndpointState,
@@ -76,10 +78,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         this.cbsChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> (CBSNode) new CBSChannel(this, parameters.tokenProvider(), reactorProvider, handlerProvider))).cache();
+            Mono.fromCallable(() -> (CBSNode) new CBSChannel(this, connectionParameters.tokenProvider(), reactorProvider, handlerProvider))).cache();
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> {
-                return (EventHubManagementNode) new ManagementChannel(this, parameters.credentials().eventHubPath(), parameters.tokenProvider(),
+                return (EventHubManagementNode) new ManagementChannel(this, connectionParameters.credentials().eventHubPath(), connectionParameters.tokenProvider(),
                     reactorProvider, handlerProvider, mapper);
             })).cache();
     }
@@ -132,11 +134,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName, parameters.timeout());
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName, connectionParameters.timeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider, parameters.timeout());
+            return new ReactorSession(session, handler, sessionName, reactorProvider, connectionParameters.timeout());
         }));
     }
 
@@ -173,7 +175,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         final Connection connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
         reactorExceptionHandler = new ReactorExceptionHandler();
-        executor = new ReactorExecutor(reactor, parameters.scheduler(), connectionId, reactorExceptionHandler, parameters.timeout());
+        executor = new ReactorExecutor(reactor, connectionParameters.scheduler(), connectionId, reactorExceptionHandler, connectionParameters.timeout());
         executor.start();
 
         return connection;

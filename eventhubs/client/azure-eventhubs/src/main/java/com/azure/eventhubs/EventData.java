@@ -186,7 +186,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return The offset within the Event Hub partition.
      */
-    private String offset() {
+    public String offset() {
         return systemProperties.offset();
     }
 
@@ -196,7 +196,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return A partition key for this Event Data.
      */
-    private String partitionKey() {
+    public String partitionKey() {
         return systemProperties.partitionKey();
     }
 
@@ -205,7 +205,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition.
      */
-    private Instant enqueuedTime() {
+    public Instant enqueuedTime() {
         return systemProperties.enqueuedTime();
     }
 
@@ -217,7 +217,7 @@ public class EventData implements Comparable<EventData> {
      * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
      * event.
      */
-    private long sequenceNumber() {
+    public long sequenceNumber() {
         return systemProperties.sequenceNumber();
     }
 

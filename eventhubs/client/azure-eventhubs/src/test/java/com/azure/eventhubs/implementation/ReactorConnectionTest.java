@@ -5,10 +5,10 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.eventhubs.CredentialInfo;
 import com.azure.eventhubs.ProxyConfiguration;
-import com.azure.eventhubs.Retry;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -52,9 +52,6 @@ public class ReactorConnectionTest {
 
     private AmqpConnection connection;
     private ConnectionHandler handler;
-    private ReactorDispatcher reactorDispatcher;
-    private ReactorHandlerProvider reactorHandlerProvider;
-    private ReactorProvider reactorProvider;
     private SessionHandler sessionHandler;
 
     @Mock
@@ -71,16 +68,17 @@ public class ReactorConnectionTest {
         Scheduler scheduler = Schedulers.newSingle(SCHEDULER_NAME);
         when(reactor.selectable()).thenReturn(selectable);
 
-        reactorDispatcher = new ReactorDispatcher(reactor);
-        reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
+        ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        MockReactorProvider reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
-        reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler, null, null);
+        MockReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler, null, null);
 
         ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, TEST_DURATION, tokenProvider,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         connection = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, mock(AmqpResponseMapper.class));
+
     }
 
     /**

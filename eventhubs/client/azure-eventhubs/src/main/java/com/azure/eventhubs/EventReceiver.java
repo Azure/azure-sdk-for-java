@@ -6,8 +6,6 @@ package com.azure.eventhubs;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
