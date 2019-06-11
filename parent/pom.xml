@@ -313,7 +313,7 @@
         <artifactId>opencensus-api</artifactId>
         <version>${opencensus.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
