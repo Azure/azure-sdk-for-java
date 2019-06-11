@@ -139,7 +139,7 @@ public class EventSender {
             return Mono.empty();
         }
 
-        logger.asInfo().log("Sending to [{}], size: {}", batch.getPartitionKey(), batch.getSize());
+        logger.asInfo().log("Sending with partitionKey[{}], batch size[{}]", batch.getPartitionKey(), batch.getSize());
 
         final List<Message> messages = EventDataUtil.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
 

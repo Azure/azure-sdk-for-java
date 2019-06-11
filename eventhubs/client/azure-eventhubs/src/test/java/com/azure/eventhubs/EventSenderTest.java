@@ -32,6 +32,9 @@ public class EventSenderTest extends ApiTestBase {
         return testName.getMethodName();
     }
 
+    /**
+     * Verifies that sending multiple events will result in calling sender.sendBatch(List<Message>).
+     */
     @Test
     public void sendBatch() {
         // Arrange
@@ -42,6 +45,27 @@ public class EventSenderTest extends ApiTestBase {
 
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         when(sendLink.sendBatch(any())).thenReturn(Mono.empty());
+
+        final int maxMessageSize = 16 * 1024;
+        final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
+        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+
+        // Act & Assert
+        StepVerifier.create(sender.send(testData, options))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that sending a single event data will result in calling sender.send(Message).
+     */
+    @Test
+    public void sendSingleMessage() {
+        // Arrange
+        final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
+        final Flux<EventData> testData = Flux.just(data);
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        when(sendLink.send(any())).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
         final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
