@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -64,7 +65,7 @@ public class Poller<T> {
      */
     private boolean cancelInitiated;
 
-    private final Flux<PollResponse<T>> fluxHandle;
+    private Flux<PollResponse<T>> fluxHandle;
 
     /*
      * Since constructor create a subscriber and start auto polling.
@@ -72,6 +73,7 @@ public class Poller<T> {
      * client disable auto polling.
      */
     private Disposable fluxDisposable;
+
 
     /**
      * Create a Poller object. The polling starts immediately by default.
@@ -90,15 +92,21 @@ public class Poller<T> {
         this.pollOperation = pollOperation;
         pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
 
-        fluxHandle = sendPollRequestWithDelay()
+        debug(" Poller fluxHandle created      ");
+        fluxHandle = asyncPollRequestWithDelay()
             .flux()
             .repeat()
-            .takeUntil(pollResponse -> pollResponse.isDone())
+            .takeUntil(pollResponse -> pollResponse != null && pollResponse.isDone())
             .share();
 
         // auto polling start here
-        fluxDisposable = fluxHandle.subscribe(pr -> pollResponse = pr);
+        fluxDisposable = fluxHandle.subscribe(
+            pr -> {
+                pollResponse = pr;
+                debug(" Constructor Got Response =" + pollResponse.getValue());
+            });
         autoPollingEnabled = true;
+        debug(" Poller fluxHandle subscribed  exit constructor");
     }
 
     /**
@@ -151,16 +159,13 @@ public class Poller<T> {
     }
 
     /**
-     * Calls poll operation once in sync if Pool operation is not completed.
+     * This is function for manual poll. It will perform one poll.
      *
      * @return a Mono of {@link PollResponse}
      */
     public Mono<PollResponse<T>> poll() {
-
-        if (!isTerminalState()) {
-            updatePollOperationAsync();
-        }
-        return Mono.just(pollResponse);
+        return pollOperation.apply(pollResponse)
+            .doOnSuccess(pr -> pollResponse = pr);
     }
 
     /**
@@ -169,44 +174,38 @@ public class Poller<T> {
      * @return returns poll response
      */
     public PollResponse<T> block() {
+        debug(" Poller block waiting for last ");
         return fluxHandle.blockLast();
+       
     }
 
     /*
-     * Calls poll operation function and update pollResponse.
+     * This function will apply delay and call poll operation function async.
+     * @return mono of poll response
      */
-    private void updatePollOperationAsync() {
-        pollOperation.apply(pollResponse).subscribe(pResponse -> {
-            this.pollResponse = pResponse;
-        });
-    }
-
-    /*
-     * Get whether or not this PollStrategy's long running operation is done.
-     * @return Whether or not this PollStrategy's long running operation is done.
-     */
-    private Mono<PollResponse<T>> sendPollRequestWithDelay() {
+    private Mono<PollResponse<T>> asyncPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
-            if (!isTerminalState()) {
-                updatePollOperationAsync();
-            }
-            return Mono.just(pollResponse);
+            return pollOperation.apply(pollResponse)
+                .doOnSuccess(pr -> pollResponse = pr);
         })));
     }
 
-    /*
-     * Helper function
-     */
-    private boolean isTerminalState() {
-        return pollResponse != null && pollResponse.isDone();
+    private boolean  debug = true;
+    private void debug(String... messages) {
+        if (debug) {
+            StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ");
+            for (String m : messages) {
+                sb.append(m);
+            }
+            System.out.println(sb.toString());
+        }
     }
 
     /*
-     * If this PollerOptions has a pollIntervalInMillis value, return an Mono that is delayed by the
-     * number of seconds that are in the pollIntervalInMillis value. If this PollerOptions doesn't have
-     * a pollIntervalInMillis value, then return an Single with no delay.
+     * If pol operation's poll response have defined retryAfter , we will use that as delay. In absence of that we will use
+     * PollerOption's poll interval.
      *
-     * @return A Mono with delay if this PollerOptions has a pollIntervalInMillis value.
+     * @return A Mono with delay.
      */
     private Mono<Void> delayAsync() {
         Mono<Void> result = Mono.empty();
@@ -229,11 +228,6 @@ public class Poller<T> {
      */
     public final void setAutoPollingEnabled(boolean autoPollingEnabled) {
 
-        // setting same auto polling status would not require any action.
-        if (this.autoPollingEnabled == autoPollingEnabled) {
-            return;
-        }
-
         this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
             if (!activeSubscriber()) {
@@ -247,7 +241,7 @@ public class Poller<T> {
     }
 
     /*
-     * Determine if subscriber exists and  still active.
+     * Determine if this poller's internal subscriber exists and  still active.
      */
     private boolean activeSubscriber() {
         return (fluxDisposable != null && !fluxDisposable.isDisposed());
