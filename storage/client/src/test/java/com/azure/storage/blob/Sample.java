@@ -22,7 +22,7 @@ public class Sample {
     public void sample() throws IOException {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint("http://jamesschreppler.blob.core.windows.net")
             .credentials(new SharedKeyCredentials("jamesschreppler", "8lw98WpdBjDmdCkcUc3PRc8VKx0t58cTDKCdJ9SifKzH9Ef54pNIvDQKyluSpcicjx3P1P9KRZNykPTMb7RSVw=="))
-            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
         ContainerClient containerClient = serviceClient.createContainerClient("uxtesting" + UUID.randomUUID());
