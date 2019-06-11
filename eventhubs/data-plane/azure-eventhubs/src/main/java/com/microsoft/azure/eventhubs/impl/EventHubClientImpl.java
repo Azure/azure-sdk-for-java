@@ -331,7 +331,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     private CompletableFuture<Map<String, Object>> addManagementToken(Map<String, Object> request) {
         String audience = String.format(Locale.US, "amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
         return this.underlyingFactory.getTokenProvider().getToken(audience, ClientConstants.TOKEN_REFRESH_INTERVAL).thenApplyAsync((securityToken) -> {
-            request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, securityToken.toString());
+            request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, securityToken.getToken());
             return request;
         }, this.executor);
     }
