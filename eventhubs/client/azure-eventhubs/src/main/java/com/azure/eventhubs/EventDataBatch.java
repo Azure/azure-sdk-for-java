@@ -16,7 +16,6 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -66,14 +65,8 @@ final class EventDataBatch {
         return true;
     }
 
-    public Iterator<EventData> iterator() {
-
-        return this.events.iterator();
-    }
-
-    Iterable<EventData> getInternalIterable() {
-
-        return this.events;
+    public Iterable<EventData> getEvents() {
+        return events;
     }
 
     String getPartitionKey() {
