@@ -3,13 +3,13 @@
 
 package com.azure.eventhubs.implementation;
 
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.eventhubs.CredentialInfo;
 import com.azure.eventhubs.ProxyConfiguration;
-import com.azure.eventhubs.Retry;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.After;
 import org.junit.Assert;
