@@ -92,6 +92,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         return cbsChannelMono;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getIdentifier() {
         return connectionId;
