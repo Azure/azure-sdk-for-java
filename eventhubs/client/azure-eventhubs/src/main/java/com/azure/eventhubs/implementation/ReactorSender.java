@@ -8,8 +8,11 @@ import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.OperationCancelledException;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -18,7 +21,6 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
-import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
@@ -30,6 +32,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
 import java.util.Timer;
@@ -39,6 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.eventhubs.implementation.EventDataUtil.getDataSerializedSize;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -52,6 +56,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final Disposable.Composite subscriptions;
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
+    private final AtomicBoolean hasAuthorized = new AtomicBoolean();
 
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
@@ -100,16 +105,21 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 }),
 
             tokenManager.getAuthorizationResults().subscribe(
-                response -> logger.asVerbose().log("Token refreshed."),
+                response -> {
+                    logger.asVerbose().log("Token refreshed: {}", response);
+                    hasAuthorized.set(true);
+                },
                 error -> {
                     logger.asInfo().log("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                }));
+                    hasAuthorized.set(false);
+                }, () -> hasAuthorized.set(false))
+        );
     }
 
     @Override
     public Mono<Void> send(Message message) {
-        final int payloadSize = AmqpUtil.getDataSerializedSize(message);
+        final int payloadSize = getDataSerializedSize(message);
         final int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         final byte[] bytes = new byte[allocationSize];
 
@@ -125,8 +135,45 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> send(Publisher<Message> messages) {
-        return null;
+    public Mono<Void> sendBatch(List<Message> messageBatch) {
+        if (messageBatch.size() == 1) {
+            return send(messageBatch.get(0));
+        }
+
+        final Message firstMessage = messageBatch.get(0);
+
+        // proton-j doesn't support multiple dataSections to be part of AmqpMessage
+        // here's the alternate approach provided by them: https://github.com/apache/qpid-proton/pull/54
+        final Message batchMessage = Proton.message();
+        batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
+
+        final int maxMessageSizeTemp = this.maxMessageSize;
+
+        final byte[] bytes = new byte[maxMessageSizeTemp];
+        int encodedSize = batchMessage.encode(bytes, 0, maxMessageSizeTemp);
+        int byteArrayOffset = encodedSize;
+
+        for (final Message amqpMessage : messageBatch) {
+            final Message messageWrappedByData = Proton.message();
+
+            int payloadSize = getDataSerializedSize(amqpMessage);
+            int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
+
+            byte[] messageBytes = new byte[allocationSize];
+            int messageSizeBytes = amqpMessage.encode(messageBytes, 0, allocationSize);
+            messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
+
+            try {
+                encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
+            } catch (BufferOverflowException exception) {
+                final String message = String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSizeTemp / 1024);
+                return Mono.error(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception));
+            }
+
+            byteArrayOffset = byteArrayOffset + encodedSize;
+        }
+
+        return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
     }
 
     @Override
@@ -147,10 +194,14 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        return Mono.create(sink -> {
-            final RetriableWorkItem workItem = new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout);
-            send(workItem);
+        Mono<Void> sendWork = Mono.create(sink -> {
+            hasAuthorized.set(true);
+            send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
         });
+
+        return hasAuthorized.get()
+            ? sendWork
+            : tokenManager.authorize().then(sendWork);
     }
 
     private void send(RetriableWorkItem workItem) {
