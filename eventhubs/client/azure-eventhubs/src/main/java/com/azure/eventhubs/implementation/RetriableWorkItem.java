@@ -26,7 +26,7 @@ class RetriableWorkItem {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout, false));
     }
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, TimeoutTracker timeout) {
+    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, TimeoutTracker timeout) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
@@ -70,8 +70,8 @@ class RetriableWorkItem {
         this.lastKnownException = exception;
     }
 
-    void isWaitingForAck(boolean isWaitingForAck) {
-        this.waitingForAck = isWaitingForAck;
+    void setIsWaitingForAck() {
+        this.waitingForAck = true;
     }
 
     boolean isWaitingForAck() {
