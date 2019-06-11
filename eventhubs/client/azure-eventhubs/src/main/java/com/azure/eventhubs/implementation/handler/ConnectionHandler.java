@@ -58,6 +58,7 @@ public class ConnectionHandler extends Handler {
      */
     protected ConnectionHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
         super(connectionId, hostname);
+
         add(new Handshaker());
         this.logger = logger;
 

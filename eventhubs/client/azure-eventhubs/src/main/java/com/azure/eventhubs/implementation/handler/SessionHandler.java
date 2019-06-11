@@ -20,8 +20,9 @@ import java.util.Locale;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class SessionHandler extends Handler {
-    private final String entityName;
     private final ServiceLogger logger = new ServiceLogger(SessionHandler.class);
+
+    private final String entityName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
 
@@ -31,10 +32,6 @@ public class SessionHandler extends Handler {
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
-    }
-
-    public String getEntityName() {
-        return this.entityName;
     }
 
     public ErrorContext getContext(Throwable throwable) {

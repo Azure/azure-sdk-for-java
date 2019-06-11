@@ -214,7 +214,7 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
      * event.
      */
     public long sequenceNumber() {
@@ -434,15 +434,6 @@ public class EventData implements Comparable<EventData> {
             }
 
             return sequenceNumber;
-        }
-
-        /**
-         * Gets the name of the publisher if this was sent to a publisher endpoint.
-         *
-         * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
-         */
-        private String publisher() {
-            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")

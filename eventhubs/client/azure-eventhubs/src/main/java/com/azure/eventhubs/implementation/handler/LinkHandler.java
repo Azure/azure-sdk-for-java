@@ -15,11 +15,11 @@ import org.apache.qpid.proton.engine.Session;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 class LinkHandler extends Handler {
-    final ServiceLogger logger;
 
-    LinkHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
+    ServiceLogger logger = new ServiceLogger(LinkHandler.class);
+
+    LinkHandler(final String connectionId, final String hostname) {
         super(connectionId, hostname);
-        this.logger = logger;
     }
 
     @Override
