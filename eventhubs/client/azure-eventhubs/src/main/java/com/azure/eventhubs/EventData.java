@@ -186,7 +186,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return The offset within the Event Hub partition.
      */
-    private String offset() {
+    public String offset() {
         return systemProperties.offset();
     }
 
@@ -196,7 +196,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return A partition key for this Event Data.
      */
-    private String partitionKey() {
+    public String partitionKey() {
         return systemProperties.partitionKey();
     }
 
@@ -205,7 +205,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition.
      */
-    private Instant enqueuedTime() {
+    public Instant enqueuedTime() {
         return systemProperties.enqueuedTime();
     }
 
@@ -214,10 +214,10 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
      * event.
      */
-    private long sequenceNumber() {
+    public long sequenceNumber() {
         return systemProperties.sequenceNumber();
     }
 
@@ -434,15 +434,6 @@ public class EventData implements Comparable<EventData> {
             }
 
             return sequenceNumber;
-        }
-
-        /**
-         * Gets the name of the publisher if this was sent to a publisher endpoint.
-         *
-         * @return The name of the publisher. Or {@code null} if this was not sent to a publisher endpoint.
-         */
-        private String publisher() {
-            return this.getSystemProperty(PUBLISHER_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")
