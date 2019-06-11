@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /**
- * Contains all response data for the getBlockList operation.
+ * Contains all response data for the listBlocks operation.
  */
 public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlobGetBlockListHeaders, BlockList> {
     /**

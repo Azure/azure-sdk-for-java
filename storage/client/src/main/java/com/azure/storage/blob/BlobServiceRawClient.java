@@ -37,8 +37,8 @@ public final class BlobServiceRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public BlobServiceRawClient(AzureBlobStorageImpl azureBlobStorageBuilder) {
-        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorageBuilder);
+    public BlobServiceRawClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(azureBlobStorage);
     }
 
     /**
