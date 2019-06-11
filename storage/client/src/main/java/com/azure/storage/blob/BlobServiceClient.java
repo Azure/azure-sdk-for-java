@@ -81,19 +81,14 @@ public final class BlobServiceClient {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
      * @return
      *      The list of containers.
      */
-    public Iterable<ContainerItem> listContainersSegment(String marker,
-                                                                             ListContainersOptions options) {
-        return this.listContainersSegment(marker, options, null, null);
+    public Iterable<ContainerItem> listContainers(ListContainersOptions options) {
+        return this.listContainers(options, null);
     }
 
     /**
@@ -103,27 +98,16 @@ public final class BlobServiceClient {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The list of containers.
      */
-    public Iterable<ContainerItem> listContainersSegment(String marker,
-                                                         ListContainersOptions options, Duration timeout, Context context) {
-        Flux<ContainerItem> response = blobServiceAsyncClient.listContainersSegment(marker, options, context);
+    public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
+        Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options, null);
 
         return timeout == null ?
             response.toIterable():

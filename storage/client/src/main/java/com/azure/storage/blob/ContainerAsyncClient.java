@@ -383,218 +383,6 @@ public final class ContainerAsyncClient {
         return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
     }
 
-    // TODO: Lease methods not in the skeleton
-    /**
-     * Acquires a lease on the container for delete operations. The lease duration must be between 15 to
-     * 60 seconds, or infinite (-1). For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @param proposedId
-     *      A {@code String} in any valid GUID format.
-     * @param duration
-     *         The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
-     *         A non-infinite lease can be between 15 and 60 seconds.
-     *
-     * @return
-     *      A reactive response containing the acquired lease.
-     */
-    public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return containerAsyncRawClient.acquireLease(proposedId, duration, null, null);
-    }
-
-    /**
-     * Acquires a lease on the container for delete operations. The lease duration must be between 15 to
-     * 60 seconds, or infinite (-1). For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     * @param duration
-     *         The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
-     *         A non-infinite lease can be between 15 and 60 seconds.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the acquired lease.
-     */
-    public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedID, int duration,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions, context);
-    }
-
-    /**
-     * Renews the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     *
-     * @return
-     *      A reactive response containing the renewed lease.
-     */
-    public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
-        return containerAsyncRawClient.renewLease(leaseID, null, null);
-    }
-
-    /**
-     * Renews the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the renewed lease.
-     */
-    public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.renewLease(leaseID, modifiedAccessConditions, context);
-    }
-
-    /**
-     * Releases the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     *
-     * @return
-     *      A reactive response containing the released lease.
-     */
-    public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
-        return containerAsyncRawClient.releaseLease(leaseID, null, null);
-    }
-
-    /**
-     * Releases the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the released lease.
-     */
-    public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions, context);
-    }
-
-    /**
-     * Breaks the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @return
-     *      A reactive response containing the broken lease.
-     */
-    public Mono<ContainersBreakLeaseResponse> breakLease() {
-        return containerAsyncRawClient.breakLease(null, null, null);
-    }
-
-    /**
-     * Breaks the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param breakPeriodInSeconds
-     *         An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
-     *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
-     *         remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
-     *         available before the break period has expired, but the lease may be held for longer than the break period.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
-     * @return
-     *      A reactive response containing the broken lease.
-     */
-    public Mono<ContainersBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions, context);
-    }
-
-    /**
-     * Changes the container's leaseAccessConditions. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     *
-     * @return
-     *      A reactive response containing the updated lease.
-     */
-    public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, null, null);
-    }
-
-    /**
-     * Changes the container's leaseAccessConditions. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the updated lease.
-     */
-    public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return containerAsyncRawClient.changeLease(leaseID, proposedID, modifiedAccessConditions, context);
-    }
 
     /**
      * Returns a single segment of blobs starting from the specified Marker. Use an empty
@@ -720,6 +508,213 @@ public final class ContainerAsyncClient {
 //            .listBlobsHierarchySegment(null, delimiter, options, context)
 //            .flatMapMany();
 //    }
+
+    /**
+     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
+     * seconds, or infinite (-1).
+     *
+     * @param proposedId
+     *      A {@code String} in any valid GUID format. May be null.
+     * @param duration
+     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
+     *         never expires. A non-infinite lease can be between 15 and 60 seconds.
+     *
+     * @return
+     *      A reactive response containing the lease ID.
+     */
+    public Mono<String> acquireLease(String proposedId, int duration) {
+        return this.acquireLease(proposedId, duration, null, null);
+    }
+
+    /**
+     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
+     * seconds, or infinite (-1).
+     *
+     * @param proposedID
+     *         A {@code String} in any valid GUID format. May be null.
+     * @param duration
+     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
+     *         never expires. A non-infinite lease can be between 15 and 60 seconds.
+     * @param modifiedAccessConditions
+     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
+     *         to construct conditions related to when the blob was changed relative to the given request. The request
+     *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response containing the lease ID.
+     */
+    public Mono<String> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
+        return containerAsyncRawClient
+            .acquireLease(proposedID, duration, modifiedAccessConditions, context)
+            .map(response -> response.deserializedHeaders().leaseId());
+    }
+
+    /**
+     * Renews the blob's previously-acquired lease.
+     *
+     * @param leaseID
+     *         The leaseId of the active lease on the blob.
+     *
+     * @return
+     *      A reactive response containing the renewed lease ID.
+     */
+    public Mono<String> renewLease(String leaseID) {
+        return this.renewLease(leaseID, null, null);
+    }
+
+    /**
+     * Renews the blob's previously-acquired lease.
+     *
+     * @param leaseID
+     *         The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions
+     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
+     *         to construct conditions related to when the blob was changed relative to the given request. The request
+     *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response containing the renewed lease ID.
+     */
+    public Mono<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        return containerAsyncRawClient
+            .renewLease(leaseID, modifiedAccessConditions, context)
+            .map(response -> response.deserializedHeaders().leaseId());
+    }
+
+    /**
+     * Releases the blob's previously-acquired lease.
+     *
+     * @param leaseID
+     *         The leaseId of the active lease on the blob.
+     *
+     * @return
+     *      A reactive response signalling completion.
+     */
+    public Mono<Void> releaseLease(String leaseID) {
+        return this.releaseLease(leaseID, null, null);
+    }
+
+    /**
+     * Releases the blob's previously-acquired lease.
+     *
+     * @param leaseID
+     *         The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions
+     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
+     *         to construct conditions related to when the blob was changed relative to the given request. The request
+     *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response signalling completion.
+     */
+    public Mono<Void> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        return containerAsyncRawClient
+            .releaseLease(leaseID, modifiedAccessConditions, context)
+            .then();
+    }
+
+    /**
+     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
+     * to break a fixed-duration lease when it expires or an infinite lease immediately.
+     *
+     * @return
+     *      A reactive response containing the remaining time in the broken lease in seconds.
+     */
+    public Mono<Integer> breakLease() {
+        return this.breakLease(null, null, null);
+    }
+
+    /**
+     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
+     * to break a fixed-duration lease when it expires or an infinite lease immediately.
+     *
+     * @param breakPeriodInSeconds
+     *         An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
+     *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the
+     *         time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
+     *         available before the break period has expired, but the lease may be held for longer than the break
+     *         period.
+     * @param modifiedAccessConditions
+     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
+     *         to construct conditions related to when the blob was changed relative to the given request. The request
+     *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response containing the remaining time in the broken lease in seconds.
+     */
+    public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
+        return containerAsyncRawClient
+            .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
+            .map(response -> response.deserializedHeaders().leaseTime());
+    }
+
+    /**
+     * ChangeLease changes the blob's lease ID.
+     *
+     * @param leaseId
+     *         The leaseId of the active lease on the blob.
+     * @param proposedID
+     *         A {@code String} in any valid GUID format.
+     *
+     * @return
+     *      A reactive response containing the new lease ID.
+     */
+    public Mono<String> changeLease(String leaseId, String proposedID) {
+        return this.changeLease(leaseId, proposedID, null, null);
+    }
+
+    /**
+     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @param leaseId
+     *         The leaseId of the active lease on the blob.
+     * @param proposedID
+     *         A {@code String} in any valid GUID format.
+     * @param modifiedAccessConditions
+     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
+     *         to construct conditions related to when the blob was changed relative to the given request. The request
+     *         will fail if the specified condition is not satisfied.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return A reactive response containing the new lease ID.
+     */
+    public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
+        return containerAsyncRawClient
+            .changeLease(leaseId, proposedID, modifiedAccessConditions, context)
+            .map(response -> response.deserializedHeaders().leaseId());
+    }
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the

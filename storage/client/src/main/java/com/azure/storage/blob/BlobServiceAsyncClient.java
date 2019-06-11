@@ -94,18 +94,14 @@ public final class BlobServiceAsyncClient {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
      * @return
      *      A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainersSegment(String marker, ListContainersOptions options) {
-        return this.listContainersSegment(marker, options, null);
+    public Flux<ContainerItem> listContainers(ListContainersOptions options) {
+        return this.listContainers(options, null);
     }
 
     /**
@@ -115,10 +111,6 @@ public final class BlobServiceAsyncClient {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param context
@@ -131,22 +123,21 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainersSegment(String marker,
-            ListContainersOptions options, Context context) {
+    public Flux<ContainerItem> listContainers(ListContainersOptions options, Context context) {
         return blobServiceAsyncRawClient
             .listContainersSegment(null, options, context)
-            .flatMapMany(response -> listContainersSegmentHelper(response.value().marker(), options, context, response));
+            .flatMapMany(response -> listContainersHelper(response.value().marker(), options, context, response));
     }
 
-    private Flux<ContainerItem> listContainersSegmentHelper(String marker, ListContainersOptions options, Context context,
-                                                    ServicesListContainersSegmentResponse response){
+    private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options, Context context,
+            ServicesListContainersSegmentResponse response){
         Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
             result = result.concatWith(blobServiceAsyncRawClient.listContainersSegment(marker, options,
                 context)
                 .flatMapMany((r) ->
-                    listContainersSegmentHelper(response.value().nextMarker(), options, context, r)));
+                    listContainersHelper(response.value().nextMarker(), options, context, r)));
         }
 
         return result;
