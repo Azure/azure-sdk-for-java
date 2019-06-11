@@ -1,14 +1,13 @@
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpSendLink;
 import com.azure.core.amqp.OperationCancelledException;
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.eventhubs.Retry;
-import com.azure.eventhubs.SenderOptions;
+import com.azure.eventhubs.EventSenderOptions;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -68,7 +67,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
 
-    ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorDispatcher dispatcher, SenderOptions senderOptions, int maxMessageSize) {
+    ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorDispatcher dispatcher,
+                  EventSenderOptions senderOptions, int maxMessageSize) {
         super(new ServiceLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
@@ -117,6 +117,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     @Override
     public String getLinkName() {
         return sender.getName();
+    }
+
+    @Override
+    public String getEntityPath() {
+        return null;
     }
 
     @Override
