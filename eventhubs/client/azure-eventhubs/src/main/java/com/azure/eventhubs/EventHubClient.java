@@ -5,6 +5,7 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -73,7 +74,7 @@ public class EventHubClient implements Closeable {
             final String audience = String.format(Locale.US, "amqp://%s/%s", connection.getHost(), eventHubName);
             return connection.getCBSNode().flatMap(node -> node.authorize(audience, Duration.ofMinutes(5)));
         }).then(Mono.fromCallable(() -> {
-            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"}, Instant.now());
+            return new EventHubProperties("Some path", Instant.now().minus(Period.ofDays(1)), new String[]{"0", "1"});
         }));
     }
 
@@ -109,19 +110,19 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates a sender that can push events to an Event Hub. If
-     * {@link SenderOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
+     * {@link EventSenderOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
      * specific partition. Otherwise, events are automatically routed to an available partition.
      *
      * @param options The set of options to apply when creating the sender.
      * @return A new {@link EventSender}.
      */
-    public EventSender createSender(SenderOptions options) {
+    public EventSender createSender(EventSenderOptions options) {
         return new EventSender(options);
     }
 
     /**
      * Creates a receiver that listens to the Event Hub {@code partitionId} starting from the moment it was created. The
-     * consumer group used is the {@link ReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
+     * consumer group used is the {@link EventReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
@@ -138,7 +139,7 @@ public class EventHubClient implements Closeable {
      * @param options Additional options for the receiver.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventReceiver createReceiver(String partitionId, ReceiverOptions options) {
+    public EventReceiver createReceiver(String partitionId, EventReceiverOptions options) {
         return new EventReceiver();
     }
 

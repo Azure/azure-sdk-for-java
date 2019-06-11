@@ -18,7 +18,7 @@ public abstract class AmqpExceptionHandler {
      * Creates a new instance of an exception handler.
      */
     protected AmqpExceptionHandler() {
-        this.logger = new ServiceLogger(AmqpExceptionHandler.class);
+        this(new ServiceLogger(AmqpExceptionHandler.class));
     }
 
     /**

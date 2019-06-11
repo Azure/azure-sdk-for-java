@@ -3,8 +3,10 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
 import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;

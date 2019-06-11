@@ -6,7 +6,7 @@ package com.azure.core.amqp;
 import java.util.Locale;
 
 /**
- * Represents a signal that caused the connection to shutdown.
+ * Represents a signal that caused the AMQP connection to shutdown.
  */
 public class AmqpShutdownSignal {
     private final boolean isTransient;
