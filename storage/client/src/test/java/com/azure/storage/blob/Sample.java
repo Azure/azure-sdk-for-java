@@ -4,6 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlockBlobUploadHeaders;
+import com.azure.storage.blob.models.ContainerItem;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,16 +19,36 @@ import java.util.UUID;
 
 public class Sample {
 
+    final static String accountEndpoint = "http://jamesschreppler.blob.core.windows.net";
+    final static String accountName = "jamesschreppler";
+    final static String accountKey = "gU7TyNVTCImPcvpxD0u0nW3kv/hrSZf4JtES0CSqb3elfU40F1esKwFzMckrPylybocUK0YfMzeUtNzFn92xow==";
+
     @Test
     public void sample() throws IOException {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint("http://jamesschreppler.blob.core.windows.net")
-            .credentials(new SharedKeyCredentials("jamesschreppler", "8lw98WpdBjDmdCkcUc3PRc8VKx0t58cTDKCdJ9SifKzH9Ef54pNIvDQKyluSpcicjx3P1P9KRZNykPTMb7RSVw=="))
+        // get service client
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+            .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
-        ContainerClient containerClient = serviceClient.createContainerClient("uxtesting" + UUID.randomUUID());
-        containerClient.create();
+        // create 5 containers
+        ContainerClient containerClient = null;
+        for (int i = 0; i < 5; i++) {
+            String name = "uxtesting" + UUID.randomUUID();
+            containerClient = serviceClient.createContainerClient(name);
+            containerClient.create();
+            System.out.println("Created container: " + name);
+        }
+        System.out.println();
 
+        // list containers in account
+        System.out.println("Listing containers in account:");
+        for (ContainerItem item : serviceClient.listContainers(new ListContainersOptions())) {
+            System.out.println(item.name());
+        }
+        System.out.println();
+
+        // in the last container, create 5 blobs
         for (int i = 0; i < 5; i++) {
             BlockBlobClient blobClient = containerClient.createBlockBlobClient("testblob-" + i);
             ByteArrayInputStream testdata = new ByteArrayInputStream(("test data" + i).getBytes(StandardCharsets.UTF_8));
@@ -35,30 +56,62 @@ public class Sample {
             blobClient.upload(testdata, testdata.available());
             System.out.println("Uploaded blob.");
         }
-
         System.out.println();
 
+        // list blobs and download results
         System.out.println("Listing/downloading blobs:");
         for (BlobItem item : containerClient.listBlobsFlat(new ListBlobsOptions())) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             containerClient.createBlobClient(item.name()).download(stream);
             System.out.println(item.name() + ": " + new String(stream.toByteArray()));
         }
+        System.out.println();
+
+        // cleanup
+        for (ContainerItem item : serviceClient.listContainers(new ListContainersOptions())) {
+            containerClient = serviceClient.createContainerClient(item.name());
+            containerClient.delete();
+            System.out.println("Deleted container: " + item.name());
+        }
     }
 
     @Test
     public void asyncSample() throws IOException {
-        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint("http://jamesschreppler.blob.core.windows.net")
-            .credentials(new SharedKeyCredentials("jamesschreppler", "8lw98WpdBjDmdCkcUc3PRc8VKx0t58cTDKCdJ9SifKzH9Ef54pNIvDQKyluSpcicjx3P1P9KRZNykPTMb7RSVw=="))
+        // get service client
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+            .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
-        ContainerAsyncClient containerClient = serviceClient.createContainerAsyncClient("uxtesting" + UUID.randomUUID());
-        containerClient.create()
+        // create 5 containers
+        ContainerAsyncClient containerClient = null;
+        Mono<Void> createContainerTask = Mono.empty();
+        for (int i = 0; i < 5; i++) {
+            String name = "uxtesting" + UUID.randomUUID();
+            containerClient = serviceClient.createContainerAsyncClient(name);
+
+            createContainerTask = createContainerTask.and(containerClient.create().then(Mono.defer(() -> {
+                System.out.println("Created container: " + name);
+                return Mono.empty();
+            })));
+        }
+        ContainerAsyncClient finalContainerClient = containerClient; // final variable for lambda usage
+
+        createContainerTask
+            // list containers
+            .thenMany(Flux.defer(() -> {
+                System.out.println("Listing containers in account:");
+                return serviceClient.listContainers(new ListContainersOptions())
+                    .flatMap(containerItem -> {
+                        System.out.println(containerItem.name());
+                        return Mono.empty();
+                    });
+            }))
+            // in the last container, create 5 blobs
             .then(Mono.defer(() -> {
                 Mono<Void> finished = Mono.empty();
                 for (int i = 0; i < 5; i++) {
-                    BlockBlobAsyncClient blobClient = containerClient.createBlockBlobAsyncClient("testblob-" + i);
+                    BlockBlobAsyncClient blobClient = finalContainerClient.createBlockBlobAsyncClient("testblob-" + i);
                     byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
                     Flux<ByteBuffer> testdata = Flux.just(ByteBuffer.wrap(message));
 
@@ -72,16 +125,23 @@ public class Sample {
 
                 return finished;
             }))
+            // list blobs
             .thenMany(Flux.defer(() -> {
                 System.out.println();
                 System.out.println("Listing/downloading blobs:");
-                return containerClient.listBlobsFlat(new ListBlobsOptions());
+                return finalContainerClient.listBlobsFlat(new ListBlobsOptions());
             }))
+            // download results
             .flatMap(listItem ->
-                containerClient.createBlobAsyncClient(listItem.name())
+                finalContainerClient.createBlobAsyncClient(listItem.name())
                     .download()
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
+            // cleanup
+            .thenMany(serviceClient.listContainers(new ListContainersOptions()))
+            .flatMap(containerItem -> serviceClient
+                .createContainerAsyncClient(containerItem.name())
+                .delete())
             .blockLast();
     }
 }
