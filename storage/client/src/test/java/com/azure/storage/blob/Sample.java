@@ -20,8 +20,8 @@ import java.util.UUID;
 public class Sample {
 
     final static String accountEndpoint = "http://jamesschreppler.blob.core.windows.net";
-    final static String accountName = "jamesschreppler";
-    final static String accountKey = "gU7TyNVTCImPcvpxD0u0nW3kv/hrSZf4JtES0CSqb3elfU40F1esKwFzMckrPylybocUK0YfMzeUtNzFn92xow==";
+    final static String accountName = "";
+    final static String accountKey = "";
 
     @Test
     public void sample() throws IOException {
