@@ -107,7 +107,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Secret
 
-Create a Secret to be stored in the Azure Key Vault. There are two ways to store a Secret:
+Create a Secret to be stored in the Azure Key Vault.
 - setSecret creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
 SecretClient secretClient = SecretClient.builder()
@@ -235,24 +235,40 @@ When you interact with Azure Key Vault Secrets service using this Java client li
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
+### Sync API Samples
 * [HelloWorld.java](TODO) - Contains sync api snippets found in this article.
-* [HelloWorldAsync.java] (TODO) - Contains async api snippets found in this article.
 
 * [ListOperations.java](TODO) 
-* [ListOperationsAsync.java](TODO) - Java code for working with Key Vault secrets, including:
     * Creating Secrets
     * Listing Secrets
     * Create new version of existing secret.
     * List secret versions
 
 * [BackupAndRestoreOperations.java](TODO)
-* [BackupAndRestoreOperationsAsync.java](TODO) - Java code to backup and restore a deleted secret:
     * Create a Secret
     * Backup a Secret -- Write it to a file.
     * Delete a secret
     * Restore a secret
 
 * [ManagingDeletedSecrets.java](TODO)
+    * Create a Secret
+    * Delete a secret
+    * List deleted secrets
+    * Recover a deleted secret
+    * Purge Deleted secret
+    
+### Async API Samples
+* [HelloWorldAsync.java] (TODO) - Contains async api snippets found in this article.
+* [ListOperationsAsync.java](TODO)
+    * Creating Secrets
+    * Listing Secrets
+    * Create new version of existing secret.
+    * List secret versions
+* [BackupAndRestoreOperationsAsync.java](TODO) - Java code to backup and restore a deleted secret:
+    * Create a Secret
+    * Backup a Secret -- Write it to a file.
+    * Delete a secret
+    * Restore a secret
 * [ManagingDeletedSecretsAsync.java](TODO) - Java code for working with deleted secrets:
     * Create a Secret
     * Delete a secret
