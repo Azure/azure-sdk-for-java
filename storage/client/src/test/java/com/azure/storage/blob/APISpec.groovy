@@ -490,7 +490,6 @@ class APISpec extends Specification {
                 return null
             }
 
-            @Override
             Object deserializedHeaders() {
                 def headers = responseHeadersType.getConstructor().newInstance()
 
@@ -504,7 +503,6 @@ class APISpec extends Specification {
                 return headers
             }
 
-            @Override
             boolean isDecoded() {
                 return true
             }
@@ -554,14 +552,12 @@ class APISpec extends Specification {
                 return null
             }
 
-            @Override
             Object deserializedHeaders() {
                 def headers = new BlobDownloadHeaders()
                 headers.withETag(etag)
                 return headers
             }
 
-            @Override
             boolean isDecoded() {
                 return true
             }
