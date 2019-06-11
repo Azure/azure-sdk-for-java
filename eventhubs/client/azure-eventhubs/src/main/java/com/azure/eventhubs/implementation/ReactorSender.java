@@ -49,7 +49,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
-    private final ReactorDispatcher dispatcher;
+    private final ReactorProvider reactorProvider;
     private final int maxMessageSize;
     private final Disposable.Composite subscriptions;
 
@@ -68,13 +68,13 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
 
-    ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorDispatcher dispatcher, ActiveClientTokenManager tokenManager,
-                  EventSenderOptions senderOptions, int maxMessageSize) {
+    ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
+                  ActiveClientTokenManager tokenManager, EventSenderOptions senderOptions, int maxMessageSize) {
         super(new ServiceLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
-        this.dispatcher = dispatcher;
+        this.reactorProvider = reactorProvider;
         this.tokenManager = tokenManager;
         this.retry = senderOptions.retry();
         this.timeout = senderOptions.timeout();
@@ -271,7 +271,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             } else {
                 workItem.lastKnownException(exception);
                 try {
-                    dispatcher.invoke(() -> send(workItem), retryInterval);
+                    reactorProvider.getReactorDispatcher().invoke(() -> send(workItem), retryInterval);
                 } catch (IOException | RejectedExecutionException schedulerException) {
                     exception.initCause(schedulerException);
                     this.cleanupFailedSend(
@@ -290,7 +290,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private void scheduleWorkOnDispatcher() {
         try {
-            dispatcher.invoke(this::processSendWork);
+            reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
             logger.asError().log("Error scheduling work on reactor.", e);
             //TODO (conniey): any error handling?
