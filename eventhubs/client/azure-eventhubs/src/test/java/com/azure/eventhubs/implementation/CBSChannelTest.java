@@ -52,10 +52,14 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        cbsChannel.close();
+        if (cbsChannel != null) {
+            cbsChannel.close();
+        }
 
         try {
-            connection.close();
+            if (connection != null) {
+                connection.close();
+            }
         } catch (IOException e) {
             Assert.fail("Could not close connection." + e.toString());
         }
