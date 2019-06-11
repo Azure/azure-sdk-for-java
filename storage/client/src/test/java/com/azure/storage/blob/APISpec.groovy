@@ -5,19 +5,21 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.*
+import com.azure.storage.common.credential.SharedKeyCredential
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.netty.http.client.HttpClientConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -26,6 +28,7 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
+import java.util.function.Supplier
 
 class APISpec extends Specification {
     static final String RECORD_MODE = "RECORD"
@@ -50,7 +53,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
+    static boolean enableDebugging = true
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -84,10 +87,10 @@ class APISpec extends Specification {
     Credentials for various kinds of accounts.
      */
     @Shared
-    static SharedKeyCredentials primaryCreds
+    static SharedKeyCredential primaryCreds
 
     @Shared
-    static SharedKeyCredentials alternateCreds
+    static SharedKeyCredential alternateCreds
 
     /*
     URLs to various kinds of accounts.
@@ -194,40 +197,44 @@ class APISpec extends Specification {
                 "these credentials will fail.")
             return null
         }
-        return new SharedKeyCredentials(accountName, accountKey)
+        return new SharedKeyCredential(accountName, accountKey)
     }
 
     static HttpClient getHttpClient() {
         if (enableDebugging) {
-            HttpClientConfiguration configuration = new HttpClientConfiguration(
-                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            return HttpClient.createDefault(configuration)
+            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+                @Override
+                ProxyOptions get() {
+                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+                }
+            })
         } else return HttpClient.createDefault()
     }
 
-    static BlobServiceClient getGenericServiceURL(SharedKeyCredentials creds) {
+    static BlobServiceClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
         return BlobServiceClient.builder()
-            .endpoint("http://" + creds.getAccountName() + ".blob.core.windows.net")
+            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
+            .credentials(primaryCreds)
             .buildClient()
     }
 
     static void cleanupContainers() throws MalformedURLException {
         BlobServiceClient serviceURL = BlobServiceClient.builder()
             .endpoint("http://" + primaryCreds.accountName + ".blob.core.windows.net")
+            .credentials(primaryCreds)
             .buildClient()
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
-            new ListContainersOptions().withPrefix(containerPrefix), null).blockingGet()
-            .body().containerItems()) {
+            new ListContainersOptions().withPrefix(containerPrefix))) {
             ContainerClient containerURL = serviceURL.createContainerClient(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
                 containerURL.breakLease(0, null, null).blockingGet()
             }
-            containerURL.delete(null, null).blockingGet()
+            containerURL.delete()
         }
     }
 
@@ -295,8 +302,8 @@ class APISpec extends Specification {
 
     def setup() {
         Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        cu = primaryServiceURL.createContainerURL(generateContainerName())
-        cu.create(null, null, null).blockingGet()
+        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu.create()
     }
 
     def cleanup() {
@@ -374,21 +381,21 @@ class APISpec extends Specification {
         HttpHeaders headers = new HttpHeaders()
         headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
-        HttpRequest request = new HttpRequest(null, HttpMethod.POST, url, headers, null, null)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request
     }
 
-    def waitForCopy(ContainerClient bu, CopyStatusType status) {
-        OffsetDateTime start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS) {
-            status = bu.getProperties(null, null).blockingGet().headers().copyStatus()
-            OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-            sleep(1000)
-        }
-    }
+//    def waitForCopy(ContainerClient bu, CopyStatusType status) {
+//        OffsetDateTime start = OffsetDateTime.now()
+//        while (status != CopyStatusType.SUCCESS) {
+//            status = bu.getProperties().
+//            OffsetDateTime currentTime = OffsetDateTime.now()
+//            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
+//                throw new Exception("Copy failed or took too long")
+//            }
+//            sleep(1000)
+//        }
+//    }
 
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
@@ -421,14 +428,13 @@ class APISpec extends Specification {
 
     def enableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-            .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)), null)
-            .blockingGet()
+            .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
         sleep(30000) // Wait for the policy to take effect.
     }
 
     def disableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-            .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false)), null).blockingGet()
+            .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
 
         sleep(30000) // Wait for the policy to take effect.
     }
@@ -489,25 +495,6 @@ class APISpec extends Specification {
             Mono<String> bodyAsString(Charset charset) {
                 return null
             }
-
-            @Override
-            Object deserializedHeaders() {
-                def headers = responseHeadersType.getConstructor().newInstance()
-
-                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
-                try {
-                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
-                }
-                catch (NoSuchMethodException e) {
-                    // No op
-                }
-                return headers
-            }
-
-            @Override
-            boolean isDecoded() {
-                return true
-            }
         }
     }
 
@@ -553,18 +540,6 @@ class APISpec extends Specification {
             Mono<String> bodyAsString(Charset charset) {
                 return null
             }
-
-            @Override
-            Object deserializedHeaders() {
-                def headers = new BlobDownloadHeaders()
-                headers.withETag(etag)
-                return headers
-            }
-
-            @Override
-            boolean isDecoded() {
-                return true
-            }
         }
     }
 
@@ -592,7 +567,7 @@ class APISpec extends Specification {
         return BlobServiceClient.builder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
             .credentials(new TokenCredentials(token))
-            .buildClient();
+            .buildClient()
     }
 
     def getTestMode(){

@@ -7,8 +7,8 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobCommitBlockListHeaders;
-import com.azure.storage.blob.models.BlockBlobGetBlockListHeaders;
 import com.azure.storage.blob.models.BlockBlobUploadHeaders;
+import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -269,8 +269,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The list of blocks.
      */
-    public BlockBlobGetBlockListHeaders getBlockList(BlockListType listType) {
-        return this.getBlockList(listType, null, null, null);
+    public Iterable<BlockItem> listBlocks(BlockListType listType) {
+        return this.listBlocks(listType, null, null, null);
     }
 
     /**
@@ -296,13 +296,13 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The list of blocks.
      */
-    public BlockBlobGetBlockListHeaders getBlockList(BlockListType listType,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobGetBlockListHeaders> response = blockBlobAsyncClient.getBlockList(listType, leaseAccessConditions, context);
+    public Iterable<BlockItem> listBlocks(BlockListType listType,
+                                          LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions, context);
 
         return timeout == null?
-            response.block():
-            response.block(timeout);
+            response.toIterable():
+            response.timeout(timeout).toIterable();
     }
 
     /**

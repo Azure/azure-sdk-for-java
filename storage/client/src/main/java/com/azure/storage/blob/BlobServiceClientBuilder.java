@@ -16,6 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.common.credential.SharedKeyCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +37,7 @@ public final class BlobServiceClientBuilder {
 
     private URL endpoint;
     private ICredentials credentials = new AnonymousCredentials();
+    private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -107,8 +109,8 @@ public final class BlobServiceClientBuilder {
      * @param credentials authorization credentials
      * @return the updated BlobServiceClientBuilder object
      */
-    public BlobServiceClientBuilder credentials(SharedKeyCredentials credentials) {
-        this.credentials = credentials;
+    public BlobServiceClientBuilder credentials(SharedKeyCredential credentials) {
+        this.sharedKeyCredential = sharedKeyCredential;
         return this;
     }
 

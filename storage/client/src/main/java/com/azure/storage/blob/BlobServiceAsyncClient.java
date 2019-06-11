@@ -70,7 +70,7 @@ public final class BlobServiceAsyncClient {
     public ContainerAsyncClient createContainerAsyncClient(String containerName) {
         AzureBlobStorageImpl azureBlobStorage = blobServiceAsyncRawClient.azureBlobStorage;
         UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.url());
-        urlBuilder.withPath(urlBuilder.path() + "/" + containerName);
+        urlBuilder.withPath("/" + containerName);
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(urlBuilder.toString())
             .pipeline(azureBlobStorage.httpPipeline())
