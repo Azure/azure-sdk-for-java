@@ -59,7 +59,11 @@ public final class BlobServiceAsyncClient {
         return new BlobServiceClientBuilder();
     }
 
-    public BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
+    /**
+     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * @param builder the blob service client builder
+     */
+    BlobServiceAsyncClient(BlobServiceClientBuilder builder) {
         this.builder = builder;
         this.blobServiceAsyncRawClient = new BlobServiceAsyncRawClient(builder.buildImpl());
     }

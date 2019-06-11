@@ -93,10 +93,16 @@ public final class ContainerClientBuilder {
             .build();
     }
 
+    /**
+     * @return a {@link ContainerClient} created from the configurations in this builder.
+     */
     public ContainerClient buildClient() {
         return new ContainerClient(this);
     }
 
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
     public ContainerAsyncClient buildAsyncClient() {
         return new ContainerAsyncClient(this);
     }
