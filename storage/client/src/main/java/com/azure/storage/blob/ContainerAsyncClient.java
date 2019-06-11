@@ -19,6 +19,12 @@ import java.util.List;
  * the resource on the service. It may also be used to construct URLs to blobs. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class ContainerAsyncClient {
 

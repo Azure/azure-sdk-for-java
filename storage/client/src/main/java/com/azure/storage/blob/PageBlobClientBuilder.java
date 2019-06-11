@@ -87,7 +87,7 @@ public final class PageBlobClientBuilder {
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated PageBlobClientBuilder object
      */

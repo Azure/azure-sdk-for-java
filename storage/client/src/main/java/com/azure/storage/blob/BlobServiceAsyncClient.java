@@ -27,6 +27,12 @@ import java.time.OffsetDateTime;
  * It may also be used to construct URLs to blobs and containers.
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class BlobServiceAsyncClient {
 

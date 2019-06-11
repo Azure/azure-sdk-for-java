@@ -26,6 +26,12 @@ import java.net.URL;
  * requests to the resource on the service. Please refer to the
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on append blobs.
+ *
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
     AppendBlobAsyncRawClient appendBlobAsyncRawClient;

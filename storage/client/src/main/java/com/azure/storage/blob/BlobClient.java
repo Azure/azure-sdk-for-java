@@ -24,7 +24,12 @@ import java.time.Duration;
 /**
  * Client to a blob of any type: block, append, or page. It may be obtained through a {@link BlobClientBuilder} or via
  * the method {@link ContainerClient#createBlobClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * blob, but is instead a convenient way of sending appropriate requests to the resource on the service. Please refer
+ * to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
+ *
+ * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
+ * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobClient {
 
@@ -82,7 +87,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob.
+     * Copies the data at the source URL to a blob. For more information, see the <a
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -95,7 +101,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob.
+     * Copies the data at the source URL to a blob. For more information, see the <a
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -168,8 +175,8 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String syncCopyFromURL(URL copySource) {
-        return this.syncCopyFromURL(copySource, null, null, null, null);
+    public String copyFromURL(URL copySource) {
+        return this.copyFromURL(copySource, null, null, null, null);
     }
 
     /**
@@ -192,11 +199,11 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String syncCopyFromURL(URL copySource, Metadata metadata,
-            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-            Duration timeout) {
+    public String copyFromURL(URL copySource, Metadata metadata,
+                              ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+                              Duration timeout) {
         Mono<String> response = blobAsyncClient
-            .syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
+            .copyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
 
         return timeout == null
             ? response.block()
@@ -204,20 +211,20 @@ public class BlobClient {
     }
 
     /**
-     * Reads the entire blob.
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
-     *          A non-null {@link OutputStream} instance to write the downloaded blob data.
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public void download(OutputStream stream) throws IOException {
         this.download(stream, null, null, null, false, null);
     }
 
     /**
-     * Reads a range of bytes from a blob.
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
-     *          A non-null {@link OutputStream} instance to write the downloaded blob data.
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range
      *         {@link BlobRange}
      * @param accessConditions
@@ -306,7 +313,10 @@ public class BlobClient {
     }
 
     /**
-     * Changes a blob's HTTP header properties.
+     * Changes a blob's HTTP header properties. if only one HTTP header is updated, the
+     * others will all be erased. In order to preserve existing values, they must be
+     * passed alongside the header being changed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
      * @param headers
      *         {@link BlobHTTPHeaders}
@@ -316,7 +326,10 @@ public class BlobClient {
     }
 
     /**
-     * Changes a blob's HTTP header properties.
+     * Changes a blob's HTTP header properties. if only one HTTP header is updated, the
+     * others will all be erased. In order to preserve existing values, they must be
+     * passed alongside the header being changed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
      * @param headers
      *         {@link BlobHTTPHeaders}
@@ -338,7 +351,9 @@ public class BlobClient {
     }
 
     /**
-     * Changes a blob's metadata.
+     * Changes a blob's metadata. The specified metadata in this method will replace existing
+     * metadata. If old values must be preserved, they must be downloaded and included in the
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
@@ -348,7 +363,9 @@ public class BlobClient {
     }
 
     /**
-     * Changes a blob's metadata.
+     * Changes a blob's metadata. The specified metadata in this method will replace existing
+     * metadata. If old values must be preserved, they must be downloaded and included in the
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
