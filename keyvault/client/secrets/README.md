@@ -26,7 +26,7 @@ Use the secret client library to create and manage secrets.
 
 ### Create an Azure Key Vault.
 
-To create an Azure Key Vault you can use the Azure Portal or [Azure Keyvault_CLI][azure_keyvault_cli].
+To create an Azure Key Vault you can use the Azure Portal or [Azure Keyvault CLI][azure_keyvault_cli].
 
 Create the Azure Key Vault:
 ```Powershell
@@ -235,34 +235,30 @@ When you interact with Azure Key Vault Secrets service using this Java client li
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-* [HelloWorld.java](TODO: Add link) - Contains sync api snippets found in this article.
-* [HelloWorldAsync.java] (TODO: Add link) - Contains async api snippets found in this article.
+* [HelloWorld.java](TODO) - Contains sync api snippets found in this article.
+* [HelloWorldAsync.java] (TODO) - Contains async api snippets found in this article.
 
 * [ListOperations.java](TODO) 
-* [ListOperationsAsync.java](TODO) 
- - Java code for working with Key Vault secrets, including:
+* [ListOperationsAsync.java](TODO) - Java code for working with Key Vault secrets, including:
     * Creating Secrets
     * Listing Secrets
     * Create new version of existing secret.
     * List secret versions
 
 * [BackupAndRestoreOperations.java](TODO)
-* [BackupAndRestoreOperationsAsync.java](TODO) 
- - Java code to backup and restore a deleted secret:
+* [BackupAndRestoreOperationsAsync.java](TODO) - Java code to backup and restore a deleted secret:
     * Create a Secret
     * Backup a Secret -- Write it to a file.
     * Delete a secret
     * Restore a secret
 
 * [ManagingDeletedSecrets.java](TODO)
-* [ManagingDeletedSecretsAsync.java](TODO)  
-- Java code for working with deleted secrets:
+* [ManagingDeletedSecretsAsync.java](TODO) - Java code for working with deleted secrets:
     * Create a Secret
     * Delete a secret
     * List deleted secrets
     * Recover a deleted secret
     * Purge Deleted secret
-
 
 ## Contributing
 
