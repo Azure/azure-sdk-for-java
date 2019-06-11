@@ -9,6 +9,11 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.eventhubs.CredentialInfo;
+import com.azure.eventhubs.EventData;
+import com.azure.eventhubs.EventHubClient;
+import com.azure.eventhubs.EventHubClientBuilder;
+import com.azure.eventhubs.EventSender;
+import com.azure.eventhubs.EventSenderOptions;
 import com.azure.eventhubs.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -16,6 +21,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -24,6 +31,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -125,5 +133,23 @@ public abstract class ApiTestBase extends TestBase {
 
     protected ReactorProvider getReactorProvider() {
         return reactorProvider;
+    }
+
+
+    protected EventHubClientBuilder getEventHubClientBuilder() {
+        return EventHubClient.builder().credentials(CredentialInfo.from(CONNECTION_STRING));
+    }
+
+    protected static String getConsumerGroupName() {
+        return "$Default";
+    }
+
+    protected static Mono<Void> pushEventsToPartition(final EventHubClient client, final String partitionId, final int noOfEvents) {
+        EventSender sender = client.createSender(new EventSenderOptions().partitionId(partitionId));
+        final Flux<EventData> map = Flux.range(0, noOfEvents).map(number -> {
+            final EventData data = new EventData("testString".getBytes(UTF_8));
+            return data;
+        });
+        return sender.send(map);
     }
 }

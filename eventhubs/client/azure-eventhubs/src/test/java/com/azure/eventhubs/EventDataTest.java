@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class EventDataTest {
 
@@ -32,7 +33,7 @@ public class EventDataTest {
     @Test
     public void sendingEventsSysPropsShouldNotBeNull() {
         EventData eventData = new EventData("Test".getBytes());
-        EventData.SystemProperties sys = eventData.systemProperties();
+        Map sys = eventData.systemProperties();
         Assert.assertTrue(eventData.systemProperties() != null);
     }
 

@@ -278,14 +278,14 @@ public class EventHubClientTest extends ApiTestBase {
     public void parallelEventHubClients() {
         final String partitionId = "0";
         final int noOfClients = 4;
-        final String consumerGroupName = TestBase.getConsumerGroupName();
+        final String consumerGroupName = ApiTestBase.getConsumerGroupName();
 
         EventHubClient[] ehClients = new EventHubClient[noOfClients];
         for (int i = 0; i < noOfClients; i++) {
             ehClients[i] = getEventHubClientBuilder().build();
         }
 
-        ReceiverOptions receiverOptions = new ReceiverOptions()
+        EventReceiverOptions receiverOptions = new EventReceiverOptions()
             .consumerGroup(consumerGroupName)
             .beginReceivingAt(EventPosition.newEventsOnly());
 
@@ -296,7 +296,7 @@ public class EventHubClientTest extends ApiTestBase {
             Flux<EventData> eventReceived = receiver.receive();
 
             StepVerifier.create(eventReceived)
-                .then(() -> TestBase.pushEventsToPartition(senderClient, partitionId, 10))
+                .then(() -> ApiTestBase.pushEventsToPartition(senderClient, partitionId, 10))
                 .expectNextCount(10)
                 .verifyComplete();
         }
