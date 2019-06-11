@@ -14,7 +14,7 @@ import java.time.Duration;
  * @see <a href="https://www.oasis-open.org/committees/download.php/62097/amqp-cbs-v1.0-wd05.doc">
  * AMPQ Claims-based Security v1.0</a>
  */
-public interface CBSNode extends Closeable {
+public interface CBSNode extends EndpointStateNotifier, Closeable {
     /**
      * Authorizes the caller with the CBS node to access resources for the {@code audience} with the provided
      * {@code timeToLive}.

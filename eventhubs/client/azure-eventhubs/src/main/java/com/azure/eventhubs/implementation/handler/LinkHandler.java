@@ -16,10 +16,11 @@ import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 class LinkHandler extends Handler {
 
-    ServiceLogger logger = new ServiceLogger(LinkHandler.class);
+    ServiceLogger logger;
 
-    LinkHandler(final String connectionId, final String hostname) {
+    LinkHandler(final String connectionId, final String hostname, ServiceLogger logger) {
         super(connectionId, hostname);
+        this.logger = logger;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class EventHubClientBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void missingConnStrBuilder() {
-        EventHubClientBuilder builder = new EventHubClientBuilder();
+        EventHubClientBuilder builder = EventHubClient.builder();
         builder.build();
     }
 

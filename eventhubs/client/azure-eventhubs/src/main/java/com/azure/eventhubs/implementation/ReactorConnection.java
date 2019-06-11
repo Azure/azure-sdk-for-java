@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
@@ -19,7 +18,6 @@ import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.util.Map;
@@ -27,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ReactorConnection extends EndpointStateNotifierBase implements AmqpConnection {
+public class ReactorConnection extends EndpointStateNotifierBase implements EventHubConnection {
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
 
@@ -38,8 +36,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     private final ReactorHandlerProvider handlerProvider;
     private final ConnectionParameters connectionParameters;
     private final ReactorProvider reactorProvider;
-    private final Scheduler scheduler;
     private final Disposable.Composite subscriptions;
+    private final Mono<EventHubManagementNode> managementChannelMono;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -53,17 +51,16 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      */
-    public ReactorConnection(String connectionId, ConnectionParameters connectionParameters, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider) {
+    public ReactorConnection(String connectionId, ConnectionParameters connectionParameters,
+                             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ServiceLogger(ReactorConnection.class));
 
-        this.reactorProvider = reactorProvider;
         this.connectionParameters = connectionParameters;
-        this.scheduler = connectionParameters.scheduler();
+        this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
-
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionParameters.host(), connectionParameters.transportType());
+
         this.connectionMono = Mono.fromCallable(this::createConnectionAndStart)
             .doOnSubscribe(c -> {
                 logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
@@ -81,7 +78,12 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         this.cbsChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> new CBSChannel(this, connectionParameters.tokenProvider(), reactorProvider.getReactorDispatcher())));
+            Mono.fromCallable(() -> (CBSNode) new CBSChannel(this, connectionParameters.tokenProvider(), reactorProvider, handlerProvider))).cache();
+        this.managementChannelMono = connectionMono.then(
+            Mono.fromCallable(() -> {
+                return (EventHubManagementNode) new ManagementChannel(this, connectionParameters.credentials().eventHubPath(), connectionParameters.tokenProvider(),
+                    reactorProvider, handlerProvider, mapper);
+            })).cache();
     }
 
     /**
@@ -92,9 +94,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         return cbsChannelMono;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Mono<EventHubManagementNode> getManagementNode() {
+        return managementChannelMono;
+    }
+
     @Override
     public String getIdentifier() {
         return connectionId;
@@ -134,7 +138,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider.getReactorDispatcher(), connectionParameters.timeout());
+            return new ReactorSession(session, handler, sessionName, reactorProvider, connectionParameters.timeout());
         }));
     }
 
@@ -171,7 +175,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         final Connection connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
         reactorExceptionHandler = new ReactorExceptionHandler();
-        executor = new ReactorExecutor(reactor, scheduler, connectionId, reactorExceptionHandler, connectionParameters.timeout());
+        executor = new ReactorExecutor(reactor, connectionParameters.scheduler(), connectionId, reactorExceptionHandler, connectionParameters.timeout());
         executor.start();
 
         return connection;

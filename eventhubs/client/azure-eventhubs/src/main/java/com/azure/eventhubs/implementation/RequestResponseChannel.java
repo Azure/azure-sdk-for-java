@@ -4,6 +4,8 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
@@ -34,6 +36,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class RequestResponseChannel implements Closeable {
+    private static final String STATUS_CODE = "status-code";
+    private static final String STATUS_DESCRIPTION = "status-description";
+
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends = new ConcurrentSkipListMap<>();
     private final ServiceLogger logger = new ServiceLogger(RequestResponseChannel.class);
 
@@ -46,8 +51,8 @@ class RequestResponseChannel implements Closeable {
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable subscription;
 
-    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session) {
-
+    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
+                           ReactorHandlerProvider handlerProvider) {
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
@@ -55,7 +60,7 @@ class RequestResponseChannel implements Closeable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = new SendLinkHandler(connectionId, host, linkName);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
@@ -67,11 +72,11 @@ class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = new ReceiveLinkHandler(connectionId, host, linkName);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
-            logger.asInfo().log("Setting message: {}", message.getCorrelationId());
+            logger.asVerbose().log("Settling message: {}", message.getCorrelationId());
             settleMessage(message);
         }, this::handleException);
     }
@@ -86,7 +91,7 @@ class RequestResponseChannel implements Closeable {
         }
     }
 
-    public Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
+    Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
         start();
 
         if (message == null) {
@@ -108,6 +113,8 @@ class RequestResponseChannel implements Closeable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
             Mono.create(sink -> {
                 try {
+                    logger.asVerbose().log("Scheduling on dispatcher. Message Id {}", messageId);
+
                     dispatcher.invoke(() -> {
                         unconfirmedSends.putIfAbsent(messageId, sink);
                         send(message);
@@ -157,10 +164,18 @@ class RequestResponseChannel implements Closeable {
         final UnsignedLong correlationId = UnsignedLong.valueOf(id);
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
-        if (sink != null) {
-            sink.success(message);
-        } else {
+        if (sink == null) {
             logger.asWarning().log("Received a delivery that was not a known pending message: {}", id);
+            return;
+        }
+
+        final int statusCode = (int) message.getApplicationProperties().getValue().get(STATUS_CODE);
+        final String statusDescription = (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
+
+        if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
+            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+        } else {
+            sink.success(message);
         }
     }
 
