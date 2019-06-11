@@ -20,12 +20,12 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
+    SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
         return sessionHandler;
     }
 
     @Override
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
+    ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
         return connectionHandler;
     }
 }
