@@ -6,7 +6,6 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.eventhubs.EventSenderOptions;
 import com.azure.eventhubs.OperationCancelledException;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -50,7 +49,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final Sender sender;
     private final SendLinkHandler handler;
     private final ReactorProvider reactorProvider;
-    private final int maxMessageSize;
     private final Disposable.Composite subscriptions;
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
@@ -68,16 +66,21 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
 
+    /**
+     * Max message size is subject to change.
+     */
+    private int maxMessageSize;
+
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  ActiveClientTokenManager tokenManager, EventSenderOptions senderOptions, int maxMessageSize) {
+                  ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
         super(new ServiceLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
         this.reactorProvider = reactorProvider;
         this.tokenManager = tokenManager;
-        this.retry = senderOptions.retry();
-        this.timeout = senderOptions.timeout();
+        this.retry = retry;
+        this.timeout = timeout;
         this.maxMessageSize = maxMessageSize;
 
         this.subscriptions = Disposables.composite(
