@@ -20,9 +20,12 @@ import java.time.OffsetDateTime;
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
+ *
+ * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  *
+ * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core
  * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
  * start the actual network operation, until {@code .subscribe()} is called on the reactive response.

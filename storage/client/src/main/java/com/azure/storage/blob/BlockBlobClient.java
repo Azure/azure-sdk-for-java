@@ -29,9 +29,11 @@ import java.util.List;
  * the method {@link BlobClient#asBlockBlobClient()}, or via the method
  * {@link ContainerClient#createBlockBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
- * requests to the resource on the service. Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
- * for more information on block blobs.
+ * requests to the resource on the service.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
  */
 public final class BlockBlobClient extends BlobClient {
 
