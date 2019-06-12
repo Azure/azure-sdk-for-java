@@ -20,8 +20,6 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 
-import static org.mockito.Mockito.mock;
-
 public class CBSChannelTest extends ApiTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
