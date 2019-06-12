@@ -34,6 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Event Hub.
  */
 public class EventHubClient implements Closeable {
+    private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
+    private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
@@ -144,7 +146,7 @@ public class EventHubClient implements Closeable {
             entityPath = eventHubPath;
             linkName = StringUtil.getRandomString("EC");
         } else {
-            entityPath = String.format(Locale.US, "%s/Partitions/%s", eventHubPath, options.partitionId());
+            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubPath, options.partitionId());
             linkName = StringUtil.getRandomString("PS");
         }
 
@@ -182,13 +184,14 @@ public class EventHubClient implements Closeable {
 
         final EventReceiverOptions clonedOptions = options.clone();
         final String linkName = StringUtil.getRandomString("PR");
-        final String entityPath = String.format(Locale.US, "%s/ConsumerGroups/%s/Partitions/%s", eventHubPath, options.consumerGroup(), partitionId);
+        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, options.consumerGroup(), partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
             .flatMap(session -> session.createReceiver(linkName, entityPath, connectionParameters.timeout(), clonedOptions.retry())
-                .cast(AmqpReceiveLink.class)));
+                .cast(AmqpReceiveLink.class)))
+            .publish(x -> x);
 
-        return new EventReceiver();
+        return new EventReceiver(receiveLinkMono, clonedOptions, connectionParameters.timeout());
     }
 
     /**
@@ -227,8 +230,7 @@ public class EventHubClient implements Closeable {
                 (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
                 (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
                 ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
-                Instant.now());
+                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
         }
     }
 }
