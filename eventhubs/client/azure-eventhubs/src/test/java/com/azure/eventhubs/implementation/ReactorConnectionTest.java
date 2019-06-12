@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -60,6 +61,8 @@ public class ReactorConnectionTest {
     private Selectable selectable;
     @Mock
     private TokenProvider tokenProvider;
+    private MockReactorProvider reactorProvider;
+    private MockReactorHandlerProvider reactorHandlerProvider;
 
     @Before
     public void initialize() throws IOException {
@@ -69,10 +72,10 @@ public class ReactorConnectionTest {
         when(reactor.selectable()).thenReturn(selectable);
 
         ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
-        MockReactorProvider reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
+        reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
-        MockReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler, null, null);
+        reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler, null, null);
 
         ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, TEST_DURATION, tokenProvider,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
@@ -247,7 +250,7 @@ public class ReactorConnectionTest {
      */
     @Test
     public void createCBSNode() {
-        // Arrange.
+        // Arrange
         final Connection connection = mock(Connection.class);
         when(connection.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         final Event mock = mock(Event.class);
@@ -260,6 +263,23 @@ public class ReactorConnectionTest {
                 Assert.assertTrue(node instanceof CBSChannel);
             }).verifyComplete();
     }
+
+    /**
+     * Verifies that if the connection cannot be created within the timeout period, it errors.
+     */
+    @Test
+    public void createCBSNodeTimeoutException() {
+        // Arrange
+        Duration timeout = Duration.ofSeconds(5);
+        ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, timeout, tokenProvider,
+            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
+        ReactorConnection connection = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, mock(AmqpResponseMapper.class));
+
+        // Act and Assert
+        StepVerifier.create(connection.getCBSNode())
+            .verifyError(TimeoutException.class);
+    }
+
 
     /**
      * Verifies if the ConnectionHandler transport fails, then we are unable to create the CBS node or sessions.
