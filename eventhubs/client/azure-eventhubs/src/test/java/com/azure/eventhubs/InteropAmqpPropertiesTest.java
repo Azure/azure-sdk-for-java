@@ -53,14 +53,13 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     @BeforeClass
     public static void initialize() {
-        final String consumerGroupName = ApiTestBase.getConsumerGroupName();
         ehClient = ApiTestBase.getEventHubClientBuilder().build();
 
         EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
         sender = ehClient.createSender(senderOptions);
 
         EventReceiverOptions receiverOptions = new EventReceiverOptions()
-            .consumerGroup(consumerGroupName)
+            .consumerGroup(ApiTestBase.getConsumerGroupName())
             .beginReceivingAt(EventPosition.newEventsOnly());
         receiver = ehClient.createReceiver(PARTITION_ID, receiverOptions);
 
