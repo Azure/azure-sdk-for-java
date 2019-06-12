@@ -78,7 +78,6 @@ public class ReactorConnectionTest {
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         connection = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, mock(AmqpResponseMapper.class));
-
     }
 
     /**
@@ -248,8 +247,15 @@ public class ReactorConnectionTest {
      */
     @Test
     public void createCBSNode() {
+        // Arrange.
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        final Event mock = mock(Event.class);
+        when(mock.getConnection()).thenReturn(connection);
+        handler.onConnectionRemoteOpen(mock);
+
         // Act and Assert
-        StepVerifier.create(connection.getCBSNode())
+        StepVerifier.create(this.connection.getCBSNode())
             .assertNext(node -> {
                 Assert.assertTrue(node instanceof CBSChannel);
             }).verifyComplete();
@@ -259,7 +265,7 @@ public class ReactorConnectionTest {
      * Verifies if the ConnectionHandler transport fails, then we are unable to create the CBS node or sessions.
      */
     @Test
-    public void cannotCreateResourcesWhenErrored() {
+    public void cannotCreateResourcesWhenErrors() {
         // Arrange
         final Event event = mock(Event.class);
         final Connection connectionProtonJ = mock(Connection.class);

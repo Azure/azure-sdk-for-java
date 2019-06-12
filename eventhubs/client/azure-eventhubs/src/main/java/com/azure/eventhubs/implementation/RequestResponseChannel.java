@@ -108,6 +108,7 @@ class RequestResponseChannel implements Closeable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
+        //TODO (conniey): timeout here if we can't get the link handlers to pass an "Active" state.
         return Mono.when(
             sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(

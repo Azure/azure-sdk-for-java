@@ -92,6 +92,7 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_VALIDITY, ClientConstants.TOKEN_REFRESH_INTERVAL);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+            .timeout(timeout)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 AmqpSendLink existingSender = openSendLinks.get(linkName);
                 if (existingSender != null) {
