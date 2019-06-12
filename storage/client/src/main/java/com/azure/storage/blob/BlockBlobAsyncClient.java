@@ -17,9 +17,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.ByteBufFlux;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -140,6 +144,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return blockBlobAsyncRawClient
             .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
             .map(ResponseBase::deserializedHeaders);
+    }
+
+    public Mono<Void> uploadFromFile(String filePath) {
+        return this.uploadFromFile(filePath, null, null, null, null);
+    }
+
+    public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+            BlobAccessConditions accessConditions, Context context) {
+        //TODO make this method smart
+        return this.blockBlobAsyncRawClient
+            .upload(ByteBufFlux.fromPath(Paths.get(filePath)), new File(filePath).length())
+            .then();
     }
 
     /**

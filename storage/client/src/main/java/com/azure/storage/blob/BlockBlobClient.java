@@ -15,19 +15,14 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Client to a block blob. It may be obtained through a {@link BlockBlobClientBuilder}, via
@@ -140,6 +135,26 @@ public final class BlockBlobClient extends BlobClient {
         return timeout == null?
             response.block():
             response.block(timeout);
+    }
+
+    public void uploadFromFile(String filePath) throws IOException {
+        this.uploadFromFile(filePath, null, null, null, null);
+    }
+
+    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+            BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
+
+        try {
+            if (timeout == null) {
+                upload.block();
+            } else {
+                upload.block(timeout);
+            }
+        }
+        catch (UncheckedIOException e) {
+            throw e.getCause();
+        }
     }
 
     /**

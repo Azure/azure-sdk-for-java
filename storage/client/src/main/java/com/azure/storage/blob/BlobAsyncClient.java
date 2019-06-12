@@ -18,8 +18,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 
+import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /**
  * Client to a blob of any type: block, append, or page. It may be obtained through a {@link BlobClientBuilder} or via
@@ -258,7 +263,34 @@ public class BlobAsyncClient {
         return blobAsyncRawClient
             .download(range, accessConditions, rangeGetContentMD5, context)
             .flatMapMany(response -> ByteBufFlux.fromInbound(response.body(options)).asByteBuffer());
+    }
 
+    public Mono<Void> downloadToFile(String filePath) {
+        return this.downloadToFile(filePath, null, null, false, null, null);
+    }
+
+    public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
+            boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
+        //todo make this method smart
+        return Mono.using(
+            () -> new FileOutputStream(new File(filePath)),
+            fstream -> this.download(range, accessConditions, rangeGetContentMD5, options, context)
+                .doOnNext(byteBuffer -> {
+                    try {
+                        fstream.write(byteBuffer.array());
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                })
+                .then(),
+            fstream -> {
+                try {
+                    fstream.close();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }
+        );
     }
 
     /**

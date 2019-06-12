@@ -9,19 +9,19 @@ import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 public class Sample {
 
     final static String accountEndpoint = "http://jamesschreppler.blob.core.windows.net";
-    final static String accountName = "";
-    final static String accountKey = "";
+    final static String accountName = "jamesschreppler";
+    final static String accountKey = "5POtFgqT5vsDYmIUOSsEpoXnbd3iw+mpBiXB4jiMvdqOcprfPX3gZXGU/sGZviLbIIFDMq+5c00w7O2eG0UT6Q==";
 
     @Test
     public void sample() throws IOException {
@@ -143,5 +143,71 @@ public class Sample {
                 .createContainerAsyncClient(containerItem.name())
                 .delete())
             .blockLast();
+    }
+
+    @Test
+    public void uploadDownloadFromFile() throws IOException {
+        final String data = "TEST DATA" + UUID.randomUUID();
+        final String folderPath = "C:/Users/jaschrep/Desktop/temp";
+
+        // make start file
+        File startFile = new File(folderPath, "startFile" + UUID.randomUUID());
+        FileOutputStream fstream = new FileOutputStream(startFile);
+        fstream.write(data.getBytes());
+        fstream.close();
+
+        // get service client
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .buildClient();
+
+        // make container
+        ContainerClient containerClient = serviceClient.createContainerClient("uxstudy" + UUID.randomUUID());
+        containerClient.create();
+
+        // upload data
+        BlockBlobClient blobClient = containerClient.createBlockBlobClient("testblob_" + UUID.randomUUID());
+        blobClient.uploadFromFile(startFile.getAbsolutePath());
+
+        // download data
+        File endFile = new File(folderPath, "endFile" + UUID.randomUUID());
+        blobClient.downloadToFile(endFile.getAbsolutePath());
+    }
+
+    @Test
+    public void uploadDownloadFromFileAsync() throws IOException {
+        final String data = "TEST DATA" + UUID.randomUUID();
+        final String folderPath = "C:/Users/jaschrep/Desktop/temp";
+
+        // make start file
+        File startFile = new File(folderPath, "startFile" + UUID.randomUUID());
+        FileOutputStream fstream = new FileOutputStream(startFile);
+        fstream.write(data.getBytes());
+        fstream.close();
+
+        // get service client
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .buildAsyncClient();
+
+        // make container
+        ContainerAsyncClient containerClient = serviceClient.createContainerAsyncClient("uxstudy" + UUID.randomUUID());
+        containerClient.create()
+
+            // upload data
+            .then(Mono.defer(() -> {
+                BlockBlobAsyncClient blobClient = containerClient.createBlockBlobAsyncClient("testblob_" + UUID.randomUUID());
+                return blobClient.uploadFromFile(startFile.getAbsolutePath())
+                    .then(Mono.just(blobClient));
+            }))
+
+            // download data
+            .flatMap(blobClient ->
+                blobClient.downloadToFile(new File(folderPath, "endFile" + UUID.randomUUID()).getAbsolutePath()))
+            
+            .block();
+
     }
 }
