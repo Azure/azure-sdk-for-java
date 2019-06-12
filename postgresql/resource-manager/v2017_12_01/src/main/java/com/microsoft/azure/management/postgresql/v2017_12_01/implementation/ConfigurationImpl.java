@@ -31,7 +31,7 @@ class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, Configurat
         this.manager = manager;
         // Set resource name
         this.configurationName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.configurationName = IdParsingUtils.getValueFromIdByName(inner.id(), "configurations");
