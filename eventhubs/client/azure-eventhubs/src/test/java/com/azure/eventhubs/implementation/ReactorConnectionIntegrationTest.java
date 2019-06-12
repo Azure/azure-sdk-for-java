@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.eventhubs.implementation;
 
 import org.junit.Assert;
@@ -40,10 +43,9 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
     public void getCbsNode() {
         skipIfNotRecordMode();
 
+        // Act & Assert
         StepVerifier.create(connection.getCBSNode())
-            .assertNext(node -> {
-                Assert.assertTrue(node instanceof CBSChannel);
-            })
+            .assertNext(node -> Assert.assertTrue(node instanceof CBSChannel))
             .verifyComplete();
     }
 
@@ -56,7 +58,7 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
             getCredentialInfo().endpoint().getHost(), getCredentialInfo().eventHubPath());
         final Duration tokenDuration = Duration.ofMinutes(5);
 
-        // Act & Assert.
+        // Act & Assert
         StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience, tokenDuration)))
             .verifyComplete();
     }

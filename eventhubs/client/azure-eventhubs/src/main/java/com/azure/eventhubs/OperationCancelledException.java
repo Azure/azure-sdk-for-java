@@ -12,10 +12,21 @@ import com.azure.core.amqp.exception.AmqpException;
 public class OperationCancelledException extends AmqpException {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates an instance of this exception with provided {@code message}.
+     *
+     * @param message Message associated with this exception.
+     */
     public OperationCancelledException(final String message) {
         super(false, message);
     }
 
+    /**
+     * Creates an instance of this exception with provided {@code message} and underlying {@code cause}.
+     *
+     * @param message Message associated with this exception.
+     * @param cause The throwable that caused this exception to be thrown.
+     */
     public OperationCancelledException(final String message, final Throwable cause) {
         super(false, message, cause);
     }

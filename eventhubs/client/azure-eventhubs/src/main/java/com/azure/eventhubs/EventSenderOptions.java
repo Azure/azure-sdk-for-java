@@ -83,6 +83,15 @@ public class EventSenderOptions implements Cloneable {
         return timeout;
     }
 
+    /**
+     * Creates a shallow clone of this instance.
+     *
+     * The object is cloned, but the objects {@link #retry()}, {@link #timeout()} and {@link #partitionId()} are not
+     * cloned. {@link Duration} and {@link String} are immutable objects and are not an issue. However, the
+     * implementation of {@link Retry} could be mutable.
+     *
+     * @return A shallow clone of this object.
+     */
     public EventSenderOptions clone() {
         EventSenderOptions clone;
         try {
