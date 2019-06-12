@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.BlockBlobAsyncClient;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;

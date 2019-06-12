@@ -3,9 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.SASQueryParameters;
-
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Comparator;
