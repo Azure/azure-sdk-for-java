@@ -53,7 +53,7 @@ public class EventSender implements Closeable {
      */
     EventSender(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
         // Caching the created link so we don't invoke another link creation.
-        this.sendLinkMono = amqpSendLinkMono.map(x -> x).cache();
+        this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
     }
 

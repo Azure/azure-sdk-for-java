@@ -145,7 +145,8 @@ public class EventHubClient implements Closeable {
 
         final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
             .flatMap(session -> session.createSender(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
-                .cast(AmqpSendLink.class)));
+                .cast(AmqpSendLink.class)))
+            .publish(x -> x);
 
         return new EventSender(amqpLinkMono, clonedOptions);
     }
