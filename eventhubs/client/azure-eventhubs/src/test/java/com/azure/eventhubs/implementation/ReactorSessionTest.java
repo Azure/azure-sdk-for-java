@@ -11,10 +11,12 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -60,6 +62,17 @@ public class ReactorSessionTest {
         this.reactorProvider = new MockReactorProvider(reactor, dispatcher);
         this.handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider, Mono.just(cbsNode), TIMEOUT);
+    }
+
+    @After
+    public void teardown() {
+        session = null;
+        reactor = null;
+        selectable = null;
+        event = null;
+        cbsNode = null;
+
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test
