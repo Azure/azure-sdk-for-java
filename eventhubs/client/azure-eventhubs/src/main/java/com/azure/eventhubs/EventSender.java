@@ -14,6 +14,8 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.stream.Collector;
  *
  * @see EventHubClient#createSender()
  */
-public class EventSender {
+public class EventSender implements Closeable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
@@ -146,6 +148,14 @@ public class EventSender {
         return amqpSendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))
             : link.sendBatch(messages));
+    }
+
+    @Override
+    public void close() throws IOException {
+        final AmqpSendLink block = amqpSendLinkMono.block(senderOptions.timeout());
+        if (block != null) {
+            block.close();
+        }
     }
 
     /*
