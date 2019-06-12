@@ -125,19 +125,19 @@ public class EventSender implements Closeable {
 
         //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
         return events.collect(new EventDataCollector(options, 1))
-            .flatMap(list -> sendBatch(Flux.fromIterable(list)));
+            .flatMap(list -> send(Flux.fromIterable(list)));
     }
 
-    private Mono<Void> sendBatch(Flux<EventDataBatch> eventBatches) {
+    private Mono<Void> send(Flux<EventDataBatch> eventBatches) {
         return eventBatches
-            .flatMap(this::sendBatch)
+            .flatMap(this::send)
             .then()
             .doOnError(error -> {
                 logger.asError().log("Error sending batch.", error);
             });
     }
 
-    private Mono<Void> sendBatch(EventDataBatch batch) {
+    private Mono<Void> send(EventDataBatch batch) {
         if (batch.getEvents().isEmpty()) {
             logger.asInfo().log("Cannot send an EventBatch that is empty.");
             return Mono.empty();

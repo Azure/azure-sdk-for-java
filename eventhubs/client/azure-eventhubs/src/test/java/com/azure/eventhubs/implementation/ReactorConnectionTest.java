@@ -285,7 +285,7 @@ public class ReactorConnectionTest {
      * Verifies if the ConnectionHandler transport fails, then we are unable to create the CBS node or sessions.
      */
     @Test
-    public void cannotCreateResourcesWhenErrors() {
+    public void cannotCreateResourcesOnFailure() {
         // Arrange
         final Event event = mock(Event.class);
         final Connection connectionProtonJ = mock(Connection.class);
