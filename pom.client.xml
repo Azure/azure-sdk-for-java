@@ -188,17 +188,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
-          <docletArtifact>
-            <groupId>org.apidesign.javadoc</groupId>
-            <artifactId>codesnippet-doclet</artifactId>
-            <version>${codesnippet4javadoc.version}</version>
-          </docletArtifact>
-          <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
-          <failOnError>true</failOnError>
-          <failOnWarnings>true</failOnWarnings>
-        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -271,14 +260,14 @@
             <linksource>false</linksource>
             <excludePackageNames>
               com.microsoft.azure.template:
-              *.impl.*:
-              *.implementation.*:
+              *.impl*:
+              *.implementation*:
               com.azure.tracing.opencensus*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
+                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
               </group>
               <group>
                 <title>Azure Core - Management</title>
@@ -300,6 +289,15 @@
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
             <isOffline>false</isOffline>
+            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>${codesnippet4javadoc.version}</version>
+            </docletArtifact>
+            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
           </configuration>
         </plugin>
 
@@ -320,11 +318,19 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-            <!-- TODO soon - enable this failure mode -->
-            <failOnError>false</failOnError>
+            <failOnError>true</failOnError>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
@@ -359,10 +365,6 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -419,6 +421,12 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
+               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
+               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
