@@ -72,15 +72,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
         this.connectionMono = Mono.fromCallable(() -> {
             if (CONNECTION_FIELD_UPDATER.compareAndSet(this, null, this.createConnectionAndStart())) {
-                logger.asInfo().log("Setting and starting connection.");
+                logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
             }
 
-            logger.asInfo().log("Returning connection.");
             return CONNECTION_FIELD_UPDATER.get(this);
-        }).doOnSubscribe(c -> {
-            logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
-            hasConnection.set(true);
-        });
+        }).doOnSubscribe(c -> hasConnection.set(true));
 
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
