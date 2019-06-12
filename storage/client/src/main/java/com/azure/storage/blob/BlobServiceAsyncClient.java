@@ -5,9 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ServiceGetAccountInfoHeaders;

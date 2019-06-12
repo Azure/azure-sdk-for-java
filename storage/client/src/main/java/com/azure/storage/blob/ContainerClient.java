@@ -4,17 +4,11 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
 import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
-import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
-import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
-import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
-import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
-import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;

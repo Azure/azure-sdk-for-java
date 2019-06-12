@@ -16,8 +16,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.common.credential.SharedKeyCredential;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,7 +36,6 @@ public final class BlobServiceClientBuilder {
 
     private URL endpoint;
     private ICredentials credentials = new AnonymousCredentials();
-    private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -82,12 +79,7 @@ public final class BlobServiceClientBuilder {
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        // TODO: Unify credentials
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else {
-            policies.add(credentials); // This needs to be a different credential type.
-        }
+        policies.add(credentials); // This needs to be a different credential type.
 
         policies.add(retryPolicy);
 
