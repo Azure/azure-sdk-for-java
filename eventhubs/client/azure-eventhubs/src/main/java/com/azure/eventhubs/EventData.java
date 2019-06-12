@@ -175,7 +175,7 @@ public class EventData implements Comparable<EventData> {
      * @return ByteBuffer representing the data.
      */
     public ByteBuffer body() {
-        return body;
+        return body.duplicate();
     }
 
     /**
