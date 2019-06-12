@@ -53,13 +53,14 @@ class ActiveClientTokenManager implements Closeable {
      * Invokes an authorisation call on the CBS node.
      */
     Mono<Void> authorize() {
-        return cbsNode.map(cbsNode -> cbsNode.authorize(tokenAudience, tokenValidity))
-            .doOnSuccess(v -> {
+        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, tokenValidity))
+            .then()
+            .doOnSuccess(x -> {
                 if (!hasScheduled.getAndSet(true)) {
                     logger.asInfo().log("Scheduling refresh token.");
                     this.timer.schedule(new RefreshAuthorizationToken(), refreshInterval.toMillis());
                 }
-            }).then();
+            });
     }
 
     @Override

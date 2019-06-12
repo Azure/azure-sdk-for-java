@@ -42,7 +42,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests scenarios on {@link EventHubClient}.
  */
 public class EventHubClientTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
+    private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
 
     private EventHubClient client;
     private ExpectedData data;
@@ -224,16 +224,16 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Arrange
         final EventSenderOptions senderOptions = new EventSenderOptions().partitionId("0");
+        final List<EventData> events = Arrays.asList(
+            new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)),
+            new EventData("Event 3".getBytes(UTF_8)));
 
+        // Act & Assert
         try (EventSender sender = client.createSender(senderOptions)) {
-            final List<EventData> events = Arrays.asList(
-                new EventData("Event 1".getBytes(UTF_8)),
-                new EventData("Event 2".getBytes(UTF_8)),
-                new EventData("Event 3".getBytes(UTF_8)));
-
-            // Act & Assert
             StepVerifier.create(sender.send(events))
-                .verifyComplete();
+                .expectComplete()
+                .verify();
         }
     }
 

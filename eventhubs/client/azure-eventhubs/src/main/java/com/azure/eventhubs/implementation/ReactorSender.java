@@ -183,7 +183,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     @Override
     public String getEntityPath() {
-        return null;
+        return entityPath;
     }
 
     @Override
@@ -194,14 +194,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        Mono<Void> sendWork = Mono.create(sink -> {
+        return Mono.create(sink -> {
             hasAuthorized.set(true);
             send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
         });
-
-        return hasAuthorized.get()
-            ? sendWork
-            : tokenManager.authorize().then(sendWork);
     }
 
     private void send(RetriableWorkItem workItem) {
@@ -267,6 +263,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }
 
             if (linkAdvance) {
+                logger.asVerbose().log("entityPath[{}], clinkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
+
                 workItem.setIsWaitingForAck();
                 sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
             } else {
@@ -289,7 +287,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         final DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
-        logger.asVerbose().log("entityPath[{}], path[{}], linkName[{}], deliveryTag[{}]", entityPath, getLinkName(), deliveryTag);
+        logger.asVerbose().log("entityPath[{}], clinkName[{}], deliveryTag[{}]: process delivered message",
+            entityPath, getLinkName(), deliveryTag);
 
         final RetriableWorkItem workItem = pendingSendsMap.remove(deliveryTag);
 

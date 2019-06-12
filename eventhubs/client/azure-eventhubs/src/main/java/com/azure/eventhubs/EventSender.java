@@ -44,7 +44,7 @@ public class EventSender implements Closeable {
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
     private final EventSenderOptions senderOptions;
-    private final Mono<AmqpSendLink> amqpSendLinkMono;
+    private final Mono<AmqpSendLink> sendLinkMono;
 
     /**
      * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
@@ -52,7 +52,8 @@ public class EventSender implements Closeable {
      * @code partitionId}.
      */
     EventSender(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
-        this.amqpSendLinkMono = amqpSendLinkMono;
+        // Caching the created link so we don't invoke another link creation.
+        this.sendLinkMono = amqpSendLinkMono.map(x -> x).cache();
         this.senderOptions = options;
     }
 
@@ -130,9 +131,10 @@ public class EventSender implements Closeable {
     private Mono<Void> sendBatch(Flux<EventDataBatch> eventBatches) {
         return eventBatches
             .flatMap(this::sendBatch)
+            .then()
             .doOnError(error -> {
                 logger.asError().log("Error sending batch.", error);
-            }).then();
+            });
     }
 
     private Mono<Void> sendBatch(EventDataBatch batch) {
@@ -145,14 +147,14 @@ public class EventSender implements Closeable {
 
         final List<Message> messages = EventDataUtil.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
 
-        return amqpSendLinkMono.flatMap(link -> messages.size() == 1
+        return sendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))
             : link.sendBatch(messages));
     }
 
     @Override
     public void close() throws IOException {
-        final AmqpSendLink block = amqpSendLinkMono.block(senderOptions.timeout());
+        final AmqpSendLink block = sendLinkMono.block(senderOptions.timeout());
         if (block != null) {
             block.close();
         }
