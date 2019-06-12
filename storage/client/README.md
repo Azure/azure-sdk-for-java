@@ -56,7 +56,7 @@ az storage queue generate-sas
     --name javasdksas
     --expiry 2019-06-05
     --permission rpau
-    --connection-string DefaultEndpointsProtocol=https;AccountName=azstoragesdkaccount;AccountKey=PhOFTkuqB09cmsy0aMgd+cJfp75xU3dgjRMKrWxHHx4pFvuFIMOSK/fhzGci6zxFGk4CkmgoXFO3s91S9m+ICw==;EndpointSuffix=core.windows.net
+    --connection-string {connection string}
 ```
 b. Alternatively, get the Account SAS Token from the Azure Portal.
 ```
