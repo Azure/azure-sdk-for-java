@@ -63,6 +63,12 @@ public class ReactorConnectionTest {
     private TokenProvider tokenProvider;
     @Mock
     private AmqpResponseMapper responseMapper;
+    @Mock
+    private Connection connectionProtonJ = mock(Connection.class);
+    @Mock
+    private Session session = mock(Session.class);
+    @Mock
+    private Record record = mock(Record.class);
 
     private MockReactorProvider reactorProvider;
     private MockReactorHandlerProvider reactorHandlerProvider;
@@ -89,6 +95,11 @@ public class ReactorConnectionTest {
     public void teardown() {
         reactor = null;
         selectable = null;
+        tokenProvider = null;
+        responseMapper = null;
+        connectionProtonJ = null;
+        session = null;
+        record = null;
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -130,10 +141,6 @@ public class ReactorConnectionTest {
     @Test
     public void createSession() {
         // Arrange
-        final Connection connectionProtonJ = mock(Connection.class);
-        final Session session = mock(Session.class);
-        final Record record = mock(Record.class);
-
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still process.
         when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(), connectionHandler)).thenReturn(connectionProtonJ);
@@ -167,10 +174,6 @@ public class ReactorConnectionTest {
     @Test
     public void removeSessionThatExists() {
         // Arrange
-        final Connection connectionProtonJ = mock(Connection.class);
-        final Session session = mock(Session.class);
-        final Record record = mock(Record.class);
-
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still process.
         when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(), connectionHandler)).thenReturn(connectionProtonJ);
@@ -191,10 +194,6 @@ public class ReactorConnectionTest {
     @Test
     public void removeSessionThatDoesNotExist() {
         // Arrange
-        final Connection connectionProtonJ = mock(Connection.class);
-        final Session session = mock(Session.class);
-        final Record record = mock(Record.class);
-
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still process.
         when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(), connectionHandler)).thenReturn(connectionProtonJ);
@@ -234,7 +233,6 @@ public class ReactorConnectionTest {
     public void onConnectionStateOpen() {
         // Arrange
         final Event event = mock(Event.class);
-        final Connection connectionProtonJ = mock(Connection.class);
         when(event.getConnection()).thenReturn(connectionProtonJ);
         when(connectionProtonJ.getHostname()).thenReturn(HOSTNAME);
         when(connectionProtonJ.getRemoteContainer()).thenReturn("remote-container");
@@ -263,10 +261,9 @@ public class ReactorConnectionTest {
     @Test
     public void createCBSNode() {
         // Arrange
-        final Connection reactorConnection = mock(Connection.class);
-        when(reactorConnection.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         final Event mock = mock(Event.class);
-        when(mock.getConnection()).thenReturn(reactorConnection);
+        when(mock.getConnection()).thenReturn(connectionProtonJ);
         connectionHandler.onConnectionRemoteOpen(mock);
 
         // Act and Assert
@@ -280,14 +277,14 @@ public class ReactorConnectionTest {
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
     @Test
-    public void createCBSNodeTimeoutException() throws IOException {
+    public void createCBSNodeTimeoutException() {
         // Arrange
         Duration timeout = Duration.ofSeconds(5);
         ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, timeout, tokenProvider,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
 
         // Act and Assert
-        try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, mock(AmqpResponseMapper.class))) {
+        try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, responseMapper)) {
             StepVerifier.create(connectionBad.getCBSNode())
                 .verifyError(TimeoutException.class);
         }
@@ -300,7 +297,6 @@ public class ReactorConnectionTest {
     public void cannotCreateResourcesOnFailure() {
         // Arrange
         final Event event = mock(Event.class);
-        final Connection connectionProtonJ = mock(Connection.class);
         final Transport transport = mock(Transport.class);
         final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("amqp:not-found"), "Not found");
 
