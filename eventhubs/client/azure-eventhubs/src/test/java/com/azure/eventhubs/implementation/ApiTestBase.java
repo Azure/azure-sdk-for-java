@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -84,6 +85,10 @@ public abstract class ApiTestBase extends TestBase {
     public void teardownTest() {
         // These are overridden because we don't use the Interceptor Manager.
         afterTest();
+
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
