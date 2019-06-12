@@ -14,11 +14,9 @@ public final class AmqpConstants {
     public static final Symbol PARTITION_KEY = Symbol.getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
     static final String VENDOR = "com.microsoft";
+
     static final String STRING_FILTER = APACHE + ":selector-filter:string";
-    static final String EPOCH = VENDOR + ":epoch";
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
-    static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
-    static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
 }
