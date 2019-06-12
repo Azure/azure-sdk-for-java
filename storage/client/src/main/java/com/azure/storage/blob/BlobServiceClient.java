@@ -13,6 +13,8 @@ import com.azure.storage.blob.models.ServiceGetStatisticsHeaders;
 import com.azure.storage.blob.models.ServiceGetUserDelegationKeyHeaders;
 import com.azure.storage.blob.models.ServiceSetPropertiesHeaders;
 import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.blob.models.StorageServiceStats;
+import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
