@@ -125,6 +125,13 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(options);
 
         final EventSenderOptions clonedOptions = options.clone();
+        if (clonedOptions.timeout() == null) {
+            clonedOptions.timeout(connectionParameters.timeout());
+        }
+        if (clonedOptions.retry() == null) {
+            clonedOptions.retry(connectionParameters.retryPolicy());
+        }
+
         final String entityPath;
         final String linkName;
 
@@ -137,7 +144,7 @@ public class EventHubClient implements Closeable {
         }
 
         final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
-            .flatMap(session -> session.createSender(linkName, entityPath, options.timeout(), options.retry()))
+            .flatMap(session -> session.createSender(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry()))
             .cast(AmqpSendLink.class);
 
         return new EventSender(amqpLinkMono, clonedOptions);
