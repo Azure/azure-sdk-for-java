@@ -103,8 +103,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             handler.getEndpointStates().subscribe(
                 endpoint -> {
-                    boolean isActive = endpoint == EndpointState.ACTIVE;
-
+                    final boolean isActive = endpoint == EndpointState.ACTIVE;
                     if (!hasConnected.getAndSet(isActive)) {
                         final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
@@ -112,6 +111,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                             this.maxMessageSize = remoteMaxMessageSize.intValue();
                         }
                     }
+
+                    notifyEndpointState(endpoint);
                 },
                 error -> logger.asError().log("Error encountered getting endpointState", error),
                 () -> {
