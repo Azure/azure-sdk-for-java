@@ -3,6 +3,10 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.BlobAccessConditions;
+import com.azure.storage.blob.Constants;
+import com.azure.storage.blob.IProgressReceiver;
+import com.azure.storage.blob.Metadata;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 
 /**

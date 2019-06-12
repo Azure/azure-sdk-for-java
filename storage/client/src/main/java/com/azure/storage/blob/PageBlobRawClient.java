@@ -24,7 +24,7 @@ import java.time.Duration;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobRawClient extends BlobRawClient {
+final class PageBlobRawClient extends BlobRawClient {
 
     private PageBlobAsyncRawClient pageBlobAsyncRawClient;
 

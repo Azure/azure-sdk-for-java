@@ -26,7 +26,7 @@ import static com.azure.storage.blob.Utility.safeURLEncode;
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
-public final class ContainerAsyncRawClient {
+final class ContainerAsyncRawClient {
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 

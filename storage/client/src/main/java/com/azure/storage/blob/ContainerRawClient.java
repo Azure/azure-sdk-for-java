@@ -21,7 +21,7 @@ import java.util.List;
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
-public final class ContainerRawClient {
+final class ContainerRawClient {
 
     private ContainerAsyncRawClient containerAsyncRawClient;
 

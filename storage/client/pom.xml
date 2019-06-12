@@ -95,8 +95,24 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
+          <failsOnError>false</failsOnError>
+          <failOnViolation>false</failOnViolation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <doctitle>Microsoft Azure Management Libraries for Java ${project.version}</doctitle>
+          <windowtitle>Microsoft Azure Management Libraries for Java ${project.version}</windowtitle>
+          <additionalparam>-Xdoclint:none</additionalparam>
+          <excludePackageNames>*.samples;*.implementation.*;*.utils.*;com.microsoft.azure.utility;*.queue.*;*.file.*;*.common.*;*RawClient</excludePackageNames>
+          <bottom><![CDATA[<code>/**
+<br />* Copyright (c) Microsoft Corporation. All rights reserved.
+<br />* Licensed under the MIT License. See License.txt in the project root for
+<br />* license information.
+<br />*/</code>]]></bottom>
         </configuration>
       </plugin>
     </plugins>

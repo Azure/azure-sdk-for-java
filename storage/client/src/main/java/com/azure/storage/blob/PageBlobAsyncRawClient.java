@@ -36,7 +36,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
-public final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
+final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Indicates the number of bytes in a page.

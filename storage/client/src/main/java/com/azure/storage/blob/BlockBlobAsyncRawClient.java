@@ -23,7 +23,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information on block blobs.
  */
-public final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
+final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.

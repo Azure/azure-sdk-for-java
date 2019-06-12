@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class BlobServiceRawClient {
+final class BlobServiceRawClient {
 
     BlobServiceAsyncRawClient blobServiceAsyncRawClient;
 
