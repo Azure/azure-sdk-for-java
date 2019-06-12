@@ -218,8 +218,11 @@ public class EventHubClientTest extends ApiTestBase {
             .verify();
     }
 
+    /**
+     * Verifies that we can create and send a message to an Event Hub partition.
+     */
     @Test
-    public void sendMessage() throws IOException {
+    public void sendMessageToPartition() throws IOException {
         skipIfNotRecordMode();
 
         // Arrange
@@ -231,6 +234,28 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Act & Assert
         try (EventSender sender = client.createSender(senderOptions)) {
+            StepVerifier.create(sender.send(events))
+                .expectComplete()
+                .verify();
+        }
+    }
+
+    /**
+     * Verifies that we can create an EventSender that does not care about partitions and lets the service distribute
+     * the events.
+     */
+    @Test
+    public void sendMessage() throws IOException {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final List<EventData> events = Arrays.asList(
+            new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)),
+            new EventData("Event 3".getBytes(UTF_8)));
+
+        // Act & Assert
+        try (EventSender sender = client.createSender()) {
             StepVerifier.create(sender.send(events))
                 .expectComplete()
                 .verify();
