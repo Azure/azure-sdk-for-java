@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -43,6 +45,7 @@ public class EventSender implements Closeable {
     private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventSenderOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
 
@@ -152,11 +155,18 @@ public class EventSender implements Closeable {
             : link.sendBatch(messages));
     }
 
+    /**
+     * Disposes of the EventSender by closing the underlying connection to the service.
+     *
+     * @throws IOException if the underlying {@link AmqpLink} and its resources could not be disposed.
+     */
     @Override
     public void close() throws IOException {
-        final AmqpSendLink block = sendLinkMono.block(senderOptions.timeout());
-        if (block != null) {
-            block.close();
+        if (!isDisposed.getAndSet(true)) {
+            final AmqpSendLink block = sendLinkMono.block(senderOptions.timeout());
+            if (block != null) {
+                block.close();
+            }
         }
     }
 
