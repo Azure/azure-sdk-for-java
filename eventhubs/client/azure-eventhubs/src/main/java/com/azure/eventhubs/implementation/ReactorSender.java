@@ -14,6 +14,7 @@ import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -75,9 +76,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile Instant lastKnownErrorReportedAt;
 
     /**
-     * Max message size is subject to change.
+     * Max message size can change from its initial value. When the send link is opened, we query for the remote link
+     * capacity.
      */
-    private int maxMessageSize;
+    private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
                   ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
@@ -100,7 +102,17 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }),
 
             handler.getEndpointStates().subscribe(
-                endpoint -> hasConnected.set(endpoint == EndpointState.ACTIVE),
+                endpoint -> {
+                    boolean isActive = endpoint == EndpointState.ACTIVE;
+
+                    if (!hasConnected.getAndSet(isActive)) {
+                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+
+                        if (remoteMaxMessageSize != null) {
+                            this.maxMessageSize = remoteMaxMessageSize.intValue();
+                        }
+                    }
+                },
                 error -> logger.asError().log("Error encountered getting endpointState", error),
                 () -> {
                     logger.asVerbose().log("getLinkCredits completed.");
