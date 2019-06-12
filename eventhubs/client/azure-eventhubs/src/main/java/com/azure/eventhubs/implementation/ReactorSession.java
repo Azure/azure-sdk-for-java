@@ -138,8 +138,4 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     public boolean removeLink(String linkName) {
         return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
     }
-
-    private Mono<AmqpLink> createReactorSender(String linkName, String entityPath, Duration timeout, Retry retry) {
-        return null;
-    }
 }
