@@ -34,6 +34,7 @@ public final class MSICredentials{
     private final MSIConfigurationForAppService configForAppService;
     private final HostType hostType;
     private final int maxRetry;
+    private final int customTimeout;
     private static final int MAX_RETRY_DEFAULT_LIMIT = 20;
 
 
@@ -121,9 +122,10 @@ public final class MSICredentials{
         this.configForAppService = null;
         this.hostType = HostType.VIRTUAL_MACHINE;
         this.maxRetry = config.maxRetry() < 0 ? MAX_RETRY_DEFAULT_LIMIT : config.maxRetry();
+        this.customTimeout = config.customTimeout();
         // Simplified variant of https://en.wikipedia.org/wiki/Exponential_backoff
         for (int x = 0; x < this.maxRetry; x++) {
-            this.retrySlots.add(500 * ((2 << 1) - 1) / 1000);
+            this.retrySlots.add(500 * ((2 << x) - 1) / 1000);
         }
     }
 
@@ -132,6 +134,7 @@ public final class MSICredentials{
         this.configForVM = null;
         this.hostType = HostType.APP_SERVICE;
         this.maxRetry = -1;
+        this.customTimeout = -1;
     }
 
     /**
@@ -271,6 +274,7 @@ public final class MSICredentials{
     private MSIToken retrieveTokenFromIDMSWithRetry(String tokenAudience) throws AzureMSICredentialException, IOException {
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
+        boolean hasTimedout = false;
 
         //
         try {
@@ -301,12 +305,15 @@ public final class MSICredentials{
             throw new AzureMSICredentialException(exception);
         }
 
+        //A 0 custom timeout implies only 1 try... no more
+        hasTimedout = this.customTimeout == 0;
         int retry = 1;
         while (retry <= maxRetry) {
             URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s", payload.toString()));
             //
             HttpURLConnection connection = null;
             //
+            long startTime = Calendar.getInstance().getTime().getTime();
             try {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -319,6 +326,9 @@ public final class MSICredentials{
             } catch (Exception exception) {
                 int responseCode = connection.getResponseCode();
                 if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {
+                    if (hasTimedout) {
+                        throw new AzureMSICredentialException("Couldn't acquire access token from IMDS within the specified timeout : " + this.customTimeout + " seconds");
+                    }
                     int retryTimeoutInMs = retrySlots.get(new Random().nextInt(retry));
                     // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                     //
@@ -327,7 +337,7 @@ public final class MSICredentials{
                     if (retry > maxRetry) {
                         break;
                     } else {
-                        sleep(retryTimeoutInMs);
+                        hasTimedout = sleep(retryTimeoutInMs, startTime);
                     }
                 } else {
                     throw new AzureMSICredentialException("Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId", exception);
@@ -343,6 +353,28 @@ public final class MSICredentials{
             throw new AzureMSICredentialException(String.format("MSI: Failed to acquire tokens after retrying %s times", maxRetry));
         }
         return null;
+    }
+
+    /**
+     * Sleep for timeToWait or time remaining until timeout reached.
+     * @param timeToWaitinMs Time to wait in milliseconds
+     * @param startTime Abcolute tim in milliseconds
+     * @return true if we used the custom timeout.
+     */
+    private boolean sleep(int timeToWaitinMs, long startTime) {
+        long timeToSleep = 0;
+
+        if (this.customTimeout > -1) {
+            //timeToSleep = ;
+            long timeRemainingToTimeout = (startTime + this.customTimeout - Calendar.getInstance().getTime().getTime());
+            timeRemainingToTimeout = (timeToWaitinMs < timeRemainingToTimeout) ? timeToWaitinMs : timeRemainingToTimeout;
+            timeToSleep = (timeRemainingToTimeout > 0) ? timeRemainingToTimeout : 0;
+        } else {
+            timeToSleep = timeToWaitinMs;
+        }
+
+        sleep(timeToSleep);
+        return (timeToSleep != timeToWaitinMs);
     }
 
     private static MSIToken getMsiTokenFromResult(String result, HostType hostType) throws AzureMSICredentialException{
@@ -401,7 +433,7 @@ public final class MSICredentials{
         return cal.getTime();
     }
 
-    private static void sleep(int millis) {
+    private static void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
