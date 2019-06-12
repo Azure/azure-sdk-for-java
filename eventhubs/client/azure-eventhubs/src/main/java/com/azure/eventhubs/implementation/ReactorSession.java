@@ -72,6 +72,23 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
 
     @Override
     public void close() {
+        openReceiveLinks.forEach((key, link) -> {
+            try {
+                link.close();
+            } catch (IOException e) {
+                logger.asError().log("Error closing send link: " + key, e);
+            }
+        });
+        openReceiveLinks.clear();
+
+        openSendLinks.forEach((key, link) -> {
+            try {
+                link.close();
+            } catch (IOException e) {
+                logger.asError().log("Error closing receive link: " + key, e);
+            }
+        });
+        openSendLinks.clear();
         subscriptions.dispose();
         super.close();
     }
