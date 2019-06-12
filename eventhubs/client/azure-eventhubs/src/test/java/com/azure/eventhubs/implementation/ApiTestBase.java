@@ -136,7 +136,7 @@ public abstract class ApiTestBase extends TestBase {
     }
 
 
-    protected EventHubClientBuilder getEventHubClientBuilder() {
+    public static EventHubClientBuilder getEventHubClientBuilder() {
         return EventHubClient.builder().credentials(CredentialInfo.from(CONNECTION_STRING));
     }
 
