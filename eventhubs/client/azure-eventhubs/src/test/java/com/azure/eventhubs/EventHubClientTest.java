@@ -23,16 +23,20 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Tests scenarios on {@link EventHubClient}.
@@ -212,6 +216,25 @@ public class EventHubClientTest extends ApiTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
+    }
+
+    @Test
+    public void sendMessage() throws IOException {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId("0");
+
+        try (EventSender sender = client.createSender(senderOptions)) {
+            final List<EventData> events = Arrays.asList(
+                new EventData("Event 1".getBytes(UTF_8)),
+                new EventData("Event 2".getBytes(UTF_8)),
+                new EventData("Event 3".getBytes(UTF_8)));
+
+            // Act & Assert
+            StepVerifier.create(sender.send(events))
+                .verifyComplete();
+        }
     }
 
     @Override
