@@ -111,7 +111,7 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
             .timeout(timeout)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
-                AmqpSendLink existingSender = openSendLinks.get(linkName);
+                final AmqpSendLink existingSender = openSendLinks.get(linkName);
                 if (existingSender != null) {
                     sink.success(existingSender);
                     return;
@@ -134,7 +134,7 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
                     provider.getReactorDispatcher().invoke(() -> {
                         sender.open();
                         final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout, retry, EventSender.MAX_MESSAGE_LENGTH_BYTES);
-
+                        openSendLinks.put(linkName, reactorSender);
                         sink.success(reactorSender);
                     });
                 } catch (IOException e) {
