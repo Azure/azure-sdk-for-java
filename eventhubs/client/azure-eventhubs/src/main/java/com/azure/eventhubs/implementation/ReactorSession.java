@@ -10,13 +10,18 @@ import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.EventSender;
+import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.Disposable;
@@ -26,6 +31,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -105,8 +111,7 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
 
     @Override
     public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout, Retry retry) {
-        final String tokenAudience = String.format(Locale.US, ClientConstants.TOKEN_AUDIENCE_FORMAT, sessionHandler.getHostname(), entityPath);
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_VALIDITY, ClientConstants.TOKEN_REFRESH_INTERVAL);
+        final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
             .timeout(timeout)
@@ -145,7 +150,50 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
 
     @Override
     public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry) {
-        return null;
+        final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
+
+        return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+            .timeout(timeout)
+            .then(tokenManager.authorize().then(Mono.create(sink -> {
+                final AmqpReceiveLink existingReceiver = openReceiveLinks.get(linkName);
+                if (existingReceiver != null) {
+                    sink.success(existingReceiver);
+                    return;
+                }
+
+                final Receiver receiver = session.receiver(linkName);
+                final Target target = new Target();
+                receiver.setTarget(target);
+
+                final Source source = new Source();
+                //TODO (conniey): support this.
+                // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
+                // if (filterMap != null) {
+                //    source.setFilter(filterMap);
+                // }
+                receiver.setSource(source);
+                receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+                // Use explicit settlement via dispositions (not pre-settled)
+                receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+                receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
+
+                final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
+                BaseHandler.setHandler(receiver, receiveLinkHandler);
+
+                try {
+                    provider.getReactorDispatcher().invoke(() -> {
+                        receiver.open();
+
+                        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager, retry);
+
+                        openReceiveLinks.put(linkName, reactorReceiver);
+                        sink.success(reactorReceiver);
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            })));
     }
 
     /**
@@ -154,5 +202,10 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     @Override
     public boolean removeLink(String linkName) {
         return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
+    }
+
+    private ActiveClientTokenManager createTokenManager(String entityPath) {
+        final String tokenAudience = String.format(Locale.US, ClientConstants.TOKEN_AUDIENCE_FORMAT, sessionHandler.getHostname(), entityPath);
+        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_VALIDITY, ClientConstants.TOKEN_REFRESH_INTERVAL);
     }
 }
