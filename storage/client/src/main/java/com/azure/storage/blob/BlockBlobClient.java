@@ -18,6 +18,7 @@ import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -134,6 +135,26 @@ public final class BlockBlobClient extends BlobClient {
         return timeout == null?
             response.block():
             response.block(timeout);
+    }
+
+    public void uploadFromFile(String filePath) throws IOException {
+        this.uploadFromFile(filePath, null, null, null, null);
+    }
+
+    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+            BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
+
+        try {
+            if (timeout == null) {
+                upload.block();
+            } else {
+                upload.block(timeout);
+            }
+        }
+        catch (UncheckedIOException e) {
+            throw e.getCause();
+        }
     }
 
     /**

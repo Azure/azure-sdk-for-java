@@ -15,10 +15,10 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 import java.time.Duration;
 
 /**
@@ -245,6 +245,25 @@ public class BlobClient {
 
         for (ByteBuffer buffer : data.toIterable()) {
            stream.write(buffer.array());
+        }
+    }
+
+    public void downloadToFile(String filePath) throws IOException {
+        this.downloadToFile(filePath, null, null, null, false, null);
+    }
+
+    public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
+            BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
+        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);
+
+        try {
+            if (timeout == null) {
+                download.block();
+            } else {
+                download.block(timeout); //TODO this isn't doing what we want
+            }
+        } catch (UncheckedIOException e) {
+            throw e.getCause();
         }
     }
 
