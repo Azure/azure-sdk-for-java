@@ -117,20 +117,20 @@ class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
                     return;
                 }
 
+                final Sender sender = session.sender(linkName);
+                final Target target = new Target();
+
+                target.setAddress(entityPath);
+                sender.setTarget(target);
+
+                final Source source = new Source();
+                sender.setSource(source);
+                sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+                final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
+                BaseHandler.setHandler(sender, sendLinkHandler);
+
                 try {
-                    final Sender sender = session.sender(linkName);
-                    final Target target = new Target();
-
-                    target.setAddress(entityPath);
-                    sender.setTarget(target);
-
-                    final Source source = new Source();
-                    sender.setSource(source);
-                    sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
-
-                    final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
-                    BaseHandler.setHandler(sender, sendLinkHandler);
-
                     provider.getReactorDispatcher().invoke(() -> {
                         sender.open();
                         final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout, retry, EventSender.MAX_MESSAGE_LENGTH_BYTES);
