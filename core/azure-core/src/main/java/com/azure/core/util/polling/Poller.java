@@ -33,7 +33,7 @@ import java.util.function.Function;
  *
  * <p><strong>Implementation of Long Running Operations</strong></p>
  *
- * @param <T> type of poll response value
+ * @param <T> Type of poll response value
  *
  * @see PollResponse
  * @see com.azure.core.util.polling.PollResponse.OperationStatus
@@ -68,7 +68,11 @@ public class Poller<T> {
      */
     private boolean autoPollingEnabled;
 
-    /* hold Flux of PollResponse<T>*/
+    /*
+     * This handle to Flux allow us to perform polling operation in asynchronous manner.
+     * This could be shared among many subscriber. One of the subscriber will be this poller itself.
+     * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
+     */
     private Flux<PollResponse<T>> fluxHandle;
 
     /*
@@ -85,14 +89,14 @@ public class Poller<T> {
      *
      * @param pollInterval Not null  and greater than zero poll interval. It ensure that polling happens only once in given pollInterval.
      * @param pollOperation to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
-     * @throws NullPointerException If {@code pollerOptions} is {@code null} for {@code  pollInterval pollOperation}.
+     * @throws NullPointerException If it is {@code null} for {@code  pollInterval pollOperation}.
      * @throws IllegalArgumentException if {@code  pollInterval} is negative or zero
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
 
         Objects.requireNonNull(pollInterval, "The poll interval input parameter cannot be null.");
         if (pollInterval.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero poll interval not allowed.");
+            throw new IllegalArgumentException("Negative or zero value for poll interval not allowed.");
         }
         Objects.requireNonNull(pollOperation, "The poll operation input parameter cannot be null.");
 
@@ -112,7 +116,7 @@ public class Poller<T> {
     }
 
     /**
-     * Create a Poller object with cancel operation. The polling starts immediately by default and invoke pollOperation.
+     * Create a Poller object with poll interval, poll operation and cancel operation. The polling starts immediately by default and invoke poll operation.
      *
      * @param pollInterval Not null poll interval. It ensure that polling happens only once in given pollInterval.
      * @param pollOperation   to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
@@ -131,13 +135,13 @@ public class Poller<T> {
      * @throws UnsupportedOperationException when cancel operation is not provided.
      */
     public void cancelOperation() throws UnsupportedOperationException {
-        if (cancelOperation == null) {
+        if (this.cancelOperation == null) {
             throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
         }
 
         // We can not cancel an operation if it was never started
         // It only make sense to call cancel operation if current status IN_PROGRESS.
-        if (pollResponse != null && pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
+        if (this.pollResponse != null && this.pollResponse.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
             return;
         }
         //Time to call cancel
@@ -146,7 +150,7 @@ public class Poller<T> {
 
     /**
      * Enable user to subscribe to {@link Flux} and listen to every {@link PollResponse} asynchronously.
-     * The user will start receiving PollResponse when client subscribe to this Flux.
+     * The user will start receiving {@link PollResponse} when client subscribe to this Flux.
      * The poller could still have its own auto polling in action unless user has turned off
      * auto polling.
      *
@@ -200,7 +204,6 @@ public class Poller<T> {
                     this.pollResponse = pollResponseSignal.get();
                 }
             }));
-            
     }
 
     private Duration getCurrentDelay() {
@@ -235,16 +238,16 @@ public class Poller<T> {
     }
 
     /*
-     * Determine if this poller's internal subscriber exists and  still active.
+     * Determine if this poller's internal subscriber exists and active.
      */
     private boolean activeSubscriber() {
         return (this.fluxDisposable != null && !this.fluxDisposable.isDisposed());
     }
 
     /**
-     * Indicate if auto polling is on/off . By default auto polling is turned <strong>on</strong>.
+     * Indicate if auto polling is <strong>on/off</strong> . By default auto polling is turned <strong>on</strong>.
      *
-     * @return false if polling is stopped. true if auto polling is enabled.
+     * @return <strong>false</strong> if polling is stopped. <strong>true</strong> if auto polling is enabled.
      */
     public boolean isAutoPollingEnabled() {
         return this.autoPollingEnabled;
@@ -253,7 +256,8 @@ public class Poller<T> {
     /**
      * Current known status as a result of last poll event. If auto polling was disabled by user, this will represent
      * old response when auto polling was enabled.
-     * @return current status {@code null} if no status is available.
+     *
+     * @return current status or {@code null} if no status is available.
      */
     public PollResponse.OperationStatus getStatus() {
         return this.pollResponse != null ? this.pollResponse.getStatus() : null;
