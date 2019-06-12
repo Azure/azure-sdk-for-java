@@ -30,8 +30,10 @@ import java.util.List;
  * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
  * {@link BlobServiceClient#createContainerClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
- * the resource on the service. It may also be used to construct URLs to blobs. Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
+ * the resource on the service. It may also be used to construct URLs to blobs.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
 public final class ContainerClient {

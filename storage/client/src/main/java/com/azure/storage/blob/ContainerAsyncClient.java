@@ -18,10 +18,13 @@ import java.util.List;
  * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
  * {@link BlobServiceAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
- * the resource on the service. It may also be used to construct URLs to blobs. Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
+ * the resource on the service. It may also be used to construct URLs to blobs.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  *
+ * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core
  * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
  * start the actual network operation, until {@code .subscribe()} is called on the reactive response.

@@ -23,10 +23,14 @@ import java.net.URL;
  * the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#createAppendBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
- * requests to the resource on the service. Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
- * for more information on append blobs.
+ * requests to the resource on the service.
  *
+ * <p>
+ * Please refer
+ * to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
+ *
+ * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core
  * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
  * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
