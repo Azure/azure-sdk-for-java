@@ -41,7 +41,7 @@ public final class BlobServiceClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    BlobServiceClientBuilder() {
+    public BlobServiceClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();

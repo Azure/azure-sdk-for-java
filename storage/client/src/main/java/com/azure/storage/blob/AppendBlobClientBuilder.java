@@ -41,7 +41,7 @@ public final class AppendBlobClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    AppendBlobClientBuilder() {
+    public AppendBlobClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();

@@ -41,7 +41,7 @@ public final class ContainerClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    ContainerClientBuilder() {
+    public ContainerClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();

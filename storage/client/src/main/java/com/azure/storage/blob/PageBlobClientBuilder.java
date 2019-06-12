@@ -41,7 +41,7 @@ public final class PageBlobClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    PageBlobClientBuilder() {
+    public PageBlobClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
