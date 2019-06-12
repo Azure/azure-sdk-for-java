@@ -6,6 +6,7 @@ package com.azure.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.eventhubs.implementation.AmqpSendLink;
 import com.azure.eventhubs.implementation.ConnectionParameters;
@@ -41,6 +42,7 @@ public class EventHubClient implements Closeable {
     private final String eventHubPath;
     private final String host;
     private final EventSenderOptions defaultSenderOptions;
+    private final EventReceiverOptions defaultReceiverOptions;
 
     EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionParameters);
@@ -59,6 +61,9 @@ public class EventHubClient implements Closeable {
         this.defaultSenderOptions = new EventSenderOptions()
             .retry(connectionParameters.retryPolicy())
             .timeout(connectionParameters.timeout());
+        this.defaultReceiverOptions = new EventReceiverOptions()
+            .retry(connectionParameters.retryPolicy())
+            .scheduler(connectionParameters.scheduler());
     }
 
     /**
@@ -159,7 +164,7 @@ public class EventHubClient implements Closeable {
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
     public EventReceiver createReceiver(String partitionId) {
-        return new EventReceiver();
+        return createReceiver(partitionId, defaultReceiverOptions);
     }
 
     /**
@@ -168,9 +173,21 @@ public class EventHubClient implements Closeable {
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @param options Additional options for the receiver.
-     * @return An new {@link EventReceiver} that receives events from the partition at the given position.
+     * @return An new {@link EventReceiver} that receives events from the partition with all configured {@link EventReceiverOptions}.
+     * @throws NullPointerException if {@code partitionId} or {@code options} is {@code null}.
      */
     public EventReceiver createReceiver(String partitionId, EventReceiverOptions options) {
+        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(options);
+
+        final EventReceiverOptions clonedOptions = options.clone();
+        final String linkName = StringUtil.getRandomString("PR");
+        final String entityPath = String.format(Locale.US, "%s/ConsumerGroups/%s/Partitions/%s", eventHubPath, options.consumerGroup(), partitionId);
+
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
+            .flatMap(session -> session.createReceiver(linkName, entityPath, connectionParameters.timeout(), clonedOptions.retry())
+                .cast(AmqpReceiveLink.class)));
+
         return new EventReceiver();
     }
 
