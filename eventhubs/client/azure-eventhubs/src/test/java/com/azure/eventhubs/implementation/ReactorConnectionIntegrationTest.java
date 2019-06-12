@@ -7,15 +7,18 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Locale;
 
-import static org.mockito.Mockito.mock;
-
 public class ReactorConnectionIntegrationTest extends ApiTestBase {
     private ReactorHandlerProvider handlerProvider;
+
+    @Mock
+    private AmqpResponseMapper responseMapper;
 
     @Rule
     public TestName testName = new TestName();
@@ -28,8 +31,10 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        MockitoAnnotations.initMocks(this);
+
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        connection = new ReactorConnection("test-connection-id", getConnectionParameters(), getReactorProvider(), handlerProvider, mock(AmqpResponseMapper.class));
+        connection = new ReactorConnection("test-connection-id", getConnectionParameters(), getReactorProvider(), handlerProvider, responseMapper);
     }
 
     @Override
