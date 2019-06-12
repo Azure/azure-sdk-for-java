@@ -5,18 +5,31 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
+import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
+import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
+import com.azure.storage.blob.models.ContainersCreateResponse;
+import com.azure.storage.blob.models.ContainersDeleteResponse;
+import com.azure.storage.blob.models.ContainersGetAccessPolicyResponse;
+import com.azure.storage.blob.models.ContainersGetAccountInfoResponse;
+import com.azure.storage.blob.models.ContainersGetPropertiesResponse;
+import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
+import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
+import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
+import com.azure.storage.blob.models.ContainersSetAccessPolicyResponse;
+import com.azure.storage.blob.models.ContainersSetMetadataResponse;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.SignedIdentifier;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
-import static com.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -26,7 +39,7 @@ import static com.azure.storage.blob.Utility.safeURLEncode;
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
-public final class ContainerAsyncRawClient {
+final class ContainerAsyncRawClient {
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 

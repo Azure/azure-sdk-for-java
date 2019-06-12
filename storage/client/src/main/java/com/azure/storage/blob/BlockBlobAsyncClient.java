@@ -8,8 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobCommitBlockListHeaders;
-import com.azure.storage.blob.models.BlockBlobGetBlockListHeaders;
 import com.azure.storage.blob.models.BlockBlobUploadHeaders;
+import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -142,7 +142,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
-            .upload(data.map(nettyBuf -> Unpooled.wrappedBuffer(nettyBuf.array())), length, headers, metadata, accessConditions, context)
+            .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
             .then();
     }
 
@@ -296,8 +296,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the list of blocks.
      */
-    public Mono<BlockBlobGetBlockListHeaders> getBlockList(BlockListType listType) {
-        return this.getBlockList(listType, null, null);
+    public Flux<BlockItem> listBlocks(BlockListType listType) {
+        return this.listBlocks(listType, null, null);
     }
 
     /**
@@ -321,11 +321,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the list of blocks.
      */
-    public Mono<BlockBlobGetBlockListHeaders> getBlockList(BlockListType listType,
-            LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Flux<BlockItem> listBlocks(BlockListType listType,
+                                      LeaseAccessConditions leaseAccessConditions, Context context) {
         return blockBlobAsyncRawClient
-            .getBlockList(listType, leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .listBlocks(listType, leaseAccessConditions, context)
+            .map(ResponseBase::value)
+            .flatMapMany(bl -> {
+                Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
+                    .map(block -> new BlockItem(block, true));
+                Flux<BlockItem> uncommitted = Flux.fromIterable(bl.uncommittedBlocks())
+                    .map(block -> new BlockItem(block, false));
+                return Flux.concat(committed, uncommitted);
+            });
     }
 
     /**

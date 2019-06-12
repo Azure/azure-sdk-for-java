@@ -159,6 +159,7 @@ public final class BlockBlobClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
+        credentials = new SharedKeyCredentials(accountName, accountKey);
 
         return this;
     }

@@ -178,6 +178,7 @@ public final class ContainerClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
+        credentials = new SharedKeyCredentials(accountName, accountKey);
 
         return this;
     }

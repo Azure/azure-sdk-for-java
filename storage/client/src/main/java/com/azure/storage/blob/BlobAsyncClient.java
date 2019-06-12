@@ -18,13 +18,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 /**
  * Client to a blob of any type: block, append, or page. It may be obtained through a {@link BlobClientBuilder} or via

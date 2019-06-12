@@ -5,14 +5,16 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
-import reactor.core.publisher.Flux;
+import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
+import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
+import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
+import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
+import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.models.StorageServiceProperties;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -23,7 +25,7 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
-public final class BlobServiceRawClient {
+final class BlobServiceRawClient {
 
     BlobServiceAsyncRawClient blobServiceAsyncRawClient;
 
