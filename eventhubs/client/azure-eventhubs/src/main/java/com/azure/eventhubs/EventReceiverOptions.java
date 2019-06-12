@@ -7,6 +7,7 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 /**
  * Options when receiving events from Event Hubs.
  */
-public class EventReceiverOptions {
+public class EventReceiverOptions implements Cloneable {
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -110,11 +111,11 @@ public class EventReceiverOptions {
      * Sets the retry policy used to govern retry attempts for receiving events. If not specified, the retry policy
      * configured on the associated {@link EventHubClient} is used.
      *
-     * @param retryPolicy The retry policy to use when receiving events.
+     * @param retry The retry policy to use when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public EventReceiverOptions retryPolicy(Retry retryPolicy) {
-        this.retryPolicy = retryPolicy;
+    public EventReceiverOptions retry(Retry retry) {
+        this.retryPolicy = retry;
         return this;
     }
 
@@ -203,7 +204,7 @@ public class EventReceiverOptions {
      *
      * @return The retry policy when receiving events.
      */
-    public Retry retryPolicy() {
+    public Retry retry() {
         return retryPolicy;
     }
 
@@ -255,5 +256,38 @@ public class EventReceiverOptions {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
         }
+    }
+
+    /**
+     * Creates a shallow clone of this instance.
+     *
+     * The object is cloned, but this instance's fields are not cloned. {@link Duration} and {@link String} are
+     * immutable objects and are not an issue. The implementation of {@link Retry} could be mutable. In addition, the
+     * {@link #scheduler()} set is not cloned.
+     *
+     * @return A shallow clone of this object.
+     */
+    public EventReceiverOptions clone() {
+        EventReceiverOptions clone;
+        try {
+            clone = (EventReceiverOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new EventReceiverOptions();
+        }
+
+        clone.beginReceivingAt(this.beginReceivingAt());
+        clone.scheduler(this.scheduler());
+        clone.consumerGroup(this.consumerGroup());
+        clone.identifier(this.identifier());
+        clone.prefetchCount(this.prefetchCount());
+        clone.keepPartitionInformationUpdated(this.keepPartitionInformationUpdated());
+        clone.retry(this.retry());
+
+        Optional<Long> priority = this.exclusiveReceiverPriority();
+        if (priority.isPresent()) {
+            clone.exclusiveReceiverPriority(priority.get());
+        }
+
+        return clone;
     }
 }
