@@ -327,7 +327,7 @@ public final class MSICredentials{
                 int responseCode = connection.getResponseCode();
                 if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {
                     if (hasTimedout) {
-                        throw new AzureMSICredentialException("Couldn't acquire access token from IMDS within the specified timeout : " + this.customTimeout + " seconds");
+                        throw new AzureMSICredentialException("Couldn't acquire access token from IMDS within the specified timeout : " + this.customTimeout + " milliseconds");
                     }
                     int retryTimeoutInMs = retrySlots.get(new Random().nextInt(retry));
                     // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s

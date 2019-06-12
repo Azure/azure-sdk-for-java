@@ -160,7 +160,7 @@ public class MSIConfigurationForVirtualMachine {
     }
 
     /**
-     * Specifies the custom timeout (in milliseconds )to be used for IMDS retries.
+     * Specifies the custom timeout (in milliseconds) to be used for IMDS retries.
      *
      * @param timeoutInMs the total timeout value in milliseconds;
      * @return MSIConfigurationForVirtualMachine
