@@ -49,7 +49,7 @@ import static com.azure.eventhubs.implementation.EventDataUtil.getDataSerialized
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Handles scheduling send work on the link and
+ * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
 class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final String entityPath;
@@ -59,7 +59,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final Disposable.Composite subscriptions;
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
-    private final AtomicBoolean hasAuthorized = new AtomicBoolean();
+    private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
 
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
@@ -198,7 +198,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
         return Mono.create(sink -> {
-            hasAuthorized.set(true);
             send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
         });
     }
