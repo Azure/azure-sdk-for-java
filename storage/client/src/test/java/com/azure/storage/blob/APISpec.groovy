@@ -18,7 +18,6 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
@@ -52,7 +51,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = true
+    static boolean enableDebugging = false
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -230,7 +229,7 @@ class APISpec extends Specification {
             new ListContainersOptions().withPrefix(containerPrefix))) {
             ContainerClient containerURL = serviceURL.createContainerClient(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null, null)
+                containerURL.breakLease(0, null, null).block()
             }
             containerURL.delete()
         }
@@ -325,7 +324,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
+            BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
             return headers.eTag()
         } else {
             return match
@@ -347,12 +346,12 @@ class APISpec extends Specification {
      * returned.
      */
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
-        BlobAcquireLeaseHeaders headers = null
+        String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            headers = bu.acquireLease(null, -1, null, null).blockingGet().headers()
+            responseLeaseId = bu.acquireLease(null, -1, null, null)
         }
         if (leaseID == receivedLeaseID) {
-            return headers.leaseId()
+            return responseLeaseId
         } else {
             return leaseID
         }
@@ -360,8 +359,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            ContainerGetPropertiesHeaders headers = cu.getProperties(null, null).blockingGet().headers()
-            return headers.eTag()
+            return cu.getProperties().eTag()
         } else {
             return match
         }
@@ -369,9 +367,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            ContainerAcquireLeaseHeaders headers =
-                cu.acquireLease(null, -1, null, null).blockingGet().headers()
-            return headers.leaseId()
+            return cu.acquireLease(null, -1).block().deserializedHeaders().leaseId()
         } else {
             return leaseID
         }
