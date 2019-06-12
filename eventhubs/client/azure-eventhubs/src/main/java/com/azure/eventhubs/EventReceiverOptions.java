@@ -81,6 +81,10 @@ public class EventReceiverOptions implements Cloneable {
      * @return The updated ReceiverOptions object.
      */
     public EventReceiverOptions consumerGroup(String consumerGroup) {
+        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
+            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
+        }
+
         this.consumerGroup = consumerGroup;
         return this;
     }
@@ -101,8 +105,13 @@ public class EventReceiverOptions implements Cloneable {
      * @param priority The priority associated with an exclusive receiver; for a non-exclusive receiver, this value
      * should be {@code null}.
      * @return The updated ReceiverOptions object.
+     * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
     public EventReceiverOptions exclusiveReceiverPriority(Long priority) {
+        if (priority != null && priority < 0) {
+            throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
+        }
+
         this.priority = priority;
         return this;
     }
