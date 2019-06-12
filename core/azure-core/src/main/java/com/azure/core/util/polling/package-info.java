@@ -4,4 +4,4 @@
 /**
  * Package containing API for Long Running Operations.
  */
-package com.azure.core.polling;
+package com.azure.core.util.polling;

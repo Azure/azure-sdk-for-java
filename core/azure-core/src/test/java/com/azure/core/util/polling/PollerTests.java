@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.polling;
+package com.azure.core.util.polling;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.polling.PollResponse.OperationStatus;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,8 +66,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
             successPollResponse, 800);
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         createCertPoller.getObserver().subscribe(pr -> {
             debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
@@ -115,9 +114,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 successPollResponse, 1800);
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
 
         new Thread().sleep(6 * pollInterval.toMillis());
         debug("Try to disable autopolling..");
@@ -153,9 +150,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
 
         while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
             new Thread().sleep(pollInterval.toMillis());
@@ -182,9 +177,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 successPollResponse, pollInterval.toMillis() * 2);
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         Thread.sleep(totalTimeoutInMillis);
         debug("Calling poller.block ");
         Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
@@ -210,10 +203,8 @@ public class PollerTests {
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
-
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
        
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         
         assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
@@ -238,9 +229,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -276,9 +265,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
 
-        PollerOptions pollerOptions = new PollerOptions(pollInterval);
-
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollerOptions, pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         createCertPoller.setAutoPollingEnabled(false);
         while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
             PollResponse<CreateCertificateResponse> pollResponse = createCertPoller.poll().block();
@@ -307,7 +294,7 @@ public class PollerTests {
             createPollOperation(inProgressPollResponse,
                 cancelPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
 
-        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(new PollerOptions(pollInterval), pollOperation);
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         createCertPoller.getObserver().subscribe(pr -> {
             debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
@@ -345,11 +332,11 @@ public class PollerTests {
         }
     }
 
-    class CreateCertificateResponse {
+    public class CreateCertificateResponse {
         String response;
         HttpResponseException error;
 
-        CreateCertificateResponse(String respone) {
+        public CreateCertificateResponse(String respone) {
             this.response = respone;
         }
 
