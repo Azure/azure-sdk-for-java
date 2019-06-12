@@ -18,7 +18,6 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
@@ -52,7 +51,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = true
+    static boolean enableDebugging = false
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -94,8 +93,7 @@ class APISpec extends Specification {
     /*
     URLs to various kinds of accounts.
      */
-    @Shared
-    static BlobServiceClient primaryServiceURL
+    BlobServiceClient primaryServiceURL
 
     @Shared
     static BlobServiceClient alternateServiceURL
@@ -231,7 +229,7 @@ class APISpec extends Specification {
             new ListContainersOptions().withPrefix(containerPrefix))) {
             ContainerClient containerURL = serviceURL.createContainerClient(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null, null).blockingGet()
+                containerURL.breakLease(0, null, null).block()
             }
             containerURL.delete()
         }
@@ -268,7 +266,6 @@ class APISpec extends Specification {
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
         primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
-        primaryServiceURL = getGenericServiceURL(primaryCreds)
 
         /*
         It's feasible someone wants to test a specific subset of tests, so we'll still attempt to create each of the
@@ -301,7 +298,10 @@ class APISpec extends Specification {
 
     def setup() {
         Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        String containerName = generateContainerName()
+
+        primaryServiceURL = getGenericServiceURL(primaryCreds)
+        cu = primaryServiceURL.createContainerClient(containerName)
         cu.create()
     }
 
@@ -324,7 +324,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
+            BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
             return headers.eTag()
         } else {
             return match
@@ -346,12 +346,12 @@ class APISpec extends Specification {
      * returned.
      */
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
-        BlobAcquireLeaseHeaders headers = null
+        String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            headers = bu.acquireLease(null, -1, null, null).blockingGet().headers()
+            responseLeaseId = bu.acquireLease(null, -1, null, null)
         }
         if (leaseID == receivedLeaseID) {
-            return headers.leaseId()
+            return responseLeaseId
         } else {
             return leaseID
         }
@@ -359,8 +359,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            ContainerGetPropertiesHeaders headers = cu.getProperties(null, null).blockingGet().headers()
-            return headers.eTag()
+            return cu.getProperties().eTag()
         } else {
             return match
         }
@@ -368,9 +367,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            ContainerAcquireLeaseHeaders headers =
-                cu.acquireLease(null, -1, null, null).blockingGet().headers()
-            return headers.leaseId()
+            return cu.acquireLease(null, -1).block().deserializedHeaders().leaseId()
         } else {
             return leaseID
         }
@@ -457,90 +454,121 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-    def getStubResponse(int code, Class responseHeadersType) {
-        return new HttpResponse() {
-
-            @Override
-            int statusCode() {
-                return code
-            }
-
-            @Override
-            String headerValue(String s) {
-                return null
-            }
-
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
-
-            @Override
-            Flux<ByteBuffer> body() {
-                return Flowable.empty()
-            }
-
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return null
-            }
-
-            @Override
-            Mono<String> bodyAsString() {
-                return null
-            }
-
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return null
-            }
-        }
-    }
+//    def getStubResponse(int code, Class responseHeadersType) {
+//        return new HttpResponse() {
+//
+//            @Override
+//            int statusCode() {
+//                return code
+//            }
+//
+//            @Override
+//            String headerValue(String s) {
+//                return null
+//            }
+//
+//            @Override
+//            HttpHeaders headers() {
+//                return new HttpHeaders()
+//            }
+//
+//            @Override
+//            Flux<ByteBuffer> body() {
+//                return Flowable.empty()
+//            }
+//
+//            @Override
+//            Mono<byte[]> bodyAsByteArray() {
+//                return null
+//            }
+//
+//            @Override
+//            Mono<String> bodyAsString() {
+//                return null
+//            }
+//
+//            @Override
+//            Mono<String> bodyAsString(Charset charset) {
+//                return null
+//            }
+//
+//            @Override
+//            Object deserializedHeaders() {
+//                def headers = responseHeadersType.getConstructor().newInstance()
+//
+//                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
+//                try {
+//                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
+//                }
+//                catch (NoSuchMethodException e) {
+//                    // No op
+//                }
+//                return headers
+//            }
+//
+//            @Override
+//            boolean isDecoded() {
+//                return true
+//            }
+//        }
+//    }
 
     /*
     This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
-        return new HttpResponse() {
-
-            @Override
-            int statusCode() {
-                return code
-            }
-
-            @Override
-            String headerValue(String s) {
-                return null
-            }
-
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
-
-            @Override
-            Flux<ByteBuffer> body() {
-                return body
-            }
-
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return null
-            }
-
-            @Override
-            Mono<String> bodyAsString() {
-                return null
-            }
-
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return null
-            }
-        }
-    }
+//    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
+//        return new HttpResponse() {
+//
+//            @Override
+//            int statusCode() {
+//                return code
+//            }
+//
+//            @Override
+//            String headerValue(String s) {
+//                return null
+//            }
+//
+//            @Override
+//            HttpHeaders headers() {
+//                return new HttpHeaders()
+//            }
+//
+//            @Override
+//            Flux<ByteBuffer> body() {
+//                return body
+//            }
+//
+//            @Override
+//            Mono<byte[]> bodyAsByteArray() {
+//                return null
+//            }
+//
+//            @Override
+//            Mono<String> bodyAsString() {
+//                return null
+//            }
+//
+//            @Override
+//            Mono<String> bodyAsString(Charset charset) {
+//                return null
+//            }
+//
+//            @Override
+//            Object deserializedHeaders() {
+//                def headers = new BlobDownloadHeaders()
+//                headers.withETag(etag)
+//                return headers
+//            }
+//
+//            @Override
+//            boolean isDecoded() {
+//                return true
+//            }
+//        }
+//    }
 
     def getContextStubPolicy(int successCode, Class responseHeadersType) {
         return Mock(HttpPipelinePolicy) {
