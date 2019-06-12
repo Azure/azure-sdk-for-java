@@ -215,7 +215,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerGetPropertiesHeaders> getProperties() {
+    public Mono<ContainerProperties> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -236,11 +236,12 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerGetPropertiesHeaders> getProperties(LeaseAccessConditions leaseAccessConditions,
+    public Mono<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
         return containerAsyncRawClient
             .getProperties(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(ContainerProperties::new);
     }
 
     /**
@@ -290,7 +291,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy() {
+    public Mono<PublicAccessType> getAccessPolicy() {
         return this.getAccessPolicy(null, null);
     }
 
@@ -312,11 +313,12 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<ContainerGetAccessPolicyHeaders> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+    public Mono<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
         return containerAsyncRawClient
             .getAccessPolicy(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(ContainerGetAccessPolicyHeaders::blobPublicAccess);
     }
 
     /**
@@ -721,7 +723,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the account info.
      */
-    public Mono<ContainerGetAccountInfoHeaders> getAccountInfo() {
+    public Mono<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -739,9 +741,10 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the account info.
      */
-    public Mono<ContainerGetAccountInfoHeaders> getAccountInfo(Context context) {
+    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
         return containerAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(StorageAccountInfo::new);
     }
 }

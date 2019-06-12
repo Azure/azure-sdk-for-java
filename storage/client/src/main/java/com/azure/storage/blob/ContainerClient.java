@@ -221,7 +221,7 @@ public final class ContainerClient {
      * @return
      *      The container properties.
      */
-    public ContainerGetPropertiesHeaders getProperties() {
+    public ContainerProperties getProperties() {
         return this.getProperties(null, null, null);
     }
 
@@ -244,9 +244,9 @@ public final class ContainerClient {
      * @return
      *      The container properties.
      */
-    public ContainerGetPropertiesHeaders getProperties(LeaseAccessConditions leaseAccessConditions,
+    public ContainerProperties getProperties(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
-        Mono<ContainerGetPropertiesHeaders> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
+        Mono<ContainerProperties> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
 
         return timeout == null
             ? response.block()
@@ -300,7 +300,7 @@ public final class ContainerClient {
      * @return
      *      The container access policy.
      */
-    public ContainerGetAccessPolicyHeaders getAccessPolicy() {
+    public PublicAccessType getAccessPolicy() {
         return this.getAccessPolicy(null, null, null);
     }
 
@@ -324,9 +324,9 @@ public final class ContainerClient {
      * @return
      *      The container access policy.
      */
-    public ContainerGetAccessPolicyHeaders getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+    public PublicAccessType getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
-        Mono<ContainerGetAccessPolicyHeaders> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
+        Mono<PublicAccessType> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
 
         return timeout == null
             ? response.block()
@@ -711,7 +711,7 @@ public final class ContainerClient {
      * @return
      *      The account info.
      */
-    public ContainerGetAccountInfoHeaders getAccountInfo() {
+    public StorageAccountInfo getAccountInfo() {
         return this.getAccountInfo(null, null);
     }
 
@@ -731,8 +731,8 @@ public final class ContainerClient {
      * @return
      *      The account info.
      */
-    public ContainerGetAccountInfoHeaders getAccountInfo(Duration timeout, Context context) {
-        Mono<ContainerGetAccountInfoHeaders> response = containerAsyncClient.getAccountInfo(context);
+    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
+        Mono<StorageAccountInfo> response = containerAsyncClient.getAccountInfo(context);
 
         return timeout == null ?
             response.block():

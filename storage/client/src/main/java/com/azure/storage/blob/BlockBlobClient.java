@@ -87,8 +87,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded block blob.
      */
-    public BlockBlobUploadHeaders upload(InputStream data, long length) throws IOException {
-        return this.upload(data, length, null, null, null, null, null);
+    public void upload(InputStream data, long length) throws IOException {
+        this.upload(data, length, null, null, null, null, null);
     }
 
     /**
@@ -122,19 +122,26 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded block blob.
      */
-    public BlockBlobUploadHeaders upload(InputStream data, long length, BlobHTTPHeaders headers,
+    public void upload(InputStream data, long length, BlobHTTPHeaders headers,
         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
 
         // buffer strategy for UX study only
         byte[] bufferedData = new byte[(int)length];
         data.read(bufferedData);
 
-        Mono<BlockBlobUploadHeaders> response = blockBlobAsyncClient
+        Mono<Void> upload = blockBlobAsyncClient
             .upload(Flux.just(ByteBuffer.wrap(bufferedData)), length, headers, metadata, accessConditions, context);
 
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        try {
+            if (timeout == null) {
+                upload.block();
+            } else {
+                upload.block(timeout);
+            }
+        }
+        catch (UncheckedIOException e) {
+            throw e.getCause();
+        }
     }
 
     public void uploadFromFile(String filePath) throws IOException {
@@ -341,8 +348,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the block blob.
      */
-    public BlockBlobCommitBlockListHeaders commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null, null);
+    public void commitBlockList(List<String> base64BlockIDs) {
+        this.commitBlockList(base64BlockIDs, null, null, null, null, null);
     }
 
     /**
@@ -374,11 +381,14 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the block blob.
      */
-    public BlockBlobCommitBlockListHeaders commitBlockList(List<String> base64BlockIDs,
+    public void commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobCommitBlockListHeaders> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
+        Mono<Void> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
+
+        if (timeout == null) {
+            response.block();
+        } else {
             response.block(timeout);
+        }
     }
 }

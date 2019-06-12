@@ -19,9 +19,9 @@ import java.util.UUID;
 
 public class Sample {
 
-    final static String accountEndpoint = "http://jamesschreppler.blob.core.windows.net";
-    final static String accountName = "jamesschreppler";
-    final static String accountKey = "5POtFgqT5vsDYmIUOSsEpoXnbd3iw+mpBiXB4jiMvdqOcprfPX3gZXGU/sGZviLbIIFDMq+5c00w7O2eG0UT6Q==";
+    final static String accountEndpoint = "";
+    final static String accountName = "";
+    final static String accountKey = "";
 
     @Test
     public void sample() throws IOException {
@@ -206,7 +206,7 @@ public class Sample {
             // download data
             .flatMap(blobClient ->
                 blobClient.downloadToFile(new File(folderPath, "endFile" + UUID.randomUUID()).getAbsolutePath()))
-            
+
             .block();
 
     }

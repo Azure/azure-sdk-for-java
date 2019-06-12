@@ -7,14 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.ContainerItem;
-import com.azure.storage.blob.models.ServiceGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ServiceGetPropertiesHeaders;
-import com.azure.storage.blob.models.ServiceGetStatisticsHeaders;
-import com.azure.storage.blob.models.ServiceGetUserDelegationKeyHeaders;
-import com.azure.storage.blob.models.ServiceSetPropertiesHeaders;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -148,7 +141,7 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service properties.
      */
-    public Mono<ServiceGetPropertiesHeaders> getProperties() {
+    public Mono<StorageServiceProperties> getProperties() {
         return this.getProperties(null);
     }
 
@@ -166,10 +159,10 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service properties.
      */
-    public Mono<ServiceGetPropertiesHeaders> getProperties(Context context) {
+    public Mono<StorageServiceProperties> getProperties(Context context) {
         return blobServiceAsyncRawClient
             .getProperties(context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::value);
     }
 
     /**
@@ -184,7 +177,7 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service properties.
      */
-    public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties) {
+    public Mono<Void> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
     }
 
@@ -206,10 +199,10 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service properties.
      */
-    public Mono<ServiceSetPropertiesHeaders> setProperties(StorageServiceProperties properties, Context context) {
+    public Mono<Void> setProperties(StorageServiceProperties properties, Context context) {
         return blobServiceAsyncRawClient
             .setProperties(properties, context)
-            .map(ResponseBase::deserializedHeaders);
+            .then();
     }
 
     /**
@@ -224,7 +217,7 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the user delegation key.
      */
-    public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null);
     }
 
@@ -246,11 +239,11 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the user delegation key.
      */
-    public Mono<ServiceGetUserDelegationKeyHeaders> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
         return blobServiceAsyncRawClient
             .getUserDelegationKey(start, expiry, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::value);
     }
 
     /**
@@ -262,7 +255,7 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service statistics.
      */
-    public Mono<ServiceGetStatisticsHeaders> getStatistics() {
+    public Mono<StorageServiceStats> getStatistics() {
         return this.getStatistics(null);
     }
 
@@ -282,10 +275,10 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service statistics.
      */
-    public Mono<ServiceGetStatisticsHeaders> getStatistics(Context context) {
+    public Mono<StorageServiceStats> getStatistics(Context context) {
         return blobServiceAsyncRawClient
             .getStatistics(context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::value);
     }
 
     /**
@@ -295,7 +288,7 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service account info.
      */
-    public Mono<ServiceGetAccountInfoHeaders> getAccountInfo() {
+    public Mono<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -313,9 +306,10 @@ public final class BlobServiceAsyncClient {
      * @return
      *      A reactive response containing the blob service account info.
      */
-    public Mono<ServiceGetAccountInfoHeaders> getAccountInfo(Context context) {
+    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
         return blobServiceAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(StorageAccountInfo::new);
     }
 }

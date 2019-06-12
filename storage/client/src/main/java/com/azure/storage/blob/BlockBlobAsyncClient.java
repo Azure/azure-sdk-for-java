@@ -101,7 +101,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length) {
+    public Mono<Void> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
     }
 
@@ -139,11 +139,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<BlockBlobUploadHeaders> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+    public Mono<Void> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .upload(data.map(nettyBuf -> Unpooled.wrappedBuffer(nettyBuf.array())), length, headers, metadata, accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .then();
     }
 
     public Mono<Void> uploadFromFile(String filePath) {
@@ -343,7 +343,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<BlockBlobCommitBlockListHeaders> commitBlockList(List<String> base64BlockIDs) {
+    public Mono<Void> commitBlockList(List<String> base64BlockIDs) {
         return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
@@ -374,10 +374,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<BlockBlobCommitBlockListHeaders> commitBlockList(List<String> base64BlockIDs,
+    public Mono<Void> commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .then();
     }
 }

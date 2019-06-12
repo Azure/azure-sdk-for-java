@@ -335,7 +335,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob properties and metadata.
      */
-    public Mono<BlobGetPropertiesHeaders> getProperties() {
+    public Mono<BlobProperties> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -354,10 +354,11 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob properties and metadata.
      */
-    public Mono<BlobGetPropertiesHeaders> getProperties(BlobAccessConditions accessConditions, Context context) {
+    public Mono<BlobProperties> getProperties(BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .getProperties(accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(BlobProperties::new);
     }
 
     /**
@@ -757,7 +758,7 @@ public class BlobAsyncClient {
      *
      * @return a reactor response containing the sku name and account kind.
      */
-    public Mono<BlobGetAccountInfoHeaders> getAccountInfo() {
+    public Mono<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -774,9 +775,10 @@ public class BlobAsyncClient {
      * @return a reactor response containing the sku name and account kind.
      */
     // TODO determine this return type
-    public Mono<BlobGetAccountInfoHeaders> getAccountInfo(Context context) {
+    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
         return blobAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(ResponseBase::deserializedHeaders)
+            .map(StorageAccountInfo::new);
     }
 }

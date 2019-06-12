@@ -307,7 +307,7 @@ public class BlobClient {
      * @return
      *      The blob properties and metadata.
      */
-    public BlobGetPropertiesHeaders getProperties() {
+    public BlobProperties getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -322,8 +322,8 @@ public class BlobClient {
      * @return
      *      The blob properties and metadata.
      */
-    public BlobGetPropertiesHeaders getProperties(BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<BlobGetPropertiesHeaders> response = blobAsyncClient
+    public BlobProperties getProperties(BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<BlobProperties> response = blobAsyncClient
             .getProperties(accessConditions, null /*context*/);
 
         return timeout == null
@@ -701,7 +701,7 @@ public class BlobClient {
      *
      * @return The sku name and account kind.
      */
-    public BlobGetAccountInfoHeaders getAccountInfo() {
+    public StorageAccountInfo getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -713,8 +713,8 @@ public class BlobClient {
      *
      * @return The sku name and account kind.
      */
-    public BlobGetAccountInfoHeaders getAccountInfo(Duration timeout) {
-        Mono<BlobGetAccountInfoHeaders> response = blobAsyncClient
+    public StorageAccountInfo getAccountInfo(Duration timeout) {
+        Mono<StorageAccountInfo> response = blobAsyncClient
             .getAccountInfo(null /*context*/);
 
         return timeout == null

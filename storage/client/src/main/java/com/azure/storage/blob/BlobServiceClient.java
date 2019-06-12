@@ -120,7 +120,7 @@ public final class BlobServiceClient {
      * @return
      *      The blob service properties.
      */
-    public ServiceGetPropertiesHeaders getProperties() {
+    public StorageServiceProperties getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -140,9 +140,9 @@ public final class BlobServiceClient {
      * @return
      *      The blob service properties.
      */
-    public ServiceGetPropertiesHeaders getProperties(Duration timeout, Context context) {
+    public StorageServiceProperties getProperties(Duration timeout, Context context) {
 
-        Mono<ServiceGetPropertiesHeaders> response = blobServiceAsyncClient.getProperties(context);
+        Mono<StorageServiceProperties> response = blobServiceAsyncClient.getProperties(context);
 
         return timeout == null ?
             response.block():
@@ -161,8 +161,8 @@ public final class BlobServiceClient {
      * @return
      *      The blob service properties.
      */
-    public ServiceSetPropertiesHeaders setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null, null);
+    public void setProperties(StorageServiceProperties properties) {
+        this.setProperties(properties, null, null);
     }
 
     /**
@@ -185,12 +185,14 @@ public final class BlobServiceClient {
      * @return
      *      The blob service properties.
      */
-    public ServiceSetPropertiesHeaders setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<ServiceSetPropertiesHeaders> response = blobServiceAsyncClient.setProperties(properties, context);
+    public void setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
+        Mono<Void> response = blobServiceAsyncClient.setProperties(properties, context);
 
-        return timeout == null ?
-            response.block():
+        if (timeout == null) {
+            response.block();
+        } else {
             response.block(timeout);
+        }
     }
 
     /**
@@ -205,7 +207,7 @@ public final class BlobServiceClient {
      * @return
      *      The user delegation key.
      */
-    public ServiceGetUserDelegationKeyHeaders getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null, null);
     }
 
@@ -229,9 +231,9 @@ public final class BlobServiceClient {
      * @return
      *      The user delegation key.
      */
-    public ServiceGetUserDelegationKeyHeaders getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Duration timeout, Context context) {
-        Mono<ServiceGetUserDelegationKeyHeaders> response = blobServiceAsyncClient.getUserDelegationKey(start, expiry, context);
+        Mono<UserDelegationKey> response = blobServiceAsyncClient.getUserDelegationKey(start, expiry, context);
 
         return timeout == null ?
             response.block():
@@ -247,7 +249,7 @@ public final class BlobServiceClient {
      * @return
      *      The blob service statistics.
      */
-    public ServiceGetStatisticsHeaders getStatistics() {
+    public StorageServiceStats getStatistics() {
         return this.getStatistics(null, null);
     }
 
@@ -269,8 +271,8 @@ public final class BlobServiceClient {
      * @return
      *      The blob service statistics.
      */
-    public ServiceGetStatisticsHeaders getStatistics(Duration timeout, Context context) {
-        Mono<ServiceGetStatisticsHeaders> response = blobServiceAsyncClient.getStatistics(context);
+    public StorageServiceStats getStatistics(Duration timeout, Context context) {
+        Mono<StorageServiceStats> response = blobServiceAsyncClient.getStatistics(context);
 
         return timeout == null ?
             response.block():
@@ -284,7 +286,7 @@ public final class BlobServiceClient {
      * @return
      *      The blob service account info.
      */
-    public ServiceGetAccountInfoHeaders getAccountInfo() {
+    public StorageAccountInfo getAccountInfo() {
         return this.getAccountInfo(null, null);
     }
 
@@ -304,8 +306,8 @@ public final class BlobServiceClient {
      * @return
      *      The blob service account info.
      */
-    public ServiceGetAccountInfoHeaders getAccountInfo(Duration timeout, Context context) {
-        Mono<ServiceGetAccountInfoHeaders> response = blobServiceAsyncClient.getAccountInfo(context);
+    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
+        Mono<StorageAccountInfo> response = blobServiceAsyncClient.getAccountInfo(context);
 
         return timeout == null ?
             response.block():
