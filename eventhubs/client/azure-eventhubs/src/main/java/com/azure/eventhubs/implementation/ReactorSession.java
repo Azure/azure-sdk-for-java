@@ -215,7 +215,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                     provider.getReactorDispatcher().invoke(() -> {
                         receiver.open();
 
-                        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager, retry);
+                        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
 
                         openReceiveLinks.put(linkName, reactorReceiver);
                         sink.success(reactorReceiver);
