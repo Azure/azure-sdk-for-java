@@ -26,7 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent AppendBlobClientBuilder for append blob clients.
+ * Fluent AppendBlobClientBuilder for instantiating a {@link AppendBlobClient} or {@link AppendBlobAsyncClient}.
+ *
+ * <p>
+ * An instance of this builder may only be created from static method {@link AppendBlobClient#appendBlobClientBuilder()}.
+ * The following information must be provided on this builder:
+ *
+ * <p><ul>
+ *     <li>the endpoint through {@code .endpoint()}
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the blob is not publicly accessible
+ * </ul>
+ *
+ * <p>
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * {@link AppendBlobClient} or {@code .buildAsyncClient()} to create a {@link AppendBlobAsyncClient}.
  */
 public final class AppendBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

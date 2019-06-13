@@ -26,7 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent ContainerClientBuilder for container clients.
+ * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient}.
+ *
+ * <p>
+ * An instance of this builder may only be created from static method {@link ContainerClient#containerClientBuilder()}.
+ * The following information must be provided on this builder:
+ *
+ * <p><ul>
+ *     <li>the endpoint through {@code .endpoint()}
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible
+ * </ul>
+ *
+ * <p>
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 public final class ContainerClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

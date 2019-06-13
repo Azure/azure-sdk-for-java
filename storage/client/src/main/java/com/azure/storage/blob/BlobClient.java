@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
- * Client to a blob of any type: block, append, or page. It may be obtained through a {@link BlobClientBuilder} or via
+ * Client to a blob of any type: block, append, or page. It may only be instantiated through a a {@link BlobClientBuilder} or via
  * the method {@link ContainerClient#createBlobClient(String)}. This class does not hold any state about a particular
  * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *

@@ -26,7 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlockBlobClientBuilder for block blob clients.
+ * Fluent BlockBlobClientBuilder for instantiating a {@link BlockBlobClient} or {@link BlockBlobAsyncClient}.
+ *
+ * <p>
+ * An instance of this builder may only be created from static method {@link BlockBlobClient#blockBlobClientBuilder()}.
+ * The following information must be provided on this builder:
+ *
+ * <p><ul>
+ *     <li>the endpoint through {@code .endpoint()}
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the blob is not publicly accessible
+ * </ul>
+ *
+ * <p>
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * {@link BlockBlobClient} or {@code .buildAsyncClient()} to create a {@link BlockBlobAsyncClient}.
  */
 public final class BlockBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

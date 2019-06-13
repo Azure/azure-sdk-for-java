@@ -26,7 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent PageBlobClientBuilder for page blob clients.
+ * Fluent PageBlobClientBuilder for instantiating a {@link PageBlobClient} or {@link PageBlobAsyncClient}.
+ *
+ * <p>
+ * An instance of this builder may only be created from static method {@link PageBlobClient#pageBlobClientBuilder()}.
+ * The following information must be provided on this builder:
+ *
+ * <p><ul>
+ *     <li>the endpoint through {@code .endpoint()}
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the blob is not publicly accessible
+ * </ul>
+ *
+ * <p>
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * {@link PageBlobClient} or {@code .buildAsyncClient()} to create a {@link PageBlobAsyncClient}.
  */
 public final class PageBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();

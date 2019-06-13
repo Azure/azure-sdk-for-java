@@ -26,7 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent appendBlobClientBuilder for blob async clients.
+ * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}.
+ *
+ * <p>
+ * An instance of this builder may only be created from static method {@link BlobClient#blobClientBuilder()}.
+ * The following information must be provided on this builder:
+ *
+ * <p><ul>
+ *     <li>the endpoint through {@code .endpoint()}
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the blob is not publicly accessible
+ * </ul>
+ *
+ * <p>
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * {@link BlobClient} or {@code .buildAsyncClient()} to create a {@link BlobAsyncClient}.
  */
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
@@ -93,7 +106,7 @@ public final class BlobClientBuilder {
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      */

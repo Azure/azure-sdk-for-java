@@ -22,9 +22,9 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
+ * Client to a container. It may only be instantiated through a a {@link ContainerClientBuilder} or via the method
  * {@link BlobServiceClient#createContainerClient(String)}. This class does not hold any
- * state about a particular blob but is instead a convenient way of sending off appropriate requests to
+ * state about a particular container but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
  * <p>

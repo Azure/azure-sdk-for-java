@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a blob service. It may be obtained through a {@link BlobServiceClientBuilder}.
+ * Client to a blob service. It may only be instantiated through a a {@link BlobServiceClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
