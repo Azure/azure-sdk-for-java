@@ -9,9 +9,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.OptionalLong;
 
 /**
  * Options when receiving events from Event Hubs.
@@ -225,8 +223,8 @@ public class EventReceiverOptions implements Cloneable {
      *
      * @return An optional priority for this receiver.
      */
-    public OptionalLong exclusiveReceiverPriority() {
-        return priority == null ? OptionalLong.empty() : OptionalLong.of(priority);
+    public Optional<Long> exclusiveReceiverPriority() {
+        return Optional.ofNullable(priority);
     }
 
     /**
@@ -293,9 +291,9 @@ public class EventReceiverOptions implements Cloneable {
         clone.keepPartitionInformationUpdated(this.keepPartitionInformationUpdated());
         clone.retry(this.retry());
 
-        OptionalLong priority = this.exclusiveReceiverPriority();
+        Optional<Long> priority = this.exclusiveReceiverPriority();
         if (priority.isPresent()) {
-            clone.exclusiveReceiverPriority(priority.getAsLong());
+            clone.exclusiveReceiverPriority(priority.get());
         }
 
         return clone;
