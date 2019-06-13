@@ -100,6 +100,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     public void close() {
         subscriptions.dispose();
         tokenManager.close();
+        messagesProcessor.dispose();
         super.close();
     }
 

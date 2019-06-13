@@ -91,6 +91,8 @@ public class EventReceiver implements Closeable {
             if (block != null) {
                 block.close();
             }
+
+            emitterProcessor.dispose();
         }
     }
 
