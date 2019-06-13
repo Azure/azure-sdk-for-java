@@ -33,6 +33,7 @@ public class ParsingEnvTest {
 
     @Test(groups = "unit")
     public void parseDesiredConsistencies() {
+        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"BoundedStaleness\" ]")).containsExactly(ConsistencyLevel.BOUNDED_STALENESS);
         assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"Session\" , \"Strong\" ]")).containsExactly(
                 ConsistencyLevel.SESSION, ConsistencyLevel.STRONG);
     }
@@ -46,6 +47,15 @@ public class ParsingEnvTest {
     public void lowerConsistencies() {
         assertThat(TestSuiteBase.allEqualOrLowerConsistencies(ConsistencyLevel.SESSION))
                 .containsExactly(ConsistencyLevel.SESSION, ConsistencyLevel.CONSISTENT_PREFIX, ConsistencyLevel.EVENTUAL);
+    }
+
+    @Test(groups = "unit")
+    public void parseAccountConsistency() {
+        assertThat(TestSuiteBase.parseConsistency("Strong")).isEqualTo(ConsistencyLevel.STRONG);
+        assertThat(TestSuiteBase.parseConsistency("Session")).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat(TestSuiteBase.parseConsistency("BoundedStaleness")).isEqualTo(ConsistencyLevel.BOUNDED_STALENESS);
+        assertThat(TestSuiteBase.parseConsistency("ConsistentPrefix")).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
+        assertThat(TestSuiteBase.parseConsistency("Eventual")).isEqualTo(ConsistencyLevel.EVENTUAL);
     }
 
     @Test(groups = "unit")

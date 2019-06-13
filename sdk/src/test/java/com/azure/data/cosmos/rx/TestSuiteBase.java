@@ -788,7 +788,7 @@ public class TestSuiteBase extends CosmosClientTest {
         };
     }
 
-    private static ConsistencyLevel parseConsistency(String consistency) {
+    static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             consistency = CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistency).trim();
             return ConsistencyLevel.valueOf(consistency);
