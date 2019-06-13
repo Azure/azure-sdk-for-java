@@ -3,11 +3,11 @@
 
 import com.azure.keyvault.SecretAsyncClient;
 import com.azure.keyvault.models.Secret;
-import com.oracle.tools.packager.IOUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.time.OffsetDateTime;
 
 /**
@@ -66,7 +66,7 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(15000);
 
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
-        byte[] backupFromFile = IOUtils.readFully(new File(backupFilePath));
+        byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         secretAsyncClient.restoreSecret(backupFromFile).subscribe(secretResponse ->
           System.out.printf("Restored Secret with name %s \n", secretResponse.value().name()));
 
