@@ -22,7 +22,6 @@ public class EventReceiverOptionsTest extends ApiTestBase {
     private static final int MAX_RETRY_TO_DECLARE_RECEIVE_STUCK = 3;
 
     private static EventHubClient ehClient;
-    private static EventSender sender;
     private static EventReceiver receiver;
 
     @Rule

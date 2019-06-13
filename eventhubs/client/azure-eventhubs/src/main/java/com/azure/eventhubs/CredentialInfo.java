@@ -26,7 +26,7 @@ public final class CredentialInfo {
     private String sharedAccessKey;
     private String eventHubPath;
 
-    private CredentialInfo() { }
+    protected CredentialInfo() { }
 
     /**
      * Create a {@link CredentialInfo} object that maps all key-value pairs of ConnectionString, include {@code EntityPath}.
@@ -139,5 +139,14 @@ public final class CredentialInfo {
         }
 
         return credentialInfo;
+    }
+
+    public CredentialInfo clone() {
+        CredentialInfo cloneObject = new CredentialInfo();
+        cloneObject.sharedAccessKeyName = sharedAccessKeyName;
+        cloneObject.sharedAccessKey = sharedAccessKey;
+        cloneObject.endpoint = endpoint;
+        cloneObject.eventHubPath = eventHubPath;
+        return cloneObject;
     }
 }

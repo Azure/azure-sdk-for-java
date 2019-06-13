@@ -43,7 +43,7 @@ public abstract class ApiTestBase extends TestBase {
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
 
-    private CredentialInfo credentialInfo;
+    private static CredentialInfo credentialInfo;
     private Reactor reactor = mock(Reactor.class);
     private TokenProvider tokenProvider = mock(TokenProvider.class);
     private ReactorProvider reactorProvider;
@@ -119,7 +119,7 @@ public abstract class ApiTestBase extends TestBase {
         return connectionParameters;
     }
 
-    protected CredentialInfo getCredentialInfo() {
+    protected static CredentialInfo getCredentialInfo() {
         return credentialInfo;
     }
 
