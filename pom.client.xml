@@ -38,6 +38,47 @@
     </developer>
   </developers>
 
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
   <issueManagement>
     <system>GitHub</system>
     <url>${issues.url}</url>
@@ -419,6 +460,15 @@
             <reports>
               <report>aggregate</report>
             </reports>
+            <configuration>
+              <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
+                  So, path for aggregate reports have to be defined relative to parent pom -->
+              <additionalOptions>-maxLineLength 120
+                -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
+                -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
+                -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
+              </additionalOptions>
+            </configuration>
           </reportSet>
         </reportSets>
         <configuration>
