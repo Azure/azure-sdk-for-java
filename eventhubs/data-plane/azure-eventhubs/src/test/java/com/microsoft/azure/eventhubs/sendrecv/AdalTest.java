@@ -1,22 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ClientSecret;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
-import com.microsoft.azure.eventhubs.EventHubClient;
-
 import java.net.MalformedURLException;
-import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 
-public class MsalTest extends AadBase {
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.aad.adal4j.ClientCredential;
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
+import com.microsoft.azure.eventhubs.EventHubClient;
+
+public class AdalTest extends AadBase {
 	final private String authority = "https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47";
 	//final private String authority = AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY;
 	final private String clientId = "51ce7943-a1aa-4bb1-b708-8f66656a9242";
@@ -63,16 +58,10 @@ public class MsalTest extends AadBase {
 	@Override
 	String tokenGet(final String authority, final String clientId, final String clientSecret, final String audience, final String extra)
 			throws MalformedURLException, InterruptedException, ExecutionException {
-		ConfidentialClientApplication app = ConfidentialClientApplication.builder(clientId, new ClientSecret(clientSecret))
-				.authority(authority)
-				.build();
-		
-		ClientCredentialParameters parameters = ClientCredentialParameters.builder(Collections.singleton(audience + extra)).build();
-
-		IAuthenticationResult result = app.acquireToken(parameters).get();
-		
-		System.out.println(result.accessToken());
-		System.out.println(decodeToken(result.accessToken()));
-		return result.accessToken();
+		AuthenticationContext context = new AuthenticationContext(authority, true, this.executorService);
+		ClientCredential creds = new ClientCredential(clientId, clientSecret);
+		AuthenticationResult result = context.acquireToken(audience, creds, null).get();
+		System.out.println(decodeToken(result.getAccessToken()));
+		return result.getAccessToken();
 	}
 }
