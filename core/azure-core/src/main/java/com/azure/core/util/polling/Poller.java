@@ -14,20 +14,22 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * This class provides implementation of long running operations. The poller starts polling <b>automatically</b> when Poller instance is created.
- * It uses {@link Flux} from reactive programming model to achieve auto polling.
- * It has function for usual operation of a poller. For example listen/observe poll responses, enable/disable auto polling,
- * manual polling, wait for polling to complete and get status of current polling.
+ * This class offer API that simplifies the task of executing long-running operations against Azure. The poller consists of
+ * {@link Function} to be triggered on each poll cycle followed by polling to determine if long-running operation completed.
+ * <p></p>
+ * The poller starts polling <strong>automatically</strong> as soon as the Poller instance is created. It provides following API:
  *
- * {@link Mono} from poll operation should never return Mono.error(). If any unexpected
- * scenario happens in poll operation, it should catch it and return a valid PollResponse.
- * This is because poller does not know what to do in case on Mono.error().
- * and we will continue to poll in this scenario
+ * <ul>
+ *      <li>Querying the current state of long-running operations.</li>
+ *      <li>Requesting an asynchronous notification for long-running operations's state.</li>
+ *      <li>Cancelling the long-running operations if cancellation is supported by the service.</li>
+ *      <li>Triggering a poll operation manually.</li>
+ *      <li>Enable/Disable auto-polling.</li>
+ * </ul>
  *
  * <p><strong>Code Samples</strong></p>
  *
  * <p><strong>Instantiating and Subscribing to Poll Response</strong></p>
- *
  * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribe}
  *
  * <p><strong>Wait/Block for Polling to complete</strong></p>
@@ -36,14 +38,10 @@ import java.util.function.Function;
  * <p><strong>Disable auto polling and polling manually</strong></p>
  * {@codesnippet com.azure.core.util.polling.poller.poll}
  *
- * <p><strong>Implementation of Long Running Operations</strong></p>
- *
  * @param <T> Type of poll response value
- *
  * @see PollResponse
  * @see com.azure.core.util.polling.PollResponse.OperationStatus
  */
-
 public class Poller<T> {
 
     /*
@@ -53,7 +51,7 @@ public class Poller<T> {
     private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
 
     /*
-     * poll interval before next auto poll.
+     * poll interval before next auto poll. This value will be used if the PollResponse does not include retryAfter from the service.
      */
     private Duration pollInterval;
 
@@ -92,14 +90,12 @@ public class Poller<T> {
      * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
      * In absence of retryAfter, the poller will use pollInterval.
      *
-     * @param pollInterval Not null  and greater than zero poll interval. It ensure that polling happens only once in given pollInterval.
+     * @param pollInterval  Not null  and greater than zero poll interval. It ensure that polling happens only once in given pollInterval.
      * @param pollOperation to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
-     * Mono from pollOperation should never return Mono.error(). If any unexpected
-     * scenario happens in pollOperation, it should catch it and return a valid PollResponse.
-     * This is because poller does not know what to do in case on Mono.error() and user always expect {@link PollResponse}
-     * and we will continue to poll in this scenario.
-     *
-     * @throws NullPointerException If it is {@code null} for {@code  pollInterval pollOperation}.
+     *                      {@link Mono} returned from poll operation should never return Mono.error().
+     *                      If any unexpected scenario happens in poll operation, it should handle it and return a valid {@link PollResponse}.
+     *                      However if poll operation returns {@link Mono#error(Throwable)}, the poller will disregard that and continue to poll.
+     * @throws NullPointerException     If it is {@code null} for {@code  pollInterval pollOperation}.
      * @throws IllegalArgumentException if {@code  pollInterval} is negative or zero
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
@@ -117,7 +113,7 @@ public class Poller<T> {
         this.fluxHandle = asyncPollRequestWithDelay()
             .flux()
             .repeat()
-            .takeUntil(pollResponse -> pollResponse != null && pollResponse.isDone())
+            .takeUntil(pollResponse -> hasCompleted())
             .share();
 
         // auto polling start here
@@ -128,9 +124,12 @@ public class Poller<T> {
     /**
      * Create a Poller object with poll interval, poll operation and cancel operation. The polling starts immediately by default and invoke poll operation.
      *
-     * @param pollInterval Not null poll interval. It ensure that polling happens only once in given pollInterval.
-     * @param pollOperation   to be called by poller. User should never return {@code null}. The response should have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
-     * @param cancelOperation cancel operation
+     * @param pollInterval    Not null poll interval. It ensure that polling happens only once in given pollInterval.
+     * @param pollOperation   to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
+     *                        {@link Mono} returned from poll operation should never return Mono.error().
+     *                        If any unexpected scenario happens in poll operation, it should handle it and return a valid {@link PollResponse}.
+     *                        However if poll operation returns {@link Mono#error(Throwable)}, the poller will disregard that and continue to poll.
+     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}.
      * @throws NullPointerException If {@code pollerOptions pollOperation} is {@code null}.
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
@@ -139,7 +138,7 @@ public class Poller<T> {
     }
 
     /**
-     * Calls Cancel Operation function if provided.
+     * Calls cancel operation function if cancellation is supported by the service.
      * It will only call cancelOperation if {@link com.azure.core.util.polling.PollResponse.OperationStatus} is IN_PROGRESS otherwise it does nothing.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
@@ -160,24 +159,24 @@ public class Poller<T> {
 
     /**
      * Enable user to subscribe to {@link Flux} and listen to every {@link PollResponse} asynchronously.
-     * The user will start receiving {@link PollResponse} when client subscribe to this Flux.
+     * The user will start receiving {@link PollResponse} when client subscribe to this {@link Flux}.
      * The poller could still have its own auto polling in action unless user has turned off
      * auto polling.
      *
-     * @return poll response as Flux that can be subscribed.
+     * @return poll response as {@link Flux} that can be subscribed.
      */
     public Flux<PollResponse<T>> getObserver() {
         return this.fluxHandle;
     }
 
     /**
-     * Enable user to take control of polling and trigger manual poll operation. It will perform one call to poll operation.
+     * Enable user to take control of polling and trigger manual poll operation. It will call poll operation once.
      * This will not turn off auto polling.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p><strong>Manual Polling</strong></p>
-
+     * <p>
      * {@codesnippet com.azure.core.util.polling.poller.poll.indepth}
      *
      * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could be subscribed
@@ -212,7 +211,7 @@ public class Poller<T> {
      * @return mono of poll response
      */
     private Mono<PollResponse<T>> asyncPollRequestWithDelay() {
-        return  Mono.defer(() -> this.pollOperation.apply(this.pollResponse)
+        return Mono.defer(() -> this.pollOperation.apply(this.pollResponse)
             .delaySubscription(getCurrentDelay())
             .onErrorResume(throwable -> {
                 // We should never get here and since we want to continue polling
@@ -226,13 +225,17 @@ public class Poller<T> {
             }));
     }
 
+    /*
+     * We will use  {@link PollResponse#getRetryAfter} if it is greater than zero otherwise use poll interval.
+     */
     private Duration getCurrentDelay() {
-        return (this.pollResponse != null && this.pollResponse.getRetryAfter() != null) ? this.pollResponse.getRetryAfter() : this.pollInterval;
+        return (this.pollResponse != null
+            && this.pollResponse.getRetryAfter() != null
+            && this.pollResponse.getRetryAfter().toNanos() > 0) ? this.pollResponse.getRetryAfter() : this.pollInterval;
     }
 
     /**
-     * Provide control to turn auto polling <strong>on or off</strong>. Once auto polling is turned off, it is <strong>user's responsibility</strong>
-     * to turn it back on.
+     * Controls whether auto-polling is enabled or disabled. Refer to the {@link Poller} class-level JavaDoc for more details on auto-polling.
      *
      * <p><strong>Disable auto polling</strong></p>
      * {@codesnippet com.azure.core.util.polling.poller.disableautopolling}
@@ -240,11 +243,10 @@ public class Poller<T> {
      * <p><strong>Enable auto polling</strong></p>
      * {@codesnippet com.azure.core.util.polling.poller.enableautopolling}
      *
-     * @param autoPollingEnabled true  Ensures the polling is happening in background.
-     * false Ensures that polling is <strong>not</strong> happening in background.
+     * @param autoPollingEnabled If true, auto-polling will occur transparently in the background, otherwise it requires
+     *                           manual polling by the user to get the latest state.
      */
     public final void setAutoPollingEnabled(boolean autoPollingEnabled) {
-
         this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
             if (!activeSubscriber()) {
@@ -258,6 +260,22 @@ public class Poller<T> {
     }
 
     /*
+     * An operation will be considered complete if it is in one of the following state:
+     * <ul>
+     *     <li>SUCCESSFULLY_COMPLETED</li>
+     *     <li>USER_CANCELLED</li>
+     *     <li>FAILED</li>
+     * </ul>
+     * Also see {@link OperationStatus}
+     * @return true if operation is done/complete.
+     */
+    private boolean hasCompleted() {
+        return pollResponse != null && (pollResponse.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == PollResponse.OperationStatus.FAILED
+            || pollResponse.getStatus() == PollResponse.OperationStatus.USER_CANCELLED);
+    }
+
+    /*
      * Determine if this poller's internal subscriber exists and active.
      */
     private boolean activeSubscriber() {
@@ -265,17 +283,17 @@ public class Poller<T> {
     }
 
     /**
-     * Indicate if auto polling is <strong>on/off</strong> . By default auto polling is turned <strong>on</strong>.
+     * Indicate if auto-polling is <strong>on/off</strong> . By default auto-polling is turned <strong>on</strong>.
      *
-     * @return <strong>false</strong> if polling is stopped. <strong>true</strong> if auto polling is enabled.
+     * @return A boolean value representing if auto-polling is enabled or not..
      */
     public boolean isAutoPollingEnabled() {
         return this.autoPollingEnabled;
     }
 
     /**
-     * Current known status as a result of last poll event. If auto polling was disabled by user, this will represent
-     * old response when auto polling was enabled.
+     * Current known status as a result of last poll event. If auto-polling was disabled by user, this will represent
+     * old response when auto-polling was enabled.
      *
      * @return current status or {@code null} if no status is available.
      */

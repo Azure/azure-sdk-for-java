@@ -8,10 +8,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Container of information related to polling and poll response. It will hold current polling status {@link OperationStatus} , T value,
- * retry after duration and various configuration properties.
+ * PollResponse represents a single response from a service for a long-running polling operation. It provides information such as
+ * the current {@link OperationStatus status} of the long running operation, any {@link #getValue value} returned in the poll, as well
+ * as other useful information provided by the service.
  *
- * @param <T> Type of poll response value
+ *<p><strong>Code Sample Creating PollResponse Object</strong></p>
+ * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+ *
+ * @param <T> Type of poll response value.
  *
  * @see OperationStatus
  * @see Poller
@@ -24,47 +28,46 @@ public final class PollResponse<T> {
     private final Map<Object, Object> properties;
 
     /**
-     * An enum to represent all possible states that a long running operation.
-     * The poll operation is considered finished when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
+     * An enum to represent all possible states that a long-running operation could exist in.
+     * The poll operation is considered <strong>complete</strong> when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
     public enum OperationStatus {
-        /** Represents the state that polling has not yet started for this long running operation.*/
+        /** Represents that polling has not yet started for this long-running operation.*/
         NOT_STARTED,
 
-        /** Represent the state that this long running operation is in progress and not yet finished.*/
+        /** Represents that this long-running operation is in progress and not yet complete.*/
         IN_PROGRESS,
 
-        /** Represent the state that this long running operation is finished successfully.*/
+        /** Represent that this long-running operation is completed successfully.*/
         SUCCESSFULLY_COMPLETED,
 
-        /** Represent the state that this long running operation has failed. This state indicate that long running operation is finished.*/
+        /**
+         * Represents that this long-running operation has failed to successfully complete, however this is still
+         * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it is complete.
+         */
         FAILED,
 
-        /** Represent the state that this long running operation is cancelled by user. This state indicate that long running operation is finished.*/
+        /** Represents that this long-running operation is cancelled by user, however this is still
+         * considered as complete long-running operation.*/
         USER_CANCELLED
     }
 
     /**
-     * Create a {@link PollResponse} with status, value, retryAfter and properties
+     * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties}
      *
-     * @param status Mandatory operation status as defined in {@link OperationStatus}
-     * @param value The value as a result of poll operation. This can be any custom user defined object.
-     * @param retryAfter How long poller should wait before calling next pollOperation.This can be null but negative or zero value is not allowed.
-     * @param properties The map of perperties which user might need in executing poll operation such as service url etc.
-     * This could be used by Poll Operation function when it gets called by {@link Poller}, since this {@link PollResponse} object
-     * will be supplied to poll operation in next polling cycle.
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
+     * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
+     * @param properties A map of properties provided by the service that will be made available into the next poll operation.
      *
      * @throws NullPointerException If {@code status} is {@code null}.
-     * @throws IllegalArgumentException if {@code  retryAfter} is negative or zero
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
-        if (retryAfter != null && retryAfter.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for retryAfter not allowed.");
-        }
         this.status = status;
         this.value = value;
         this.retryAfter = retryAfter;
@@ -72,59 +75,45 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Create a Poll Response with status, value and retryAfter
+     * Creates a new {@link PollResponse} with status, value and retryAfter.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter}
      *
-     * @param status Mandatory operation status as defined in {@link OperationStatus}
-     * @param value The value as a result of poll operation. This can be any custom user defined object.
-     * @param retryAfter How long poller should wait before calling next pollOperation. This can be null but negative or zero value is not allowed.
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
+     * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter) {
         this(status, value, retryAfter, null);
-
     }
 
     /**
-     * Create a Poll Response with status and value
+     * Creates a new {@link PollResponse} with status and value.
      *
      *<p><strong>Code Sample Creating PollResponse Object</strong></p>
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
      *
-     * @param status Mandatory operation status as defined in {@link OperationStatus}
-     * @param value The value as a result of poll operation. This can be any custom user defined object.
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
+     * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value) {
         this(status, value, null);
     }
 
     /**
-     * Status of Long Running Operation at the time of polling. Also see {@link OperationStatus}
-     * @return {@link OperationStatus} as a result of poll operation.
+     * Represents the status of the long-running operation at the time the last polling operation completed successfully.
+     * @return A {@link OperationStatus} representing the result of the poll operation.
      */
     public OperationStatus getStatus() {
         return status;
     }
 
     /**
-     * An operation will be <b>done/complete</b> if it is one of the following.
-     * <ul>
-     *     <li>SUCCESSFULLY_COMPLETED</li>
-     *     <li>USER_CANCELLED</li>
-     *     <li>FAILED</li>
-     * </ul>
-     * Also see {@link OperationStatus}
-     * @return true if operation is done/complete.
-     */
-    public boolean isDone() {
-        return status == OperationStatus.SUCCESSFULLY_COMPLETED
-            || status == OperationStatus.FAILED
-            || status == OperationStatus.USER_CANCELLED;
-    }
-
-    /**
-     * The value as a result of poll operation. This can be any custom user defined object.
+     * The value returned as a result of the last successful poll operation. This can be any custom user defined object,
+     * or null if no value was returned from the service.
      *
      * @return T result of poll operation.
      */
@@ -133,7 +122,8 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Returns retry after duration which indicate when next polling should happen.
+     * Returns the delay the service has requested until the next polling operation is performed. A null or negative value will be
+     * taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
      * @return Duration How long to wait before next retry.
      */
     public Duration getRetryAfter() {
@@ -141,8 +131,8 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Various config properties which could be used by poll operation. See more detail about poll operation in {@link Poller}
-     * @return Map of properties to be used by poll operation
+     * A map of properties provided by the service that will be made available into the next poll operation.
+     * @return Map of properties that were returned from the service, and which will be made available into the next poll operation.
      */
     public Map<Object, Object> getProperties() {
         return properties;

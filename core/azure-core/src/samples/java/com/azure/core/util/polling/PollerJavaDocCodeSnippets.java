@@ -17,26 +17,26 @@ public final class PollerJavaDocCodeSnippets {
 
     private boolean debug = true;
 
-    private Function<PollResponse<MyResponse>, Mono<PollResponse<MyResponse>>> createPollOperation(
-        PollResponse<MyResponse> inProResp,
-        PollResponse<MyResponse> finalPollResponse,
+    private Function<PollResponse<String>, Mono<PollResponse<String>>> createPollOperation(
+        PollResponse<String> inProResp,
+        PollResponse<String> finalPollResponse,
         long sendFinalResponseInMillis
     ) {
-        return new Function<PollResponse<MyResponse>, Mono<PollResponse<MyResponse>>>() {
+        return new Function<PollResponse<String>, Mono<PollResponse<String>>>() {
 
             // Will return success after this time.
             LocalDateTime timeToReturnFinalResponse
                 = LocalDateTime.now().plus(Duration.ofMillis(sendFinalResponseInMillis));
 
             @Override
-            public Mono<PollResponse<MyResponse>> apply(PollResponse<MyResponse> prePollResponse) {
+            public Mono<PollResponse<String>> apply(PollResponse<String> prePollResponse) {
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                     System.out.println(" Service poll function called  returning intermediate response "
-                        + inProResp.getValue().response);
+                        + inProResp.getValue());
                     return Mono.just(inProResp);
                 } else {
                     System.out.println(" Service poll function called   returning final response "
-                        + finalPollResponse.getValue().response);
+                        + finalPollResponse.getValue());
                     return Mono.just(finalPollResponse);
                 }
             }
@@ -47,40 +47,40 @@ public final class PollerJavaDocCodeSnippets {
      * Initialise and subscribe snippet
      */
     public void initialiseAndSubscribe() {
-        PollResponse<MyResponse> finalPollResponse =
-            new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new MyResponse("Created : Cert A"));
-        PollResponse<MyResponse> inProgressResp =
-            new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new MyResponse("Starting : Cert A"));
+        PollResponse<String> finalPollResponse =
+            new PollResponse<String>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
+        PollResponse<String> inProgressResp =
+            new PollResponse<String>(PollResponse.OperationStatus.IN_PROGRESS, "Operation in progress.");
 
         long totalTimeoutInMillis = 1000 * 2;
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
         Duration pollInterval = Duration.ofMillis(100);
-        // Define my custom poll Operation. Assumption : Poll Operation will return user defined custom class MyResponse.
-        Function<PollResponse<MyResponse>, Mono<PollResponse<MyResponse>>> pollOperation =
-            new Function<PollResponse<MyResponse>, Mono<PollResponse<MyResponse>>>() {
+        // Assumption : Poll Operation will return a String type in our example.
+        Function<PollResponse<String>, Mono<PollResponse<String>>> pollOperation =
+            new Function<PollResponse<String>, Mono<PollResponse<String>>>() {
                 // Will return success after this time.
                 LocalDateTime timeToReturnFinalResponse
                     = LocalDateTime.now().plus(Duration.ofMillis(800));
 
                 @Override
-                public Mono<PollResponse<MyResponse>> apply(PollResponse<MyResponse> prePollResponse) {
+                public Mono<PollResponse<String>> apply(PollResponse<String> prePollResponse) {
                     if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
-                        System.out.println("returning intermediate response " + inProgressResp.getValue().response);
+                        System.out.println("returning intermediate response " + inProgressResp.getValue());
                         return Mono.just(inProgressResp);
                     } else {
-                        System.out.println("returning final response " + finalPollResponse.getValue().response);
+                        System.out.println("returning final response " + finalPollResponse.getValue());
                         return Mono.just(finalPollResponse);
                     }
                 }
             };
 
         //Create poller instance
-        Poller<MyResponse> myPoller = new Poller<>(pollInterval, pollOperation);
+        Poller<String> myPoller = new Poller<>(pollInterval, pollOperation);
 
         // Listen to poll responses
         myPoller.getObserver().subscribe(pr -> {
             //process poll response
-            System.out.println("Got Response status,value " + pr.getStatus().toString() + " " + pr.getValue().response);
+            System.out.println("Got Response status,value " + pr.getStatus().toString() + " " + pr.getValue());
         });
         // Do something else
 
@@ -92,10 +92,10 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void block() {
 
-        Poller<MyResponse> myPoller = null;
+        Poller<String> myPoller = null;
 
         // BEGIN: com.azure.core.util.polling.poller.block
-        PollResponse<MyResponse> myFinalResponse = myPoller.block();
+        PollResponse<String> myFinalResponse = myPoller.block();
         System.out.println("Polling complete final status , value=  "
             + myFinalResponse.getStatus().toString() + "," + myFinalResponse.getValue());
         // END: com.azure.core.util.polling.poller.block
@@ -106,7 +106,7 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void setAutoPollingFalse() {
 
-        Poller<MyResponse> myPoller = null;
+        Poller<String> myPoller = null;
 
         // BEGIN: com.azure.core.util.polling.poller.disableautopolling
         myPoller.setAutoPollingEnabled(false);
@@ -119,7 +119,7 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void setAutoPollingTrue() {
 
-        Poller<MyResponse> myPoller = null;
+        Poller<String> myPoller = null;
 
         // BEGIN: com.azure.core.util.polling.poller.enableautopolling
         myPoller.setAutoPollingEnabled(true);
@@ -133,13 +133,14 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void poll() {
 
-        Poller<MyResponse> myPoller = null;
+        Poller<String> myPoller = null;
 
         // BEGIN: com.azure.core.util.polling.poller.poll
         myPoller.setAutoPollingEnabled(false);
-        PollResponse<MyResponse> pollResponse = null;
-        // We assume that we get SUCCESSFULLY_COMPLETED status from pollOperation when polling is done.
-        while (pollResponse == null || !pollResponse.isDone()) {
+        PollResponse<String> pollResponse = null;
+        // We assume that we get SUCCESSFULLY_COMPLETED status from pollOperation when polling is complete.
+        while (pollResponse != null
+            && pollResponse.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
             pollResponse = myPoller.poll().block();
             try {
                 Thread.sleep(500);
@@ -155,14 +156,16 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void pollIndepth() {
 
-        Poller<MyResponse> myPoller = null;
+        Poller<String> myPoller = null;
 
         // BEGIN: com.azure.core.util.polling.poller.poll.indepth
-        // Turn off auto polling and we will take control of polling
+        // Turn off auto polling and this code will take control of polling
         myPoller.setAutoPollingEnabled(false);
 
-        PollResponse<MyResponse> pollResponse = null;
-        while (pollResponse == null || !pollResponse.isDone()) {
+        PollResponse<String> pollResponse = null;
+        while (pollResponse == null
+            || pollResponse.getStatus() == PollResponse.OperationStatus.IN_PROGRESS
+            || pollResponse.getStatus() == PollResponse.OperationStatus.NOT_STARTED) {
             // get one poll Response at a time..
             pollResponse = myPoller.poll().block();
             System.out.println("Poll response status  " + pollResponse.getStatus().toString());
@@ -175,17 +178,5 @@ public final class PollerJavaDocCodeSnippets {
         }
         System.out.println("Polling complete with status  " + myPoller.getStatus().toString());
         // END: com.azure.core.util.polling.poller.poll.indepth
-    }
-
-    class MyResponse {
-        String response;
-
-        MyResponse(String response) {
-            this.response = response;
-        }
-
-        public String toString() {
-            return response;
-        }
     }
 }

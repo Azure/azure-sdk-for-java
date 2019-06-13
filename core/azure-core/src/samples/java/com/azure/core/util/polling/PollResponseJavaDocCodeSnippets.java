@@ -24,8 +24,9 @@ public final class PollResponseJavaDocCodeSnippets<T> {
     public void initialise(PollResponse.OperationStatus status, T value) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value
         // Lets say we want to crete poll response with status as IN_PROGRESS
-        PollResponse<MyResponse> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new MyResponse("custom response string"));
+
+        PollResponse<String> inProgressPollResponse
+            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, "my custom response");
         // END: com.azure.core.util.polling.pollresponse.status.value
     }
 
@@ -46,8 +47,8 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         prop.put("customer.id", 2635342);
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
-        PollResponse<MyResponse> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new MyResponse("custom response string"),
+        PollResponse<String> inProgressPollResponse
+            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, "mycustom response",
             Duration.ofMillis(2000), prop);
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
     }
@@ -64,20 +65,9 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         // If nextRetry should happen after 2 seconds ...
-        PollResponse<MyResponse> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new MyResponse("custom response string"),
+        PollResponse<String> inProgressPollResponse
+            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS,  "my custom response",
             Duration.ofMillis(2000));
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter
-    }
-    class MyResponse {
-        String response;
-
-        MyResponse(String response) {
-            this.response = response;
-        }
-
-        public String toString() {
-            return response;
-        }
     }
 }

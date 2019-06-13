@@ -63,14 +63,10 @@ public class PollerTests {
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
-            successPollResponse, 1500);
+                successPollResponse, 1500);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
-        createCertPoller.getObserver().subscribe(pr -> {
-            debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
-        }, e -> {
-            debug("Got Error " + e.getMessage());
-        });
+        createCertPoller.getObserver().subscribe();
 
         Thread t = new Thread() {
             @Override
@@ -107,7 +103,7 @@ public class PollerTests {
 
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-        
+
         int totalTileInSeconds = 5;
         long totalTimeoutInMillis = 1000 * totalTileInSeconds;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
@@ -121,7 +117,7 @@ public class PollerTests {
         new Thread().sleep(6 * pollInterval.toMillis());
         debug("Try to disable autopolling..");
         createCertPoller.setAutoPollingEnabled(false);
-        
+
         Thread.sleep(totalTimeoutInMillis);
         debug("Try to enable autopolling..");
         createCertPoller.setAutoPollingEnabled(true);
@@ -205,9 +201,9 @@ public class PollerTests {
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
                 successPollResponse, totalTimeoutInMillis / 2);
-       
+
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
-        
+
         assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
@@ -339,6 +335,7 @@ public class PollerTests {
         public void setResponse(String st) {
             response = st;
         }
+
         public String toString() {
             return response;
         }
