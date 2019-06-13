@@ -32,7 +32,13 @@ import java.nio.ByteBuffer;
  *
  * <p>
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
- * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
+ * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options. This
+ * client can be converted into one of these clients easily through the methods {@link #asBlockBlobAsyncClient},
+ * {@link #asPageBlobAsyncClient}, and {@link #asAppendBlobAsyncClient()}.
+ *
+ * <p>
+ * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
+ * and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>

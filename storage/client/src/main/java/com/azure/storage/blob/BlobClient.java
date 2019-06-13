@@ -29,7 +29,13 @@ import java.time.Duration;
  *
  * <p>
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
- * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
+ * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options. This
+ * client can be converted into one of these clients easily through the methods {@link #asBlockBlobClient}, {@link #asPageBlobClient},
+ * and {@link #asAppendBlobClient}.
+ *
+ * <p>
+ * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient},
+ * and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>

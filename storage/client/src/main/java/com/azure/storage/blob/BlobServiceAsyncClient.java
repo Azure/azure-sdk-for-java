@@ -22,6 +22,10 @@ import java.time.OffsetDateTime;
  * It may also be used to construct URLs to blobs and containers.
  *
  * <p>
+ * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient}
+ * through {@link #createContainerAsyncClient(String)}, and operations on a blob are available on {@link BlobAsyncClient}.
+ *
+ * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  *
@@ -82,10 +86,7 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
-     * Returns a Mono segment of containers starting from the specified Marker.
-     * Use an empty marker to start enumeration from the beginning. Container names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListContainers again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see
+     * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @param options
@@ -99,10 +100,7 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
-     * Returns a Mono segment of containers starting from the specified Marker.
-     * Use an empty marker to start enumeration from the beginning. Container names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListContainers again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see
+     * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @param options

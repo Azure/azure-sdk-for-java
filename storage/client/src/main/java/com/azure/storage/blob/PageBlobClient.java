@@ -33,6 +33,10 @@ import java.time.Duration;
  * requests to the resource on the service.
  *
  * <p>
+ * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient},
+ * and operations on the service are available on {@link BlobServiceClient}.
+ *
+ * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */

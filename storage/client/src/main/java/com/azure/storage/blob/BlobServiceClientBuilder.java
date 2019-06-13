@@ -33,8 +33,8 @@ import java.util.Objects;
  * The following information must be provided on this builder:
  *
  * <p><ul>
- *     <li>the endpoint through {@code .endpoint()}
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()}
+ *     <li>the endpoint through {@code .endpoint()}, in the format of {@code https://{accountName}.blob.core.windows.net}.
+ *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>

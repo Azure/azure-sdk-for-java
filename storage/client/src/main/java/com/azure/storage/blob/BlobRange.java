@@ -27,7 +27,7 @@ public final class BlobRange {
     }
 
     /**
-     * The start of the range. Must be greater than or equal to 0.
+     * Specifies the start of the range. Must be greater than or equal to 0.
      */
     public BlobRange offset(long offset) {
         if (offset < 0) {
@@ -45,7 +45,7 @@ public final class BlobRange {
     }
 
     /**
-     * How many bytes to include in the range. Must be greater than or equal to 0 if specified.
+     * Specifies how many bytes to include in the range. Must be greater than or equal to 0 if specified.
      */
     public BlobRange count(Long count) {
         if (count != null && count < 0) {

@@ -28,6 +28,10 @@ import java.util.List;
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
  * <p>
+ * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
+ * {@link #createBlobAsyncClient(String)}, and operations on the service are available on {@link BlobServiceAsyncClient}.
+ *
+ * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  *
@@ -395,10 +399,10 @@ public final class ContainerAsyncClient {
 
 
     /**
-     * Returns a single segment of blobs starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param options
@@ -412,10 +416,10 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a single segment of blobs starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param options
