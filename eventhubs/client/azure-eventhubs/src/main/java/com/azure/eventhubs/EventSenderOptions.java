@@ -40,10 +40,9 @@ public class EventSenderOptions implements Cloneable {
 
     /**
      * Sets the default timeout to apply when sending events. If the timeout is reached, before the Event Hub
-     * acknowledges receipt of the event data being sent, the attempt will be considered failed and considered to be
-     * retried.
+     * acknowledges receipt of the event data being sent, the attempt will be considered failed and will be retried.
      *
-     * @param timeout The timeout to apply when sedning events.
+     * @param timeout The timeout to apply when sending events.
      * @return The updated EventSenderOptions object.
      */
     public EventSenderOptions timeout(Duration timeout) {

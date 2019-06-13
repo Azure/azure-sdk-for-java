@@ -17,7 +17,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Manages the re-authorisation of the client to the token audience against the CBS node.
+ * Manages the re-authorization of the client to the token audience against the CBS node.
  */
 class ActiveClientTokenManager implements Closeable {
     private final ServiceLogger logger = new ServiceLogger(ActiveClientTokenManager.class);
@@ -26,7 +26,7 @@ class ActiveClientTokenManager implements Closeable {
     private final String tokenAudience;
     private final Duration tokenValidity;
     private final Duration refreshInterval;
-    private Timer timer;
+    private final Timer timer;
     private final Flux<AmqpResponseCode> authorizationResults;
     private FluxSink<AmqpResponseCode> sink;
 
@@ -40,17 +40,17 @@ class ActiveClientTokenManager implements Closeable {
     }
 
     /**
-     * Gets a flux of the periodic authorisation results from the CBS node. Errors are returned on the Flux if
+     * Gets a flux of the periodic authorization results from the CBS node. Errors are returned on the Flux if
      * authorization is unsuccessful.
      *
-     * @return A Flux of authorisation results from the CBS node.
+     * @return A Flux of authorization results from the CBS node.
      */
     Flux<AmqpResponseCode> getAuthorizationResults() {
         return authorizationResults;
     }
 
     /**
-     * Invokes an authorisation call on the CBS node.
+     * Invokes an authorization call on the CBS node.
      */
     Mono<Void> authorize() {
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, tokenValidity))
