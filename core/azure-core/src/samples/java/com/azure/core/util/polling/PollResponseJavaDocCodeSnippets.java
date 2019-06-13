@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.util.polling;
 
 import java.time.Duration;
@@ -14,7 +17,9 @@ import java.util.Map;
 public final class PollResponseJavaDocCodeSnippets<T> {
 
     /**
-     * Initialise and subscribe snippet
+     * initialise
+     * @param status v
+     * @param value v
      */
     public void initialise(PollResponse.OperationStatus status, T value) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value
@@ -26,13 +31,17 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
     /**
      * Initialise and subscribe snippet
+     * @param status v
+     * @param value v
+     * @param retryAfter v
+     * @param properties v
      */
     public void initialise(PollResponse.OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
 
         // We can store some properties which we might need to execute poll Operation call.
 
-        Map<Object, Object> prop =  new HashMap<Object, Object> ();
+        Map<Object, Object> prop =  new HashMap<>();
         prop.put("service.url", "http://azure.service.url" );
         prop.put("customer.id", 2635342 );
 
@@ -46,6 +55,9 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
     /**
      * Initialise and subscribe snippet
+     * @param status v
+     * @param value v
+     * @param retryAfter v
      */
     public void initialise(PollResponse.OperationStatus status, T value, Duration retryAfter) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value.retryAfter

@@ -64,11 +64,13 @@ public class PollerTests {
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
             createPollOperation(inProgressPollResponse,
-            successPollResponse, 800);
+            successPollResponse, 1500);
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         createCertPoller.getObserver().subscribe(pr -> {
             debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
+        }, e -> {
+        	debug("Got Error " + e.getMessage());
         });
 
         Thread t = new Thread() {
@@ -82,6 +84,7 @@ public class PollerTests {
                     Thread.sleep(1000);
                     debug("Thread to enable Polling .. Sleeping ");
                     createCertPoller.setAutoPollingEnabled(true);
+
                 } catch (Exception e) {
                 }
             }
@@ -314,12 +317,6 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.USER_CANCELLED);
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-    }
-
-    private void showResults(Collection<PollResponse<CreateCertificateResponse>> al) {
-        for (PollResponse<CreateCertificateResponse> pr : al) {
-            debug("done response status, data=  ", pr.getValue().response, " , " + pr.getStatus().toString());
-        }
     }
 
     private void debug(String... messages) {

@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,6 +19,11 @@ import java.util.function.Function;
  * It uses {@link Flux} from reactive programming model to achieve auto polling.
  * It has function for usual operation of a poller. For example listen/observe poll responses, enable/disable auto polling,
  * manual polling, wait for polling to complete and get status of current polling.
+ *
+ * {@link Mono} from poll operation should never return Mono.error(). If any unexpected
+ * scenario happens in poll operation, it should catch it and return a valid PollResponse.
+ * This is because poller does not know what to do in case on Mono.error().
+ * and we will continue to poll in this scenario
  *
  * <p><strong>Code Samples</strong></p>
  *
@@ -89,6 +95,11 @@ public class Poller<T> {
      *
      * @param pollInterval Not null  and greater than zero poll interval. It ensure that polling happens only once in given pollInterval.
      * @param pollOperation to be called by poller. It should not return {@code null}. The response should always have valid {@link com.azure.core.util.polling.PollResponse.OperationStatus}
+     * Mono from pollOperation should never return Mono.error(). If any unexpected
+     * scenario happens in pollOperation, it should catch it and return a valid PollResponse.
+     * This is because poller does not know what to do in case on Mono.error() and user always expect {@link PollResponse}
+     * and we will continue to poll in this scenario.
+     *
      * @throws NullPointerException If it is {@code null} for {@code  pollInterval pollOperation}.
      * @throws IllegalArgumentException if {@code  pollInterval} is negative or zero
      */
@@ -194,11 +205,21 @@ public class Poller<T> {
 
     /*
      * This function will apply delay and call poll operation function async.
+     * We expect Mono from pollOperation should never return Mono.error() . If any unexpected
+     * scenario happens in pollOperation, it should catch it and return a valid PollResponse.
+     * This is because poller does not know what to do in case on Mono.error.
+     * This function will return empty mono in case of Mono.error() returned by poll operation.
+     *
      * @return mono of poll response
      */
     private Mono<PollResponse<T>> asyncPollRequestWithDelay() {
         return  Mono.defer(() -> this.pollOperation.apply(this.pollResponse)
             .delaySubscription(getCurrentDelay())
+            .onErrorResume(throwable -> {
+                // We should never get here and since we want to continue polling
+                //Log the error
+                return Mono.empty();
+            })
             .doOnEach(pollResponseSignal -> {
                 if (pollResponseSignal.get() != null) {
                     this.pollResponse = pollResponseSignal.get();
@@ -209,7 +230,10 @@ public class Poller<T> {
     private Duration getCurrentDelay() {
         return (this.pollResponse != null && this.pollResponse.getRetryAfter() != null) ? this.pollResponse.getRetryAfter() : this.pollInterval;
     }
-
+    private PollResponse<T> getRError(){
+        System.out.println("Poller Error from poller operation.. ");
+        return pollResponse;
+    }
     /**
      * Provide control to turn auto polling <strong>on or off</strong>. Once auto polling is turned off, it is <strong>user's responsibility</strong>
      * to turn it back on.
