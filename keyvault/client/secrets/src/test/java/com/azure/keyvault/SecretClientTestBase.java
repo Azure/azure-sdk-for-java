@@ -10,11 +10,15 @@ import com.azure.core.test.TestBase;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.aad.adal4j.ClientCredential;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
@@ -22,6 +26,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -64,11 +72,13 @@ public abstract class SecretClientTestBase extends TestBase {
         TokenCredential credential = new TokenCredential() {
             @Override
             public Mono<String> getTokenAsync(String resource) {
-                String authority = "https://login.microsoftonline.com/{tenantId}";
-                String auth = authority.replace("{tenantId}", tenantId);
-                KeyvaultCredentials creds =  new KeyvaultCredentials(auth, clientId,
-                        clientKey, "https://vault.azure.net");
-                return Mono.just(creds.authorizationHeaderValue("a"));
+                String token = "";
+                try {
+                    token =  getAccessToken(tenantId, clientId, clientKey);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return Mono.just(token);
             }
         };
 
@@ -78,6 +88,24 @@ public abstract class SecretClientTestBase extends TestBase {
         client = clientBuilder.apply(credential);
 
         return Objects.requireNonNull(client);
+    }
+
+    private String getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
+        String authority = "https://login.microsoftonline.com/{tenantId}";
+        String auth = authority.replace("{tenantId}", tenantId);
+        KeyvaultCredentials creds =  new KeyvaultCredentials(auth, clientId,
+                clientKey, "https://vault.azure.net");
+
+        ExecutorService service = Executors.newFixedThreadPool(1);
+        AuthenticationContext context = new AuthenticationContext(authority, true, service);
+        // Acquire Token
+        Future<AuthenticationResult> result = context.acquireToken(
+                "https://vault.azure.net",
+                new ClientCredential(clientId, clientKey),
+                null
+        );
+        String token = result.get().getAccessToken();
+        return token;
     }
 
     @Test
