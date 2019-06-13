@@ -109,6 +109,6 @@ public class EventReceiver implements Closeable {
      * @return A stream of events for this receiver.
      */
     public Flux<EventData> receive() {
-        return eventDataConnectableFlux;
+        return this.receiveLinkMono.thenMany(eventDataConnectableFlux);
     }
 }
