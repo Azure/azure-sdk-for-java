@@ -358,14 +358,13 @@ public final class MSICredentials{
     /**
      * Sleep for timeToWait or time remaining until timeout reached.
      * @param timeToWaitinMs Time to wait in milliseconds
-     * @param startTime Abcolute tim in milliseconds
+     * @param startTime Absolute tim in milliseconds
      * @return true if we used the custom timeout.
      */
     private boolean sleep(int timeToWaitinMs, long startTime) {
         long timeToSleep = 0;
 
         if (this.customTimeout > -1) {
-            //timeToSleep = ;
             long timeRemainingToTimeout = (startTime + this.customTimeout - Calendar.getInstance().getTime().getTime());
             timeRemainingToTimeout = (timeToWaitinMs < timeRemainingToTimeout) ? timeToWaitinMs : timeRemainingToTimeout;
             timeToSleep = (timeRemainingToTimeout > 0) ? timeRemainingToTimeout : 0;
