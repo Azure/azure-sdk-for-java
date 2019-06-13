@@ -57,7 +57,7 @@ public final class TestConfigurations {
     public static String CONSISTENCY =
             System.getProperty("ACCOUNT_CONSISTENCY",
                                StringUtils.defaultString(Strings.emptyToNull(
-                                       System.getenv().get("ACCOUNT_CONSISTENCY")), "STRONG"));
+                                       System.getenv().get("ACCOUNT_CONSISTENCY")), "Strong"));
 
     public static String PREFERRED_LOCATIONS =
             System.getProperty("PREFERRED_LOCATIONS",

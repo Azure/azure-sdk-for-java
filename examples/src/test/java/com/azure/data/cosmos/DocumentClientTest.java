@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
 
 public abstract class DocumentClientTest implements ITest {
 
-    private final AsyncDocumentClient.Builder clientBuilder;;
+    private final AsyncDocumentClient.Builder clientBuilder;
     private String testName;
 
     public DocumentClientTest() {

@@ -33,7 +33,8 @@ public class ParsingEnvTest {
 
     @Test(groups = "unit")
     public void parseDesiredConsistencies() {
-        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"SESSION\" , \"STRONG\" ]")).containsExactly(
+        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"BoundedStaleness\" ]")).containsExactly(ConsistencyLevel.BOUNDED_STALENESS);
+        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"Session\" , \"Strong\" ]")).containsExactly(
                 ConsistencyLevel.SESSION, ConsistencyLevel.STRONG);
     }
 
@@ -49,6 +50,15 @@ public class ParsingEnvTest {
     }
 
     @Test(groups = "unit")
+    public void parseAccountConsistency() {
+        assertThat(TestSuiteBase.parseConsistency("Strong")).isEqualTo(ConsistencyLevel.STRONG);
+        assertThat(TestSuiteBase.parseConsistency("Session")).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat(TestSuiteBase.parseConsistency("BoundedStaleness")).isEqualTo(ConsistencyLevel.BOUNDED_STALENESS);
+        assertThat(TestSuiteBase.parseConsistency("ConsistentPrefix")).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
+        assertThat(TestSuiteBase.parseConsistency("Eventual")).isEqualTo(ConsistencyLevel.EVENTUAL);
+    }
+
+    @Test(groups = "unit")
     public void parsePreferredLocation() {
         assertThat(TestSuiteBase.parsePreferredLocation("[ \"central us\" , \"central us2\" ]"))
                 .containsExactly("central us", "central us2");
@@ -61,6 +71,6 @@ public class ParsingEnvTest {
 
     @Test(groups = "unit")
     public void protocols() {
-        assertThat(TestSuiteBase.parseProtocols("[ \"TCP\" , \"HTTPS\" ]")).containsExactly(Protocol.TCP, Protocol.HTTPS);
+        assertThat(TestSuiteBase.parseProtocols("[ \"Tcp\" , \"Https\" ]")).containsExactly(Protocol.TCP, Protocol.HTTPS);
     }
 }

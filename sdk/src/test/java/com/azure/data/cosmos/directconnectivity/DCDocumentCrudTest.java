@@ -47,7 +47,6 @@ import com.azure.data.cosmos.rx.FeedResponseListValidator;
 import com.azure.data.cosmos.rx.ResourceResponseValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import org.mockito.stubbing.Answer;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;

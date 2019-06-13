@@ -23,7 +23,6 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 /**

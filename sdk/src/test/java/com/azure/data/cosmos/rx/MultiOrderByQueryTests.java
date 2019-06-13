@@ -32,7 +32,6 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosContainerSettings;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
