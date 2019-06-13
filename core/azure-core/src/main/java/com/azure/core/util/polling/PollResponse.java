@@ -28,7 +28,7 @@ public final class PollResponse<T> {
     private final Map<Object, Object> properties;
 
     /**
-     * An enum to represent all possible states that a long-running operation could exist in.
+     * An enum to represent all possible states that a long running operation may find itself in.
      * The poll operation is considered <strong>complete</strong> when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
     public enum OperationStatus {
