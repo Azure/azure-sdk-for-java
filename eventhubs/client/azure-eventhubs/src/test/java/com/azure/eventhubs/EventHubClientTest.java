@@ -42,6 +42,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests scenarios on {@link EventHubClient}.
  */
 public class EventHubClientTest extends ApiTestBase {
+    private static final String PARTITION_ID = "0";
+
     private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
 
     private EventHubClient client;
@@ -226,7 +228,7 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId("0");
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
@@ -260,6 +262,34 @@ public class EventHubClientTest extends ApiTestBase {
                 .expectComplete()
                 .verify();
         }
+    }
+
+    @Test
+    public void receiveMessage() throws InterruptedException, IOException {
+        // Arrange
+        final int numberOfEvents = 10;
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .prefetchCount(2)
+            .beginReceivingAt(EventPosition.firstAvailableEvent());
+        final EventReceiver receiver = client.createReceiver(PARTITION_ID, options);
+
+        // Act & Assert
+        StepVerifier.create(receiver.receive().take(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .expectComplete()
+            .verify();
+
+
+//        final Flux<EventData> take = receiver.receive().take(10);
+//        take.subscribe(e -> {
+//            logger.asInfo().log("Date: {}. Event Received: {}.", e.enqueuedTime(), e.sequenceNumber());
+//        }, error -> {
+//            Assert.fail("Receiving threw an exception" + error.toString());
+//        }, () -> {
+//            logger.asInfo().log("Completed receive.");
+//        });
+//
+//        Thread.sleep(Duration.ofSeconds(20).toMillis());
     }
 
     @Override
