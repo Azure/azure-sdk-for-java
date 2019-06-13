@@ -298,7 +298,6 @@ public class EventHubClientTest extends ApiTestBase {
                     throw new IllegalArgumentException("Test mode not recognized.");
             }
 
-            final Instant now = Instant.now();
             this.properties = new EventHubProperties(eventHubPath, Instant.EPOCH, partitionIds);
             this.partitionPropertiesMap = new HashMap<>();
 
@@ -307,7 +306,7 @@ public class EventHubClientTest extends ApiTestBase {
 
                 this.partitionPropertiesMap.put(key, new PartitionProperties(
                     eventHubPath, key, -1, -1,
-                    "lastEnqueued", Instant.now(), true, now));
+                    "lastEnqueued", Instant.now(), true));
             }
         }
 
