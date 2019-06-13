@@ -7,6 +7,7 @@ import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
+import com.azure.storage.file.models.ListSharesOptions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -20,6 +21,7 @@ abstract class FileServiceClientTestsBase extends TestBase {
     private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
     private final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
 
+    final String shareNamePrefix = "share";
     String shareName;
 
     @Rule
@@ -30,7 +32,7 @@ abstract class FileServiceClientTestsBase extends TestBase {
         return testName.getMethodName();
     }
 
-    <T> T clientSetup(BiFunction<String, String, T> clientBuilder) {
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
         String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
         String endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
 
@@ -44,7 +46,11 @@ abstract class FileServiceClientTestsBase extends TestBase {
     }
 
     String getShareName() {
-        return testResourceNamer.randomName("file", 16).toLowerCase();
+        return testResourceNamer.randomName(shareNamePrefix, 16).toLowerCase();
+    }
+
+    ListSharesOptions defaultOptions() {
+        return new ListSharesOptions().prefix(shareName);
     }
 
     @Test

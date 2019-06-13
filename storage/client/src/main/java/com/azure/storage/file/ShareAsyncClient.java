@@ -52,8 +52,16 @@ public class ShareAsyncClient {
         throw new UnsupportedOperationException();
     }
 
-    public Mono<Response<ShareInfo>> create(Map<String, String> metadata, int quotaInGB) {
+    public Mono<Response<ShareInfo>> create() {
+        return create(null, null);
+    }
+
+    public Mono<Response<ShareInfo>> create(Map<String, String> metadata, Integer quotaInGB) {
         throw new UnsupportedOperationException();
+    }
+
+    public Mono<Response<ShareSnapshotInfo>> createSnapshot() {
+        return createSnapshot(null);
     }
 
     public Mono<Response<ShareSnapshotInfo>> createSnapshot(Map<String, String> metadata) {
