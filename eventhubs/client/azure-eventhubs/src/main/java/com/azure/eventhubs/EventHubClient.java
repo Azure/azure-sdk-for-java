@@ -12,6 +12,7 @@ import com.azure.eventhubs.implementation.AmqpSendLink;
 import com.azure.eventhubs.implementation.ConnectionParameters;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
+import com.azure.eventhubs.implementation.EventHubSession;
 import com.azure.eventhubs.implementation.ManagementChannel;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
@@ -192,10 +193,17 @@ public class EventHubClient implements Closeable {
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, options.consumerGroup(), partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
-            .flatMap(session -> session.createReceiver(linkName, entityPath, connectionParameters.timeout(), clonedOptions.retry())
-                .cast(AmqpReceiveLink.class)))
-            .publish(x -> x);
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
+            .cast(EventHubSession.class)
+            .flatMap(session -> {
+                final Long priority = options.exclusiveReceiverPriority().isPresent()
+                    ? options.exclusiveReceiverPriority().get()
+                    : null;
+
+                return session.createReceiver(linkName, entityPath, connectionParameters.timeout(),
+                    clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
+            })
+            .cast(AmqpReceiveLink.class);
 
         return new EventReceiver(receiveLinkMono, clonedOptions, connectionParameters.timeout());
     }
