@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix0",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix0",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "65f46ff9-8003-003f-43a9-2178f7000000"
+      "x-ms-request-id" : "f58c505a-0003-0048-45ab-21fdb6000000"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f601",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue718550641",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "65f47015-8003-003f-5ea9-2178f7000000"
+      "x-ms-request-id" : "f58c5064-0003-0048-4cab-21fdb6000000"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix2",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "65f47036-8003-003f-7ea9-2178f7000000"
+      "x-ms-request-id" : "f58c506a-0003-0048-50ab-21fdb6000000"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue64002f60prefix&comp=list",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue71855064prefix&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-ms-version" : "2018-03-28",
@@ -63,18 +63,18 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "200",
-      "x-ms-request-id" : "65f47054-8003-003f-1ba9-2178f7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue64002f60prefix</Prefix><Queues><Queue><Name>queue64002f60prefix0</Name></Queue><Queue><Name>queue64002f60prefix2</Name></Queue></Queues><NextMarker /></EnumerationResults>"
+      "x-ms-request-id" : "f58c5071-0003-0048-54ab-21fdb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue71855064prefix</Prefix><Queues><Queue><Name>queue71855064prefix0</Name></Queue><Queue><Name>queue71855064prefix2</Name></Queue></Queues><NextMarker /></EnumerationResults>"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue64002f60&comp=list",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue71855064&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-ms-version" : "2018-03-28",
@@ -82,105 +82,105 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "200",
-      "x-ms-request-id" : "65f4706e-8003-003f-33a9-2178f7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue64002f60</Prefix><Queues><Queue><Name>queue64002f601</Name></Queue><Queue><Name>queue64002f60prefix0</Name></Queue><Queue><Name>queue64002f60prefix2</Name></Queue></Queues><NextMarker /></EnumerationResults>"
+      "x-ms-request-id" : "f58c5074-0003-0048-56ab-21fdb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue71855064</Prefix><Queues><Queue><Name>queue718550641</Name></Queue><Queue><Name>queue71855064prefix0</Name></Queue><Queue><Name>queue71855064prefix2</Name></Queue></Queues><NextMarker /></EnumerationResults>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f601/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue718550641/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f47084-8003-003f-48a9-2178f7000000"
+      "x-ms-request-id" : "f58c5079-0003-0048-5aab-21fdb6000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f601",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue718550641",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f47095-8003-003f-58a9-2178f7000000"
+      "x-ms-request-id" : "f58c507e-0003-0048-5eab-21fdb6000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix0/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix0/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f470a7-8003-003f-6aa9-2178f7000000"
+      "x-ms-request-id" : "f58c5085-0003-0048-63ab-21fdb6000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix0",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix0",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f470bc-8003-003f-7ea9-2178f7000000"
+      "x-ms-request-id" : "f58c508a-0003-0048-67ab-21fdb6000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix2/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix2/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f47123-8003-003f-62a9-2178f7000000"
+      "x-ms-request-id" : "f58c508e-0003-0048-6aab-21fdb6000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64002f60prefix2",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71855064prefix2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:31:16 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:55 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "65f4712e-8003-003f-6ca9-2178f7000000"
+      "x-ms-request-id" : "f58c5092-0003-0048-6dab-21fdb6000000"
     }
   } ],
-  "variables" : [ "queue64002f60" ]
+  "variables" : [ "queue71855064" ]
 }

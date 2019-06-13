@@ -1,14 +1,14 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue57373998?comp=acl",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue5812197f?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:36:18 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:48 GMT",
       "content-length" : "294",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -16,18 +16,18 @@
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "53b6edd9-a003-0001-60a9-21ced6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:53b6edd9-a003-0001-60a9-21ced6000000\nTime:2019-06-13T05:36:18.5324092Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
+      "x-ms-request-id" : "f58c4ce8-0003-0048-51ab-21fdb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:f58c4ce8-0003-0048-51ab-21fdb6000000\nTime:2019-06-13T05:47:49.3038674Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue57373998/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue5812197f/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:36:18 GMT",
+      "date" : "Thu, 13 Jun 2019 05:47:48 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -35,9 +35,9 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "53b6eddc-a003-0001-63a9-21ced6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:53b6eddc-a003-0001-63a9-21ced6000000\nTime:2019-06-13T05:36:18.5694452Z</Message></Error>"
+      "x-ms-request-id" : "f58c4cec-0003-0048-55ab-21fdb6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:f58c4cec-0003-0048-55ab-21fdb6000000\nTime:2019-06-13T05:47:49.3409025Z</Message></Error>"
     }
   } ],
-  "variables" : [ "queue57373998" ]
+  "variables" : [ "queue5812197f" ]
 }
