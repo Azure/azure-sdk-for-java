@@ -809,6 +809,8 @@ public class TestSuiteBase extends DocumentClientTest {
             return null;
         }
 
+        protocols = protocols.toUpperCase();
+
         try {
             return objectMapper.readValue(protocols, new TypeReference<List<Protocol>>() {
             });
@@ -888,6 +890,7 @@ public class TestSuiteBase extends DocumentClientTest {
             return null;
         }
 
+        consistencies = consistencies.toUpperCase();
         try {
             return objectMapper.readValue(consistencies, new TypeReference<List<ConsistencyLevel>>() {
             });

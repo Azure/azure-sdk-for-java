@@ -29,8 +29,6 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosStoredProcedureSettings;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.directconnectivity.Protocol;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
