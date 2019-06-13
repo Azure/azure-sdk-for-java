@@ -52,7 +52,7 @@ public final class BlobServiceClient {
      * @return
      *      A new {@link BlobServiceClientBuilder} instance.
      */
-    public static BlobServiceClientBuilder builder() {
+    public static BlobServiceClientBuilder blobServiceClientBuilder() {
         return new BlobServiceClientBuilder();
     }
 
