@@ -1,0 +1,10 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      PomFilePath: './keyvault/data-plane/pom.xml'
+      EnvVars:
+        AZURE_TEST_MODE: RECORD
+        ARM_CLIENTID: $(java-keyvault-test-arm-client-id)
+        ARM_CLIENTKEY: $(java-keyvault-test-arm-client-key)
