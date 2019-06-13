@@ -14,7 +14,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -70,7 +69,7 @@ public class PollerTests {
         createCertPoller.getObserver().subscribe(pr -> {
             debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         }, e -> {
-        	debug("Got Error " + e.getMessage());
+            debug("Got Error " + e.getMessage());
         });
 
         Thread t = new Thread() {

@@ -11,7 +11,6 @@ import java.util.Objects;
  * Container of information related to polling and poll response. It will hold current polling status {@link OperationStatus} , T value,
  * retry after duration and various configuration properties.
  *
- * <p><strong>Container of PollResponse and related information.</strong></p>
  * @param <T> Type of poll response value
  *
  * @see OperationStatus
@@ -25,23 +24,23 @@ public final class PollResponse<T> {
     private final Map<Object, Object> properties;
 
     /**
-     * Represent various state of poll operation.
-     * The poll operation is considered complete/done when status is one of SUCCESSFULLY_COMPLETED/FAILED/USER_CANCELLED.
+     * An enum to represent all possible states that a long running operation.
+     * The poll operation is considered finished when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
     public enum OperationStatus {
-        /** Represents the state that polling has not started for Long Running Operation.*/
+        /** Represents the state that polling has not yet started for this long running operation.*/
         NOT_STARTED,
 
-        /** Represent the state that Long Running Operation is in progress and not completed/done .*/
+        /** Represent the state that this long running operation is in progress and not yet finished.*/
         IN_PROGRESS,
 
-        /** Represent the state that Long Running Operation is completed/done successfully. Long Running Operation is considered complete/done.*/
+        /** Represent the state that this long running operation is finished successfully.*/
         SUCCESSFULLY_COMPLETED,
 
-        /** Represent the state that Long Running Operation has failed. Long Running Operation is considered complete/done.*/
+        /** Represent the state that this long running operation has failed. This state indicate that long running operation is finished.*/
         FAILED,
 
-        /** Represent the state that Long Running Operation is cancelled by user. Long Running Operation is considered complete/done.*/
+        /** Represent the state that this long running operation is cancelled by user. This state indicate that long running operation is finished.*/
         USER_CANCELLED
     }
 

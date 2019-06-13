@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -194,10 +193,10 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks execution and wait for polling to complete. The polling is complete/done based on status defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
+     * Blocks execution and wait for polling to complete. The polling is considered finished based on status defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
      * Auto polling must be turned on for poller to continuously poll in background.
      *
-     * @return returns final poll response when polling is done.
+     * @return returns final poll response when polling is finished as defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
      */
     public PollResponse<T> block() {
         return this.fluxHandle.blockLast();
@@ -230,10 +229,7 @@ public class Poller<T> {
     private Duration getCurrentDelay() {
         return (this.pollResponse != null && this.pollResponse.getRetryAfter() != null) ? this.pollResponse.getRetryAfter() : this.pollInterval;
     }
-    private PollResponse<T> getRError(){
-        System.out.println("Poller Error from poller operation.. ");
-        return pollResponse;
-    }
+
     /**
      * Provide control to turn auto polling <strong>on or off</strong>. Once auto polling is turned off, it is <strong>user's responsibility</strong>
      * to turn it back on.

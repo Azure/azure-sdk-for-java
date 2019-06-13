@@ -42,8 +42,8 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // We can store some properties which we might need to execute poll Operation call.
 
         Map<Object, Object> prop =  new HashMap<>();
-        prop.put("service.url", "http://azure.service.url" );
-        prop.put("customer.id", 2635342 );
+        prop.put("service.url", "http://azure.service.url");
+        prop.put("customer.id", 2635342);
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<MyResponse> inProgressPollResponse
