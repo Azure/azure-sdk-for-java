@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.azure.data.cosmos.internal.Constants;
 
 public class SpatialSpec extends JsonSerializable {
 
@@ -62,6 +62,7 @@ public class SpatialSpec extends JsonSerializable {
      * Sets path.
      *
      * @param path the path.
+     * @return the SpatialSpec.
      */
     public SpatialSpec path(String path) {
         super.set(Constants.Properties.PATH, path);
@@ -75,7 +76,7 @@ public class SpatialSpec extends JsonSerializable {
      */
     public Collection<SpatialType> spatialTypes() {
         if (this.spatialTypes == null) {
-            this.spatialTypes = super.getCollection(Constants.Properties.TYPES, SpatialType.class);
+            this.spatialTypes = super.getCollection(Constants.Properties.TYPES, SpatialType.class, true);
 
             if (this.spatialTypes == null) {
                 this.spatialTypes = new ArrayList<SpatialType>();
@@ -89,12 +90,13 @@ public class SpatialSpec extends JsonSerializable {
      * Sets the collection of spatial types.
      *
      * @param spatialTypes the collection of spatial types.
+     * @return the SpatialSpec.
      */
     public SpatialSpec spatialTypes(Collection<SpatialType> spatialTypes) {
         this.spatialTypes = spatialTypes;
         Collection<String> spatialTypeNames = new ArrayList<String>();
         for (SpatialType spatialType : this.spatialTypes) {
-            spatialTypeNames.add(spatialType.name());
+            spatialTypeNames.add(spatialType.toString());
         }
         super.set(Constants.Properties.TYPES, spatialTypeNames);
         return this;

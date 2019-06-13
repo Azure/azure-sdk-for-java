@@ -23,8 +23,8 @@
 package com.azure.data.cosmos.changefeed.internal;
 
 import com.azure.data.cosmos.ChangeFeedObserver;
-import com.azure.data.cosmos.changefeed.CheckpointFrequency;
 import com.azure.data.cosmos.ChangeFeedObserverFactory;
+import com.azure.data.cosmos.changefeed.CheckpointFrequency;
 
 /**
  * Factory class used to create instance(s) of {@link ChangeFeedObserver}.

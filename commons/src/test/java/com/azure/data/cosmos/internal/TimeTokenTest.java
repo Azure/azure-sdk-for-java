@@ -23,12 +23,12 @@
 
 package com.azure.data.cosmos.internal;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class TimeTokenTest {
 

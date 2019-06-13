@@ -23,18 +23,18 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.internal.AuthorizationTokenType;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.InternalServerErrorException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.PathsHelper;
+import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.Utils;
-import com.azure.data.cosmos.internal.AuthorizationTokenType;
-import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Single;

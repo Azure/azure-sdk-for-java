@@ -23,21 +23,25 @@
 
 package com.azure.data.cosmos;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.*;
-
+import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.data.cosmos.internal.Utils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
@@ -283,9 +287,11 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
      *                     and a static one.
+     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
+     *                              before converting to required class.
      * @return the object value.
      */
-    public <T> T getObject(String propertyName, Class<T> c) {
+    public <T> T getObject(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonObj = propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -294,7 +300,9 @@ public class JsonSerializable {
                 return c.cast(getValue(jsonObj));
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
-                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(getValue(jsonObj))));
+                    String value = String.class.cast(getValue(jsonObj));
+                    value = convertFromCamelCase.length > 0 && convertFromCamelCase[0] ? Strings.fromCamelCaseToUpperCase(value) : value;
+                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, value));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                         | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to create enum.", e);
@@ -327,9 +335,11 @@ public class JsonSerializable {
      * @param propertyName the property to get
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
      *                     and a static one.
+     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
+     *                              before converting to required class.
      * @return the object collection.
      */
-    public <T> List<T> getList(String propertyName, Class<T> c) {
+    public <T> List<T> getList(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
@@ -356,8 +366,9 @@ public class JsonSerializable {
                     result.add(c.cast(getValue(n)));
                 } else if (isEnumClass) {
                     try {
-                        result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null,
-                                                                                      String.class.cast(getValue(n)))));
+                        String value = String.class.cast(getValue(n));
+                        value = convertFromCamelCase.length > 0 && convertFromCamelCase[0] ? Strings.fromCamelCaseToUpperCase(value) : value;
+                        result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null, value)));
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                             | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to create enum.", e);
@@ -391,10 +402,12 @@ public class JsonSerializable {
      * @param propertyName the property to get
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
      *                     and a static one.
+     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
+     *                              before converting to required class.
      * @return the object collection.
      */
-    public <T> Collection<T> getCollection(String propertyName, Class<T> c) {
-        return getList(propertyName, c);
+    public <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
+        return getList(propertyName, c, convertFromCamelCase);
     }
 
     /**

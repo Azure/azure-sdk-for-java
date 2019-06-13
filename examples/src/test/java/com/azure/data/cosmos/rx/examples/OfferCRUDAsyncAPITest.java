@@ -23,11 +23,13 @@
 
 package com.azure.data.cosmos.rx.examples;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.DataType;
 import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
@@ -35,7 +37,6 @@ import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.Offer;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -53,30 +54,32 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * This integration test class demonstrates how to use Async API to query and
  * replace an Offer.
  */
-public class OfferCRUDAsyncAPITest {
+public class OfferCRUDAsyncAPITest extends DocumentClientTest {
     private final static int TIMEOUT = 60000;
     private Database createdDatabase;
-    private AsyncDocumentClient asyncClient;
+    private AsyncDocumentClient client;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
-        asyncClient = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .build();
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+
+        this.clientBuilder()
+            .withServiceEndpoint(TestConfigurations.HOST)
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withConnectionPolicy(connectionPolicy)
+            .withConsistencyLevel(ConsistencyLevel.SESSION);
+
+        this.client = this.clientBuilder().build();
 
         // CREATE database
-        createdDatabase = Utils.createDatabaseForTest(asyncClient);
+        createdDatabase = Utils.createDatabaseForTest(client);
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
     public void shutdown() {
-        Utils.safeClean(asyncClient, createdDatabase);
-        Utils.safeClose(asyncClient);
+        Utils.safeClean(client, createdDatabase);
+        Utils.safeClose(client);
     }
 
     /**
@@ -94,14 +97,14 @@ public class OfferCRUDAsyncAPITest {
         multiPartitionRequestOptions.setOfferThroughput(initialThroughput);
 
         // CREATE the collection
-        DocumentCollection createdCollection = asyncClient.createCollection("dbs/" + createdDatabase.id(),
+        DocumentCollection createdCollection = client.createCollection("dbs/" + createdDatabase.id(),
                                                                             getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).toBlocking().single()
-                .getResource();
+                                                     .getResource();
 
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Find offer associated with this collection
-        asyncClient.queryOffers(
+        client.queryOffers(
                 String.format("SELECT * FROM r where r.offerResourceId = '%s'", createdCollection.resourceId()),
                 null).flatMap(offerFeedResponse -> {
             List<Offer> offerList = offerFeedResponse.results();
@@ -119,7 +122,7 @@ public class OfferCRUDAsyncAPITest {
             offer.setThroughput(newThroughput);
 
             // REPLACE the offer
-            return asyncClient.replaceOffer(offer);
+            return client.replaceOffer(offer);
         }).subscribe(offerResourceResponse -> {
             Offer offer = offerResourceResponse.getResource();
             int currentThroughput = offer.getThroughput();

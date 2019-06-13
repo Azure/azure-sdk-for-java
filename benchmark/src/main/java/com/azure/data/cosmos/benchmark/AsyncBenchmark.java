@@ -23,6 +23,12 @@
 
 package com.azure.data.cosmos.benchmark;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.benchmark.Configuration.Operation;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -34,12 +40,6 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.ResourceResponse;
-import com.azure.data.cosmos.benchmark.Configuration.Operation;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

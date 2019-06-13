@@ -22,7 +22,15 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.ClientUnderTestBuilder;
+import com.azure.data.cosmos.CosmosBridgeInternal;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerRequestOptions;
+import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.DataType;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -30,21 +38,17 @@ import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.directconnectivity.Protocol;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
-
 import io.reactivex.subscribers.TestSubscriber;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 import rx.Observable;
 
@@ -106,7 +110,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
     public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     private void warmUp() {
@@ -150,57 +154,39 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         int i = 0;
 
         // use a test subscriber and request for more result and sleep in between
-        try {
-            while(subscriber.completions() == 0 && subscriber.errorCount() == 0) {
-                log.debug("loop " + i);
+        while (subscriber.completions() == 0 && subscriber.errorCount() == 0) {
+            log.debug("loop " + i);
 
-                TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
-                sleepTimeInMillis /= 2;
+            TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
+            sleepTimeInMillis /= 2;
 
-                if (sleepTimeInMillis > 4000) {
-                    // validate that only one item is returned to subscriber in each iteration
-                    assertThat(subscriber.valueCount() - i).isEqualTo(1);
-                }
-
-                log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
-                log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
-                // validate that the difference between the number of requests to backend
-                // and the number of returned results is always less than a fixed threshold
-                assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
-                        .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
-
-                log.debug("requesting more");
-                subscriber.requestMore(1);
-                i++;
+            if (sleepTimeInMillis > 4000) {
+                // validate that only one item is returned to subscriber in each iteration
+                assertThat(subscriber.valueCount() - i).isEqualTo(1);
             }
-        } catch (Throwable error) {
-            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.TCP) {
-                String message = String.format("DIRECT TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
-                logger.info(message, error);
-                throw new SkipException(message, error);
-            }
-            throw error;
+
+            log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
+            log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
+            // validate that the difference between the number of requests to backend
+            // and the number of returned results is always less than a fixed threshold
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+                .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
+
+            log.debug("requesting more");
+            subscriber.requestMore(1);
+            i++;
         }
 
-        try {
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
-            assertThat(subscriber.values().stream().mapToInt(p -> p.results().size()).sum()).isEqualTo(expectedNumberOfResults);
-        } catch (Throwable error) {
-            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.TCP) {
-                String message = String.format("DIRECT TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
-                logger.info(message, error);
-                throw new SkipException(message, error);
-            }
-            throw error;
-        }
+        subscriber.assertNoErrors();
+        subscriber.assertComplete();
+        assertThat(subscriber.values().stream().mapToInt(p -> p.results().size()).sum()).isEqualTo(expectedNumberOfResults);
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         options.offerThroughput(20000);
-        client = new ClientUnderTestBuilder(clientBuilder).build();
+        client = new ClientUnderTestBuilder(clientBuilder()).build();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options);
 
@@ -216,7 +202,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.results())).toList().toBlocking().single().size();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
         warmUp();
     }
 

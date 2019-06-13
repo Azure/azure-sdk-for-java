@@ -66,6 +66,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * Sets the partitionKeyRangeId.
      *
      * @param partitionKeyRangeId the partitionKeyRangeId.
+     * @return the FeedOptions.
      */
     public FeedOptions partitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
@@ -85,6 +86,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * Sets the session token for use with session consistency.
      *
      * @param sessionToken the session token.
+     * @return the FeedOptions.
      */
     public FeedOptions sessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
@@ -106,6 +108,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * indexing was opted out on the requested paths.
      *
      * @param enableScanInQuery the option of enable scan in query.
+     * @return the FeedOptions.
      */
     public FeedOptions enableScanInQuery(Boolean enableScanInQuery) {
         this.enableScanInQuery = enableScanInQuery;
@@ -127,6 +130,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * investigation.
      *
      * @param emitVerboseTracesInQuery the emit verbose traces in query.
+     * @return the FeedOptions.
      */
     public FeedOptions emitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
         this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
@@ -150,6 +154,7 @@ public final class FeedOptions extends FeedOptionsBase {
      *
      * @param enableCrossPartitionQuery whether to allow queries to run across all
      *                                  partitions of the collection.
+     * @return the FeedOptions.
      */
     public FeedOptions enableCrossPartitionQuery(Boolean enableCrossPartitionQuery) {
         this.enableCrossPartitionQuery = enableCrossPartitionQuery;
@@ -172,6 +177,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * query execution.
      *
      * @param maxDegreeOfParallelism number of concurrent operations.
+     * @return the FeedOptions.
      */
     public FeedOptions maxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
@@ -194,6 +200,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * parallel query execution.
      *
      * @param maxBufferedItemCount maximum number of items.
+     * @return the FeedOptions.
      */
     public FeedOptions maxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
@@ -218,6 +225,7 @@ public final class FeedOptions extends FeedOptionsBase {
      * size.
      *
      * @param limitInKb continuation token size limit.
+     * @return the FeedOptions.
      */
     public FeedOptions responseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;

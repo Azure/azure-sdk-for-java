@@ -23,23 +23,21 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.FeedOptionsBase;
+import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.directconnectivity.WFConstants;
+import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import org.apache.commons.lang3.StringUtils;
+import rx.Observable;
+import rx.observables.StringObservable;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.azure.data.cosmos.directconnectivity.WFConstants;
-import org.apache.commons.lang3.StringUtils;
-
-import com.azure.data.cosmos.FeedOptionsBase;
-import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-
-import rx.Observable;
-import rx.observables.StringObservable;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -468,7 +466,7 @@ public class RxDocumentServiceRequest {
             if (querySpec.parameters() != null && querySpec.parameters().size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
-                                queryCompatibilityMode.name()));
+                                queryCompatibilityMode.toString()));
             }
 
             operation = OperationType.SqlQuery;

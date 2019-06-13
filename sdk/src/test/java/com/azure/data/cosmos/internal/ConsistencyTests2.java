@@ -23,7 +23,17 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.ConnectionMode;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.rx.FailureValidator;

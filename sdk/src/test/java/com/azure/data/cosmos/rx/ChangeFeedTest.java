@@ -22,16 +22,6 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.Method;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ChangeFeedOptions;
@@ -44,17 +34,24 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.internal.TestSuiteBase;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
 import rx.Observable;
+
+import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase 
 public class ChangeFeedTest extends TestSuiteBase {
@@ -86,7 +83,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     public ChangeFeedTest() {
-        clientBuilder = createGatewayRxDocumentClient();
+        super(createGatewayRxDocumentClient());
         subscriberValidationTimeout = TIMEOUT;
     }
 
@@ -104,7 +101,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .toList().toBlocking().single();
 
         int count = 0;
-        for(int i = 0; i < changeFeedResultList.size(); i++) {
+        for (int i = 0; i < changeFeedResultList.size(); i++) {
             FeedResponse<Document> changeFeedPage = changeFeedResultList.get(i);
             assertThat(changeFeedPage.continuationToken()).as("Response continuation should not be null").isNotNull();
 
@@ -266,7 +263,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
-        super.beforeMethod(method);
+
         partitionKeyToDocuments.clear();
 
         RequestOptions options = new RequestOptions();
@@ -291,7 +288,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         // set up the client
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 

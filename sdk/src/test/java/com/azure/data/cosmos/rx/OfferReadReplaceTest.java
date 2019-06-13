@@ -22,22 +22,20 @@
  */
 package com.azure.data.cosmos.rx;
 
-import java.util.List;
-
 import com.azure.data.cosmos.AsyncDocumentClient;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DatabaseForTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.Offer;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
+
+import java.util.List;
 
 //TODO: change to use external TestSuiteBase 
 public class OfferReadReplaceTest extends TestSuiteBase {
@@ -51,7 +49,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public OfferReadReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -102,7 +100,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
         createdCollection = createCollection(client, createdDatabase.id(),
                 getCollectionDefinition());

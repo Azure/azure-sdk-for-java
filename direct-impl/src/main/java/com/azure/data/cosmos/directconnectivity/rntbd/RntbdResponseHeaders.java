@@ -41,10 +41,10 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
 import static com.azure.data.cosmos.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdIndexingDirective;
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
+import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
 
 @JsonFilter("RntbdToken")
 class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
@@ -52,103 +52,103 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     // region Fields
 
     @JsonProperty
-    final private RntbdToken LSN;
+    private final RntbdToken LSN;
     @JsonProperty
-    final private RntbdToken collectionLazyIndexProgress;
+    private final RntbdToken collectionLazyIndexProgress;
     @JsonProperty
-    final private RntbdToken collectionPartitionIndex;
+    private final RntbdToken collectionPartitionIndex;
     @JsonProperty
-    final private RntbdToken collectionSecurityIdentifier;
+    private final RntbdToken collectionSecurityIdentifier;
     @JsonProperty
-    final private RntbdToken collectionServiceIndex;
+    private final RntbdToken collectionServiceIndex;
     @JsonProperty
-    final private RntbdToken collectionUpdateProgress;
+    private final RntbdToken collectionUpdateProgress;
     @JsonProperty
-    final private RntbdToken continuationToken;
+    private final RntbdToken continuationToken;
     @JsonProperty
-    final private RntbdToken currentReplicaSetSize;
+    private final RntbdToken currentReplicaSetSize;
     @JsonProperty
-    final private RntbdToken currentWriteQuorum;
+    private final RntbdToken currentWriteQuorum;
     @JsonProperty
-    final private RntbdToken databaseAccountId;
+    private final RntbdToken databaseAccountId;
     @JsonProperty
-    final private RntbdToken disableRntbdChannel;
+    private final RntbdToken disableRntbdChannel;
     @JsonProperty
-    final private RntbdToken eTag;
+    private final RntbdToken eTag;
     @JsonProperty
-    final private RntbdToken globalCommittedLSN;
+    private final RntbdToken globalCommittedLSN;
     @JsonProperty
-    final private RntbdToken hasTentativeWrites;
+    private final RntbdToken hasTentativeWrites;
     @JsonProperty
-    final private RntbdToken indexTermsGenerated;
+    private final RntbdToken indexTermsGenerated;
     @JsonProperty
-    final private RntbdToken indexingDirective;
+    private final RntbdToken indexingDirective;
     @JsonProperty
-    final private RntbdToken isRUPerMinuteUsed;
+    private final RntbdToken isRUPerMinuteUsed;
     @JsonProperty
-    final private RntbdToken itemCount;
+    private final RntbdToken itemCount;
     @JsonProperty
-    final private RntbdToken itemLSN;
+    private final RntbdToken itemLSN;
     @JsonProperty
-    final private RntbdToken itemLocalLSN;
+    private final RntbdToken itemLocalLSN;
     @JsonProperty
-    final private RntbdToken lastStateChangeDateTime;
+    private final RntbdToken lastStateChangeDateTime;
     @JsonProperty
-    final private RntbdToken localLSN;
+    private final RntbdToken localLSN;
     @JsonProperty
-    final private RntbdToken logResults;
+    private final RntbdToken logResults;
     @JsonProperty
-    final private RntbdToken numberOfReadRegions;
+    private final RntbdToken numberOfReadRegions;
     @JsonProperty
-    final private RntbdToken offerReplacePending;
+    private final RntbdToken offerReplacePending;
     @JsonProperty
-    final private RntbdToken ownerFullName;
+    private final RntbdToken ownerFullName;
     @JsonProperty
-    final private RntbdToken ownerId;
+    private final RntbdToken ownerId;
     @JsonProperty
-    final private RntbdToken partitionKeyRangeId;
+    private final RntbdToken partitionKeyRangeId;
     @JsonProperty
-    final private RntbdToken payloadPresent;
+    private final RntbdToken payloadPresent;
     @JsonProperty
-    final private RntbdToken queriesPerformed;
+    private final RntbdToken queriesPerformed;
     @JsonProperty
-    final private RntbdToken queryMetrics;
+    private final RntbdToken queryMetrics;
     @JsonProperty
-    final private RntbdToken quorumAckedLSN;
+    private final RntbdToken quorumAckedLSN;
     @JsonProperty
-    final private RntbdToken quorumAckedLocalLSN;
+    private final RntbdToken quorumAckedLocalLSN;
     @JsonProperty
-    final private RntbdToken readsPerformed;
+    private final RntbdToken readsPerformed;
     @JsonProperty
-    final private RntbdToken requestCharge;
+    private final RntbdToken requestCharge;
     @JsonProperty
-    final private RntbdToken requestValidationFailure;
+    private final RntbdToken requestValidationFailure;
     @JsonProperty
-    final private RntbdToken restoreState;
+    private final RntbdToken restoreState;
     @JsonProperty
-    final private RntbdToken retryAfterMilliseconds;
+    private final RntbdToken retryAfterMilliseconds;
     @JsonProperty
-    final private RntbdToken schemaVersion;
+    private final RntbdToken schemaVersion;
     @JsonProperty
-    final private RntbdToken scriptsExecuted;
+    private final RntbdToken scriptsExecuted;
     @JsonProperty
-    final private RntbdToken serverDateTimeUtc;
+    private final RntbdToken serverDateTimeUtc;
     @JsonProperty
-    final private RntbdToken sessionToken;
+    private final RntbdToken sessionToken;
     @JsonProperty
-    final private RntbdToken shareThroughput;
+    private final RntbdToken shareThroughput;
     @JsonProperty
-    final private RntbdToken storageMaxResoureQuota;
+    private final RntbdToken storageMaxResoureQuota;
     @JsonProperty
-    final private RntbdToken storageResourceQuotaUsage;
+    private final RntbdToken storageResourceQuotaUsage;
     @JsonProperty
-    final private RntbdToken subStatus;
+    private final RntbdToken subStatus;
     @JsonProperty
-    final private RntbdToken transportRequestID;
+    private final RntbdToken transportRequestID;
     @JsonProperty
-    final private RntbdToken writesPerformed;
+    private final RntbdToken writesPerformed;
     @JsonProperty
-    final private RntbdToken xpRole;
+    private final RntbdToken xpRole;
 
     // endregion
 
@@ -211,13 +211,13 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return this.payloadPresent.isPresent() && this.payloadPresent.getValue(Byte.class) != 0x00;
     }
 
-    List<Map.Entry<String, String>> asList(RntbdContext context, UUID activityId) {
+    List<Map.Entry<String, String>> asList(final RntbdContext context, final UUID activityId) {
 
-        ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
+        final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
         builder.add(new Entry(HttpHeaders.SERVER_VERSION, context.getServerVersion()));
         builder.add(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
-        collectEntries((token, toEntry) -> {
+        this.collectEntries((token, toEntry) -> {
             if (token.isPresent()) {
                 builder.add(toEntry.apply(token));
             }
@@ -226,13 +226,13 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return builder.build();
     }
 
-    public Map<String, String> asMap(RntbdContext context, UUID activityId) {
+    public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
 
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
         builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.getServerVersion()));
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
-        collectEntries((token, toEntry) -> {
+        this.collectEntries((token, toEntry) -> {
             if (token.isPresent()) {
                 builder.put(toEntry.apply(token));
             }
@@ -241,80 +241,80 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return builder.build();
     }
 
-    static RntbdResponseHeaders decode(ByteBuf in) {
-        RntbdResponseHeaders headers = new RntbdResponseHeaders();
+    static RntbdResponseHeaders decode(final ByteBuf in) {
+        final RntbdResponseHeaders headers = new RntbdResponseHeaders();
         RntbdTokenStream.decode(in, headers);
         return headers;
     }
 
-    public static RntbdResponseHeaders fromMap(Map<String, String> map, boolean payloadPresent) {
+    public static RntbdResponseHeaders fromMap(final Map<String, String> map, final boolean payloadPresent) {
 
-        RntbdResponseHeaders headers = new RntbdResponseHeaders();
+        final RntbdResponseHeaders headers = new RntbdResponseHeaders();
         headers.payloadPresent.setValue(payloadPresent);
         headers.setValues(map);
 
         return headers;
     }
 
-    public void setValues(Map<String, String> headers) {
+    public void setValues(final Map<String, String> headers) {
 
-        mapValue(this.LSN, BackendHeaders.LSN, Long::parseLong, headers);
-        mapValue(this.collectionLazyIndexProgress, HttpHeaders.COLLECTION_LAZY_INDEXING_PROGRESS, Integer::parseInt, headers);
-        mapValue(this.collectionLazyIndexProgress, BackendHeaders.COLLECTION_PARTITION_INDEX, Integer::parseInt, headers);
-        mapValue(this.collectionSecurityIdentifier, BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, String::toString, headers);
-        mapValue(this.collectionServiceIndex, BackendHeaders.COLLECTION_SERVICE_INDEX, Integer::parseInt, headers);
-        mapValue(this.collectionUpdateProgress, HttpHeaders.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, Integer::parseInt, headers);
-        mapValue(this.continuationToken, HttpHeaders.CONTINUATION, String::toString, headers);
-        mapValue(this.currentReplicaSetSize, BackendHeaders.CURRENT_REPLICA_SET_SIZE, Integer::parseInt, headers);
-        mapValue(this.currentWriteQuorum, BackendHeaders.CURRENT_WRITE_QUORUM, Integer::parseInt, headers);
-        mapValue(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, String::toString, headers);
-        mapValue(this.disableRntbdChannel, HttpHeaders.DISABLE_RNTBD_CHANNEL, Boolean::parseBoolean, headers);
-        mapValue(this.eTag, HttpHeaders.E_TAG, String::toString, headers);
-        mapValue(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, Long::parseLong, headers);
-        mapValue(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, Boolean::parseBoolean, headers);
-        mapValue(this.indexingDirective, HttpHeaders.INDEXING_DIRECTIVE, RntbdIndexingDirective::valueOf, headers);
-        mapValue(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, Byte::parseByte, headers);
-        mapValue(this.itemCount, HttpHeaders.ITEM_COUNT, Integer::parseInt, headers);
-        mapValue(this.itemLSN, BackendHeaders.ITEM_LSN, Long::parseLong, headers);
-        mapValue(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, Long::parseLong, headers);
-        mapValue(this.lastStateChangeDateTime, HttpHeaders.LAST_STATE_CHANGE_UTC, String::toString, headers);
-        mapValue(this.lastStateChangeDateTime, HttpHeaders.LAST_STATE_CHANGE_UTC, String::toString, headers);
-        mapValue(this.localLSN, BackendHeaders.LOCAL_LSN, Long::parseLong, headers);
-        mapValue(this.logResults, HttpHeaders.LOG_RESULTS, String::toString, headers);
-        mapValue(this.numberOfReadRegions, BackendHeaders.NUMBER_OF_READ_REGIONS, Integer::parseInt, headers);
-        mapValue(this.offerReplacePending, BackendHeaders.OFFER_REPLACE_PENDING, Boolean::parseBoolean, headers);
-        mapValue(this.ownerFullName, HttpHeaders.OWNER_FULL_NAME, String::toString, headers);
-        mapValue(this.ownerId, HttpHeaders.OWNER_ID, String::toString, headers);
-        mapValue(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, String::toString, headers);
-        mapValue(this.queryMetrics, BackendHeaders.QUERY_METRICS, String::toString, headers);
-        mapValue(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, Long::parseLong, headers);
-        mapValue(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long::parseLong, headers);
-        mapValue(this.requestCharge, HttpHeaders.REQUEST_CHARGE, Double::parseDouble, headers);
-        mapValue(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, Byte::parseByte, headers);
-        mapValue(this.restoreState, BackendHeaders.RESTORE_STATE, String::toString, headers);
-        mapValue(this.retryAfterMilliseconds, HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, Integer::parseInt, headers);
-        mapValue(this.schemaVersion, HttpHeaders.SCHEMA_VERSION, String::toString, headers);
-        mapValue(this.serverDateTimeUtc, HttpHeaders.X_DATE, String::toString, headers);
-        mapValue(this.sessionToken, HttpHeaders.SESSION_TOKEN, String::toString, headers);
-        mapValue(this.shareThroughput, BackendHeaders.SHARE_THROUGHPUT, Boolean::parseBoolean, headers);
-        mapValue(this.storageMaxResoureQuota, HttpHeaders.MAX_RESOURCE_QUOTA, String::toString, headers);
-        mapValue(this.storageResourceQuotaUsage, HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE, String::toString, headers);
-        mapValue(this.subStatus, BackendHeaders.SUB_STATUS, Integer::parseInt, headers);
-        mapValue(this.transportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID, Integer::parseInt, headers);
-        mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
+        this.mapValue(this.LSN, BackendHeaders.LSN, Long::parseLong, headers);
+        this.mapValue(this.collectionLazyIndexProgress, HttpHeaders.COLLECTION_LAZY_INDEXING_PROGRESS, Integer::parseInt, headers);
+        this.mapValue(this.collectionLazyIndexProgress, BackendHeaders.COLLECTION_PARTITION_INDEX, Integer::parseInt, headers);
+        this.mapValue(this.collectionSecurityIdentifier, BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, String::toString, headers);
+        this.mapValue(this.collectionServiceIndex, BackendHeaders.COLLECTION_SERVICE_INDEX, Integer::parseInt, headers);
+        this.mapValue(this.collectionUpdateProgress, HttpHeaders.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, Integer::parseInt, headers);
+        this.mapValue(this.continuationToken, HttpHeaders.CONTINUATION, String::toString, headers);
+        this.mapValue(this.currentReplicaSetSize, BackendHeaders.CURRENT_REPLICA_SET_SIZE, Integer::parseInt, headers);
+        this.mapValue(this.currentWriteQuorum, BackendHeaders.CURRENT_WRITE_QUORUM, Integer::parseInt, headers);
+        this.mapValue(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, String::toString, headers);
+        this.mapValue(this.disableRntbdChannel, HttpHeaders.DISABLE_RNTBD_CHANNEL, Boolean::parseBoolean, headers);
+        this.mapValue(this.eTag, HttpHeaders.E_TAG, String::toString, headers);
+        this.mapValue(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, Long::parseLong, headers);
+        this.mapValue(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, Boolean::parseBoolean, headers);
+        this.mapValue(this.indexingDirective, HttpHeaders.INDEXING_DIRECTIVE, RntbdIndexingDirective::valueOf, headers);
+        this.mapValue(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, Byte::parseByte, headers);
+        this.mapValue(this.itemCount, HttpHeaders.ITEM_COUNT, Integer::parseInt, headers);
+        this.mapValue(this.itemLSN, BackendHeaders.ITEM_LSN, Long::parseLong, headers);
+        this.mapValue(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, Long::parseLong, headers);
+        this.mapValue(this.lastStateChangeDateTime, HttpHeaders.LAST_STATE_CHANGE_UTC, String::toString, headers);
+        this.mapValue(this.lastStateChangeDateTime, HttpHeaders.LAST_STATE_CHANGE_UTC, String::toString, headers);
+        this.mapValue(this.localLSN, BackendHeaders.LOCAL_LSN, Long::parseLong, headers);
+        this.mapValue(this.logResults, HttpHeaders.LOG_RESULTS, String::toString, headers);
+        this.mapValue(this.numberOfReadRegions, BackendHeaders.NUMBER_OF_READ_REGIONS, Integer::parseInt, headers);
+        this.mapValue(this.offerReplacePending, BackendHeaders.OFFER_REPLACE_PENDING, Boolean::parseBoolean, headers);
+        this.mapValue(this.ownerFullName, HttpHeaders.OWNER_FULL_NAME, String::toString, headers);
+        this.mapValue(this.ownerId, HttpHeaders.OWNER_ID, String::toString, headers);
+        this.mapValue(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, String::toString, headers);
+        this.mapValue(this.queryMetrics, BackendHeaders.QUERY_METRICS, String::toString, headers);
+        this.mapValue(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, Long::parseLong, headers);
+        this.mapValue(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long::parseLong, headers);
+        this.mapValue(this.requestCharge, HttpHeaders.REQUEST_CHARGE, Double::parseDouble, headers);
+        this.mapValue(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, Byte::parseByte, headers);
+        this.mapValue(this.restoreState, BackendHeaders.RESTORE_STATE, String::toString, headers);
+        this.mapValue(this.retryAfterMilliseconds, HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, Integer::parseInt, headers);
+        this.mapValue(this.schemaVersion, HttpHeaders.SCHEMA_VERSION, String::toString, headers);
+        this.mapValue(this.serverDateTimeUtc, HttpHeaders.X_DATE, String::toString, headers);
+        this.mapValue(this.sessionToken, HttpHeaders.SESSION_TOKEN, String::toString, headers);
+        this.mapValue(this.shareThroughput, BackendHeaders.SHARE_THROUGHPUT, Boolean::parseBoolean, headers);
+        this.mapValue(this.storageMaxResoureQuota, HttpHeaders.MAX_RESOURCE_QUOTA, String::toString, headers);
+        this.mapValue(this.storageResourceQuotaUsage, HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE, String::toString, headers);
+        this.mapValue(this.subStatus, BackendHeaders.SUB_STATUS, Integer::parseInt, headers);
+        this.mapValue(this.transportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID, Integer::parseInt, headers);
+        this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
     }
 
     @Override
     public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
+        final ObjectWriter writer = RntbdObjectMapper.writer();
         try {
             return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
+        } catch (final JsonProcessingException error) {
             throw new CorruptedFrameException(error);
         }
     }
 
-    private void collectEntries(BiConsumer<RntbdToken, Function<RntbdToken, Map.Entry<String, String>>> collector) {
+    private void collectEntries(final BiConsumer<RntbdToken, Function<RntbdToken, Map.Entry<String, String>>> collector) {
 
         collector.accept(this.LSN, token ->
             toLongEntry(BackendHeaders.LSN, token)
@@ -461,7 +461,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         );
 
         collector.accept(this.sessionToken, token ->
-            toSessionTokenEntry(HttpHeaders.SESSION_TOKEN, token)
+            this.toSessionTokenEntry(HttpHeaders.SESSION_TOKEN, token)
         );
 
         collector.accept(this.shareThroughput, token ->
@@ -489,46 +489,46 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         );
     }
 
-    private void mapValue(RntbdToken token, String name, Function<String, Object> parse, Map<String, String> headers) {
+    private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {
 
-        String value = headers.get(name);
+        final String value = headers.get(name);
 
         if (value != null) {
             token.setValue(parse.apply(value));
         }
     }
 
-    private static Map.Entry<String, String> toBooleanEntry(String name, RntbdToken token) {
+    private static Map.Entry<String, String> toBooleanEntry(final String name, final RntbdToken token) {
         return new Entry(name, String.valueOf(token.getValue(Byte.class) != 0));
     }
 
-    private static Map.Entry<String, String> toByteEntry(String name, RntbdToken token) {
+    private static Map.Entry<String, String> toByteEntry(final String name, final RntbdToken token) {
         return new Entry(name, Byte.toString(token.getValue(Byte.class)));
     }
 
-    private static Map.Entry<String, String> toCurrencyEntry(String name, RntbdToken token) {
-        BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
+    private static Map.Entry<String, String> toCurrencyEntry(final String name, final RntbdToken token) {
+        final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
         return new Entry(name, value.toString());
     }
 
-    private static Map.Entry<String, String> toIntegerEntry(String name, RntbdToken token) {
+    private static Map.Entry<String, String> toIntegerEntry(final String name, final RntbdToken token) {
         return new Entry(name, Long.toString(token.getValue(Long.class)));
     }
 
-    private static Map.Entry<String, String> toLongEntry(String name, RntbdToken token) {
+    private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {
         return new Entry(name, Long.toString(token.getValue(Long.class)));
     }
 
-    private Map.Entry<String, String> toSessionTokenEntry(String name, RntbdToken token) {
+    private Map.Entry<String, String> toSessionTokenEntry(final String name, final RntbdToken token) {
         return new Entry(name, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
     }
 
-    private static Map.Entry<String, String> toStringEntry(String name, RntbdToken token) {
+    private static Map.Entry<String, String> toStringEntry(final String name, final RntbdToken token) {
         return new Entry(name, token.getValue(String.class));
     }
 
-    final private static class Entry extends AbstractMap.SimpleImmutableEntry<String, String> {
-        Entry(String name, String value) {
+    private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> {
+        Entry(final String name, final String value) {
             super(name, value);
         }
     }

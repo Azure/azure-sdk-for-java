@@ -23,10 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 import com.azure.data.cosmos.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents the index of a collection in the Azure Cosmos DB database service.
@@ -162,7 +160,7 @@ public abstract class Index extends JsonSerializable {
      * @param indexKind the index kind.
      */
     private Index kind(IndexKind indexKind) {
-        super.set(Constants.Properties.INDEX_KIND, indexKind.name());
+        super.set(Constants.Properties.INDEX_KIND, indexKind.toString());
         return this;
     }
 }

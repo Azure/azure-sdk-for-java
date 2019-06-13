@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.text.WordUtils;
+
 /**
  * Specifies the operations on which a trigger should be executed in the Azure Cosmos DB database service.
  */
@@ -65,5 +67,10 @@ public enum TriggerOperation {
      */
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
     }
 }

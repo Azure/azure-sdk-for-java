@@ -23,44 +23,46 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.UserAgentContainer;
-import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdContext;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdContextNegotiator;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdContextRequest;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequest;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestEncoder;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestTimer;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdResponse;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdUUID;
-import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.internal.BadRequestException;
+import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.InternalServerErrorException;
 import com.azure.data.cosmos.internal.InvalidPartitionException;
 import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.PartitionIsMigratingException;
 import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.internal.Paths;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.rx.FailureValidator;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.util.concurrent.DefaultEventExecutor;
-import io.netty.util.concurrent.Future;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
@@ -75,32 +77,29 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
 import static com.azure.data.cosmos.internal.HttpConstants.HttpMethods;
 import static com.azure.data.cosmos.internal.HttpConstants.SubStatusCodes;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
-public class RntbdTransportClientTest {
+public final class RntbdTransportClientTest {
 
-    final private static Logger logger = LoggerFactory.getLogger(RntbdTransportClientTest.class);
-    final private static int lsn = 5;
-    final private static ByteBuf noContent = Unpooled.wrappedBuffer(new byte[0]);
-    final private static String partitionKeyRangeId = "3";
-    final private static URI physicalAddress = URI.create("rntbd://host:10251/replica-path/");
-    final private static Duration requestTimeout = Duration.ofSeconds(1000);
+    private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClientTest.class);
+    private static final int lsn = 5;
+    private static final ByteBuf noContent = Unpooled.wrappedBuffer(new byte[0]);
+    private static final String partitionKeyRangeId = "3";
+    private static final URI physicalAddress = URI.create("rntbd://host:10251/replica-path/");
+    private static final Duration requestTimeout = Duration.ofSeconds(1000);
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
 
         return new Object[][] {
-            // TODO: DANOBLE: add network failure exception test cases
         };
     }
 
@@ -129,7 +128,8 @@ public class RntbdTransportClientTest {
                     400,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(1L)
                     ),
                     noContent)
             },
@@ -154,7 +154,8 @@ public class RntbdTransportClientTest {
                     401,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(2L)
                     ),
                     noContent)
             },
@@ -179,7 +180,8 @@ public class RntbdTransportClientTest {
                     403,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(3L)
                     ),
                     noContent)
             },
@@ -204,7 +206,8 @@ public class RntbdTransportClientTest {
                     404,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(4L)
                     ),
                     noContent)
             },
@@ -229,7 +232,8 @@ public class RntbdTransportClientTest {
                     405,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(5L)
                     ),
                     noContent)
             },
@@ -254,7 +258,8 @@ public class RntbdTransportClientTest {
                     408,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(6L)
                     ),
                     noContent)
             },
@@ -279,7 +284,8 @@ public class RntbdTransportClientTest {
                     409,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(7L)
                     ),
                     noContent)
             },
@@ -305,7 +311,8 @@ public class RntbdTransportClientTest {
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
                         HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.NAME_CACHE_IS_STALE)
+                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.NAME_CACHE_IS_STALE),
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(8L)
                     ),
                     noContent)
             },
@@ -331,7 +338,8 @@ public class RntbdTransportClientTest {
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
                         HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.PARTITION_KEY_RANGE_GONE)
+                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.PARTITION_KEY_RANGE_GONE),
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(9L)
                     ),
                     noContent)
             },
@@ -357,7 +365,8 @@ public class RntbdTransportClientTest {
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
                         HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_SPLIT)
+                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_SPLIT),
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(10L)
                     ),
                     noContent)
             },
@@ -383,7 +392,8 @@ public class RntbdTransportClientTest {
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
                         HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_PARTITION_MIGRATION)
+                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_PARTITION_MIGRATION),
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(11L)
                     ),
                     noContent)
             },
@@ -409,7 +419,9 @@ public class RntbdTransportClientTest {
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
                         HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, String.valueOf(SubStatusCodes.UNKNOWN)),
+                        HttpHeaders.SUB_STATUS, String.valueOf(SubStatusCodes.UNKNOWN),
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(12L)
+                    ),
                     noContent)
             },
             {
@@ -433,7 +445,8 @@ public class RntbdTransportClientTest {
                     412,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(13L)
                     ),
                     noContent)
             },
@@ -458,7 +471,8 @@ public class RntbdTransportClientTest {
                     413,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(14L)
                     ),
                     noContent)
             },
@@ -483,7 +497,8 @@ public class RntbdTransportClientTest {
                     423,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(15L)
                     ),
                     noContent)
             },
@@ -508,7 +523,8 @@ public class RntbdTransportClientTest {
                     429,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(16L)
                     ),
                     noContent)
             },
@@ -533,7 +549,8 @@ public class RntbdTransportClientTest {
                     449,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(17L)
                     ),
                     noContent)
             },
@@ -558,7 +575,8 @@ public class RntbdTransportClientTest {
                     500,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(18L)
                     ),
                     noContent)
             },
@@ -583,7 +601,8 @@ public class RntbdTransportClientTest {
                     503,
                     ImmutableMap.of(
                         HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(19L)
                     ),
                     noContent)
             },
@@ -593,14 +612,13 @@ public class RntbdTransportClientTest {
     /**
      * Verifies that a request for a non-existent resource produces a {@link }GoneException}
      */
-    @Test(enabled = false, groups = "direct")
+    @Test(enabled = false, groups = { "direct" })
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
-        final RntbdTransportClient.Options options = new RntbdTransportClient.Options(requestTimeout);
+        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(requestTimeout).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
-        final UserAgentContainer userAgent = new UserAgentContainer();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, userAgent)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 RntbdTestConfiguration.AccountKey
@@ -623,13 +641,13 @@ public class RntbdTransportClientTest {
 
             builder.put(HttpHeaders.AUTHORIZATION, token);
 
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+            final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.DatabaseAccount,
                 Paths.DATABASE_ACCOUNT_PATH_SEGMENT,
                 builder.build()
             );
 
-            Single<StoreResponse> responseSingle = transportClient.invokeStoreAsync(physicalAddress, null, request);
+            final Single<StoreResponse> responseSingle = transportClient.invokeStoreAsync(physicalAddress, null, request);
 
             responseSingle.toObservable().toBlocking().subscribe(new Subscriber<StoreResponse>() {
                 @Override
@@ -637,24 +655,24 @@ public class RntbdTransportClientTest {
                 }
 
                 @Override
-                public void onError(Throwable error) {
-                    String cs = "Expected %s, not %s";
-                    assertTrue(error instanceof GoneException, String.format(cs, GoneException.class, error.getClass()));
-                    Throwable cause = error.getCause();
+                public void onError(final Throwable error) {
+                    final String format = "Expected %s, not %s";
+                    assertTrue(error instanceof GoneException, String.format(format, GoneException.class, error.getClass()));
+                    final Throwable cause = error.getCause();
                     if (cause != null) {
                         // assumption: cosmos isn't listening on 10251
-                        assertTrue(cause instanceof ConnectException, String.format(cs, ConnectException.class, error.getClass()));
+                        assertTrue(cause instanceof ConnectException, String.format(format, ConnectException.class, error.getClass()));
                     }
                 }
 
                 @Override
-                public void onNext(StoreResponse response) {
+                public void onNext(final StoreResponse response) {
                     fail(String.format("Expected GoneException, not a StoreResponse: %s", response));
                 }
             });
 
-        } catch (Exception error) {
-            String message = String.format("%s: %s", error.getClass(), error.getMessage());
+        } catch (final Exception error) {
+            final String message = String.format("%s: %s", error.getClass(), error.getMessage());
             fail(message, error);
         }
     }
@@ -669,12 +687,15 @@ public class RntbdTransportClientTest {
      * @param request   An RNTBD request instance
      * @param exception An exception mapping
      */
-    @Test(enabled = false, groups = "unit", dataProvider = "fromMockedNetworkFailureToExpectedDocumentClientException")
+    @Test(enabled = false, groups = { "unit" }, dataProvider = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public void verifyNetworkFailure(
-        FailureValidator.Builder builder,
-        RxDocumentServiceRequest request,
-        CosmosClientException exception
+        final FailureValidator.Builder builder,
+        final RxDocumentServiceRequest request,
+        final CosmosClientException exception
     ) {
+        // TODO: DANOBLE: Implement RntbdTransportClientTest.verifyNetworkFailure
+        //  Links:
+        //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/378750
         throw new UnsupportedOperationException("TODO: DANOBLE: Implement this test");
     }
 
@@ -685,70 +706,59 @@ public class RntbdTransportClientTest {
      * @param request   An RNTBD request instance
      * @param response  The RNTBD response instance to be returned as a result of the request
      */
-    @Test(enabled = true, groups = "unit", dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
+    @Test(enabled = true, groups = { "unit" }, dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
     public void verifyRequestFailures(
-        FailureValidator.Builder builder,
-        RxDocumentServiceRequest request,
-        RntbdResponse response
+        final FailureValidator.Builder builder,
+        final RxDocumentServiceRequest request,
+        final RntbdResponse response
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
         final Duration timeout = Duration.ofMillis(1000);
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, timeout, response)) {
 
-            Single<StoreResponse> responseSingle;
+            final Single<StoreResponse> responseSingle;
 
             try {
-                responseSingle = client.invokeStoreAsync(
-                    physicalAddress, new ResourceOperation(request.getOperationType(), request.getResourceType()), request
-                );
-            } catch (Exception error) {
-                throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
+                responseSingle = client.invokeStoreAsync(physicalAddress, null, request);
+            } catch (final Exception error) {
+                throw new AssertionError(String.format("%s: %s", error.getClass(), error));
             }
 
-            validateFailure(responseSingle, builder.build());
+            this.validateFailure(responseSingle, builder.build());
         }
     }
 
     private static RntbdTransportClient getRntbdTransportClientUnderTest(
-            UserAgentContainer userAgent,
-            Duration requestTimeout,
-            RntbdResponse expected
+        final UserAgentContainer userAgent,
+        final Duration requestTimeout,
+        final RntbdResponse expected
     ) {
 
-        final RntbdTransportClient.Options options = new RntbdTransportClient.Options(requestTimeout);
+        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(requestTimeout)
+            .userAgent(userAgent)
+            .build();
+
         final SslContext sslContext;
 
         try {
             sslContext = SslContextBuilder.forClient().build();
-        } catch (Exception error) {
+        } catch (final Exception error) {
             throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
         }
 
-        final RntbdTransportClient.EndpointFactory endpointFactory = spy(new RntbdTransportClient.EndpointFactory(
-            options, sslContext, userAgent
-        ));
-
-        final RntbdTransportClient client = new RntbdTransportClient(endpointFactory);
-
-        doAnswer((Answer) invocation -> {
-
-            RntbdTransportClient.EndpointFactory factory = (RntbdTransportClient.EndpointFactory) invocation.getMock();
-            URI physicalAddress = invocation.getArgumentAt(0, URI.class);
-            return new FakeEndpoint(factory, physicalAddress, expected);
-
-        }).when(endpointFactory).createEndpoint(any());
-
-        return client;
+        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected));
     }
 
-    private void validateFailure(Single<StoreResponse> single, FailureValidator validator) {
+    private void validateFailure(final Single<? extends StoreResponse> single, final FailureValidator validator) {
         validateFailure(single, validator, requestTimeout.toMillis());
     }
 
-    private static void validateFailure(Single<StoreResponse> single, FailureValidator validator, long timeout) {
+    private static void validateFailure(
+        final Single<? extends StoreResponse> single, final FailureValidator validator, final long timeout
+    ) {
 
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
+        final TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
         single.toObservable().subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNotCompleted();
@@ -759,24 +769,24 @@ public class RntbdTransportClientTest {
 
     // region Types
 
-    final private static class FakeChannel extends EmbeddedChannel {
+    private static final class FakeChannel extends EmbeddedChannel {
 
-        final private static ServerProperties serverProperties = new ServerProperties("agent", "3.0.0");
-        final private BlockingQueue<RntbdResponse> responses;
+        private static final ServerProperties serverProperties = new ServerProperties("agent", "3.0.0");
+        private final BlockingQueue<RntbdResponse> responses;
 
-        FakeChannel(BlockingQueue<RntbdResponse> responses, ChannelHandler... handlers) {
+        FakeChannel(final BlockingQueue<RntbdResponse> responses, final ChannelHandler... handlers) {
             super(handlers);
             this.responses = responses;
         }
 
         @Override
-        protected void handleInboundMessage(Object message) {
+        protected void handleInboundMessage(final Object message) {
             super.handleInboundMessage(message);
             assertTrue(message instanceof ByteBuf);
         }
 
         @Override
-        protected void handleOutboundMessage(Object message) {
+        protected void handleOutboundMessage(final Object message) {
 
             assertTrue(message instanceof ByteBuf);
 
@@ -787,21 +797,23 @@ public class RntbdTransportClientTest {
 
             if (in.getUnsignedIntLE(4) == 0) {
 
-                RntbdContextRequest request = RntbdContextRequest.decode(in.copy());
-                RntbdContext rntbdContext = RntbdContext.from(request, serverProperties, HttpResponseStatus.OK);
+                final RntbdContextRequest request = RntbdContextRequest.decode(in.copy());
+                final RntbdContext rntbdContext = RntbdContext.from(request, serverProperties, HttpResponseStatus.OK);
 
                 rntbdContext.encode(out);
 
             } else {
 
-                RntbdResponse rntbdResponse;
+                final RntbdRequest rntbdRequest = RntbdRequest.decode(in.copy());
+                final RntbdResponse rntbdResponse;
 
                 try {
                     rntbdResponse = this.responses.take();
-                } catch (Exception error) {
+                } catch (final Exception error) {
                     throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
                 }
 
+                assertEquals(rntbdRequest.getTransportRequestId(), rntbdResponse.getTransportRequestId());
                 rntbdResponse.encode(out);
                 out.setBytes(8, in.slice(8, 16));  // Overwrite activityId
             }
@@ -810,50 +822,90 @@ public class RntbdTransportClientTest {
         }
     }
 
-    final private static class FakeEndpoint implements RntbdTransportClient.Endpoint {
+    private static final class FakeEndpoint implements RntbdEndpoint {
 
+        final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
         final URI physicalAddress;
-        final RntbdRequestManager requestManager;
 
-        FakeEndpoint(
-            RntbdTransportClient.EndpointFactory factory,
-            URI physicalAddress,
-            RntbdResponse... expected
+        private FakeEndpoint(
+            final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
+            final RntbdResponse... expected
         ) {
 
-            ArrayBlockingQueue<RntbdResponse> responses = new ArrayBlockingQueue<RntbdResponse>(
+            final ArrayBlockingQueue<RntbdResponse> responses = new ArrayBlockingQueue<>(
                 expected.length, true, Arrays.asList(expected)
             );
 
-            this.requestManager = new RntbdRequestManager();
+            RntbdRequestManager requestManager = new RntbdRequestManager(30);
             this.physicalAddress = physicalAddress;
+            this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,
-                new RntbdContextNegotiator(this.requestManager, factory.getUserAgent()),
+                new RntbdContextNegotiator(requestManager, config.getUserAgent()),
                 new RntbdRequestEncoder(),
                 new RntbdResponseDecoder(),
-                this.requestManager
+                requestManager
             );
         }
 
         @Override
-        public Future<?> close() {
-            DefaultEventExecutor executor = new DefaultEventExecutor();
-            Future<?> future = executor.newSucceededFuture(true);
-            this.fakeChannel.close().syncUninterruptibly();
-            return future;
+        public String getName() {
+            return "FakeEndpoint";
         }
 
         @Override
-        public CompletableFuture<StoreResponse> write(RntbdRequestArgs requestArgs) {
-            final CompletableFuture<StoreResponse> responseFuture = this.requestManager.createStoreResponseFuture(requestArgs);
-            this.fakeChannel.writeOutbound(requestArgs);
-            return responseFuture;
+        public void close() {
+            this.fakeChannel.close().syncUninterruptibly();
+        }
+
+        @Override
+        public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
+            final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+            this.fakeChannel.writeOutbound(requestRecord);
+            return requestRecord;
+        }
+
+        static class Provider implements RntbdEndpoint.Provider {
+
+            final Config config;
+            final RntbdResponse expected;
+            final RntbdRequestTimer timer;
+
+            Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected) {
+                this.config = new Config(options, sslContext, LogLevel.WARN);
+                this.timer = new RntbdRequestTimer(config.getRequestTimeout());
+                this.expected = expected;
+            }
+
+            @Override
+            public void close() throws RuntimeException {
+                this.timer.close();
+            }
+
+            @Override
+            public Config config() {
+                return this.config;
+            }
+
+            @Override
+            public int count() {
+                return 1;
+            }
+
+            @Override
+            public RntbdEndpoint get(URI physicalAddress) {
+                return new FakeEndpoint(config, timer, physicalAddress, expected);
+            }
+
+            @Override
+            public Stream<RntbdEndpoint> list() {
+                return Stream.empty();
+            }
         }
     }
 
-    final private static class RntbdTestConfiguration {
+    private static final class RntbdTestConfiguration {
 
         static String AccountHost = System.getProperty("ACCOUNT_HOST",
             StringUtils.defaultString(

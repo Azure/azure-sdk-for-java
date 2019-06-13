@@ -25,8 +25,8 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
-import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 
 import java.util.ArrayList;

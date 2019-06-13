@@ -23,19 +23,18 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
-
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class TopDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
 

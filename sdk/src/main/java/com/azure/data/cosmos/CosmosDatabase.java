@@ -24,7 +24,6 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Paths;
-
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import org.apache.commons.lang3.StringUtils;
 import reactor.adapter.rxjava.RxJava2Adapter;

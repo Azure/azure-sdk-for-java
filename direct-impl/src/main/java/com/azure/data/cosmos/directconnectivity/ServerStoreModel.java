@@ -25,8 +25,8 @@ package com.azure.data.cosmos.directconnectivity;
 
 
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.BadRequestException;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
@@ -51,7 +51,7 @@ public class ServerStoreModel implements RxStoreModel {
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel;
 
-            if ((requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, requestConsistencyLevelHeaderValue)) == null) {
+            if ((requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, Strings.fromCamelCaseToUpperCase(requestConsistencyLevelHeaderValue))) == null) {
                 return Observable.error(new BadRequestException(
                     String.format(
                         RMResources.InvalidHeaderValue,

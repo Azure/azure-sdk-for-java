@@ -22,25 +22,23 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosDatabaseSettings;
+import com.azure.data.cosmos.FeedResponse;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosDatabaseSettings;
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.FeedResponse;
-
-import io.reactivex.subscribers.TestSubscriber;
 import reactor.core.publisher.Flux;
+
+import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
@@ -48,7 +46,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedExceptionHandlingTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -78,7 +76,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -22,16 +22,25 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.BridgeUtils;
+import com.azure.data.cosmos.ConflictResolutionMode;
+import com.azure.data.cosmos.ConflictResolutionPolicy;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
-
-import reactor.core.publisher.Mono;
-
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerRequestOptions;
+import com.azure.data.cosmos.CosmosContainerResponse;
+import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosDatabaseForTest;
+import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.internal.Utils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -51,7 +60,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public MultiMasterConflictResolutionTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = "multi-master", timeOut = 10 * TIMEOUT)
@@ -89,7 +98,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
             if (dce != null && dce.statusCode() == 400) {
-                assertThat(dce.getMessage()).contains("INVALID path '\\/a\\/b' for last writer wins conflict resolution");
+                assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
             } else {
                 throw e;
             }
@@ -106,7 +115,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
             if (dce != null && dce.statusCode() == 400) {
-                assertThat(dce.getMessage()).contains("INVALID path 'someText' for last writer wins conflict resolution");
+                assertThat(dce.getMessage()).contains("Invalid path 'someText' for last writer wins conflict resolution");
             } else {
                 throw e;
             }
@@ -158,7 +167,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
                 .statusCode(400)
-                .errorMessageContains("LAST_WRITER_WINS conflict resolution mode should not have conflict resolution procedure set.")
+                .errorMessageContains("LastWriterWins conflict resolution mode should not have conflict resolution procedure set.")
                 .build();
         validateFailure(createObservable, validator);
     }
@@ -180,7 +189,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
                 .statusCode(400)
-                .errorMessageContains("CUSTOM conflict resolution mode should not have conflict resolution path set.")
+                .errorMessageContains("Custom conflict resolution mode should not have conflict resolution path set.")
                 .build();
         validateFailure(createObservable, validator);
     }
@@ -189,7 +198,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     public void beforeClass() {
         // set up the client
 
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         database = createDatabase(client, databaseId);
         partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
@@ -29,12 +30,9 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.AsyncDocumentClient;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -67,7 +65,7 @@ public class SessionTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
@@ -95,13 +93,13 @@ public class SessionTest extends TestSuiteBase {
 
         createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.id(),
                 collection, null);
-        houseKeepingClient = clientBuilder.build();
+        houseKeepingClient = clientBuilder().build();
         connectionMode = houseKeepingClient.getConnectionPolicy().connectionMode();
 
         if (connectionMode == ConnectionMode.DIRECT) {
-            spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder);
+            spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
         } else {
-            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder);
+            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder());
         }
         options = new RequestOptions();
         options.setPartitionKey(PartitionKey.None);
@@ -117,7 +115,6 @@ public class SessionTest extends TestSuiteBase {
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeTest(Method method) {
-        super.beforeMethod(method);
         spyClient.clearCapturedRequests();
     }
 

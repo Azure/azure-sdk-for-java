@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import org.apache.commons.text.WordUtils;
+
 public enum Protocol {
     HTTPS, TCP;
 
@@ -36,4 +38,9 @@ public enum Protocol {
                 throw new IllegalStateException();
         }
     }
+    
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
+    }    
 }

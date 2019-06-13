@@ -26,14 +26,14 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.InternalServerErrorException;
 import com.azure.data.cosmos.internal.JavaStreamUtils;
 import com.azure.data.cosmos.internal.MutableVolatile;
 import com.azure.data.cosmos.internal.Quadruple;
-import com.azure.data.cosmos.internal.RequestChargeTracker;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.RMResources;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;

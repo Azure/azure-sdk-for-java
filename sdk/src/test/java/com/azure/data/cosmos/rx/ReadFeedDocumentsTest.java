@@ -24,19 +24,17 @@ package com.azure.data.cosmos.rx;
 
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-
-import reactor.core.publisher.Flux;
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedDocumentsTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
@@ -93,7 +91,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -104,7 +102,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         }
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

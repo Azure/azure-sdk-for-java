@@ -23,16 +23,16 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.PartitionIsMigratingException;
 import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.rx.FailureValidator;
+import com.google.common.collect.ImmutableList;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;

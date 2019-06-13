@@ -23,16 +23,15 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.azure.data.cosmos.JsonSerializable;
+import com.azure.data.cosmos.internal.Utils.ValueHolder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.azure.data.cosmos.JsonSerializable;
-import com.azure.data.cosmos.internal.Utils.ValueHolder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

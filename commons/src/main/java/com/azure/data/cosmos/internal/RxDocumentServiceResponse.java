@@ -23,9 +23,6 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ClientSideRequestStatistics;
@@ -43,6 +40,9 @@ import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.UserDefinedFunction;
 import com.azure.data.cosmos.directconnectivity.Address;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;

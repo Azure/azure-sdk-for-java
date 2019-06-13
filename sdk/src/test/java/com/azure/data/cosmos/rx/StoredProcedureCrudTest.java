@@ -22,15 +22,8 @@
  */
 package com.azure.data.cosmos.rx;
 
-import java.util.UUID;
-
-import com.azure.data.cosmos.CosmosClientBuilder;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
@@ -38,8 +31,13 @@ import com.azure.data.cosmos.CosmosStoredProcedure;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosStoredProcedureResponse;
 import com.azure.data.cosmos.CosmosStoredProcedureSettings;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 public class StoredProcedureCrudTest extends TestSuiteBase {
 
@@ -49,7 +47,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureCrudTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -81,7 +79,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
                 .block().storedProcedure();
 
         // read stored procedure
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
@@ -111,7 +109,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
 
         // attempt to read stored procedure which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
@@ -120,7 +118,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

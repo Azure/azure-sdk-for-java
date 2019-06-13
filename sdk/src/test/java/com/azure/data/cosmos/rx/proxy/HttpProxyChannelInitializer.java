@@ -22,13 +22,12 @@
  */
 package com.azure.data.cosmos.rx.proxy;
 
-import java.util.concurrent.atomic.AtomicLong;
-
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The channel initializer.

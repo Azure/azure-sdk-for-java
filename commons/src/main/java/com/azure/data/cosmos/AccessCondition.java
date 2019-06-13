@@ -44,6 +44,7 @@ public final class AccessCondition {
      * Sets the condition type.
      *
      * @param type the condition type to use.
+     * @return the Access Condition
      */
     public AccessCondition type(AccessConditionType type) {
         this.type = type;
@@ -65,6 +66,7 @@ public final class AccessCondition {
      * be compared to.
      *
      * @param condition the condition to use.
+     * @return the Access Condition
      */
     public AccessCondition condition(String condition) {
         this.condition = condition;

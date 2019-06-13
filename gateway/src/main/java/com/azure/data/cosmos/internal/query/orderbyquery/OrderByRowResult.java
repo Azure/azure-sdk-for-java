@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.query.orderbyquery;
 
-import java.util.List;
-
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.query.QueryItem;
+
+import java.util.List;
 
 /**
  * Represents the result of a query in the Azure Cosmos DB database service.

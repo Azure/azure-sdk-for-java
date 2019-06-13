@@ -22,23 +22,27 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IRetryPolicyFactory;
 import com.azure.data.cosmos.internal.RetryPolicy;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
+import com.azure.data.cosmos.internal.query.orderbyquery.OrderByRowResult;
+import com.azure.data.cosmos.internal.query.orderbyquery.OrderbyRowComparer;
+import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import com.azure.data.cosmos.internal.routing.Range;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.query.orderbyquery.OrderByRowResult;
-import com.azure.data.cosmos.internal.query.orderbyquery.OrderbyRowComparer;
-import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import com.azure.data.cosmos.internal.routing.Range;
 import org.apache.commons.lang3.RandomUtils;
 import org.mockito.Matchers;
 import org.mockito.Mockito;

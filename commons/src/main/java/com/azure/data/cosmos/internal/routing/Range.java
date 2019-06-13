@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import java.util.Comparator;
-
+import com.azure.data.cosmos.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.data.cosmos.JsonSerializable;
+
+import java.util.Comparator;
 
 @JsonIgnoreProperties({ "empty", "singleValue", "hashMap" })
 public final class Range<T extends Comparable<T>> extends JsonSerializable {

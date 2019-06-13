@@ -24,7 +24,6 @@ package com.azure.data.cosmos.internal.caches;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Single;
 import rx.functions.Func0;
 

@@ -23,16 +23,15 @@
 
 package com.azure.data.cosmos;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.internal.ResourceId;
+import org.apache.commons.lang3.tuple.Pair;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.internal.ResourceId;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResourceIdTests {
 

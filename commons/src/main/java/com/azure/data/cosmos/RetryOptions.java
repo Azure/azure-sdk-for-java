@@ -65,6 +65,7 @@ public class RetryOptions {
      *
      * @param maxRetryAttemptsOnThrottledRequests the max number of retry attempts on failed requests due to a
      *                                            throttle error.
+     * @return the RetryOptions.
      */
     public RetryOptions maxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
         if (maxRetryAttemptsOnThrottledRequests < 0) {
@@ -97,6 +98,7 @@ public class RetryOptions {
      * The default value is 30 seconds.
      *
      * @param maxRetryWaitTimeInSeconds the maximum number of seconds a request will be retried.
+     * @return the RetryOptions.
      */
     public RetryOptions maxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
         if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {

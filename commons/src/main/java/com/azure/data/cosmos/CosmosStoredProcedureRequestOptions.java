@@ -43,6 +43,7 @@ public class CosmosStoredProcedureRequestOptions extends CosmosRequestOptions {
      * Sets the consistency level required for the request.
      *
      * @param consistencyLevel the consistency level.
+     * @return the CosmosStoredProcedureRequestOptions.
      */
     public CosmosStoredProcedureRequestOptions consistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
@@ -62,6 +63,7 @@ public class CosmosStoredProcedureRequestOptions extends CosmosRequestOptions {
      * Sets the partition key used to identify the current request's target partition.
      *
      * @param partitionKey the partition key value.
+     * @return the CosmosStoredProcedureRequestOptions.
      */
     public CosmosStoredProcedureRequestOptions partitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
@@ -81,6 +83,7 @@ public class CosmosStoredProcedureRequestOptions extends CosmosRequestOptions {
      * Sets the token for use with session consistency.
      *
      * @param sessionToken the session token.
+     * @return the CosmosStoredProcedureRequestOptions.
      */
     public CosmosStoredProcedureRequestOptions sessionToken(String sessionToken) {
         this.sessionToken = sessionToken;

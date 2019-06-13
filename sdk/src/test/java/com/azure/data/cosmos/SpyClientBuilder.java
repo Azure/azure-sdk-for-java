@@ -22,7 +22,6 @@
  */
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.SpyClientUnderTestFactory;
 
 public class SpyClientBuilder extends AsyncDocumentClient.Builder {

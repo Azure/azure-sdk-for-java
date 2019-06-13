@@ -23,13 +23,13 @@
 
 package com.azure.data.cosmos.benchmark;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlParameter;
 import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.AsyncDocumentClient;
 
 class DocDBUtils {
 

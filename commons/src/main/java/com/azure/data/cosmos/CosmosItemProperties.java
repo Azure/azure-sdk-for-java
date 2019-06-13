@@ -22,8 +22,8 @@
  */
 package com.azure.data.cosmos;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;

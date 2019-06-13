@@ -22,20 +22,18 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
 import com.azure.data.cosmos.CosmosDatabaseSettings;
 import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -49,7 +47,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public DatabaseCrudTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -131,7 +129,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = createDatabase(client, preExistingDatabaseId);
     }
 

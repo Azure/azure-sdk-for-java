@@ -23,12 +23,12 @@
 
 package com.azure.data.cosmos.rx;
 
-import java.io.StringWriter;
-import java.lang.reflect.Method;
-import java.util.UUID;
-
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.CosmosItemResponse;
+import com.azure.data.cosmos.CosmosResponseValidator;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -40,8 +40,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import reactor.core.publisher.Mono;
+
+import java.io.StringWriter;
+import java.lang.reflect.Method;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,12 +60,12 @@ public class LogLevelTest extends TestSuiteBase {
     private static CosmosClient client;
 
     public LogLevelTest() {
-        this.clientBuilder = createGatewayRxDocumentClient();
+        super(createGatewayRxDocumentClient());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -79,7 +82,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -109,7 +112,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -138,7 +141,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -165,7 +168,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -191,7 +194,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -220,7 +223,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -249,7 +252,7 @@ public class LogLevelTest extends TestSuiteBase {
         WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
         Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
-        CosmosClient client = clientBuilder.build();
+        CosmosClient client = clientBuilder().build();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition,
@@ -274,7 +277,6 @@ public class LogLevelTest extends TestSuiteBase {
 
     @BeforeMethod(groups = { "simple" })
     public void beforeMethod(Method method) {
-        super.beforeMethod(method);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

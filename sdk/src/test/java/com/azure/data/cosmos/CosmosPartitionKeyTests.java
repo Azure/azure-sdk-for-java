@@ -22,7 +22,31 @@
  */
 package com.azure.data.cosmos;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.HttpClientFactory;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.Paths;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.rx.FeedResponseListValidator;
+import com.azure.data.cosmos.rx.TestConfigurations;
+import com.azure.data.cosmos.rx.TestSuiteBase;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpMethod;
+import io.reactivex.netty.client.RxClient;
+import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
+import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import org.apache.commons.io.IOUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import rx.Observable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,33 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.Utils;
-import com.azure.data.cosmos.rx.FeedResponseListValidator;
-import com.azure.data.cosmos.rx.TestConfigurations;
-import com.azure.data.cosmos.rx.TestSuiteBase;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.HttpClientFactory;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpMethod;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import rx.Observable;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosPartitionKeyTests extends TestSuiteBase {
 
@@ -237,10 +235,10 @@ public class CosmosPartitionKeyTests extends TestSuiteBase {
                         "  'body':'" +
                         "   function() {" +
                         "   var client = getContext().getCollection();" +
-                        "   var doc = client.createDocument(client.selfLink(), { \\'id\\': \\'" + documentCreatedBySprocId + "\\'}, {}, function(err, docCreated, options) { " +
+                        "   var doc = client.createDocument(client.getSelfLink(), { \\'id\\': \\'" + documentCreatedBySprocId + "\\'}, {}, function(err, docCreated, options) { " +
                         "   if(err) throw new Error(\\'Error while creating document: \\' + err.message);" +
                         "   else {" +
-                        "   getContext().getResponse().body(1);" +
+                        "   getContext().getResponse().setBody(1);" +
                         "      }" +
                         "    });" +
                         "}'" +

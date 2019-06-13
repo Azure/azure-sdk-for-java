@@ -22,16 +22,19 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.CosmosBridgeInternal;
+import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerRequestOptions;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.PartitionKeyRange;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKeyRange;
-
 import rx.Observable;
 
 public class ReadFeedPkrTests extends TestSuiteBase {
@@ -43,7 +46,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     
     @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedPkrTests(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
@@ -63,8 +66,8 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = CosmosBridgeInternal.getAsyncDocumentClient(clientBuilder.build());
-        createdDatabase = getSharedCosmosDatabase(clientBuilder.build());
+        client = CosmosBridgeInternal.getAsyncDocumentClient(clientBuilder().build());
+        createdDatabase = getSharedCosmosDatabase(clientBuilder().build());
         createdCollection = createCollection(createdDatabase,
                                              getCollectionDefinition(),
                                              new CosmosContainerRequestOptions());

@@ -23,7 +23,10 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.PartitionKeyRange;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,11 +36,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.PartitionKeyRange;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoutingMapProviderHelperTest {
     private static final MockRoutingMapProvider ROUTING_MAP_PROVIDER = new MockRoutingMapProvider(

@@ -22,18 +22,18 @@
  */
 package com.azure.data.cosmos.changefeed.internal;
 
+import com.azure.data.cosmos.AccessCondition;
+import com.azure.data.cosmos.AccessConditionType;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.changefeed.LeaseStore;
 import com.azure.data.cosmos.changefeed.RequestOptionsFactory;
 import com.azure.data.cosmos.changefeed.ServiceItemLease;
-import com.azure.data.cosmos.AccessCondition;
-import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Document;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

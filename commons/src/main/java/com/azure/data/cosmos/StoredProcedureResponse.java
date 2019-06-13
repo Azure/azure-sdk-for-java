@@ -23,13 +23,12 @@
 
 package com.azure.data.cosmos;
 
-import java.util.Map;
-
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+import java.util.Map;
 
 /**
  * Represents the response returned from a stored procedure in the Azure Cosmos DB database service.

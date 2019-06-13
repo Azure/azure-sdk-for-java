@@ -25,7 +25,6 @@ package com.azure.data.cosmos.examples.ChangeFeed;
 import com.azure.data.cosmos.ChangeFeedObserver;
 import com.azure.data.cosmos.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.ChangeFeedObserverContext;
-import com.azure.data.cosmos.*;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.SerializationFormattingPolicy;
 

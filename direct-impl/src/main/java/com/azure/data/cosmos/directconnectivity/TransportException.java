@@ -24,36 +24,26 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.Error;
-import io.netty.handler.codec.http.HttpResponseStatus;
+// TODO: DANOBLE: Use a TransportException derivative wherever CorruptFrameException is thrown in RntbdTransportClient
+//   * Continue to throw IllegalArgumentException, IllegalStateException, and NullPointerException.
+//   * Continue to complete all pending requests with a GoneException.
+//     Customers should then expect to see these causes for GoneException errors originating in RntbdTransportClient:
+//     - TransportException
+//     - ReadTimeoutException
+//     - WriteTimeoutException
+//     These causes for GoneException errors will be logged as issues because they indicate a problem in the
+//     RntbdTransportClient code:
+//     - IllegalArgumentException
+//     - IllegalStateException
+//     - NullPointerException
+//     Any other exceptions caught by the RntbdTransportClient code will also be logged as issues because they
+//     indicate something unexpected happened.
+//   NOTES:
+//   We throw a derivative in one place: RntbdContextException in RntbdContext.decode. This is a special case
+//   that is handled by RntbdRequestManager.userEventTriggered.
 
-import java.util.Map;
-
-public class TransportException extends Exception {
-
-    final private Error error;
-    final private Map<String, Object> headers;
-    final private HttpResponseStatus status;
-
-    public TransportException(HttpResponseStatus status, ObjectNode details, Map<String, Object> headers) {
-
-        super("TODO: DANOBLE: format message string based on headers, and status information");
-        this.error = BridgeInternal.createError(details);
-        this.headers = headers;
-        this.status = status;
-    }
-
-    public Error getError() {
-        return error;
-    }
-
-    public Map<String, Object> getHeaders() {
-        return headers;
-    }
-
-    public HttpResponseStatus getStatus() {
-        return status;
+public class TransportException extends RuntimeException {
+    public TransportException(String message, Throwable cause) {
+        super(message, cause, /* enableSuppression */ true, /* writableStackTrace */ false);
     }
 }

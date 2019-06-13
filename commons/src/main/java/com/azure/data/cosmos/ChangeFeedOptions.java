@@ -71,6 +71,7 @@ public final class ChangeFeedOptions extends FeedOptionsBase {
      *
      * @param partitionKeyRangeId a string indicating the partition key range ID
      * @see PartitionKeyRange
+     * @return the ChangeFeedOptions.
      */
     public ChangeFeedOptions partitionKeyRangeId(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
@@ -94,6 +95,7 @@ public final class ChangeFeedOptions extends FeedOptionsBase {
      *
      * @param startFromBeginning a boolean value indicating change feed should start
      *                           from beginning or not
+     * @return the ChangeFeedOptions.
      */
     public ChangeFeedOptions startFromBeginning(boolean startFromBeginning) {
         this.startFromBeginning = startFromBeginning;
@@ -115,6 +117,7 @@ public final class ChangeFeedOptions extends FeedOptionsBase {
      * this is specified, startFromBeginning is ignored.
      * 
      * @param startDateTime a zoned date time to start looking for changes after.
+     * @return the ChangeFeedOptions.
      */
     public ChangeFeedOptions startDateTime(OffsetDateTime startDateTime) {
         this.startDateTime = startDateTime;

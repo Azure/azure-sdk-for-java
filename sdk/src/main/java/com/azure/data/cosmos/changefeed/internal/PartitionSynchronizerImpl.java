@@ -23,13 +23,13 @@
 package com.azure.data.cosmos.changefeed.internal;
 
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.changefeed.Lease;
 import com.azure.data.cosmos.changefeed.LeaseContainer;
 import com.azure.data.cosmos.changefeed.LeaseManager;
 import com.azure.data.cosmos.changefeed.PartitionSynchronizer;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.PartitionKeyRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

@@ -23,9 +23,9 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.net.URI;

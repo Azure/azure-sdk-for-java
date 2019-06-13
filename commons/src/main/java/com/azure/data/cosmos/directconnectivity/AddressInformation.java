@@ -63,7 +63,7 @@ public class AddressInformation {
     }
 
     public String getProtocolName() {
-        return this.protocol.name();
+        return this.protocol.toString();
     }
 
     public String getProtocolScheme() {

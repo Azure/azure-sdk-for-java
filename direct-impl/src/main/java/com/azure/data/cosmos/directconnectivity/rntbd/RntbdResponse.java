@@ -24,68 +24,65 @@
 
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
+import com.azure.data.cosmos.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.azure.data.cosmos.directconnectivity.StoreResponse;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.EmptyByteBuf;
-import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.ResourceLeakDetector;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Math.min;
 
 @JsonPropertyOrder({ "frame", "headers", "content" })
-final public class RntbdResponse implements ReferenceCounted {
+public final class RntbdResponse implements ReferenceCounted {
 
     // region Fields
 
+    private static final String simpleClassName = RntbdResponse.class.getSimpleName();
+
+    @JsonProperty
     @JsonSerialize(using = PayloadSerializer.class)
-    @JsonProperty
-    final private ByteBuf content;
+    private final ByteBuf content;
 
     @JsonProperty
-    final private RntbdResponseStatus frame;
+    private final RntbdResponseStatus frame;
 
     @JsonProperty
-    final private RntbdResponseHeaders headers;
+    private final RntbdResponseHeaders headers;
 
     private AtomicInteger referenceCount = new AtomicInteger();
 
     // endregion
 
-    public RntbdResponse(UUID activityId, int statusCode, Map<String, String> map, ByteBuf content) {
+    public RntbdResponse(final UUID activityId, final int statusCode, final Map<String, String> map, final ByteBuf content) {
 
         this.headers = RntbdResponseHeaders.fromMap(map, content.readableBytes() > 0);
         this.content = content.retain();
 
-        HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
-        int length = RntbdResponseStatus.LENGTH + headers.computeLength();
+        final HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
+        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength();
 
         this.frame = new RntbdResponseStatus(length, status, activityId);
     }
 
-    private RntbdResponse(RntbdResponseStatus frame, RntbdResponseHeaders headers, ByteBuf content) {
+    private RntbdResponse(final RntbdResponseStatus frame, final RntbdResponseHeaders headers, final ByteBuf content) {
 
         this.frame = frame;
         this.headers = headers;
@@ -106,17 +103,17 @@ final public class RntbdResponse implements ReferenceCounted {
         return this.headers;
     }
 
-    public InputStreamReader getResponseStreamReader() {
-        InputStream istream = new ByteBufInputStream(this.content.retain(), true);
-        return new InputStreamReader(istream);
-    }
-
     @JsonIgnore
     public HttpResponseStatus getStatus() {
         return this.frame.getStatus();
     }
 
-    static RntbdResponse decode(ByteBuf in) {
+    @JsonIgnore
+    public Long getTransportRequestId() {
+        return this.getHeader(RntbdResponseHeader.TransportRequestID);
+    }
+
+    static RntbdResponse decode(final ByteBuf in) {
 
         in.markReaderIndex();
 
@@ -124,7 +121,7 @@ final public class RntbdResponse implements ReferenceCounted {
         final RntbdResponseHeaders headers = RntbdResponseHeaders.decode(in.readSlice(frame.getHeadersLength()));
 
         final boolean hasPayload = headers.isPayloadPresent();
-        ByteBuf content;
+        final ByteBuf content;
 
         if (hasPayload) {
 
@@ -143,18 +140,15 @@ final public class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(frame, headers, content);
     }
 
-    public void encode(ByteBuf out) {
+    public void encode(final ByteBuf out) {
 
-        int start = out.writerIndex();
+        final int start = out.writerIndex();
 
         this.frame.encode(out);
         this.headers.encode(out);
 
-        int length = out.writerIndex() - start;
-
-        if (length != this.frame.getLength()) {
-            throw new IllegalStateException();
-        }
+        final int length = out.writerIndex() - start;
+        checkState(length == this.frame.getLength());
 
         if (this.hasPayload()) {
             out.writeIntLE(this.content.readableBytes());
@@ -165,9 +159,9 @@ final public class RntbdResponse implements ReferenceCounted {
     }
 
     @JsonIgnore
-    public <T> T getHeader(RntbdResponseHeader header) {
-        T value = (T)this.headers.get(header).getValue();
-        return value;
+    @SuppressWarnings("unchecked")
+    public <T> T getHeader(final RntbdResponseHeader header) {
+        return (T)this.headers.get(header).getValue();
     }
 
     public boolean hasPayload() {
@@ -199,7 +193,7 @@ final public class RntbdResponse implements ReferenceCounted {
      * @return {@code true} if and only if the reference count became {@code 0} and this object has been de-allocated
      */
     @Override
-    public boolean release(int decrement) {
+    public boolean release(final int decrement) {
 
         return this.referenceCount.getAndAccumulate(decrement, (value, n) -> {
             value = value - min(value, n);
@@ -227,15 +221,15 @@ final public class RntbdResponse implements ReferenceCounted {
      * @param increment amount of the increase
      */
     @Override
-    public ReferenceCounted retain(int increment) {
+    public ReferenceCounted retain(final int increment) {
         this.referenceCount.addAndGet(increment);
         return this;
     }
 
-    StoreResponse toStoreResponse(RntbdContext context) {
+    StoreResponse toStoreResponse(final RntbdContext context) {
 
-        Objects.requireNonNull(context);
-        int length = this.content.readableBytes();
+        checkNotNull(context, "context");
+        final int length = this.content.readableBytes();
 
         return new StoreResponse(
             this.getStatus().code(),
@@ -246,12 +240,7 @@ final public class RntbdResponse implements ReferenceCounted {
 
     @Override
     public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
-        try {
-            return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
-            throw new CorruptedFrameException(error);
-        }
+        return simpleClassName + '(' + RntbdObjectMapper.toJson(this) + ')';
     }
 
     /**
@@ -274,7 +263,7 @@ final public class RntbdResponse implements ReferenceCounted {
      * @param hint information useful for debugging (unused)
      */
     @Override
-    public ReferenceCounted touch(Object hint) {
+    public ReferenceCounted touch(final Object hint) {
         return this;
     }
 
@@ -285,9 +274,9 @@ final public class RntbdResponse implements ReferenceCounted {
         }
 
         @Override
-        public void serialize(ByteBuf value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+        public void serialize(final ByteBuf value, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
 
-            int length = value.readableBytes();
+            final int length = value.readableBytes();
 
             generator.writeStartObject();
             generator.writeObjectField("length", length);

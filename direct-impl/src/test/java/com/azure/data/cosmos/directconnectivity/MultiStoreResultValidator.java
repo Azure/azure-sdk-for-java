@@ -23,9 +23,9 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.base.Predicates;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.rx.FailureValidator;
+import com.google.common.base.Predicates;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.assertj.core.description.Description;
 import org.assertj.core.description.TextDescription;

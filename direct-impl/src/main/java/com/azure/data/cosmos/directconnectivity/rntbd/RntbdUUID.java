@@ -28,12 +28,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
 
-import java.util.Objects;
 import java.util.UUID;
 
-final public class RntbdUUID {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    final public static UUID EMPTY = new UUID(0L, 0L);
+public final class RntbdUUID {
+
+    public static final UUID EMPTY = new UUID(0L, 0L);
 
     private RntbdUUID() {
     }
@@ -44,7 +45,7 @@ final public class RntbdUUID {
      * @param bytes a {@link byte} array containing the serialized {@link UUID} to be decoded
      * @return a new {@link UUID}
      */
-    public static UUID decode(byte[] bytes) {
+    public static UUID decode(final byte[] bytes) {
         return decode(Unpooled.wrappedBuffer(bytes));
     }
 
@@ -54,12 +55,12 @@ final public class RntbdUUID {
      * @param in a {@link ByteBuf} containing the serialized {@link UUID} to be decoded
      * @return a new {@link UUID}
      */
-    public static UUID decode(ByteBuf in) {
+    public static UUID decode(final ByteBuf in) {
 
-        Objects.requireNonNull(in);
+        checkNotNull(in, "in");
 
         if (in.readableBytes() < 2 * Long.BYTES) {
-            String reason = String.format("invalid frame length: %d", in.readableBytes());
+            final String reason = String.format("invalid frame length: %d", in.readableBytes());
             throw new CorruptedFrameException(reason);
         }
 
@@ -83,7 +84,7 @@ final public class RntbdUUID {
      * @param uuid a {@link UUID} to be encoded
      * @return a new byte array containing the encoded
      */
-    public static byte[] encode(UUID uuid) {
+    public static byte[] encode(final UUID uuid) {
         final byte[] bytes = new byte[2 * Integer.BYTES];
         encode(uuid, Unpooled.wrappedBuffer(bytes));
         return bytes;
@@ -95,7 +96,7 @@ final public class RntbdUUID {
      * @param uuid a {@link UUID} to be encoded
      * @param out  an output {@link ByteBuf}
      */
-    public static void encode(UUID uuid, ByteBuf out) {
+    public static void encode(final UUID uuid, final ByteBuf out) {
 
         final long mostSignificantBits = uuid.getMostSignificantBits();
 

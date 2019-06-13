@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 
 import java.util.Arrays;
 import java.util.HashMap;

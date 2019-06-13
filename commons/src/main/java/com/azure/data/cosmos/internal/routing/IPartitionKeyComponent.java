@@ -23,9 +23,9 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import java.io.OutputStream;
-
 import com.fasterxml.jackson.core.JsonGenerator;
+
+import java.io.OutputStream;
 
 interface IPartitionKeyComponent {
     int CompareTo(IPartitionKeyComponent other);

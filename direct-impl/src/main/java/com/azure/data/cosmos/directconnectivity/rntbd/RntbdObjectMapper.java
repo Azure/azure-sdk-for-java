@@ -24,60 +24,83 @@
 
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.CorruptedFrameException;
+import io.netty.handler.codec.EncoderException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
-class RntbdObjectMapper {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private static final SimpleFilterProvider propertyFilterProvider = new SimpleFilterProvider();
-    private static final ObjectMapper objectMapper = new ObjectMapper().setFilterProvider(propertyFilterProvider);
-    private static volatile ObjectWriter objectWriter = null;
+public final class RntbdObjectMapper {
+
+    private static final SimpleFilterProvider filterProvider;
+    private static final ObjectMapper objectMapper;
+    private static final ObjectWriter objectWriter;
+
+    static {
+        objectMapper = new ObjectMapper().setFilterProvider(filterProvider = new SimpleFilterProvider());
+        objectWriter = objectMapper.writer();
+    }
 
     private RntbdObjectMapper() {
     }
 
-    static JsonNode readTree(ByteBuf in) {
-
-        Objects.requireNonNull(in, "in");
-        InputStream istream = new ByteBufInputStream(in);
-
-        try {
-            return objectMapper.readTree(istream);
-        } catch (IOException error) {
-            throw new CorruptedFrameException(error);
-        }
+    static ObjectNode readTree(final RntbdResponse response) {
+        checkNotNull(response, "response");
+        return readTree(response.getContent());
     }
 
-    static void registerPropertyFilter(Class<?> type, Class<? extends PropertyFilter> filter) {
+    static ObjectNode readTree(final ByteBuf in) {
 
-        Objects.requireNonNull(type, "type");
-        Objects.requireNonNull(filter, "filter");
+        checkNotNull(in, "in");
+        final JsonNode node;
+
+        try (final InputStream istream = new ByteBufInputStream(in)) {
+            node = objectMapper.readTree(istream);
+        } catch (final IOException error) {
+            throw new CorruptedFrameException(error);
+        }
+
+        if (node.isObject()) {
+            return (ObjectNode)node;
+        }
+
+        final String cause = String.format("Expected %s, not %s", JsonNodeType.OBJECT, node.getNodeType());
+        throw new CorruptedFrameException(cause);
+    }
+
+    static void registerPropertyFilter(final Class<?> type, final Class<? extends PropertyFilter> filter) {
+
+        checkNotNull(type, "type");
+        checkNotNull(filter, "filter");
 
         try {
-            propertyFilterProvider.addFilter(type.getSimpleName(), filter.newInstance());
-        } catch (ReflectiveOperationException error) {
+            filterProvider.addFilter(type.getSimpleName(), filter.newInstance());
+        } catch (final ReflectiveOperationException error) {
             throw new IllegalStateException(error);
         }
     }
 
-    static ObjectWriter writer() {
-        if (objectWriter == null) {
-            synchronized (objectMapper) {
-                if (objectWriter == null) {
-                    objectWriter = objectMapper.writer();
-                }
-            }
+    public static String toJson(Object value) {
+        try {
+            return objectWriter.writeValueAsString(value);
+        } catch (final JsonProcessingException error) {
+            throw new EncoderException(error);
         }
+    }
+
+    public static ObjectWriter writer() {
         return objectWriter;
     }
 }

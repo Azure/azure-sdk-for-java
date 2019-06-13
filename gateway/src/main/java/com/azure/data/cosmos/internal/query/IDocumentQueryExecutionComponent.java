@@ -24,7 +24,6 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
-
 import rx.Observable;
 
 /**

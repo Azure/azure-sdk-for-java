@@ -28,7 +28,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import java.nio.ByteOrder;
 
-final public class RntbdRequestFramer extends LengthFieldBasedFrameDecoder {
+public final class RntbdRequestFramer extends LengthFieldBasedFrameDecoder {
 
     public RntbdRequestFramer() {
         super(ByteOrder.LITTLE_ENDIAN, Integer.MAX_VALUE, 0, Integer.BYTES, -Integer.BYTES, 0, true);

@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.azure.data.cosmos.PartitionKeyRange;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Used internally in request routing in the Azure Cosmos DB database service.

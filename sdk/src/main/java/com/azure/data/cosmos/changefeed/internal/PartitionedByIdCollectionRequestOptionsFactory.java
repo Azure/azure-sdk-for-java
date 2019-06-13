@@ -23,10 +23,10 @@
 package com.azure.data.cosmos.changefeed.internal;
 
 import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.changefeed.Lease;
-import com.azure.data.cosmos.changefeed.RequestOptionsFactory;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.changefeed.Lease;
+import com.azure.data.cosmos.changefeed.RequestOptionsFactory;
 
 /**
  * Used to create request options for partitioned lease collections, when partition key is defined as /id.

@@ -22,8 +22,8 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 
 public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory {
 

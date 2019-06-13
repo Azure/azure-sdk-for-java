@@ -23,16 +23,15 @@
 
 package com.azure.data.cosmos;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.

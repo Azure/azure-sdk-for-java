@@ -25,7 +25,6 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

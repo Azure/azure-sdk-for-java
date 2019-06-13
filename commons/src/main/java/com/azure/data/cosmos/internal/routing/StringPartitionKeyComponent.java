@@ -23,12 +23,12 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.azure.data.cosmos.internal.Utils;
 
 class StringPartitionKeyComponent implements IPartitionKeyComponent {
 

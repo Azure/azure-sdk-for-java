@@ -22,29 +22,28 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.query.orderbyquery.OrderByRowResult;
 import com.azure.data.cosmos.internal.query.orderbyquery.OrderbyRowComparer;
-import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
-import com.azure.data.cosmos.internal.Utils;
-
-import com.azure.data.cosmos.QueryMetrics;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func3;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
     private final OrderbyRowComparer<T> consumeComparer;

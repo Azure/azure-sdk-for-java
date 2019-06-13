@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos.internal.query.aggregation;
 
-import java.io.IOException;
-
 import com.azure.data.cosmos.Undefined;
 import com.azure.data.cosmos.internal.Utils;
+
+import java.io.IOException;
 
 public class AverageAggregator implements Aggregator {
     private AverageInfo averageInfo;

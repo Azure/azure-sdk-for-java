@@ -22,17 +22,15 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
-import com.azure.data.cosmos.internal.RMResources;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import org.apache.commons.lang3.StringUtils;
-
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.internal.PathsHelper;
-import com.azure.data.cosmos.internal.ResourceId;
-import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
 import com.azure.data.cosmos.internal.InvalidPartitionException;
 import com.azure.data.cosmos.internal.NotFoundException;
-
+import com.azure.data.cosmos.internal.PathsHelper;
+import com.azure.data.cosmos.internal.RMResources;
+import com.azure.data.cosmos.internal.ResourceId;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import org.apache.commons.lang3.StringUtils;
 import rx.Completable;
 import rx.Single;
 

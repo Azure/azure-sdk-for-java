@@ -22,10 +22,10 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.azure.data.cosmos.internal.Constants;
 
 /**
  * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the

@@ -23,10 +23,6 @@
 
 package com.azure.data.cosmos.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.Conflict;
 import com.azure.data.cosmos.Database;
@@ -39,10 +35,14 @@ import com.azure.data.cosmos.StoredProcedure;
 import com.azure.data.cosmos.Trigger;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.UserDefinedFunction;
-
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used internally to provide utility methods to work with the resource's path in the Azure Cosmos DB database service.

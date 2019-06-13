@@ -22,15 +22,15 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.HttpConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.internal.HttpConstants;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public interface FeedResponseValidator<T extends Resource> {
     

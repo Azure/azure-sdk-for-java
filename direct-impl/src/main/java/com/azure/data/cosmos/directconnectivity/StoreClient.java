@@ -25,21 +25,21 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.ISessionToken;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.SessionContainer;
-import com.azure.data.cosmos.internal.SessionTokenHelper;
 import com.azure.data.cosmos.internal.BackoffRetryUtility;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Exceptions;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.IRetryPolicy;
+import com.azure.data.cosmos.internal.ISessionToken;
+import com.azure.data.cosmos.internal.InternalServerErrorException;
+import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.RMResources;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+import com.azure.data.cosmos.internal.SessionContainer;
+import com.azure.data.cosmos.internal.SessionTokenHelper;
 import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -176,7 +176,7 @@ public class StoreClient implements IStoreClient {
         boolean sessionConsistency =
                 this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
                         (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.name()));
+                                && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
 
         long storeLSN = this.getLSN(headers);
         if (storeLSN == -1) {

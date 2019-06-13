@@ -23,15 +23,13 @@
 
 package com.azure.data.cosmos;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.azure.data.cosmos.internal.Constants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
-import com.azure.data.cosmos.internal.Constants;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
@@ -69,6 +67,7 @@ public class IncludedPath extends JsonSerializable {
      * Sets path.
      *
      * @param path the path.
+     * @return the Included Path.
      */
     public IncludedPath path(String path) {
         super.set(Constants.Properties.PATH, path);

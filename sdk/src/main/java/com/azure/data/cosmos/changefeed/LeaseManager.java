@@ -23,7 +23,6 @@
 package com.azure.data.cosmos.changefeed;
 
 import com.azure.data.cosmos.changefeed.exceptions.LeaseLostException;
-
 import reactor.core.publisher.Mono;
 
 /**

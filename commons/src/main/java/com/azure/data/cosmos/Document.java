@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.data.cosmos.internal.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 /**
  * Represents a document in the Azure Cosmos DB database service.

@@ -22,14 +22,18 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosItem;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.CosmosItemResponse;
+import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.directconnectivity.Protocol;
-
-import reactor.core.publisher.Mono;
-
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -38,6 +42,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -55,7 +60,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     
     @Factory(dataProvider = "clientBuildersWithDirect")
     public DocumentCrudTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @DataProvider(name = "documentCrudArgProvider")
@@ -128,7 +133,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         CosmosItem createdDocument = TestSuiteBase.createDocument(createdCollection, docDefinition);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(sb.toString()));
@@ -170,7 +175,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
 
         CosmosItem document = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
@@ -183,13 +188,13 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
-    public void timestamp(String documentId, boolean isNameBased) throws Exception {
+    public void timestamp(String documentId) throws Exception {
         OffsetDateTime before = OffsetDateTime.now();
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         Thread.sleep(1000);
         CosmosItem document = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
@@ -211,7 +216,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
         document.delete(options).block();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         options.partitionKey(new PartitionKey("looloo"));
         Mono<CosmosItemResponse> readObservable = document.read(options);
@@ -237,7 +242,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         Mono<CosmosItemResponse> readObservable = document.read(options);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
@@ -246,7 +251,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument_undefinedPK(String documentId) throws InterruptedException {
-        Document docDefinition = new Document();
+        CosmosItemProperties docDefinition = new CosmosItemProperties();
         docDefinition.id(documentId);
 
         CosmosItem document = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
@@ -260,7 +265,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         Mono<CosmosItemResponse> readObservable = document.read(options);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
@@ -317,16 +322,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         // validate
         CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                 .withId(docDefinition.id()).build();
-        try {
-            validateSuccess(upsertObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.TCP) {
-                String message = String.format("DIRECT TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
-                logger.info(message, error);
-                throw new SkipException(message, error);
-            }
-            throw error;
-        }
+
+        validateSuccess(upsertObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 100, dataProvider = "documentCrudArgProvider")
@@ -346,21 +343,12 @@ public class DocumentCrudTest extends TestSuiteBase {
         // validate
         CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                 .withProperty("newProp", newPropValue).build();
-        try {
-            validateSuccess(readObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.getConfigs().getProtocol() == Protocol.TCP) {
-                String message = String.format("DIRECT TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.getDesiredConsistencyLevel());
-                logger.info(message, error);
-                throw new SkipException(message, error);
-            }
-            throw error;
-        }
+        validateSuccess(readObservable, validator);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -372,7 +360,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeMethod() {
         safeClose(client);
-        client = clientBuilder.build();
+        client = clientBuilder().build();
     }
     
     private CosmosItemProperties getDocumentDefinition(String documentId) {

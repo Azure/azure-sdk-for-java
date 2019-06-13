@@ -23,9 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.azure.data.cosmos.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a Database in the Azure Cosmos DB database service. A database manages users, permissions and a set of collections

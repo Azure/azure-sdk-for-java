@@ -23,12 +23,13 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.routing.LocationHelper;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.DatabaseAccountManagerInternal;
 import com.azure.data.cosmos.internal.routing.LocationCache;
+import com.azure.data.cosmos.internal.routing.LocationHelper;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Completable;
@@ -37,8 +38,6 @@ import rx.Scheduler;
 import rx.Single;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import org.apache.commons.collections4.list.UnmodifiableList;
-
 
 import java.net.URISyntaxException;
 import java.net.URL;

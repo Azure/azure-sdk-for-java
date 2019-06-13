@@ -22,11 +22,8 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
-import com.azure.data.cosmos.internal.directconnectivity.GlobalAddressResolver;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.data.cosmos.AccessConditionType;
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.Conflict;
@@ -64,15 +61,18 @@ import com.azure.data.cosmos.directconnectivity.GatewayServiceConfigurationReade
 import com.azure.data.cosmos.directconnectivity.ServerStoreModel;
 import com.azure.data.cosmos.directconnectivity.StoreClient;
 import com.azure.data.cosmos.directconnectivity.StoreClientFactory;
-import com.azure.data.cosmos.internal.routing.PartitionKeyAndResourceTokenPair;
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
+import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
+import com.azure.data.cosmos.internal.directconnectivity.GlobalAddressResolver;
 import com.azure.data.cosmos.internal.query.DocumentQueryExecutionContextFactory;
 import com.azure.data.cosmos.internal.query.IDocumentQueryClient;
 import com.azure.data.cosmos.internal.query.IDocumentQueryExecutionContext;
 import com.azure.data.cosmos.internal.query.Paginator;
+import com.azure.data.cosmos.internal.routing.PartitionKeyAndResourceTokenPair;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
@@ -835,7 +835,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.name());
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
         if (options == null) {
@@ -856,11 +856,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getConsistencyLevel() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().name());
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
         if (options.getIndexingDirective() != null) {
-            headers.put(HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, options.getIndexingDirective().name());
+            headers.put(HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, options.getIndexingDirective().toString());
         }
 
         if (options.getPostTriggerInclude() != null && options.getPostTriggerInclude().size() > 0) {
@@ -1085,7 +1085,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private CosmosResourceType resolveCosmosResourceType(ResourceType resourceType) {
         try {
-            return CosmosResourceType.valueOf(resourceType.name());
+            return CosmosResourceType.valueOf(resourceType.toString());
         } catch (IllegalArgumentException e) {
             return CosmosResourceType.System;
         }

@@ -1,9 +1,9 @@
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.azure.data.cosmos.internal.Constants;
 
 public class CosmosUserSettings extends Resource {
     /**

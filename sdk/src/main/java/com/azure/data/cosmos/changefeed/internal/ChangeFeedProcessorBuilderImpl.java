@@ -23,10 +23,10 @@
 package com.azure.data.cosmos.changefeed.internal;
 
 import com.azure.data.cosmos.ChangeFeedObserver;
+import com.azure.data.cosmos.ChangeFeedObserverFactory;
 import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.ChangeFeedObserverFactory;
 import com.azure.data.cosmos.changefeed.Bootstrapper;
 import com.azure.data.cosmos.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.changefeed.HealthMonitor;

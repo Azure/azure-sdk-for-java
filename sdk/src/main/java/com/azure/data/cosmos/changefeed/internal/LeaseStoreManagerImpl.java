@@ -22,8 +22,14 @@
  */
 package com.azure.data.cosmos.changefeed.internal;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.changefeed.exceptions.LeaseLostException;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosItem;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.SqlParameter;
+import com.azure.data.cosmos.SqlParameterCollection;
+import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.changefeed.Lease;
 import com.azure.data.cosmos.changefeed.LeaseStore;
@@ -32,6 +38,7 @@ import com.azure.data.cosmos.changefeed.LeaseStoreManagerSettings;
 import com.azure.data.cosmos.changefeed.RequestOptionsFactory;
 import com.azure.data.cosmos.changefeed.ServiceItemLease;
 import com.azure.data.cosmos.changefeed.ServiceItemLeaseUpdater;
+import com.azure.data.cosmos.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

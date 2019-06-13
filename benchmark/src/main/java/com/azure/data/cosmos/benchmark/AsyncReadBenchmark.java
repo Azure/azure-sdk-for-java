@@ -23,13 +23,12 @@
 
 package com.azure.data.cosmos.benchmark;
 
-import com.codahale.metrics.Timer;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.benchmark.Configuration.Operation;
-
+import com.codahale.metrics.Timer;
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;

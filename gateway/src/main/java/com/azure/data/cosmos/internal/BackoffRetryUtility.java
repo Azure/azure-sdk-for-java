@@ -22,14 +22,13 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-
-
 import rx.Observable;
 import rx.Single;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+
+import java.time.Duration;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

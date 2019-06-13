@@ -22,26 +22,26 @@
  */
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.ConfigsBuilder;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
-import com.azure.data.cosmos.rx.TestConfigurations;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpClientFactory;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.TestSuiteBase;
+import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import com.azure.data.cosmos.rx.TestConfigurations;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import org.mockito.Matchers;
@@ -77,7 +77,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public GatewayAddressCacheTest(Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @DataProvider(name = "targetPartitionsKeyRangeListAndCollectionLinkParams")
@@ -821,7 +821,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
 
         RequestOptions options = new RequestOptions();

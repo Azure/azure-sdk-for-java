@@ -23,8 +23,8 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.google.common.collect.ImmutableList;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -160,7 +160,7 @@ public class AddressSelectorTest {
 
         List<AddressInformation> res = selector.resolveAddressesAsync(request, false).toBlocking().value();
 
-        assertThat(res).isEqualTo(replicaAddresses.stream().filter(a -> a.getProtocolName().equals(Protocol.HTTPS.name())).collect(Collectors.toList()));
+        assertThat(res).isEqualTo(replicaAddresses.stream().filter(a -> a.getProtocolName().equals(Protocol.HTTPS.toString())).collect(Collectors.toList()));
     }
 
     @Test(groups = "unit")

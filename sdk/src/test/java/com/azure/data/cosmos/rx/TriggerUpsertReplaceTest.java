@@ -22,15 +22,8 @@
  */
 package com.azure.data.cosmos.rx;
 
-import java.util.UUID;
-
-import com.azure.data.cosmos.CosmosClientBuilder;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponseValidator;
@@ -39,8 +32,13 @@ import com.azure.data.cosmos.CosmosTriggerSettings;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
@@ -50,7 +48,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -65,7 +63,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         CosmosTriggerSettings readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().settings();
         
         // read trigger to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
         Mono<CosmosTriggerResponse> readObservable = createdCollection.getTrigger(readBackTrigger.id()).read(new RequestOptions());
 
         // validate trigger creation
@@ -94,7 +92,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

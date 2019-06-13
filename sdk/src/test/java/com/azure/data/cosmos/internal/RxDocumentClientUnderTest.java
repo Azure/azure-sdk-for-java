@@ -26,7 +26,6 @@ import com.azure.data.cosmos.ClientUnderTestBuilder;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
-
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;

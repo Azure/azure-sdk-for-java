@@ -22,23 +22,11 @@
  */
 package com.azure.data.cosmos.rx;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.DatabaseForTest;
-import org.apache.commons.lang3.StringUtils;
-
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.DatabaseForTest;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
@@ -49,8 +37,17 @@ import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-
+import org.apache.commons.lang3.StringUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * This class try to test different scenario related to fetching various
@@ -105,12 +102,12 @@ public class ResourceTokenTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public ResourceTokenTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         Database d = new Database();
         d.id(databaseId);
         createdDatabase = createDatabase(client, d);

@@ -22,14 +22,6 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -37,14 +29,21 @@ import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.routing.Range;
 import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
-
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.routing.Range;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func3;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

@@ -22,14 +22,6 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.lang.invoke.MethodHandles;
-import java.util.List;
-import java.util.UUID;
-
-import com.azure.data.cosmos.internal.Exceptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
@@ -37,13 +29,19 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.Utils;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
+
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

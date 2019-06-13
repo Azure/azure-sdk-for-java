@@ -24,14 +24,11 @@
 
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.data.cosmos.directconnectivity.ServerProperties;
-import com.azure.data.cosmos.directconnectivity.TransportException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Collections;
@@ -40,19 +37,63 @@ import java.util.UUID;
 
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.CurrentProtocolVersion;
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdContextHeader;
+import static com.google.common.base.Preconditions.checkState;
 
-final public class RntbdContext {
+public final class RntbdContext {
 
-    final private RntbdResponseStatus frame;
-    final private Headers headers;
+    private final RntbdResponseStatus frame;
+    private final Headers headers;
+    private ServerProperties serverProperties;
 
-    private RntbdContext(RntbdResponseStatus frame, Headers headers) {
-
+    private RntbdContext(final RntbdResponseStatus frame, final Headers headers) {
         this.frame = frame;
         this.headers = headers;
     }
 
-    static RntbdContext decode(ByteBuf in) throws TransportException {
+    @JsonProperty
+    public UUID getActivityId() {
+        return this.frame.getActivityId();
+    }
+
+    @JsonProperty
+    public String getClientVersion() {
+        return this.headers.clientVersion.getValue(String.class);
+    }
+
+    @JsonProperty
+    public long getIdleTimeoutInSeconds() {
+        return this.headers.idleTimeoutInSeconds.getValue(Long.class);
+    }
+
+    @JsonProperty
+    public int getProtocolVersion() {
+        return this.headers.protocolVersion.getValue(Long.class).intValue();
+    }
+
+    @JsonProperty
+    public ServerProperties getServerProperties() {
+        return this.serverProperties == null ? (this.serverProperties = new ServerProperties(
+            this.headers.serverAgent.getValue(String.class),
+            this.headers.serverVersion.getValue(String.class))
+        ) : this.serverProperties;
+    }
+
+    @JsonIgnore
+    public String getServerVersion() {
+        return this.headers.serverVersion.getValue(String.class);
+    }
+
+    @JsonProperty
+    public int getStatusCode() {
+        return this.frame.getStatusCode();
+    }
+
+    @JsonProperty
+    public long getUnauthenticatedTimeoutInSeconds() {
+        return this.headers.unauthenticatedTimeoutInSeconds.getValue(Long.class);
+    }
+
+    public static RntbdContext decode(final ByteBuf in) {
 
         in.markReaderIndex();
 
@@ -71,7 +112,7 @@ final public class RntbdContext {
 
         if (statusCode < 200 || statusCode >= 400) {
 
-            final ObjectNode details = (ObjectNode)RntbdObjectMapper.readTree(in.readSlice(in.readIntLE()));
+            final ObjectNode details = RntbdObjectMapper.readTree(in.readSlice(in.readIntLE()));
             final HashMap<String, Object> map = new HashMap<>(4);
 
             if (headers.clientVersion.isPresent()) {
@@ -90,13 +131,24 @@ final public class RntbdContext {
                 map.put("serverVersion", headers.serverVersion.getValue());
             }
 
-            throw new TransportException(frame.getStatus(), details, Collections.unmodifiableMap(map));
+            throw new RntbdContextException(frame.getStatus(), details, Collections.unmodifiableMap(map));
         }
 
         return new RntbdContext(frame, headers);
     }
 
-    public static RntbdContext from(RntbdContextRequest request, ServerProperties properties, HttpResponseStatus status) {
+    public void encode(final ByteBuf out) {
+
+        final int start = out.writerIndex();
+
+        this.frame.encode(out);
+        this.headers.encode(out);
+
+        final int length = out.writerIndex() - start;
+        checkState(length == this.frame.getLength());
+    }
+
+    public static RntbdContext from(final RntbdContextRequest request, final ServerProperties properties, final HttpResponseStatus status) {
 
         // NOTE TO CODE REVIEWERS
         // ----------------------
@@ -120,73 +172,12 @@ final public class RntbdContext {
         return new RntbdContext(frame, headers);
     }
 
-    @JsonProperty
-    UUID getActivityId() {
-        return this.frame.getActivityId();
-    }
-
-    @JsonProperty
-    String getClientVersion() {
-        return this.headers.clientVersion.getValue(String.class);
-    }
-
-    @JsonProperty
-    long getIdleTimeoutInSeconds() {
-        return this.headers.idleTimeoutInSeconds.getValue(Long.class);
-    }
-
-    @JsonProperty
-    int getProtocolVersion() {
-        return this.headers.protocolVersion.getValue(Long.class).intValue();
-    }
-
-    @JsonProperty
-    ServerProperties getServerProperties() {
-        return new ServerProperties(
-            this.headers.serverAgent.getValue(String.class),
-            this.headers.serverVersion.getValue(String.class)
-        );
-    }
-
-    String getServerVersion() {
-        return this.headers.serverVersion.getValue(String.class);
-    }
-
-    @JsonProperty
-    int getStatusCode() {
-        return this.frame.getStatusCode();
-    }
-
-    @JsonProperty
-    long getUnauthenticatedTimeoutInSeconds() {
-        return this.headers.unauthenticatedTimeoutInSeconds.getValue(Long.class);
-    }
-
-    public void encode(ByteBuf out) {
-
-        int start = out.writerIndex();
-
-        this.frame.encode(out);
-        this.headers.encode(out);
-
-        int length = out.writerIndex() - start;
-
-        if (length != this.frame.getLength()) {
-            throw new IllegalStateException();
-        }
-    }
-
     @Override
     public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
-        try {
-            return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
-            throw new CorruptedFrameException(error);
-        }
+        return RntbdObjectMapper.toJson(this);
     }
 
-    final private static class Headers extends RntbdTokenStream<RntbdContextHeader> {
+    private static final class Headers extends RntbdTokenStream<RntbdContextHeader> {
 
         RntbdToken clientVersion;
         RntbdToken idleTimeoutInSeconds;
@@ -207,8 +198,8 @@ final public class RntbdContext {
             this.unauthenticatedTimeoutInSeconds = this.get(RntbdContextHeader.UnauthenticatedTimeoutInSeconds);
         }
 
-        static Headers decode(ByteBuf in) {
-            Headers headers = new Headers();
+        static Headers decode(final ByteBuf in) {
+            final Headers headers = new Headers();
             Headers.decode(in, headers);
             return headers;
         }

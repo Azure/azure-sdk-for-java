@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.ResourceResponse;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.rx.FailureValidator;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
@@ -45,7 +45,7 @@ public class NetworkFailureTest extends TestSuiteBase {
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public NetworkFailureTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
         this.collectionDefinition = getCollectionDefinition();
     }
 
@@ -54,7 +54,7 @@ public class NetworkFailureTest extends TestSuiteBase {
         SpyClientUnderTestFactory.ClientWithGatewaySpy client = null;
 
         try {
-            client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder);
+            client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 
             Database database = SHARED_DATABASE;
 

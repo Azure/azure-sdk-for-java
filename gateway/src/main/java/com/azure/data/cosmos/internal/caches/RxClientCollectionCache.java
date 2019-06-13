@@ -22,31 +22,30 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.azure.data.cosmos.internal.AuthorizationTokenType;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.PathsHelper;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.AuthorizationTokenType;
 import com.azure.data.cosmos.internal.ClearingSessionContainerClientRetryPolicy;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
 import com.azure.data.cosmos.internal.IRetryPolicyFactory;
 import com.azure.data.cosmos.internal.ObservableHelper;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.PathsHelper;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.RxStoreModel;
-
+import com.azure.data.cosmos.internal.Utils;
 import rx.Observable;
 import rx.Single;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Caches collection information.

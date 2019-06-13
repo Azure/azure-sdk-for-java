@@ -97,6 +97,7 @@ public final class ConnectionPolicy {
      * milliseconds. The default is 60 seconds.
      *
      * @param requestTimeoutInMillis the request timeout in milliseconds.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy requestTimeoutInMillis(int requestTimeoutInMillis) {
         this.requestTimeoutInMillis = requestTimeoutInMillis;
@@ -116,6 +117,7 @@ public final class ConnectionPolicy {
      * Sets the connection mode used in the client.
      *
      * @param connectionMode the connection mode.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy connectionMode(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
@@ -136,6 +138,7 @@ public final class ConnectionPolicy {
      * is 1000.
      *
      * @param maxPoolSize The value of the connection pool size.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy maxPoolSize(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
@@ -157,6 +160,7 @@ public final class ConnectionPolicy {
      * the connection will be automatically closed.
      *
      * @param idleConnectionTimeoutInMillis the timeout for an idle connection in seconds.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy idleConnectionTimeoutInMillis(int idleConnectionTimeoutInMillis) {
         this.idleConnectionTimeoutInMillis = idleConnectionTimeoutInMillis;
@@ -177,6 +181,7 @@ public final class ConnectionPolicy {
      *
      * @param userAgentSuffix The value to be appended to the user-agent header, this is
      *                        used for monitoring purposes.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy userAgentSuffix(String userAgentSuffix) {
         this.userAgentSuffix = userAgentSuffix;
@@ -201,6 +206,7 @@ public final class ConnectionPolicy {
      * more details.
      *
      * @param retryOptions the RetryOptions instance.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy retryOptions(RetryOptions retryOptions) {
         if (retryOptions == null) {
@@ -230,6 +236,7 @@ public final class ConnectionPolicy {
      * The default value for this property is true indicating endpoint discovery is enabled.
      *
      * @param enableEndpointDiscovery true if EndpointDiscovery is enabled.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy enableEndpointDiscovery(boolean enableEndpointDiscovery) {
         this.enableEndpointDiscovery = enableEndpointDiscovery;
@@ -283,6 +290,7 @@ public final class ConnectionPolicy {
      * first region in PreferredLocations property.
      *
      * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated database accounts.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy usingMultipleWriteLocations(boolean usingMultipleWriteLocations) {
         this.usingMultipleWriteLocations = usingMultipleWriteLocations;
@@ -300,6 +308,7 @@ public final class ConnectionPolicy {
      * 2. the Azure Cosmos DB account has more than one region
      *
      * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy enableReadRequestsFallback(Boolean enableReadRequestsFallback) {
         this.enableReadRequestsFallback = enableReadRequestsFallback;
@@ -326,6 +335,7 @@ public final class ConnectionPolicy {
      * If EnableEndpointDiscovery is set to false, this property is ignored.
      *
      * @param preferredLocations the list of preferred locations.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy preferredLocations(List<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
@@ -346,6 +356,7 @@ public final class ConnectionPolicy {
      * all the requests to cosmoDB will route from this address.
      * @param proxyHost The proxy server host.
      * @param proxyPort The proxy server port.
+     * @return the ConnectionPolicy.
      */
     public ConnectionPolicy proxy(String proxyHost, int proxyPort) {
         this.inetSocketProxyAddress = new InetSocketAddress(proxyHost, proxyPort);

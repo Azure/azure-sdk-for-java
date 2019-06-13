@@ -23,6 +23,9 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+
 public enum ConflictResolutionMode {
     /**
      * Last writer wins conflict resolution mode
@@ -48,6 +51,11 @@ public enum ConflictResolutionMode {
     /**
      * INVALID or unknown mode.
      */
-    INVALID
+    INVALID;
+    
+    @Override
+    public String toString() {
+        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');     
+    }
 }
 

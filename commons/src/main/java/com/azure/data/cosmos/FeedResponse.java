@@ -23,16 +23,15 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.HttpConstants;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.HttpConstants;
 
 public class FeedResponse<T> {
 

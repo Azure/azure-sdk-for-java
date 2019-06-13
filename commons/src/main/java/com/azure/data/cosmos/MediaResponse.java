@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Map;
-
-import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 
 /**
  * Response associated with retrieving attachment content in the Azure Cosmos DB database service.

@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos.changefeed.internal;
 
+import com.azure.data.cosmos.AccessCondition;
+import com.azure.data.cosmos.AccessConditionType;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
@@ -31,9 +34,6 @@ import com.azure.data.cosmos.changefeed.Lease;
 import com.azure.data.cosmos.changefeed.ServiceItemLease;
 import com.azure.data.cosmos.changefeed.ServiceItemLeaseUpdater;
 import com.azure.data.cosmos.changefeed.exceptions.LeaseLostException;
-import com.azure.data.cosmos.AccessCondition;
-import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.CosmosClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

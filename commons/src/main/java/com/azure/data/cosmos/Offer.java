@@ -23,10 +23,9 @@
 
 package com.azure.data.cosmos;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents an offer in the Azure Cosmos DB database service.

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 final class RntbdContextRequestEncoder extends MessageToByteEncoder {
 
-    final private static Logger Logger = LoggerFactory.getLogger(RntbdContextRequestEncoder.class);
+    private static final Logger Logger = LoggerFactory.getLogger(RntbdContextRequestEncoder.class);
 
     /**
      * Returns {@code true} if the given message is an @{link RntbdContextRequest} instance
@@ -41,10 +41,9 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder {
      *
      * @param message the message to encode
      * @return @{code true}, if the given message is an an @{link RntbdContextRequest} instance; otherwise @{false}
-     * @throws Exception thrown if an error occurs
      */
     @Override
-    public boolean acceptOutboundMessage(Object message) throws Exception {
+    public boolean acceptOutboundMessage(final Object message) {
         return message instanceof RntbdContextRequest;
     }
 
@@ -59,14 +58,14 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder {
      * @throws IllegalStateException is thrown if an error occurs
      */
     @Override
-    protected void encode(ChannelHandlerContext context, Object message, ByteBuf out) throws IllegalStateException {
+    protected void encode(final ChannelHandlerContext context, final Object message, final ByteBuf out) throws IllegalStateException {
 
-        RntbdContextRequest request = (RntbdContextRequest)message;
+        final RntbdContextRequest request = (RntbdContextRequest)message;
         out.markWriterIndex();
 
         try {
             request.encode(out);
-        } catch (IllegalStateException error) {
+        } catch (final IllegalStateException error) {
             out.resetWriterIndex();
             throw error;
         }

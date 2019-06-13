@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos;
 
-import java.util.List;
-
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.routing.Range;
+
+import java.util.List;
 
 /**
  * Represent a partition key range in the Azure Cosmos DB database service.

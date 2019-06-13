@@ -22,9 +22,8 @@
  */
 package com.azure.data.cosmos.rx.examples;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Contains the configurations for tests.

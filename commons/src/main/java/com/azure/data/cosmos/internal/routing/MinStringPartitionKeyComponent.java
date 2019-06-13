@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 import java.io.IOException;
 import java.io.OutputStream;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.azure.data.cosmos.internal.Utils;
 
 class MinStringPartitionKeyComponent implements IPartitionKeyComponent {
     public static final MinStringPartitionKeyComponent VALUE = new MinStringPartitionKeyComponent();

@@ -25,6 +25,7 @@
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.Utils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -35,11 +36,12 @@ import io.netty.channel.CombinedChannelDuplexHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-final public class RntbdContextNegotiator extends CombinedChannelDuplexHandler<RntbdContextDecoder, RntbdContextRequestEncoder> {
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<RntbdContextDecoder, RntbdContextRequestEncoder> {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdContextNegotiator.class);
     private final RntbdRequestManager manager;
@@ -47,12 +49,12 @@ final public class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
 
     private volatile boolean pendingRntbdContextRequest = true;
 
-    public RntbdContextNegotiator(RntbdRequestManager manager, UserAgentContainer userAgent) {
+    public RntbdContextNegotiator(final RntbdRequestManager manager, final UserAgentContainer userAgent) {
 
         super(new RntbdContextDecoder(), new RntbdContextRequestEncoder());
 
-        Objects.requireNonNull(manager);
-        Objects.requireNonNull(userAgent);
+        checkNotNull(manager, "manager");
+        checkNotNull(userAgent, "userAgent");
 
         this.manager = manager;
         this.userAgent = userAgent;
@@ -69,12 +71,11 @@ final public class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
      * @throws Exception thrown if an error occurs
      */
     @Override
-    public void write(ChannelHandlerContext context, Object message, ChannelPromise promise) throws Exception {
+    public void write(
+        final ChannelHandlerContext context, final Object message, final ChannelPromise promise
+    ) throws Exception {
 
-        if (!(message instanceof ByteBuf)) {
-            throw new IllegalArgumentException(String.format("message: %s", message.getClass()));
-        }
-
+        checkArgument(message instanceof ByteBuf, "message: %s", message.getClass());
         final ByteBuf out = (ByteBuf)message;
 
         if (this.manager.hasRntbdContext()) {
@@ -91,12 +92,12 @@ final public class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
 
     // region Privates
 
-    private void startRntbdContextRequest(ChannelHandlerContext context) throws Exception {
+    private void startRntbdContextRequest(final ChannelHandlerContext context) throws Exception {
 
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
         final Channel channel = context.channel();
-        final RntbdContextRequest request = new RntbdContextRequest(UUID.randomUUID(), this.userAgent);
+        final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.getRntbdContextRequestFuture();
 
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {

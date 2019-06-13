@@ -22,17 +22,7 @@
  */
 package com.azure.data.cosmos.directconnectivity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.internal.HttpConstants;
-
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -41,6 +31,14 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import org.testng.annotations.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HttpUtilsTest {
 

@@ -39,11 +39,9 @@ import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import io.reactivex.netty.protocol.http.client.HttpClient.HttpClientConfig;
 import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
-
-import javax.net.ssl.SSLEngine;
-
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLEngine;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 

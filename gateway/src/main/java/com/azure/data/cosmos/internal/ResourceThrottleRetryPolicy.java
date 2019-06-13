@@ -22,13 +22,12 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-
 import com.azure.data.cosmos.CosmosClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Single;
+
+import java.time.Duration;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

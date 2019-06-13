@@ -61,6 +61,7 @@ public final class SqlParameter extends JsonSerializable {
      * Sets the name of the parameter.
      *
      * @param name the name of the parameter.
+     * @return the SqlParameter.
      */
     public SqlParameter name(String name) {
         super.set("name", name);
@@ -82,6 +83,7 @@ public final class SqlParameter extends JsonSerializable {
      * Sets the value of the parameter.
      *
      * @param value the value of the parameter.
+     * @return the SqlParameter.
      */
     public SqlParameter value(Object value) {
         super.set("value", value);

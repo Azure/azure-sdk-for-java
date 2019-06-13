@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.changefeed;
 
+import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosContainerResponse;
@@ -30,10 +31,9 @@ import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
 import com.azure.data.cosmos.CosmosItem;
+import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;

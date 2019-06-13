@@ -23,7 +23,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
-
 import rx.Single;
 
 import java.util.Map;

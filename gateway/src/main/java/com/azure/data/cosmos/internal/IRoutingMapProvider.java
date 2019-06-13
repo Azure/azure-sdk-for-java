@@ -22,13 +22,12 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.util.List;
-import java.util.Map;
-
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.routing.Range;
-
 import rx.Single;
+
+import java.util.List;
+import java.util.Map;
 
 //TODO: update documentation
 //TODO: add two overload methods for forceRefresh = false

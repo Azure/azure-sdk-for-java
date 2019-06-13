@@ -23,13 +23,13 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import com.azure.data.cosmos.directconnectivity.HttpTransportClient;
 import com.azure.data.cosmos.directconnectivity.ServerStoreModel;
 import com.azure.data.cosmos.directconnectivity.StoreClient;
 import com.azure.data.cosmos.directconnectivity.TransportClient;
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;

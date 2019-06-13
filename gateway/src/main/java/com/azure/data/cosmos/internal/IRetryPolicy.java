@@ -23,9 +23,9 @@
 
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-
 import rx.Single;
+
+import java.time.Duration;
 
 // TODO update documentation
 /**

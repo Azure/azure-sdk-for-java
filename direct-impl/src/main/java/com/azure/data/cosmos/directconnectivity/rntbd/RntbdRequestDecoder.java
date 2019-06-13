@@ -30,7 +30,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-final public class RntbdRequestDecoder extends ByteToMessageDecoder {
+public final class RntbdRequestDecoder extends ByteToMessageDecoder {
     /**
      * Prepare for decoding an @{link RntbdRequest} or fire a channel readTree event to pass the input message along
      *
@@ -39,12 +39,12 @@ final public class RntbdRequestDecoder extends ByteToMessageDecoder {
      * @throws Exception thrown if an error occurs
      */
     @Override
-    public void channelRead(ChannelHandlerContext context, Object message) throws Exception {
+    public void channelRead(final ChannelHandlerContext context, final Object message) throws Exception {
 
         if (message instanceof ByteBuf) {
 
-            ByteBuf in = (ByteBuf)message;
-            int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
+            final ByteBuf in = (ByteBuf)message;
+            final int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
 
             if (resourceOperationType != 0) {
                 super.channelRead(context, message);
@@ -67,14 +67,14 @@ final public class RntbdRequestDecoder extends ByteToMessageDecoder {
      * @throws IllegalStateException thrown if an error occurs
      */
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) throws IllegalStateException {
+    protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) throws IllegalStateException {
 
-        RntbdRequest request;
+        final RntbdRequest request;
         in.markReaderIndex();
 
         try {
             request = RntbdRequest.decode(in);
-        } catch (IllegalStateException error) {
+        } catch (final IllegalStateException error) {
             in.resetReaderIndex();
             throw error;
         }

@@ -25,12 +25,12 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ISessionToken;
 import com.azure.data.cosmos.internal.InternalServerErrorException;
-import com.azure.data.cosmos.internal.RequestChargeTracker;
-import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.RMResources;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -23,18 +23,16 @@
 
 package com.azure.data.cosmos.benchmark;
 
-import java.util.UUID;
-
-import org.apache.commons.lang3.RandomStringUtils;
-
-import com.codahale.metrics.Timer;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.benchmark.Configuration.Operation;
-
+import com.codahale.metrics.Timer;
+import org.apache.commons.lang3.RandomStringUtils;
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+
+import java.util.UUID;
 
 class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 

@@ -22,17 +22,16 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-
-import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
-import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
+import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
-
 import rx.Observable;
 import rx.Single;
+
+import java.time.Duration;
 
 // TODO: this need testing
 /**

@@ -27,7 +27,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +36,8 @@ public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
     private final SslContext sslContext;
 
-    private static final String PROTOCOL = "COSMOS.PROTOCOL";
-    private static final Protocol DEFAULT_PROTOCOL = Protocol.HTTPS;
+    private static final String PROTOCOL = "cosmos.directModeProtocol";
+    private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
 
@@ -87,7 +86,7 @@ public class Configs {
     }
 
     public Protocol getProtocol() {
-        String protocol = getJVMConfigAsString(PROTOCOL, DEFAULT_PROTOCOL.name());
+        String protocol = getJVMConfigAsString(PROTOCOL, DEFAULT_PROTOCOL.toString());
         try {
             return Protocol.valueOf(StringUtils.upperCase(protocol.toLowerCase()));
         } catch (Exception e) {

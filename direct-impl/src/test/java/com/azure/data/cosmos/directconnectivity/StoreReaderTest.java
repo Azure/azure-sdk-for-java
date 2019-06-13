@@ -23,24 +23,24 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ISessionToken;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.RequestChargeTracker;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.VectorSessionToken;
-import com.azure.data.cosmos.rx.FailureValidator;
-import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.PartitionIsMigratingException;
 import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.VectorSessionToken;
+import com.azure.data.cosmos.rx.FailureValidator;
+import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -247,7 +247,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.name());
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         dsr.requestContext.sessionToken = sessionToken.v;
@@ -324,7 +324,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.name());
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         dsr.requestContext.sessionToken = sessionToken.v;
@@ -393,7 +393,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.name());
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         dsr.requestContext.sessionToken = sessionToken.v;
@@ -455,7 +455,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.name());
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         dsr.requestContext.sessionToken = sessionToken.v;

@@ -1,16 +1,14 @@
 package com.azure.data.cosmos;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.fail;
-
-import java.io.Serializable;
-
-import com.azure.data.cosmos.Document;
-import org.testng.annotations.Test;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
+import org.testng.annotations.Test;
+
+import java.io.Serializable;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.fail;
 
 public class JsonSerializableTests {
 

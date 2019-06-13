@@ -22,22 +22,20 @@
  */
 package com.azure.data.cosmos.rx;
 
-import java.util.UUID;
-
 import com.azure.data.cosmos.AsyncDocumentClient;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Permission;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
+
+import java.util.UUID;
 
 //TODO: change to use external TestSuiteBase 
 public class PermissionCrudTest extends TestSuiteBase {
@@ -49,7 +47,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public PermissionCrudTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -120,7 +118,7 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         // attempt to read the permission which was deleted
         Observable<ResourceResponse<Permission>> readObservable = client.readPermission(readBackPermission.selfLink(), null);
@@ -208,7 +206,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 

@@ -23,15 +23,15 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.commons.io.IOUtils;
+import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.io.IOUtils;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreResponseTest {
     @Test(groups = { "unit" })

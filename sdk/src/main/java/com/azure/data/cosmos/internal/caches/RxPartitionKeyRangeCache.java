@@ -22,37 +22,35 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.Exceptions;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
+import com.azure.data.cosmos.internal.routing.IServerIdentity;
+import com.azure.data.cosmos.internal.routing.InMemoryCollectionRoutingMap;
+import com.azure.data.cosmos.internal.routing.Range;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import rx.Observable;
+import rx.Single;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.internal.routing.IServerIdentity;
-import com.azure.data.cosmos.internal.NotFoundException;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.PartitionKeyRange;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
-import com.azure.data.cosmos.internal.routing.InMemoryCollectionRoutingMap;
-import com.azure.data.cosmos.internal.routing.Range;
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.internal.Exceptions;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Utils;
-
-import rx.Observable;
-import rx.Single;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

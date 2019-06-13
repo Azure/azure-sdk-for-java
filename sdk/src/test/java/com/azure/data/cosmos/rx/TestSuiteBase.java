@@ -22,9 +22,65 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
+import com.azure.data.cosmos.CompositePath;
+import com.azure.data.cosmos.CompositePathSortOrder;
+import com.azure.data.cosmos.ConnectionMode;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosBridgeInternal;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosClientTest;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerRequestOptions;
+import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosDatabaseForTest;
+import com.azure.data.cosmos.CosmosDatabaseResponse;
+import com.azure.data.cosmos.CosmosDatabaseSettings;
+import com.azure.data.cosmos.CosmosItem;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosRequestOptions;
+import com.azure.data.cosmos.CosmosResponse;
+import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.CosmosUser;
+import com.azure.data.cosmos.CosmosUserSettings;
+import com.azure.data.cosmos.DataType;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.IncludedPath;
+import com.azure.data.cosmos.Index;
+import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.RetryOptions;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.directconnectivity.Protocol;
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.PathParser;
+import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import io.reactivex.subscribers.TestSubscriber;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.mockito.stubbing.Answer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import rx.Observable;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -36,39 +92,15 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.internal.Utils;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.PathParser;
-import com.azure.data.cosmos.directconnectivity.Protocol;
-import com.azure.data.cosmos.internal.Configs;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 
-import io.reactivex.subscribers.TestSubscriber;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import rx.Observable;
+public class TestSuiteBase extends CosmosClientTest {
 
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
-
-import org.testng.annotations.Test;
-
-public class TestSuiteBase {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
@@ -86,12 +118,15 @@ public class TestSuiteBase {
     private static final ImmutableList<Protocol> protocols;
 
     protected int subscriberValidationTimeout = TIMEOUT;
-    protected CosmosClientBuilder clientBuilder;
 
     private static CosmosDatabase SHARED_DATABASE;
     private static CosmosContainer SHARED_MULTI_PARTITION_COLLECTION;
     private static CosmosContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
     private static CosmosContainer SHARED_SINGLE_PARTITION_COLLECTION;
+
+    public TestSuiteBase(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
 
     protected static CosmosDatabase getSharedCosmosDatabase(CosmosClient client) {
         return CosmosBridgeInternal.getCosmosDatabaseWithNewClient(SHARED_DATABASE, client);
@@ -129,25 +164,6 @@ public class TestSuiteBase {
 
     private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
         return list != null ? ImmutableList.copyOf(list) : null;
-    }
-
-    @BeforeMethod(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"})
-    public void beforeMethod(Method method) {
-        if (this.clientBuilder != null) {
-            logger.info("Starting {}::{} using {} {} mode with {} consistency",
-                        method.getDeclaringClass().getSimpleName(), method.getName(),
-                        this.clientBuilder.getConnectionPolicy().connectionMode(),
-                        this.clientBuilder.getConfigs().getProtocol(),
-                        this.clientBuilder.getDesiredConsistencyLevel());
-            return;
-        }
-        logger.info("Starting {}::{}", method.getDeclaringClass().getSimpleName(), method.getName());
-    }
-
-    @AfterMethod(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"})
-    public void afterMethod(Method m) {
-        Test t = m.getAnnotation(Test.class);
-        logger.info("Finished {}:{}.", m.getDeclaringClass().getSimpleName(), m.getName());
     }
 
     private static class DatabaseManagerImpl implements CosmosDatabaseForTest.DatabaseManager {
@@ -671,42 +687,6 @@ public class TestSuiteBase {
         }
     }
 
-    public <T extends Resource> void validateSuccess(Observable<ResourceResponse<T>> observable,
-            ResourceResponseValidator<T> validator) {
-        validateSuccess(observable, validator, subscriberValidationTimeout);
-    }
-
-    public static <T extends Resource> void validateSuccess(Observable<ResourceResponse<T>> observable,
-            ResourceResponseValidator<T> validator, long timeout) {
-
-        VerboseTestSubscriber<ResourceResponse<T>> testSubscriber = new VerboseTestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
-    }
-
-    public <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable,
-            FailureValidator validator) {
-        validateFailure(observable, validator, subscriberValidationTimeout);
-    }
-
-    public static <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable,
-            FailureValidator validator, long timeout) {
-
-        VerboseTestSubscriber<ResourceResponse<T>> testSubscriber = new VerboseTestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
-    }
-
     public <T extends Resource> void validateQuerySuccess(Observable<FeedResponse<T>> observable,
             FeedResponseListValidator<T> validator) {
         validateQuerySuccess(observable, validator, subscriberValidationTimeout);
@@ -722,24 +702,6 @@ public class TestSuiteBase {
         testSubscriber.assertNoErrors();
         testSubscriber.assertCompleted();
         validator.validate(testSubscriber.getOnNextEvents());
-    }
-
-    public <T extends Resource> void validateQueryFailure(Observable<FeedResponse<T>> observable,
-            FailureValidator validator) {
-        validateQueryFailure(observable, validator, subscriberValidationTimeout);
-    }
-
-    public static <T extends Resource> void validateQueryFailure(Observable<FeedResponse<T>> observable,
-            FailureValidator validator, long timeout) {
-
-        VerboseTestSubscriber<FeedResponse<T>> testSubscriber = new VerboseTestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
     }
 
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator)
@@ -830,7 +792,7 @@ public class TestSuiteBase {
     private static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             for (ConsistencyLevel consistencyLevel : ConsistencyLevel.values()) {
-                if (consistencyLevel.name().toLowerCase().equals(consistency.toLowerCase())) {
+                if (consistencyLevel.toString().toLowerCase().equals(consistency.toLowerCase())) {
                     return consistencyLevel;
                 }
             }

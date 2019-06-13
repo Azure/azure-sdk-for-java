@@ -23,14 +23,14 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import java.util.List;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.Range;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.List;
 
 public final class PartitionedQueryExecutionInfoInternal extends JsonSerializable {
     static final String QUERY_INFO_PROPERTY = "queryInfo";

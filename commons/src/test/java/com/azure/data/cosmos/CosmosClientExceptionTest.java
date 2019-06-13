@@ -23,8 +23,6 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.Test;
 

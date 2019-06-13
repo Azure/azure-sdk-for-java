@@ -22,7 +22,34 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.CosmosBridgeInternal;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.RetryAnalyzer;
+import com.azure.data.cosmos.internal.Utils.ValueHolder;
+import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
+import com.azure.data.cosmos.internal.query.OrderByContinuationToken;
+import com.azure.data.cosmos.internal.query.QueryItem;
+import com.azure.data.cosmos.internal.routing.Range;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.reactivex.subscribers.TestSubscriber;
+import org.apache.commons.lang3.StringUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,28 +62,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.*;
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.query.QueryItem;
-import com.azure.data.cosmos.internal.routing.Range;
-import com.azure.data.cosmos.internal.Utils.ValueHolder;
-import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
-import com.azure.data.cosmos.internal.query.OrderByContinuationToken;
-
-import io.reactivex.subscribers.TestSubscriber;
-import reactor.core.publisher.Flux;
-import rx.Observable;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
@@ -70,7 +76,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
@@ -104,17 +110,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            // TODO: DANOBLE: report this detailed information in all failures produced by TestSuiteBase classes
-            // work item: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/370015
-            String message = String.format("%s %s mode with %s consistency test failure",
-                this.clientBuilder.getConnectionPolicy().connectionMode(),
-                this.clientBuilder.getConfigs().getProtocol(),
-                this.clientBuilder.getDesiredConsistencyLevel());
-            throw new AssertionError(message, error);
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -427,7 +423,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
@@ -462,7 +458,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .readPartitionKeyRanges("dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id(), null)
                 .flatMap(p -> Observable.from(p.results())).toList().toBlocking().single().size();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

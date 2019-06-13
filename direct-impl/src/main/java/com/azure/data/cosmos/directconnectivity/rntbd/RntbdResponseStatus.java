@@ -39,21 +39,21 @@ final class RntbdResponseStatus {
 
     // region Fields
 
-    final static int LENGTH = Integer.BYTES  // length
+    static final int LENGTH = Integer.BYTES  // length
         + Integer.BYTES  // status
         + 2 * Long.BYTES;  // activityId
 
     @JsonProperty("activityId")
-    final private UUID activityId;
+    private final UUID activityId;
 
     @JsonProperty("length")
-    final private int length;
+    private final int length;
 
-    final private HttpResponseStatus status;
+    private final HttpResponseStatus status;
 
     // endregion
 
-    RntbdResponseStatus(int length, HttpResponseStatus status, UUID activityId) {
+    RntbdResponseStatus(final int length, final HttpResponseStatus status, final UUID activityId) {
         this.length = length;
         this.status = status;
         this.activityId = activityId;
@@ -80,28 +80,28 @@ final class RntbdResponseStatus {
         return this.status.code();
     }
 
-    static RntbdResponseStatus decode(ByteBuf in) {
+    static RntbdResponseStatus decode(final ByteBuf in) {
 
-        long length = in.readUnsignedIntLE();
+        final long length = in.readUnsignedIntLE();
 
         if (!(LENGTH <= length && length <= Integer.MAX_VALUE)) {
-            String reason = String.format("frame length: %d", length);
+            final String reason = String.format("frame length: %d", length);
             throw new CorruptedFrameException(reason);
         }
 
-        int code = in.readIntLE();
-        HttpResponseStatus status = HttpResponseStatus.valueOf(code);
+        final int code = in.readIntLE();
+        final HttpResponseStatus status = HttpResponseStatus.valueOf(code);
 
         if (status == null) {
-            String reason = String.format("status code: %d", code);
+            final String reason = String.format("status code: %d", code);
             throw new CorruptedFrameException(reason);
         }
 
-        UUID activityId = RntbdUUID.decode(in);
+        final UUID activityId = RntbdUUID.decode(in);
         return new RntbdResponseStatus((int)length, status, activityId);
     }
 
-    void encode(ByteBuf out) {
+    void encode(final ByteBuf out) {
         out.writeIntLE(this.getLength());
         out.writeIntLE(this.getStatusCode());
         RntbdUUID.encode(this.getActivityId(), out);
@@ -109,10 +109,10 @@ final class RntbdResponseStatus {
 
     @Override
     public String toString() {
-        ObjectWriter writer = RntbdObjectMapper.writer();
+        final ObjectWriter writer = RntbdObjectMapper.writer();
         try {
             return writer.writeValueAsString(this);
-        } catch (JsonProcessingException error) {
+        } catch (final JsonProcessingException error) {
             throw new CorruptedFrameException(error);
         }
     }

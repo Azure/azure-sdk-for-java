@@ -23,9 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import com.azure.data.cosmos.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a trigger in the Azure Cosmos DB database service.
@@ -92,7 +91,7 @@ public class Trigger extends Resource {
      * @param triggerType the trigger type.
      */
     public void setTriggerType(TriggerType triggerType) {
-        super.set(Constants.Properties.TRIGGER_TYPE, triggerType.name());
+        super.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
     }
 
     /**
@@ -118,6 +117,6 @@ public class Trigger extends Resource {
      * @param triggerOperation the trigger operation.
      */
     public void setTriggerOperation(TriggerOperation triggerOperation) {
-        super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.name());
+        super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
     }
 }

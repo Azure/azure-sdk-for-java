@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.text.WordUtils;
+
 /**
  * These are the indexing types available for indexing a path in the Azure Cosmos DB database service.
  * For additional details, refer to
@@ -40,5 +42,10 @@ public enum IndexKind {
 
     // The index entries are indexed to serve spatial queries like below:
     // SELECT * FROM Root r WHERE ST_DISTANCE({"type":"POINT","coordinates":[71.0589,42.3601]}, r.location) $LE 10000
-    SPATIAL
+    SPATIAL;
+    
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
+    }    
 }

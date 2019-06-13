@@ -25,81 +25,80 @@
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
-import java.util.Objects;
 import java.util.UUID;
 
-final public class RntbdRequest {
+import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    final private static byte[] EmptyByteArray = {};
+public final class RntbdRequest {
 
-    final private RntbdRequestFrame frame;
-    final private RntbdRequestHeaders headers;
-    final private byte[] payload;
+    private static final byte[] EmptyByteArray = {};
 
-    private RntbdRequest(RntbdRequestFrame frame, RntbdRequestHeaders headers, byte[] payload) {
+    private final RntbdRequestFrame frame;
+    private final RntbdRequestHeaders headers;
+    private final byte[] payload;
 
-        Objects.requireNonNull(frame, "frame");
-        Objects.requireNonNull(headers, "headers");
+    private RntbdRequest(final RntbdRequestFrame frame, final RntbdRequestHeaders headers, final byte[] payload) {
+
+        checkNotNull(frame, "frame");
+        checkNotNull(headers, "headers");
 
         this.frame = frame;
         this.headers = headers;
         this.payload = payload == null ? EmptyByteArray : payload;
     }
 
-    static RntbdRequest decode(ByteBuf in) {
+    public UUID getActivityId() {
+        return this.frame.getActivityId();
+    }
 
-        int resourceOperationCode = in.getInt(in.readerIndex() + Integer.BYTES);
+    @JsonIgnore
+    @SuppressWarnings("unchecked")
+    public <T> T getHeader(final RntbdRequestHeader header) {
+        return (T)this.headers.get(header).getValue();
+    }
+
+    public Long getTransportRequestId() {
+        return this.getHeader(RntbdRequestHeader.TransportRequestID);
+    }
+
+    public static RntbdRequest decode(final ByteBuf in) {
+
+        final int resourceOperationCode = in.getInt(in.readerIndex() + Integer.BYTES);
 
         if (resourceOperationCode == 0) {
-            String reason = String.format("resourceOperationCode=0x%08X", resourceOperationCode);
+            final String reason = String.format("resourceOperationCode=0x%08X", resourceOperationCode);
             throw new IllegalStateException(reason);
         }
 
-        int start = in.readerIndex();
-        int expectedLength = in.readIntLE();
+        final int start = in.readerIndex();
+        final int expectedLength = in.readIntLE();
 
-        RntbdRequestFrame header = RntbdRequestFrame.decode(in);
-        RntbdRequestHeaders metadata = RntbdRequestHeaders.decode(in);
-        ByteBuf payloadBuf = in.readSlice(expectedLength - (in.readerIndex() - start));
+        final RntbdRequestFrame header = RntbdRequestFrame.decode(in);
+        final RntbdRequestHeaders metadata = RntbdRequestHeaders.decode(in);
+        final ByteBuf payloadBuf = in.readSlice(expectedLength - (in.readerIndex() - start));
 
-        int observedLength = in.readerIndex() - start;
+        final int observedLength = in.readerIndex() - start;
 
         if (observedLength != expectedLength) {
-            String reason = String.format("expectedLength=%d, observedLength=%d", expectedLength, observedLength);
+            final String reason = String.format("expectedLength=%d, observedLength=%d", expectedLength, observedLength);
             throw new IllegalStateException(reason);
         }
 
-        byte[] payload = new byte[payloadBuf.readableBytes()];
+        final byte[] payload = new byte[payloadBuf.readableBytes()];
         payloadBuf.readBytes(payload);
         in.discardReadBytes();
 
         return new RntbdRequest(header, metadata, payload);
     }
 
-    public static RntbdRequest from(RntbdRequestArgs args) {
+    void encode(final ByteBuf out) {
 
-        RxDocumentServiceRequest serviceRequest = args.getServiceRequest();
-
-        final RntbdRequestFrame frame = new RntbdRequestFrame(
-            serviceRequest.getActivityId(),
-            serviceRequest.getOperationType(),
-            serviceRequest.getResourceType());
-
-        final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
-
-        return new RntbdRequest(frame, headers, serviceRequest.getContent());
-    }
-
-    public UUID getActivityId() {
-        return this.frame.getActivityId();
-    }
-
-    void encode(ByteBuf out) {
-
-        int expectedLength = RntbdRequestFrame.LENGTH + headers.computeLength();
-        int start = out.readerIndex();
+        final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
+        final int start = out.readerIndex();
 
         out.writeIntLE(expectedLength);
         this.frame.encode(out);
@@ -111,5 +110,19 @@ final public class RntbdRequest {
             out.writeIntLE(this.payload.length);
             out.writeBytes(this.payload);
         }
+    }
+
+    public static RntbdRequest from(final RntbdRequestArgs args) {
+
+        final RxDocumentServiceRequest serviceRequest = args.getServiceRequest();
+
+        final RntbdRequestFrame frame = new RntbdRequestFrame(
+            args.getActivityId(),
+            serviceRequest.getOperationType(),
+            serviceRequest.getResourceType());
+
+        final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
+
+        return new RntbdRequest(frame, headers, serviceRequest.getContent());
     }
 }

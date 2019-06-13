@@ -23,10 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 import com.azure.data.cosmos.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
@@ -83,9 +81,10 @@ public final class SpatialIndex extends Index {
      * Sets data type.
      *
      * @param dataType the data type.
+     * @return the SpatialIndex.
      */
     public SpatialIndex dataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.name());
+        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 }

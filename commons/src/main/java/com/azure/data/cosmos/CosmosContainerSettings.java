@@ -100,6 +100,7 @@ public class CosmosContainerSettings extends Resource {
      * Sets the container's indexing policy
      *
      * @param indexingPolicy {@link IndexingPolicy} the indexing policy
+     * @return the CosmosContainerSettings.
      */
     public CosmosContainerSettings indexingPolicy(IndexingPolicy indexingPolicy) {
         if (indexingPolicy == null) {
@@ -133,6 +134,7 @@ public class CosmosContainerSettings extends Resource {
      * Sets the Containers unique key policy
      * 
      * @param uniqueKeyPolicy the unique key policy
+     * @return the CosmosContainerSettings.
      */
     public CosmosContainerSettings uniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         if (uniqueKeyPolicy == null) {
@@ -166,6 +168,7 @@ public class CosmosContainerSettings extends Resource {
      * Sets the containers's partition key definition.
      *
      * @param partitionKeyDefinition the partition key definition.
+     * @return the CosmosContainerSettings.
      */
     public CosmosContainerSettings setPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition == null) {
@@ -191,6 +194,7 @@ public class CosmosContainerSettings extends Resource {
      * on documents in different regions, in a collection in the Azure Cosmos DB service.
      *
      * @param value ConflictResolutionPolicy to be used.
+     * @return the CosmosContainerSettings.
      */
     public CosmosContainerSettings conflictResolutionPolicy(ConflictResolutionPolicy value) {
         if (value == null) {

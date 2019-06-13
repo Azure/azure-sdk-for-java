@@ -24,9 +24,9 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.internal.routing.MurmurHash3_32;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-import com.azure.data.cosmos.internal.routing.MurmurHash3_32;
 import org.apache.commons.lang3.RandomUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

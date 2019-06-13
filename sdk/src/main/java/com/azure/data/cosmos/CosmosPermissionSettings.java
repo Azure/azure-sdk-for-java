@@ -24,7 +24,6 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,7 +86,7 @@ public class CosmosPermissionSettings extends Resource {
      */
     public void setPermissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
-                permissionMode.name().toLowerCase());
+                permissionMode.toString().toLowerCase());
     }
 
     /**

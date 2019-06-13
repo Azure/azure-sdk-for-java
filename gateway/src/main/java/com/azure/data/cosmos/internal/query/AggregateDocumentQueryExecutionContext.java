@@ -23,17 +23,10 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
-
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.Undefined;
 import com.azure.data.cosmos.internal.Constants;
@@ -45,9 +38,15 @@ import com.azure.data.cosmos.internal.query.aggregation.CountAggregator;
 import com.azure.data.cosmos.internal.query.aggregation.MaxAggregator;
 import com.azure.data.cosmos.internal.query.aggregation.MinAggregator;
 import com.azure.data.cosmos.internal.query.aggregation.SumAggregator;
-import com.azure.data.cosmos.QueryMetrics;
-
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 public class AggregateDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T>{
 

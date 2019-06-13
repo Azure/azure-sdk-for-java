@@ -22,35 +22,34 @@
  */
 package com.azure.data.cosmos.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.SpyClientBuilder;
 import com.azure.data.cosmos.rx.Utils;
-
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
+
     private Database createdDatabase;
     private DocumentCollection createdSinglePartitionCollection;
     private DocumentCollection createdMultiPartitionCollection;
@@ -70,7 +69,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public DocumentQuerySpyWireContentTest(Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @DataProvider(name = "responseContinuationTokenLimitParamProvider")
@@ -160,7 +159,9 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = new SpyClientBuilder(clientBuilder).build();
+
+        client = new SpyClientBuilder(this.clientBuilder()).build();
+
         createdDatabase = SHARED_DATABASE;
         createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION;
         truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);

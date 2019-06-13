@@ -23,20 +23,20 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.BridgeUtils;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.DatabaseAccountLocation;
+import com.azure.data.cosmos.DatabaseAccountManagerInternal;
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.GlobalEndpointManager;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.DatabaseAccountManagerInternal;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import org.apache.commons.collections4.list.UnmodifiableList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

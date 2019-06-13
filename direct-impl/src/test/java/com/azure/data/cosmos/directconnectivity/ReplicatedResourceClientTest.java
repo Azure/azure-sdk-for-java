@@ -25,12 +25,12 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.rx.FailureValidator;
 import org.assertj.core.api.Assertions;
 import org.mockito.Matchers;
 import org.mockito.Mockito;

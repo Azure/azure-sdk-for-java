@@ -23,35 +23,33 @@
 
 package com.azure.data.cosmos.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doAnswer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.RetryOptions;
+import com.azure.data.cosmos.rx.ResourceResponseValidator;
+import com.azure.data.cosmos.rx.TestConfigurations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.ResourceResponse;
-import com.azure.data.cosmos.RetryOptions;
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.rx.ResourceResponseValidator;
-import com.azure.data.cosmos.rx.TestConfigurations;
-
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doAnswer;
 
 public class RetryThrottleTest extends TestSuiteBase {
     private final static int TIMEOUT = 10000;

@@ -24,25 +24,25 @@
 package com.azure.data.cosmos.directconnectivity;
 
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.ICollectionRoutingMapCache;
+import com.azure.data.cosmos.internal.InvalidPartitionException;
+import com.azure.data.cosmos.internal.NotFoundException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.IServerIdentity;
 import com.azure.data.cosmos.internal.routing.InMemoryCollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalHelper;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import com.azure.data.cosmos.internal.ICollectionRoutingMapCache;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
-import com.azure.data.cosmos.internal.NotFoundException;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.caches.RxCollectionCache;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.mutable.MutableObject;

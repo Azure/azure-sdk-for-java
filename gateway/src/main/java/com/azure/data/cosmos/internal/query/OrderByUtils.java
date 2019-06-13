@@ -22,25 +22,24 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.azure.data.cosmos.internal.BadRequestException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.github.davidmoten.rx.Transformers;
+import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.BadRequestException;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.query.orderbyquery.OrderByRowResult;
 import com.azure.data.cosmos.internal.query.orderbyquery.OrderbyRowComparer;
-import com.azure.data.cosmos.QueryMetrics;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.github.davidmoten.rx.Transformers;
 import org.apache.commons.lang3.tuple.Pair;
 import rx.Observable;
 import rx.Observable.Transformer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 class OrderByUtils {
 

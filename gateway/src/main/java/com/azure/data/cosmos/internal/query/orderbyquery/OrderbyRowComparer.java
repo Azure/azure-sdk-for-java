@@ -23,19 +23,18 @@
 
 package com.azure.data.cosmos.internal.query.orderbyquery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.azure.data.cosmos.internal.query.ItemComparator;
 import com.azure.data.cosmos.internal.query.ItemType;
 import com.azure.data.cosmos.internal.query.ItemTypeHelper;
 import com.azure.data.cosmos.internal.query.QueryItem;
 import com.azure.data.cosmos.internal.query.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<T>> {
     private static final Logger logger = LoggerFactory.getLogger(OrderbyRowComparer.class);

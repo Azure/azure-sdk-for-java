@@ -23,19 +23,17 @@
 
 package com.azure.data.cosmos.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-
+import com.azure.data.cosmos.Document;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.Document;
-
 import rx.Observable;
+
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RxDocumentServiceRequestTest {
 

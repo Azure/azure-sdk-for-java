@@ -22,14 +22,13 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func0;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AsyncCache<TKey, TValue> {
 

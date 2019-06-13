@@ -23,8 +23,11 @@
 package com.azure.data.cosmos.internal;
 
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
 import io.netty.buffer.ByteBuf;
@@ -528,7 +531,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         boolean sessionConsistency =
                 this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
                         (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.name()));
+                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
 
         if (!sessionConsistency || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
             return; // Only apply the session token in case of session consistency and when resource is not a master resource

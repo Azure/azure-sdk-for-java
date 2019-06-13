@@ -23,6 +23,26 @@
 
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.CompositePath;
+import com.azure.data.cosmos.CompositePathSortOrder;
+import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.ComparatorUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,19 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.*;
-import org.apache.commons.collections4.ComparatorUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.data.cosmos.CosmosClientException;
-
-import reactor.core.publisher.Flux;
 
 public class MultiOrderByQueryTests extends TestSuiteBase {
 
@@ -122,7 +129,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public MultiOrderByQueryTests(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -132,7 +139,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
@@ -140,7 +147,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         Random random = new Random();
         for (int i = 0; i < numberOfDocuments; ++i) {
-            Document multiOrderByDocument = generateMultiOrderByDocument();
+            CosmosItemProperties multiOrderByDocument = generateMultiOrderByDocument();
             String multiOrderByDocumentString = multiOrderByDocument.toJson();
             int numberOfDuplicates = 5;
 
@@ -179,9 +186,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
-    private Document generateMultiOrderByDocument() {
+    private CosmosItemProperties generateMultiOrderByDocument() {
         Random random = new Random();
-        Document document = new Document();
+        CosmosItemProperties document = new CosmosItemProperties();
         document.id(UUID.randomUUID().toString());
         document.set(NUMBER_FIELD, random.nextInt(5));
         document.set(NUMBER_FIELD_2, random.nextInt(5));
@@ -272,7 +279,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         
         // CREATE document with numberField not set.
         // This query would then be invalid.
-        Document documentWithEmptyField = generateMultiOrderByDocument();
+        CosmosItemProperties documentWithEmptyField = generateMultiOrderByDocument();
         documentWithEmptyField.remove(NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";

@@ -36,7 +36,8 @@ SOFTWARE.
     <test.groups>unit</test.groups>
     <cosmosdb-sdk.version>3.0.0-a1-SNAPSHOT</cosmosdb-sdk.version>
     <guava.version>27.0.1-jre</guava.version>
-    </properties>
+    <metrics.version>4.0.5</metrics.version>
+  </properties>
   <profiles>
     <profile>
       <!-- unit test -->
@@ -53,8 +54,7 @@ SOFTWARE.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              </configuration>
+            <configuration/>
           </plugin>
         </plugins>
       </build>
@@ -312,6 +312,11 @@ SOFTWARE.
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
     </dependency>
   </dependencies>
   <licenses>

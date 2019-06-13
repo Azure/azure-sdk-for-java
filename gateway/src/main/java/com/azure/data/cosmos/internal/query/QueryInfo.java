@@ -23,13 +23,12 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.query.aggregation.AggregateOperator;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Used internally to encapsulates a query's information in the Azure Cosmos DB database service.

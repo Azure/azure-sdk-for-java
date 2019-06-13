@@ -23,6 +23,9 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+
 /**
  * Enumeration specifying applicability of permission in the Azure Cosmos DB database service.
  */
@@ -50,5 +53,10 @@ public enum PermissionMode {
      */
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
     }
 }

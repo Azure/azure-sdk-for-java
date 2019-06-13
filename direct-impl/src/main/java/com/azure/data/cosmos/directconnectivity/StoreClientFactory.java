@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.internal.SessionContainer;
-import com.azure.data.cosmos.internal.UserAgentContainer;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.SessionContainer;
+import com.azure.data.cosmos.internal.UserAgentContainer;
 
 // TODO: DANOBLE: no support for ICommunicationEventSource ask Ji
 //  Links:

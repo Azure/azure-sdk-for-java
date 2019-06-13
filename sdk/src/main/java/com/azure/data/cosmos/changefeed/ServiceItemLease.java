@@ -22,11 +22,11 @@
  */
 package com.azure.data.cosmos.changefeed;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.changefeed.internal.Constants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

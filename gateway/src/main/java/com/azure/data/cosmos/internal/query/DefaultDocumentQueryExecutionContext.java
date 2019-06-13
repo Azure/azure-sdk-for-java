@@ -22,45 +22,44 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Strings;
-import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
-import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.BackoffRetryUtility;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.PathsHelper;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
-import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import com.azure.data.cosmos.internal.routing.Range;
-import com.azure.data.cosmos.internal.BackoffRetryUtility;
 import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
 import com.azure.data.cosmos.internal.InvalidPartitionExceptionRetryPolicy;
 import com.azure.data.cosmos.internal.PartitionKeyRangeGoneRetryPolicy;
+import com.azure.data.cosmos.internal.PathsHelper;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
+import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
+import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
 import com.azure.data.cosmos.internal.query.metrics.FetchExecutionRangeAccumulator;
-import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.internal.query.metrics.SchedulingStopwatch;
 import com.azure.data.cosmos.internal.query.metrics.SchedulingTimeSpan;
-
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import com.azure.data.cosmos.internal.routing.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 import rx.functions.Func2;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

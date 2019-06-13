@@ -23,9 +23,9 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import java.util.Collection;
-
 import com.azure.data.cosmos.PartitionKeyRange;
+
+import java.util.Collection;
 
 /**
  * Used internally in request routing in the Azure Cosmos DB database service.

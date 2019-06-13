@@ -23,9 +23,6 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.PartitionKeyDefinitionVersion;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 

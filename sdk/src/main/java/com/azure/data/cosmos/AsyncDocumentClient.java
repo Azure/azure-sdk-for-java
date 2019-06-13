@@ -22,14 +22,13 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.RxDocumentClientImpl;
+import rx.Observable;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.RxDocumentClientImpl;
-
-import rx.Observable;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB

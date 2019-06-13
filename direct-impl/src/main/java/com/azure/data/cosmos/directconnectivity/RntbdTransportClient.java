@@ -24,66 +24,67 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableMap;
-import com.azure.data.cosmos.internal.UserAgentContainer;
-import com.azure.data.cosmos.directconnectivity.rntbd.RntbdClientChannelInitializer;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.data.cosmos.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.logging.LogLevel;
+import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.netty.handler.ssl.SslContext;
-import io.netty.util.concurrent.DefaultThreadFactory;
-import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Single;
+import rx.SingleEmitter;
 
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
+import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
-final public class RntbdTransportClient extends TransportClient implements AutoCloseable {
+@JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
+public final class RntbdTransportClient extends TransportClient implements AutoCloseable {
 
     // region Fields
 
-    final private static String className = RntbdTransportClient.class.getName();
-    final private static AtomicLong counter = new AtomicLong(0L);
-    final private static Logger logger = LoggerFactory.getLogger(className);
+    private static final AtomicLong instanceCount = new AtomicLong();
+    private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClient.class);
+    private static final String namePrefix = RntbdTransportClient.class.getSimpleName() + '-';
 
-    final private AtomicBoolean closed = new AtomicBoolean(false);
-    final private EndpointFactory endpointFactory;
-    final private String name;
+    private final AtomicBoolean closed = new AtomicBoolean();
+    private final RntbdEndpoint.Provider endpointProvider;
+    private final RntbdMetrics metrics;
+    private final String name;
 
     // endregion
 
     // region Constructors
 
-    RntbdTransportClient(EndpointFactory endpointFactory) {
-        this.name = className + '-' + counter.incrementAndGet();
-        this.endpointFactory = endpointFactory;
+    RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
+        this.name = RntbdTransportClient.namePrefix + RntbdTransportClient.instanceCount.incrementAndGet();
+        this.endpointProvider = endpointProvider;
+        this.metrics = new RntbdMetrics(this.name);
     }
 
-    RntbdTransportClient(Options options, SslContext sslContext, UserAgentContainer userAgent) {
-        this(new EndpointFactory(options, sslContext, userAgent));
+    RntbdTransportClient(final Options options, final SslContext sslContext) {
+        this(new RntbdServiceEndpoint.Provider(options, sslContext));
     }
 
-    RntbdTransportClient(Configs configs, int requestTimeoutInSeconds, UserAgentContainer userAgent) {
-        this(new Options(Duration.ofSeconds((long)requestTimeoutInSeconds)), configs.getSslContext(), userAgent);
+    RntbdTransportClient(final Configs configs, final int requestTimeoutInSeconds, final UserAgentContainer userAgent) {
+        this(new Options.Builder(requestTimeoutInSeconds).userAgent(userAgent).build(), configs.getSslContext());
     }
 
     // endregion
@@ -93,380 +94,160 @@ final public class RntbdTransportClient extends TransportClient implements AutoC
     @Override
     public void close() {
 
+        logger.debug("\n  [{}] CLOSE", this);
+
         if (this.closed.compareAndSet(false, true)) {
-
-            this.endpointFactory.close().addListener(future -> {
-
-                if (future.isSuccess()) {
-
-                    // TODO: DANOBLE: Deal with fact that all channels are closed, but each of their sockets are open
-                    //  Links:
-                    //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-                    //  Notes:
-                    //  Observation: Closing/shutting down a channel does not cause its underlying socket to be closed
-                    //  Option: Pool SocketChannel instances and manage the SocketChannel used by each NioSocketChannel
-                    //  Option: Inherit from NioSocketChannel to ensure the behavior we'd like (close means close)
-                    //  Option: Recommend that customers increase their system's file descriptor count (e.g., on macOS)
-
-                    logger.info("{} closed", this);
-                    return;
-                }
-
-                logger.error("{} close failed: {}", this, future.cause());
-            });
-
-        } else {
-            logger.debug("{} already closed", this);
+            this.endpointProvider.close();
+            this.metrics.close();
+            return;
         }
+
+        logger.debug("\n  [{}]\n  already closed", this);
     }
 
     @Override
     public Single<StoreResponse> invokeStoreAsync(
-        URI physicalAddress, ResourceOperation unused, RxDocumentServiceRequest request
+        final URI physicalAddress, final ResourceOperation unused, final RxDocumentServiceRequest request
     ) {
-        Objects.requireNonNull(physicalAddress, "physicalAddress");
-        Objects.requireNonNull(request, "request");
+        checkNotNull(physicalAddress, "physicalAddress");
+        checkNotNull(request, "request");
         this.throwIfClosed();
 
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress.getPath());
-        final Endpoint endpoint = this.endpointFactory.getEndpoint(physicalAddress);
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
 
-        final CompletableFuture<StoreResponse> responseFuture = endpoint.write(requestArgs);
+        if (logger.isDebugEnabled()) {
+            requestArgs.traceOperation(logger, null, "invokeStoreAsync");
+            logger.debug("\n  [{}]\n  {}\n  INVOKE_STORE_ASYNC", this, requestArgs);
+        }
 
-        return Single.fromEmitter(emitter -> responseFuture.whenComplete((response, error) -> {
+        final RntbdEndpoint endpoint = this.endpointProvider.get(physicalAddress);
+        this.metrics.incrementRequestCount();
 
-            requestArgs.traceOperation(logger, null, "emitSingle", response, error);
+        final RntbdRequestRecord requestRecord = endpoint.request(requestArgs);
 
-            if (error == null) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("{} [physicalAddress: {}, activityId: {}] Request succeeded with response status: {}",
-                        endpoint, physicalAddress, request.getActivityId(), response.getStatus()
-                    );
+        return Single.fromEmitter((SingleEmitter<StoreResponse> emitter) -> {
+
+            requestRecord.whenComplete((response, error) -> {
+
+                requestArgs.traceOperation(logger, null, "emitSingle", response, error);
+                this.metrics.incrementResponseCount();
+
+                if (error == null) {
+                    emitter.onSuccess(response);
+                } else {
+                    reportIssueUnless(error instanceof CosmosClientException, logger, requestRecord, "", error);
+                    this.metrics.incrementErrorResponseCount();
+                    emitter.onError(error);
                 }
-                emitter.onSuccess(response);
 
-            } else {
-                if (logger.isErrorEnabled()) {
-                    logger.error("{} [physicalAddress: {}, activityId: {}] Request failed: {}",
-                        endpoint, physicalAddress, request.getActivityId(), error.getMessage()
-                    );
-                }
-                emitter.onError(error);
-            }
-
-            requestArgs.traceOperation(logger, null, "completeEmitSingle");
-        }));
+                requestArgs.traceOperation(logger, null, "emitSingleComplete");
+            });
+        });
     }
 
     @Override
     public String toString() {
-        return '[' + name + ", endpointCount: " + this.endpointFactory.endpoints.mappingCount() + ']';
+        return RntbdObjectMapper.toJson(this);
     }
 
     private void throwIfClosed() {
-        if (this.closed.get()) {
-            throw new IllegalStateException(String.format("%s is closed", this));
-        }
+        checkState(!this.closed.get(), "%s is closed", this);
     }
 
     // endregion
 
     // region Types
 
-    interface Endpoint {
+    static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
 
-        Future<?> close();
-
-        CompletableFuture<StoreResponse> write(RntbdRequestArgs requestArgs);
-    }
-
-    private static class DefaultEndpoint implements Endpoint {
-
-        final private ChannelFuture channelFuture;
-        final private RntbdRequestManager requestManager;
-
-        DefaultEndpoint(EndpointFactory factory, URI physicalAddress) {
-
-            final RntbdClientChannelInitializer clientChannelInitializer = factory.createClientChannelInitializer();
-            this.requestManager = clientChannelInitializer.getRequestManager();
-            final int connectionTimeout = factory.getConnectionTimeout();
-
-            final Bootstrap bootstrap = new Bootstrap()
-                .channel(NioSocketChannel.class)
-                .group(factory.eventLoopGroup)
-                .handler(clientChannelInitializer)
-                .option(ChannelOption.AUTO_READ, true)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTimeout)
-                .option(ChannelOption.SO_KEEPALIVE, true);
-
-            this.channelFuture = bootstrap.connect(physicalAddress.getHost(), physicalAddress.getPort());
+        public JsonSerializer() {
+            this(null);
         }
 
-        public Future<?> close() {
-            return this.channelFuture.channel().close();
+        public JsonSerializer(Class<RntbdTransportClient> type) {
+            super(type);
         }
 
         @Override
-        public String toString() {
-            return this.channelFuture.channel().toString();
-        }
+        public void serialize(RntbdTransportClient value, JsonGenerator generator, SerializerProvider provider) throws IOException {
 
-        public CompletableFuture<StoreResponse> write(RntbdRequestArgs requestArgs) {
+            generator.writeStartObject();
 
-            Objects.requireNonNull(requestArgs, "requestArgs");
+            generator.writeArrayFieldStart(value.name);
 
-            final CompletableFuture<StoreResponse> responseFuture = this.requestManager.createStoreResponseFuture(requestArgs);
-
-            this.channelFuture.addListener((ChannelFuture future) -> {
-
-                if (future.isSuccess()) {
-                    requestArgs.traceOperation(logger, null, "doWrite");
-                    logger.debug("{} connected", future.channel());
-                    doWrite(future.channel(), requestArgs);
-                    return;
-                }
-
-                UUID activityId = requestArgs.getActivityId();
-
-                if (future.isCancelled()) {
-
-                    this.requestManager.cancelStoreResponseFuture(activityId);
-
-                    logger.debug("{}{} request cancelled: ", future.channel(), requestArgs, future.cause());
-
-                } else {
-
-                    final Channel channel = future.channel();
-                    Throwable cause = future.cause();
-
-                    logger.error("{}{} request failed: ", channel, requestArgs, cause);
-
-                    GoneException goneException = new GoneException(
-                        String.format("failed to establish connection to %s: %s",
-                            channel.remoteAddress(), cause.getMessage()
-                        ),
-                        cause instanceof Exception ? (Exception)cause : new IOException(cause.getMessage(), cause),
-                        ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
-                        requestArgs.getReplicaPath()
-                    );
-
-                    logger.debug("{}{} {} mapped to GoneException: ",
-                        channel, requestArgs, cause.getClass(), goneException
-                    );
-
-                    this.requestManager.completeStoreResponseFutureExceptionally(activityId, goneException);
-                }
-
-            });
-
-            return responseFuture;
-        }
-
-        private static void doWrite(Channel channel, RntbdRequestArgs requestArgs) {
-
-            channel.write(requestArgs).addListener((ChannelFuture future) -> {
-
-                requestArgs.traceOperation(logger, null, "writeComplete", future.channel());
-
-                if (future.isSuccess()) {
-
-                    logger.debug("{} request sent: {}", future.channel(), requestArgs);
-
-                } else if (future.isCancelled()) {
-
-                    logger.debug("{}{} request cancelled: {}",
-                        future.channel(), requestArgs, future.cause().getMessage()
-                    );
-
-                } else {
-                    Throwable cause = future.cause();
-                    logger.error("{}{} request failed due to {}: {}",
-                        future.channel(), requestArgs, cause.getClass(), cause.getMessage()
-                    );
+            value.endpointProvider.list().forEach(endpoint -> {
+                try {
+                    generator.writeObject(endpoint);
+                } catch (IOException error) {
+                    logger.error("failed to serialize {} due to ", endpoint.getName(), error);
                 }
             });
+
+            generator.writeEndArray();
+
+            generator.writeObjectField("config", value.endpointProvider.config());
+            generator.writeObjectField("metrics", value.metrics);
+            generator.writeEndObject();
         }
     }
 
-    static class EndpointFactory {
-
-        final private ConcurrentHashMap<String, Endpoint> endpoints = new ConcurrentHashMap<>();
-        final private NioEventLoopGroup eventLoopGroup;
-        final private Options options;
-        final private SslContext sslContext;
-        final private UserAgentContainer userAgent;
-
-        EndpointFactory(Options options, SslContext sslContext, UserAgentContainer userAgent) {
-
-            Objects.requireNonNull(options, "options");
-            Objects.requireNonNull(sslContext, "sslContext");
-            Objects.requireNonNull(userAgent, "userAgent");
-
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("CosmosEventLoop", true);
-            final int threadCount = Runtime.getRuntime().availableProcessors();
-
-            this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
-            this.options = options;
-            this.sslContext = sslContext;
-            this.userAgent = userAgent;
-        }
-
-        int getConnectionTimeout() {
-            return (int)this.options.getOpenTimeout().toMillis();
-        }
-
-        Options getOptions() {
-            return this.options;
-        }
-
-        UserAgentContainer getUserAgent() {
-            return this.userAgent;
-        }
-
-        Future<?> close() {
-            return this.eventLoopGroup.shutdownGracefully();
-        }
-
-        RntbdClientChannelInitializer createClientChannelInitializer() {
-
-            final LogLevel logLevel;
-
-            if (RntbdTransportClient.logger.isTraceEnabled()) {
-                logLevel = LogLevel.TRACE;
-            } else if (RntbdTransportClient.logger.isDebugEnabled()) {
-                logLevel = LogLevel.DEBUG;
-            } else {
-                logLevel = null;
-            }
-
-            return new RntbdClientChannelInitializer(this.userAgent, this.sslContext, logLevel, this.options);
-        }
-
-        Endpoint createEndpoint(URI physicalAddress) {
-            return new DefaultEndpoint(this, physicalAddress);
-        }
-
-        void deleteEndpoint(URI physicalAddress) {
-
-            // TODO: DANOBLE: Utilize this method of tearing down unhealthy endpoints
-            //  Links:
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331552
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331593
-
-            final String authority = physicalAddress.getAuthority();
-            final Endpoint endpoint = this.endpoints.remove(authority);
-
-            if (endpoint == null) {
-                throw new IllegalArgumentException(String.format("physicalAddress: %s", physicalAddress));
-            }
-
-            endpoint.close().addListener(future -> {
-
-                if (future.isSuccess()) {
-                    logger.info("{} closed channel of communication with {}", endpoint, authority);
-                    return;
-                }
-
-                logger.error("{} failed to close channel of communication with {}: {}", endpoint, authority, future.cause());
-            });
-        }
-
-        Endpoint getEndpoint(URI physicalAddress) {
-            return this.endpoints.computeIfAbsent(
-                physicalAddress.getAuthority(), authority -> this.createEndpoint(physicalAddress)
-            );
-        }
-    }
-
-    final public static class Options {
+    public static final class Options {
 
         // region Fields
 
-        private String certificateHostNameOverride;
-        private int maxChannels;
-        private int maxRequestsPerChannel;
-        private Duration openTimeout = Duration.ZERO;
-        private int partitionCount;
-        private Duration receiveHangDetectionTime;
-        private Duration requestTimeout;
-        private Duration sendHangDetectionTime;
-        private Duration timerPoolResolution = Duration.ZERO;
-        private UserAgentContainer userAgent = null;
+        private final String certificateHostNameOverride;
+        private final int maxChannelsPerEndpoint;
+        private final int maxRequestsPerChannel;
+        private final Duration connectionTimeout;
+        private final int partitionCount;
+        private final Duration receiveHangDetectionTime;
+        private final Duration requestTimeout;
+        private final Duration sendHangDetectionTime;
+        private final UserAgentContainer userAgent;
 
         // endregion
 
         // region Constructors
 
-        public Options(int requestTimeoutInSeconds) {
-            this(Duration.ofSeconds((long)requestTimeoutInSeconds));
-        }
+        private Options(Builder builder) {
 
-        public Options(Duration requestTimeout) {
-
-            Objects.requireNonNull(requestTimeout);
-
-            if (requestTimeout.compareTo(Duration.ZERO) <= 0) {
-                throw new IllegalArgumentException("requestTimeout");
-            }
-
-            this.maxChannels = 0xFFFF;
-            this.maxRequestsPerChannel = 30;
-            this.partitionCount = 1;
-            this.receiveHangDetectionTime = Duration.ofSeconds(65L);
-            this.requestTimeout = requestTimeout;
-            this.sendHangDetectionTime = Duration.ofSeconds(10L);
+            this.certificateHostNameOverride = builder.certificateHostNameOverride;
+            this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
+            this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
+            this.connectionTimeout = builder.connectionTimeout == null ? builder.requestTimeout : builder.connectionTimeout;
+            this.partitionCount = builder.partitionCount;
+            this.requestTimeout = builder.requestTimeout;
+            this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
+            this.sendHangDetectionTime = builder.sendHangDetectionTime;
+            this.userAgent = builder.userAgent;
         }
 
         // endregion
 
-        // region Property accessors
+        // region Accessors
 
         public String getCertificateHostNameOverride() {
-            return certificateHostNameOverride;
+            return this.certificateHostNameOverride;
         }
 
-        public void setCertificateHostNameOverride(String value) {
-            this.certificateHostNameOverride = value;
-        }
-
-        public int getMaxChannels() {
-            return this.maxChannels;
-        }
-
-        public void setMaxChannels(int value) {
-            this.maxChannels = value;
+        public int getMaxChannelsPerEndpoint() {
+            return this.maxChannelsPerEndpoint;
         }
 
         public int getMaxRequestsPerChannel() {
             return this.maxRequestsPerChannel;
         }
 
-        public void setMaxRequestsPerChannel(int maxRequestsPerChannel) {
-            this.maxRequestsPerChannel = maxRequestsPerChannel;
-        }
-
-        public Duration getOpenTimeout() {
-            return this.openTimeout.isNegative() || this.openTimeout.isZero() ? this.requestTimeout : this.openTimeout;
-        }
-
-        public void setOpenTimeout(Duration value) {
-            this.openTimeout = value;
+        public Duration getConnectionTimeout() {
+            return this.connectionTimeout;
         }
 
         public int getPartitionCount() {
             return this.partitionCount;
         }
 
-        public void setPartitionCount(int value) {
-            this.partitionCount = value;
-        }
-
         public Duration getReceiveHangDetectionTime() {
             return this.receiveHangDetectionTime;
-        }
-
-        public void setReceiveHangDetectionTime(Duration value) {
-            this.receiveHangDetectionTime = value;
         }
 
         public Duration getRequestTimeout() {
@@ -477,63 +258,129 @@ final public class RntbdTransportClient extends TransportClient implements AutoC
             return this.sendHangDetectionTime;
         }
 
-        public void setSendHangDetectionTime(Duration value) {
-            this.sendHangDetectionTime = value;
-        }
-
-        public Duration getTimerPoolResolution() {
-            return calculateTimerPoolResolutionSeconds(this.timerPoolResolution, this.requestTimeout, this.openTimeout);
-        }
-
-        public void setTimerPoolResolution(Duration value) {
-            this.timerPoolResolution = value;
-        }
-
         public UserAgentContainer getUserAgent() {
-
-            if (this.userAgent != null) {
-                return this.userAgent;
-            }
-
-            this.userAgent = new UserAgentContainer();
             return this.userAgent;
-        }
-
-        public void setUserAgent(UserAgentContainer value) {
-            this.userAgent = value;
         }
 
         // endregion
 
         // region Methods
 
-        private static Duration calculateTimerPoolResolutionSeconds(
+        @Override
+        public String toString() {
+            return RntbdObjectMapper.toJson(this);
+        }
 
-            Duration timerPoolResolution,
-            Duration requestTimeout,
-            Duration openTimeout) {
+        // endregion
 
-            Objects.requireNonNull(timerPoolResolution, "timerPoolResolution");
-            Objects.requireNonNull(requestTimeout, "requestTimeout");
-            Objects.requireNonNull(openTimeout, "openTimeout");
+        // region Types
 
-            if (timerPoolResolution.compareTo(Duration.ZERO) <= 0 && requestTimeout.compareTo(Duration.ZERO) <= 0 &&
-                openTimeout.compareTo(Duration.ZERO) <= 0) {
+        public static class Builder {
 
-                throw new IllegalStateException("RntbdTransportClient.Options");
+            // region Fields
+
+            private static final UserAgentContainer DEFAULT_USER_AGENT_CONTAINER = new UserAgentContainer();
+            private static final Duration SIXTY_FIVE_SECONDS = Duration.ofSeconds(65L);
+            private static final Duration TEN_SECONDS = Duration.ofSeconds(10L);
+
+            // Required parameters
+
+            private String certificateHostNameOverride = null;
+
+            // Optional parameters
+
+            private int maxChannelsPerEndpoint = 10;
+            private int maxRequestsPerChannel = 30;
+            private Duration connectionTimeout = null;
+            private int partitionCount = 1;
+            private Duration receiveHangDetectionTime = SIXTY_FIVE_SECONDS;
+            private Duration requestTimeout;
+            private Duration sendHangDetectionTime = TEN_SECONDS;
+            private UserAgentContainer userAgent = DEFAULT_USER_AGENT_CONTAINER;
+
+            // endregion
+
+            // region Constructors
+
+            public Builder(Duration requestTimeout) {
+                this.requestTimeout(requestTimeout);
             }
 
-            if (timerPoolResolution.compareTo(Duration.ZERO) > 0 && timerPoolResolution.compareTo(openTimeout) < 0 &&
-                timerPoolResolution.compareTo(requestTimeout) < 0) {
-
-                return timerPoolResolution;
+            public Builder(int requestTimeoutInSeconds) {
+                this(Duration.ofSeconds(requestTimeoutInSeconds));
             }
 
-            if (openTimeout.compareTo(Duration.ZERO) > 0 && requestTimeout.compareTo(Duration.ZERO) > 0) {
-                return openTimeout.compareTo(requestTimeout) < 0 ? openTimeout : requestTimeout;
+            // endregion
+
+            // region Methods
+
+            public Options build() {
+                return new Options(this);
             }
 
-            return openTimeout.compareTo(Duration.ZERO) > 0 ? openTimeout : requestTimeout;
+            public Builder certificateHostNameOverride(final String value) {
+                this.certificateHostNameOverride = value;
+                return this;
+            }
+
+            public Builder connectionTimeout(final Duration value) {
+                checkArgument(value == null || value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+                this.connectionTimeout = value;
+                return this;
+            }
+
+            public Builder maxRequestsPerChannel(final int value) {
+                checkArgument(value > 0, "value: %s", value);
+                this.maxRequestsPerChannel = value;
+                return this;
+            }
+
+            public Builder maxChannelsPerEndpoint(final int value) {
+                checkArgument(value > 0, "value: %s", value);
+                this.maxChannelsPerEndpoint = value;
+                return this;
+            }
+
+            public Builder partitionCount(final int value) {
+                checkArgument(value > 0, "value: %s", value);
+                this.partitionCount = value;
+                return this;
+            }
+
+            public Builder receiveHangDetectionTime(final Duration value) {
+
+                checkNotNull(value, "value: null");
+                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+
+                this.receiveHangDetectionTime = value;
+                return this;
+            }
+
+            public Builder requestTimeout(final Duration value) {
+
+                checkNotNull(value, "value: null");
+                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+
+                this.requestTimeout = value;
+                return this;
+            }
+
+            public Builder sendHangDetectionTime(final Duration value) {
+
+                checkNotNull(value, "value: null");
+                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+
+                this.sendHangDetectionTime = value;
+                return this;
+            }
+
+            public Builder userAgent(final UserAgentContainer value) {
+                checkNotNull(value, "value: null");
+                this.userAgent = value;
+                return this;
+            }
+
+            // endregion
         }
 
         // endregion

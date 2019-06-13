@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.text.WordUtils;
+
 /**
  * Specifies whether or not the resource is to be indexed in the Azure Cosmos DB database service.
  */
@@ -41,5 +43,10 @@ public enum IndexingDirective {
     /**
      * Do not index the resource.
      */
-    EXCLUDE
+    EXCLUDE;
+
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
+    }
 }

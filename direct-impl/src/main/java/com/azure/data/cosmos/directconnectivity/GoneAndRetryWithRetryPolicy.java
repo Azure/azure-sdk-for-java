@@ -23,22 +23,20 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import java.time.Duration;
-
 import com.azure.data.cosmos.CosmosClientException;
-import org.apache.commons.lang3.time.StopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.Quadruple;
 import com.azure.data.cosmos.internal.IRetryPolicy;
 import com.azure.data.cosmos.internal.InvalidPartitionException;
 import com.azure.data.cosmos.internal.PartitionIsMigratingException;
 import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.internal.Quadruple;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Single;
+
+import java.time.Duration;
 
 public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 

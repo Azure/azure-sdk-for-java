@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.rx.examples.multimaster.samples;
 
-import com.google.common.base.Preconditions;
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.rx.examples.multimaster.ConfigurationManager;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Completable;

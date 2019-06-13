@@ -22,27 +22,26 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import com.azure.data.cosmos.directconnectivity.GoneException;
+import com.azure.data.cosmos.directconnectivity.StoreResponse;
+import com.azure.data.cosmos.directconnectivity.StoreResponseBuilder;
+import com.azure.data.cosmos.directconnectivity.StoreResponseValidator;
+import com.azure.data.cosmos.internal.IRetryPolicy.ShouldRetryResult;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.directconnectivity.GoneException;
-import com.azure.data.cosmos.directconnectivity.StoreResponse;
-import com.azure.data.cosmos.directconnectivity.StoreResponseBuilder;
-import com.azure.data.cosmos.directconnectivity.StoreResponseValidator;
-import com.azure.data.cosmos.internal.IRetryPolicy.ShouldRetryResult;
-
 import rx.Single;
 import rx.functions.Func1;
 import rx.observers.TestSubscriber;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class RetryUtilsTest {
     IRetryPolicy retryPolicy;

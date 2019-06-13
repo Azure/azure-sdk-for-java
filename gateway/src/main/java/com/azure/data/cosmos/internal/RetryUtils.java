@@ -22,16 +22,15 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

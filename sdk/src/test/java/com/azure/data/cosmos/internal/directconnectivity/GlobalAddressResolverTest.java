@@ -24,20 +24,20 @@
 package com.azure.data.cosmos.internal.directconnectivity;
 
 
-import com.azure.data.cosmos.internal.GlobalEndpointManager;
-import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.caches.RxCollectionCache;
-import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyRange;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.UserAgentContainer;
 import com.azure.data.cosmos.directconnectivity.GatewayAddressCache;
 import com.azure.data.cosmos.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.data.cosmos.directconnectivity.Protocol;
+import com.azure.data.cosmos.internal.GlobalEndpointManager;
+import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.caches.RxCollectionCache;
+import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalHelper;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;

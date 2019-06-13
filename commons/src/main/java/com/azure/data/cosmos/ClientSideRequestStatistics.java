@@ -22,6 +22,13 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.directconnectivity.StoreResult;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -36,13 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.Utils;
-import com.azure.data.cosmos.directconnectivity.StoreResult;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import org.apache.commons.lang3.StringUtils;
 
 public class ClientSideRequestStatistics {
 

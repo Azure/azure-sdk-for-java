@@ -29,22 +29,23 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;
 
-import java.util.Objects;
 import java.util.stream.Collector;
 
 import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
     final ImmutableMap<Short, T> headers;
     final ImmutableMap<T, RntbdToken> tokens;
 
-    RntbdTokenStream(ImmutableSet<T> headers, ImmutableMap<Short, T> ids) {
+    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids) {
 
-        Objects.requireNonNull(headers, "headers");
-        Objects.requireNonNull(ids, "ids");
+        checkNotNull(headers, "headers");
+        checkNotNull(ids, "ids");
 
-        Collector<T, ?, ImmutableMap<T, RntbdToken>> collector = Maps.toImmutableEnumMap(h -> h, RntbdToken::create);
+        final Collector<T, ?, ImmutableMap<T, RntbdToken>> collector = Maps.toImmutableEnumMap(h -> h, RntbdToken::create);
         this.tokens = headers.stream().collect(collector);
         this.headers = ids;
     }
@@ -53,7 +54,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
         int count = 0;
 
-        for (RntbdToken token : this.tokens.values()) {
+        for (final RntbdToken token : this.tokens.values()) {
             if (token.isPresent()) {
                 ++count;
             }
@@ -66,14 +67,14 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
         int total = 0;
 
-        for (RntbdToken token : this.tokens.values()) {
+        for (final RntbdToken token : this.tokens.values()) {
             total += token.computeLength();
         }
 
         return total;
     }
 
-    static <T extends RntbdTokenStream<?>> T decode(ByteBuf in, T stream) {
+    static <T extends RntbdTokenStream<?>> T decode(final ByteBuf in, final T stream) {
 
         while (in.readableBytes() > 0) {
 
@@ -89,10 +90,10 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
             token.decode(in);
         }
 
-        for (RntbdToken token : stream.tokens.values()) {
+        for (final RntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                String reason = String.format("Required token not found on RNTBD stream: type: %s, identifier: %s",
-                    token.getType(), token.getId());
+                final String reason = String.format("Required token not found on RNTBD stream: type: %s, identifier: %s",
+                    token.getTokenType(), token.getId());
                 throw new IllegalStateException(reason);
             }
         }
@@ -100,28 +101,28 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
         return stream;
     }
 
-    final void encode(ByteBuf out) {
-        for (RntbdToken token : this.tokens.values()) {
+    final void encode(final ByteBuf out) {
+        for (final RntbdToken token : this.tokens.values()) {
             token.encode(out);
         }
     }
 
-    final RntbdToken get(T header) {
+    final RntbdToken get(final T header) {
         return this.tokens.get(header);
     }
 
     final void releaseBuffers() {
-        for (RntbdToken token : this.tokens.values()) {
+        for (final RntbdToken token : this.tokens.values()) {
             token.releaseBuffer();
         }
     }
 
-    final static private class UndefinedHeader implements RntbdHeader {
+    private static final class UndefinedHeader implements RntbdHeader {
 
-        final private short id;
-        final private RntbdTokenType type;
+        private final short id;
+        private final RntbdTokenType type;
 
-        UndefinedHeader(short id, RntbdTokenType type) {
+        UndefinedHeader(final short id, final RntbdTokenType type) {
             this.id = id;
             this.type = type;
         }

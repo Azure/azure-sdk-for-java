@@ -22,7 +22,14 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.CompositePath;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.QueryMetrics;
+import com.azure.data.cosmos.Resource;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -31,14 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.BridgeInternal;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.azure.data.cosmos.CompositePath;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.QueryMetrics;
-import com.azure.data.cosmos.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public interface FeedResponseListValidator<T extends Resource> {
 

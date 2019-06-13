@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.text.WordUtils;
+
 /**
  * The trigger type in the Azure Cosmos DB database service.
  */
@@ -51,4 +53,9 @@ public enum TriggerType {
     public int getValue() {
         return value;
     }
+    
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
+    }    
 }

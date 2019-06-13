@@ -23,13 +23,13 @@
 
 package com.azure.data.cosmos;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.net.URI;
 import java.util.Collection;

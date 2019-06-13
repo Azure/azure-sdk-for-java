@@ -22,11 +22,17 @@
  */
 package com.azure.data.cosmos.examples.ChangeFeed;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerRequestOptions;
+import com.azure.data.cosmos.CosmosContainerResponse;
+import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosDatabase;
+import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.SerializationFormattingPolicy;
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.Mono;

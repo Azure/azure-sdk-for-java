@@ -23,8 +23,8 @@
 package com.azure.data.cosmos.changefeed.internal;
 
 import com.azure.data.cosmos.ChangeFeedObserver;
-import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.ChangeFeedObserverFactory;
+import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.changefeed.Lease;
 import com.azure.data.cosmos.changefeed.LeaseManager;
 import com.azure.data.cosmos.changefeed.LeaseRenewer;

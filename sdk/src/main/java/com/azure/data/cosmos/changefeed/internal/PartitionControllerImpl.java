@@ -22,8 +22,6 @@
  */
 package com.azure.data.cosmos.changefeed.internal;
 
-import com.azure.data.cosmos.changefeed.exceptions.PartitionSplitException;
-import com.azure.data.cosmos.changefeed.exceptions.TaskCancelledException;
 import com.azure.data.cosmos.changefeed.CancellationToken;
 import com.azure.data.cosmos.changefeed.CancellationTokenSource;
 import com.azure.data.cosmos.changefeed.Lease;
@@ -33,6 +31,8 @@ import com.azure.data.cosmos.changefeed.PartitionController;
 import com.azure.data.cosmos.changefeed.PartitionSupervisor;
 import com.azure.data.cosmos.changefeed.PartitionSupervisorFactory;
 import com.azure.data.cosmos.changefeed.PartitionSynchronizer;
+import com.azure.data.cosmos.changefeed.exceptions.PartitionSplitException;
+import com.azure.data.cosmos.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

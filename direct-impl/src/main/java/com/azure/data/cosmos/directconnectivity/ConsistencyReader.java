@@ -23,27 +23,26 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.azure.data.cosmos.ClientSideRequestStatistics;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.ISessionToken;
-import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.ISessionToken;
 import com.azure.data.cosmos.internal.NotFoundException;
 import com.azure.data.cosmos.internal.RMResources;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-
-import static com.azure.data.cosmos.internal.Utils.ValueHolder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Single;
+
+import java.util.HashMap;
+import java.util.List;
+
+import static com.azure.data.cosmos.internal.Utils.ValueHolder;
 
 /*
  ConsistencyLevel      Replication Mode         Desired ReadMode

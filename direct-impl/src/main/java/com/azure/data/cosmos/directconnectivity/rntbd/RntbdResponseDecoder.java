@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-final public class RntbdResponseDecoder extends ByteToMessageDecoder {
+public final class RntbdResponseDecoder extends ByteToMessageDecoder {
 
-    final private static Logger Logger = LoggerFactory.getLogger(RntbdResponseDecoder.class);
+    private static final Logger Logger = LoggerFactory.getLogger(RntbdResponseDecoder.class);
 
     /**
      * Deserialize from an input {@link ByteBuf} to an {@link RntbdResponse} instance
@@ -46,11 +46,11 @@ final public class RntbdResponseDecoder extends ByteToMessageDecoder {
      * @param out     the {@link List} to which decoded messages are added
      */
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) {
+    protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
         if (RntbdFramer.canDecodeHead(in)) {
 
-            RntbdResponse response = RntbdResponse.decode(in);
+            final RntbdResponse response = RntbdResponse.decode(in);
 
             if (response != null) {
                 Logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);

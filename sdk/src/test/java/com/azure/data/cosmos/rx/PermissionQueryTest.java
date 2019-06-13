@@ -22,22 +22,10 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.azure.data.cosmos.AsyncDocumentClient;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DatabaseForTest;
-import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -45,8 +33,18 @@ import com.azure.data.cosmos.Permission;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase 
 public class PermissionQueryTest extends TestSuiteBase {
@@ -61,7 +59,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public PermissionQueryTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -151,7 +149,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder.build();
+        client = clientBuilder().build();
         Database d = new Database();
         d.id(databaseId);
         createdDatabase = createDatabase(client, d);
@@ -161,7 +159,7 @@ public class PermissionQueryTest extends TestSuiteBase {
             createdPermissions.add(createPermissions(client, i));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder);
+        waitIfNeededForReplicasToCatchUp(clientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

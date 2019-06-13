@@ -23,10 +23,10 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.azure.data.cosmos.GatewayTestUtils;
 import com.azure.data.cosmos.PartitionKeyRange;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;

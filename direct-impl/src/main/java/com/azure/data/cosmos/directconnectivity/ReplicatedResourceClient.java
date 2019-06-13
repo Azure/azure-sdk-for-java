@@ -23,27 +23,25 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import java.time.Duration;
-
 import com.azure.data.cosmos.ClientSideRequestStatistics;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.ReplicatedResourceClientUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.BackoffRetryUtility;
+import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.Quadruple;
+import com.azure.data.cosmos.internal.ReplicatedResourceClientUtils;
 import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.BackoffRetryUtility;
-import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Single;
 import rx.functions.Func1;
 import rx.functions.Func2;
+
+import java.time.Duration;
 
 /**
  * ReplicatedResourceClient uses the ConsistencyReader to make requests to

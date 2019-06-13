@@ -22,19 +22,6 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.assertj.core.api.Condition;
-
 import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.DocumentCollection;
@@ -45,12 +32,24 @@ import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.SpatialSpec;
+import com.azure.data.cosmos.SpatialType;
 import com.azure.data.cosmos.StoredProcedure;
 import com.azure.data.cosmos.Trigger;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
 import com.azure.data.cosmos.UserDefinedFunction;
-import com.azure.data.cosmos.SpatialType;
+import org.assertj.core.api.Condition;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public interface ResourceResponseValidator<T extends Resource> {
 

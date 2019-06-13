@@ -22,10 +22,6 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
-
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;
@@ -33,8 +29,11 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.Utils;
-
 import rx.Observable;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

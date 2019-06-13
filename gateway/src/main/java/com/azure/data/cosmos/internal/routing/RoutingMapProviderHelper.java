@@ -23,11 +23,11 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.PartitionKeyRange;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.azure.data.cosmos.PartitionKeyRange;
 
 /**
  * Provide utility functionality to route request in direct connectivity mode in the Azure Cosmos DB database service.

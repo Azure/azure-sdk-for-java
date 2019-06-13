@@ -23,27 +23,25 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
-
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.observers.TestSubscriber;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class FetcherTest {
 

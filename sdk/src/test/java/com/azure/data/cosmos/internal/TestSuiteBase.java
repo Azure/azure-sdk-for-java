@@ -22,13 +22,58 @@
  */
 package com.azure.data.cosmos.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
+import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.AsyncDocumentClient.Builder;
+import com.azure.data.cosmos.CompositePath;
+import com.azure.data.cosmos.CompositePathSortOrder;
+import com.azure.data.cosmos.ConnectionMode;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.DataType;
+import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.DatabaseForTest;
+import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentClientTest;
+import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.IncludedPath;
+import com.azure.data.cosmos.Index;
+import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.RetryOptions;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.User;
+import com.azure.data.cosmos.directconnectivity.Protocol;
+import com.azure.data.cosmos.rx.FailureValidator;
+import com.azure.data.cosmos.rx.FeedResponseListValidator;
+import com.azure.data.cosmos.rx.ResourceResponseValidator;
+import com.azure.data.cosmos.rx.TestConfigurations;
+import com.azure.data.cosmos.rx.Utils;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.mockito.stubbing.Answer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
+import rx.Observable;
+import rx.observers.TestSubscriber;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,36 +81,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.azure.data.cosmos.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.azure.data.cosmos.directconnectivity.Protocol;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
-import com.azure.data.cosmos.rx.FailureValidator;
-import com.azure.data.cosmos.rx.FeedResponseListValidator;
-import com.azure.data.cosmos.rx.ResourceResponseValidator;
-import com.azure.data.cosmos.rx.TestConfigurations;
-import com.azure.data.cosmos.rx.Utils;
+public class TestSuiteBase extends DocumentClientTest {
 
-import org.testng.annotations.Test;
-import rx.Observable;
-import rx.observers.TestSubscriber;
-
-public class TestSuiteBase {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
@@ -85,12 +106,14 @@ public class TestSuiteBase {
     private static final ImmutableList<Protocol> protocols;
 
     protected int subscriberValidationTimeout = TIMEOUT;
-    protected Builder clientBuilder;
-
     protected static Database SHARED_DATABASE;
     protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
+
+    private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
+        return list != null ? ImmutableList.copyOf(list) : null;
+    }
 
     static {
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
@@ -102,35 +125,19 @@ public class TestSuiteBase {
                                               ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
     }
 
+    private String testName;
+
     protected TestSuiteBase() {
+        this(new AsyncDocumentClient.Builder());
+    }
+
+    protected TestSuiteBase(AsyncDocumentClient.Builder clientBuilder) {
+        super(clientBuilder);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         logger.debug("Initializing {} ...", this.getClass().getSimpleName());
-    }
-
-    private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
-        return list != null ? ImmutableList.copyOf(list) : null;
-    }
-
-    @BeforeMethod(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"})
-    public void beforeMethod(Method method) {
-        if (this.clientBuilder != null) {
-            logger.info("Starting {}::{} using {} {} mode with {} consistency",
-                        method.getDeclaringClass().getSimpleName(), method.getName(),
-                        this.clientBuilder.getConnectionPolicy().connectionMode(),
-                        this.clientBuilder.getConfigs().getProtocol(),
-                        this.clientBuilder.getDesiredConsistencyLevel());
-            return;
-        }
-        logger.info("Starting {}::{}", method.getDeclaringClass().getSimpleName(), method.getName());
-    }
-
-    @AfterMethod(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"})
-    public void afterMethod(Method m) {
-        Test t = m.getAnnotation(Test.class);
-        logger.info("Finished {}:{}.", m.getDeclaringClass().getSimpleName(), m.getName());
     }
 
     private static class DatabaseManagerImpl implements DatabaseForTest.DatabaseManager {
@@ -773,7 +780,7 @@ public class TestSuiteBase {
     private static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             for (ConsistencyLevel consistencyLevel : ConsistencyLevel.values()) {
-                if (consistencyLevel.name().toLowerCase().equals(consistency.toLowerCase())) {
+                if (consistencyLevel.toString().toLowerCase().equals(consistency.toLowerCase())) {
                     return consistencyLevel;
                 }
             }

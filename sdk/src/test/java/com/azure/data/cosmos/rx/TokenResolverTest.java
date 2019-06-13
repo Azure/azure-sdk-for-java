@@ -47,7 +47,6 @@ import com.azure.data.cosmos.TokenResolver;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -56,15 +55,14 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
 public class TokenResolverTest extends TestSuiteBase {
@@ -92,7 +90,7 @@ public class TokenResolverTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public TokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @DataProvider(name = "connectionMode")
@@ -108,7 +106,7 @@ public class TokenResolverTest extends TestSuiteBase {
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
 
-        client = clientBuilder.build();
+        client = clientBuilder().build();
 
         userWithReadPermission = createUser(client, createdDatabase.id(), getUserDefinition());
         readPermission = client.createPermission(userWithReadPermission.selfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).toBlocking().single()
@@ -315,10 +313,10 @@ public class TokenResolverTest extends TestSuiteBase {
                     "        var mytext = \"x\";" +
                     "        var myval = 1;" +
                     "        try {" +
-                    "            getContext().getResponse().body(\"Success!\");" +
+                    "            getContext().getResponse().setBody(\"Success!\");" +
                     "        }" +
                     "        catch(err) {" +
-                    "            getContext().getResponse().body(\"inline err: [\" + err.number + \"] \" + err);" +
+                    "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
                     "        }" +
                     "    }'" +
                     "}");

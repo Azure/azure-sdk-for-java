@@ -62,6 +62,7 @@ public class CosmosUserDefinedFunctionSettings extends Resource {
      * Set the body of the user defined function.
      *
      * @param body the body.
+     * @return the CosmosUserDefinedFunctionSettings.
      */
     public CosmosUserDefinedFunctionSettings body(String body) {
         super.set(Constants.Properties.BODY, body);

@@ -24,9 +24,8 @@
 package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.JsonSerializable;
-import com.azure.data.cosmos.internal.routing.Range;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
-
+import com.azure.data.cosmos.internal.routing.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

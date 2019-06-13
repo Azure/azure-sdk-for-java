@@ -23,7 +23,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.changefeed.internal.ChangeFeedProcessorBuilderImpl;
-
 import reactor.core.publisher.Mono;
 
 /**

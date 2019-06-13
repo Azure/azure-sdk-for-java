@@ -23,6 +23,11 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.PartitionKeyRange;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,12 +39,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
-import com.azure.data.cosmos.PartitionKeyRange;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Used internally to cache partition key ranges of a collection in the Azure Cosmos DB database service.

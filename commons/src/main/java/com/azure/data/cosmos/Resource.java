@@ -23,13 +23,13 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.data.cosmos.internal.Constants;
 
 /**
  * Represents the base resource in the Azure Cosmos DB database service.
@@ -101,6 +101,7 @@ public class Resource extends JsonSerializable {
      * Sets the name of the resource.
      *
      * @param id the name of the resource.
+     * @return the resource.
      */
     public Resource id(String id) {
         super.set(Constants.Properties.ID, id);
@@ -121,6 +122,7 @@ public class Resource extends JsonSerializable {
      * Set the ID associated with the resource.
      *
      * @param resourceId the ID associated with the resource.
+     * @return the resource.
      */
     public Resource resourceId(String resourceId) {
         super.set(Constants.Properties.R_ID, resourceId);

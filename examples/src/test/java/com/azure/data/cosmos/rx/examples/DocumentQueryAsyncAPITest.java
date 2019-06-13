@@ -22,12 +22,13 @@
  */
 package com.azure.data.cosmos.rx.examples;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -36,7 +37,7 @@ import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -82,23 +83,27 @@ import static org.hamcrest.Matchers.notNullValue;
  * transform an observable to ListenableFuture. Please see
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
  */
-public class DocumentQueryAsyncAPITest {
+public class DocumentQueryAsyncAPITest extends DocumentClientTest {
+
     private final static int TIMEOUT = 3 * 60000;
-    private AsyncDocumentClient asyncClient;
+
+    private AsyncDocumentClient client;
     private DocumentCollection createdCollection;
     private Database createdDatabase;
     private int numberOfDocuments;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
-        asyncClient = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .build();
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+
+        this.clientBuilder()
+            .withServiceEndpoint(TestConfigurations.HOST)
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withConnectionPolicy(connectionPolicy)
+            .withConsistencyLevel(ConsistencyLevel.SESSION);
+
+        this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.id(UUID.randomUUID().toString());
@@ -110,10 +115,10 @@ public class DocumentQueryAsyncAPITest {
 
         // CREATE database
 
-        createdDatabase = Utils.createDatabaseForTest(asyncClient);
+        createdDatabase = Utils.createDatabaseForTest(client);
 
         // CREATE collection
-        createdCollection = asyncClient
+        createdCollection = client
                 .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
                 .toBlocking().single().getResource();
 
@@ -121,14 +126,14 @@ public class DocumentQueryAsyncAPITest {
         // Add documents
         for (int i = 0; i < numberOfDocuments; i++) {
             Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
-            asyncClient.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
+            client.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
         }
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
     public void shutdown() {
-        Utils.safeClean(asyncClient, createdDatabase);
-        Utils.safeClose(asyncClient);
+        Utils.safeClean(client, createdDatabase);
+        Utils.safeClose(client);
     }
 
     /**
@@ -143,7 +148,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
+        Observable<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
@@ -190,7 +195,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
+        Observable<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
@@ -240,7 +245,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<Double> totalChargeObservable = asyncClient
+        Observable<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
                 .map(FeedResponse::requestCharge) // Map the page to its request charge
                 .reduce((totalCharge, charge) -> totalCharge + charge); // Sum up all the request charges
@@ -266,7 +271,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> requestChargeObservable = asyncClient
+        Observable<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         AtomicInteger onNextCounter = new AtomicInteger();
@@ -328,11 +333,11 @@ public class DocumentQueryAsyncAPITest {
 
         List<Document> resultList = Collections.synchronizedList(new ArrayList<Document>());
 
-        asyncClient.queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
-                .map(FeedResponse::results) // Map the page to the list of documents
-                .concatMap(Observable::from) // Flatten the observable<list<document>> to observable<document>
-                .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
-                .subscribe(doc -> resultList.add(doc)); // Collect the results
+        client.queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
+              .map(FeedResponse::results) // Map the page to the list of documents
+              .concatMap(Observable::from) // Flatten the observable<list<document>> to observable<document>
+              .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
+              .subscribe(doc -> resultList.add(doc)); // Collect the results
 
         Thread.sleep(4000);
 
@@ -371,7 +376,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
+        Observable<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         // Covert the observable to a blocking observable, then convert the blocking
@@ -411,7 +416,7 @@ public class DocumentQueryAsyncAPITest {
 
             Document doc = new Document(String.format("{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", i,
                                                       RandomStringUtils.randomAlphabetic(2), i));
-            asyncClient.createDocument("dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(),
+            client.createDocument("dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(),
                                        doc, null, true).toBlocking().single();
         }
 
@@ -426,7 +431,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxDegreeOfParallelism(2);
 
         // Get the observable order by query documents
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient.queryDocuments(
+        Observable<FeedResponse<Document>> documentQueryObservable = client.queryDocuments(
                 "dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(), query, options);
 
         List<String> resultList = Collections.synchronizedList(new ArrayList<>());
@@ -461,7 +466,7 @@ public class DocumentQueryAsyncAPITest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
+        Observable<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         // Convert to observable of list of pages
@@ -495,8 +500,8 @@ public class DocumentQueryAsyncAPITest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.id(collectionId);
         collectionDefinition.setPartitionKey(partitionKeyDef);
-        DocumentCollection createdCollection = asyncClient.createCollection(databaseLink, collectionDefinition, options)
-                .toBlocking().single().getResource();
+        DocumentCollection createdCollection = client.createCollection(databaseLink, collectionDefinition, options)
+                                                     .toBlocking().single().getResource();
 
         return createdCollection;
     }

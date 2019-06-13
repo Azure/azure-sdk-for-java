@@ -23,19 +23,18 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.PartitionKeyRange;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.testng.annotations.Test;
-
-import com.azure.data.cosmos.PartitionKeyRange;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InMemoryCollectionRoutingMapTest {
 

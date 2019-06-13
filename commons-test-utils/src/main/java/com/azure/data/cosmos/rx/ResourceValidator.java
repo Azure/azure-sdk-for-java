@@ -22,12 +22,12 @@
  */
 package com.azure.data.cosmos.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.data.cosmos.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.data.cosmos.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 interface ResourceValidator<T extends Resource> {
     

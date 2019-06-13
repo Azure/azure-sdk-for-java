@@ -22,21 +22,20 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.query.Paginator;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import com.azure.data.cosmos.internal.query.Paginator;
-
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 import rx.functions.Func2;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class ChangeFeedQueryImpl<T extends Resource> {
 

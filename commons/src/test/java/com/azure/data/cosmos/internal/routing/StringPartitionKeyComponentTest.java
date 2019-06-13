@@ -2,6 +2,7 @@ package com.azure.data.cosmos.internal.routing;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringPartitionKeyComponentTest {

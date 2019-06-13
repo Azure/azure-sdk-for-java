@@ -23,19 +23,19 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.PartitionKeyRange;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.RequestChargeTracker;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.rx.DocumentServiceRequestContextValidator;
-import com.azure.data.cosmos.rx.DocumentServiceRequestValidator;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
+import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.rx.DocumentServiceRequestContextValidator;
+import com.azure.data.cosmos.rx.DocumentServiceRequestValidator;
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

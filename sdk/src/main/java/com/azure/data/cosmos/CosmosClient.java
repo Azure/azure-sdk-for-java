@@ -22,9 +22,8 @@
  */
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Configs;
-
+import com.azure.data.cosmos.internal.HttpConstants;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;

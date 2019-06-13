@@ -24,14 +24,12 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
 /**
  * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition specifies which
@@ -67,7 +65,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKind kind() {
         if (this.kind == null) {
-            this.kind = super.getObject(Constants.Properties.PARTITION_KIND, PartitionKind.class);
+            this.kind = super.getObject(Constants.Properties.PARTITION_KIND, PartitionKind.class, true);
         }
 
         return this.kind;
@@ -77,6 +75,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      * Sets the partition algorithm used to calculate the partition id given a partition key.
      *
      * @param kind the partition algorithm.
+     * @return this PartitionKeyDefinition.
      */
     public PartitionKeyDefinition kind(PartitionKind kind) {
         this.kind = kind;
@@ -129,6 +128,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      * Sets the document property paths for the partition key.
      *
      * @param paths the paths to document properties that form the partition key.
+     * @return this PartitionKeyDefinition.
      */
     public PartitionKeyDefinition paths(List<String> paths) {
         if (paths == null || paths.size() == 0) {
@@ -167,14 +167,14 @@ public final class PartitionKeyDefinition extends JsonSerializable {
     @Override
     void populatePropertyBag() {
         if (this.kind != null) {
-            super.set(Constants.Properties.PARTITION_KIND, kind.name());
+            super.set(Constants.Properties.PARTITION_KIND, kind.toString());
         }
         if (this.paths != null) {
             super.set(Constants.Properties.PARTITION_KEY_PATHS, paths);
         }
 
         if (this.version != null) {
-            super.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, version.name());
+            super.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, version.toString());
         }
         super.populatePropertyBag();
     }

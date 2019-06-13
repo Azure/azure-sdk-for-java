@@ -23,8 +23,8 @@
 
 package com.azure.data.cosmos.benchmark;
 
-import com.google.common.collect.ImmutableList;
 import com.azure.data.cosmos.SqlParameter;
+import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

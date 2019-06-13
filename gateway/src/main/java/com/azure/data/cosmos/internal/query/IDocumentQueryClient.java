@@ -22,13 +22,12 @@
  */
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.internal.IRetryPolicyFactory;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.internal.IRetryPolicyFactory;
-
 import rx.Single;
 
 /**

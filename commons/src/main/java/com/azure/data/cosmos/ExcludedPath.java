@@ -59,6 +59,7 @@ public class ExcludedPath extends JsonSerializable {
      * Sets path.
      *
      * @param path the path.
+     * @return the Exculded path.
      */
     public ExcludedPath path(String path) {
         super.set(Constants.Properties.PATH, path);

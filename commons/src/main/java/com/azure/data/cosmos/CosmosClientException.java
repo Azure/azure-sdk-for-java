@@ -23,14 +23,13 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.HttpConstants;
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.HttpConstants;
 
 /**
  * This class defines a custom exception type for all operations on
@@ -51,15 +50,23 @@ import com.azure.data.cosmos.internal.HttpConstants;
 public class CosmosClientException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    private Error error;
     private final int statusCode;
     private final Map<String, String> responseHeaders;
+
     private ClientSideRequestStatistics clientSideRequestStatistics;
-    String resourceAddress;
-    String partitionKeyRangeId;
-    URI requestUri;
+    private Error error;
+
     long lsn;
+    String partitionKeyRangeId;
     Map<String, String> requestHeaders;
+    URI requestUri;
+    String resourceAddress;
+
+    private CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
+        super(message, cause, /* enableSuppression */ true, /* writableStackTrace */ false);
+        this.statusCode = statusCode;
+        this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
+    }
 
     /**
      * Creates a new instance of the CosmosClientException class.
@@ -67,8 +74,7 @@ public class CosmosClientException extends Exception {
      * @param statusCode the http status code of the response.
      */
     public CosmosClientException(int statusCode) {
-        this.statusCode = statusCode;
-        this.responseHeaders = new HashMap<>();
+        this(statusCode, null, null, null);
     }
 
     /**
@@ -78,11 +84,9 @@ public class CosmosClientException extends Exception {
      * @param errorMessage the error message.
      */
     public CosmosClientException(int statusCode, String errorMessage) {
-        Error error = new Error();
+        this(statusCode, errorMessage, null, null);
+        this.error = new Error();
         error.set(Constants.Properties.MESSAGE, errorMessage);
-        this.statusCode = statusCode;
-        this.error = error;
-        this.responseHeaders = new HashMap<>();
     }
 
     /**
@@ -92,9 +96,7 @@ public class CosmosClientException extends Exception {
      * @param innerException the original exception.
      */
     public CosmosClientException(int statusCode, Exception innerException) {
-        super(innerException);
-        this.statusCode = statusCode;
-        this.responseHeaders = new HashMap<>();
+        this(statusCode, null, null, innerException);
     }
 
     /**
@@ -105,27 +107,21 @@ public class CosmosClientException extends Exception {
      * @param responseHeaders the response headers.
      */
     public CosmosClientException(int statusCode, Error errorResource, Map<String, String> responseHeaders) {
-        this(null, statusCode, errorResource, responseHeaders);
+        this(/* resourceAddress */ null, statusCode, errorResource, responseHeaders);
     }
 
     /**
      * Creates a new instance of the CosmosClientException class.
      *
-     * @param resourceAddress the address of the resource the request is associated
-     *                        with.
+     * @param resourceAddress the address of the resource the request is associated with.
      * @param statusCode      the http status code of the response.
      * @param errorResource   the error resource object.
      * @param responseHeaders the response headers.
      */
 
-    public CosmosClientException(String resourceAddress, int statusCode, Error errorResource,
-            Map<String, String> responseHeaders) {
-
-        super(errorResource == null ? null : errorResource.getMessage());
-
-        this.responseHeaders = safeResponseHeaders(responseHeaders);
+    public CosmosClientException(String resourceAddress, int statusCode, Error errorResource, Map<String, String> responseHeaders) {
+        this(statusCode, errorResource == null ? null : errorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
-        this.statusCode = statusCode;
         this.error = errorResource;
     }
 
@@ -136,17 +132,11 @@ public class CosmosClientException extends Exception {
      * @param statusCode      the http status code of the response.
      * @param exception       the exception object.
      * @param responseHeaders the response headers.
-     * @param resourceAddress the address of the resource the request is associated
-     *                        with.
+     * @param resourceAddress the address of the resource the request is associated with.
      */
-    public CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders,
-            int statusCode, String resourceAddress) {
-
-        super(message, exception);
-
-        this.responseHeaders = safeResponseHeaders(responseHeaders);
+    public CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
+        this(statusCode, message, responseHeaders, exception);
         this.resourceAddress = resourceAddress;
-        this.statusCode = statusCode;
     }
 
     @Override
@@ -294,13 +284,5 @@ public class CosmosClientException extends Exception {
             return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
         }
         return null;
-    }
-
-    private Map<String, String> safeResponseHeaders(Map<String, String> map) {
-        if (map != null) {
-            return new HashMap<>(map);
-        } else {
-            return new HashMap<>();
-        }
     }
 }

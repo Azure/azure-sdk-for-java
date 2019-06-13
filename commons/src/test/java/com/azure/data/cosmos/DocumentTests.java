@@ -23,14 +23,12 @@
 
 package com.azure.data.cosmos;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-
-import com.azure.data.cosmos.Document;
 import org.testng.annotations.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentTests {
 

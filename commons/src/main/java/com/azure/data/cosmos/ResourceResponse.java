@@ -23,15 +23,14 @@
 
 package com.azure.data.cosmos;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+import org.apache.commons.lang3.StringUtils;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents the service response to a request made from DocumentClient in the Azure Cosmos DB database service.

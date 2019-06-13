@@ -23,13 +23,14 @@
 
 package com.azure.data.cosmos.rx.examples;
 
-import com.google.common.collect.ImmutableMap;
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosResourceType;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
@@ -39,7 +40,7 @@ import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.TokenResolver;
 import com.azure.data.cosmos.User;
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -53,14 +54,15 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-public class TokenResolverTest {
+public class TokenResolverTest extends DocumentClientTest {
+
     private final static int TIMEOUT = 60000;
     private final static String USER_ID = "userId";
-    private AsyncDocumentClient asyncClient;
+    private AsyncDocumentClient client;
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private Map<String, String> userToReadOnlyResourceTokenMap = new HashMap<>();
@@ -76,15 +78,16 @@ public class TokenResolverTest {
      */
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
-        // Sets up the requirements for each test
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
-        asyncClient = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .build();
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+
+        this.clientBuilder()
+            .withServiceEndpoint(TestConfigurations.HOST)
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withConnectionPolicy(connectionPolicy)
+            .withConsistencyLevel(ConsistencyLevel.SESSION);
+
+        this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.id(UUID.randomUUID().toString());
@@ -95,10 +98,10 @@ public class TokenResolverTest {
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // CREATE database
-        createdDatabase = Utils.createDatabaseForTest(asyncClient);
+        createdDatabase = Utils.createDatabaseForTest(client);
 
         // CREATE collection
-        createdCollection = asyncClient
+        createdCollection = client
                 .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
                 .toBlocking().single().getResource();
 
@@ -106,12 +109,12 @@ public class TokenResolverTest {
             // CREATE a document
             Document documentDefinition = new Document();
             documentDefinition.id(UUID.randomUUID().toString());
-            Document createdDocument = asyncClient.createDocument(createdCollection.selfLink(), documentDefinition, null, true).toBlocking().first().getResource();
+            Document createdDocument = client.createDocument(createdCollection.selfLink(), documentDefinition, null, true).toBlocking().first().getResource();
 
             // CREATE a User who is meant to only read this document
             User readUserDefinition = new User();
             readUserDefinition.id(UUID.randomUUID().toString());
-            User createdReadUser = asyncClient.createUser(createdDatabase.selfLink(), readUserDefinition, null).toBlocking().first().getResource();
+            User createdReadUser = client.createUser(createdDatabase.selfLink(), readUserDefinition, null).toBlocking().first().getResource();
 
             // CREATE a read only permission for  the above document
             Permission readOnlyPermissionDefinition = new Permission();
@@ -120,7 +123,7 @@ public class TokenResolverTest {
             readOnlyPermissionDefinition.setPermissionMode(PermissionMode.READ);
 
             // Assign the permission to the above user
-            Permission readOnlyCreatedPermission = asyncClient.createPermission(createdReadUser.selfLink(), readOnlyPermissionDefinition, null).toBlocking().first().getResource();
+            Permission readOnlyCreatedPermission = client.createPermission(createdReadUser.selfLink(), readOnlyPermissionDefinition, null).toBlocking().first().getResource();
             userToReadOnlyResourceTokenMap.put(createdReadUser.id(), readOnlyCreatedPermission.getToken());
 
             documentToReadUserMap.put(createdDocument.selfLink(), createdReadUser.id());
@@ -128,7 +131,7 @@ public class TokenResolverTest {
             // CREATE a User who can both read and write this document
             User readWriteUserDefinition = new User();
             readWriteUserDefinition.id(UUID.randomUUID().toString());
-            User createdReadWriteUser = asyncClient.createUser(createdDatabase.selfLink(), readWriteUserDefinition, null).toBlocking().first().getResource();
+            User createdReadWriteUser = client.createUser(createdDatabase.selfLink(), readWriteUserDefinition, null).toBlocking().first().getResource();
 
             // CREATE a read/write permission for the above document
             Permission readWritePermissionDefinition = new Permission();
@@ -137,7 +140,7 @@ public class TokenResolverTest {
             readWritePermissionDefinition.setPermissionMode(PermissionMode.ALL);
 
             // Assign the permission to the above user
-            Permission readWriteCreatedPermission = asyncClient.createPermission(createdReadWriteUser.selfLink(), readWritePermissionDefinition, null).toBlocking().first().getResource();
+            Permission readWriteCreatedPermission = client.createPermission(createdReadWriteUser.selfLink(), readWritePermissionDefinition, null).toBlocking().first().getResource();
             userToReadWriteResourceTokenMap.put(createdReadWriteUser.id(), readWriteCreatedPermission.getToken());
 
             documentToReadWriteUserMap.put(createdDocument.selfLink(), createdReadWriteUser.id());
@@ -339,7 +342,7 @@ public class TokenResolverTest {
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
     public void shutdown() {
-        Utils.safeClean(asyncClient, createdDatabase);
-        Utils.safeClose(asyncClient);
+        Utils.safeClean(client, createdDatabase);
+        Utils.safeClose(client);
     }
 }

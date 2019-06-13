@@ -24,16 +24,16 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.azure.data.cosmos.CommonsBridgeInternal;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PartitionKind;
 import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalHelper;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalUtils;
-import com.azure.data.cosmos.internal.RMResources;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import rx.functions.Func2;

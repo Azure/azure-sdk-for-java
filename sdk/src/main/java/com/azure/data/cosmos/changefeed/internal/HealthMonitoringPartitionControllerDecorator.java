@@ -22,11 +22,11 @@
  */
 package com.azure.data.cosmos.changefeed.internal;
 
+import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.changefeed.HealthMonitor;
 import com.azure.data.cosmos.changefeed.HealthMonitoringRecord;
 import com.azure.data.cosmos.changefeed.Lease;
 import com.azure.data.cosmos.changefeed.PartitionController;
-import com.azure.data.cosmos.CosmosClientException;
 import reactor.core.publisher.Mono;
 
 /**

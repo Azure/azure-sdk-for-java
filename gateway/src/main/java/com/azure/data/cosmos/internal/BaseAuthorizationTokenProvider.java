@@ -23,6 +23,12 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,14 +36,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.azure.data.cosmos.directconnectivity.HttpUtils;
 
 /**
  * This class is used internally by both client (for generating the auth header with master/system key) and by the GATEWAY when

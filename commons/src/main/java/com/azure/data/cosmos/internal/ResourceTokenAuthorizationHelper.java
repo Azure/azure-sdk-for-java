@@ -22,15 +22,14 @@
  */
 package com.azure.data.cosmos.internal;
 
-import java.util.List;
-import java.util.Map;
-
+import com.azure.data.cosmos.internal.routing.PartitionKeyAndResourceTokenPair;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.data.cosmos.internal.routing.PartitionKeyAndResourceTokenPair;
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is used internally and act as a helper in authorization of

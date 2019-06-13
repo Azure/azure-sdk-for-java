@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import org.apache.commons.text.WordUtils;
+
 /**
  * Specifies the supported indexing modes in the Azure Cosmos DB database service.
  */
@@ -49,5 +51,10 @@ public enum IndexingMode {
      * collection, to save the storage cost or improve the write throughput. Your queries will degenerate to scans of
      * the entire collection.
      */
-    NONE
+    NONE;
+    
+    @Override
+    public String toString() {
+        return WordUtils.capitalizeFully(this.name());        
+    }
 }

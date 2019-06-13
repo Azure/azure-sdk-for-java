@@ -34,29 +34,36 @@ import java.util.List;
 
 class RntbdContextDecoder extends ByteToMessageDecoder {
 
-    final private static Logger logger = LoggerFactory.getLogger("RntbdContextDecoder");
+    private static final Logger logger = LoggerFactory.getLogger(RntbdContextDecoder.class);
 
     /**
      * Deserialize from an input {@link ByteBuf} to an {@link RntbdContext} instance
      * <p>
-     * This method fulfills the promise of an {@link RntbdContext} instance. It does not pass the instance down the
-     * pipeline.
+     * This method decodes an {@link RntbdContext} or {@link RntbdContextException} instance and fires a user event.
      *
-     * @param context the {@link ChannelHandlerContext} to which this {@link ByteToMessageDecoder} belongs
+     * @param context the {@link ChannelHandlerContext} to which this {@link RntbdContextDecoder} belongs
      * @param in      the {@link ByteBuf} from which to readTree data
      * @param out     the {@link List} to which decoded messages should be added
-     * @throws Exception thrown if an error occurs
      */
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
         if (RntbdFramer.canDecodeHead(in)) {
 
-            RntbdContext rntbdContext = RntbdContext.decode(in);
-            context.fireUserEventTriggered(rntbdContext);
-            in.discardReadBytes();
+            Object result;
 
-            logger.debug("{} DECODE COMPLETE: {}", context.channel(), rntbdContext);
+            try {
+                final RntbdContext rntbdContext = RntbdContext.decode(in);
+                context.fireUserEventTriggered(rntbdContext);
+                result = rntbdContext;
+            } catch (RntbdContextException error) {
+                context.fireUserEventTriggered(error);
+                result = error;
+            } finally {
+                in.discardReadBytes();
+            }
+
+            logger.debug("{} DECODE COMPLETE: {}", context.channel(), result);
         }
     }
 }

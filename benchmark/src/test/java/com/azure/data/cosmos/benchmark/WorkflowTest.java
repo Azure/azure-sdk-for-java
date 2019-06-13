@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.benchmark;
 
-import com.beust.jcommander.JCommander;
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.DataType;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
@@ -32,8 +32,8 @@ import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.rx.TestConfigurations;
+import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

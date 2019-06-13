@@ -24,7 +24,6 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Paths;
-
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
@@ -274,7 +273,7 @@ public class CosmosContainer extends CosmosResource {
         return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(this.getDatabase()
                                                                             .getDocClientWrapper()
                                                                             .upsertDocument(this.getLink(),
-                                                                                            item,
+                                                                                            CosmosItemProperties.fromObject(item),
                                                                                             options.toRequestOptions(),
                                                                                             true)
                                                                             .map(response -> new CosmosItemResponse(response,

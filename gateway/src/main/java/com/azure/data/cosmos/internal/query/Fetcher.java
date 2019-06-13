@@ -23,16 +23,14 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
-
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;

@@ -22,12 +22,12 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;

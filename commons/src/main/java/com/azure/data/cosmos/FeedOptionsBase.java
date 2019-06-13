@@ -59,6 +59,7 @@ public abstract class FeedOptionsBase {
      * operation.
      *
      * @param maxItemCount the max number of items.
+     * @return the FeedOptionsBase.
      */
     public FeedOptionsBase maxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
@@ -79,6 +80,7 @@ public abstract class FeedOptionsBase {
      *
      * @param requestContinuation
      *            the request continuation.
+     * @return the FeedOptionsBase.
      */
     public FeedOptionsBase requestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
@@ -101,6 +103,7 @@ public abstract class FeedOptionsBase {
      *
      * @param partitionkey
      *            the partition key value.
+     * @return the FeedOptionsBase.
      */
     public FeedOptionsBase partitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
@@ -118,6 +121,7 @@ public abstract class FeedOptionsBase {
     /**
      * Sets the option to enable/disable getting metrics relating to query execution on document query requests
      * @param populateQueryMetrics whether to enable or disable query metrics
+     * @return the FeedOptionsBase.
      */
     public FeedOptionsBase populateQueryMetrics(boolean populateQueryMetrics) {
         this.populateQueryMetrics = populateQueryMetrics;
@@ -137,6 +141,7 @@ public abstract class FeedOptionsBase {
      * Sets the properties used to identify the request token.
      *
      * @param properties the properties.
+     * @return the FeedOptionsBase.
      */
     public FeedOptionsBase properties(Map<String, Object> properties) {
         this.properties = properties;

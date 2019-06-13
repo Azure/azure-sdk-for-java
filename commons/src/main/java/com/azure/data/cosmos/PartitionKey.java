@@ -23,8 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 
 /**
  * Represents a partition key value in the Azure Cosmos DB database service. A

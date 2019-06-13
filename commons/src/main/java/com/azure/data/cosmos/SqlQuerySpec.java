@@ -79,6 +79,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * 
      * @param queryText
      *            the query text.
+     * @return the SqlQuerySpec.
      */
     public SqlQuerySpec queryText(String queryText) {
         super.set("query", queryText);
@@ -108,6 +109,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * 
      * @param parameters
      *            the query parameters.
+     * @return the SqlQuerySpec.
      */
     public SqlQuerySpec parameters(SqlParameterCollection parameters) {
         this.parameters = parameters;

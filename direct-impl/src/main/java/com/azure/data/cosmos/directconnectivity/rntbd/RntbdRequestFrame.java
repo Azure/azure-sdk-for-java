@@ -38,22 +38,22 @@ final class RntbdRequestFrame {
 
     // region Fields
 
-    final static int LENGTH = Integer.BYTES  // messageLength
+    static final int LENGTH = Integer.BYTES  // messageLength
         + Short.BYTES  // resourceType
         + Short.BYTES  // operationType
         + 2 * Long.BYTES;  // activityId
 
-    final private UUID activityId;
-    final private RntbdOperationType operationType;
-    final private RntbdResourceType resourceType;
+    private final UUID activityId;
+    private final RntbdOperationType operationType;
+    private final RntbdResourceType resourceType;
 
     // region Constructors
 
-    RntbdRequestFrame(String activityId, OperationType operationType, ResourceType resourceType) {
-        this(UUID.fromString(activityId), map(operationType), map(resourceType));
+    RntbdRequestFrame(final UUID activityId, final OperationType operationType, final ResourceType resourceType) {
+        this(activityId, map(operationType), map(resourceType));
     }
 
-    RntbdRequestFrame(UUID activityId, RntbdOperationType operationType, RntbdResourceType resourceType) {
+    RntbdRequestFrame(final UUID activityId, final RntbdOperationType operationType, final RntbdResourceType resourceType) {
         this.activityId = activityId;
         this.operationType = operationType;
         this.resourceType = resourceType;
@@ -63,16 +63,34 @@ final class RntbdRequestFrame {
 
     // region Methods
 
-    static RntbdRequestFrame decode(ByteBuf in) {
+    UUID getActivityId() {
+        return this.activityId;
+    }
 
-        RntbdResourceType resourceType = RntbdResourceType.fromId(in.readShortLE());
-        RntbdOperationType operationType = RntbdOperationType.fromId(in.readShortLE());
-        UUID activityId = RntbdUUID.decode(in);
+    RntbdOperationType getOperationType() {
+        return this.operationType;
+    }
+
+    RntbdResourceType getResourceType() {
+        return this.resourceType;
+    }
+
+    static RntbdRequestFrame decode(final ByteBuf in) {
+
+        final RntbdResourceType resourceType = RntbdResourceType.fromId(in.readShortLE());
+        final RntbdOperationType operationType = RntbdOperationType.fromId(in.readShortLE());
+        final UUID activityId = RntbdUUID.decode(in);
 
         return new RntbdRequestFrame(activityId, operationType, resourceType);
     }
 
-    private static RntbdResourceType map(ResourceType resourceType) {
+    void encode(final ByteBuf out) {
+        out.writeShortLE(this.resourceType.id());
+        out.writeShortLE(this.operationType.id());
+        RntbdUUID.encode(this.activityId, out);
+    }
+
+    private static RntbdResourceType map(final ResourceType resourceType) {
 
         switch (resourceType) {
             case Attachment:
@@ -132,12 +150,12 @@ final class RntbdRequestFrame {
             case RidRange:
                 return RntbdResourceType.RidRange;
             default:
-                String reason = String.format(Locale.ROOT, "Unrecognized resource type: %s", resourceType);
+                final String reason = String.format(Locale.ROOT, "Unrecognized resource type: %s", resourceType);
                 throw new UnsupportedOperationException(reason);
         }
     }
 
-    private static RntbdOperationType map(OperationType operationType) {
+    private static RntbdOperationType map(final OperationType operationType) {
 
         switch (operationType) {
             case Crash:
@@ -207,27 +225,9 @@ final class RntbdRequestFrame {
             case AddComputeGatewayRequestCharges:
                 return RntbdOperationType.AddComputeGatewayRequestCharges;
             default:
-                String reason = String.format(Locale.ROOT, "Unrecognized operation type: %s", operationType);
+                final String reason = String.format(Locale.ROOT, "Unrecognized operation type: %s", operationType);
                 throw new UnsupportedOperationException(reason);
         }
-    }
-
-    UUID getActivityId() {
-        return activityId;
-    }
-
-    RntbdOperationType getOperationType() {
-        return operationType;
-    }
-
-    RntbdResourceType getResourceType() {
-        return resourceType;
-    }
-
-    void encode(ByteBuf out) {
-        out.writeShortLE(this.resourceType.id());
-        out.writeShortLE(this.operationType.id());
-        RntbdUUID.encode(this.activityId, out);
     }
 
     // endregion

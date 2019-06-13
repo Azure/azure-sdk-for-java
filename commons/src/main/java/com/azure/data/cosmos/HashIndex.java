@@ -23,10 +23,8 @@
 
 package com.azure.data.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 import com.azure.data.cosmos.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a hash index in the Azure Cosmos DB database service.
@@ -105,9 +103,10 @@ public final class HashIndex extends Index {
      * Sets data type.
      *
      * @param dataType the data type.
+     * @return the Hash Index.
      */
     public HashIndex dataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.name());
+        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 
@@ -124,6 +123,7 @@ public final class HashIndex extends Index {
      * Sets precision.
      *
      * @param precision the precision.
+     * @return the Hash Index.
      */
     public HashIndex precision(int precision) {
         super.set(Constants.Properties.PRECISION, precision);

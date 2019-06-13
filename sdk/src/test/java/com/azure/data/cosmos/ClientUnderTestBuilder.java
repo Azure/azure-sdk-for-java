@@ -22,11 +22,11 @@
  */
 package com.azure.data.cosmos;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
 import com.azure.data.cosmos.internal.directconnectivity.ReflectionUtils;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ClientUnderTestBuilder extends CosmosClientBuilder {
 

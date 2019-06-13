@@ -27,37 +27,61 @@ package com.azure.data.cosmos.directconnectivity.rntbd;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
-import java.util.Objects;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 final class RntbdFramer {
 
     private RntbdFramer() {
     }
 
-    static boolean canDecodePayload(ByteBuf in) {
-        return canDecodePayload(in, in.readerIndex());
+    static boolean canDecodeHead(final ByteBuf in) throws CorruptedFrameException {
+
+        checkNotNull(in, "in");
+
+        if (in.readableBytes() < RntbdResponseStatus.LENGTH) {
+            return false;
+        }
+
+        final int start = in.readerIndex();
+        final long length = in.getUnsignedIntLE(start);
+
+        if (length > Integer.MAX_VALUE) {
+            final String reason = String.format("Head frame length exceeds Integer.MAX_VALUE, %d: %d",
+                Integer.MAX_VALUE, length
+            );
+            throw new CorruptedFrameException(reason);
+        }
+
+        if (length < Integer.BYTES) {
+            final String reason = String.format("Head frame length is less than size of length field, %d: %d",
+                Integer.BYTES, length
+            );
+            throw new CorruptedFrameException(reason);
+        }
+
+        return length <= in.readableBytes();
     }
 
-    static boolean canDecodePayload(ByteBuf in, int start) {
+    static boolean canDecodePayload(final ByteBuf in, final int start) {
 
-        Objects.requireNonNull(in);
+        checkNotNull(in, "in");
 
-        int readerIndex = in.readerIndex();
+        final int readerIndex = in.readerIndex();
 
         if (start < readerIndex) {
             throw new IllegalArgumentException("start < in.readerIndex()");
         }
 
-        int offset = start - readerIndex;
+        final int offset = start - readerIndex;
 
         if (in.readableBytes() - offset < Integer.BYTES) {
             return false;
         }
 
-        long length = in.getUnsignedIntLE(start);
+        final long length = in.getUnsignedIntLE(start);
 
         if (length > Integer.MAX_VALUE) {
-            String reason = String.format("Payload frame length exceeds Integer.MAX_VALUE, %d: %d",
+            final String reason = String.format("Payload frame length exceeds Integer.MAX_VALUE, %d: %d",
                 Integer.MAX_VALUE, length
             );
             throw new CorruptedFrameException(reason);
@@ -66,31 +90,7 @@ final class RntbdFramer {
         return offset + Integer.BYTES + length <= in.readableBytes();
     }
 
-    static boolean canDecodeHead(ByteBuf in) throws CorruptedFrameException {
-
-        Objects.requireNonNull(in);
-
-        if (in.readableBytes() < RntbdResponseStatus.LENGTH) {
-            return false;
-        }
-
-        int start = in.readerIndex();
-        long length = in.getUnsignedIntLE(start);
-
-        if (length > Integer.MAX_VALUE) {
-            String reason = String.format("Head frame length exceeds Integer.MAX_VALUE, %d: %d",
-                Integer.MAX_VALUE, length
-            );
-            throw new CorruptedFrameException(reason);
-        }
-
-        if (length < Integer.BYTES) {
-            String reason = String.format("Head frame length is less than size of length field, %d: %d",
-                Integer.BYTES, length
-            );
-            throw new CorruptedFrameException(reason);
-        }
-
-        return length <= in.readableBytes();
+    static boolean canDecodePayload(final ByteBuf in) {
+        return canDecodePayload(in, in.readerIndex());
     }
 }

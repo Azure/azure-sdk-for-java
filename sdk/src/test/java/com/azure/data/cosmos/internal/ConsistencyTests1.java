@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
@@ -34,7 +35,6 @@ import com.azure.data.cosmos.PartitionKind;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.User;
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.rx.ResourceResponseValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
