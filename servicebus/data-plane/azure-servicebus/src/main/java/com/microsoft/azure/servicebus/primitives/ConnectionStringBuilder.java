@@ -383,8 +383,7 @@ public class ConnectionStringBuilder {
                         KEY_VALUE_SEPARATOR, this.transportType.toString()));
             }
             
-            if (this.authentication != null)
-            {
+            if (this.authentication != null) {
                 connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER,
                         AUTHENTICATION_CONFIG_NAME, KEY_VALUE_SEPARATOR, this.authentication));
             }
