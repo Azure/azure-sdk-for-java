@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
- * A appendBlobClientBuilder for creating a new instance of the AzureBlobStorage type.
+ * A builder for creating a new instance of the AzureBlobStorage type.
  */
 public final class AzureBlobStorageBuilder {
     /*
@@ -25,10 +25,6 @@ public final class AzureBlobStorageBuilder {
     public AzureBlobStorageBuilder url(String url) {
         this.url = url;
         return this;
-    }
-
-    String getURL() {
-        return this.url;
     }
 
     /*

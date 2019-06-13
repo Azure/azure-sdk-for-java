@@ -6,10 +6,10 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -415,7 +415,7 @@ public final class BlobDownloadHeaders {
      * @return the contentMD5 value.
      */
     public byte[] contentMD5() {
-        return Arrays.copyOf(this.contentMD5, this.contentMD5.length);
+        return ImplUtils.clone(this.contentMD5);
     }
 
     /**
@@ -427,7 +427,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders contentMD5(byte[] contentMD5) {
-        this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
 
@@ -1003,7 +1003,7 @@ public final class BlobDownloadHeaders {
      * @return the blobContentMD5 value.
      */
     public byte[] blobContentMD5() {
-        return Arrays.copyOf(this.blobContentMD5, this.blobContentMD5.length);
+        return ImplUtils.clone(this.blobContentMD5);
     }
 
     /**
@@ -1017,7 +1017,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders blobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = Arrays.copyOf(blobContentMD5, blobContentMD5.length);
+        this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
         return this;
     }
 

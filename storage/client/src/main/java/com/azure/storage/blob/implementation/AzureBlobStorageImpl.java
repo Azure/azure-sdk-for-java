@@ -158,7 +158,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    AzureBlobStorageImpl(HttpPipeline httpPipeline) {
+    public AzureBlobStorageImpl(HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.services = new ServicesImpl(this);
         this.containers = new ContainersImpl(this);

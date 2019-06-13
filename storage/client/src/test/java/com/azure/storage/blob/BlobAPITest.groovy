@@ -126,7 +126,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download range"() {
         setup:
-        BlobRange range = new BlobRange().withOffset(offset).withCount(count)
+        BlobRange range = new BlobRange().offset(offset).count(count)
 
         when:
         def outStream = new ByteArrayOutputStream()

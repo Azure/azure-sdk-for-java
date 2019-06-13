@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Mono;
@@ -278,8 +277,8 @@ class BlobAsyncRawClient {
                 return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
-                        this.download(new BlobRange().withOffset(newInfo.offset())
-                                .withCount(newInfo.count()),
+                        this.download(new BlobRange().offset(newInfo.offset())
+                                .count(newInfo.count()),
                             new BlobAccessConditions().withModifiedAccessConditions(
                                 new ModifiedAccessConditions().ifMatch(info.eTag())), false,
                             context == null ? Context.NONE : context));
