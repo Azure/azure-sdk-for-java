@@ -816,7 +816,7 @@ public class TestSuiteBase extends CosmosClientTest {
         if (StringUtils.isEmpty(protocols)) {
             return null;
         }
-
+        protocols = protocols.toUpperCase();
         try {
             return objectMapper.readValue(protocols, new TypeReference<List<Protocol>>() {
             });
@@ -895,7 +895,7 @@ public class TestSuiteBase extends CosmosClientTest {
         if (StringUtils.isEmpty(consistencies)) {
             return null;
         }
-
+        consistencies = consistencies.toUpperCase();
         try {
             return objectMapper.readValue(consistencies, new TypeReference<List<ConsistencyLevel>>() {
             });
