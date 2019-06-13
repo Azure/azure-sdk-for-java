@@ -101,6 +101,9 @@ public abstract class QueueClientTestsBase extends TestBase {
     public abstract void setInvalidAccessPolicy();
 
     @Test
+    public abstract void setTooManyAccessPolicies();
+
+    @Test
     public abstract void enqueueMessage();
 
     @Test
@@ -146,6 +149,9 @@ public abstract class QueueClientTestsBase extends TestBase {
     public abstract void deleteMessage();
 
     @Test
+    public abstract void deleteMessageInvalidMessageId();
+
+    @Test
     public abstract void deleteMessageInvalidPopReceipt();
 
     @Test
@@ -153,6 +159,9 @@ public abstract class QueueClientTestsBase extends TestBase {
 
     @Test
     public abstract void updateMessage();
+
+    @Test
+    public abstract void updateMessageInvalidMessageId();
 
     @Test
     public abstract void updateMessageInvalidPopReceipt();

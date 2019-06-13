@@ -1,4 +1,42 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ ]
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue000198e6/messages/queue?popreceipt=doesn%27t%20exist",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:17 GMT",
+      "content-length" : "423",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "53b6ed6c-a003-0001-03a9-21ced6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:53b6ed6c-a003-0001-03a9-21ced6000000\nTime:2019-06-13T05:36:17.7526610Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>doesn't exist</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue000198e6/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:17 GMT",
+      "content-length" : "217",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "53b6ed6e-a003-0001-04a9-21ced6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:53b6ed6e-a003-0001-04a9-21ced6000000\nTime:2019-06-13T05:36:17.7906975Z</Message></Error>"
+    }
+  } ],
+  "variables" : [ "queue000198e6" ]
 }

@@ -1,4 +1,71 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ ]
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue98591912",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:24 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "53b6f0d2-a003-0001-5ba9-21ced6000000"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue98591912?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:24 GMT",
+      "content-length" : "285",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "53b6f0d6-a003-0001-5ea9-21ced6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:53b6f0d6-a003-0001-5ea9-21ced6000000\nTime:2019-06-13T05:36:25.0086168Z</Message><MetadataValue>bad metadata</MetadataValue></Error>"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue98591912/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:24 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "53b6f0dc-a003-0001-63a9-21ced6000000"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue98591912",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:24 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "53b6f0de-a003-0001-65a9-21ced6000000"
+    }
+  } ],
+  "variables" : [ "queue98591912" ]
 }

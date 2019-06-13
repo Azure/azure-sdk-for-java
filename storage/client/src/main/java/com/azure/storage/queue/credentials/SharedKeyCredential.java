@@ -83,6 +83,9 @@ public final class SharedKeyCredential {
         String contentLength = headers.get("Content-Length");
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
+        // If the x-ms-header exists ignore the Date header
+        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : headers.getOrDefault("Date", "");
+
         return String.join("\n",
             httpMethod,
             headers.getOrDefault("Content-Encoding", ""),
@@ -90,7 +93,7 @@ public final class SharedKeyCredential {
             contentLength,
             headers.getOrDefault("Content-MD5", ""),
             headers.getOrDefault("Content-Type", ""),
-            headers.getOrDefault("Date", ""),
+            dateHeader,
             headers.getOrDefault("If-Modified-Since", ""),
             headers.getOrDefault("If-Match", ""),
             headers.getOrDefault("If-None-Match", ""),

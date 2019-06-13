@@ -1,4 +1,71 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ ]
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue810035fd",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:16 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "53b6ec64-a003-0001-16a9-21ced6000000"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue810035fd/messages?numofmessages=64&peekonly=true",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:16 GMT",
+      "content-length" : "456",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "OutOfRangeQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "53b6ec7d-a003-0001-2ea9-21ced6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:53b6ec7d-a003-0001-2ea9-21ced6000000\nTime:2019-06-13T05:36:16.4944602Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>64</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue810035fd/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:16 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "53b6ec80-a003-0001-31a9-21ced6000000"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue810035fd",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Jun 2019 05:36:16 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-03-28",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "53b6ec85-a003-0001-35a9-21ced6000000"
+    }
+  } ],
+  "variables" : [ "queue810035fd" ]
 }

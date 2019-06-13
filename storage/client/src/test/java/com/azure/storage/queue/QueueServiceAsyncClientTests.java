@@ -18,9 +18,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
     private QueueServiceAsyncClient serviceClient;
@@ -65,13 +62,13 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
     @Override
     public void getQueueDoesNotCreateAQueue() {
         StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"))
-            .verifyErrorSatisfies(throwable -> assertTrue(throwable instanceof StorageErrorException));
+            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void createQueue() {
         StepVerifier.create(serviceClient.createQueue(queueName).enqueueMessage("Testing service client creating a queue"))
-            .assertNext(response -> assertNotNull(response.value()))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
@@ -84,7 +81,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                assertEquals(metadata.size(), response.value().metadata().size());
+                TestHelpers.assertResponseStatusCode(response, 200);
                 assertEquals(metadata, response.value().metadata());
             })
             .verifyComplete();
@@ -98,7 +95,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).enqueueMessage(messageText))
-            .assertNext(response -> assertNotNull(response.value()))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).peekMessages())
@@ -115,8 +112,8 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         try {
             serviceClient.createQueue(queueName);
             serviceClient.createQueue(queueName, metadata);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 409);
         }
     }
 
@@ -126,15 +123,15 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         serviceClient.deleteQueue(queueName);
 
         StepVerifier.create(client.enqueueMessage("Expecting an exception"))
-            .verifyErrorSatisfies(throwable -> assertTrue(throwable instanceof StorageErrorException));
+            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void deleteNonExistentQueue() {
         try {
             serviceClient.deleteQueue(queueName);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -148,9 +145,9 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions()))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -172,9 +169,9 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().includeMetadata(true)))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -194,8 +191,8 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().prefix(queueName + "prefix")))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -209,8 +206,8 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().maxResults(2)))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
+            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -237,34 +234,19 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
             .cors(new ArrayList<>());
 
         StepVerifier.create(serviceClient.setProperties(updatedProperties))
-            .assertNext(response -> assertNull(response.value()))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(response -> assertQueueServicePropertiesAreEqual(updatedProperties, response.value()))
+            .assertNext(response -> TestHelpers.assertQueueServicePropertiesAreEqual(updatedProperties, response.value()))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.setProperties(originalProperties))
-            .assertNext(response -> assertNull(response.value()))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(response -> assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
+            .assertNext(response -> TestHelpers.assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
             .verifyComplete();
-    }
-
-    //@Test
-    public void deleteAllQueues() {
-        serviceClient.listQueuesSegment()
-            .collectList()
-            .block()
-            .forEach(queue -> {
-                QueueAsyncClient client = serviceClient.getQueueAsyncClient(queue.name());
-                try {
-                    client.clearMessages().then(client.delete()).block();
-                } catch (StorageErrorException ex) {
-                    // Queue already delete, that's what we wanted anyways.
-                }
-            });
     }
 }

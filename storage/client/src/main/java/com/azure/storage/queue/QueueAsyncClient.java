@@ -113,7 +113,7 @@ public final class QueueAsyncClient {
      * @return an empty response
      */
     public Mono<VoidResponse> setMetadata(Map<String, String> metadata) {
-        return client.queues().setMetadataWithRestResponseAsync(queueName, Context.NONE)
+        return client.queues().setMetadataWithRestResponseAsync(queueName, null, metadata, null, Context.NONE)
             .map(VoidResponse::new);
     }
 
@@ -218,13 +218,13 @@ public final class QueueAsyncClient {
 
     /**
      * Updates the message in the queue
-     * @param messageId Id of the message
      * @param messageText Updated value for the message
+     * @param messageId Id of the message
      * @param popReceipt Unique identifier that must match the message for it to be updated
      * @param visibilityTimeout How long the message will be invisible in the queue in seconds
      * @return the updated message information
      */
-    public Mono<Response<UpdatedMessage>> updateMessage(String messageId, String messageText, String popReceipt, Duration visibilityTimeout) {
+    public Mono<Response<UpdatedMessage>> updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
         QueueMessage message = new QueueMessage().messageText(messageText);
         return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt, (int) visibilityTimeout.getSeconds(), Context.NONE)
             .map(this::getUpdatedMessageResponse);

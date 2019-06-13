@@ -24,8 +24,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class QueueServiceClientTests extends QueueServiceClientTestsBase {
     private QueueServiceClient serviceClient;
@@ -70,16 +69,17 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
     public void getQueueDoesNotCreateAQueue() {
         try {
             serviceClient.getQueueClient(queueName).enqueueMessage("Expecting an exception");
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+            fail("getQueueClient doesn't create a queue in Azure Storage.");
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 404);
         }
     }
 
     @Override
     public void createQueue() {
         QueueClient client = serviceClient.createQueue(queueName);
-        EnqueuedMessage message = client.enqueueMessage("Testing service client creating a queue").value();
-        assertNotNull(message);
+        Response<EnqueuedMessage> response = client.enqueueMessage("Testing service client creating a queue");
+        TestHelpers.assertResponseStatusCode(response, 201);
     }
 
     @Override
@@ -89,9 +89,9 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata2", "value2");
         QueueClient client = serviceClient.createQueue(queueName, metadata);
 
-        QueueProperties properties = client.getProperties().value();
-        assertEquals(metadata.size(), properties.metadata().size());
-        assertEquals(metadata, properties.metadata());
+        Response<QueueProperties> propertiesResponse = client.getProperties();
+        TestHelpers.assertResponseStatusCode(propertiesResponse, 200);
+        assertEquals(metadata, propertiesResponse.value().metadata());
     }
 
     @Override
@@ -117,8 +117,9 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         try {
             serviceClient.createQueue(queueName);
             serviceClient.createQueue(queueName, metadata);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+            fail("Creating a queue twice with different metadata should throw an exception.");
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 409);
         }
     }
 
@@ -129,8 +130,9 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
         try {
             client.enqueueMessage("Expecting an exception");
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+            fail("Attempting to enqueue a message on a client that has been delete should throw an exception.");
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -138,8 +140,9 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
     public void deleteNonExistentQueue() {
         try {
             serviceClient.deleteQueue(queueName);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof StorageErrorException);
+            fail("Attempting to delete a queue that doesn't exist should throw an exception.");
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -153,7 +156,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions())) {
-            assertQueuesAreEqual(testQueues.pop(), queue);
+            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -175,7 +178,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().includeMetadata(true))) {
-            assertQueuesAreEqual(testQueues.pop(), queue);
+            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -195,7 +198,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().prefix(queueName + "prefix"))) {
-            assertQueuesAreEqual(testQueues.pop(), queue);
+            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -209,7 +212,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().maxResults(2))) {
-            assertQueuesAreEqual(testQueues.pop(), queue);
+            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -236,15 +239,15 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             .cors(new ArrayList<>());
 
         VoidResponse setResponse = serviceClient.setProperties(updatedProperties);
-        assertNull(setResponse.value());
+        TestHelpers.assertResponseStatusCode(setResponse, 202);
 
         Response<StorageServiceProperties> getResponse = serviceClient.getProperties();
-        assertQueueServicePropertiesAreEqual(updatedProperties, getResponse.value());
+        TestHelpers.assertQueueServicePropertiesAreEqual(updatedProperties, getResponse.value());
 
         setResponse = serviceClient.setProperties(originalProperties);
-        assertNull(setResponse.value());
+        TestHelpers.assertResponseStatusCode(setResponse, 202);
 
         getResponse = serviceClient.getProperties();
-        assertQueueServicePropertiesAreEqual(originalProperties, getResponse.value());
+        TestHelpers.assertQueueServicePropertiesAreEqual(originalProperties, getResponse.value());
     }
 }

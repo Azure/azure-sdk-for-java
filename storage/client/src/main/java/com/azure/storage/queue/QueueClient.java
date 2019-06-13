@@ -165,19 +165,19 @@ public final class QueueClient {
      * @return peeked message information
      */
     public Iterable<PeekedMessage> peekMessages(Integer maxMessages) {
-        return client.peekMessages().collectList().block();
+        return client.peekMessages(maxMessages).collectList().block();
     }
 
     /**
      * Updates the message in the queue
-     * @param messageId Id of the message
      * @param messageText Updated value for the message
+     * @param messageId Id of the message
      * @param popReceipt Unique identifier that must match the message for it to be updated
      * @param visibilityTimeout How long the message will be invisible in the queue in seconds
      * @return the updated message information
      */
-    public Response<UpdatedMessage> updateMessage(String messageId, String messageText, String popReceipt, Duration visibilityTimeout) {
-        return client.updateMessage(messageId, messageText, popReceipt, visibilityTimeout).block();
+    public Response<UpdatedMessage> updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
+        return client.updateMessage(messageText, messageId, popReceipt, visibilityTimeout).block();
     }
 
     /**
