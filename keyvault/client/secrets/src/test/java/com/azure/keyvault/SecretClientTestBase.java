@@ -57,7 +57,7 @@ public abstract class SecretClientTestBase extends TestBase {
     <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
         final String endpoint = interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            : System.getenv("AZURE_EYVAULT_ENDPOINT");
 
         final String tenantId = System.getenv("MICROSOFT_AD_TENANT_ID");
         final String clientId = System.getenv("ARM_CLIENT_ID");
@@ -93,11 +93,9 @@ public abstract class SecretClientTestBase extends TestBase {
     private String getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
         String authority = "https://login.microsoftonline.com/{tenantId}";
         String auth = authority.replace("{tenantId}", tenantId);
-        KeyvaultCredentials creds =  new KeyvaultCredentials(auth, clientId,
-                clientKey, "https://vault.azure.net");
 
         ExecutorService service = Executors.newFixedThreadPool(1);
-        AuthenticationContext context = new AuthenticationContext(authority, true, service);
+        AuthenticationContext context = new AuthenticationContext(auth, true, service);
         // Acquire Token
         Future<AuthenticationResult> result = context.acquireToken(
                 "https://vault.azure.net",
