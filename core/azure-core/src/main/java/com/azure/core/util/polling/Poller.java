@@ -33,7 +33,7 @@ import java.util.function.Function;
  * The {@code Poller.status} represents the status returned by the successful long-running operation at the time the last auto-polling or last manual polling, whichever happened most recently.
  *
  *<p><strong>Disable Auto Polling</strong></p>
- * Those scenario which require manual control of poll cycle, you can disable auto-poling by calling {@code setAutoPollingEnabled#false}. You can perform manual poll
+ * Those scenario which requires manual control of poll cycle, you can disable auto-poling by calling {@code setAutoPollingEnabled#false}. You can perform manual poll
  * by invoking {@code poll} function. It will perform one call to poll operation and updated {@code poller} with latest status.
  * <p>Once auto-polling is disabled, the {@code poller} with not get status update unless manual polling is triggered by calling {@code poll} function.
  *
