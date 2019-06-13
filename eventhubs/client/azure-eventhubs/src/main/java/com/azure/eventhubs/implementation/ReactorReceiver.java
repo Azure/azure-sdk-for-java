@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -17,7 +16,9 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
@@ -30,18 +31,18 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
     private final ActiveClientTokenManager tokenManager;
-    private final Retry retry;
     private final Disposable.Composite subscriptions;
     private final DirectProcessor<Message> messagesProcessor = DirectProcessor.create();
     private FluxSink<Message> messageSink = messagesProcessor.sink();
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager, Retry retry) {
-        super(new ServiceLogger(ReactorSender.class));
+    private volatile Supplier<Integer> creditSupplier;
+
+    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
+        super(new ServiceLogger(ReactorReceiver.class));
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
-        this.retry = retry;
 
         this.subscriptions = Disposables.composite(
             handler.getDeliveredMessages().subscribe(this::decodeDelivery),
@@ -79,8 +80,14 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     }
 
     @Override
-    public int credits() {
+    public int getCredits() {
         return receiver.getRemoteCredit();
+    }
+
+    @Override
+    public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
+        Objects.requireNonNull(creditSupplier);
+        this.creditSupplier = creditSupplier;
     }
 
     @Override
@@ -105,6 +112,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];
         final int read = receiver.recv(buffer, 0, messageSize);
+        receiver.advance();
 
         final Message message = Proton.message();
         message.decode(buffer, 0, read);
@@ -112,5 +120,13 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         delivery.settle();
 
         messageSink.next(message);
+
+        if (receiver.getRemoteCredit() == 0 && creditSupplier != null) {
+            final Integer credits = creditSupplier.get();
+
+            if (credits != null && credits > 0) {
+                addCredits(credits);
+            }
+        }
     }
 }
