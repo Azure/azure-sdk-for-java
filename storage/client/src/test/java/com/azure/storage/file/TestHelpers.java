@@ -4,10 +4,16 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.file.models.CorsRule;
+import com.azure.storage.file.models.FileServiceProperties;
+import com.azure.storage.file.models.Metrics;
+import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageErrorException;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -46,6 +52,59 @@ class TestHelpers {
             if (expected.snapshot() != null) {
                 assertEquals(expected.snapshot(), actual.snapshot());
             }
+        }
+    }
+
+    static void assertFileServicePropertiesAreEqual(FileServiceProperties expected, FileServiceProperties actual) {
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics());
+            assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics());
+            assertCorsAreEqual(expected.cors(), actual.cors());
+        }
+    }
+
+    private static void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.enabled(), actual.enabled());
+            assertEquals(expected.includeAPIs(), actual.includeAPIs());
+            assertEquals(expected.version(), actual.version());
+            assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy());
+        }
+    }
+
+    private static void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.days(), actual.days());
+            assertEquals(expected.enabled(), actual.enabled());
+        }
+    }
+
+    private static void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+        if (expected == null) {
+            assertTrue(ImplUtils.isNullOrEmpty(actual));
+        } else {
+            assertEquals(expected.size(), actual.size());
+            for (int i = 0; i < expected.size(); i++) {
+                assertCorRulesAreEqual(expected.get(i), actual.get(i));
+            }
+        }
+    }
+
+    private static void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.allowedHeaders(), actual.allowedHeaders());
+            assertEquals(expected.allowedMethods(), actual.allowedMethods());
+            assertEquals(expected.allowedOrigins(), actual.allowedOrigins());
+            assertEquals(expected.exposedHeaders(), actual.exposedHeaders());
+            assertEquals(expected.maxAgeInSeconds(), actual.maxAgeInSeconds());
         }
     }
 }

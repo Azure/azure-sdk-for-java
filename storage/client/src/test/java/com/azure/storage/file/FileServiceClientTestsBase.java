@@ -87,6 +87,12 @@ abstract class FileServiceClientTestsBase extends TestBase {
     public abstract void listShares();
 
     @Test
+    public abstract void listSharesWithPrefix();
+
+    @Test
+    public abstract void listSharesWithLimit();
+
+    @Test
     public abstract void listSharesInvalidMaxResults();
 
     @Test
@@ -97,9 +103,6 @@ abstract class FileServiceClientTestsBase extends TestBase {
 
     @Test
     public abstract void listSharesIncludeMetadataAndSnapshots();
-
-    @Test
-    public abstract void getProperties();
 
     @Test
     public abstract void setProperties();
