@@ -13,6 +13,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -34,8 +35,8 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final ActiveClientTokenManager tokenManager;
     private final Retry retry;
     private final Disposable.Composite subscriptions;
-    private final Flux<Message> messagesProcessor;
-    private FluxSink<Message> messageSink;
+    private final DirectProcessor<Message> messagesProcessor = DirectProcessor.create();
+    private FluxSink<Message> messageSink = messagesProcessor.sink();
 
     ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager, Retry retry) {
         super(new ServiceLogger(ReactorSender.class));
@@ -44,7 +45,6 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.retry = retry;
-        this.messagesProcessor = Flux.create(sink -> this.messageSink = sink);
 
         this.subscriptions = Disposables.composite(
             handler.getDeliveredMessages().subscribe(this::decodeDelivery),
@@ -57,14 +57,13 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
                     notifyEndpointState(EndpointState.CLOSED);
                 }),
 
-            handler.getErrors().subscribe(errorContext -> notifyError(errorContext)),
+            handler.getErrors().subscribe(this::notifyError),
 
             tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.asVerbose().log("Token refreshed: {}", response);
                     hasAuthorized.set(true);
-                },
-                error -> {
+                }, error -> {
                     logger.asInfo().log("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
@@ -80,6 +79,11 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     @Override
     public void addCredits(int credits) {
         receiver.flow(credits);
+    }
+
+    @Override
+    public int credits() {
+        return receiver.getRemoteCredit();
     }
 
     @Override
