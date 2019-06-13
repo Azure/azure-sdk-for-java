@@ -96,7 +96,7 @@ public class ReadMyWritesConsistencyTest {
                                    TestConfigurations.MASTER_KEY,
                                    database.id(),
                                    collection.id(),
-                                   desiredConsistency,
+                                   desiredConsistency.toUpperCase(),
                                    concurrency,
                                    numberOfOperationsAsString,
                                    maxRunningTime)
