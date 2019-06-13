@@ -18,7 +18,7 @@ import java.time.Duration;
  * @see AmqpSession
  * @see ReactorSession
  */
-interface EventHubSession extends AmqpSession {
+public interface EventHubSession extends AmqpSession {
     /**
      * Creates a new AMQP receiver link.
      *
