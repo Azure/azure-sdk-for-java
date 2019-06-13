@@ -32,14 +32,26 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>7.1</version>
-    </dependency>
-    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
       <version>1.6.7</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>msal4j</artifactId>
+    	<version>0.4.0-preview</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>adal4j</artifactId>
+    	<version>1.6.4</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.nimbusds</groupId>
+    	<artifactId>nimbus-jose-jwt</artifactId>
+    	<version>6.0.1</version>
     </dependency>
   </dependencies>
 
