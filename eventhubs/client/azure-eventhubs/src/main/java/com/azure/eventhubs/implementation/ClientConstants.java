@@ -30,7 +30,6 @@ public final class ClientConstants {
     public static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
     public static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
     public static final String MANAGEMENT_RESPONSE_ERROR_CONDITION = "error-condition";
-    public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 

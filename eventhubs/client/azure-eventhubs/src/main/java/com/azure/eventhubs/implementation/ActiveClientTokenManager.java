@@ -24,17 +24,15 @@ class ActiveClientTokenManager implements Closeable {
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final Mono<CBSNode> cbsNode;
     private final String tokenAudience;
-    private final Duration tokenValidity;
     private final Duration refreshInterval;
     private final Timer timer;
     private final Flux<AmqpResponseCode> authorizationResults;
     private FluxSink<AmqpResponseCode> sink;
 
-    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience, Duration tokenValidity, Duration refreshInterval) {
+    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience, Duration refreshInterval) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
-        this.tokenValidity = tokenValidity;
         this.refreshInterval = refreshInterval;
         this.authorizationResults = Flux.create(sink -> this.sink = sink);
     }
@@ -53,7 +51,7 @@ class ActiveClientTokenManager implements Closeable {
      * Invokes an authorization call on the CBS node.
      */
     Mono<Void> authorize() {
-        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, tokenValidity))
+        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))
             .then()
             .doOnSuccess(x -> {
                 if (!hasScheduled.getAndSet(true)) {

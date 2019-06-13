@@ -7,14 +7,14 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ConnectionParameters;
+import com.azure.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
-import com.azure.eventhubs.implementation.SharedAccessSignatureTokenProvider;
-import com.azure.eventhubs.implementation.TokenProvider;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionParameters(), getReactorProvider(), handlerProvider);
-        data = new ExpectedData(getTestMode(), getCredentialInfo());
+        data = new ExpectedData(getTestMode(), getConnectionStringProperties());
     }
 
     @Override
@@ -169,11 +169,13 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final CredentialInfo original = getCredentialInfo();
-        final CredentialInfo invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
+        final ConnectionStringProperties original = getConnectionStringProperties();
+        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
             original.sharedAccessKeyName(), "invalid-sas-key-value");
-        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
-        final ConnectionParameters connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+        final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
+            invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey(), Duration.ofSeconds(40));
+        final ConnectionParameters connectionParameters = new ConnectionParameters(original.endpoint().getHost(),
+            original.eventHubPath(), badTokenProvider, getAuthorizationType(), Duration.ofSeconds(45),
             TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionParameters().scheduler());
         final EventHubClient client = new EventHubClient(connectionParameters, getReactorProvider(), handlerProvider);
 
@@ -194,16 +196,14 @@ public class EventHubClientTest extends ApiTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
-    public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
+    public void getPartitionPropertiesNonExistentHub() {
         skipIfNotRecordMode();
 
         // Arrange
-        final CredentialInfo credentials = getConnectionParameters().credentials();
-        final CredentialInfo invalidCredentials = getCredentials(credentials.endpoint(), "nonExistentEventhub",
-            credentials.sharedAccessKeyName(), credentials.sharedAccessKey());
-
-        final TokenProvider badTokenProvider = new SharedAccessSignatureTokenProvider(invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey());
-        final ConnectionParameters connectionParameters = new ConnectionParameters(invalidCredentials, Duration.ofSeconds(45), badTokenProvider,
+        // Arrange
+        final ConnectionStringProperties original = getConnectionStringProperties();
+        final ConnectionParameters connectionParameters = new ConnectionParameters(original.endpoint().getHost(),
+            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), Duration.ofSeconds(45),
             TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionParameters().scheduler());
         final EventHubClient client = new EventHubClient(connectionParameters, getReactorProvider(), handlerProvider);
 
@@ -287,12 +287,12 @@ public class EventHubClientTest extends ApiTestBase {
         return testName.getMethodName();
     }
 
-    private static CredentialInfo getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
+    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
         final String connectionString = String.format(Locale.ROOT,
             "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s;", endpoint.toString(),
             sasKeyName, sasKeyValue, eventHubPath);
 
-        return CredentialInfo.from(connectionString);
+        return new ConnectionStringProperties(connectionString);
     }
 
     /**
@@ -302,7 +302,7 @@ public class EventHubClientTest extends ApiTestBase {
         private final EventHubProperties properties;
         private final Map<String, PartitionProperties> partitionPropertiesMap;
 
-        ExpectedData(TestMode testMode, CredentialInfo credentialInfo) {
+        ExpectedData(TestMode testMode, ConnectionStringProperties connectionStringProperties) {
             final String eventHubPath;
             final String[] partitionIds;
             switch (testMode) {
@@ -311,7 +311,7 @@ public class EventHubClientTest extends ApiTestBase {
                     partitionIds = new String[]{"test-1", "test-2"};
                     break;
                 case RECORD:
-                    eventHubPath = credentialInfo.eventHubPath();
+                    eventHubPath = connectionStringProperties.eventHubPath();
                     partitionIds = new String[]{"0", "1"};
                     break;
                 default:

@@ -47,6 +47,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
     private final Mono<EventHubManagementNode> managementChannelMono;
+    private final TokenResourceProvider tokenResourceProvider;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -88,11 +89,12 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 error -> notifyError(new ErrorContext(error, getHost())),
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
+        tokenResourceProvider = new TokenResourceProvider(connectionParameters.authorizationType(), connectionParameters.host());
+
         this.managementChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> {
-                return (EventHubManagementNode) new ManagementChannel(this, connectionParameters.credentials().eventHubPath(), connectionParameters.tokenProvider(),
-                    reactorProvider, handlerProvider, mapper);
-            })).cache();
+            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
+                connectionParameters.eventHubPath(), connectionParameters.tokenCredential(), tokenResourceProvider,
+                reactorProvider, handlerProvider, mapper))).cache();
     }
 
     /**
@@ -104,7 +106,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             .timeout(connectionParameters.timeout())
             .then(Mono.fromCallable(() -> {
                 if (CBS_CHANNEL_FIELD_UPDATER.compareAndSet(this, null,
-                    new CBSChannel(this, connectionParameters.tokenProvider(), reactorProvider, handlerProvider))) {
+                    new CBSChannel(this, connectionParameters.tokenCredential(),
+                        connectionParameters.authorizationType(), reactorProvider, handlerProvider,
+                        connectionParameters.timeout()))) {
                     logger.asInfo().log("Setting CBS channel.");
                 }
 
@@ -166,7 +170,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, this.getCBSNode(), connectionParameters.timeout());
+            return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+                this.getCBSNode(), tokenResourceProvider, connectionParameters.timeout());
         }));
     }
 

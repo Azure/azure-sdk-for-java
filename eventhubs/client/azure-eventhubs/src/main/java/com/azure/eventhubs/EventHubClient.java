@@ -52,8 +52,8 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(handlerProvider);
 
         this.connectionParameters = connectionParameters;
-        this.eventHubPath = connectionParameters.credentials().eventHubPath();
-        this.host = connectionParameters.credentials().endpoint().getHost();
+        this.eventHubPath = connectionParameters.eventHubPath();
+        this.host = connectionParameters.host();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());

@@ -37,7 +37,7 @@ public abstract class AmqpExceptionHandler {
      * @param context The error context that caused the error.
      */
     public void onConnectionError(ErrorContext context) {
-        logger.asWarning().log("Connection error: {}", context);
+        logger.asWarning().log("Connection error:" + context.toString(), context);
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class AmqpExceptionHandler {
      * @param exception The exception that caused the connection error.
      */
     public void onConnectionError(Throwable exception) {
-        logger.asWarning().log("Connection exception encountered: {}", exception);
+        logger.asWarning().log("Connection exception encountered: " + exception.toString(), exception);
     }
 
     /**

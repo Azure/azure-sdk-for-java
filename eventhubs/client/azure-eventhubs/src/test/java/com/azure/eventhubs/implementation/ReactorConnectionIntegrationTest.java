@@ -11,9 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-import java.util.Locale;
-
 public class ReactorConnectionIntegrationTest extends ApiTestBase {
     private ReactorHandlerProvider handlerProvider;
 
@@ -31,10 +28,13 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        skipIfNotRecordMode();
+
         MockitoAnnotations.initMocks(this);
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        connection = new ReactorConnection("test-connection-id", getConnectionParameters(), getReactorProvider(), handlerProvider, responseMapper);
+        connection = new ReactorConnection("test-connection-id", getConnectionParameters(),
+            getReactorProvider(), handlerProvider, responseMapper);
     }
 
     @Override
@@ -46,8 +46,6 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
     @Test
     public void getCbsNode() {
-        skipIfNotRecordMode();
-
         // Act & Assert
         StepVerifier.create(connection.getCBSNode())
             .assertNext(node -> Assert.assertTrue(node instanceof CBSChannel))
@@ -56,15 +54,14 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
     @Test
     public void getCbsNodeAuthorize() {
-        skipIfNotRecordMode();
-
         // Arrange
-        final String tokenAudience = String.format(Locale.US, ClientConstants.TOKEN_AUDIENCE_FORMAT,
-            getCredentialInfo().endpoint().getHost(), getCredentialInfo().eventHubPath());
-        final Duration tokenDuration = Duration.ofMinutes(5);
+        final TokenResourceProvider provider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            getConnectionStringProperties().endpoint().getHost());
+
+        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().eventHubPath());
 
         // Act & Assert
-        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience, tokenDuration)))
+        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))
             .verifyComplete();
     }
 }

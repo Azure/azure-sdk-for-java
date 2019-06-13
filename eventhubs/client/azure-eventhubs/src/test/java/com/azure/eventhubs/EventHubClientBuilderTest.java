@@ -4,6 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.eventhubs.implementation.ClientConstants;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -28,8 +29,6 @@ public class EventHubClientBuilderTest {
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, ENTITY_PATH);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
-    private static final CredentialInfo VALID_CREDENTIAL_INFO = CredentialInfo.from(CORRECT_CONNECTION_STRING);
-
     @Test(expected = IllegalArgumentException.class)
     public void missingConnStrBuilder() {
         EventHubClientBuilder builder = EventHubClient.builder();
@@ -38,16 +37,18 @@ public class EventHubClientBuilderTest {
 
     @Test
     public void defaultProxyConfigurationBuilder() {
-        EventHubClientBuilder builder = new EventHubClientBuilder();
-        builder.credentials(VALID_CREDENTIAL_INFO).build();
+        final EventHubClientBuilder builder = new EventHubClientBuilder();
+        final EventHubClient client = builder.credentials(CORRECT_CONNECTION_STRING).build();
+
+        Assert.assertNotNull(client);
     }
 
     @Test
     public void customNoneProxyConfigurationBuilder() {
-        EventHubClientBuilder builder = new EventHubClientBuilder();
-        ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE,
-            PROXY_ADDRESS, null, null);
-        builder.credentials(VALID_CREDENTIAL_INFO)
+        final EventHubClientBuilder builder = EventHubClient.builder();
+        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
+
+        builder.credentials(CORRECT_CONNECTION_STRING)
             .proxyConfiguration(proxyConfig)
             .build();
     }
@@ -60,5 +61,6 @@ public class EventHubClientBuilderTest {
                 "Invalid namespace name: %s", namespaceName), exception);
         }
     }
+
     // TODO: add test for retry(), scheduler(), timeout(), transportType()
 }

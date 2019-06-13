@@ -7,8 +7,9 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.eventhubs.CredentialInfo;
+import com.azure.eventhubs.EventHubSharedAccessKeyCredential;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,8 +32,9 @@ public class CBSChannelTest extends ApiTestBase {
 
     private AmqpConnection connection;
     private CBSChannel cbsChannel;
-    private CredentialInfo credentials;
+    private ConnectionStringProperties credentials;
     private ReactorHandlerProvider handlerProvider;
+    private TokenResourceProvider tokenResourceProvider;
 
     @Override
     protected String testName() {
@@ -43,14 +45,15 @@ public class CBSChannelTest extends ApiTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        skipIfNotRecordMode();
-
-        credentials = getCredentialInfo();
+        credentials = getConnectionStringProperties();
+        tokenResourceProvider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, credentials.endpoint().getHost());
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        connection = new ReactorConnection(CONNECTION_ID, getConnectionParameters(), getReactorProvider(), handlerProvider, mapper);
+        connection = new ReactorConnection(CONNECTION_ID, getConnectionParameters(), getReactorProvider(),
+            handlerProvider, mapper);
 
-        cbsChannel = new CBSChannel(connection, getTokenProvider(), getReactorProvider(), handlerProvider);
+        cbsChannel = new CBSChannel(connection, getTokenCredential(), getAuthorizationType(), getReactorProvider(),
+            handlerProvider, Duration.ofMinutes(5));
     }
 
     @Override
@@ -73,31 +76,33 @@ public class CBSChannelTest extends ApiTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
-        final Duration duration = Duration.ofMinutes(10);
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubPath());
 
         // Act & Assert
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, duration))
+        StepVerifier.create(cbsChannel.authorize(tokenAudience))
             .verifyComplete();
     }
 
     @Test
     public void unsuccessfulAuthorize() {
+        skipIfNotRecordMode();
+
         // Arrange
-        final String tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, credentials.endpoint().getHost(), credentials.eventHubPath());
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubPath());
         final Duration duration = Duration.ofMinutes(10);
 
-        TokenProvider tokenProvider = null;
+        TokenCredential tokenProvider = null;
         try {
-            tokenProvider = new SharedAccessSignatureTokenProvider(credentials.sharedAccessKeyName(), "Invalid shared access key.");
+            tokenProvider = new EventHubSharedAccessKeyCredential(credentials.sharedAccessKeyName(), "Invalid shared access key.", duration);
         } catch (Exception e) {
             Assert.fail("Could not create token provider: " + e.toString());
         }
 
-        final CBSNode node = new CBSChannel(connection, tokenProvider, getReactorProvider(), handlerProvider);
+        final CBSNode node = new CBSChannel(connection, tokenProvider, getAuthorizationType(), getReactorProvider(),
+            handlerProvider, Duration.ofMinutes(5));
 
         // Act & Assert
-        StepVerifier.create(node.authorize(tokenAudience, duration))
+        StepVerifier.create(node.authorize(tokenAudience))
             .expectErrorSatisfies(error -> {
                 Assert.assertTrue(error instanceof AmqpException);
 
