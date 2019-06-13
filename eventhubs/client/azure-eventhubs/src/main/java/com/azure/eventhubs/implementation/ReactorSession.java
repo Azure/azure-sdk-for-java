@@ -174,17 +174,20 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 }
 
                 final Receiver receiver = session.receiver(linkName);
-                final Target target = new Target();
-                receiver.setTarget(target);
 
                 final Source source = new Source();
+                source.setAddress(entityPath);
+
                 //TODO (conniey): support this.
                 // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
                 // if (filterMap != null) {
                 //    source.setFilter(filterMap);
                 // }
+
                 receiver.setSource(source);
-                receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+                final Target target = new Target();
+                receiver.setTarget(target);
 
                 // Use explicit settlement via dispositions (not pre-settled)
                 receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
