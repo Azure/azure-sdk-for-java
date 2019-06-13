@@ -108,8 +108,8 @@ A secret is the fundamental resource within an Azure Key Vault. In its simplest 
 
 The client performs the interactions with the Azure Key Vault service, getting, setting, updating, deleting, and listing secrets. An asynchronous, `SecretAsyncClient`, and synchronous, `SecretClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
-## Sync API Examples
-
+## Examples
+### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Secret Service tasks, including:
 - [Create a Secret](#create-a-secret)
 - [Retrieve a Secret](#retrieve-a-secret)
@@ -173,15 +173,15 @@ DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
 System.out.printf("Deleted Secret's deletion time %s", deletedSecret.deletedDate().toString());
 ```
 
-## Async API Examples
+### Async API
 
-The following sections provide several code snippets covering some of the most common Azure Key Vault Secret Service tasks, including:
-- [Create a Secret](#create-a-secret-asynchronously)
-- [Retrieve a Secret](#retrieve-a-secret-asynchronously)
-- [Update an existing Secret](#update-an-existing-secret-asynchronously)
-- [Delete a Secret](#delete-a-secret-asynchronously)
+The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Secret Service tasks, including:
+- [Create a Secret Asynchronously](#create-a-secret-asynchronously)
+- [Retrieve a Secret Asynchronously](#retrieve-a-secret-asynchronously)
+- [Update an existing Secret Asynchronously](#update-an-existing-secret-asynchronously)
+- [Delete a Secret Asynchronously](#delete-a-secret-asynchronously)
 
-### Create a Secret asynchronously
+### Create a Secret Asynchronously
 
 Create a Secret to be stored in the Azure Key Vault.
 - setSecret creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
@@ -195,7 +195,7 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretRespo
   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
 ```
 
-### Retrieve a Secret asynchronously
+### Retrieve a Secret Asynchronously
 
 Retrieve a previously stored Secret by calling getSecret.
 ```Java
@@ -209,7 +209,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
   secretResponse.value().value()));
 ```
 
-### Update an existing Secret asynchronously
+### Update an existing Secret Asynchronously
 
 Update an existing Secret by calling updateSecret.
 ```Java
@@ -227,7 +227,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
    });
 ```
 
-### Delete a Secret asynchronously
+### Delete a Secret Asynchronously
 
 Delete an existing Secret by calling deleteSecret.
 ```Java
