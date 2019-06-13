@@ -34,6 +34,7 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import com.beust.jcommander.JCommander;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class ReadMyWritesConsistencyTest {
     private final String desiredConsistency =
             System.getProperty("DESIRED_CONSISTENCY",
                                StringUtils.defaultString(Strings.emptyToNull(
-                                       System.getenv().get("DESIRED_CONSISTENCY")), "SESSION"));
+                                       System.getenv().get("DESIRED_CONSISTENCY")), "Session"));
 
     private final String numberOfOperationsAsString =
             System.getProperty("NUMBER_OF_OPERATIONS",
@@ -96,7 +97,7 @@ public class ReadMyWritesConsistencyTest {
                                    TestConfigurations.MASTER_KEY,
                                    database.id(),
                                    collection.id(),
-                                   desiredConsistency.toUpperCase(),
+                                    CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, desiredConsistency),
                                    concurrency,
                                    numberOfOperationsAsString,
                                    maxRunningTime)

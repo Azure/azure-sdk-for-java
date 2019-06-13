@@ -102,6 +102,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
+            .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
             .withConsistencyLevel(ConsistencyLevel.SESSION);

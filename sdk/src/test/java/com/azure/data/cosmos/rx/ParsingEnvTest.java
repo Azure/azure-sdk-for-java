@@ -33,7 +33,7 @@ public class ParsingEnvTest {
 
     @Test(groups = "unit")
     public void parseDesiredConsistencies() {
-        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"SESSION\" , \"STRONG\" ]")).containsExactly(
+        assertThat(TestSuiteBase.parseDesiredConsistencies("[ \"Session\" , \"Strong\" ]")).containsExactly(
                 ConsistencyLevel.SESSION, ConsistencyLevel.STRONG);
     }
 
@@ -61,6 +61,6 @@ public class ParsingEnvTest {
 
     @Test(groups = "unit")
     public void protocols() {
-        assertThat(TestSuiteBase.parseProtocols("[ \"TCP\" , \"HTTPS\" ]")).containsExactly(Protocol.TCP, Protocol.HTTPS);
+        assertThat(TestSuiteBase.parseProtocols("[ \"Tcp\" , \"Https\" ]")).containsExactly(Protocol.TCP, Protocol.HTTPS);
     }
 }
