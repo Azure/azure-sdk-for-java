@@ -104,7 +104,7 @@ public final class PollResponse<T> {
     }
 
     /**
-     * Represents the status of the long-running operation at the time the last polling operation completed successfully.
+     * Represents the status of the long-running operation at the time the last polling operation finished successfully.
      * @return A {@link OperationStatus} representing the result of the poll operation.
      */
     public OperationStatus getStatus() {
