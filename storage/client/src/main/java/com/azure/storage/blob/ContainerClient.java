@@ -390,15 +390,19 @@ public final class ContainerClient {
     }
 
     /**
-     * Returns a lazy loaded list of blobs in this container. The returned {@link Iterable} can be iterated
-     * through while new items are automatically retrieved as needed.
+     * Returns a lazy loaded list of blobs in this container, with folder structures flattened.
+     * The returned {@link Iterable} can be iterated through while new items are automatically
+     * retrieved as needed.
      *
      * <p>
-     * Blob names are returned in lexicographic order. For more information, see the
+     * Blob names are returned in lexicographic order.
+     *
+     * <p>
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param options
-     *         {@link ListBlobsOptions}
+     *         {@link ListBlobsOptions} Optional. Configures which blobs
      *
      * @return
      *      The listed blobs, flattened.
@@ -408,11 +412,15 @@ public final class ContainerClient {
     }
 
     /**
-     * Returns a lazy loaded list of blobs in this container. The returned {@link Iterable} can be iterated
-     * through while new items are automatically retrieved as needed.
+     * Returns a lazy loaded list of blobs in this container, with folder structures flattened.
+     * The returned {@link Iterable} can be iterated through while new items are automatically
+     * retrieved as needed.
      *
      * <p>
-     * Blob names are returned in lexicographic order. For more information, see the
+     * Blob names are returned in lexicographic order.
+     *
+     * <p>
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param options
