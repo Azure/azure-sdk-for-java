@@ -182,6 +182,13 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(options);
 
         final EventReceiverOptions clonedOptions = options.clone();
+        if (clonedOptions.scheduler() == null) {
+            clonedOptions.scheduler(connectionParameters.scheduler());
+        }
+        if (clonedOptions.retry() == null) {
+            clonedOptions.retry(connectionParameters.retryPolicy());
+        }
+
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, options.consumerGroup(), partitionId);
 

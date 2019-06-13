@@ -175,7 +175,6 @@ public class EventReceiverOptions implements Cloneable {
      * @return The updated EventHubClientBuilder object.
      */
     public EventReceiverOptions scheduler(Scheduler scheduler) {
-        Objects.requireNonNull(scheduler);
         this.scheduler = scheduler;
         return this;
     }
@@ -263,7 +262,7 @@ public class EventReceiverOptions implements Cloneable {
     }
 
     private void validateIdentifier(String identifier) {
-        if (ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
+        if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
         }
