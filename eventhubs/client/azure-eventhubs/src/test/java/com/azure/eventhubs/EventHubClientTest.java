@@ -265,7 +265,9 @@ public class EventHubClientTest extends ApiTestBase {
     }
 
     @Test
-    public void receiveMessage() throws InterruptedException, IOException {
+    public void receiveMessage() {
+        skipIfNotRecordMode();
+
         // Arrange
         final int numberOfEvents = 10;
         final EventReceiverOptions options = new EventReceiverOptions()
@@ -278,18 +280,6 @@ public class EventHubClientTest extends ApiTestBase {
             .expectNextCount(numberOfEvents)
             .expectComplete()
             .verify();
-
-
-//        final Flux<EventData> take = receiver.receive().take(10);
-//        take.subscribe(e -> {
-//            logger.asInfo().log("Date: {}. Event Received: {}.", e.enqueuedTime(), e.sequenceNumber());
-//        }, error -> {
-//            Assert.fail("Receiving threw an exception" + error.toString());
-//        }, () -> {
-//            logger.asInfo().log("Completed receive.");
-//        });
-//
-//        Thread.sleep(Duration.ofSeconds(20).toMillis());
     }
 
     @Override
