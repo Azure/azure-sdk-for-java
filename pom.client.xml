@@ -303,7 +303,8 @@
               com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
-              com.azure.tracing.opencensus*
+              com.azure.tracing*:
+              com.azure.core.test*
             </excludePackageNames>
             <groups>
               <group>
@@ -321,6 +322,10 @@
               <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.applicationconfig*</packages>
+              </group>
+              <group>
+                <title>Azure Key Vault</title>
+                <packages>com.azure.keyvault*</packages>
               </group>
             </groups>
             <links>
