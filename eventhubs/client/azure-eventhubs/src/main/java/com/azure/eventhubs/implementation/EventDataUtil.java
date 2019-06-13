@@ -18,6 +18,7 @@ import org.apache.qpid.proton.message.Message;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -50,22 +51,20 @@ public class EventDataUtil {
         int applicationPropertiesSize = 0;
 
         if (messageAnnotations != null) {
-            for (Symbol value : messageAnnotations.getValue().keySet()) {
-                annotationsSize += sizeof(value);
-            }
+            final Map<Symbol, Object> map = messageAnnotations.getValue();
 
-            for (Object value : messageAnnotations.getValue().values()) {
-                annotationsSize += sizeof(value);
+            for (Symbol key : map.keySet()) {
+                final int size = sizeof(key) + sizeof(map.get(key));
+                annotationsSize += size;
             }
         }
 
         if (applicationProperties != null) {
-            for (Object value : applicationProperties.getValue().keySet()) {
-                applicationPropertiesSize += sizeof(value);
-            }
+            final Map<String, Object> map = applicationProperties.getValue();
 
-            for (Object value : applicationProperties.getValue().values()) {
-                applicationPropertiesSize += sizeof(value);
+            for (String key : map.keySet()) {
+                final int size = sizeof(key) + sizeof(map.get(key));
+                applicationPropertiesSize += size;
             }
         }
 
