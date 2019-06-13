@@ -12,7 +12,9 @@ import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
@@ -28,9 +30,10 @@ import com.azure.storage.file.models.SharesSetMetadataResponse;
 import com.azure.storage.file.models.SharesSetQuotaResponse;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -62,11 +65,12 @@ public final class SharesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage File Shares")
     private interface SharesService {
         @PUT("{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
+        Mono<SharesCreateResponse> create(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @GET("{shareName}")
         @ExpectedResponses({200})
@@ -76,7 +80,7 @@ public final class SharesImpl {
         @DELETE("{shareName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesDeleteResponse> delete(@HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @QueryParam("restype") String restype, Context context);
+        Mono<SharesDeleteResponse> delete(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @QueryParam("restype") String restype, Context context);
 
         @PUT("{shareName}")
         @ExpectedResponses({201})
@@ -112,21 +116,23 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation fails.
      *
+     * @param shareName The name of the share to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateResponse> createWithRestResponseAsync(Context context) {
+    public Mono<SharesCreateResponse> createWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final Integer quota = null;
         final String restype = "share";
-        return service.create(this.client.url(), timeout, metadata, quota, this.client.version(), restype, context);
+        return service.create(this.client.url(), shareName, timeout, metadata, quota, this.client.version(), restype, context);
     }
 
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation fails.
      *
+     * @param shareName The name of the share to create.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -134,9 +140,9 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Integer quota, Context context) {
+    public Mono<SharesCreateResponse> createWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota, Context context) {
         final String restype = "share";
-        return service.create(this.client.url(), timeout, metadata, quota, this.client.version(), restype, context);
+        return service.create(this.client.url(), shareName, timeout, metadata, quota, this.client.version(), restype, context);
     }
 
     /**
@@ -170,21 +176,23 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files contained within it are later deleted during garbage collection.
      *
+     * @param shareName The name of the share to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(Context context) {
+    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(String shareName, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final DeleteSnapshotsOptionType deleteSnapshots = null;
         final String restype = "share";
-        return service.delete(this.client.url(), sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
+        return service.delete(this.client.url(), shareName, sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
     }
 
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files contained within it are later deleted during garbage collection.
      *
+     * @param shareName The name of the share to delete.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots. Possible values include: 'include'.
@@ -192,9 +200,9 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(String sharesnapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, Context context) {
+    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(String shareName, String sharesnapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, Context context) {
         final String restype = "share";
-        return service.delete(this.client.url(), sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
+        return service.delete(this.client.url(), shareName, sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
     }
 
     /**

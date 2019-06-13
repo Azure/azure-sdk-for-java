@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
@@ -5,48 +8,57 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public class FileServiceClient {
-
+public final class FileServiceClient {
     private final FileServiceAsyncClient client;
 
-    FileServiceClient() {
-        throw new UnsupportedOperationException();
+    FileServiceClient(FileServiceAsyncClient client) {
+        this.client = client;
     }
 
-    public static FileServiceClientBuilder syncBuilder() {
-        throw new UnsupportedOperationException();
+    public static FileServiceClientBuilder builder() {
+        return new FileServiceClientBuilder();
     }
 
     public String url() {
-        throw new UnsupportedOperationException();
+        return client.url();
     }
 
     public ShareClient getShareClient(String shareName) {
-        throw new UnsupportedOperationException();
+        return new ShareClient(client.getShareAsyncClient(shareName));
     }
 
-    public Flux<ShareItem> listShares(ListSharesOptions options) {
-        throw new UnsupportedOperationException();
+    public Iterable<ShareItem> listShares() {
+        return listShares(null);
     }
 
-    public Mono<Response<FileServiceProperties>> getProperties() {
-        throw new UnsupportedOperationException();
+    public Iterable<ShareItem> listShares(ListSharesOptions options) {
+        return client.listShares(options).toIterable();
     }
 
-    public Mono<VoidResponse> setProperties() {
-        throw new UnsupportedOperationException();
+    public Response<FileServiceProperties> getProperties() {
+        return client.getProperties().block();
     }
 
-    public Mono<Response<ShareClient>> createShare(String shareName, Map<String, String> metadata, int quotaInGB) {
-        throw new UnsupportedOperationException();
+    public VoidResponse setProperties(FileServiceProperties properties) {
+        return client.setProperties(properties).block();
     }
 
-    public Mono<VoidResponse> deleteShare(String shareName, String shareSnapshot) {
-        throw new UnsupportedOperationException();
+    public ShareClient createShare(String shareName) {
+        return createShare(shareName, null, null);
+    }
+
+    public ShareClient createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
+        return new ShareClient(client.createShare(shareName, metadata, quotaInGB).block());
+    }
+
+    public void deleteShare(String shareName) {
+        deleteShare(shareName, null);
+    }
+
+    public void deleteShare(String shareName, String shareSnapshot) {
+        client.deleteShare(shareName, shareSnapshot).block();
     }
 }

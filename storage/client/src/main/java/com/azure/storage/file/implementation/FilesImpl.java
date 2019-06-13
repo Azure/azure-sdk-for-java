@@ -14,6 +14,7 @@ import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
@@ -34,9 +35,10 @@ import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import io.netty.buffer.ByteBuf;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -68,6 +70,7 @@ public final class FilesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage File Files")
     private interface FilesService {
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})

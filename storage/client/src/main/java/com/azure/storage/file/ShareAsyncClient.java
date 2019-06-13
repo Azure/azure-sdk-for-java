@@ -3,8 +3,10 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
@@ -13,13 +15,25 @@ import com.azure.storage.file.models.SignedIdentifier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 public class ShareAsyncClient {
+    private final AzureFileStorageImpl client;
+    private final String shareName;
 
-    ShareAsyncClient() {
-        throw new UnsupportedOperationException();
+    ShareAsyncClient(AzureFileStorageImpl client, String shareName) {
+        this.shareName = shareName;
+        this.client = new AzureFileStorageImpl(client.httpPipeline())
+            .withUrl(client.url())
+            .withVersion(client.version());
+    }
+
+    ShareAsyncClient(URL endpoint, HttpPipeline pipeline, String shareName) {
+        this.shareName = shareName;
+        this.client = new AzureFileStorageImpl(pipeline)
+            .withUrl(endpoint.toString());
     }
 
     public static ShareClientBuilder asyncBuilder() {

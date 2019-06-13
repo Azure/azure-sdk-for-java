@@ -14,11 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ShareClient {
-
     private final ShareAsyncClient client;
 
-    ShareClient() {
-        throw new UnsupportedOperationException();
+    ShareClient(ShareAsyncClient client) {
+        this.client = client;
     }
 
     public static ShareClientBuilder syncBuilder() {

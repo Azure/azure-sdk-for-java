@@ -646,5 +646,6 @@
     <module>./core</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
+    <module>./storage/client</module>
   </modules>
 </project>
