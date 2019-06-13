@@ -5,7 +5,6 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
-import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -15,7 +14,6 @@ import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;

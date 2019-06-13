@@ -6,7 +6,6 @@ package com.azure.eventhubs;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.AmqpReceiveLink;
-import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,8 +15,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.

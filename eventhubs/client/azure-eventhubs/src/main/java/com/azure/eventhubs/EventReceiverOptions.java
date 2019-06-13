@@ -80,6 +80,7 @@ public class EventReceiverOptions implements Cloneable {
      *
      * @param consumerGroup The name of the consumer group.
      * @return The updated ReceiverOptions object.
+     * @throws IllegalArgumentException If {@code consumerGroup} is {@code null} or an empty string.
      */
     public EventReceiverOptions consumerGroup(String consumerGroup) {
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {

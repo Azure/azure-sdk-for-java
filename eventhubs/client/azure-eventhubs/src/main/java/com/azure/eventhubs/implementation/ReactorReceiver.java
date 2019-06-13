@@ -14,12 +14,9 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.UnicastProcessor;
 
-import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
