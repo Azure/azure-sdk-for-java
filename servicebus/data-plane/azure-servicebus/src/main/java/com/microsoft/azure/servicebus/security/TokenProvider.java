@@ -3,13 +3,9 @@
 
 package com.microsoft.azure.servicebus.security;
 
-import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
-
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.ClientCredential;
+import com.microsoft.azure.servicebus.security.AzureActiveDirectoryTokenProvider.AuthenticationCallback;
 
 /**
  * This abstract class defines the contract of a token provider. All token providers should inherit from this class.
@@ -46,45 +42,27 @@ public abstract class TokenProvider {
     public static TokenProvider createSharedAccessSignatureTokenProvider(String sasToken, Instant sasTokenValidUntil) {
         return new SharedAccessSignatureTokenProvider(sasToken, sasTokenValidUntil);
     }
-    
+
     /**
-     * Creates an Azure Active Directory token provider that acquires a token from the given active directory instance using the given clientId, username and password.
-     * This is a utility method.
-     * @param authorityUrl URL of the Azure Active Directory instance
-     * @param clientId client id of the application
-     * @param userName user name
-     * @param password password
+     * Creates a Azure Active Directory token provider that creates a token with the user defined AuthenticationCallback. This is a utility method.
+     * @param callback A custom AuthenticationCallback that takes in the target resource and address of the authority 
+     *            to issue token and provides a security token for the target url
+     * @param authority URL of the Azure Active Directory instance
+     * @param callbackState Custom parameter that may be provided to the AuthenticationCallback
      * @return an instance of Azure Active Directory token provider
-     * @throws MalformedURLException if the authority URL is not well formed
      */
-    public static TokenProvider createAzureActiveDirectoryTokenProvider(String authorityUrl, String clientId, String userName, String password) throws MalformedURLException {
-        AuthenticationContext authContext = createAuthenticationContext(authorityUrl);
-        return new AzureActiveDirectoryTokenProvider(authContext, clientId, userName, password);
+    public static TokenProvider createAzureActiveDirectoryTokenProvider(AuthenticationCallback callback, String authority, Object callbackState) {
+        if (callback == null) {
+            throw new IllegalArgumentException("The callback provided cannot be null.");
+        }
+        return new AzureActiveDirectoryTokenProvider(callback, authority, callbackState);
     }
-    
+
     /**
-     * Creates an Azure Active Directory token provider that acquires a token from the given active directory instance using the given clientId and client secret.
-     * This is a utility method.
-     * @param authorityUrl URL of the Azure Active Directory instance
-     * @param clientId client id of the application
-     * @param clientSecret client secret of the application
-     * @return an instance of Azure Active Directory token provider
-     * @throws MalformedURLException if the authority URL is not well formed
+     * Creates a Managed Identity token provider. This is a utility method.
+     * @return an instance of Managed Identity token provider
      */
-    public static TokenProvider createAzureActiveDirectoryTokenProvider(String authorityUrl, String clientId, String clientSecret) throws MalformedURLException {
-        AuthenticationContext authContext = createAuthenticationContext(authorityUrl);
-        return new AzureActiveDirectoryTokenProvider(authContext, new ClientCredential(clientId, clientSecret));
-    }
-    
-    /**
-     * Creates a Managed Service Identity token provider. This is a utility method.
-     * @return an instance of Managed Service Identity token provider
-     */
-    public static TokenProvider createManagedServiceIdentityTokenProvider() {
-        return new ManagedServiceIdentityTokenProvider();
-    }
-    
-    private static AuthenticationContext createAuthenticationContext(String authorityUrl) throws MalformedURLException {
-        return new AuthenticationContext(authorityUrl, true, ForkJoinPool.commonPool());
+    public static TokenProvider createManagedIdentityTokenProvider() {
+        return new ManagedIdentityTokenProvider();
     }
 }
