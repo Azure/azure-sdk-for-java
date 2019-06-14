@@ -644,6 +644,7 @@
       <modules>
         <module>./eng/spotbugs-aggregate-report</module>
         <module>./eng/code-quality-reports</module>
+        <module>./eng/testcoverage</module>
       </modules>
     </profile>
 
@@ -661,10 +662,9 @@
   </profiles>
 
   <modules>
-<!--    <module>./applicationconfig/client</module>-->
+    <module>./applicationconfig/client</module>
     <module>./core</module>
-    <module>./testcoverage</module>
-<!--    <module>./keyvault/client</module>-->
-<!--    <module>./tracing</module>-->
+    <module>./keyvault/client</module>
+    <module>./tracing</module>
   </modules>
 </project>

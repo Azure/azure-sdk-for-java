@@ -11,7 +11,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../pom.client.xml</relativePath>
+    <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -86,10 +86,6 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
-          <!--
-              Ensures that the code coverage report for unit tests is created after
-              unit tests have been run.
-          -->
           <execution>
             <id>post-unit-test</id>
             <phase>test</phase>
@@ -105,21 +101,4 @@
       </plugin>
     </plugins>
   </build>
-<!--  <reporting>-->
-<!--    <plugins>-->
-<!--      <plugin>-->
-<!--        <groupId>org.jacoco</groupId>-->
-<!--        <artifactId>jacoco-maven-plugin</artifactId>-->
-<!--        <version>${jacoco-maven-plugin.version}</version>-->
-<!--        <reportSets>-->
-<!--          <reportSet>-->
-<!--            <id>aggregate</id>-->
-<!--            <reports>-->
-<!--              <report>report-aggregate</report>-->
-<!--            </reports>-->
-<!--          </reportSet>-->
-<!--        </reportSets>-->
-<!--      </plugin>-->
-<!--    </plugins>-->
-<!--  </reporting>-->
 </project>

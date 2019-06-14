@@ -273,6 +273,5 @@
     <module>./pom.client.xml</module>
     <module>./pom.data.xml</module>
     <module>./pom.management.xml</module>
-    <module>testcoverage</module>
   </modules>
 </project>
