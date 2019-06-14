@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 /**
  * This class offers API that simplifies the task of executing long-running operations against Azure service.
- * The {@link Poller} consist of poll operation, cancel operation if supported by Azure service and poll interval.
+ * The {@link Poller} consist of poll operation, cancel operation if supported by Azure service and polling interval.
  * <p>
   * It provides the following functionality:
  *
@@ -29,15 +29,15 @@ import java.util.function.Function;
  *
  * <p><strong>Auto Polling</strong></p>
  * Auto-polling is enabled by-default. It means that the {@link Poller} starts polling as soon as its instance is created. The {@link Poller} will transparently call the poll operation every polling cycle
- * and track the state of the long-running operation. Azure services can return {@code PollResponse#retryAfter} to override the {@link Poller#pollInterval} defined in the {@link Poller}.
+ * and track the state of the long-running operation. Azure services can return {@link PollResponse#getRetryAfter()} to override the {@code Poller.pollInterval} defined in the {@link Poller}.
  * The {@link Poller#getStatus()} represents the status returned by the successful long-running operation at the time the last auto-polling or last manual polling, whichever happened most recently.
  *
  *<p><strong>Disable Auto Polling</strong></p>
  * For those scenarios which require manual control of the polling cycle, disable auto-poling by calling {@code setAutoPollingEnabled#false} and perform manual poll
- * by invoking {@code poll} function. It will perform one call to poll operation and update the {@link Poller} with the latest status.
- * <p>When auto-polling is disabled, the {@link Poller} will not update its status or other information, unless manual polling is triggered by calling {@code poll} function.
+ * by invoking {@link Poller#poll()} function. It will call poll operation once and update the {@link Poller} with the latest status.
+ * <p>When auto-polling is disabled, the {@link Poller} will not update its status or other information, unless manual polling is triggered by calling {@link Poller#poll()} function.
  *
- * <p>The {@link Poller} will stop polling when the long-running operation is complete or it is disabled. The polling is considered finished
+ * <p>The {@link Poller} will stop polling when the long-running operation is complete or it is disabled. The polling is considered complete
  * based on status defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
  *
  * <p><strong>Code Samples</strong></p>
@@ -103,8 +103,8 @@ public class Poller<T> {
      * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
      * In absence of {@code retryAfter}, the {@code poller} will use {@code pollInterval}.
      *
-     * @param pollInterval  Not-null and greater than zero poll interval.
-     * @param pollOperation  @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
+     * @param pollInterval Not-null and greater than zero poll interval.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
      * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
      *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should be handled byclient library and return a valid {@link PollResponse}.However if poll operation returns {@link Mono#error(Throwable)},
@@ -139,13 +139,14 @@ public class Poller<T> {
      * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
      * In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code pollInterval}.
      *
-     * @param pollInterval  Not-null and greater than zero poll interval.
-     * @param pollOperation  @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
+     * @param pollInterval Not-null and greater than zero poll interval.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
      * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
-     *{@link Mono} returned from poll operation should never return Mono.error().If any unexpected scenario happens in poll operation,
-     * it should handle it and return a valid {@link PollResponse}.However if poll operation returns {@link Mono#error(Throwable)},
+     *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
+     * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
-     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}.
+     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
+     * that cancel operation is not supported by Azure service.
      * @throws NullPointerException If {@code pollInterval} or {@code pollOperation} are {@code null}.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
      */
@@ -181,7 +182,7 @@ public class Poller<T> {
      * This method returns a {@link Flux} that can be subscribed to, enabling a subscriber to receive notification of
      * every {@link PollResponse}, as it is received.
      *
-     * @return A Flux that can be subscribed to to receive poll responses as the long-running operation executes.
+     * @return A {@link Flux} that can be subscribed to receive poll responses as the long-running operation executes.
      */
     public Flux<PollResponse<T>> getObserver() {
         return this.fluxHandle;
@@ -210,10 +211,10 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks execution and wait for polling to complete. The polling is considered finished based on status defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
-     * It will enable auto-polling if it was disable by user.
+     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
+     * <p>It will enable auto-polling if it was disable by user.
      *
-     * @return returns final poll response when polling is finished as defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
+     * @return returns final {@link PollResponse} when polling is complete as defined in {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
      */
     public PollResponse<T> block() {
         if (!isAutoPollingEnabled()) {
@@ -312,7 +313,7 @@ public class Poller<T> {
     }
 
     /**
-     * Current known status as a result of last poll event or last response from a manual {@code poll} function call.
+     * Current known status as a result of last poll event or last response from a manual polling.
      *
      * @return current status or {@code null} if no status is available.
      */

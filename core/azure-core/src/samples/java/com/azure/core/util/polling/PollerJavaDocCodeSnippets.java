@@ -143,6 +143,7 @@ public final class PollerJavaDocCodeSnippets {
             && pollResponse.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
             pollResponse = myPoller.poll().block();
             try {
+                // Ensure that you have sufficient wait in each poll() which is suitable for your application.
                 Thread.sleep(500);
             } catch (InterruptedException e) {
             }

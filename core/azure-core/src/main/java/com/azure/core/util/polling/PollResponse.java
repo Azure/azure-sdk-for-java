@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * PollResponse represents a single response from a service for a long-running polling operation. It provides information such as
- * the current {@link OperationStatus status} of the long running operation, any {@link #getValue value} returned in the poll, as well
+ * the current {@link OperationStatus status} of the long-running operation, any {@link #getValue value} returned in the poll, as well
  * as other useful information provided by the service.
  *
  *<p><strong>Code Sample Creating PollResponse Object</strong></p>
@@ -28,7 +28,7 @@ public final class PollResponse<T> {
     private final Map<Object, Object> properties;
 
     /**
-     * An enum to represent all possible states that a long running operation may find itself in.
+     * An enum to represent all possible states that a long-running operation may find itself in.
      * The poll operation is considered complete when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
     public enum OperationStatus {
