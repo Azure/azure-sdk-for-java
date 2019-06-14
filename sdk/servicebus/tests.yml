@@ -3,7 +3,7 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      PomFilePath: './servicebus/data-plane/pom.xml'
+      PomFilePath: sdk/servicebus/microsoft-azure-servicebus/pom.xml
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_SERVICEBUS_CONNECTION_STRING: $(java-servicebus-test-connection-string)
