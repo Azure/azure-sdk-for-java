@@ -279,6 +279,27 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <!--
+              Prepares the property pointing to the JaCoCo runtime agent which
+              is passed as VM argument when Maven the Surefire plugin is executed.
+          -->
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- Allows the sample sources to be built during test-compile phase. -->
       <plugin>
@@ -371,7 +392,6 @@
             <failOnViolation>true</failOnViolation>
           </configuration>
         </plugin>
-
       </plugins>
     </pluginManagement>
 
@@ -504,7 +524,6 @@
       </plugin>
     </plugins>
   </reporting>
-
   <profiles>
 
     <!--
@@ -642,9 +661,10 @@
   </profiles>
 
   <modules>
-    <module>./applicationconfig/client</module>
+<!--    <module>./applicationconfig/client</module>-->
     <module>./core</module>
-    <module>./keyvault/client</module>
-    <module>./tracing</module>
+    <module>./testcoverage</module>
+<!--    <module>./keyvault/client</module>-->
+<!--    <module>./tracing</module>-->
   </modules>
 </project>

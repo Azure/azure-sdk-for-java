@@ -72,7 +72,7 @@ jobs:
         displayName: 'Install reporting tools'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -123,6 +123,7 @@ jobs:
 
       - powershell: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
+          copy -r testcoverage/target/site $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
