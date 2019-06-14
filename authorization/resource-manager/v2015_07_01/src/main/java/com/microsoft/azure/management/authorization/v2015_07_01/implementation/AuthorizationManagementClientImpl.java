@@ -146,32 +146,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ProviderOperationsMetadatasInner object to access its operations.
-     */
-    private ProviderOperationsMetadatasInner providerOperationsMetadatas;
-
-    /**
-     * Gets the ProviderOperationsMetadatasInner object to access its operations.
-     * @return the ProviderOperationsMetadatasInner object.
-     */
-    public ProviderOperationsMetadatasInner providerOperationsMetadatas() {
-        return this.providerOperationsMetadatas;
-    }
-
-    /**
-     * The RoleAssignmentsInner object to access its operations.
-     */
-    private RoleAssignmentsInner roleAssignments;
-
-    /**
-     * Gets the RoleAssignmentsInner object to access its operations.
-     * @return the RoleAssignmentsInner object.
-     */
-    public RoleAssignmentsInner roleAssignments() {
-        return this.roleAssignments;
-    }
-
-    /**
      * The RoleDefinitionsInner object to access its operations.
      */
     private RoleDefinitionsInner roleDefinitions;
@@ -185,16 +159,42 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ElevateAccessInner object to access its operations.
+     * The ProviderOperationsMetadatasInner object to access its operations.
      */
-    private ElevateAccessInner elevateAccess;
+    private ProviderOperationsMetadatasInner providerOperationsMetadatas;
 
     /**
-     * Gets the ElevateAccessInner object to access its operations.
-     * @return the ElevateAccessInner object.
+     * Gets the ProviderOperationsMetadatasInner object to access its operations.
+     * @return the ProviderOperationsMetadatasInner object.
      */
-    public ElevateAccessInner elevateAccess() {
-        return this.elevateAccess;
+    public ProviderOperationsMetadatasInner providerOperationsMetadatas() {
+        return this.providerOperationsMetadatas;
+    }
+
+    /**
+     * The GlobalAdministratorsInner object to access its operations.
+     */
+    private GlobalAdministratorsInner globalAdministrators;
+
+    /**
+     * Gets the GlobalAdministratorsInner object to access its operations.
+     * @return the GlobalAdministratorsInner object.
+     */
+    public GlobalAdministratorsInner globalAdministrators() {
+        return this.globalAdministrators;
+    }
+
+    /**
+     * The RoleAssignmentsInner object to access its operations.
+     */
+    private RoleAssignmentsInner roleAssignments;
+
+    /**
+     * Gets the RoleAssignmentsInner object to access its operations.
+     * @return the RoleAssignmentsInner object.
+     */
+    public RoleAssignmentsInner roleAssignments() {
+        return this.roleAssignments;
     }
 
     /**
@@ -246,10 +246,10 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.permissions = new PermissionsInner(restClient().retrofit(), this);
-        this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
-        this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.roleDefinitions = new RoleDefinitionsInner(restClient().retrofit(), this);
-        this.elevateAccess = new ElevateAccessInner(restClient().retrofit(), this);
+        this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
+        this.globalAdministrators = new GlobalAdministratorsInner(restClient().retrofit(), this);
+        this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }

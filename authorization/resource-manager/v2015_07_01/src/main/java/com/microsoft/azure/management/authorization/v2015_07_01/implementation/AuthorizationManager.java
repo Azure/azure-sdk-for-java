@@ -17,10 +17,10 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.authorization.v2015_07_01.Permissions;
-import com.microsoft.azure.management.authorization.v2015_07_01.ProviderOperationsMetadatas;
-import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
-import com.microsoft.azure.management.authorization.v2015_07_01.ElevateAccess;
+import com.microsoft.azure.management.authorization.v2015_07_01.ProviderOperationsMetadatas;
+import com.microsoft.azure.management.authorization.v2015_07_01.GlobalAdministrators;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministrators;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -30,10 +30,10 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class AuthorizationManager extends ManagerCore<AuthorizationManager, AuthorizationManagementClientImpl> {
     private Permissions permissions;
-    private ProviderOperationsMetadatas providerOperationsMetadatas;
-    private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
-    private ElevateAccess elevateAccess;
+    private ProviderOperationsMetadatas providerOperationsMetadatas;
+    private GlobalAdministrators globalAdministrators;
+    private RoleAssignments roleAssignments;
     private ClassicAdministrators classicAdministrators;
     /**
     * Get a Configurable instance that can be used to create AuthorizationManager with optional configuration.
@@ -93,26 +93,6 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
     }
 
     /**
-     * @return Entry point to manage ProviderOperationsMetadatas.
-     */
-    public ProviderOperationsMetadatas providerOperationsMetadatas() {
-        if (this.providerOperationsMetadatas == null) {
-            this.providerOperationsMetadatas = new ProviderOperationsMetadatasImpl(this);
-        }
-        return this.providerOperationsMetadatas;
-    }
-
-    /**
-     * @return Entry point to manage RoleAssignments.
-     */
-    public RoleAssignments roleAssignments() {
-        if (this.roleAssignments == null) {
-            this.roleAssignments = new RoleAssignmentsImpl(this);
-        }
-        return this.roleAssignments;
-    }
-
-    /**
      * @return Entry point to manage RoleDefinitions.
      */
     public RoleDefinitions roleDefinitions() {
@@ -123,13 +103,33 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
     }
 
     /**
-     * @return Entry point to manage ElevateAccess.
+     * @return Entry point to manage ProviderOperationsMetadatas.
      */
-    public ElevateAccess elevateAccess() {
-        if (this.elevateAccess == null) {
-            this.elevateAccess = new ElevateAccessImpl(this);
+    public ProviderOperationsMetadatas providerOperationsMetadatas() {
+        if (this.providerOperationsMetadatas == null) {
+            this.providerOperationsMetadatas = new ProviderOperationsMetadatasImpl(this);
         }
-        return this.elevateAccess;
+        return this.providerOperationsMetadatas;
+    }
+
+    /**
+     * @return Entry point to manage GlobalAdministrators.
+     */
+    public GlobalAdministrators globalAdministrators() {
+        if (this.globalAdministrators == null) {
+            this.globalAdministrators = new GlobalAdministratorsImpl(this);
+        }
+        return this.globalAdministrators;
+    }
+
+    /**
+     * @return Entry point to manage RoleAssignments.
+     */
+    public RoleAssignments roleAssignments() {
+        if (this.roleAssignments == null) {
+            this.roleAssignments = new RoleAssignmentsImpl(this);
+        }
+        return this.roleAssignments;
     }
 
     /**

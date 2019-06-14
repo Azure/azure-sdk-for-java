@@ -12,15 +12,13 @@ package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinition;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitionProperties;
 import java.util.List;
-import rx.functions.Func1;
+import java.util.ArrayList;
+import com.microsoft.azure.management.authorization.v2015_07_01.Permission;
 
 class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefinitionInner, RoleDefinitionImpl> implements RoleDefinition, RoleDefinition.Definition, RoleDefinition.Update {
     private String scope;
     private String roleDefinitionId;
-    private RoleDefinitionProperties cproperties;
-    private RoleDefinitionProperties uproperties;
     private final AuthorizationManager manager;
 
     RoleDefinitionImpl(String name, AuthorizationManager manager) {
@@ -29,8 +27,6 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         // Set resource name
         this.roleDefinitionId = name;
         //
-        this.cproperties = new RoleDefinitionProperties();
-        this.uproperties = new RoleDefinitionProperties();
     }
 
     RoleDefinitionImpl(RoleDefinitionInner inner, AuthorizationManager manager) {
@@ -42,8 +38,6 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         this.roleDefinitionId = IdParsingUtils.getValueFromIdByName(inner.id(), "roleDefinitions");
         this.scope = IdParsingUtils.getValueFromIdByPosition(inner.id(), 0);
         // set other parameters for create and update
-        this.cproperties = new RoleDefinitionProperties();
-        this.uproperties = new RoleDefinitionProperties();
     }
 
     @Override
@@ -54,28 +48,14 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
     @Override
     public Observable<RoleDefinition> createResourceAsync() {
         RoleDefinitionsInner client = this.manager().inner().roleDefinitions();
-        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.cproperties)
-            .map(new Func1<RoleDefinitionInner, RoleDefinitionInner>() {
-               @Override
-               public RoleDefinitionInner call(RoleDefinitionInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<RoleDefinition> updateResourceAsync() {
         RoleDefinitionsInner client = this.manager().inner().roleDefinitions();
-        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.uproperties)
-            .map(new Func1<RoleDefinitionInner, RoleDefinitionInner>() {
-               @Override
-               public RoleDefinitionInner call(RoleDefinitionInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -90,9 +70,15 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         return this.inner().id() == null;
     }
 
-    private void resetCreateUpdateParameters() {
-        this.cproperties = new RoleDefinitionProperties();
-        this.uproperties = new RoleDefinitionProperties();
+
+    @Override
+    public List<String> assignableScopes() {
+        return this.inner().assignableScopes();
+    }
+
+    @Override
+    public String description() {
+        return this.inner().description();
     }
 
     @Override
@@ -106,8 +92,24 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
     }
 
     @Override
-    public RoleDefinitionProperties properties() {
-        return this.inner().properties();
+    public List<Permission> permissions() {
+        List<Permission> lst = new ArrayList<Permission>();
+        if (this.inner().permissions() != null) {
+            for (PermissionInner inner : this.inner().permissions()) {
+                lst.add( new PermissionImpl(inner, manager()));
+            }
+        }
+        return lst;
+    }
+
+    @Override
+    public String roleName() {
+        return this.inner().roleName();
+    }
+
+    @Override
+    public String roleType() {
+        return this.inner().roleType();
     }
 
     @Override
@@ -122,12 +124,32 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
     }
 
     @Override
-    public RoleDefinitionImpl withProperties(RoleDefinitionProperties properties) {
-        if (isInCreateMode()) {
-            this.cproperties = properties;
-        } else {
-            this.uproperties = properties;
-        }
+    public RoleDefinitionImpl withAssignableScopes(List<String> assignableScopes) {
+        this.inner().withAssignableScopes(assignableScopes);
+        return this;
+    }
+
+    @Override
+    public RoleDefinitionImpl withDescription(String description) {
+        this.inner().withDescription(description);
+        return this;
+    }
+
+    @Override
+    public RoleDefinitionImpl withPermissions(List<PermissionInner> permissions) {
+        this.inner().withPermissions(permissions);
+        return this;
+    }
+
+    @Override
+    public RoleDefinitionImpl withRoleName(String roleName) {
+        this.inner().withRoleName(roleName);
+        return this;
+    }
+
+    @Override
+    public RoleDefinitionImpl withRoleType(String roleType) {
+        this.inner().withRoleType(roleType);
         return this;
     }
 

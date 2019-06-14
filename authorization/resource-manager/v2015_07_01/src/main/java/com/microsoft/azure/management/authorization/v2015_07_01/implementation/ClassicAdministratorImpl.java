@@ -10,7 +10,6 @@ package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 
 import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministrator;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministratorProperties;
 
 class ClassicAdministratorImpl extends WrapperImpl<ClassicAdministratorInner> implements ClassicAdministrator {
     private final AuthorizationManager manager;
@@ -25,6 +24,11 @@ class ClassicAdministratorImpl extends WrapperImpl<ClassicAdministratorInner> im
     }
 
     @Override
+    public String emailAddress() {
+        return this.inner().emailAddress();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -35,8 +39,8 @@ class ClassicAdministratorImpl extends WrapperImpl<ClassicAdministratorInner> im
     }
 
     @Override
-    public ClassicAdministratorProperties properties() {
-        return this.inner().properties();
+    public String role() {
+        return this.inner().role();
     }
 
     @Override
