@@ -15,6 +15,7 @@ import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.ServicesGetPropertiesResponse;
@@ -23,8 +24,9 @@ import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.ServicesSetPropertiesResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
-import java.util.List;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -203,7 +205,7 @@ public final class ServicesImpl {
      */
     public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListQueuesIncludeType> include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listQueuesSegment(this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, comp, context);
     }
 }

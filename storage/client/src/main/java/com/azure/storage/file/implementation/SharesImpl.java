@@ -75,7 +75,7 @@ public final class SharesImpl {
         @GET("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
+        Mono<SharesGetPropertiesResponse> getProperties(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @DELETE("{shareName}")
         @ExpectedResponses({202})
@@ -85,32 +85,32 @@ public final class SharesImpl {
         @PUT("{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesCreateSnapshotResponse> createSnapshot(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesCreateSnapshotResponse> createSnapshot(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesSetQuotaResponse> setQuota(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesSetQuotaResponse> setQuota(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesSetMetadataResponse> setMetadata(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesGetAccessPolicyResponse> getAccessPolicy(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesGetAccessPolicyResponse> getAccessPolicy(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesSetAccessPolicyResponse> setAccessPolicy(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper shareAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesSetAccessPolicyResponse> setAccessPolicy(@HostParam("url") String url, @PathParam ("shareName") String shareName, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper shareAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<SharesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @PathParam ("shareName") String shareName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -148,29 +148,31 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data returned does not include the share's list of files.
      *
+     * @param shareName The name of the share that is having its properties retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
+    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String restype = "share";
-        return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(this.client.url(), shareName, sharesnapshot, timeout, this.client.version(), restype, context);
     }
 
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data returned does not include the share's list of files.
      *
+     * @param shareName The name of the share that is having its properties retrieved.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
+    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String sharesnapshot, Integer timeout, Context context) {
         final String restype = "share";
-        return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(this.client.url(), shareName, sharesnapshot, timeout, this.client.version(), restype, context);
     }
 
     /**
@@ -208,177 +210,189 @@ public final class SharesImpl {
     /**
      * Creates a read-only snapshot of a share.
      *
+     * @param shareName The name of the share that is having a snapshot created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(Context context) {
+    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "share";
         final String comp = "snapshot";
-        return service.createSnapshot(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.createSnapshot(this.client.url(), shareName, timeout, metadata, this.client.version(), restype, comp, context);
     }
 
     /**
      * Creates a read-only snapshot of a share.
      *
+     * @param shareName The name of the share that is having a snapshot created.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "snapshot";
-        return service.createSnapshot(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.createSnapshot(this.client.url(), shareName, timeout, metadata, this.client.version(), restype, comp, context);
     }
 
     /**
      * Sets quota for the specified share.
      *
+     * @param shareName The name of the share that is having its quota set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(Context context) {
+    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Integer quota = null;
         final String restype = "share";
         final String comp = "properties";
-        return service.setQuota(this.client.url(), timeout, this.client.version(), quota, restype, comp, context);
+        return service.setQuota(this.client.url(), shareName, timeout, this.client.version(), quota, restype, comp, context);
     }
 
     /**
      * Sets quota for the specified share.
      *
+     * @param shareName The name of the share that is having its quota set.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(Integer timeout, Integer quota, Context context) {
+    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(String shareName, Integer timeout, Integer quota, Context context) {
         final String restype = "share";
         final String comp = "properties";
-        return service.setQuota(this.client.url(), timeout, this.client.version(), quota, restype, comp, context);
+        return service.setQuota(this.client.url(), shareName, timeout, this.client.version(), quota, restype, comp, context);
     }
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
      *
+     * @param shareName The name of the share having its metadata set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
+    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "share";
         final String comp = "metadata";
-        return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(this.client.url(), shareName, timeout, metadata, this.client.version(), restype, comp, context);
     }
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
      *
+     * @param shareName The name of the share having its metadata set.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "metadata";
-        return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(this.client.url(), shareName, timeout, metadata, this.client.version(), restype, comp, context);
     }
 
     /**
      * Returns information about stored access policies specified on the share.
      *
+     * @param shareName The name of the share having its access policy retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Context context) {
+    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "acl";
-        return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getAccessPolicy(this.client.url(), shareName, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Returns information about stored access policies specified on the share.
      *
+     * @param shareName The name of the share having its access policy retrieved.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, Context context) {
+    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String shareName, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
-        return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getAccessPolicy(this.client.url(), shareName, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Sets a stored access policy for use with shared access signatures.
      *
+     * @param shareName The name of the share having its access policy set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(Context context) {
+    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(null);
-        return service.setAccessPolicy(this.client.url(), shareAclConverted, timeout, this.client.version(), restype, comp, context);
+        return service.setAccessPolicy(this.client.url(), shareName, shareAclConverted, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Sets a stored access policy for use with shared access signatures.
      *
+     * @param shareName The name of the share having its access policy set.
      * @param shareAcl The ACL for the share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> shareAcl, Integer timeout, Context context) {
+    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String shareName, List<SignedIdentifier> shareAcl, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(shareAcl);
-        return service.setAccessPolicy(this.client.url(), shareAclConverted, timeout, this.client.version(), restype, comp, context);
+        return service.setAccessPolicy(this.client.url(), shareName, shareAclConverted, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Retrieves statistics related to the share.
      *
+     * @param shareName The name of the share having its statistics retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Context context) {
+    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getStatistics(this.client.url(), shareName, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Retrieves statistics related to the share.
      *
+     * @param shareName The name of the share having its statistics retrieved.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, Context context) {
+    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(String shareName, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getStatistics(this.client.url(), shareName, timeout, this.client.version(), restype, comp, context);
     }
 }

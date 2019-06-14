@@ -4,4 +4,13 @@
 package com.azure.storage.file.models;
 
 public final class ShareStatistics {
+    private final int shareUsageInGB;
+
+    public ShareStatistics(int shareUsageInGB) {
+        this.shareUsageInGB = shareUsageInGB;
+    }
+
+    public int getGhareUsageInGB() {
+        return shareUsageInGB;
+    }
 }

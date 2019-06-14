@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlockLookupList;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Test;
 import reactor.core.publisher.Flux;
 
 import java.net.InetSocketAddress;
@@ -25,7 +24,7 @@ import java.util.Random;
 
 public class BlobPocTests {
 
-    @Test
+    //@Test
     public void testCreateBlob() {
         AzureBlobStorageImpl client = new AzureBlobStorageImpl(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
             new HttpPipelinePolicy() {

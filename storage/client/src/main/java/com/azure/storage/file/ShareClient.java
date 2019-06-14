@@ -7,7 +7,6 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -19,19 +18,19 @@ public class ShareClient {
         this.client = client;
     }
 
-    public static ShareClientBuilder syncBuilder() {
+    public static ShareClientBuilder builder() {
+        return new ShareClientBuilder();
+    }
+
+    public String getUrl() {
+        return client.getUrl();
+    }
+
+    public DirectoryAsyncClient getRootDirectoryClient() {
         throw new UnsupportedOperationException();
     }
 
-    public String url() {
-        throw new UnsupportedOperationException();
-    }
-
-    public DirectoryClient getRootDirectoryClient() {
-        throw new UnsupportedOperationException();
-    }
-
-    public DirectoryClient getDirectoryClient(String directoryName) {
+    public DirectoryAsyncClient getDirectoryClient(String directoryName) {
         throw new UnsupportedOperationException();
     }
 
@@ -40,7 +39,7 @@ public class ShareClient {
     }
 
     public Response<ShareInfo> create(Map<String, String> metadata, Integer quotaInGB) {
-        throw new UnsupportedOperationException();
+        return client.create(metadata, quotaInGB).block();
     }
 
     public Response<ShareSnapshotInfo> createSnapshot() {
@@ -48,38 +47,46 @@ public class ShareClient {
     }
 
     public Response<ShareSnapshotInfo> createSnapshot(Map<String, String> metadata) {
-        throw new UnsupportedOperationException();
+        return client.createSnapshot(metadata).block();
+    }
+
+    public VoidResponse delete() {
+        return delete(null);
     }
 
     public VoidResponse delete(String shareSnapshot) {
-        throw new UnsupportedOperationException();
+        return client.delete(shareSnapshot).block();
+    }
+
+    public Response<ShareProperties> getProperties() {
+        return getProperties(null);
     }
 
     public Response<ShareProperties> getProperties(String shareSnapshot) {
-        throw new UnsupportedOperationException();
+        return client.getProperties(shareSnapshot).block();
     }
 
     public Response<ShareInfo> setQuota(int quotaInGB) {
-        throw new UnsupportedOperationException();
+        return client.setQuota(quotaInGB).block();
     }
 
     public Response<ShareInfo> setMetadata(Map<String, String> metadata) {
-        throw new UnsupportedOperationException();
+        return client.setMetadata(metadata).block();
     }
 
     public Iterable<SignedIdentifier> listAccessPolicy() {
-        throw new UnsupportedOperationException();
+        return client.listAccessPolicy().toIterable();
     }
 
-    public Mono<Response<ShareInfo>> setAccessPolicy(List<SignedIdentifier> permissions) {
-        throw new UnsupportedOperationException();
+    public Response<ShareInfo> setAccessPolicy(List<SignedIdentifier> permissions) {
+        return client.setAccessPolicy(permissions).block();
     }
 
     public Response<ShareStatistics> getStatistics() {
-        throw new UnsupportedOperationException();
+        return client.getStatistics().block();
     }
 
-    public Response<DirectoryClient> createDirectory(String directoryName, Map<String, String> metadata) {
+    public Response<DirectoryAsyncClient> createDirectory(String directoryName, Map<String, String> metadata) {
         throw new UnsupportedOperationException();
     }
 

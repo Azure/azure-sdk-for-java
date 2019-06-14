@@ -29,13 +29,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-public final class FileServiceClientTests extends FileServiceClientTestsBase {
+public class FileServiceClientTests extends FileServiceClientTestsBase {
     private FileServiceClient serviceClient;
 
     private String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
     @Override
-    public void setupTest() {
+    public void beforeTest() {
         shareName = getShareName();
 
         if (interceptorManager.isPlaybackMode()) {
@@ -57,7 +57,7 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
     }
 
     @Override
-    public void teardownTest() {
+    public void afterTest() {
         for (ShareItem share : serviceClient.listShares(new ListSharesOptions().prefix(shareName))) {
             ShareClient client = serviceClient.getShareClient(share.name());
             try {
@@ -75,7 +75,7 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
             client.getStatistics();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
         } catch (Exception ex) {
-            TestHelpers.assertExceptionStatusCode(ex, 404);
+            TestHelpers.assertExceptionStatusCode(ex, 400);
         }
     }
 
@@ -87,7 +87,12 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
     @Override
     public void createShareTwiceSameMetadata() {
         assertNotNull(serviceClient.createShare(shareName));
-        assertNotNull(serviceClient.createShare(shareName));
+
+        try {
+            serviceClient.createShare(shareName);
+        } catch (Exception exception) {
+            TestHelpers.assertExceptionStatusCode(exception, 409);
+        }
     }
 
     @Override
@@ -167,6 +172,7 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
             ShareItem share = new ShareItem().name(shareName + i)
                 .properties(new ShareProperties().quota(2));
 
+            testShares.add(share);
             assertNotNull(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()));
         }
 
@@ -221,14 +227,14 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
     @Override
     public void listSharesInvalidMaxResults() {
         try {
-            serviceClient.listShares(defaultOptions().maxResults(-1));
+            serviceClient.listShares(defaultOptions().maxResults(-1)).iterator().hasNext();
             fail("Attempting to list shares with a negative maximum should throw an error");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 400);
         }
 
         try {
-            serviceClient.listShares(defaultOptions().maxResults(0));
+            serviceClient.listShares(defaultOptions().maxResults(0)).iterator().hasNext();
             fail("Attempting to list shares with a zero maximum should throw an error");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 400);
@@ -268,20 +274,23 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
 
             ShareClient client = serviceClient.getShareClient(share.name());
 
-            Response<ShareInfo> createResponse = client.create();
+            Response<ShareInfo> createResponse = client.create(null, share.properties().quota());
             TestHelpers.assertResponseStatusCode(createResponse, 201);
 
             if (i % 2 == 0) {
                 Response<ShareSnapshotInfo> snapshotResponse = client.createSnapshot();
                 TestHelpers.assertResponseStatusCode(snapshotResponse, 201);
-                share.snapshot(snapshotResponse.value().snapshot());
+
+                testShares.add(new ShareItem().name(share.name())
+                    .snapshot(snapshotResponse.value().snapshot())
+                    .properties(new ShareProperties().quota(share.properties().quota())));
             }
 
             testShares.add(share);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions().includeSnapshots(true)).iterator();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             TestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
         assertFalse(shares.hasNext());
@@ -302,20 +311,23 @@ public final class FileServiceClientTests extends FileServiceClientTestsBase {
 
             ShareClient client = serviceClient.getShareClient(share.name());
 
-            Response<ShareInfo> createResponse = client.create();
+            Response<ShareInfo> createResponse = client.create(share.metadata(), share.properties().quota());
             TestHelpers.assertResponseStatusCode(createResponse, 201);
 
             if (i % 2 == 0) {
                 Response<ShareSnapshotInfo> snapshotResponse = client.createSnapshot();
                 TestHelpers.assertResponseStatusCode(snapshotResponse, 201);
-                share.snapshot(snapshotResponse.value().snapshot());
+
+                testShares.add(new ShareItem().name(share.name())
+                    .snapshot(snapshotResponse.value().snapshot())
+                    .properties(share.properties()));
             }
 
             testShares.add(share);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)).iterator();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             TestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
         assertFalse(shares.hasNext());

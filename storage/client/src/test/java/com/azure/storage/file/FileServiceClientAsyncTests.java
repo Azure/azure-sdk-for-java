@@ -25,13 +25,13 @@ import java.util.Map;
 
 import static org.junit.Assert.fail;
 
-public final class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
+public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
     private FileServiceAsyncClient serviceClient;
 
     private String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
     @Override
-    public void setupTest() {
+    public void beforeTest() {
         shareName = getShareName();
 
         if (interceptorManager.isPlaybackMode()) {
@@ -53,7 +53,7 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
     }
 
     @Override
-    public void teardownTest() {
+    public void afterTest() {
         serviceClient.listShares(new ListSharesOptions().prefix(shareName))
             .collectList()
             .block()
@@ -74,7 +74,7 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
             client.getStatistics().block();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
         } catch (Exception ex) {
-            TestHelpers.assertExceptionStatusCode(ex, 404);
+            TestHelpers.assertExceptionStatusCode(ex, 400);
         }
     }
 
@@ -92,8 +92,7 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
-            .verifyComplete();
+            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 409));
     }
 
     @Override
@@ -158,7 +157,7 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
         StepVerifier.create(serviceClient.deleteShare(shareName))
             .verifyComplete();
 
-        StepVerifier.create(serviceClient.deleteShare(shareName))
+        StepVerifier.create(serviceClient.createShare(shareName))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 409));
     }
 
@@ -227,6 +226,10 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
 
     @Override
     public void listSharesInvalidMaxResults() {
+        StepVerifier.create(serviceClient.createShare(shareName))
+            .assertNext(Assert::assertNotNull)
+            .verifyComplete();
+
         StepVerifier.create(serviceClient.listShares(defaultOptions().maxResults(-1)))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
 
@@ -269,14 +272,17 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
 
             ShareAsyncClient client = serviceClient.getShareAsyncClient(share.name());
 
-            StepVerifier.create(client.create())
+            StepVerifier.create(client.create(null, share.properties().quota()))
                 .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
 
             if (i % 2 == 0) {
                 StepVerifier.create(client.createSnapshot())
                     .assertNext(response -> {
-                        share.snapshot(response.value().snapshot());
+                        testShares.add(new ShareItem().name(share.name())
+                            .snapshot(response.value().snapshot())
+                            .properties(share.properties()));
+
                         TestHelpers.assertResponseStatusCode(response, 201);
                     })
                     .verifyComplete();
@@ -286,6 +292,8 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
         }
 
         StepVerifier.create(serviceClient.listShares(defaultOptions().includeSnapshots(true)))
+            .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
+            .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
@@ -307,14 +315,17 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
 
             ShareAsyncClient client = serviceClient.getShareAsyncClient(share.name());
 
-            StepVerifier.create(client.create())
+            StepVerifier.create(client.create(share.metadata(), share.properties().quota()))
                 .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
 
             if (i % 2 == 0) {
                 StepVerifier.create(client.createSnapshot())
                     .assertNext(response -> {
-                        share.snapshot(response.value().snapshot());
+                        testShares.add(new ShareItem().name(share.name())
+                            .snapshot(response.value().snapshot())
+                            .properties(share.properties()));
+
                         TestHelpers.assertResponseStatusCode(response, 201);
                     })
                     .verifyComplete();
@@ -324,6 +335,8 @@ public final class FileServiceClientAsyncTests extends FileServiceClientTestsBas
         }
 
         StepVerifier.create(serviceClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)))
+            .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
+            .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> TestHelpers.assertSharesAreEqual(testShares.pop(), share))

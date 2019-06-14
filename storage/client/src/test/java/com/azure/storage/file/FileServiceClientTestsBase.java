@@ -16,12 +16,11 @@ import java.util.function.BiFunction;
 
 import static org.junit.Assert.fail;
 
-abstract class FileServiceClientTestsBase extends TestBase {
+public abstract class FileServiceClientTestsBase extends TestBase {
     private final ServiceLogger logger = new ServiceLogger(FileServiceClientTestsBase.class);
     private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
     private final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
 
-    final String shareNamePrefix = "share";
     String shareName;
 
     @Rule
@@ -46,7 +45,7 @@ abstract class FileServiceClientTestsBase extends TestBase {
     }
 
     String getShareName() {
-        return testResourceNamer.randomName(shareNamePrefix, 16).toLowerCase();
+        return testResourceNamer.randomName("share", 16).toLowerCase();
     }
 
     ListSharesOptions defaultOptions() {
