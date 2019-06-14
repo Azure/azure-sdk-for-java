@@ -17,6 +17,7 @@ public class MSIConfigurationForVirtualMachine {
     private String clientId;
     private String identityId;
     private int maxRetry = -1;
+    private int customTimeout = -1;
 
     /**
      * Creates MSIConfigurationForVirtualMachine.
@@ -86,6 +87,11 @@ public class MSIConfigurationForVirtualMachine {
     }
 
     /**
+     * @return the custom timeout (in milliseconds) when getting the token from IMDS
+     */
+    public int customTimeout() { return this.customTimeout; }
+
+    /**
      * Specifies the token retrieval source.
      *
      * @param tokenSource the source of token
@@ -153,6 +159,17 @@ public class MSIConfigurationForVirtualMachine {
         return this;
     }
 
+    /**
+     * Specifies the custom timeout (in milliseconds) to be used for IMDS retries.
+     *
+     * @param timeoutInMs the total timeout value in milliseconds;
+     * @return MSIConfigurationForVirtualMachine
+     */
+    public MSIConfigurationForVirtualMachine withCustomTimeout(int timeoutInMs) {
+        this.customTimeout = timeoutInMs;
+        return this;
+    }
+
     @Override
     public MSIConfigurationForVirtualMachine clone() {
         MSIConfigurationForVirtualMachine copy = new MSIConfigurationForVirtualMachine(this.managementEndpoint);
@@ -172,6 +189,7 @@ public class MSIConfigurationForVirtualMachine {
             copy.withTokenSource(this.tokenSource());
         }
         copy.withMaxRetry(this.maxRetry());
+        copy.withCustomTimeout(this.customTimeout());
         return copy;
     }
 
