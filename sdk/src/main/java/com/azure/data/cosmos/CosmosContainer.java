@@ -670,6 +670,44 @@ public class CosmosContainer extends CosmosResource {
     }
 
     /**
+     * Lists all the conflicts in the container
+     *
+     * @param options the feed options
+     * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
+     */
+    public Flux<FeedResponse<CosmosConflictProperties>> listConflicts(FeedOptions options) {
+        return RxJava2Adapter.flowableToFlux(
+                RxJavaInterop.toV2Flowable(database.getDocClientWrapper()
+                        .readConflicts(getLink(), options)
+                        .map(response -> BridgeInternal.createFeedResponse(CosmosConflictProperties.getFromV2Results(response.results()),
+                                response.responseHeaders()))));
+    }
+
+    /**
+     * Queries all the conflicts in the container
+     *
+     * @param query   the query
+     * @param options the feed options
+     * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
+     */
+    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query, FeedOptions options) {
+        return RxJava2Adapter.flowableToFlux(
+                RxJavaInterop.toV2Flowable(database.getDocClientWrapper()
+                        .queryConflicts(getLink(), query, options)
+                        .map(response -> BridgeInternal.createFeedResponse(CosmosConflictProperties.getFromV2Results(response.results()),
+                                response.responseHeaders()))));
+    }
+
+    /**
+     * Gets a CosmosConflict object without making a service call
+     * @param id id of the cosmos conflict
+     * @return a cosmos conflict
+     */
+    public CosmosTrigger getConflict(String id){
+        return new CosmosTrigger(id, this);
+    }
+
+    /**
      * Gets the throughput of the container
      *
      * @return a {@link Mono} containing throughput or an error.
