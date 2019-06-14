@@ -12,6 +12,7 @@ import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
@@ -23,8 +24,9 @@ import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentRes
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import java.util.Map;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -56,6 +58,7 @@ public final class DirectorysImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Files Directory")
     private interface DirectorysService {
         @PUT("{shareName}/{directory}")
         @ExpectedResponses({201})

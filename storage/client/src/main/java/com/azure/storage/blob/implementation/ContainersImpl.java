@@ -11,13 +11,15 @@ import com.azure.core.annotations.GET;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
@@ -39,10 +41,11 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageErrorException;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -74,6 +77,7 @@ public final class ContainersImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Blobs Containers")
     private interface ContainersService {
         @PUT("{containerName}")
         @ExpectedResponses({201})
@@ -692,7 +696,7 @@ public final class ContainersImpl {
     public Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegmentWithRestResponseAsync(String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobFlatSegment(containerName, this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
@@ -735,7 +739,7 @@ public final class ContainersImpl {
     public Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithRestResponseAsync(String containerName, String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        String includeConverted = this.client.serializerAdapter().serializeList(include, CollectionFormat.CSV);
+        String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(containerName, this.client.url(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, restype, comp, context);
     }
 
