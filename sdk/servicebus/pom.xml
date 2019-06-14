@@ -32,6 +32,6 @@
   </scm>
 
   <modules>
-    <module>azure-servicebus</module>
+    <module>microsoft-azure-servicebus</module>
   </modules>
 </project>
