@@ -201,7 +201,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: $(pomFile)
-          options: '$(DefaultOptions) $(ProfileFlag)'
+          options: '$(DefaultOptions) $(ProfileFlag) -Dinclude-non-shipping-modules'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
