@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /*
- * A helper class for aggregating EventData into a single AMPQ message, taking into account the max size limit.
+ * A helper class for aggregating EventData into a single AMQP message, taking into account the max size limit.
  */
 final class EventDataBatch {
     private final int maxMessageSize;

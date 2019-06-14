@@ -48,6 +48,7 @@ public class EventSender implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventSenderOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
+    private final boolean isPartitionSender;
 
     /**
      * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
@@ -58,6 +59,41 @@ public class EventSender implements Closeable {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
+        this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+    }
+
+    /**
+     * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
+     * allowed, an exception will be triggered and the send will fail.
+     *
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     *
+     * @param event Event to send to the service.
+     * @return A {@link Mono} that completes when the event is pushed to the service.
+     */
+    public Mono<Void> send(EventData event) {
+        Objects.requireNonNull(event);
+
+        return send(Flux.just(event));
+    }
+
+    /**
+     * Sends a single event to the associated Event Hub with the send options. If the size of the single event exceeds
+     * the maximum size allowed, an exception will be triggered and the send will fail.
+     *
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     *
+     * @param event Event to send to the service.
+     * @param options The set of options to consider when sending this event.
+     * @return A {@link Mono} that completes when the event is pushed to the service.
+     */
+    public Mono<Void> send(EventData event, EventBatchingOptions options) {
+        Objects.requireNonNull(event);
+        Objects.requireNonNull(options);
+
+        return send(Flux.just(event), options);
     }
 
     /**
@@ -121,9 +157,17 @@ public class EventSender implements Closeable {
 
     private Mono<Void> sendInternal(Flux<EventData> events, EventBatchingOptions options) {
         final String partitionKey = options.partitionKey();
-        if (!ImplUtils.isNullOrEmpty(partitionKey) && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            throw new IllegalArgumentException(
-                String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", MAX_PARTITION_KEY_LENGTH));
+
+        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
+            if (isPartitionSender) {
+                throw new IllegalArgumentException(String.format(Locale.US,
+                    "SendOptions.partitionKey() cannot be set when an EventSender is "
+                        + "created with EventSenderOptions.partitionId() set. This EventSender can only send events to partition '%s'.",
+                    senderOptions.partitionId()));
+            } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+                throw new IllegalArgumentException(String.format(Locale.US,
+                    "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
+            }
         }
 
         //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
