@@ -103,6 +103,9 @@ public class Poller<T> {
      * The next poll cycle will be defined by {@code retryAfter} value in {@link PollResponse}.
      * In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
      *
+     * <p><strong>Code Sample - Create poller object</strong></p>
+     * {@codesnippet com.azure.core.util.polling.poller.initialize.interval.polloperation}
+     *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
      * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.PollResponse.OperationStatus}.

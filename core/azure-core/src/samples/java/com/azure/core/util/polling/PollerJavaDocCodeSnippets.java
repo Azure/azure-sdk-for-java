@@ -44,9 +44,46 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
+     * Initialise
+     */
+    public void initialize() {
+        PollResponse<String> finalPollResponse =
+            new PollResponse<String>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
+        PollResponse<String> inProgressResp =
+            new PollResponse<String>(PollResponse.OperationStatus.IN_PROGRESS, "Operation in progress.");
+
+        long totalTimeoutInMillis = 1000 * 2;
+        // BEGIN: com.azure.core.util.polling.poller.initialize.interval.polloperation
+        // Define your custom poll operation
+        Function<PollResponse<String>, Mono<PollResponse<String>>> pollOperation =
+            new Function<PollResponse<String>, Mono<PollResponse<String>>>() {
+                // Will return success after this time.
+                LocalDateTime timeToReturnFinalResponse
+                    = LocalDateTime.now().plus(Duration.ofMillis(800));
+                @Override
+                public Mono<PollResponse<String>> apply(PollResponse<String> prePollResponse) {
+                    if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
+                        System.out.println("returning intermediate response " + inProgressResp.getValue());
+                        return Mono.just(inProgressResp);
+                    } else {
+                        System.out.println("returning final response " + finalPollResponse.getValue());
+                        return Mono.just(finalPollResponse);
+                    }
+                }
+            };
+
+        //Create poller instance
+        Poller<String> myPoller = new Poller<>(Duration.ofMillis(100), pollOperation);
+
+        // Default polling will start transparently.
+
+        // END: com.azure.core.util.polling.poller.initialize.interval.polloperation
+    }
+
+    /**
      * Initialise and subscribe snippet
      */
-    public void initialiseAndSubscribe() {
+    public void initializeAndSubscribe() {
         PollResponse<String> finalPollResponse =
             new PollResponse<String>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
         PollResponse<String> inProgressResp =
