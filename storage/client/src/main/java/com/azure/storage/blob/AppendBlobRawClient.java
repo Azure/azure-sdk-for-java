@@ -98,14 +98,14 @@ final class AppendBlobRawClient extends BlobRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      *
      * @return Emits the successful response.
      *
@@ -122,14 +122,14 @@ final class AppendBlobRawClient extends BlobRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      * @param appendBlobAccessConditions
      *         {@link AppendBlobAccessConditions}
      * @param context

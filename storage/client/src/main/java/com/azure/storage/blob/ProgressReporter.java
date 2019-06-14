@@ -129,7 +129,7 @@ final class ProgressReporter {
     }
 
     /**
-     * Adds progress reporting functionality to the given {@code Flowable}. Each subscription (and therefore each
+     * Adds progress reporting functionality to the given {@code Flux}. Each subscription (and therefore each
      * retry) will rewind the progress reported so as not to over-report. The data reported will be the total amount
      * of data emitted so far, or the "current position" of the Flowable.
      *
@@ -138,7 +138,7 @@ final class ProgressReporter {
      * @param progressReceiver
      *         {@link IProgressReceiver}
      *
-     * @return A {@code Flowable} that emits the same data as the source but calls a callback to report the total amount
+     * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount
      * of data emitted so far.
      *
      * @apiNote ## Sample Code \n

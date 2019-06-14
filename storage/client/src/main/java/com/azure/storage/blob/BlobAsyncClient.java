@@ -19,6 +19,7 @@ import reactor.netty.ByteBufFlux;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -36,7 +37,7 @@ import java.nio.ByteBuffer;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
@@ -272,10 +273,36 @@ public class BlobAsyncClient {
             .flatMapMany(response -> ByteBufFlux.fromInbound(response.body(options)).asByteBuffer());
     }
 
+    /**
+     * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * @param filePath
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     */
     public Mono<Void> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, null, false, null, null);
     }
 
+    /**
+     * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * @param filePath
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param range
+     *         {@link BlobRange}
+     * @param accessConditions
+     *         {@link BlobAccessConditions}
+     * @param rangeGetContentMD5
+     *         Whether the contentMD5 for the specified blob range should be returned.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
         //todo make this method smart

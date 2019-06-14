@@ -33,7 +33,7 @@ import java.time.Duration;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient},
- * and operations on the service are available on {@link BlobServiceClient}.
+ * and operations on the service are available on {@link StorageClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
@@ -219,7 +219,8 @@ public class BlobClient {
     }
 
     /**
-     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Downloads the entire blob into an output stream. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
@@ -229,7 +230,8 @@ public class BlobClient {
     }
 
     /**
-     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
@@ -256,10 +258,32 @@ public class BlobClient {
         }
     }
 
+    /**
+     * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * @param filePath
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     */
     public void downloadToFile(String filePath) throws IOException {
         this.downloadToFile(filePath, null, null, null, false, null);
     }
 
+    /**
+     * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * @param filePath
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param range
+     *         {@link BlobRange}
+     * @param accessConditions
+     *         {@link BlobAccessConditions}
+     * @param rangeGetContentMD5
+     *         Whether the contentMD5 for the specified blob range should be returned.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
     public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
         Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);

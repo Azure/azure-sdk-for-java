@@ -349,7 +349,7 @@
 //    }
 //
 //    /**
-//     * Uploads the contents of an arbitrary {@code Flowable} to a block blob. This Flowable need not be replayable and
+//     * Uploads the contents of an arbitrary {@code Flux} to a block blob. This Flowable need not be replayable and
 //     * therefore it may have as its source a network stream or any other data for which the replay behavior is unknown
 //     * (non-replayable meaning the Flowable may not return the exact same data on each subscription).
 //     *

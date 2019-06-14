@@ -34,7 +34,7 @@ import java.net.URL;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
  * Please refer
@@ -135,14 +135,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
      *         be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
      *         0-511, 512-1023, etc.
      * @param body
-     *         The data to upload. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      *
      * @return
@@ -158,14 +158,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
      * @param body
-     *         The data to upload. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}

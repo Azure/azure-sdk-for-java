@@ -38,7 +38,7 @@ public class Sample {
 
         // list containers in account
         System.out.println("Listing containers in account:");
-        for (ContainerItem item : serviceClient.listContainers(new ListContainersOptions())) {
+        for (ContainerItem item : serviceClient.listContainers()) {
             System.out.println(item.name());
         }
         System.out.println();
@@ -63,7 +63,7 @@ public class Sample {
         System.out.println();
 
         // cleanup
-        for (ContainerItem item : serviceClient.listContainers(new ListContainersOptions())) {
+        for (ContainerItem item : serviceClient.listContainers()) {
             containerClient = serviceClient.getContainerClient(item.name());
             containerClient.delete();
             System.out.println("Deleted container: " + item.name());
@@ -96,7 +96,7 @@ public class Sample {
             // list containers
             .thenMany(Flux.defer(() -> {
                 System.out.println("Listing containers in account:");
-                return serviceClient.listContainers(new ListContainersOptions())
+                return serviceClient.listContainers()
                     .flatMap(containerItem -> {
                         System.out.println(containerItem.name());
                         return Mono.empty();
@@ -133,7 +133,7 @@ public class Sample {
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup
-            .thenMany(serviceClient.listContainers(new ListContainersOptions()))
+            .thenMany(serviceClient.listContainers())
             .flatMap(containerItem -> serviceClient
                 .getContainerAsyncClient(containerItem.name())
                 .delete())

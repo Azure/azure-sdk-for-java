@@ -93,14 +93,11 @@ public final class StorageAsyncClient {
      * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param options
-     *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     *
      * @return
      *      A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainers(ListContainersOptions options) {
-        return this.listContainers(options, null);
+    public Flux<ContainerItem> listContainers() {
+        return this.listContainers(new ListContainersOptions(), null);
     }
 
     /**

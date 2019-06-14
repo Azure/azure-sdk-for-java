@@ -31,7 +31,7 @@ import java.util.List;
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient},
- * and operations on the service are available on {@link BlobServiceClient}.
+ * and operations on the service are available on {@link StorageClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>

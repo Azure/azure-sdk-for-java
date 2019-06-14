@@ -57,16 +57,16 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      *
      * @return Emits the successful response.
      *
@@ -87,16 +87,16 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
-     *         The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      * @param headers
      *         {@link BlobHTTPHeaders}
      * @param metadata
@@ -130,17 +130,17 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param data
-     *         The data to write to the block. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      *
      * @return Emits the successful response.
      *
@@ -158,17 +158,17 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flowable} must produce the same data each time it is subscribed to.
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param data
-     *         The data to write to the block. Note that this {@code Flowable} must be replayable if retries are enabled
+     *         The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
-     *         emitted by the {@code Flowable}.
+     *         emitted by the {@code Flux}.
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.

@@ -86,14 +86,11 @@ public final class StorageClient {
      * through while new items are automatically retrieved as needed. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @param options
-     *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     *
      * @return
      *      The list of containers.
      */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options) {
-        return this.listContainers(options, null);
+    public Iterable<ContainerItem> listContainers() {
+        return this.listContainers(new ListContainersOptions(), null);
     }
 
     /**
