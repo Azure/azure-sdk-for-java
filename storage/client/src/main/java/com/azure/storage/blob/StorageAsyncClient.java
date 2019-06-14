@@ -20,7 +20,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a storage service. It may only be instantiated through a a {@link StorageClientBuilder}.
+ * Client to a storage account. It may only be instantiated through a a {@link StorageClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
@@ -65,7 +65,7 @@ public final class StorageAsyncClient {
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the storage service client builder
+     * @param builder the storage account client builder
      */
     StorageAsyncClient(StorageClientBuilder builder) {
         this.builder = builder;
@@ -144,7 +144,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the storage service properties.
+     *      A reactive response containing the storage account properties.
      */
     public Mono<StorageServiceProperties> getProperties() {
         return this.getProperties(null);
@@ -162,7 +162,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the storage service properties.
+     *      A reactive response containing the storage account properties.
      */
     public Mono<StorageServiceProperties> getProperties(Context context) {
         return storageAsyncRawClient
@@ -180,7 +180,7 @@ public final class StorageAsyncClient {
      *         Configures the service.
      *
      * @return
-     *      A reactive response containing the storage service properties.
+     *      A reactive response containing the storage account properties.
      */
     public Mono<Void> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
@@ -202,7 +202,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the storage service properties.
+     *      A reactive response containing the storage account properties.
      */
     public Mono<Void> setProperties(StorageServiceProperties properties, Context context) {
         return storageAsyncRawClient
@@ -258,7 +258,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the storage service statistics.
+     *      A reactive response containing the storage account statistics.
      */
     public Mono<StorageServiceStats> getStatistics() {
         return this.getStatistics(null);
@@ -278,7 +278,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the storage service statistics.
+     *      A reactive response containing the storage account statistics.
      */
     public Mono<StorageServiceStats> getStatistics(Context context) {
         return storageAsyncRawClient
@@ -291,7 +291,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the storage service account info.
+     *      A reactive response containing the storage account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -309,7 +309,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the storage service account info.
+     *      A reactive response containing the storage account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo(Context context) {
         return storageAsyncRawClient

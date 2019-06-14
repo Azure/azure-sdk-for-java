@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a storage service. It may only be instantiated through a a {@link StorageClientBuilder}.
+ * Client to a storage account. It may only be instantiated through a a {@link StorageClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
@@ -57,7 +57,7 @@ public final class StorageClient {
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the storage service client builder
+     * @param builder the storage account client builder
      */
     StorageClient(StorageClientBuilder builder) {
         this.builder = builder;
@@ -122,7 +122,7 @@ public final class StorageClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * @return
-     *      The storage service properties.
+     *      The storage account properties.
      */
     public StorageServiceProperties getProperties() {
         return this.getProperties(null, null);
@@ -142,7 +142,7 @@ public final class StorageClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The storage service properties.
+     *      The storage account properties.
      */
     public StorageServiceProperties getProperties(Duration timeout, Context context) {
 
@@ -163,7 +163,7 @@ public final class StorageClient {
      *         Configures the service.
      *
      * @return
-     *      The storage service properties.
+     *      The storage account properties.
      */
     public void setProperties(StorageServiceProperties properties) {
         this.setProperties(properties, null, null);
@@ -187,7 +187,7 @@ public final class StorageClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The storage service properties.
+     *      The storage account properties.
      */
     public void setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
         Mono<Void> response = storageAsyncClient.setProperties(properties, context);
@@ -251,7 +251,7 @@ public final class StorageClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @return
-     *      The storage service statistics.
+     *      The storage account statistics.
      */
     public StorageServiceStats getStatistics() {
         return this.getStatistics(null, null);
@@ -273,7 +273,7 @@ public final class StorageClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The storage service statistics.
+     *      The storage account statistics.
      */
     public StorageServiceStats getStatistics(Duration timeout, Context context) {
         Mono<StorageServiceStats> response = storageAsyncClient.getStatistics(context);
@@ -288,7 +288,7 @@ public final class StorageClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return
-     *      The storage service account info.
+     *      The storage account info.
      */
     public StorageAccountInfo getAccountInfo() {
         return this.getAccountInfo(null, null);
@@ -308,7 +308,7 @@ public final class StorageClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The storage service account info.
+     *      The storage account info.
      */
     public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
         Mono<StorageAccountInfo> response = storageAsyncClient.getAccountInfo(context);

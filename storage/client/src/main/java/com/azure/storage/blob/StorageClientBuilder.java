@@ -125,7 +125,7 @@ public final class StorageClientBuilder {
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
+     * Sets the blob service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated StorageClientBuilder object
      */
