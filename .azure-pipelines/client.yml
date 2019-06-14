@@ -72,7 +72,7 @@ jobs:
         displayName: 'Install reporting tools'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip'
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -123,7 +123,6 @@ jobs:
 
       - powershell: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
-          copy -r eng/jacoco-test-coverage/target/site $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
@@ -215,3 +214,25 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'
+
+        # Publish JaCoCo code coverage results from a build
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage report'
+        inputs:
+            codeCoverageTool: 'JaCoCo'
+            summaryFileLocation: $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+            reportDirectory: $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/test-coverage/
+            failIfCoverageEmpty: true
+
+        # Copy test coverage reports
+      - powershell: |
+            copy -r $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/ $(Build.ArtifactStagingDirectory)
+        displayName: 'Copy test coverage report to staging'
+
+
+        # Publish build artifacts
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish artifact'
+        inputs:
+          artifactName: '$(OSName)-$(JavaVersion)-test-coverage'
+
