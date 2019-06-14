@@ -239,7 +239,7 @@ public class QueueClientTests extends QueueClientTestsBase {
     @Override
     public void getAccessPolicyQueueDoesNotExist() {
         try {
-            client.getAccessPolicy();
+            client.getAccessPolicy().iterator().hasNext();
             fail("Attempting to get access policies on a queue that doesn't exist should throw an exception");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 404);
@@ -409,7 +409,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         TestHelpers.assertResponseStatusCode(client.create(), 201);
 
         try {
-            client.dequeueMessages(64);
+            client.dequeueMessages(64).iterator().hasNext();
             fail("Attempting to get more than 32 messages from a queue should throw an exception");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 400);
@@ -419,7 +419,7 @@ public class QueueClientTests extends QueueClientTestsBase {
     @Override
     public void dequeueQueueDoesNotExist() {
         try {
-            client.dequeueMessages();
+            client.dequeueMessages().iterator().hasNext();
             fail("Attempting to get messages from a queue that doesn't exist should throw an exception");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 404);
@@ -458,7 +458,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         TestHelpers.assertResponseStatusCode(client.create(), 201);
 
         try {
-            client.peekMessages(64);
+            client.peekMessages(64).iterator().hasNext();
             fail("Attempting to peek more than 32 messages from a queue should throw an exception");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 400);
@@ -468,7 +468,7 @@ public class QueueClientTests extends QueueClientTestsBase {
     @Override
     public void peekQueueDoesNotExist() {
         try {
-            client.peekMessages();
+            client.peekMessages().iterator().hasNext();
             fail("Attempting to peek messages from a queue that doesn't exist should throw an exception");
         } catch (Exception exception) {
             TestHelpers.assertExceptionStatusCode(exception, 404);

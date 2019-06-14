@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71987991",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue628634e3",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:12 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "70a2a8d1-2003-0039-26f7-228f8f000000"
+      "x-ms-request-id" : "6b5bec3d-e003-0024-17ff-225665000000"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71987991?comp=metadata",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue628634e3?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:12 GMT",
       "content-length" : "285",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -31,41 +31,41 @@
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "70a2a8d5-2003-0039-29f7-228f8f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:70a2a8d5-2003-0039-29f7-228f8f000000\nTime:2019-06-14T21:20:47.2888391Z</Message><MetadataValue>bad metadata</MetadataValue></Error>"
+      "x-ms-request-id" : "6b5bec57-e003-0024-2dff-225665000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:6b5bec57-e003-0024-2dff-225665000000\nTime:2019-06-14T22:21:13.2517053Z</Message><MetadataValue>bad metadata</MetadataValue></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71987991/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue628634e3/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:12 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "70a2a8d9-2003-0039-2cf7-228f8f000000"
+      "x-ms-request-id" : "6b5bec63-e003-0024-37ff-225665000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue71987991",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue628634e3",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:12 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "70a2a8dc-2003-0039-2df7-228f8f000000"
+      "x-ms-request-id" : "6b5bec75-e003-0024-44ff-225665000000"
     }
   } ],
-  "variables" : [ "queue71987991" ]
+  "variables" : [ "queue628634e3" ]
 }

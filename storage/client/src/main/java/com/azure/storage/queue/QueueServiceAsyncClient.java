@@ -11,7 +11,6 @@ import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageErrorCode;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
@@ -48,7 +47,7 @@ public final class QueueServiceAsyncClient {
     /**
      * @return URL of the storage account queue endpoint
      */
-    public String url() {
+    public String getUrl() {
         return client.url();
     }
 
@@ -66,7 +65,7 @@ public final class QueueServiceAsyncClient {
      * @param queueName Name of the queue
      * @return the client to interact with the new queue
      */
-    public QueueAsyncClient createQueue(String queueName) {
+    public Mono<Response<QueueAsyncClient>> createQueue(String queueName) {
         return createQueue(queueName, null);
     }
 
@@ -77,18 +76,11 @@ public final class QueueServiceAsyncClient {
      * @return the client to interact with the new queue
      * @throws StorageErrorException If the queue fails to be created
      */
-    public QueueAsyncClient createQueue(String queueName, Map<String, String> metadata) {
+    public Mono<Response<QueueAsyncClient>> createQueue(String queueName, Map<String, String> metadata) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
 
-        try {
-            queueAsyncClient.create(metadata).block();
-        } catch (StorageErrorException ex) {
-            if (!StorageErrorCode.QUEUE_ALREADY_EXISTS.toString().equals(ex.value().message())) {
-                throw ex;
-            }
-        }
-
-        return queueAsyncClient;
+        return queueAsyncClient.create(metadata)
+            .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
     /**
@@ -96,23 +88,16 @@ public final class QueueServiceAsyncClient {
      * @param queueName Name of the queue
      * @throws StorageErrorException If the queue fails to be deleted
      */
-    public void deleteQueue(String queueName) {
-        try {
-            new QueueAsyncClient(client, queueName).delete().block();
-        } catch (StorageErrorException ex) {
-            if (!StorageErrorCode.QUEUE_NOT_FOUND.toString().equals(ex.value().message())
-                && !StorageErrorCode.QUEUE_BEING_DELETED.toString().equals(ex.value().message())) {
-                throw ex;
-            }
-        }
+    public Mono<VoidResponse> deleteQueue(String queueName) {
+        return new QueueAsyncClient(client, queueName).delete();
     }
 
     /**
      * Lists the queues in the storage account
      * @return queues in the storage account
      */
-    public Flux<QueueItem> listQueuesSegment() {
-        return listQueuesSegment(null, null);
+    public Flux<QueueItem> listQueues() {
+        return listQueues(null, null);
     }
 
     /**
@@ -120,8 +105,8 @@ public final class QueueServiceAsyncClient {
      * @param options Filter for queue selection
      * @return queues in the storage account that satisfy the filter requirements
      */
-    public Flux<QueueItem> listQueuesSegment(QueuesSegmentOptions options) {
-        return listQueuesSegment(null, options);
+    public Flux<QueueItem> listQueues(QueuesSegmentOptions options) {
+        return listQueues(null, options);
     }
 
     /**
@@ -130,7 +115,7 @@ public final class QueueServiceAsyncClient {
      * @param options Filter for queue selection
      * @return queues in the storage account that satisfy the filter requirements
      */
-    Flux<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
+    Flux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
         String prefix = null;
         Integer maxResults = null;
         List<ListQueuesIncludeType> include = null;
@@ -152,7 +137,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<StorageServiceProperties>> getProperties() {
         return client.services().getPropertiesWithRestResponseAsync(Context.NONE)
-            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 
     /**
@@ -170,6 +155,6 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<StorageServiceStats>> getStatistics() {
         return client.services().getStatisticsWithRestResponseAsync(Context.NONE)
-            .map(response -> new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), response.value()));
+            .map(response -> new SimpleResponse<>(response, response.value()));
     }
 }

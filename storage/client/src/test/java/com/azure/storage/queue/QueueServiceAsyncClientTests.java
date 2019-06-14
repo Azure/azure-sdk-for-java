@@ -47,7 +47,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
     @Override
     protected void afterTest() {
-        serviceClient.listQueuesSegment(new QueuesSegmentOptions().prefix(queueName))
+        serviceClient.listQueues(new QueuesSegmentOptions().prefix(queueName))
             .collectList()
             .block()
             .forEach(queue -> {
@@ -68,7 +68,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void createQueue() {
-        StepVerifier.create(serviceClient.createQueue(queueName).enqueueMessage("Testing service client creating a queue"))
+        StepVerifier.create(serviceClient.createQueue(queueName).block().value().enqueueMessage("Testing service client creating a queue"))
             .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
@@ -78,7 +78,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
-        QueueAsyncClient client = serviceClient.createQueue(queueName, metadata);
+        QueueAsyncClient client = serviceClient.createQueue(queueName, metadata).block().value();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
@@ -95,11 +95,11 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
 
-        StepVerifier.create(serviceClient.createQueue(queueName, metadata).enqueueMessage(messageText))
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().enqueueMessage(messageText))
             .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(serviceClient.createQueue(queueName, metadata).peekMessages())
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().peekMessages())
             .assertNext(response -> assertEquals(messageText, response.messageText()))
             .verifyComplete();
     }
@@ -120,8 +120,8 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void deleteExistingQueue() {
-        QueueAsyncClient client = serviceClient.createQueue(queueName);
-        serviceClient.deleteQueue(queueName);
+        QueueAsyncClient client = serviceClient.createQueue(queueName).block().value();
+        serviceClient.deleteQueue(queueName).block();
 
         StepVerifier.create(client.enqueueMessage("Expecting an exception"))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
@@ -142,10 +142,10 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         for (int i = 0; i < 3; i++) {
             QueueItem queue = new QueueItem().name(queueName + i);
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions()))
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions()))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
@@ -166,10 +166,10 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
             }
 
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().includeMetadata(true)))
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true)))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
@@ -188,10 +188,10 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
                 queue.name(queueName + i);
             }
 
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().prefix(queueName + "prefix")))
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix")))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
@@ -203,10 +203,10 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         for (int i = 0; i < 3; i++) {
             QueueItem queue = new QueueItem().name(queueName + i);
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        StepVerifier.create(serviceClient.listQueuesSegment(defaultSegmentOptions().maxResults(2)))
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().maxResults(2)))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();

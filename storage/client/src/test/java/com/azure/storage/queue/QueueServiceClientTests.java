@@ -53,12 +53,12 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
     @Override
     protected void afterTest() {
-        serviceClient.listQueuesSegment(new QueuesSegmentOptions().prefix(queueName))
+        serviceClient.listQueues(new QueuesSegmentOptions().prefix(queueName))
             .forEach(queueToDelete -> {
                 try {
                     QueueClient client = serviceClient.getQueueClient(queueToDelete.name());
                     client.clearMessages();
-                    client.delete();
+                    client.deleteQueue();
                 } catch (StorageErrorException ex) {
                     // Queue already delete, that's what we wanted anyways.
                 }
@@ -77,7 +77,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void createQueue() {
-        QueueClient client = serviceClient.createQueue(queueName);
+        QueueClient client = serviceClient.createQueue(queueName).value();
         Response<EnqueuedMessage> response = client.enqueueMessage("Testing service client creating a queue");
         TestHelpers.assertResponseStatusCode(response, 201);
     }
@@ -87,7 +87,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
-        QueueClient client = serviceClient.createQueue(queueName, metadata);
+        QueueClient client = serviceClient.createQueue(queueName, metadata).value();
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
         TestHelpers.assertResponseStatusCode(propertiesResponse, 200);
@@ -101,10 +101,10 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
 
-        EnqueuedMessage enqueuedMessage = serviceClient.createQueue(queueName, metadata).enqueueMessage(messageText).value();
+        EnqueuedMessage enqueuedMessage = serviceClient.createQueue(queueName, metadata).value().enqueueMessage(messageText).value();
         assertNotNull(enqueuedMessage);
 
-        PeekedMessage peekedMessage = serviceClient.createQueue(queueName, metadata).peekMessages().iterator().next();
+        PeekedMessage peekedMessage = serviceClient.createQueue(queueName, metadata).value().peekMessages().iterator().next();
         assertEquals(messageText, peekedMessage.messageText());
     }
 
@@ -125,7 +125,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void deleteExistingQueue() {
-        QueueClient client = serviceClient.createQueue(queueName);
+        QueueClient client = serviceClient.createQueue(queueName).value();
         serviceClient.deleteQueue(queueName);
 
         try {
@@ -155,7 +155,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queue.name(), queue.metadata());
         }
 
-        for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions())) {
+        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions())) {
             TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
@@ -177,7 +177,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queue.name(), queue.metadata());
         }
 
-        for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().includeMetadata(true))) {
+        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true))) {
             TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
@@ -197,7 +197,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queue.name(), queue.metadata());
         }
 
-        for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().prefix(queueName + "prefix"))) {
+        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix"))) {
             TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
@@ -211,7 +211,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queue.name(), queue.metadata());
         }
 
-        for (QueueItem queue : serviceClient.listQueuesSegment(defaultSegmentOptions().maxResults(2))) {
+        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().maxResults(2))) {
             TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }

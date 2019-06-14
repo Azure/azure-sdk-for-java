@@ -1,30 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue38222b2b",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue347236e2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:21:24 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:51 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "70a2b41a-2003-0039-2ff7-228f8f000000"
+      "x-ms-request-id" : "6b5c0a2e-e003-0024-45ff-225665000000"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue38222b2b?comp=acl",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue347236e2?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:21:24 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:51 GMT",
       "content-length" : "371",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -32,41 +32,41 @@
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "70a2b41c-2003-0039-30f7-228f8f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:70a2b41c-2003-0039-30f7-228f8f000000\nTime:2019-06-14T21:21:25.2543323Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>"
+      "x-ms-request-id" : "6b5c0a41-e003-0024-57ff-225665000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:6b5c0a41-e003-0024-57ff-225665000000\nTime:2019-06-14T22:21:51.8724497Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue38222b2b/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue347236e2/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:21:24 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:51 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "70a2b41e-2003-0039-32f7-228f8f000000"
+      "x-ms-request-id" : "6b5c0a4e-e003-0024-64ff-225665000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue38222b2b",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue347236e2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 21:21:24 GMT",
+      "date" : "Fri, 14 Jun 2019 22:21:51 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "70a2b421-2003-0039-35f7-228f8f000000"
+      "x-ms-request-id" : "6b5c0a55-e003-0024-6bff-225665000000"
     }
   } ],
-  "variables" : [ "queue38222b2b" ]
+  "variables" : [ "queue347236e2" ]
 }

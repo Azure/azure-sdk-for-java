@@ -68,7 +68,7 @@ public final class QueueAsyncClient {
     /**
      * @return the URL of the queue
      */
-    public String url() {
+    public String getUrl() {
         return client.url();
     }
 
@@ -166,7 +166,7 @@ public final class QueueAsyncClient {
         QueueMessage message = new QueueMessage().messageText(messageText);
 
         return client.messages().enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, Context.NONE)
-            .map(response -> mapResponse(response, response.value().get(0)));
+            .map(response -> new SimpleResponse<>(response, response.value().get(0)));
     }
 
     /**
@@ -249,7 +249,7 @@ public final class QueueAsyncClient {
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
         QueueGetPropertiesHeaders propertiesHeaders = response.deserializedHeaders();
         QueueProperties properties = new QueueProperties(propertiesHeaders.metadata(), propertiesHeaders.approximateMessagesCount());
-        return mapResponse(response, properties);
+        return new SimpleResponse<>(response, properties);
     }
 
     /*
@@ -260,17 +260,6 @@ public final class QueueAsyncClient {
     private Response<UpdatedMessage> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
         MessageIdUpdateHeaders headers = response.deserializedHeaders();
         UpdatedMessage updatedMessage = new UpdatedMessage(headers.popReceipt(), headers.timeNextVisible());
-        return mapResponse(response, updatedMessage);
-    }
-
-    /*
-     * Maps a response from the service to the expected response for the client
-     * @param response Service response
-     * @param value Service response value
-     * @param <T> Type of teh service response value
-     * @return Mapped response
-     */
-    private <T> SimpleResponse<T> mapResponse(Response response, T value) {
-        return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), value);
+        return new SimpleResponse<>(response, updatedMessage);
     }
 }

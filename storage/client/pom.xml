@@ -10,6 +10,7 @@
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-storage</artifactId>
   <version>12.0.0</version>
 

@@ -35,8 +35,8 @@ public final class QueueClient {
     /**
      * @return the URL of the queue
      */
-    public String url() {
-        return client.url();
+    public String getUrl() {
+        return client.getUrl();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class QueueClient {
      * @return the access policies of the queue
      */
     public Iterable<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().collectList().block();
+        return client.getAccessPolicy().toIterable();
     }
 
     /**
@@ -148,7 +148,7 @@ public final class QueueClient {
      * @return dequeued message information
      */
     public Iterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
-        return client.dequeueMessages(maxMessages, visibilityTimeout).collectList().block();
+        return client.dequeueMessages(maxMessages, visibilityTimeout).toIterable();
     }
 
     /**
@@ -165,7 +165,7 @@ public final class QueueClient {
      * @return peeked message information
      */
     public Iterable<PeekedMessage> peekMessages(Integer maxMessages) {
-        return client.peekMessages(maxMessages).collectList().block();
+        return client.peekMessages(maxMessages).toIterable();
     }
 
     /**

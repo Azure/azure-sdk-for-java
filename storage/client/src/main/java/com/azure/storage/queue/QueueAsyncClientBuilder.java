@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -99,6 +100,7 @@ public final class QueueAsyncClientBuilder {
     public QueueAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
+            UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
             URL fullURL = new URL(endpoint);
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 

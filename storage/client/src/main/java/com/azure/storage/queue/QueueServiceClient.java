@@ -3,6 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
@@ -32,8 +33,8 @@ public final class QueueServiceClient {
     /**
      * @return URL of the storage account queue endpoint
      */
-    public String url() {
-        return client.url();
+    public String getUrl() {
+        return client.getUrl();
     }
 
     /**
@@ -50,7 +51,7 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @return the client to interact with the new queue
      */
-    public QueueClient createQueue(String queueName) {
+    public Response<QueueClient> createQueue(String queueName) {
         return createQueue(queueName, null);
     }
 
@@ -61,8 +62,10 @@ public final class QueueServiceClient {
      * @return the client to interact with the new queue
      * @throws StorageErrorException If the queue fails to be created
      */
-    public QueueClient createQueue(String queueName, Map<String, String> metadata) {
-        return new QueueClient(client.createQueue(queueName, metadata));
+    public Response<QueueClient> createQueue(String queueName, Map<String, String> metadata) {
+        Response<QueueAsyncClient> response = client.createQueue(queueName, metadata).block();
+
+        return new SimpleResponse<>(response, new QueueClient(response.value()));
     }
 
     /**
@@ -70,16 +73,16 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @throws StorageErrorException If the queue fails to be deleted
      */
-    public void deleteQueue(String queueName) {
-        client.deleteQueue(queueName);
+    public VoidResponse deleteQueue(String queueName) {
+        return client.deleteQueue(queueName).block();
     }
 
     /**
      * Lists the queues in the storage account
      * @return queues in the storage account
      */
-    public Iterable<QueueItem> listQueuesSegment() {
-        return listQueuesSegment(null, null);
+    public Iterable<QueueItem> listQueues() {
+        return listQueues(null, null);
     }
 
     /**
@@ -87,8 +90,8 @@ public final class QueueServiceClient {
      * @param options Filter for queue selection
      * @return queues in the storage account that satisfy the filter requirements
      */
-    public Iterable<QueueItem> listQueuesSegment(QueuesSegmentOptions options) {
-        return listQueuesSegment(null, options);
+    public Iterable<QueueItem> listQueues(QueuesSegmentOptions options) {
+        return listQueues(null, options);
     }
 
     /**
@@ -97,8 +100,8 @@ public final class QueueServiceClient {
      * @param options Filter for queue selection
      * @return queues in the storage account that satisfy the filter requirements
      */
-    Iterable<QueueItem> listQueuesSegment(String marker, QueuesSegmentOptions options) {
-        return client.listQueuesSegment(marker, options).collectList().block();
+    Iterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+        return client.listQueues(marker, options).toIterable();
     }
 
     /**
