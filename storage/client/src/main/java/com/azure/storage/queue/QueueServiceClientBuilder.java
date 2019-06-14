@@ -6,7 +6,7 @@ import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.queue.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SASTokenCredential;
 
 /**
  * Fluent builder for queue service clients

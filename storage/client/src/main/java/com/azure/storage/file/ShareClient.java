@@ -2,11 +2,15 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
+import com.azure.storage.file.models.ShareSnapshotInfo;
+import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 public class ShareClient {
@@ -60,7 +64,7 @@ public class ShareClient {
     public Flux<SignedIdentifier> listAccessPolicy() {
         throw new UnsupportedOperationException();
     }
-    public Mono<Response<ShareInfo>> setAccessPolicy(List<SignedIdentifer> permissions) {
+    public Mono<Response<ShareInfo>> setAccessPolicy(List<SignedIdentifier> permissions) {
         throw new UnsupportedOperationException();
     }
 

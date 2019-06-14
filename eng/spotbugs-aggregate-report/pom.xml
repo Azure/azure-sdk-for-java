@@ -9,9 +9,9 @@
     <version>1.0.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
-  <modelVersion>4.0.0</modelVersion>  
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>spotbugs-reporting</artifactId>
-  <version>1.0.0</version>  
+  <version>1.0.0</version>
   <properties>
     <azure-batch.version>5.0.1</azure-batch.version>
     <azure-eventhubs.version>2.3.1</azure-eventhubs.version>
@@ -20,7 +20,7 @@
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     <azure-app-configuration.version>1.0.0-SNAPSHOT</azure-app-configuration.version>
-  </properties>  
+  </properties>
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
@@ -84,6 +84,16 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Added to override the -snippetpath arg which is not applicable here-->
+          <additionalOptions>-maxLineLength 120</additionalOptions>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 

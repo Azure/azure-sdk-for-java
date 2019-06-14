@@ -15,10 +15,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.queue.credentials.SASTokenCredential;
-import com.azure.storage.queue.credentials.SharedKeyCredential;
-import com.azure.storage.queue.policy.SASTokenCredentialPolicy;
-import com.azure.storage.queue.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SASTokenCredentialPolicy;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;

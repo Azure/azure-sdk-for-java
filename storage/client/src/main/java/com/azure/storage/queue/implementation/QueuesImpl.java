@@ -61,7 +61,7 @@ public final class QueuesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Queues")
+    @Service("Storage Queue Queues")
     private interface QueuesService {
         @PUT("{queueName}")
         @ExpectedResponses({201, 204})
