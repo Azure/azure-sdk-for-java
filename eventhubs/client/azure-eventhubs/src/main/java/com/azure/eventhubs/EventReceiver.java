@@ -18,16 +18,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * This is a logical representation of receiving from a EventHub partition.
+ * This is a logical representation of receiving from an Event Hub partition.
  *
  * <p>
- * A {@link EventReceiver#receive()} is tied to a Event Hub PartitionId + consumer group combination.
+ * A {@link EventReceiver#receive()} is tied to a Event Hub partitionId + consumer group combination.
  *
  * <ul>
- * <li>If the {@link EventReceiver} is created where {@link EventReceiverOptions#exclusiveReceiverPriority()} has a
+ * <li>If {@link EventReceiver} is created where {@link EventReceiverOptions#exclusiveReceiverPriority()} has a
  * value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
  * combination. This is the recommended approach to create a {@link EventReceiver}.</li>
- * <li>Multiple receivers per partitionId and consumer group combination can be created using non-epoch receivers.</li>
+ * <li>Multiple receivers per partitionId and consumer group combination can be created by not setting
+ * {@link EventReceiverOptions#exclusiveReceiverPriority()} when creating receivers.</li>
  * </ul>
  *
  * @see EventHubClient#createReceiver(String)

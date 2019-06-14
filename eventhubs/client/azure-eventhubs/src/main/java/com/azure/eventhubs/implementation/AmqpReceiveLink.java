@@ -43,7 +43,9 @@ public interface AmqpReceiveLink extends AmqpLink {
     int getCredits();
 
     /**
-     * Adds an event listener that is invoked when there are no credits on the link left. Informs the
+     * Sets an event listener that is invoked when there are no credits on the link left. If the supplier returns an
+     * integer that is {@code null} or less than 1, then no credits are added to the link and no more messages are
+     * received on the link.
      *
      * @param creditSupplier Supplier that returns the number of credits to add to the link.
      */

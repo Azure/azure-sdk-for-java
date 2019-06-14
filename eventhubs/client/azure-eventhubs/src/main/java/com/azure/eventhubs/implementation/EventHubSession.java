@@ -12,8 +12,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * Represents an AMQP session that supports vendor specific properties and capabilities. For example, creating epoch
- * receivers and getting partition runtime information.
+ * Represents an AMQP session that supports vendor specific properties and capabilities. For example, creating a
+ * receiver that exclusively listens to a partition + consumer group combination, or getting snapshots of partition
+ * information.
  *
  * @see AmqpSession
  * @see ReactorSession

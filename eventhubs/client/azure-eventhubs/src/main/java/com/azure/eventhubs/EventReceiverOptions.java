@@ -64,6 +64,7 @@ public class EventReceiverOptions implements Cloneable {
      * <p>
      * If not specified, the receiver will begin receiving all events that are contained in the partition, starting with
      * the first event that was enqueued and will continue receiving until there are no more events observed.
+     * </p>
      *
      * @param position Position within the partition where the receiver should begin reading events.
      * @return The updated ReceiverOptions object.
