@@ -541,7 +541,7 @@
   </profiles>
 
   <modules>
-    <module>./batch/data-plane</module>
+    <module>./sdk/batch</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./sdk/servicebus</module>
