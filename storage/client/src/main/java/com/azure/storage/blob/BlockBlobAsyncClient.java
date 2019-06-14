@@ -7,8 +7,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlockBlobCommitBlockListHeaders;
-import com.azure.storage.blob.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -22,14 +20,13 @@ import reactor.netty.ByteBufFlux;
 import java.io.File;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 /**
  * Client to a block blob. It may only be instantiated through a a {@link BlockBlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#createBlockBlobAsyncClient(String)}. This class does not hold
+ * {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
  *

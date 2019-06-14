@@ -14,7 +14,7 @@ class BlobAPITest extends APISpec {
     BlobClient bu
 
     def setup() {
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
         bu.upload(defaultInputStream.get(), defaultDataSize)
     }
 
@@ -55,7 +55,7 @@ class BlobAPITest extends APISpec {
 
     def "Download empty file"() {
         setup:
-        bu = cu.createAppendBlobClient("emptyAppendBlob")
+        bu = cu.getAppendBlobClient("emptyAppendBlob")
         bu.create()
 
         when:
@@ -202,7 +202,7 @@ class BlobAPITest extends APISpec {
 
     def "Download error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.download(null, null, null, null, false, null)
@@ -321,7 +321,7 @@ class BlobAPITest extends APISpec {
 
     /*def "Get properties error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.getProperties(null, null)
@@ -442,7 +442,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.setHTTPHeaders(null, null, null)
@@ -565,7 +565,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.setMetadata(null, null, null)
@@ -658,7 +658,7 @@ class BlobAPITest extends APISpec {
 
     def "Acquire lease error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.acquireLease(null, 20, null, null)
@@ -750,7 +750,7 @@ class BlobAPITest extends APISpec {
 
     def "Renew lease error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.renewLease("id", null, null)
@@ -842,7 +842,7 @@ class BlobAPITest extends APISpec {
 
     def "Release lease error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.releaseLease("id", null, null)
@@ -944,7 +944,7 @@ class BlobAPITest extends APISpec {
 
     def "Break lease error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.breakLease(null, null, null)
@@ -1035,7 +1035,7 @@ class BlobAPITest extends APISpec {
 
     def "Change lease error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.changeLease("id", "id", null, null)
@@ -1150,7 +1150,7 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.createSnapshot(null, null, null)
@@ -1175,7 +1175,7 @@ class BlobAPITest extends APISpec {
 
     /*def "Copy"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         BlobStartCopyFromURLHeaders headers =
             bu2.startCopyFromURL(bu.toURL(), null, null, null, null)
 
@@ -1202,7 +1202,7 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Copy metadata"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         Metadata metadata = new Metadata()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
@@ -1227,7 +1227,7 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Copy source AC"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         match = setupBlobMatchCondition(bu, match)
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
             .ifMatch(match).ifNoneMatch(noneMatch)
@@ -1247,7 +1247,7 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Copy source AC fail"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
             .ifMatch(match).ifNoneMatch(noneMatch)
@@ -1269,7 +1269,7 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Copy dest AC"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
@@ -1295,7 +1295,7 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Copy dest AC fail"() {
         setup:
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
@@ -1328,9 +1328,9 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB)
 
-        ContainerClient cu2 = alternateServiceURL.createContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
         cu2.create(null, null, null)
-        BlockBlobClient bu2 = cu2.createBlockBlobClient(generateBlobName())
+        BlockBlobClient bu2 = cu2.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
 
@@ -1370,9 +1370,9 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.createContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
         cu2.create()
-        BlobClient bu2 = cu2.createBlobClient(generateBlobName())
+        BlobClient bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
         String copyID = bu2.startCopyFromURL(bu.toURL())
@@ -1396,9 +1396,9 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.createContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
         cu2.create()
-        BlobClient bu2 = cu2.createBlobClient(generateBlobName())
+        BlobClient bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
         String copyID =
@@ -1418,9 +1418,9 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.createContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
         cu2.create()
-        BlockBlobClient bu2 = cu2.createBlockBlobClient(generateBlobName())
+        BlockBlobClient bu2 = cu2.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
 
@@ -1439,7 +1439,7 @@ class BlobAPITest extends APISpec {
 
     def "Copy error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.startCopyFromURL(new URL("http://www.error.com"))
@@ -1450,7 +1450,7 @@ class BlobAPITest extends APISpec {
 
     def "Abort copy error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.abortCopyFromURL("id", null, null)
@@ -1477,7 +1477,7 @@ class BlobAPITest extends APISpec {
         setup:
         // Sync copy is a deep copy, which requires either sas or public access.
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         def headers = bu2.syncCopyFromURL(bu.toURL(), null, null,null, null).blockingGet().headers()
 
         expect:
@@ -1489,7 +1489,7 @@ class BlobAPITest extends APISpec {
     /*def "Sync copy min"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
 
         expect:
         bu2.syncCopyFromURL(bu.toURL()).blockingGet().statusCode() == 202
@@ -1499,7 +1499,7 @@ class BlobAPITest extends APISpec {
     def "Sync copy metadata"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         Metadata metadata = new Metadata()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
@@ -1524,7 +1524,7 @@ class BlobAPITest extends APISpec {
     def "Sync copy source AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         match = setupBlobMatchCondition(bu, match)
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
             .ifMatch(match).ifNoneMatch(noneMatch)
@@ -1545,7 +1545,7 @@ class BlobAPITest extends APISpec {
     def "Sync copy source AC fail"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
             .ifMatch(match).ifNoneMatch(noneMatch)
@@ -1568,7 +1568,7 @@ class BlobAPITest extends APISpec {
     def "Sync copy dest AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
@@ -1594,7 +1594,7 @@ class BlobAPITest extends APISpec {
     def "Sync copy dest AC fail"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        BlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultFlux, defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
@@ -1620,7 +1620,7 @@ class BlobAPITest extends APISpec {
 
     /*def "Sync copy error"() {
         setup:
-        def bu2 = cu.createBlockBlobClient(generateBlobName())
+        def bu2 = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu2.syncCopyFromURL(bu.toURL(), null, null, null, null).blockingGet()
@@ -1665,7 +1665,7 @@ class BlobAPITest extends APISpec {
         setup:
         bu.createSnapshot()
         // Create an extra blob so the list isn't empty (null) when we delete base blob, too
-        BlockBlobClient bu2 = cu.createBlockBlobClient(generateBlobName())
+        BlockBlobClient bu2 = cu.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -1742,7 +1742,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob delete error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.delete(null, null, null)
@@ -1768,8 +1768,8 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Set tier block blob"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateContainerName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateContainerName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultData.remaining())
 
@@ -1794,8 +1794,8 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Set tier page blob"() {
         setup:
-        ContainerClient cu = premiumServiceURL.createContainerClient(generateContainerName())
-        PageBlobClient bu = cu.createPageBlobClient(generateBlobName())
+        ContainerClient cu = premiumServiceURL.getContainerClient(generateContainerName())
+        PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
         cu.create()
         bu.create(512)
 
@@ -1820,8 +1820,8 @@ class BlobAPITest extends APISpec {
 
     /*def "Set tier min"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateContainerName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateContainerName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultData.remaining())
 
@@ -1834,8 +1834,8 @@ class BlobAPITest extends APISpec {
 
     /*def "Set tier inferred"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateBlobName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -1859,8 +1859,8 @@ class BlobAPITest extends APISpec {
     /*@Unroll
     def "Set tier archive status"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateBlobName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create(null, null, null, defaultContext)
         bu.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -1880,8 +1880,8 @@ class BlobAPITest extends APISpec {
 
     /*def "Set tier error"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateBlobName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -1903,8 +1903,8 @@ class BlobAPITest extends APISpec {
 
     /*def "Set tier lease"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateBlobName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
         def leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -1918,8 +1918,8 @@ class BlobAPITest extends APISpec {
 
     /*def "Set tier lease fail"() {
         setup:
-        ContainerClient cu = blobStorageServiceURL.createContainerClient(generateBlobName())
-        BlockBlobClient bu = cu.createBlockBlobClient(generateBlobName())
+        ContainerClient cu = blobStorageServiceURL.getContainerClient(generateBlobName())
+        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
         cu.create()
         bu.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -1972,7 +1972,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Undelete error"() {
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.undelete(null)
@@ -2016,7 +2016,7 @@ class BlobAPITest extends APISpec {
         when:
         StorageClient serviceURL = StorageClient.builder() new ServiceURL(primaryServiceURL.toURL(),
             StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
-        serviceURL.createContainerClient(generateContainerName()).createBlobClient(generateBlobName())
+        serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName())
             .getAccountInfo(null)
 
         then:

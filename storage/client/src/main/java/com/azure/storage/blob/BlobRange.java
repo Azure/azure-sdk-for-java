@@ -13,10 +13,38 @@ import java.util.Locale;
 public final class BlobRange {
 
     private long offset;
-
     private Long count;
 
-    public BlobRange() {
+    /**
+     * Specifies the download operation to start from the offset position (zero-based) and download the
+     * rest of the entire blob to the end.
+     *
+     * @param offset
+     *          the zero-based position to start downloading
+     */
+    public BlobRange(long offset) {
+        if (offset < 0) {
+            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
+        }
+        this.offset = offset;
+    }
+
+    /**
+     * Specifies the download operation to start from the offset position (zero-based) and download the
+     * count number of bytes.
+     *
+     * @param offset
+     *          the zero-based position to start downloading
+     * @param count
+     *          the number of bytes to download
+     */
+    public BlobRange(long offset, long count) {
+        this(offset);
+        if (count < 0) {
+            throw new IllegalArgumentException(
+                "BlobRange count must be greater than or equal to 0 if specified.");
+        }
+        this.count = count;
     }
 
     /**
@@ -27,33 +55,10 @@ public final class BlobRange {
     }
 
     /**
-     * Specifies the start of the range. Must be greater than or equal to 0.
-     */
-    public BlobRange offset(long offset) {
-        if (offset < 0) {
-            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
-        }
-        this.offset = offset;
-        return this;
-    }
-
-    /**
      * How many bytes to include in the range. Must be greater than or equal to 0 if specified.
      */
     public Long count() {
         return count;
-    }
-
-    /**
-     * Specifies how many bytes to include in the range. Must be greater than or equal to 0 if specified.
-     */
-    public BlobRange count(Long count) {
-        if (count != null && count < 0) {
-            throw new IllegalArgumentException(
-                    "BlobRange count must be greater than or equal to 0 if specified.");
-        }
-        this.count = count;
-        return this;
     }
 
     /**

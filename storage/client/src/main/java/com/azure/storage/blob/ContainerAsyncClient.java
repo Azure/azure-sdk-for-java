@@ -21,13 +21,13 @@ import java.util.List;
 
 /**
  * Client to a container. It may only be instantiated through a a {@link ContainerClientBuilder} or via the method
- * {@link StorageAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
+ * {@link StorageAsyncClient#getContainerAsyncClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
- * {@link #createBlobAsyncClient(String)}, and operations on the service are available on {@link StorageAsyncClient}.
+ * {@link #getBlobAsyncClient(String)}, and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
@@ -79,7 +79,7 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public BlockBlobAsyncClient createBlockBlobAsyncClient(String blobName) {
+    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
         try {
             return new BlockBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -99,7 +99,7 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public PageBlobAsyncClient createPageBlobAsyncClient(String blobName) {
+    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
         try {
             return new PageBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -119,7 +119,7 @@ public final class ContainerAsyncClient {
      *
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public AppendBlobAsyncClient createAppendBlobAsyncClient(String blobName) {
+    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
         try {
             return new AppendBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -131,15 +131,15 @@ public final class ContainerAsyncClient {
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of
      * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's createBlobAsyncClient instead of calling this object's
-     * createBlobAsyncClient method.
+     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
+     * getBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public BlobAsyncClient createBlobAsyncClient(String blobName) {
+    public BlobAsyncClient getBlobAsyncClient(String blobName) {
         try {
             return new BlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {

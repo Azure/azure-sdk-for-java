@@ -257,7 +257,7 @@ class BlobAsyncRawClient {
     public Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
-        range = range == null ? new BlobRange() : range;
+        range = range == null ? new BlobRange(0) : range;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
             .withOffset(range.offset())
@@ -277,8 +277,7 @@ class BlobAsyncRawClient {
                 return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
-                        this.download(new BlobRange().offset(newInfo.offset())
-                                .count(newInfo.count()),
+                        this.download(new BlobRange(newInfo.offset(), newInfo.count()),
                             new BlobAccessConditions().withModifiedAccessConditions(
                                 new ModifiedAccessConditions().ifMatch(info.eTag())), false,
                             context == null ? Context.NONE : context));

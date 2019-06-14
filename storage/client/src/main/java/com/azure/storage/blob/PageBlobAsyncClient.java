@@ -28,7 +28,7 @@ import java.net.URL;
 /**
  * Client to a page blob. It may only be instantiated through a a {@link PageBlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#createPageBlobAsyncClient(String)}. This class does not hold
+ * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
  *

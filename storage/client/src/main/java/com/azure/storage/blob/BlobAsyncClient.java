@@ -7,8 +7,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobGetAccountInfoHeaders;
-import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -27,7 +25,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a a {@link BlobClientBuilder} or via
- * the method {@link ContainerAsyncClient#createBlobAsyncClient(String)}. This class does not hold any state about a particular
+ * the method {@link ContainerAsyncClient#getBlobAsyncClient(String)}. This class does not hold any state about a particular
  * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>

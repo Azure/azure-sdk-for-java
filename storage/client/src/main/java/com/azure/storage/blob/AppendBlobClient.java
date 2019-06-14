@@ -21,7 +21,7 @@ import java.time.Duration;
 /**
  * Client to an append blob. It may only be instantiated through a a {@link AppendBlobClientBuilder}, via
  * the method {@link BlobClient#asAppendBlobClient()}, or via the method
- * {@link ContainerClient#createAppendBlobClient(String)}. This class does not hold
+ * {@link ContainerClient#getAppendBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
  *

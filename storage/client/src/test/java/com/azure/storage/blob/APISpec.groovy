@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.annotations.HEAD
+
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -212,7 +212,7 @@ class APISpec extends Specification {
     static StorageClient getGenericServiceURL(SharedKeyCredentials creds) {
         // TODO: logging?
 
-        return StorageClient.blobServiceClientBuilder()
+        return StorageClient.storageClientBuilder()
             .endpoint("https://" + creds.getAccountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
@@ -221,14 +221,14 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        StorageClient serviceURL = StorageClient.blobServiceClientBuilder()
+        StorageClient serviceURL = StorageClient.storageClientBuilder()
             .endpoint("http://" + primaryCreds.accountName + ".blob.core.windows.net")
             .credentials(primaryCreds)
             .buildClient()
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
             new ListContainersOptions().withPrefix(containerPrefix))) {
-            ContainerClient containerURL = serviceURL.createContainerClient(c.name())
+            ContainerClient containerURL = serviceURL.getContainerClient(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
                 containerURL.breakLease(0, null, null).block()
             }
@@ -302,7 +302,7 @@ class APISpec extends Specification {
         String containerName = generateContainerName()
 
         primaryServiceURL = getGenericServiceURL(primaryCreds)
-        cu = primaryServiceURL.createContainerClient(containerName)
+        cu = primaryServiceURL.getContainerClient(containerName)
         cu.create()
     }
 
@@ -592,7 +592,7 @@ class APISpec extends Specification {
         def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
         def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
 
-        return StorageClient.blobServiceClientBuilder()
+        return StorageClient.storageClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
             .credentials(new TokenCredentials(token))
             .buildClient()

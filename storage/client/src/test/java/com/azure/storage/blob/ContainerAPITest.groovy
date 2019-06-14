@@ -19,7 +19,7 @@ class ContainerAPITest extends APISpec {
         // Overwrite the existing cu, which has already been created
         String containerName = generateContainerName()
         System.out.println("create all null name: " + containerName)
-        cu = primaryServiceURL.createContainerClient(containerName)
+        cu = primaryServiceURL.getContainerClient(containerName)
 
         when:
         cu.create(null, null, null, null)
@@ -44,7 +44,7 @@ class ContainerAPITest extends APISpec {
         String containerName = generateContainerName()
         System.out.println("create min name: " + containerName)
         when:
-        primaryServiceURL.createContainerClient(containerName).create()
+        primaryServiceURL.getContainerClient(containerName).create()
         then:
         primaryServiceURL.properties
     }
@@ -52,7 +52,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create metadata"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -77,7 +77,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create publicAccess"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
         cu.create(null, publicAccess, null, null)
@@ -110,7 +110,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String containerName = generateContainerName()
         System.out.println("create context name: " + containerName)
-        def cuContext = primaryServiceURL.createContainerClient(containerName)
+        def cuContext = primaryServiceURL.getContainerClient(containerName)
 
         when:
         // No service call is made. Just satisfy the parameters.
@@ -131,7 +131,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete error"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
         cu.delete()
@@ -142,7 +142,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete context"() {
         setup:
-        def cuDeleteContext = primaryServiceURL.createContainerClient(generateContainerName())
+        def cuDeleteContext = primaryServiceURL.getContainerClient(generateContainerName())
         cuDeleteContext.create()
 
         when:
@@ -157,7 +157,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat"() {
         setup:
         String name = generateBlobName()
-        PageBlobClient bu = cu.createPageBlobClient(name)
+        PageBlobClient bu = cu.getPageBlobClient(name)
         bu.create(512, null, null, null, null, null, null)
 
         when:
@@ -193,7 +193,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat min"() {
         when:
         def containerName = generateBlobName()
-        BlockBlobClient bu = cu.createBlockBlobClient(containerName)
+        BlockBlobClient bu = cu.getBlockBlobClient(containerName)
         bu.upload(defaultInputStream, defaultDataSize)
 
         then:
@@ -208,7 +208,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
         Metadata metadata = new Metadata()
         metadata.put("key", "value")
         cu.create(metadata, null, null, null)
@@ -253,7 +253,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
         cu.setMetadata(null, null, null, null)
@@ -264,7 +264,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata context"() {
         setup:
-        def cuMetadataContext = primaryServiceURL.createContainerClient(generateContainerName())
+        def cuMetadataContext = primaryServiceURL.getContainerClient(generateContainerName())
         cuMetadataContext.create()
 
         when:
@@ -296,7 +296,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        cu = primaryServiceURL.createContainerClient(generateContainerName())
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
         cu.getProperties(null, null, null)
@@ -307,7 +307,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties context"() {
         setup:
-        def cuPropertyContext = primaryServiceURL.createContainerClient(generateContainerName())
+        def cuPropertyContext = primaryServiceURL.getContainerClient(generateContainerName())
         cuPropertyContext.create()
 
         when:

@@ -21,7 +21,7 @@ import java.net.URL;
 /**
  * Client to an append blob. It may only be instantiated through a a {@link AppendBlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#createAppendBlobAsyncClient(String)}. This class does not hold
+ * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
  *

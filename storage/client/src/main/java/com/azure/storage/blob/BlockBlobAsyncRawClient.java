@@ -264,7 +264,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
                                                                        BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
                                                                        SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
+        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
         context = context == null ? Context.NONE : context;
 
         return postProcessResponse(

@@ -13,7 +13,7 @@ class BlockBlobAPITest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
         bu.upload(defaultInputStream.get(), defaultDataSize)
     }
 
@@ -99,7 +99,7 @@ class BlockBlobAPITest extends APISpec {
 //
     def "Stage block error"() {
         setup:
-        bu = cu.createBlockBlobClient(generateBlobName())
+        bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
         bu.stageBlock("id", defaultInputStream.get(), defaultDataSize)
@@ -125,7 +125,7 @@ class BlockBlobAPITest extends APISpec {
 //    def "Stage block from url"() {
 //        setup:
 //        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-//        def bu2 = cu.createBlockBlobClient(generateBlobName())
+//        def bu2 = cu.getBlockBlobClient(generateBlobName())
 //        def blockID = getBlockID()
 //
 //        when:
@@ -150,7 +150,7 @@ class BlockBlobAPITest extends APISpec {
 //    def "Stage block from url min"() {
 //        setup:
 //        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-//        def bu2 = cu.createBlockBlobClient(generateBlobName())
+//        def bu2 = cu.getBlockBlobClient(generateBlobName())
 //        def blockID = getBlockID()
 //
 //        expect:

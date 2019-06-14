@@ -421,7 +421,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      */
     public Mono<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Context context) {
-        blobRange = blobRange == null ? new BlobRange() : blobRange;
+        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -479,7 +479,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      */
     public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Context context) {
-        blobRange = blobRange == null ? new BlobRange() : blobRange;
+        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 

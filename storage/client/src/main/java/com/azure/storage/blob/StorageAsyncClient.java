@@ -20,14 +20,14 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a blob service. It may only be instantiated through a a {@link StorageClientBuilder}.
+ * Client to a storage service. It may only be instantiated through a a {@link StorageClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient}
- * through {@link #createContainerAsyncClient(String)}, and operations on a blob are available on {@link BlobAsyncClient}.
+ * through {@link #getContainerAsyncClient(String)}, and operations on a blob are available on {@link BlobAsyncClient}.
  *
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -59,13 +59,13 @@ public final class StorageAsyncClient {
      * @return
      *      A new {@link StorageClientBuilder} instance.
      */
-    public static StorageClientBuilder blobServiceClientBuilder() {
+    public static StorageClientBuilder storageClientBuilder() {
         return new StorageClientBuilder();
     }
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the blob service client builder
+     * @param builder the storage service client builder
      */
     StorageAsyncClient(StorageClientBuilder builder) {
         this.builder = builder;
@@ -73,7 +73,7 @@ public final class StorageAsyncClient {
     }
 
     /**
-     * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
+     * Initializes a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
      * @param containerName
@@ -81,7 +81,7 @@ public final class StorageAsyncClient {
      * @return
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
-    public ContainerAsyncClient createContainerAsyncClient(String containerName) {
+    public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         try {
             return new ContainerAsyncClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
         } catch (MalformedURLException e) {
@@ -144,7 +144,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the blob service properties.
+     *      A reactive response containing the storage service properties.
      */
     public Mono<StorageServiceProperties> getProperties() {
         return this.getProperties(null);
@@ -162,7 +162,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the blob service properties.
+     *      A reactive response containing the storage service properties.
      */
     public Mono<StorageServiceProperties> getProperties(Context context) {
         return storageAsyncRawClient
@@ -180,7 +180,7 @@ public final class StorageAsyncClient {
      *         Configures the service.
      *
      * @return
-     *      A reactive response containing the blob service properties.
+     *      A reactive response containing the storage service properties.
      */
     public Mono<Void> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
@@ -202,7 +202,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the blob service properties.
+     *      A reactive response containing the storage service properties.
      */
     public Mono<Void> setProperties(StorageServiceProperties properties, Context context) {
         return storageAsyncRawClient
@@ -258,7 +258,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the blob service statistics.
+     *      A reactive response containing the storage service statistics.
      */
     public Mono<StorageServiceStats> getStatistics() {
         return this.getStatistics(null);
@@ -278,7 +278,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the blob service statistics.
+     *      A reactive response containing the storage service statistics.
      */
     public Mono<StorageServiceStats> getStatistics(Context context) {
         return storageAsyncRawClient
@@ -291,7 +291,7 @@ public final class StorageAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return
-     *      A reactive response containing the blob service account info.
+     *      A reactive response containing the storage service account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -309,7 +309,7 @@ public final class StorageAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the blob service account info.
+     *      A reactive response containing the storage service account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo(Context context) {
         return storageAsyncRawClient

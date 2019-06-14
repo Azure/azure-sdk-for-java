@@ -20,13 +20,13 @@ import java.util.List;
 
 /**
  * Client to a container. It may only be instantiated through a a {@link ContainerClientBuilder} or via the method
- * {@link StorageClient#createContainerClient(String)}. This class does not hold any
+ * {@link StorageClient#getContainerClient(String)}. This class does not hold any
  * state about a particular container but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobClient} through
- * {@link #createBlobClient(String)}, and operations on the service are available on {@link StorageClient}.
+ * {@link #getBlobClient(String)}, and operations on the service are available on {@link StorageClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
@@ -71,7 +71,7 @@ public final class ContainerClient {
      *
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
-    public BlockBlobClient createBlockBlobClient(String blobName) {
+    public BlockBlobClient getBlockBlobClient(String blobName) {
         try {
             return new BlockBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -91,7 +91,7 @@ public final class ContainerClient {
      *
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
-    public PageBlobClient createPageBlobClient(String blobName) {
+    public PageBlobClient getPageBlobClient(String blobName) {
         try {
             return new PageBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -111,7 +111,7 @@ public final class ContainerClient {
      *
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this container.
      */
-    public AppendBlobClient createAppendBlobClient(String blobName) {
+    public AppendBlobClient getAppendBlobClient(String blobName) {
         try {
             return new AppendBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {
@@ -120,18 +120,18 @@ public final class ContainerClient {
     }
 
     /**
-     * Creates a new BlobClient object by concatenating blobName to the end of
+     * Initializes a new BlobClient object by concatenating blobName to the end of
      * ContainerAsyncClient's URL. The new BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's createBlobAsyncClient instead of calling this object's
-     * createBlobAsyncClient method.
+     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
+     * getBlobAsyncClient method.
      *
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
-    public BlobClient createBlobClient(String blobName) {
+    public BlobClient getBlobClient(String blobName) {
         try {
             return new BlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
         } catch (MalformedURLException e) {

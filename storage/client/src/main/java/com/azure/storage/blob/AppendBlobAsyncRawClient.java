@@ -192,7 +192,7 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
                                                                           byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
                                                                           SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
-        sourceRange = sourceRange == null ? new BlobRange() : sourceRange;
+        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
         destAccessConditions = destAccessConditions == null
             ? new AppendBlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;

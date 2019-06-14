@@ -29,7 +29,7 @@ import java.util.Objects;
  * Fluent StorageClientBuilder for instantiating a {@link StorageClient} or {@link StorageAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link StorageClient#blobServiceClientBuilder()}.
+ * An instance of this builder may only be created from static method {@link StorageClient#storageClientBuilder()}.
  * The following information must be provided on this builder:
  *
  * <p><ul>

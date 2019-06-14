@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
+ * Represents a URL to a storage service. This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
