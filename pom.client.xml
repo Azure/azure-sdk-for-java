@@ -649,7 +649,7 @@
       <modules>
         <module>./eng/spotbugs-aggregate-report</module>
         <module>./eng/code-quality-reports</module>
-        <module>./eng/testcoverage</module>
+        <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
 

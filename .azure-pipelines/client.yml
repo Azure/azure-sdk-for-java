@@ -123,7 +123,7 @@ jobs:
 
       - powershell: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
-          copy -r eng/testcoverage/target/site $(Build.ArtifactStagingDirectory)
+          copy -r eng/jacoco-test-coverage/target/site $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")

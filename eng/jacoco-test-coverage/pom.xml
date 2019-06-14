@@ -15,11 +15,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>test-coverage</artifactId>
+  <artifactId>jacoco-test-coverage</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>Microsoft Azure client library for Application Configuration</name>
-  <description>This package contains the Microsoft Azure Application Configuration client library.</description>
+  <name>Microsoft Azure - Test coverage</name>
+  <description>This package is for generating test coverage reports</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
