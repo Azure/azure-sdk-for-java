@@ -388,7 +388,7 @@ public final class KeyClient extends ServiceClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
-    public Response<Key> updateKey(KeyBase key, KeyOperation ... keyOperations) {
+    public Response<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())
