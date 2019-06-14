@@ -57,15 +57,23 @@ public abstract class SecretClientTestBase extends TestBase {
     <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
         final String endpoint = interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
-            : System.getenv("AZURE_EYVAULT_ENDPOINT");
+            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
-        final String tenantId = System.getenv("MICROSOFT_AD_TENANT_ID");
-        final String clientId = System.getenv("ARM_CLIENT_ID");
-        final String clientKey = System.getenv("ARM_CLIENT_KEY");
+        final String tenantId = interceptorManager.isPlaybackMode()
+                ? ""
+                : System.getenv("MICROSOFT_AD_TENANT_ID");
+
+        final String clientId = interceptorManager.isPlaybackMode()
+                ? ""
+                : System.getenv("ARM_CLIENT_ID");
+
+        final String clientKey = interceptorManager.isPlaybackMode()
+                ? "http://localhost:8080"
+                : System.getenv("ARM_CLIENT_KEY");
 
         Objects.requireNonNull(endpoint, "AZURE_KEYVAULT_ENDPOINT expected to be set.");
-        Objects.requireNonNull(tenantId, "ARM_CLIENT_ID expected to be set.");
-        Objects.requireNonNull(clientId, "ARM_CLIENT_KEY expected to be set.");
+        Objects.requireNonNull(clientId, "ARM_CLIENT_ID expected to be set.");
+        Objects.requireNonNull(clientKey, "ARM_CLIENT_KEY expected to be set.");
         Objects.requireNonNull(tenantId, "MICROSOFT_AD_TENANT_ID expected to be set.");
 
 
