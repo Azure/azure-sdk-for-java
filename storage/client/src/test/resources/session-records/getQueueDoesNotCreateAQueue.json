@@ -1,14 +1,14 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue74004983/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue832353eb/messages?visibilitytimeout=0&messagettl=604800",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:30 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -16,18 +16,18 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "f58c4fe5-0003-0048-67ab-21fdb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:f58c4fe5-0003-0048-67ab-21fdb6000000\nTime:2019-06-13T05:47:54.9462123Z</Message></Error>"
+      "x-ms-request-id" : "70a2b666-2003-0039-0ff7-228f8f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:70a2b666-2003-0039-0ff7-228f8f000000\nTime:2019-06-14T21:21:31.3061493Z</Message></Error>"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue74004983&comp=list",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net?prefix=queue832353eb&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:54 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:30 GMT",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-ms-version" : "2018-03-28",
@@ -35,9 +35,9 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f58c4fe9-0003-0048-6aab-21fdb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue74004983</Prefix><Queues /><NextMarker /></EnumerationResults>"
+      "x-ms-request-id" : "70a2b66d-2003-0039-15f7-228f8f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.queue.core.windows.net/\"><Prefix>queue832353eb</Prefix><Queues /><NextMarker /></EnumerationResults>"
     }
   } ],
-  "variables" : [ "queue74004983" ]
+  "variables" : [ "queue832353eb" ]
 }

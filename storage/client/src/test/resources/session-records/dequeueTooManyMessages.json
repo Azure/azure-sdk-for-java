@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue47448277",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64446050",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:08 GMT",
+      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f58c3cba-0003-0048-52ab-21fdb6000000"
+      "x-ms-request-id" : "70a2a8a7-2003-0039-04f7-228f8f000000"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue47448277/messages?numofmessages=64&visibilitytimeout=30",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64446050/messages?numofmessages=64&visibilitytimeout=30",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:09 GMT",
+      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
       "content-length" : "456",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -31,41 +31,41 @@
       "x-ms-error-code" : "OutOfRangeQueryParameterValue",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "f58c3cbc-0003-0048-53ab-21fdb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:f58c3cbc-0003-0048-53ab-21fdb6000000\nTime:2019-06-13T05:47:09.8534931Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>64</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>"
+      "x-ms-request-id" : "70a2a8b1-2003-0039-0df7-228f8f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:70a2a8b1-2003-0039-0df7-228f8f000000\nTime:2019-06-14T21:20:47.0916487Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>64</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue47448277/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64446050/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:09 GMT",
+      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "f58c3cbd-0003-0048-54ab-21fdb6000000"
+      "x-ms-request-id" : "70a2a8c3-2003-0039-19f7-228f8f000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue47448277",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue64446050",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:09 GMT",
+      "date" : "Fri, 14 Jun 2019 21:20:46 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "f58c3cbf-0003-0048-55ab-21fdb6000000"
+      "x-ms-request-id" : "70a2a8c8-2003-0039-1ef7-228f8f000000"
     }
   } ],
-  "variables" : [ "queue47448277" ]
+  "variables" : [ "queue64446050" ]
 }

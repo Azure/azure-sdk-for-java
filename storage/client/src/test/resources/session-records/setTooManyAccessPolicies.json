@@ -1,30 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue676921f3",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue254200c6",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:46 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:22 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f58c4b8d-0003-0048-33ab-21fdb6000000"
+      "x-ms-request-id" : "70a2b361-2003-0039-19f7-228f8f000000"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue676921f3?comp=acl",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue254200c6?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:46 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:22 GMT",
       "content-length" : "294",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -32,41 +32,41 @@
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "f58c4b93-0003-0048-38ab-21fdb6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:f58c4b93-0003-0048-38ab-21fdb6000000\nTime:2019-06-13T05:47:47.0477256Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
+      "x-ms-request-id" : "70a2b365-2003-0039-1cf7-228f8f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:70a2b365-2003-0039-1cf7-228f8f000000\nTime:2019-06-14T21:21:23.2413953Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue676921f3/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue254200c6/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:46 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:22 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "f58c4b9a-0003-0048-3dab-21fdb6000000"
+      "x-ms-request-id" : "70a2b36a-2003-0039-21f7-228f8f000000"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue676921f3",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue254200c6",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 13 Jun 2019 05:47:46 GMT",
+      "date" : "Fri, 14 Jun 2019 21:21:22 GMT",
       "content-length" : "0",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "f58c4ba0-0003-0048-42ab-21fdb6000000"
+      "x-ms-request-id" : "70a2b370-2003-0039-25f7-228f8f000000"
     }
   } ],
-  "variables" : [ "queue676921f3" ]
+  "variables" : [ "queue254200c6" ]
 }

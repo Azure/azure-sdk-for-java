@@ -206,7 +206,11 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     public void setInvalidMetadata() {
         Map<String, String> badMetadata = Collections.singletonMap("", "bad metadata");
 
-        StepVerifier.create(client.create(badMetadata))
+        StepVerifier.create(client.create())
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+
+        StepVerifier.create(client.setMetadata(badMetadata))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -576,9 +580,13 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        DequeuedMessage dequeuedMessage = client.dequeueMessages(1, Duration.ofSeconds(5))
-            .blockFirst();
-        assertEquals(messageText, dequeuedMessage.messageText());
+        DequeuedMessage dequeuedMessage = new DequeuedMessage();
+        StepVerifier.create(client.dequeueMessages())
+            .assertNext(response -> {
+                assertEquals(messageText, response.messageText());
+                dequeuedMessage.popReceipt(response.popReceipt()).messageId(response.messageId());
+            })
+            .verifyComplete();
 
         StepVerifier.create(client.deleteMessage(dequeuedMessage.messageId() + "random", dequeuedMessage.popReceipt()))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
@@ -595,9 +603,13 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        DequeuedMessage dequeuedMessage = client.dequeueMessages(1, Duration.ofSeconds(5))
-            .blockFirst();
-        assertEquals(messageText, dequeuedMessage.messageText());
+        DequeuedMessage dequeuedMessage = new DequeuedMessage();
+        StepVerifier.create(client.dequeueMessages())
+            .assertNext(response -> {
+                assertEquals(messageText, response.messageText());
+                dequeuedMessage.popReceipt(response.popReceipt()).messageId(response.messageId());
+            })
+            .verifyComplete();
 
         StepVerifier.create(client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt() + "random"))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
@@ -605,8 +617,8 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
     @Override
     public void deleteMessageQueueDoesNotExist() {
-        StepVerifier.create(client.deleteMessage("queue", "doesn't exist"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+        StepVerifier.create(client.deleteMessage("invalid", "call"))
+            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
