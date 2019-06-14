@@ -235,6 +235,6 @@ jobs:
       - task: PublishPipelineArtifact@0
         displayName: 'Publish test coverage artifact'
         inputs:
-          artifactName: 'test-coverage-$(OSName)-$(JavaVersion)'
+          artifactName: 'coverage'
           targetPath: 'test-coverage-$(OSName)-$(JavaVersion)'
 
