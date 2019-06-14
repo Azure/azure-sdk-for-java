@@ -29,7 +29,7 @@ public final class PollResponse<T> {
 
     /**
      * An enum to represent all possible states that a long running operation may find itself in.
-     * The poll operation is considered <strong>complete</strong> when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
+     * The poll operation is considered complete when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
     public enum OperationStatus {
         /** Represents that polling has not yet started for this long-running operation.*/
