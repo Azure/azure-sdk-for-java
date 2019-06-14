@@ -46,19 +46,20 @@ public final class FileServiceClient {
         return client.setProperties(properties).block();
     }
 
-    public ShareClient createShare(String shareName) {
+    public Response<ShareClient> createShare(String shareName) {
         return createShare(shareName, null, null);
     }
 
-    public ShareClient createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
-        return new ShareClient(client.createShare(shareName, metadata, quotaInGB).block());
+    public Response<ShareClient> createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
+        Response<ShareAsyncClient> response = client.createShare(shareName, metadata, quotaInGB).block();
+        return FileServiceAsyncClient.mapToResponse(response, new ShareClient(response.value()));
     }
 
-    public void deleteShare(String shareName) {
-        deleteShare(shareName, null);
+    public VoidResponse deleteShare(String shareName) {
+        return deleteShare(shareName, null);
     }
 
-    public void deleteShare(String shareName, String shareSnapshot) {
-        client.deleteShare(shareName, shareSnapshot).block();
+    public VoidResponse deleteShare(String shareName, String shareSnapshot) {
+        return client.deleteShare(shareName, shareSnapshot).block();
     }
 }

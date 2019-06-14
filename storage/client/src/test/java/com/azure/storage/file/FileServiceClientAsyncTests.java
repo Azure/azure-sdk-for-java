@@ -13,7 +13,6 @@ import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.StorageErrorException;
-import org.junit.Assert;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -74,21 +73,21 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
             client.getStatistics().block();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
         } catch (Exception ex) {
-            TestHelpers.assertExceptionStatusCode(ex, 400);
+            TestHelpers.assertExceptionStatusCode(ex, 404);
         }
     }
 
     @Override
     public void createShare() {
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
     @Override
     public void createShareTwiceSameMetadata() {
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createShare(shareName))
@@ -100,7 +99,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
         Map<String, String> metadata = Collections.singletonMap("test", "metadata");
 
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createShare(shareName, metadata, null))
@@ -119,10 +118,11 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
     @Override
     public void deleteShare() {
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.deleteShare(shareName))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
     }
 
@@ -135,26 +135,28 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
     @Override
     public void deleteThenCreateShare() {
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.deleteShare(shareName))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         TestHelpers.sleep(Duration.ofSeconds(45));
 
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
     @Override
     public void deleteThenCreateShareTooSoon() {
         StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.deleteShare(shareName))
+            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createShare(shareName))
@@ -170,7 +172,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
 
             testShares.add(share);
             StepVerifier.create(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()))
-                .assertNext(Assert::assertNotNull)
+                .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
@@ -195,7 +197,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
             }
 
             StepVerifier.create(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()))
-                .assertNext(Assert::assertNotNull)
+                .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
@@ -214,7 +216,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
 
             testShares.add(share);
             StepVerifier.create(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()))
-                .assertNext(Assert::assertNotNull)
+                .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
@@ -226,10 +228,6 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
 
     @Override
     public void listSharesInvalidMaxResults() {
-        StepVerifier.create(serviceClient.createShare(shareName))
-            .assertNext(Assert::assertNotNull)
-            .verifyComplete();
-
         StepVerifier.create(serviceClient.listShares(defaultOptions().maxResults(-1)))
             .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
 
@@ -252,7 +250,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
 
             testShares.add(share);
             StepVerifier.create(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()))
-                .assertNext(Assert::assertNotNull)
+                .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 

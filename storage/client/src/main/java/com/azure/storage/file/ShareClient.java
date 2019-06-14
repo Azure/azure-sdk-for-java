@@ -26,11 +26,11 @@ public class ShareClient {
         return client.getUrl();
     }
 
-    public DirectoryAsyncClient getRootDirectoryClient() {
+    public DirectoryClient getRootDirectoryClient() {
         throw new UnsupportedOperationException();
     }
 
-    public DirectoryAsyncClient getDirectoryClient(String directoryName) {
+    public DirectoryClient getDirectoryClient(String directoryName) {
         throw new UnsupportedOperationException();
     }
 
@@ -86,7 +86,7 @@ public class ShareClient {
         return client.getStatistics().block();
     }
 
-    public Response<DirectoryAsyncClient> createDirectory(String directoryName, Map<String, String> metadata) {
+    public Response<DirectoryClient> createDirectory(String directoryName, Map<String, String> metadata) {
         throw new UnsupportedOperationException();
     }
 

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class FileServiceClientTests extends FileServiceClientTestsBase {
@@ -75,18 +74,18 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
             client.getStatistics();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
         } catch (Exception ex) {
-            TestHelpers.assertExceptionStatusCode(ex, 400);
+            TestHelpers.assertExceptionStatusCode(ex, 404);
         }
     }
 
     @Override
     public void createShare() {
-        assertNotNull(serviceClient.createShare(shareName));
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
     }
 
     @Override
     public void createShareTwiceSameMetadata() {
-        assertNotNull(serviceClient.createShare(shareName));
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
 
         try {
             serviceClient.createShare(shareName);
@@ -99,7 +98,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
     public void createShareTwiceDifferentMetadata() {
         Map<String, String> metadata = Collections.singletonMap("test", "metadata");
 
-        assertNotNull(serviceClient.createShare(shareName));
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
 
         try {
             serviceClient.createShare(shareName, metadata, null);
@@ -128,8 +127,8 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
 
     @Override
     public void deleteShare() {
-        assertNotNull(serviceClient.createShare(shareName));
-        serviceClient.deleteShare(shareName);
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
+        TestHelpers.assertResponseStatusCode(serviceClient.deleteShare(shareName), 202);
     }
 
     @Override
@@ -144,18 +143,18 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
 
     @Override
     public void deleteThenCreateShare() {
-        assertNotNull(serviceClient.createShare(shareName));
-        serviceClient.deleteShare(shareName);
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
+        TestHelpers.assertResponseStatusCode(serviceClient.deleteShare(shareName), 202);
 
         TestHelpers.sleep(Duration.ofSeconds(45));
 
-        assertNotNull(serviceClient.createShare(shareName));
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
     }
 
     @Override
     public void deleteThenCreateShareTooSoon() {
-        assertNotNull(serviceClient.createShare(shareName));
-        serviceClient.deleteShare(shareName);
+        TestHelpers.assertResponseStatusCode(serviceClient.createShare(shareName), 201);
+        TestHelpers.assertResponseStatusCode(serviceClient.deleteShare(shareName), 202);
 
         try {
             serviceClient.createShare(shareName);
@@ -173,7 +172,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            assertNotNull(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()));
+            TestHelpers.assertResponseStatusCode(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions()).iterator();
@@ -196,7 +195,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
                 share.name(shareName + i);
             }
 
-            assertNotNull(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()));
+            TestHelpers.assertResponseStatusCode(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions().prefix(shareName + "prefix")).iterator();
@@ -214,7 +213,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            assertNotNull(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()));
+            TestHelpers.assertResponseStatusCode(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions().maxResults(2)).iterator();
@@ -255,7 +254,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
             }
 
             testShares.add(share);
-            assertNotNull(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()));
+            TestHelpers.assertResponseStatusCode(serviceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
         Iterator<ShareItem> shares = serviceClient.listShares(defaultOptions().includeMetadata(true)).iterator();

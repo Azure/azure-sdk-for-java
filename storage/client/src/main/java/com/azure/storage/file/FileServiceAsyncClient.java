@@ -81,31 +81,31 @@ public final class FileServiceAsyncClient {
             .map(VoidResponse::new);
     }
 
-    public Mono<ShareAsyncClient> createShare(String shareName) {
+    public Mono<Response<ShareAsyncClient>> createShare(String shareName) {
         return createShare(shareName, null, null);
     }
 
-    public Mono<ShareAsyncClient> createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
+    public Mono<Response<ShareAsyncClient>> createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
         ShareAsyncClient shareAsyncClient = new ShareAsyncClient(client, shareName);
 
         return shareAsyncClient.create(metadata, quotaInGB)
-            .flatMap(response -> Mono.just(shareAsyncClient));
+            .map(response -> mapToResponse(response, shareAsyncClient));
     }
 
-    public Mono<Void> deleteShare(String shareName) {
+    public Mono<VoidResponse> deleteShare(String shareName) {
         return deleteShare(shareName, null);
     }
 
-    public Mono<Void> deleteShare(String shareName, String shareSnapshot) {
+    public Mono<VoidResponse> deleteShare(String shareName, String shareSnapshot) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(shareSnapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
         }
         return client.shares().deleteWithRestResponseAsync(shareName, shareSnapshot, null, deleteSnapshots, Context.NONE)
-            .flatMap(response -> Mono.empty());
+            .map(VoidResponse::new);
     }
 
-    private <T> Response<T> mapToResponse(Response<T> response, T value) {
+    static <T> Response<T> mapToResponse(Response<?> response, T value) {
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), value);
     }
 }

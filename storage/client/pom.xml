@@ -94,7 +94,7 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <configuration>
-          <failOnError>false</failOnError>
+          <failOnError>true</failOnError>
         </configuration>
       </plugin>
     </plugins>

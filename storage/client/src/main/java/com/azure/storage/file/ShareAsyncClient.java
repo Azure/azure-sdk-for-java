@@ -128,7 +128,7 @@ public class ShareAsyncClient {
     }
 
     public Mono<Response<ShareStatistics>> getStatistics() {
-        return client.shares().getStatisticsWithRestResponseAsync(shareSnapshot, Context.NONE)
+        return client.shares().getStatisticsWithRestResponseAsync(shareName, Context.NONE)
             .map(this::mapGetStatisticsResponse);
     }
 
