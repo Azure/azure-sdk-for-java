@@ -231,14 +231,10 @@ jobs:
             sourceFolder: eng/jacoco-test-coverage/target/site/
             targetFolder: test-coverage-$(OSName)-$(JavaVersion)
 
-      - bash: |
-            ls -lahR
-        displayName: 'Print directories for debugging'
-
         # Publish pipeline artifacts
       - task: PublishPipelineArtifact@0
         displayName: 'Publish test coverage artifact'
         inputs:
-          artifactName: 'coverage'
+          artifactName: 'test-coverage-$(OSName)-$(JavaVersion)'
           targetPath: 'test-coverage-$(OSName)-$(JavaVersion)'
 
