@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlobServiceClientBuilder for instantiating a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}.
+ * Fluent StorageClientBuilder for instantiating a {@link StorageClient} or {@link StorageAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link BlobServiceClient#blobServiceClientBuilder()}.
+ * An instance of this builder may only be created from static method {@link StorageClient#blobServiceClientBuilder()}.
  * The following information must be provided on this builder:
  *
  * <p><ul>
@@ -39,9 +39,9 @@ import java.util.Objects;
  *
  * <p>
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link BlobServiceClient} or {@code .buildAsyncClient()} to create a {@link BlobServiceAsyncClient}.
+ * {@link StorageClient} or {@code .buildAsyncClient()} to create a {@link StorageAsyncClient}.
  */
-public final class BlobServiceClientBuilder {
+public final class StorageClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
 
@@ -54,13 +54,13 @@ public final class BlobServiceClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
-    public BlobServiceClientBuilder() {
+    public StorageClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
-    private BlobServiceClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
+    private StorageClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
         HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
         this.policies = policies;
         this.endpoint = endpoint;
@@ -71,8 +71,8 @@ public final class BlobServiceClientBuilder {
         this.configuration = configuration;
     }
 
-    BlobServiceClientBuilder copyBuilder() {
-        return new BlobServiceClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
+    StorageClientBuilder copyBuilder() {
+        return new StorageClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
     }
 
     ContainerClientBuilder copyAsContainerBuilder() {
@@ -111,25 +111,25 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
-     * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     * @return a {@link StorageClient} created from the configurations in this builder.
      */
-    public BlobServiceClient buildClient() {
-        return new BlobServiceClient(this);
+    public StorageClient buildClient() {
+        return new StorageClient(this);
     }
 
     /**
-     * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     * @return a {@link StorageAsyncClient} created from the configurations in this builder.
      */
-    public BlobServiceAsyncClient buildAsyncClient() {
-        return new BlobServiceAsyncClient(this);
+    public StorageAsyncClient buildAsyncClient() {
+        return new StorageAsyncClient(this);
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder endpoint(String endpoint) {
+    public StorageClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
             this.endpoint = new URL(endpoint);
@@ -149,7 +149,7 @@ public final class BlobServiceClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public BlobServiceClientBuilder credentials(SharedKeyCredentials credentials) {
+    public StorageClientBuilder credentials(SharedKeyCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -157,18 +157,18 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the credentials used to authorize requests sent to the service
      * @param credentials authorization credentials
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder credentials(TokenCredentials credentials) {
+    public StorageClientBuilder credentials(TokenCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
 
     /**
      * Clears the credentials used to authorize requests sent to the service
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder anonymousCredentials() {
+    public StorageClientBuilder anonymousCredentials() {
         this.credentials = new AnonymousCredentials();
         return this;
     }
@@ -176,9 +176,9 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder connectionString(String connectionString) {
+    public StorageClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         Map<String, String> connectionKVPs = new HashMap<>();
@@ -203,9 +203,9 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
+    public StorageClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -213,9 +213,9 @@ public final class BlobServiceClientBuilder {
     /**
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public StorageClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(pipelinePolicy);
         return this;
     }
@@ -223,9 +223,9 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the logging level for service requests
      * @param logLevel logging level
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public StorageClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }
@@ -234,9 +234,9 @@ public final class BlobServiceClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
      * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
      * @param configuration configuration store
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated StorageClientBuilder object
      */
-    public BlobServiceClientBuilder configuration(Configuration configuration) {
+    public StorageClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }

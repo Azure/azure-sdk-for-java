@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
- * {@link BlobServiceAsyncRawClient} object. This class does not hold any state about a particular blob but is instead a convenient way
+ * {@link StorageAsyncRawClient} object. This class does not hold any state about a particular blob but is instead a convenient way
  * of sending off appropriate requests to the resource on the service. It may also be used to construct URLs to blobs.
  * Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>

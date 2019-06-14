@@ -7,8 +7,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
-import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -23,13 +21,13 @@ import java.util.List;
 
 /**
  * Client to a container. It may only be instantiated through a a {@link ContainerClientBuilder} or via the method
- * {@link BlobServiceAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
+ * {@link StorageAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
- * {@link #createBlobAsyncClient(String)}, and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * {@link #createBlobAsyncClient(String)}, and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
@@ -405,14 +403,11 @@ public final class ContainerAsyncClient {
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
      * @return
      *      A reactive response emitting the flattened blobs.
      */
-    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return this.listBlobsFlat(options, null);
+    public Flux<BlobItem> listBlobsFlat() {
+        return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**

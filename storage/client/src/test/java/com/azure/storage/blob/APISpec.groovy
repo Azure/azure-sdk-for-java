@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.annotations.HEAD
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -93,16 +94,16 @@ class APISpec extends Specification {
     /*
     URLs to various kinds of accounts.
      */
-    BlobServiceClient primaryServiceURL
+    StorageClient primaryServiceURL
 
     @Shared
-    static BlobServiceClient alternateServiceURL
+    static StorageClient alternateServiceURL
 
     @Shared
-    static BlobServiceClient blobStorageServiceURL
+    static StorageClient blobStorageServiceURL
 
     @Shared
-    static BlobServiceClient premiumServiceURL
+    static StorageClient premiumServiceURL
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -208,10 +209,10 @@ class APISpec extends Specification {
         } else return HttpClient.createDefault()
     }
 
-    static BlobServiceClient getGenericServiceURL(SharedKeyCredentials creds) {
+    static StorageClient getGenericServiceURL(SharedKeyCredentials creds) {
         // TODO: logging?
 
-        return BlobServiceClient.blobServiceClientBuilder()
+        return StorageClient.blobServiceClientBuilder()
             .endpoint("https://" + creds.getAccountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
@@ -220,7 +221,7 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        BlobServiceClient serviceURL = BlobServiceClient.blobServiceClientBuilder()
+        StorageClient serviceURL = StorageClient.blobServiceClientBuilder()
             .endpoint("http://" + primaryCreds.accountName + ".blob.core.windows.net")
             .credentials(primaryCreds)
             .buildClient()
@@ -591,7 +592,7 @@ class APISpec extends Specification {
         def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
         def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
 
-        return BlobServiceClient.blobServiceClientBuilder()
+        return StorageClient.blobServiceClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
             .credentials(new TokenCredentials(token))
             .buildClient()

@@ -76,14 +76,14 @@ final class BlobURLParts {
     }
 
     /**
-     * The container name or {@code null} if a {@link BlobServiceAsyncRawClient} was parsed.
+     * The container name or {@code null} if a {@link StorageAsyncRawClient} was parsed.
      */
     public String containerName() {
         return containerName;
     }
 
     /**
-     * The container name or {@code null} if a {@link BlobServiceAsyncRawClient} was parsed.
+     * The container name or {@code null} if a {@link StorageAsyncRawClient} was parsed.
      */
     public BlobURLParts withContainerName(String containerName) {
         this.containerName = containerName;
@@ -91,14 +91,14 @@ final class BlobURLParts {
     }
 
     /**
-     * The blob name or {@code null} if a {@link BlobServiceAsyncRawClient} or {@link ContainerAsyncClient} was parsed.
+     * The blob name or {@code null} if a {@link StorageAsyncRawClient} or {@link ContainerAsyncClient} was parsed.
      */
     public String blobName() {
         return blobName;
     }
 
     /**
-     * The blob name or {@code null} if a {@link BlobServiceAsyncRawClient} or {@link ContainerAsyncClient} was parsed.
+     * The blob name or {@code null} if a {@link StorageAsyncRawClient} or {@link ContainerAsyncClient} was parsed.
      */
     public BlobURLParts withBlobName(String blobName) {
         this.blobName = blobName;

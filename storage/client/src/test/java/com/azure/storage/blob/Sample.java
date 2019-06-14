@@ -1,20 +1,15 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.models.ContainerItem;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 public class Sample {
@@ -26,7 +21,7 @@ public class Sample {
     @Test
     public void sample() throws IOException {
         // get service client
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
             .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -60,7 +55,7 @@ public class Sample {
 
         // list blobs and download results
         System.out.println("Listing/downloading blobs:");
-        for (BlobItem item : containerClient.listBlobsFlat(new ListBlobsOptions())) {
+        for (BlobItem item : containerClient.listBlobsFlat()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             containerClient.createBlobClient(item.name()).download(stream);
             System.out.println(item.name() + ": " + new String(stream.toByteArray()));
@@ -78,7 +73,7 @@ public class Sample {
     @Test
     public void asyncSample() throws IOException {
         // get service client
-        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
             .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
@@ -129,7 +124,7 @@ public class Sample {
             .thenMany(Flux.defer(() -> {
                 System.out.println();
                 System.out.println("Listing/downloading blobs:");
-                return finalContainerClient.listBlobsFlat(new ListBlobsOptions());
+                return finalContainerClient.listBlobsFlat();
             }))
             // download results
             .flatMap(listItem ->
@@ -157,7 +152,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
             .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
@@ -187,7 +182,7 @@ public class Sample {
         fstream.close();
 
         // get service client
-        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(accountEndpoint)
+        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
             .credentials(new SharedKeyCredentials(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
