@@ -18,8 +18,8 @@
   <artifactId>jacoco-test-coverage</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>Microsoft Azure - Test coverage</name>
-  <description>This package is for generating test coverage reports</description>
+  <name>Microsoft Azure Client Library - Test coverage</name>
+  <description>Package for generating test coverage report for Azure Client Libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
