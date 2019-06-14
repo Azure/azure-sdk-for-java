@@ -7,8 +7,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
-import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -23,7 +21,7 @@ import java.util.List;
 
 /**
  * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
- * {@link BlobServiceAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
+ * {@link StorageAsyncClient#createContainerAsyncClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
@@ -401,14 +399,11 @@ public final class ContainerAsyncClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
      * @return
      *      A reactive response emitting the flattened blobs.
      */
-    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return this.listBlobsFlat(options, null);
+    public Flux<BlobItem> listBlobsFlat() {
+        return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**

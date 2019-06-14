@@ -4,25 +4,19 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.ContainerItem;
-import com.azure.storage.blob.models.ServiceGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ServiceGetPropertiesHeaders;
-import com.azure.storage.blob.models.ServiceGetStatisticsHeaders;
-import com.azure.storage.blob.models.ServiceGetUserDelegationKeyHeaders;
-import com.azure.storage.blob.models.ServiceSetPropertiesHeaders;
-import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a blob service. It may be obtained through a {@link BlobServiceClientBuilder}.
+ * Client to a blob service. It may be obtained through a {@link StorageClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
@@ -30,51 +24,58 @@ import java.time.OffsetDateTime;
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
+ *
+ * <p>
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core
+ * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
+ * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
+ * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
+ * object through {@link Mono#toFuture()}.
  */
-public final class BlobServiceClient {
+public final class StorageAsyncClient {
 
-    private BlobServiceAsyncClient blobServiceAsyncClient;
-    private BlobServiceClientBuilder builder;
+    StorageAsyncRawClient storageAsyncRawClient;
+    private StorageClientBuilder builder;
 
     /**
-     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * Package-private constructor for use by {@link StorageClientBuilder}.
      * @param azureBlobStorage the API client for blob storage API
      */
-    BlobServiceClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.blobServiceAsyncClient = new BlobServiceAsyncClient(azureBlobStorage);
+    StorageAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.storageAsyncRawClient = new StorageAsyncRawClient(azureBlobStorage);
     }
 
     /**
      * Static method for getting a new builder for this class.
      *
      * @return
-     *      A new {@link BlobServiceClientBuilder} instance.
+     *      A new {@link StorageClientBuilder} instance.
      */
-    public static BlobServiceClientBuilder builder() {
-        return new BlobServiceClientBuilder();
+    public static StorageClientBuilder builder() {
+        return new StorageClientBuilder();
     }
 
     /**
-     * Package-private constructor for use by {@link BlobServiceClientBuilder}.
+     * Package-private constructor for use by {@link StorageClientBuilder}.
      * @param builder the blob service client builder
      */
-    BlobServiceClient(BlobServiceClientBuilder builder) {
+    StorageAsyncClient(StorageClientBuilder builder) {
         this.builder = builder;
-        this.blobServiceAsyncClient = new BlobServiceAsyncClient(builder);
+        this.storageAsyncRawClient = new StorageAsyncRawClient(builder.buildImpl());
     }
 
     /**
-     * Creates a {@link ContainerClient} object pointing to the specified container. This method does not create a
+     * Creates a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
      * @param containerName
      *     The name of the container to point to.
      * @return
-     *     A {@link ContainerClient} object pointing to the specified container
+     *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
-    public ContainerClient createContainerClient(String containerName) {
+    public ContainerAsyncClient createContainerAsyncClient(String containerName) {
         try {
-            return new ContainerClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
+            return new ContainerAsyncClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -91,9 +92,9 @@ public final class BlobServiceClient {
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
      * @return
-     *      The list of containers.
+     *      A reactive response emitting the list of containers.
      */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options) {
+    public Flux<ContainerItem> listContainers(ListContainersOptions options) {
         return this.listContainers(options, null);
     }
 
@@ -106,37 +107,6 @@ public final class BlobServiceClient {
      *
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     *
-     * @return
-     *      The list of containers.
-     */
-    public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        Flux<ContainerItem> response = blobServiceAsyncClient.listContainers(options, null);
-
-        return timeout == null ?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
-    }
-
-    /**
-     * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
-     *
-     * @return
-     *      The blob service properties.
-     */
-    public StorageServiceProperties getProperties() {
-        return this.getProperties(null, null);
-    }
-
-    /**
-     * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
-     *
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -145,61 +115,97 @@ public final class BlobServiceClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The blob service properties.
+     *      A reactive response emitting the list of containers.
      */
-    public StorageServiceProperties getProperties(Duration timeout, Context context) {
-
-        Mono<StorageServiceProperties> response = blobServiceAsyncClient.getProperties(context);
-
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+    public Flux<ContainerItem> listContainers(ListContainersOptions options, Context context) {
+        return storageAsyncRawClient
+            .listContainersSegment(null, options, context)
+            .flatMapMany(response -> listContainersHelper(response.value().marker(), options, context, response));
     }
 
-    /**
-     * Sets properties for a storage account's Blob service endpoint. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
-     * Note that setting the default service version has no effect when using this client because this client explicitly
-     * sets the version header on each request, overriding the default.
-     *
-     * @param properties
-     *         Configures the service.
-     *
-     * @return
-     *      The blob service properties.
-     */
-    public void setProperties(StorageServiceProperties properties) {
-        this.setProperties(properties, null, null);
-    }
-
-    /**
-     * Sets properties for a storage account's Blob service endpoint. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
-     * Note that setting the default service version has no effect when using this client because this client explicitly
-     * sets the version header on each request, overriding the default.
-     *
-     * @param properties
-     *         Configures the service.
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      The blob service properties.
-     */
-    public void setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<Void> response = blobServiceAsyncClient.setProperties(properties, context);
-
-        if (timeout == null) {
-            response.block();
-        } else {
-            response.block(timeout);
+    private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options, Context context,
+            ServicesListContainersSegmentResponse response){
+        Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
+        if (response.value().nextMarker() != null) {
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(storageAsyncRawClient.listContainersSegment(marker, options,
+                context)
+                .flatMapMany((r) ->
+                    listContainersHelper(response.value().nextMarker(), options, context, r)));
         }
+
+        return result;
+    }
+
+    /**
+     * Gets the properties of a storage account’s Blob service. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * @return
+     *      A reactive response containing the blob service properties.
+     */
+    public Mono<StorageServiceProperties> getProperties() {
+        return this.getProperties(null);
+    }
+
+    /**
+     * Gets the properties of a storage account’s Blob service. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response containing the blob service properties.
+     */
+    public Mono<StorageServiceProperties> getProperties(Context context) {
+        return storageAsyncRawClient
+            .getProperties(context)
+            .map(ResponseBase::value);
+    }
+
+    /**
+     * Sets properties for a storage account's Blob service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     *
+     * @param properties
+     *         Configures the service.
+     *
+     * @return
+     *      A reactive response containing the blob service properties.
+     */
+    public Mono<Void> setProperties(StorageServiceProperties properties) {
+        return this.setProperties(properties, null);
+    }
+
+    /**
+     * Sets properties for a storage account's Blob service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     *
+     * @param properties
+     *         Configures the service.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response containing the blob service properties.
+     */
+    public Mono<Void> setProperties(StorageServiceProperties properties, Context context) {
+        return storageAsyncRawClient
+            .setProperties(properties, context)
+            .then();
     }
 
     /**
@@ -212,10 +218,10 @@ public final class BlobServiceClient {
      *         Expiration of the key's validity.
      *
      * @return
-     *      The user delegation key.
+     *      A reactive response containing the user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null, null);
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return this.getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -226,8 +232,6 @@ public final class BlobServiceClient {
      *         Start time for the key's validity. Null indicates immediate start.
      * @param expiry
      *         Expiration of the key's validity.
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -236,15 +240,13 @@ public final class BlobServiceClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The user delegation key.
+     *      A reactive response containing the user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-            Duration timeout, Context context) {
-        Mono<UserDelegationKey> response = blobServiceAsyncClient.getUserDelegationKey(start, expiry, context);
-
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+            Context context) {
+        return storageAsyncRawClient
+            .getUserDelegationKey(start, expiry, context)
+            .map(ResponseBase::value);
     }
 
     /**
@@ -254,10 +256,10 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @return
-     *      The blob service statistics.
+     *      A reactive response containing the blob service statistics.
      */
-    public StorageServiceStats getStatistics() {
-        return this.getStatistics(null, null);
+    public Mono<StorageServiceStats> getStatistics() {
+        return this.getStatistics(null);
     }
 
     /**
@@ -266,8 +268,6 @@ public final class BlobServiceClient {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -276,14 +276,12 @@ public final class BlobServiceClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The blob service statistics.
+     *      A reactive response containing the blob service statistics.
      */
-    public StorageServiceStats getStatistics(Duration timeout, Context context) {
-        Mono<StorageServiceStats> response = blobServiceAsyncClient.getStatistics(context);
-
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+    public Mono<StorageServiceStats> getStatistics(Context context) {
+        return storageAsyncRawClient
+            .getStatistics(context)
+            .map(ResponseBase::value);
     }
 
     /**
@@ -291,18 +289,16 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return
-     *      The blob service account info.
+     *      A reactive response containing the blob service account info.
      */
-    public StorageAccountInfo getAccountInfo() {
-        return this.getAccountInfo(null, null);
+    public Mono<StorageAccountInfo> getAccountInfo() {
+        return this.getAccountInfo(null);
     }
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @param timeout
-     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
@@ -311,13 +307,12 @@ public final class BlobServiceClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      The blob service account info.
+     *      A reactive response containing the blob service account info.
      */
-    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
-        Mono<StorageAccountInfo> response = blobServiceAsyncClient.getAccountInfo(context);
-
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
+        return storageAsyncRawClient
+            .getAccountInfo(context)
+            .map(ResponseBase::deserializedHeaders)
+            .map(StorageAccountInfo::new);
     }
 }

@@ -6,9 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
-import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -23,7 +20,7 @@ import java.util.List;
 
 /**
  * Client to a container. It may be obtained through a {@link ContainerClientBuilder} or via the method
- * {@link BlobServiceClient#createContainerClient(String)}. This class does not hold any
+ * {@link StorageClient#createContainerClient(String)}. This class does not hold any
  * state about a particular blob but is instead a convenient way of sending off appropriate requests to
  * the resource on the service. It may also be used to construct URLs to blobs.
  *
@@ -392,14 +389,11 @@ public final class ContainerClient {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
      * @return
      *      The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return this.listBlobsFlat(options, null, null);
+    public Iterable<BlobItem> listBlobsFlat() {
+        return this.listBlobsFlat(new ListBlobsOptions(), null, null);
     }
 
     /**

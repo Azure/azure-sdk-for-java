@@ -2014,7 +2014,7 @@ class BlobAPITest extends APISpec {
 
     /*def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = BlobServiceClient.builder() new ServiceURL(primaryServiceURL.toURL(),
+        StorageClient serviceURL = StorageClient.builder() new ServiceURL(primaryServiceURL.toURL(),
             StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
         serviceURL.createContainerClient(generateContainerName()).createBlobClient(generateBlobName())
             .getAccountInfo(null)
