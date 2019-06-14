@@ -224,14 +224,14 @@ jobs:
             reportDirectory: ./eng/jacoco-test-coverage/target/site/test-coverage/
             failIfCoverageEmpty: true
 
-        # Copy test coverage reports to respective OS and Java version directory
+        # Copy test coverage reports to respective OS and Java version directories
       - task: CopyFiles@2
         displayName: 'Copy test coverage reports to OS-JDKversion directory'
         inputs:
             sourceFolder: eng/jacoco-test-coverage/target/site/
             targetFolder: test-coverage-$(OSName)-$(JavaVersion)
 
-        # Publish pipeline artifacts
+        # Publish pipeline artifacts for respective OS and Java versions
       - task: PublishPipelineArtifact@0
         displayName: 'Publish test coverage artifact'
         inputs:
