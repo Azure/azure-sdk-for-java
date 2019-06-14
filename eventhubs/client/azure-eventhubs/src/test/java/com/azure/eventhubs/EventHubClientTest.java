@@ -23,22 +23,26 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
  * Tests scenarios on {@link EventHubClient}.
  */
 public class EventHubClientTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventHubClient.class);
+    private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
 
     private EventHubClient client;
     private ExpectedData data;
@@ -212,6 +216,50 @@ public class EventHubClientTest extends ApiTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
+    }
+
+    /**
+     * Verifies that we can create and send a message to an Event Hub partition.
+     */
+    @Test
+    public void sendMessageToPartition() throws IOException {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId("0");
+        final List<EventData> events = Arrays.asList(
+            new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)),
+            new EventData("Event 3".getBytes(UTF_8)));
+
+        // Act & Assert
+        try (EventSender sender = client.createSender(senderOptions)) {
+            StepVerifier.create(sender.send(events))
+                .expectComplete()
+                .verify();
+        }
+    }
+
+    /**
+     * Verifies that we can create an EventSender that does not care about partitions and lets the service distribute
+     * the events.
+     */
+    @Test
+    public void sendMessage() throws IOException {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final List<EventData> events = Arrays.asList(
+            new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)),
+            new EventData("Event 3".getBytes(UTF_8)));
+
+        // Act & Assert
+        try (EventSender sender = client.createSender()) {
+            StepVerifier.create(sender.send(events))
+                .expectComplete()
+                .verify();
+        }
     }
 
     @Override

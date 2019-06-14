@@ -4,9 +4,11 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.exception.AmqpException;
 import org.apache.qpid.proton.message.Message;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * An AMQP link that sends information to the remote endpoint.
@@ -17,14 +19,22 @@ public interface AmqpSendLink extends AmqpLink {
      *
      * @param message Message to send.
      * @return A Mono that completes when the message has been sent.
+     * @throws AmqpException if the serialized {@code message} exceed the links capacity for a single message.
      */
     Mono<Void> send(Message message);
 
     /**
-     * Sends messages to the service. This completes when all the messages have been pushed to the service.
+     * Batches the messages given into a single proton-j message that is sent down the wire.
      *
-     * @param messages Messages to send to the service.
-     * @return A Mono that completes when all the messages have been sent.
+     * @param messageBatch The batch of messages to send to the service.
+<<<<<<< Updated upstream
+     * @return A Mono that completes when all the batched messages are successfully transmitted to Event Hub.
+     * @throws AmqpException if the serialised contents of {@code messageBatch} exceed the link's capacity for a single
+=======
+     * @return A Mono that completes when all the batched message is successfully transmitted to Event Hub.
+     * @throws AmqpException if the serialized contents of {@code messageBatch} exceed the link's capacity for a single
+>>>>>>> Stashed changes
+     * message.
      */
-    Mono<Void> send(Publisher<Message> messages);
+    Mono<Void> sendBatch(List<Message> messageBatch);
 }

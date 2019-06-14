@@ -70,7 +70,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     void notifyEndpointState(EndpointState endpointState) {
         Objects.requireNonNull(endpointState);
 
-        logger.asInfo().log("Connection state: {}", endpointState);
+        logger.asVerbose().log("Connection state: {}", endpointState);
         final AmqpEndpointState state = getConnectionState(endpointState);
         connectionStateProcessor.onNext(state);
     }

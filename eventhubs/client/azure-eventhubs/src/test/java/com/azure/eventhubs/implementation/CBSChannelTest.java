@@ -13,17 +13,18 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
 
-import static org.mockito.Mockito.mock;
-
 public class CBSChannelTest extends ApiTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
-    private AmqpResponseMapper mapper = mock(AmqpResponseMapper.class);
+    @Mock
+    private AmqpResponseMapper mapper;
 
     @Rule
     public TestName testName = new TestName();
@@ -40,6 +41,8 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        MockitoAnnotations.initMocks(this);
+
         skipIfNotRecordMode();
 
         credentials = getCredentialInfo();
@@ -52,6 +55,8 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
+        mapper = null;
+
         if (cbsChannel != null) {
             cbsChannel.close();
         }

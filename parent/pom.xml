@@ -166,6 +166,7 @@
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.18</checkstyle.version>
+    <mockito-core.version>2.28.2</mockito-core.version>
   </properties>
 
   <dependencyManagement>
@@ -313,7 +314,7 @@
         <artifactId>opencensus-api</artifactId>
         <version>${opencensus.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
@@ -474,6 +475,13 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
         <version>${jetty-server.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito-core.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

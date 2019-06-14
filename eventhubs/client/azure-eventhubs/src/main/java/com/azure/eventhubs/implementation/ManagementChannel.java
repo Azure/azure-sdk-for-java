@@ -65,7 +65,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * Creates an instance that is connected to the {@code eventHubPath}'s management node.
      *
      * @param eventHubPath The name of the Event Hub.
-     * @param tokenProvider A provider that generates authorisation tokens.
+     * @param tokenProvider A provider that generates authorization tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
     ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider,

@@ -4,17 +4,21 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.CBSNode;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -33,6 +37,8 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
+    private MockReactorProvider reactorProvider;
+    private MockReactorHandlerProvider handlerProvider;
 
     @Mock
     private Session session;
@@ -42,6 +48,8 @@ public class ReactorSessionTest {
     private Selectable selectable;
     @Mock
     private Event event;
+    @Mock
+    private CBSNode cbsNode;
 
     @Before
     public void setup() throws IOException {
@@ -51,7 +59,20 @@ public class ReactorSessionTest {
 
         ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60));
-        this.reactorSession = new ReactorSession(session, handler, NAME, new MockReactorProvider(reactor, dispatcher), TIMEOUT);
+        this.reactorProvider = new MockReactorProvider(reactor, dispatcher);
+        this.handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
+        this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider, Mono.just(cbsNode), TIMEOUT);
+    }
+
+    @After
+    public void teardown() {
+        session = null;
+        reactor = null;
+        selectable = null;
+        event = null;
+        cbsNode = null;
+
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test
