@@ -63,7 +63,6 @@ public final class PollResponse<T> {
      * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
      * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
      * @param properties A map of properties provided by the service that will be made available into the next poll operation.
-     *
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
@@ -83,6 +82,7 @@ public final class PollResponse<T> {
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
      * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
+     * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter) {

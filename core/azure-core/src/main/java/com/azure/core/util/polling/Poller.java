@@ -100,14 +100,14 @@ public class Poller<T> {
 
     /**
      * Create a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by invoking {@code pollOperation}.
-     * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
-     * In absence of {@code retryAfter}, the {@code poller} will use {@code pollInterval}.
+     * The next poll cycle will be defined by {@code retryAfter} value in {@link PollResponse}.
+     * In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
      * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.PollResponse.OperationStatus}.
      *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     * it should be handled byclient library and return a valid {@link PollResponse}.However if poll operation returns {@link Mono#error(Throwable)},
+     * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
      * @throws NullPointerException If {@code pollInterval} or {@code pollOperation} are {@code null}.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
@@ -156,10 +156,10 @@ public class Poller<T> {
     }
 
     /**
-     * Attempts to cancel the long-running operation that this {@link Poller} represents. This is only possible if the service supports it,
+     * Attempts to cancel the long-running operation that this {@link Poller} represents. This is possible only if the service supports it,
      * otherwise an {@code UnsupportedOperationException} will be thrown.
      * <p>
-     * It will only call cancelOperation if {@link com.azure.core.util.polling.PollResponse.OperationStatus} is IN_PROGRESS otherwise it does nothing.
+     * It will call cancelOperation if status is {@link com.azure.core.util.polling.PollResponse.OperationStatus#IN_PROGRESS} otherwise it does nothing.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
      */
