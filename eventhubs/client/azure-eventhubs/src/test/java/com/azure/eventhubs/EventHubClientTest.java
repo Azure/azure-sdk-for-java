@@ -42,6 +42,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests scenarios on {@link EventHubClient}.
  */
 public class EventHubClientTest extends ApiTestBase {
+    private static final String PARTITION_ID = "0";
+
     private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
 
     private EventHubClient client;
@@ -226,7 +228,7 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId("0");
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
@@ -260,6 +262,24 @@ public class EventHubClientTest extends ApiTestBase {
                 .expectComplete()
                 .verify();
         }
+    }
+
+    @Test
+    public void receiveMessage() {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final int numberOfEvents = 10;
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .prefetchCount(2)
+            .beginReceivingAt(EventPosition.firstAvailableEvent());
+        final EventReceiver receiver = client.createReceiver(PARTITION_ID, options);
+
+        // Act & Assert
+        StepVerifier.create(receiver.receive().take(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .expectComplete()
+            .verify();
     }
 
     @Override
@@ -298,7 +318,6 @@ public class EventHubClientTest extends ApiTestBase {
                     throw new IllegalArgumentException("Test mode not recognized.");
             }
 
-            final Instant now = Instant.now();
             this.properties = new EventHubProperties(eventHubPath, Instant.EPOCH, partitionIds);
             this.partitionPropertiesMap = new HashMap<>();
 
@@ -307,7 +326,7 @@ public class EventHubClientTest extends ApiTestBase {
 
                 this.partitionPropertiesMap.put(key, new PartitionProperties(
                     eventHubPath, key, -1, -1,
-                    "lastEnqueued", Instant.now(), true, now));
+                    "lastEnqueued", Instant.now(), true));
             }
         }
 

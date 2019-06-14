@@ -100,7 +100,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      */
     @Override
     public Mono<CBSNode> getCBSNode() {
-        return getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE)
+        final Mono<CBSNode> cbsNodeMono = getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE)
             .timeout(connectionParameters.timeout())
             .then(Mono.fromCallable(() -> {
                 if (CBS_CHANNEL_FIELD_UPDATER.compareAndSet(this, null,
@@ -110,6 +110,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
                 return CBS_CHANNEL_FIELD_UPDATER.get(this);
             }));
+
+        return hasConnection.get()
+            ? cbsNodeMono
+            : connectionMono.then(cbsNodeMono);
     }
 
     @Override
