@@ -151,7 +151,7 @@ public interface VirtualNetworkGatewayConnection extends HasInner<VirtualNetwork
         interface WithConnectionType {
            /**
             * Specifies connectionType.
-            * @param connectionType Gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+            * @param connectionType Gateway connection type. Possible values are: 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
             * @return the next definition stage
 */
             WithVirtualNetworkGateway1 withConnectionType(VirtualNetworkGatewayConnectionType connectionType);

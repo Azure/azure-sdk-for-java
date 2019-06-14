@@ -54,7 +54,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Provisioning state of the circuit connection resource. Possible values
-     * are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
+     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -162,7 +162,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get provisioning state of the circuit connection resource. Possible values are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
+     * Get provisioning state of the circuit connection resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */

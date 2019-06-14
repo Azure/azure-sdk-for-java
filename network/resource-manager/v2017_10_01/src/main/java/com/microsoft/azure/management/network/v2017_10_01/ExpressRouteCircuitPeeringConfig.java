@@ -22,7 +22,7 @@ public class ExpressRouteCircuitPeeringConfig {
     private List<String> advertisedPublicPrefixes;
 
     /**
-     * The communities of bgp peering. Spepcified for microsoft peering.
+     * The communities of bgp peering. Specified for microsoft peering.
      */
     @JsonProperty(value = "advertisedCommunities")
     private List<String> advertisedCommunities;
@@ -75,7 +75,7 @@ public class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the communities of bgp peering. Spepcified for microsoft peering.
+     * Get the communities of bgp peering. Specified for microsoft peering.
      *
      * @return the advertisedCommunities value
      */
@@ -84,7 +84,7 @@ public class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the communities of bgp peering. Spepcified for microsoft peering.
+     * Set the communities of bgp peering. Specified for microsoft peering.
      *
      * @param advertisedCommunities the advertisedCommunities value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.

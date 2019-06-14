@@ -14,7 +14,7 @@ import com.microsoft.azure.management.network.v2018_04_01.ConnectionStateSnapsho
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of connection states snaphots.
+ * List of connection states snapshots.
  */
 public class ConnectionMonitorQueryResultInner {
     /**

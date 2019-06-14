@@ -166,7 +166,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDirection {
            /**
             * Specifies direction.
-            * @param direction The direction of the rule. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
+            * @param direction The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
             * @return the next definition stage
             */
             WithProtocol withDirection(SecurityRuleDirection direction);
@@ -202,7 +202,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefix {
             /**
              * Specifies destinationAddressPrefix.
-             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
+             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
              * @return the next definition stage
              */
             WithCreate withDestinationAddressPrefix(String destinationAddressPrefix);
@@ -238,7 +238,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRange {
             /**
              * Specifies destinationPortRange.
-             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
+             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports
              * @return the next definition stage
              */
             WithCreate withDestinationPortRange(String destinationPortRange);
@@ -322,7 +322,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefix {
             /**
              * Specifies sourceAddressPrefix.
-             * @param sourceAddressPrefix The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
+             * @param sourceAddressPrefix The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
              * @return the next definition stage
              */
             WithCreate withSourceAddressPrefix(String sourceAddressPrefix);
@@ -358,7 +358,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRange {
             /**
              * Specifies sourcePortRange.
-             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
+             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports
              * @return the next definition stage
              */
             WithCreate withSourcePortRange(String sourcePortRange);
@@ -412,7 +412,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefix {
             /**
              * Specifies destinationAddressPrefix.
-             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
+             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
              * @return the next update stage
              */
             Update withDestinationAddressPrefix(String destinationAddressPrefix);
@@ -448,7 +448,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRange {
             /**
              * Specifies destinationPortRange.
-             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
+             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports
              * @return the next update stage
              */
             Update withDestinationPortRange(String destinationPortRange);
@@ -532,7 +532,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefix {
             /**
              * Specifies sourceAddressPrefix.
-             * @param sourceAddressPrefix The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
+             * @param sourceAddressPrefix The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
              * @return the next update stage
              */
             Update withSourceAddressPrefix(String sourceAddressPrefix);
@@ -568,7 +568,7 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRange {
             /**
              * Specifies sourcePortRange.
-             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
+             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports
              * @return the next update stage
              */
             Update withSourcePortRange(String sourcePortRange);
