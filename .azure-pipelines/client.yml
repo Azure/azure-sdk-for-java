@@ -215,24 +215,30 @@ jobs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'
 
+        # For debugging only, will be deleted before pushing to master
+      - bash: |
+            ls -lahR .
+        displayName: Print the directory structure
+
         # Publish JaCoCo code coverage results from a build
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage report'
         inputs:
             codeCoverageTool: 'JaCoCo'
-            summaryFileLocation: $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-            reportDirectory: $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/test-coverage/
+            summaryFileLocation: ./eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+            reportDirectory: ./eng/jacoco-test-coverage/target/site/test-coverage/
             failIfCoverageEmpty: true
 
-        # Copy test coverage reports
-      - powershell: |
-            copy -r $(System.DefaultWorkingDirectory)/eng/jacoco-test-coverage/target/site/ $(Build.ArtifactStagingDirectory)
-        displayName: 'Copy test coverage report to staging'
+      - bash: |
+            mkdir $(OSName)-$(JavaVersion)
+            mv eng/jacoco-test-coverage/target/site/ $(OSName)-$(JavaVersion)
+            ls -lahr
+        displayName: Move test coverage reports to respective OS-JDK directory
 
-
-        # Publish build artifacts
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish artifact'
+        # Publish pipeline artifacts
+      - task: PublishPipelineArtifact@0
+        displayName: 'Publish test coverage artifact'
         inputs:
-          artifactName: '$(OSName)-$(JavaVersion)-test-coverage'
+          artifactName: 'coverage'
+          targetPath: '$(Build.ArtifactStagingDirectory)'
 
