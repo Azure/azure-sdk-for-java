@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share36315f6b&maxresults=-1&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Fri, 14 Jun 2019 17:10:15 GMT",
+      "content-length" : "461",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-11-09",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "OutOfRangeQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "a1b94f6c-401a-0029-15d4-22b969000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:a1b94f6c-401a-0029-15d4-22b969000000\nTime:2019-06-14T17:10:16.1351822Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>-1</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share36315f6b&maxresults=0&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Fri, 14 Jun 2019 17:10:15 GMT",
+      "content-length" : "460",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-11-09",
+      "content-type" : "application/xml",
+      "x-ms-error-code" : "OutOfRangeQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "a1b94f6d-401a-0029-16d4-22b969000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:a1b94f6d-401a-0029-16d4-22b969000000\nTime:2019-06-14T17:10:16.1702158Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>0</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share36315f6b&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Fri, 14 Jun 2019 17:10:15 GMT",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "x-ms-version" : "2018-11-09",
+      "content-type" : "application/xml",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a1b94f6e-401a-0029-17d4-22b969000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.file.core.windows.net/\"><Prefix>share36315f6b</Prefix><Shares /><NextMarker /></EnumerationResults>"
+    }
+  } ],
+  "variables" : [ "share36315f6b" ]
+}
