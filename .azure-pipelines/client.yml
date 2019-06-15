@@ -231,9 +231,10 @@ jobs:
             sourceFolder: eng/jacoco-test-coverage/target/site/
             targetFolder: test-coverage-$(OSName)-$(JavaVersion)
 
-        # Publish pipeline artifacts for respective OS and Java versions
+        # Publish pipeline artifact containing test coverage for just Linux and Java LTS
       - task: PublishPipelineArtifact@0
         displayName: 'Publish test coverage artifact'
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
         inputs:
           artifactName: 'coverage'
           targetPath: 'test-coverage-$(OSName)-$(JavaVersion)'
