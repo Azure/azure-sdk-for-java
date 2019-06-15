@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Locale;
+import java.util.Objects;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -39,26 +40,31 @@ public class EventHubSharedAccessKeyCredential extends TokenCredential {
      * @param keyName Name of the shared access key policy.
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
+     * @throws IllegalArgumentException if {@code keyName}, {@code sharedAccessKey} is null or empty. Or the value of
+     * {@code tokenValidity} less less than 1.
      * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated for generated the shared access
      * signatures.
      * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
+     * @throws NullPointerException if {@code tokenValidity} is null.
      */
     public EventHubSharedAccessKeyCredential(String keyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
         super("");
 
-        this.tokenValidity = tokenValidity;
         if (ImplUtils.isNullOrEmpty(keyName)) {
             throw new IllegalArgumentException("keyName cannot be null or empty");
         }
         if (ImplUtils.isNullOrEmpty(sharedAccessKey)) {
             throw new IllegalArgumentException("sharedAccessKey cannot be null or empty.");
         }
+
+        Objects.requireNonNull(tokenValidity);
         if (tokenValidity.isZero() || tokenValidity.isNegative()) {
             throw new IllegalArgumentException("tokenTimeToLive has to positive and in the order-of seconds");
         }
 
         this.keyName = keyName;
+        this.tokenValidity = tokenValidity;
 
         hmac = Mac.getInstance(HASH_ALGORITHM);
 

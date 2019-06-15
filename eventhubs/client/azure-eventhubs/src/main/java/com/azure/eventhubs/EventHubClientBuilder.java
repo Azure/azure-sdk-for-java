@@ -176,7 +176,7 @@ public class EventHubClientBuilder {
      * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
-     * @throws IllegalStateException if the credentials have not been set using either {@link #credentials(String)}
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link #credentials(String)}
      * or {@link #credentials(String, String, TokenCredential)}.
      */
     public EventHubClient build() {
