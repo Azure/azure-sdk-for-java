@@ -19,7 +19,7 @@ public class EventHubSharedAccessKeyCredentialTest {
     private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorNullDuration() throws InvalidKeyException, NoSuchAlgorithmException {
         new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, null);
     }
