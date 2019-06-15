@@ -20,6 +20,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 class TestHelpers {
+    static final String AZURE_STORAGE_CONNECTION_STRING = "AZURE_STORAGE_CONNECTION_STRING";
+    static final String AZURE_STORAGE_FILE_ENDPOINT = "AZURE_STORAGE_FILE_ENDPOINT";
+
     static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.statusCode());
     }
