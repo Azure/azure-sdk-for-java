@@ -38,10 +38,11 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifacts $(ArtifactName)'
+      - task: PublishPipelineArtifact@0
+        displayName: 'Publish $(ArtifactName) artifact'
         inputs:
           artifactName: '$(ArtifactName)'
+          targetPath: $(Build.ArtifactStagingDirectory)
 
   - job: 'Analyze'
 
@@ -128,11 +129,12 @@ jobs:
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         displayName: 'Copy reports to artifact staging'
 
-      - task: PublishBuildArtifacts@1
+      - task: PublishPipelineArtifact@0
         condition: succeededOrFailed()
-        displayName: 'Publish Report Artifacts'
+        displayName: 'Publish reports artifact'
         inputs:
           artifactName: reports
+          targetPath: $(Build.ArtifactStagingDirectory)
 
   - job: 'Test'
 
@@ -215,27 +217,19 @@ jobs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'
 
-        # Publish JaCoCo code coverage results from a build
+      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS
       - task: PublishCodeCoverageResults@1
-        displayName: 'Publish code coverage report'
-        inputs:
-            codeCoverageTool: 'JaCoCo'
-            summaryFileLocation: ./eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-            reportDirectory: ./eng/jacoco-test-coverage/target/site/test-coverage/
-            failIfCoverageEmpty: true
-
-        # Copy test coverage reports to respective OS and Java version directories
-      - task: CopyFiles@2
-        displayName: 'Copy test coverage reports to OS-JDKversion directory'
-        inputs:
-            sourceFolder: eng/jacoco-test-coverage/target/site/
-            targetFolder: test-coverage-$(OSName)-$(JavaVersion)
-
-        # Publish pipeline artifact containing test coverage for just Linux and Java LTS
-      - task: PublishPipelineArtifact@0
-        displayName: 'Publish test coverage artifact'
         condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
         inputs:
-          artifactName: 'coverage'
-          targetPath: 'test-coverage-$(OSName)-$(JavaVersion)'
+          codeCoverageTool: JaCoCo
+          summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+          reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+          failIfCoverageEmpty: true
 
+      # Publish code coverage to an artifact so it can be uploaded to the Maven site
+      - task: PublishPipelineArtifact@0
+        displayName: 'Publish coverage artifact'
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
+        inputs:
+          artifactName: coverage
+          targetPath: eng/jacoco-test-coverage/target/site/
