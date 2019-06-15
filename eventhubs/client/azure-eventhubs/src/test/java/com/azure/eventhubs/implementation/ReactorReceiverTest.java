@@ -21,7 +21,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,14 +41,13 @@ public class ReactorReceiverTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        final Duration tokenValidity = Duration.ofMinutes(1);
-        when(cbsNode.authorize(any(), eq(tokenValidity))).thenReturn(Mono.empty());
+        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
 
         when(event.getLink()).thenReturn(receiver);
         when(receiver.getRemoteSource()).thenReturn(new Source());
 
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name");
-        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", tokenValidity, Duration.ofSeconds(30));
+        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", Duration.ofSeconds(30));
         reactorReceiver = new ReactorReceiver("test-entityPath", receiver, receiverHandler, tokenManager);
     }
 
