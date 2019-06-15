@@ -40,6 +40,18 @@ public class ApplicationGetHttpsEndpoint {
     private Integer publicPort;
 
     /**
+     * The subDomainSuffix of the application.
+     */
+    @JsonProperty(value = "subDomainSuffix")
+    private String subDomainSuffix;
+
+    /**
+     * The value indicates whether to disable GatewayAuth.
+     */
+    @JsonProperty(value = "disableGatewayAuth")
+    private Boolean disableGatewayAuth;
+
+    /**
      * Get the list of access modes for the application.
      *
      * @return the accessModes value
@@ -116,6 +128,46 @@ public class ApplicationGetHttpsEndpoint {
      */
     public ApplicationGetHttpsEndpoint withPublicPort(Integer publicPort) {
         this.publicPort = publicPort;
+        return this;
+    }
+
+    /**
+     * Get the subDomainSuffix of the application.
+     *
+     * @return the subDomainSuffix value
+     */
+    public String subDomainSuffix() {
+        return this.subDomainSuffix;
+    }
+
+    /**
+     * Set the subDomainSuffix of the application.
+     *
+     * @param subDomainSuffix the subDomainSuffix value to set
+     * @return the ApplicationGetHttpsEndpoint object itself.
+     */
+    public ApplicationGetHttpsEndpoint withSubDomainSuffix(String subDomainSuffix) {
+        this.subDomainSuffix = subDomainSuffix;
+        return this;
+    }
+
+    /**
+     * Get the value indicates whether to disable GatewayAuth.
+     *
+     * @return the disableGatewayAuth value
+     */
+    public Boolean disableGatewayAuth() {
+        return this.disableGatewayAuth;
+    }
+
+    /**
+     * Set the value indicates whether to disable GatewayAuth.
+     *
+     * @param disableGatewayAuth the disableGatewayAuth value to set
+     * @return the ApplicationGetHttpsEndpoint object itself.
+     */
+    public ApplicationGetHttpsEndpoint withDisableGatewayAuth(Boolean disableGatewayAuth) {
+        this.disableGatewayAuth = disableGatewayAuth;
         return this;
     }
 
