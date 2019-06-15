@@ -65,7 +65,11 @@ public final class SharesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+<<<<<<< HEAD
     @Service("Storage File Shares")
+=======
+    @Service("Storage Files Shares")
+>>>>>>> c0511be2b392f8abeec9b9b217bcb7f075aec8f7
     private interface SharesService {
         @PUT("{shareName}")
         @ExpectedResponses({201})

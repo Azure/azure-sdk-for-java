@@ -70,7 +70,11 @@ public final class FilesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+<<<<<<< HEAD
     @Service("Storage File Files")
+=======
+    @Service("Storage Files File")
+>>>>>>> c0511be2b392f8abeec9b9b217bcb7f075aec8f7
     private interface FilesService {
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})

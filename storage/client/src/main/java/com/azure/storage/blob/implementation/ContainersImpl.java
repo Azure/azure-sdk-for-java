@@ -14,6 +14,7 @@ import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.DateTimeRfc1123;
@@ -76,6 +77,7 @@ public final class ContainersImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Blobs Containers")
     private interface ContainersService {
         @PUT("{containerName}")
         @ExpectedResponses({201})
