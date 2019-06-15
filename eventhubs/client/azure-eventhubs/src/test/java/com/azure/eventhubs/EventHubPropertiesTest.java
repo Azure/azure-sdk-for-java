@@ -12,6 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class EventHubPropertiesTest {
+    /**
+     * Verifies that the properties on {@link EventHubProperties} are set properly.
+     */
     @Test
     public void setsProperties() {
         // Arrange
@@ -33,6 +36,10 @@ public class EventHubPropertiesTest {
         }
     }
 
+    /**
+     * Verifies that the {@link EventHubProperties#partitionIds()} array is not {@code null} when we pass {@code null}
+     * to the constructor.
+     */
     @Test
     public void setsPropertiesNoPartitions() {
         // Arrange

@@ -9,6 +9,9 @@ import org.junit.Test;
 import java.time.Instant;
 
 public class PartitionPropertiesTest {
+    /**
+     * Verifies that the properties on {@link PartitionProperties} are set properly.
+     */
     @Test
     public void setsProperties() {
         // Arrange
