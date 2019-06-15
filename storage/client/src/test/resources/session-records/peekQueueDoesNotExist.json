@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue689661bd/messages?numofmessages=1&peekonly=true",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue04685840/messages?numofmessages=1&peekonly=true",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 22:21:06 GMT",
+      "date" : "Fri, 14 Jun 2019 23:54:21 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -15,18 +15,18 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "6b5be7d6-e003-0024-0cff-225665000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:6b5be7d6-e003-0024-0cff-225665000000\nTime:2019-06-14T22:21:06.8356010Z</Message></Error>"
+      "x-ms-request-id" : "eecd7de0-c003-001a-730c-23e044000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:eecd7de0-c003-001a-730c-23e044000000\nTime:2019-06-14T23:54:22.3230477Z</Message></Error>"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue689661bd/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue04685840/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 22:21:06 GMT",
+      "date" : "Fri, 14 Jun 2019 23:54:21 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -34,9 +34,9 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "6b5be7e2-e003-0024-17ff-225665000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:6b5be7e2-e003-0024-17ff-225665000000\nTime:2019-06-14T22:21:06.8786423Z</Message></Error>"
+      "x-ms-request-id" : "eecd7de9-c003-001a-7b0c-23e044000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:eecd7de9-c003-001a-7b0c-23e044000000\nTime:2019-06-14T23:54:22.3640865Z</Message></Error>"
     }
   } ],
-  "variables" : [ "queue689661bd" ]
+  "variables" : [ "queue04685840" ]
 }

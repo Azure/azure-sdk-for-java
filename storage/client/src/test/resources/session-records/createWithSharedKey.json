@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue69906c50/messages",
+    "Uri" : "https://alzimmerstorage.queue.core.windows.net/queue85706eb6/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
       "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 22:21:50 GMT",
+      "date" : "Fri, 14 Jun 2019 23:55:05 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-03-28",
@@ -15,9 +15,9 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "6b5c09c6-e003-0024-62ff-225665000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:6b5c09c6-e003-0024-62ff-225665000000\nTime:2019-06-14T22:21:51.3059103Z</Message></Error>"
+      "x-ms-request-id" : "eecda883-c003-001a-680c-23e044000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:eecda883-c003-001a-680c-23e044000000\nTime:2019-06-14T23:55:06.4839191Z</Message></Error>"
     }
   } ],
-  "variables" : [ "queue69906c50" ]
+  "variables" : [ "queue85706eb6" ]
 }

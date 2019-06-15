@@ -58,7 +58,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
                 try {
                     QueueClient client = serviceClient.getQueueClient(queueToDelete.name());
                     client.clearMessages();
-                    client.deleteQueue();
+                    client.delete();
                 } catch (StorageErrorException ex) {
                     // Queue already delete, that's what we wanted anyways.
                 }

@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.queue.models;
 
+/**
+ * This model class contains the options for listing queues.
+ */
 public final class QueuesSegmentOptions {
     private boolean includeMetadata;
 

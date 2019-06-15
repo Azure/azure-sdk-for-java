@@ -9,16 +9,19 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
+import com.azure.storage.queue.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -118,18 +121,37 @@ public final class QueueServiceAsyncClient {
     Flux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
         String prefix = null;
         Integer maxResults = null;
-        List<ListQueuesIncludeType> include = null;
+        final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
             prefix = options.prefix();
             maxResults = options.maxResults();
             if (options.includeMetadata()) {
-                include = Collections.singletonList(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
+                include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }
 
-        return client.services().listQueuesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, null, Context.NONE)
-            .flatMapMany(response -> Flux.fromIterable(response.value().queueItems()));
+        Mono<ServicesListQueuesSegmentResponse> result = client.services()
+            .listQueuesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, null, Context.NONE);
+
+        return result.flatMapMany(response -> extractAndFetchQueues(response, include, Context.NONE));
+    }
+
+    private Flux<QueueItem> listQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
+        ListQueuesSegmentResponse value = response.value();
+        Mono<ServicesListQueuesSegmentResponse> result = client.services()
+            .listQueuesSegmentWithRestResponseAsync(value.prefix(), value.marker(), value.maxResults(), include, null, null, context);
+
+        return result.flatMapMany(r -> extractAndFetchQueues(r, include, context));
+    }
+
+    private Publisher<QueueItem> extractAndFetchQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
+        String nextPageLink = response.value().nextMarker();
+        if (nextPageLink == null) {
+            return Flux.fromIterable(response.value().queueItems());
+        }
+
+        return Flux.fromIterable(response.value().queueItems()).concatWith(listQueues(response, include, context));
     }
 
     /**
