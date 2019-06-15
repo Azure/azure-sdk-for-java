@@ -24,10 +24,6 @@ import com.azure.storage.file.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
-<<<<<<< HEAD
-=======
-import com.azure.storage.file.models.StorageServiceProperties;
->>>>>>> c0511be2b392f8abeec9b9b217bcb7f075aec8f7
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -62,11 +58,7 @@ public final class ServicesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-<<<<<<< HEAD
     @Service("Storage File Services")
-=======
-    @Service("Storage Files Service")
->>>>>>> c0511be2b392f8abeec9b9b217bcb7f075aec8f7
     private interface ServicesService {
         @PUT("")
         @ExpectedResponses({202})

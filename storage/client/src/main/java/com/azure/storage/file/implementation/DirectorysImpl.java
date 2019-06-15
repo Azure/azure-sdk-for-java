@@ -58,11 +58,7 @@ public final class DirectorysImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-<<<<<<< HEAD
     @Service("Storage File Directories")
-=======
-    @Service("Storage Files Directory")
->>>>>>> c0511be2b392f8abeec9b9b217bcb7f075aec8f7
     private interface DirectorysService {
         @PUT("{shareName}/{directory}")
         @ExpectedResponses({201})
