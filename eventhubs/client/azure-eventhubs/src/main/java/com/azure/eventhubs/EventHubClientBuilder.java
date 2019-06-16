@@ -58,7 +58,7 @@ public class EventHubClientBuilder {
      * @return The updated EventHubClientBuilder object.
      * @throws IllegalArgumentException if {@code connectionString} is null or empty.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
-     * string.
+     *         string.
      */
     public EventHubClientBuilder credentials(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -76,10 +76,10 @@ public class EventHubClientBuilder {
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
-     * {@literal {your-namespace}.servicebus.windows.net}.
+     *         {@literal {your-namespace}.servicebus.windows.net}.
      * @param eventHubPath The path of the specific Event Hub to connect the client to.
      * @param credentials The token credential to use for authorization. Access controls may be specified by the Event
-     * Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     *         Hubs namespace or the requested Event Hub, depending on Azure configuration.
      * @return The updated EventHubClientBuilder object.
      * @throws IllegalArgumentException if {@code host} or {@code eventHubPath} is null or empty.
      * @throws NullPointerException if {@code credentials} is null.
@@ -177,7 +177,7 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubClient} instance.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link #credentials(String)}
-     * or {@link #credentials(String, String, TokenCredential)}.
+     *         or {@link #credentials(String, String, TokenCredential)}.
      */
     public EventHubClient build() {
         configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
