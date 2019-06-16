@@ -121,7 +121,7 @@ public final class SecretClientBuilder {
      *
      * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated Builder object.
-     * @throws IllegalStateException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public SecretClientBuilder endpoint(String endpoint) {
         try {

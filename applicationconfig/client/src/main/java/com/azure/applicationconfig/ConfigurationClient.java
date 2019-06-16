@@ -12,21 +12,15 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import java.util.List;
-
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
  * ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector filter}.
  *
- * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * <pre>
- * ConfigurationClient client = ConfigurationClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.applicationconfig.configurationclient.instantiation}
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -62,9 +56,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.addSetting("prodDBConnection", "db_connection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.applicationconfig.configurationclient.addSetting#string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -123,7 +115,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
+    private Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
         return client.addSetting(setting, context).block();
     }
 
@@ -229,7 +221,7 @@ public final class ConfigurationClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
+    private Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
         return client.setSetting(setting, context).block();
     }
 
@@ -310,7 +302,7 @@ public final class ConfigurationClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
+    private Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
         return client.updateSetting(setting, context).block();
     }
 
@@ -379,7 +371,7 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
+    private Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
         return client.getSetting(setting, context).block();
     }
 
@@ -462,7 +454,7 @@ public final class ConfigurationClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
+    private Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
         return client.deleteSetting(setting, context).block();
     }
 
@@ -483,7 +475,7 @@ public final class ConfigurationClient {
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
-    public List<ConfigurationSetting> listSettings(SettingSelector options) {
+    public Iterable<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
 
@@ -505,7 +497,7 @@ public final class ConfigurationClient {
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
-    public List<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    private Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return client.listSettings(options, context).collectList().block();
     }
 
@@ -529,7 +521,7 @@ public final class ConfigurationClient {
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
 
@@ -554,7 +546,7 @@ public final class ConfigurationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
-    public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    private Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         return client.listSettingRevisions(selector, context).collectList().block();
     }
 }

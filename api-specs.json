@@ -1,4 +1,8 @@
 {
+  "advisor/resource-manager": {
+    "source": "specification/advisor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "apimanagement/resource-manager": {
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -82,6 +86,10 @@
     "source": "specification/eventhub/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "hanaonazure/resource-manager": {
+    "source": "specification/hanaonazure/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -114,6 +122,10 @@
   },
   "notificationhubs/resource-manager": {
     "source": "specification/notificationhubs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mariadb/resource-manager": {
+    "source": "specification/mariadb/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "marketplaceordering/resource-manager": {

@@ -63,7 +63,7 @@ public class PerformanceTierServiceLevelObjectives {
     private Integer minStorageMB;
 
     /**
-     * Get the id value.
+     * Get iD for the service level objective.
      *
      * @return the id value
      */
@@ -72,7 +72,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the id value.
+     * Set iD for the service level objective.
      *
      * @param id the id value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -83,7 +83,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the edition value.
+     * Get edition of the performance tier.
      *
      * @return the edition value
      */
@@ -92,7 +92,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the edition value.
+     * Set edition of the performance tier.
      *
      * @param edition the edition value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -103,7 +103,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the vCore value.
+     * Get vCore associated with the service level objective.
      *
      * @return the vCore value
      */
@@ -112,7 +112,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the vCore value.
+     * Set vCore associated with the service level objective.
      *
      * @param vCore the vCore value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -123,7 +123,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the hardwareGeneration value.
+     * Get hardware generation associated with the service level objective.
      *
      * @return the hardwareGeneration value
      */
@@ -132,7 +132,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the hardwareGeneration value.
+     * Set hardware generation associated with the service level objective.
      *
      * @param hardwareGeneration the hardwareGeneration value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -143,7 +143,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the maxBackupRetentionDays value.
+     * Get maximum Backup retention in days for the performance tier edition.
      *
      * @return the maxBackupRetentionDays value
      */
@@ -152,7 +152,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the maxBackupRetentionDays value.
+     * Set maximum Backup retention in days for the performance tier edition.
      *
      * @param maxBackupRetentionDays the maxBackupRetentionDays value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -163,7 +163,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the minBackupRetentionDays value.
+     * Get minimum Backup retention in days for the performance tier edition.
      *
      * @return the minBackupRetentionDays value
      */
@@ -172,7 +172,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the minBackupRetentionDays value.
+     * Set minimum Backup retention in days for the performance tier edition.
      *
      * @param minBackupRetentionDays the minBackupRetentionDays value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -183,7 +183,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the maxStorageMB value.
+     * Get max storage allowed for a server.
      *
      * @return the maxStorageMB value
      */
@@ -192,7 +192,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the maxStorageMB value.
+     * Set max storage allowed for a server.
      *
      * @param maxStorageMB the maxStorageMB value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.
@@ -203,7 +203,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Get the minStorageMB value.
+     * Get max storage allowed for a server.
      *
      * @return the minStorageMB value
      */
@@ -212,7 +212,7 @@ public class PerformanceTierServiceLevelObjectives {
     }
 
     /**
-     * Set the minStorageMB value.
+     * Set max storage allowed for a server.
      *
      * @param minStorageMB the minStorageMB value to set
      * @return the PerformanceTierServiceLevelObjectives object itself.

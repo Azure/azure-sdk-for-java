@@ -38,6 +38,47 @@
     </developer>
   </developers>
 
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
   <issueManagement>
     <system>GitHub</system>
     <url>${issues.url}</url>
@@ -238,6 +279,27 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <!--
+              Prepares the property pointing to the JaCoCo runtime agent which
+              is passed as VM argument when Maven the Surefire plugin is executed.
+          -->
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- Allows the sample sources to be built during test-compile phase. -->
       <plugin>
@@ -260,14 +322,15 @@
             <linksource>false</linksource>
             <excludePackageNames>
               com.microsoft.azure.template:
-              *.impl.*:
-              *.implementation.*:
-              com.azure.tracing.opencensus*
+              *.impl*:
+              *.implementation*:
+              com.azure.tracing*:
+              com.azure.core.test*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*</packages>
+                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
               </group>
               <group>
                 <title>Azure Core - Management</title>
@@ -281,6 +344,10 @@
                 <title>Azure App Configuration</title>
                 <packages>com.azure.applicationconfig*</packages>
               </group>
+              <group>
+                <title>Azure Key Vault</title>
+                <packages>com.azure.keyvault*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -289,6 +356,15 @@
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
             <isOffline>false</isOffline>
+            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>${codesnippet4javadoc.version}</version>
+            </docletArtifact>
+            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
           </configuration>
         </plugin>
 
@@ -309,9 +385,16 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+            <failOnError>true</failOnError>
+          </configuration>
+        </plugin>
 
-            <!-- TODO soon - enable this failure mode -->
-            <failOnError>false</failOnError>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
           </configuration>
         </plugin>
       </plugins>
@@ -348,10 +431,6 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -406,8 +485,23 @@
             <reports>
               <report>aggregate</report>
             </reports>
+            <configuration>
+              <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
+                  So, path for aggregate reports have to be defined relative to parent pom -->
+              <additionalOptions>-maxLineLength 120
+                -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
+                -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
+                -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
+              </additionalOptions>
+            </configuration>
           </reportSet>
         </reportSets>
+        <configuration>
+          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
+               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
+               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -435,7 +529,6 @@
       </plugin>
     </plugins>
   </reporting>
-
   <profiles>
 
     <!--
@@ -502,7 +595,7 @@
     <profile>
       <id>javadoc-no-modules-fix</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <build>
         <plugins>
@@ -511,6 +604,35 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <additionalJOption>--no-module-directories</additionalJOption>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>javadoc-doclet-compatibility</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+
+              <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
+              javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
+              Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
+              <failOnWarnings>false</failOnWarnings>
+
+              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
+              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
+              <additionalJOptions>
+                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
+              </additionalJOptions>
+
             </configuration>
           </plugin>
         </plugins>
@@ -527,6 +649,7 @@
       <modules>
         <module>./eng/spotbugs-aggregate-report</module>
         <module>./eng/code-quality-reports</module>
+        <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
 

@@ -123,6 +123,7 @@
     <jgit.version>4.5.0.201609210915-r</jgit.version>
     <commons-net.version>3.3</commons-net.version>
     <fluentsdk.version>1.14.0</fluentsdk.version>
+    <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
@@ -165,6 +166,7 @@
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.18</checkstyle.version>
+    <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -312,7 +314,7 @@
         <artifactId>opencensus-api</artifactId>
         <version>${opencensus.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
@@ -514,6 +516,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
+            <!-- Sets the VM argument line used when unit tests are run. -->
+            <argLine>${surefireArgLine}</argLine>
             <includes>
               <include>**/Test*.java</include>
               <include>**/*Test.java</include>
