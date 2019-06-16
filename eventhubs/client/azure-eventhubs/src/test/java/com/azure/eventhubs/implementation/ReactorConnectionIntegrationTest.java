@@ -33,7 +33,7 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
         MockitoAnnotations.initMocks(this);
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        connection = new ReactorConnection("test-connection-id", getConnectionParameters(),
+        connection = new ReactorConnection("test-connection-id", getConnectionOptions(),
             getReactorProvider(), handlerProvider, responseMapper);
     }
 

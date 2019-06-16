@@ -49,7 +49,7 @@ public class CBSChannelTest extends ApiTestBase {
         tokenResourceProvider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, credentials.endpoint().getHost());
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        connection = new ReactorConnection(CONNECTION_ID, getConnectionParameters(), getReactorProvider(),
+        connection = new ReactorConnection(CONNECTION_ID, getConnectionOptions(), getReactorProvider(),
             handlerProvider, mapper);
 
         cbsChannel = new CBSChannel(connection, getTokenCredential(), getAuthorizationType(), getReactorProvider(),

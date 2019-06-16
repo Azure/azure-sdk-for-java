@@ -9,7 +9,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.eventhubs.implementation.AmqpSendLink;
-import com.azure.eventhubs.implementation.ConnectionParameters;
+import com.azure.eventhubs.implementation.ConnectionOptions;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
 import com.azure.eventhubs.implementation.EventHubSession;
@@ -40,32 +40,32 @@ public class EventHubClient implements Closeable {
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-    private final ConnectionParameters connectionParameters;
+    private final ConnectionOptions connectionOptions;
     private final String eventHubPath;
     private final String host;
     private final EventSenderOptions defaultSenderOptions;
     private final EventReceiverOptions defaultReceiverOptions;
 
-    EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionParameters);
+    EventHubClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+        Objects.requireNonNull(connectionOptions);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
 
-        this.connectionParameters = connectionParameters;
-        this.eventHubPath = connectionParameters.eventHubPath();
-        this.host = connectionParameters.host();
+        this.connectionOptions = connectionOptions;
+        this.eventHubPath = connectionOptions.eventHubPath();
+        this.host = connectionOptions.host();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultSenderOptions = new EventSenderOptions()
-            .retry(connectionParameters.retryPolicy())
-            .timeout(connectionParameters.timeout());
+            .retry(connectionOptions.retryPolicy())
+            .timeout(connectionOptions.timeout());
         this.defaultReceiverOptions = new EventReceiverOptions()
-            .retry(connectionParameters.retryPolicy())
-            .scheduler(connectionParameters.scheduler());
+            .retry(connectionOptions.retryPolicy())
+            .scheduler(connectionOptions.scheduler());
     }
 
     /**
@@ -133,10 +133,10 @@ public class EventHubClient implements Closeable {
 
         final EventSenderOptions clonedOptions = options.clone();
         if (clonedOptions.timeout() == null) {
-            clonedOptions.timeout(connectionParameters.timeout());
+            clonedOptions.timeout(connectionOptions.timeout());
         }
         if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionParameters.retryPolicy());
+            clonedOptions.retry(connectionOptions.retryPolicy());
         }
 
         final String entityPath;
@@ -184,10 +184,10 @@ public class EventHubClient implements Closeable {
 
         final EventReceiverOptions clonedOptions = options.clone();
         if (clonedOptions.scheduler() == null) {
-            clonedOptions.scheduler(connectionParameters.scheduler());
+            clonedOptions.scheduler(connectionOptions.scheduler());
         }
         if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionParameters.retryPolicy());
+            clonedOptions.retry(connectionOptions.retryPolicy());
         }
 
         final String linkName = StringUtil.getRandomString("PR");
@@ -200,12 +200,12 @@ public class EventHubClient implements Closeable {
                     ? options.exclusiveReceiverPriority().get()
                     : null;
 
-                return session.createReceiver(linkName, entityPath, connectionParameters.timeout(),
+                return session.createReceiver(linkName, entityPath, connectionOptions.timeout(),
                     clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
             })
             .cast(AmqpReceiveLink.class);
 
-        return new EventReceiver(receiveLinkMono, clonedOptions, connectionParameters.timeout());
+        return new EventReceiver(receiveLinkMono, clonedOptions, connectionOptions.timeout());
     }
 
     /**
@@ -216,7 +216,7 @@ public class EventHubClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(connectionParameters.timeout());
+                final AmqpConnection connection = connectionMono.block(connectionOptions.timeout());
                 if (connection != null) {
                     connection.close();
                 }

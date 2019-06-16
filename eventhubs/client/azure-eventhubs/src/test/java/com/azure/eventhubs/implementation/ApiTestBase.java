@@ -41,7 +41,7 @@ public abstract class ApiTestBase extends TestBase {
     private Reactor reactor = mock(Reactor.class);
     private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
-    private ConnectionParameters connectionParameters;
+    private ConnectionOptions connectionOptions;
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
@@ -73,7 +73,7 @@ public abstract class ApiTestBase extends TestBase {
             reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
-        connectionParameters = new ConnectionParameters(properties.endpoint().getHost(), properties.eventHubPath(),
+        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
             tokenCredential, getAuthorizationType(), Duration.ofSeconds(45), TransportType.AMQP,
             Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
@@ -112,8 +112,8 @@ public abstract class ApiTestBase extends TestBase {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 
-    protected ConnectionParameters getConnectionParameters() {
-        return connectionParameters;
+    protected ConnectionOptions getConnectionOptions() {
+        return connectionOptions;
     }
 
     protected ConnectionStringProperties getConnectionStringProperties() {

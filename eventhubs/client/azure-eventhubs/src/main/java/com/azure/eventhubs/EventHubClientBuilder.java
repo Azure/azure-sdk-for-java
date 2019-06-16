@@ -13,7 +13,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.eventhubs.implementation.ClientConstants;
-import com.azure.eventhubs.implementation.ConnectionParameters;
+import com.azure.eventhubs.implementation.ConnectionOptions;
 import com.azure.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.eventhubs.implementation.ReactorProvider;
@@ -214,7 +214,7 @@ public class EventHubClientBuilder {
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
-        final ConnectionParameters parameters = new ConnectionParameters(host, eventHubPath, credentials,
+        final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials,
             authorizationType, timeout, transport, retry, proxyConfiguration, scheduler);
 
         return new EventHubClient(parameters, provider, handlerProvider);

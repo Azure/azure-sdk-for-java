@@ -87,10 +87,10 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        final ConnectionParameters connectionParameters = new ConnectionParameters(CREDENTIAL_INFO.endpoint().getHost(),
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
             CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TEST_DURATION,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
-        connection = new ReactorConnection(CONNECTION_ID, connectionParameters, reactorProvider, reactorHandlerProvider, responseMapper);
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider, responseMapper);
     }
 
     @After
@@ -282,7 +282,7 @@ public class ReactorConnectionTest {
     public void createCBSNodeTimeoutException() {
         // Arrange
         Duration timeout = Duration.ofSeconds(5);
-        ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO.endpoint().getHost(),
+        ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
             CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, timeout,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
 

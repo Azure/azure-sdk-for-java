@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an Event Hub.
  */
-public class ConnectionParameters {
+public class ConnectionOptions {
     private final Duration timeout;
     private final TokenCredential tokenCredential;
     private final TransportType transport;
@@ -26,9 +26,9 @@ public class ConnectionParameters {
     private final String eventHubPath;
     private final CBSAuthorizationType authorizationType;
 
-    public ConnectionParameters(String host, String eventHubPath, TokenCredential tokenCredential,
-                                CBSAuthorizationType authorizationType, Duration timeout, TransportType transport,
-                                Retry retryPolicy, ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
+    public ConnectionOptions(String host, String eventHubPath, TokenCredential tokenCredential,
+                             CBSAuthorizationType authorizationType, Duration timeout, TransportType transport,
+                             Retry retryPolicy, ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
         Objects.requireNonNull(host);
         Objects.requireNonNull(eventHubPath);
         Objects.requireNonNull(timeout);
