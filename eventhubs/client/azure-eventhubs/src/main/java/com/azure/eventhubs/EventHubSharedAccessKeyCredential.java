@@ -40,10 +40,10 @@ public class EventHubSharedAccessKeyCredential extends TokenCredential {
      * @param keyName Name of the shared access key policy.
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
-     * @throws IllegalArgumentException if {@code keyName}, {@code sharedAccessKey} is null or empty. Or the value of
-     * {@code tokenValidity} less less than 1.
-     * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated for generated the shared access
-     * signatures.
+     * @throws IllegalArgumentException if {@code keyName}, {@code sharedAccessKey} is null or empty. Or the duration of
+     *         {@code tokenValidity} is zero or a negative value.
+     * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate the
+     *         shared access signatures.
      * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
      * @throws NullPointerException if {@code tokenValidity} is null.
      */
