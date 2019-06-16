@@ -164,4 +164,23 @@ public final class EventPosition {
             enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
             isInclusive);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EventPosition)) {
+            return false;
+        }
+
+        final EventPosition other = (EventPosition) obj;
+
+        return Objects.equals(isInclusive, other.isInclusive)
+            && Objects.equals(offset, other.offset)
+            && Objects.equals(sequenceNumber, other.sequenceNumber)
+            && Objects.equals(enqueuedDateTime, other.enqueuedDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isInclusive, offset, sequenceNumber, enqueuedDateTime);
+    }
 }
