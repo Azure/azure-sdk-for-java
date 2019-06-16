@@ -25,6 +25,7 @@ import java.net.Proxy;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -54,9 +55,11 @@ public class EventHubClientBuilder {
     /**
      * Sets the credential information given a connection string to the Event Hub instance.
      *
-     * @param connectionString The connection string to the Event Hub this client wishes to connect to.
+     * @param connectionString The connection string to the Event Hub this client wishes to connect to. It is expected
+     *         that the Event Hub path and the shared key properties are contained in this connection string.
      * @return The updated EventHubClientBuilder object.
-     * @throws IllegalArgumentException if {@code connectionString} is null or empty.
+     * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code connectionString}
+     *         does not contain the "EntityPath" key, which is the name of the Event Hub instance.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      *         string.
      */
@@ -64,12 +67,50 @@ public class EventHubClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(), properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
+                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new AzureException("Could not create the SharedAccessSignatureTokenCredential.", e);
+            throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
         }
 
         return credentials(properties.endpoint().getHost(), properties.eventHubPath(), tokenCredential);
+    }
+
+    /**
+     * Sets the credential information given a connection string to the Event Hubs namespace and a path to a specific
+     * Event Hub instance.
+     *
+     * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is expected
+     *         that the shared key properties are contained in this connection string, but not the Event Hub path.
+     * @param eventHubPath The path of the specific Event Hub to connect the client to.
+     * @return The updated EventHubClientBuilder object.
+     * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubPath} is null or empty. Or, if the
+     *         {@code connectionString} contains the Event Hub path.
+     * @throws AzureException If the shared access signature token credential could not be created using the connection
+     *         string.
+     */
+    public EventHubClientBuilder credentials(String connectionString, String eventHubPath) {
+        if (ImplUtils.isNullOrEmpty(eventHubPath)) {
+            throw new IllegalArgumentException("'eventHubPath' cannot be null or empty");
+        }
+
+        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        final TokenCredential tokenCredential;
+        try {
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
+                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
+        }
+
+        if (!ImplUtils.isNullOrEmpty(properties.eventHubPath())) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "'connectionString' contains an Event Hub path [%s].  Please use the"
+                    + " credentials(String connectionString) overload. Or supply a 'connectionString' without"
+                    + " 'EntityPath' in it.", properties.eventHubPath()));
+        }
+
+        return credentials(properties.endpoint().getHost(), eventHubPath, tokenCredential);
     }
 
     /**
