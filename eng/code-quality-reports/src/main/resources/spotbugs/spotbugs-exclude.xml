@@ -257,6 +257,12 @@
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
+  <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.FluxUtil"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <Match>
     <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
@@ -322,13 +328,13 @@
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
-    <Class name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Class name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- The checked field is always not null. -->
   <Match>
-    <Class name="com.azure.core.management.AzureProxy"/>
+    <Class name="com.azure.core.management.implementation.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -367,7 +373,7 @@
     <Class name="com.azure.core.http.HttpRequest"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
-  
+
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
@@ -407,5 +413,51 @@
     <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
     <Method name="onReceiveComplete"/>
     <Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/>
+  </Match>
+
+  <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
+  <Match>
+    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Method name="endTracingSpan"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.core.configuration.Configuration"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Or>
+      <Class name="com.azure.keyvault.models.DeletedSecret"/>
+      <Class name="com.azure.keyvault.models.SecretBase"/>
+      <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.keyvault.keys.models.Key"/>
+      <Class name="com.azure.keyvault.keys.models.KeyBase"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Field initialized by jackson property annotation -->
+  <Match>
+    <Class name="com.azure.keyvault.keys.models.webkey.JsonWebKey"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize" />
+      </And>
+      <And>
+        <Class name="com.azure.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Method name="clone" />
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 </FindBugsFilter>

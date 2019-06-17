@@ -265,6 +265,19 @@ public class AppServiceEnvironmentInner {
     private Boolean hasLinuxWorkers;
 
     /**
+     * Key Vault ID for ILB App Service Environment default SSL certificate.
+     */
+    @JsonProperty(value = "sslCertKeyVaultId")
+    private String sslCertKeyVaultId;
+
+    /**
+     * Key Vault Secret Name for ILB App Service Environment default SSL
+     * certificate.
+     */
+    @JsonProperty(value = "sslCertKeyVaultSecretName")
+    private String sslCertKeyVaultSecretName;
+
+    /**
      * Get name of the App Service Environment.
      *
      * @return the name value
@@ -818,6 +831,46 @@ public class AppServiceEnvironmentInner {
      */
     public AppServiceEnvironmentInner withHasLinuxWorkers(Boolean hasLinuxWorkers) {
         this.hasLinuxWorkers = hasLinuxWorkers;
+        return this;
+    }
+
+    /**
+     * Get key Vault ID for ILB App Service Environment default SSL certificate.
+     *
+     * @return the sslCertKeyVaultId value
+     */
+    public String sslCertKeyVaultId() {
+        return this.sslCertKeyVaultId;
+    }
+
+    /**
+     * Set key Vault ID for ILB App Service Environment default SSL certificate.
+     *
+     * @param sslCertKeyVaultId the sslCertKeyVaultId value to set
+     * @return the AppServiceEnvironmentInner object itself.
+     */
+    public AppServiceEnvironmentInner withSslCertKeyVaultId(String sslCertKeyVaultId) {
+        this.sslCertKeyVaultId = sslCertKeyVaultId;
+        return this;
+    }
+
+    /**
+     * Get key Vault Secret Name for ILB App Service Environment default SSL certificate.
+     *
+     * @return the sslCertKeyVaultSecretName value
+     */
+    public String sslCertKeyVaultSecretName() {
+        return this.sslCertKeyVaultSecretName;
+    }
+
+    /**
+     * Set key Vault Secret Name for ILB App Service Environment default SSL certificate.
+     *
+     * @param sslCertKeyVaultSecretName the sslCertKeyVaultSecretName value to set
+     * @return the AppServiceEnvironmentInner object itself.
+     */
+    public AppServiceEnvironmentInner withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
+        this.sslCertKeyVaultSecretName = sslCertKeyVaultSecretName;
         return this;
     }
 

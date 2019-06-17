@@ -13,6 +13,7 @@ import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
+import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
@@ -28,9 +29,10 @@ import com.azure.storage.file.models.SharesSetMetadataResponse;
 import com.azure.storage.file.models.SharesSetQuotaResponse;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -62,6 +64,7 @@ public final class SharesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
+    @Service("Storage Files Shares")
     private interface SharesService {
         @PUT("{shareName}")
         @ExpectedResponses({201})

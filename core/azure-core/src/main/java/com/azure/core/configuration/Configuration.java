@@ -6,15 +6,14 @@ package com.azure.core.configuration;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
  */
 public class Configuration implements Cloneable {
-
     /**
      * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
      */
@@ -25,7 +24,8 @@ public class Configuration implements Cloneable {
 
     private final ServiceLogger logger = new ServiceLogger(Configuration.class);
 
-    private Map<String, String> configurations = new HashMap<>();
+    private ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
+    private boolean loadedBaseConfigurations = false;
 
     /**
      * Constructs an empty configuration.
@@ -33,8 +33,8 @@ public class Configuration implements Cloneable {
     public Configuration() {
     }
 
-    private Configuration(Map<String, String> configurations) {
-        this.configurations = new HashMap<>(configurations);
+    private Configuration(ConcurrentMap<String, String> configurations) {
+        this.configurations = new ConcurrentHashMap<>(configurations);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Configuration implements Cloneable {
         return converter.apply(value);
     }
 
-    /**
+    /*
      * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
      * attempts to load it from the runtime parameters then the environment variables.
      *
@@ -89,6 +89,15 @@ public class Configuration implements Cloneable {
      * variable, in that order, if found, otherwise null.
      */
     private String getOrLoad(String name) {
+        loadBaseConfigurations();
+
+        // Special handling for tracing disabled and log level as they need to be updated instantly on
+        // configuration change.
+        if (BaseConfigurations.AZURE_TRACING_DISABLED.equalsIgnoreCase(name)
+            || BaseConfigurations.AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
+            load(name);
+        }
+
         if (configurations.containsKey(name)) {
             return configurations.get(name);
         }
@@ -96,7 +105,7 @@ public class Configuration implements Cloneable {
         return load(name);
     }
 
-    /**
+    /*
      * Attempts to load the configuration from the environment.
      *
      * The runtime parameters are checked first followed by the environment variables. If the configuration is found
@@ -154,16 +163,14 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
-            if (!configurations.containsKey(config)) {
-                load(config);
-            }
-        }
+        loadBaseConfigurations();
+        Configuration clone = new Configuration(configurations);
+        clone.loadedBaseConfigurations = true;
 
-        return new Configuration(configurations);
+        return clone;
     }
 
-    /**
+    /*
      * Attempts to convert the configuration value to {@code T}.
      *
      * If the value is null or empty then the default value is returned.
@@ -203,7 +210,7 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    /**
+    /*
      * Attempts to load the configuration using the passed loader. If the configuration is found it will be added to
      * the configuration store and a message will be logged.
      *
@@ -213,12 +220,29 @@ public class Configuration implements Cloneable {
      */
     private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
         String value = loader.apply(name);
-        if (!ImplUtils.isNullOrEmpty(value)) {
-            logger.asInformational().log(logMessage, name, value);
+        if (!ImplUtils.isNullOrEmpty(value) && !value.equals(configurations.get(name))) {
             configurations.put(name, value);
+            logger.asInfo().log(logMessage, name, value);
             return true;
         }
 
         return false;
+    }
+
+    /*
+     * Loads all configurations in BaseConfigurations if they haven't been loaded already.
+     */
+    private void loadBaseConfigurations() {
+        if (loadedBaseConfigurations) {
+            return;
+        }
+
+        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
+            if (!configurations.containsKey(config)) {
+                load(config);
+            }
+        }
+
+        loadedBaseConfigurations = true;
     }
 }
