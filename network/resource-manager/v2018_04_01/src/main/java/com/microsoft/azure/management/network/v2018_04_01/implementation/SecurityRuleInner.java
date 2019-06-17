@@ -35,7 +35,7 @@ public class SecurityRuleInner extends SubResource {
     private SecurityRuleProtocol protocol;
 
     /**
-     * The source port or range. Integer or range between 0 and 65535. Asterix
+     * The source port or range. Integer or range between 0 and 65535. Asterisk
      * '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.sourcePortRange")
@@ -43,13 +43,13 @@ public class SecurityRuleInner extends SubResource {
 
     /**
      * The destination port or range. Integer or range between 0 and 65535.
-     * Asterix '*' can also be used to match all ports.
+     * Asterisk '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.destinationPortRange")
     private String destinationPortRange;
 
     /**
-     * The CIDR or source IP range. Asterix '*' can also be used to match all
+     * The CIDR or source IP range. Asterisk '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer'
      * and 'Internet' can also be used. If this is an ingress rule, specifies
      * where network traffic originates from.
@@ -70,7 +70,7 @@ public class SecurityRuleInner extends SubResource {
     private List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups;
 
     /**
-     * The destination address prefix. CIDR or destination IP range. Asterix
+     * The destination address prefix. CIDR or destination IP range. Asterisk
      * '*' can also be used to match all source IPs. Default tags such as
      * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      */
@@ -118,7 +118,7 @@ public class SecurityRuleInner extends SubResource {
 
     /**
      * The direction of the rule. The direction specifies if rule will be
-     * evaluated on incoming or outcoming traffic. Possible values are:
+     * evaluated on incoming or outgoing traffic. Possible values are:
      * 'Inbound' and 'Outbound'. Possible values include: 'Inbound',
      * 'Outbound'.
      */
@@ -186,7 +186,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+     * Get the source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
      *
      * @return the sourcePortRange value
      */
@@ -195,7 +195,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+     * Set the source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
      *
      * @param sourcePortRange the sourcePortRange value to set
      * @return the SecurityRuleInner object itself.
@@ -206,7 +206,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+     * Get the destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
      *
      * @return the destinationPortRange value
      */
@@ -215,7 +215,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+     * Set the destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
      *
      * @param destinationPortRange the destinationPortRange value to set
      * @return the SecurityRuleInner object itself.
@@ -226,7 +226,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+     * Get the CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
      *
      * @return the sourceAddressPrefix value
      */
@@ -235,7 +235,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+     * Set the CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
      *
      * @param sourceAddressPrefix the sourceAddressPrefix value to set
      * @return the SecurityRuleInner object itself.
@@ -286,7 +286,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Get the destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @return the destinationAddressPrefix value
      */
@@ -295,7 +295,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Set the destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @param destinationAddressPrefix the destinationAddressPrefix value to set
      * @return the SecurityRuleInner object itself.
@@ -426,7 +426,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the direction of the rule. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'.
+     * Get the direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'.
      *
      * @return the direction value
      */
@@ -435,7 +435,7 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the direction of the rule. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'.
+     * Set the direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'.
      *
      * @param direction the direction value to set
      * @return the SecurityRuleInner object itself.
