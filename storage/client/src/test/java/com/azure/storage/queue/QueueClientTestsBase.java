@@ -30,8 +30,13 @@ public abstract class QueueClientTestsBase extends TestBase {
     }
 
     <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
-        String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
-        String queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String queueEndpoint = "https://teststorage.queue.core.windows.net/";
+
+        if (!interceptorManager.isPlaybackMode()) {
+            ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+            ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
+        }
 
         if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
             logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageQueueEndpoint);
