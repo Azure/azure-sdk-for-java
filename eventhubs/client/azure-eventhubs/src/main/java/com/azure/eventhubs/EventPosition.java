@@ -31,6 +31,9 @@ public final class EventPosition {
      */
     private static final String END_OF_STREAM = "@latest";
 
+    private static final EventPosition FIRST_AVAILABLE_EVENT = fromOffset(START_OF_STREAM, false);
+    private static final EventPosition NEW_EVENTS_ONLY = fromOffset(END_OF_STREAM, false);
+
     private final ServiceLogger logger = new ServiceLogger(EventPosition.class);
     private final boolean isInclusive;
     private String offset;
@@ -48,7 +51,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} set to the start of an Event Hubs stream.
      */
     public static EventPosition firstAvailableEvent() {
-        return fromOffset(START_OF_STREAM, true);
+        return FIRST_AVAILABLE_EVENT;
     }
 
     /**
@@ -59,7 +62,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
     public static EventPosition newEventsOnly() {
-        return fromOffset(END_OF_STREAM, false);
+        return NEW_EVENTS_ONLY;
     }
 
     /**
@@ -163,5 +166,24 @@ public final class EventPosition {
             offset, sequenceNumber,
             enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
             isInclusive);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EventPosition)) {
+            return false;
+        }
+
+        final EventPosition other = (EventPosition) obj;
+
+        return Objects.equals(isInclusive, other.isInclusive)
+            && Objects.equals(offset, other.offset)
+            && Objects.equals(sequenceNumber, other.sequenceNumber)
+            && Objects.equals(enqueuedDateTime, other.enqueuedDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isInclusive, offset, sequenceNumber, enqueuedDateTime);
     }
 }

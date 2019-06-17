@@ -20,12 +20,14 @@ public class EventReceiverOptions implements Cloneable {
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
+    //Default number of events to fetch when creating the receiver.
+    static final int DEFAULT_PREFETCH_COUNT = 500;
+
     // The maximum length, in characters, for the identifier assigned to a receiver.
-    private static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
+    static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     // The minimum value allowed for the prefetch count of the receiver.
-    private static final int MINIMUM_PREFETCH_COUNT = 1;
-    private static final int DEFAULT_PREFETCH_COUNT = 500;
-    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    static final int MINIMUM_PREFETCH_COUNT = 1;
+    static final int MAXIMUM_PREFETCH_COUNT = 8000;
 
     private String identifier;
     private String consumerGroup;
