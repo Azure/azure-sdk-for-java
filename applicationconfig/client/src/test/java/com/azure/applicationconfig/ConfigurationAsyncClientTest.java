@@ -12,7 +12,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClientTest.class);
+    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
 
     private ConfigurationAsyncClient client;
 

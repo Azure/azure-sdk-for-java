@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.logging;
+package com.azure.core.util.logging;
 
 /**
  * Fluent logging API interface.
  */
-public interface ServiceLoggerAPI {
+public interface ClientLoggerAPI {
     int DEFAULT_LOG_LEVEL = 2;
 
     int TRACE_LEVEL = 0;
@@ -16,19 +16,35 @@ public interface ServiceLoggerAPI {
     int ERROR_LEVEL = 4;
     int DISABLED_LEVEL = 5;
 
-    default ServiceLoggerAPI asVerbose() {
+    /**
+     * To work with verbose logger.
+     * @return The verbose logger.
+     */
+    default ClientLoggerAPI asVerbose() {
         return this;
     }
 
-    default ServiceLoggerAPI asInfo() {
+    /**
+     * To work with logger at info level.
+     * @return The verbose logger.
+     */
+    default ClientLoggerAPI asInfo() {
         return this;
     }
 
-    default ServiceLoggerAPI asWarning() {
+    /**
+     * To work with logger at warning level.
+     * @return The verbose logger.
+     */
+    default ClientLoggerAPI asWarning() {
         return this;
     }
 
-    default ServiceLoggerAPI asError() {
+    /**
+     * To work with logger at error level.
+     * @return The verbose logger.
+     */
+    default ClientLoggerAPI asError() {
         return this;
     }
 
@@ -43,6 +59,6 @@ public interface ServiceLoggerAPI {
     /**
      * Logger that doesn't perform any logging.
      */
-    class NoopServiceLogger implements ServiceLoggerAPI {
+    class NoopServiceLogger implements ClientLoggerAPI {
     }
 }

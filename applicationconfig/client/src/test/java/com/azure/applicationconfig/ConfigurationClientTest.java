@@ -12,7 +12,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTest.class);
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
 
     private ConfigurationClient client;
 
