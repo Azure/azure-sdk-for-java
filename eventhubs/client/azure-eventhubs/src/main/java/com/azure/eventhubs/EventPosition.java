@@ -31,8 +31,8 @@ public final class EventPosition {
      */
     private static final String END_OF_STREAM = "@latest";
 
-    private static final EventPosition FIRST_AVAILABLE_EVENT = fromOffset(START_OF_STREAM, false);
-    private static final EventPosition NEW_EVENTS_ONLY = fromOffset(END_OF_STREAM, false);
+    private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
+    private static final EventPosition LATEST = fromOffset(END_OF_STREAM, false);
 
     private final ServiceLogger logger = new ServiceLogger(EventPosition.class);
     private final boolean isInclusive;
@@ -46,12 +46,12 @@ public final class EventPosition {
 
     /**
      * Returns the position for the start of a stream. Provide this position in receiver creation
-     * to start receiving from the first available event in the partition.
+     * to start receiving from the first available (earliest) event in the partition.
      *
      * @return An {@link EventPosition} set to the start of an Event Hubs stream.
      */
-    public static EventPosition firstAvailableEvent() {
-        return FIRST_AVAILABLE_EVENT;
+    public static EventPosition earliest() {
+        return EARLIEST;
     }
 
     /**
@@ -61,8 +61,8 @@ public final class EventPosition {
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
-    public static EventPosition newEventsOnly() {
-        return NEW_EVENTS_ONLY;
+    public static EventPosition latest() {
+        return LATEST;
     }
 
     /**

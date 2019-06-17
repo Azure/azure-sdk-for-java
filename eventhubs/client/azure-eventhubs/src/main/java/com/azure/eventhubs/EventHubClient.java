@@ -42,7 +42,6 @@ public class EventHubClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubPath;
-    private final String host;
     private final EventSenderOptions defaultSenderOptions;
     private final EventReceiverOptions defaultReceiverOptions;
 
@@ -53,7 +52,6 @@ public class EventHubClient implements Closeable {
 
         this.connectionOptions = connectionOptions;
         this.eventHubPath = connectionOptions.eventHubPath();
-        this.host = connectionOptions.host();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, new ResponseMapper());
@@ -163,10 +161,11 @@ public class EventHubClient implements Closeable {
      * consumer group used is the {@link EventReceiverOptions#DEFAULT_CONSUMER_GROUP_NAME} consumer group.
      *
      * @param partitionId The identifier of the Event Hub partition.
+     * @param eventPosition The position within the partition where the receiver should begin reading events.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventReceiver createReceiver(String partitionId) {
-        return createReceiver(partitionId, defaultReceiverOptions);
+    public EventReceiver createReceiver(String partitionId, EventPosition eventPosition) {
+        return createReceiver(partitionId, eventPosition, defaultReceiverOptions);
     }
 
     /**
@@ -174,12 +173,14 @@ public class EventHubClient implements Closeable {
      * provided options.
      *
      * @param partitionId The identifier of the Event Hub partition.
+     * @param eventPosition The position within the partition where the receiver should begin reading events.
      * @param options Additional options for the receiver.
      * @return An new {@link EventReceiver} that receives events from the partition with all configured {@link EventReceiverOptions}.
-     * @throws NullPointerException if {@code partitionId} or {@code options} is {@code null}.
+     * @throws NullPointerException if {@code partitionId}, {@code eventPosition}, or {@code options} is {@code null}.
      */
-    public EventReceiver createReceiver(String partitionId, EventReceiverOptions options) {
+    public EventReceiver createReceiver(String partitionId, EventPosition eventPosition, EventReceiverOptions options) {
         Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);
 
         final EventReceiverOptions clonedOptions = options.clone();
@@ -200,7 +201,7 @@ public class EventHubClient implements Closeable {
                     ? options.exclusiveReceiverPriority().get()
                     : null;
 
-                return session.createReceiver(linkName, entityPath, connectionOptions.timeout(),
+                return session.createReceiver(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
                     clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
             })
             .cast(AmqpReceiveLink.class);
