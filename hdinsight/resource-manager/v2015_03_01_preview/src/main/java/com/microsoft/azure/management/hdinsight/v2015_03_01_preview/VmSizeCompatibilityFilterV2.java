@@ -14,11 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * This class represent a single filter object that defines a multidimensional
  * set. The dimensions of this set are Regions, ClusterFlavors, NodeTypes and
- * ClusterVersionsThe dimensions of this set are Regions, ClusterFlavors,
- * NodeTypes and ClusterVersions. The constraint should be defined based on the
- * following: FilterMode (Exclude vs Include), VMSizes (the vm sizes in affect
- * of exlucsion/inclusion) and the ordering of the Filters. Later filters
- * override previous settings if conflicted.
+ * ClusterVersions. The constraint should be defined based on the following:
+ * FilterMode (Exclude vs Include), VMSizes (the vm sizes in affect of
+ * exclusion/inclusion) and the ordering of the Filters. Later filters override
+ * previous settings if conflicted.
  */
 public class VmSizeCompatibilityFilterV2 {
     /**
