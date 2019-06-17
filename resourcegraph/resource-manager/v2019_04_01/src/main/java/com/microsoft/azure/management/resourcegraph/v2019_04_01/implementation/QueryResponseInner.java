@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.resourcegraph.v2019_04_01.implementation;
 
 import com.microsoft.azure.management.resourcegraph.v2019_04_01.ResultTruncated;
-import com.microsoft.azure.management.resourcegraph.v2019_04_01.Table;
 import java.util.List;
 import com.microsoft.azure.management.resourcegraph.v2019_04_01.Facet;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,7 +49,7 @@ public class QueryResponseInner {
      * Query output in tabular format.
      */
     @JsonProperty(value = "data", required = true)
-    private Table data;
+    private Object data;
 
     /**
      * Query facets.
@@ -143,7 +142,7 @@ public class QueryResponseInner {
      *
      * @return the data value
      */
-    public Table data() {
+    public Object data() {
         return this.data;
     }
 
@@ -153,7 +152,7 @@ public class QueryResponseInner {
      * @param data the data value to set
      * @return the QueryResponseInner object itself.
      */
-    public QueryResponseInner withData(Table data) {
+    public QueryResponseInner withData(Object data) {
         this.data = data;
         return this;
     }
