@@ -3,7 +3,9 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
@@ -14,26 +16,41 @@ import com.azure.storage.file.models.StorageErrorException;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 class TestHelpers {
-    static final String AZURE_STORAGE_CONNECTION_STRING = "AZURE_STORAGE_CONNECTION_STRING";
-    static final String AZURE_STORAGE_FILE_ENDPOINT = "AZURE_STORAGE_FILE_ENDPOINT";
+    final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
+    final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
 
-    static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder, ServiceLogger logger) {
+        String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+        String endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
+
+        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(endpoint)) {
+            logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageFileEndpoint);
+            fail();
+            return null;
+        }
+
+        return clientBuilder.apply(connectionString, endpoint);
+    }
+
+    void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.statusCode());
     }
 
-    static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
+    void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         assertTrue(throwable instanceof StorageErrorException);
         StorageErrorException exception = (StorageErrorException) throwable;
         assertEquals(expectedStatusCode, exception.response().statusCode());
     }
 
-    static void sleep(Duration duration) {
+    void sleep(Duration duration) {
         try {
             Thread.sleep(duration.toMillis());
         } catch (InterruptedException ex) {
@@ -41,7 +58,7 @@ class TestHelpers {
         }
     }
 
-    static void assertSharesAreEqual(ShareItem expected, ShareItem actual) {
+    void assertSharesAreEqual(ShareItem expected, ShareItem actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -58,7 +75,7 @@ class TestHelpers {
         }
     }
 
-    static void assertFileServicePropertiesAreEqual(FileServiceProperties expected, FileServiceProperties actual) {
+    void assertFileServicePropertiesAreEqual(FileServiceProperties expected, FileServiceProperties actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -68,7 +85,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    void assertMetricsAreEqual(Metrics expected, Metrics actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -79,7 +96,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -88,7 +105,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
         if (expected == null) {
             assertTrue(ImplUtils.isNullOrEmpty(actual));
         } else {
@@ -99,7 +116,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
         if (expected == null) {
             assertNull(actual);
         } else {

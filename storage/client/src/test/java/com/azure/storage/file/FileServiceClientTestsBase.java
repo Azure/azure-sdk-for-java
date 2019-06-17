@@ -3,23 +3,17 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.storage.file.models.ListSharesOptions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import java.util.function.BiFunction;
-
-import static org.junit.Assert.fail;
-
 public abstract class FileServiceClientTestsBase extends TestBase {
-    private final ServiceLogger logger = new ServiceLogger(FileServiceClientTestsBase.class);
-
     String shareName;
+    TestHelpers helper;
+
+    String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
     @Rule
     public TestName testName = new TestName();
@@ -27,19 +21,6 @@ public abstract class FileServiceClientTestsBase extends TestBase {
     @Override
     public String testName() {
         return testName.getMethodName();
-    }
-
-    <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
-        String connectionString = ConfigurationManager.getConfiguration().get(TestHelpers.AZURE_STORAGE_CONNECTION_STRING);
-        String endpoint = ConfigurationManager.getConfiguration().get(TestHelpers.AZURE_STORAGE_FILE_ENDPOINT);
-
-        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(endpoint)) {
-            logger.asWarning().log("{} and {} must be set to build the testing client", TestHelpers.AZURE_STORAGE_CONNECTION_STRING, TestHelpers.AZURE_STORAGE_FILE_ENDPOINT);
-            fail();
-            return null;
-        }
-
-        return clientBuilder.apply(connectionString, endpoint);
     }
 
     ListSharesOptions defaultOptions() {

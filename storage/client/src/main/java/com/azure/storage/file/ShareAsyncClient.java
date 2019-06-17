@@ -132,6 +132,7 @@ public class ShareAsyncClient {
             .map(this::mapGetStatisticsResponse);
     }
 
+    // TODO (alzimmer): When Sima's and my development are merged into the feature branch implement this.
     public Mono<Response<DirectoryAsyncClient>> createDirectory(String directoryName, Map<String, String> metadata) {
         throw new UnsupportedOperationException();
     }
