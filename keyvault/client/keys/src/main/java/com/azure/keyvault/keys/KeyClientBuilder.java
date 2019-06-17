@@ -102,7 +102,7 @@ public final class KeyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, Configuration.NONE));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, new Configuration()));
         policies.add(retryPolicy);
         policies.add(new TokenCredentialPolicy(credential));
         policies.addAll(this.policies);
