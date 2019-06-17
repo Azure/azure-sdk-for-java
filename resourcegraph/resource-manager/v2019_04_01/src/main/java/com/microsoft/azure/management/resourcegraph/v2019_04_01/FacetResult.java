@@ -36,7 +36,7 @@ public class FacetResult extends Facet {
      * valid.
      */
     @JsonProperty(value = "data", required = true)
-    private Table data;
+    private Object data;
 
     /**
      * Get number of total records in the facet results.
@@ -83,7 +83,7 @@ public class FacetResult extends Facet {
      *
      * @return the data value
      */
-    public Table data() {
+    public Object data() {
         return this.data;
     }
 
@@ -93,7 +93,7 @@ public class FacetResult extends Facet {
      * @param data the data value to set
      * @return the FacetResult object itself.
      */
-    public FacetResult withData(Table data) {
+    public FacetResult withData(Object data) {
         this.data = data;
         return this;
     }
