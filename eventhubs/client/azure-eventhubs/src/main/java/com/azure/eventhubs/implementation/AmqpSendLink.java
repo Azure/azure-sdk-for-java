@@ -31,5 +31,5 @@ public interface AmqpSendLink extends AmqpLink {
      * @throws AmqpException if the serialized contents of {@code messageBatch} exceed the link's capacity for a single
      * message.
      */
-    Mono<Void> sendBatch(List<Message> messageBatch);
+    Mono<Void> send(List<Message> messageBatch);
 }

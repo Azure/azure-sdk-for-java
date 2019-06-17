@@ -27,6 +27,7 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,7 +71,7 @@ public class EventSenderTest {
             return Flux.just(data);
         });
 
-        when(sendLink.sendBatch(any())).thenReturn(Mono.empty());
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
         final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
@@ -82,7 +83,7 @@ public class EventSenderTest {
             .verifyComplete();
 
         // Assert
-        verify(sendLink).sendBatch(messagesCaptor.capture());
+        verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assert.assertEquals(count, messagesSent.size());
@@ -100,7 +101,7 @@ public class EventSenderTest {
         // Arrange
         final EventData testData = new EventData(CONTENTS.getBytes(UTF_8));
 
-        when(sendLink.send(any())).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
         final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
@@ -112,7 +113,7 @@ public class EventSenderTest {
             .verifyComplete();
 
         // Assert
-        verify(sendLink, times(1)).send(any());
+        verify(sendLink, times(1)).send(any(Message.class));
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
@@ -129,7 +130,7 @@ public class EventSenderTest {
             new EventData(CONTENTS.getBytes(UTF_8)),
             new EventData(CONTENTS.getBytes(UTF_8)));
 
-        when(sendLink.sendBatch(any())).thenReturn(Mono.empty());
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final EventBatchingOptions options = new EventBatchingOptions().partitionKey("Some partition key");
         final EventSenderOptions senderOptions = new EventSenderOptions()
@@ -140,8 +141,12 @@ public class EventSenderTest {
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
         // Act & Assert
-        StepVerifier.create(sender.send(testData, options))
-            .verifyError(IllegalArgumentException.class);
+        try {
+            sender.send(testData, options).block(Duration.ofSeconds(10));
+            Assert.fail("Should have thrown an exception.");
+        } catch (IllegalArgumentException e) {
+            // This is what we expect.
+        }
 
         verifyZeroInteractions(sendLink);
     }

@@ -151,7 +151,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> sendBatch(List<Message> messageBatch) {
+    public Mono<Void> send(List<Message> messageBatch) {
         if (messageBatch.size() == 1) {
             return send(messageBatch.get(0));
         }

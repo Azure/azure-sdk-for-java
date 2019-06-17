@@ -196,7 +196,7 @@ public class EventSender implements Closeable {
 
         return sendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))
-            : link.sendBatch(messages));
+            : link.send(messages));
     }
 
     /**
