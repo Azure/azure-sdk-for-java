@@ -20,6 +20,8 @@ import com.microsoft.azure.management.sql.v2018_06_01_preview.DatabaseSecurityAl
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ServerVulnerabilityAssessments;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.InstancePools;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.Usages;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,6 +33,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ManagedDatabaseSensitivityLabels managedDatabaseSensitivityLabels;
     private ManagedInstanceVulnerabilityAssessments managedInstanceVulnerabilityAssessments;
     private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
+    private InstancePools instancePools;
+    private Usages usages;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -116,6 +120,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsImpl(this);
         }
         return this.serverVulnerabilityAssessments;
+    }
+
+    /**
+     * @return Entry point to manage InstancePools.
+     */
+    public InstancePools instancePools() {
+        if (this.instancePools == null) {
+            this.instancePools = new InstancePoolsImpl(this);
+        }
+        return this.instancePools;
+    }
+
+    /**
+     * @return Entry point to manage Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(this);
+        }
+        return this.usages;
     }
 
     /**
