@@ -6,7 +6,6 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.Retry;
-import com.azure.eventhubs.EventPosition;
 import com.azure.eventhubs.EventReceiver;
 import reactor.core.publisher.Mono;
 
