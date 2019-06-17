@@ -23,7 +23,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Client to a block blob. It may only be instantiated through a a {@link BlockBlobClientBuilder}, via
+ * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
  * the method {@link BlobClient#asBlockBlobClient()}, or via the method
  * {@link ContainerClient#getBlockBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate

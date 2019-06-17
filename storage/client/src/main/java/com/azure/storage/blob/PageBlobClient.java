@@ -26,7 +26,7 @@ import java.net.URL;
 import java.time.Duration;
 
 /**
- * Client to a page blob. It may only be instantiated through a a {@link PageBlobClientBuilder}, via
+ * Client to a page blob. It may only be instantiated through a {@link PageBlobClientBuilder}, via
  * the method {@link BlobClient#asPageBlobClient()}, or via the method
  * {@link ContainerClient#getPageBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate

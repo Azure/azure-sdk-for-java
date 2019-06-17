@@ -20,7 +20,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a storage account. It may only be instantiated through a a {@link StorageClientBuilder}.
+ * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}.
  * This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
