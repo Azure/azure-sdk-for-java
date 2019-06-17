@@ -8,15 +8,33 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckDomainAvailabilityParameter;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the CognitiveServicesManagementClientImpl class.
  */
 public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private CognitiveServicesManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -224,6 +242,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.checkSkuAvailabilitys = new CheckSkuAvailabilitysInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -235,4 +254,106 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "CognitiveServicesManagementClient", "2017-04-18");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(CognitiveServicesManagementClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for CognitiveServicesManagementClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface CognitiveServicesManagementClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesManagementClient checkDomainAvailability" })
+        @POST("providers/Microsoft.CognitiveServices/checkDomainAvailability")
+        Observable<Response<ResponseBody>> checkDomainAvailability(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckDomainAvailabilityParameter parameters, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckDomainAvailabilityResultInner object if successful.
+     */
+    public CheckDomainAvailabilityResultInner checkDomainAvailability(String subdomainName, String type) {
+        return checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type).toBlocking().single().body();
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckDomainAvailabilityResultInner> checkDomainAvailabilityAsync(String subdomainName, String type, final ServiceCallback<CheckDomainAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type), serviceCallback);
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckDomainAvailabilityResultInner object
+     */
+    public Observable<CheckDomainAvailabilityResultInner> checkDomainAvailabilityAsync(String subdomainName, String type) {
+        return checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type).map(new Func1<ServiceResponse<CheckDomainAvailabilityResultInner>, CheckDomainAvailabilityResultInner>() {
+            @Override
+            public CheckDomainAvailabilityResultInner call(ServiceResponse<CheckDomainAvailabilityResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckDomainAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<CheckDomainAvailabilityResultInner>> checkDomainAvailabilityWithServiceResponseAsync(String subdomainName, String type) {
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        if (subdomainName == null) {
+            throw new IllegalArgumentException("Parameter subdomainName is required and cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Parameter type is required and cannot be null.");
+        }
+        CheckDomainAvailabilityParameter parameters = new CheckDomainAvailabilityParameter();
+        parameters.withSubdomainName(subdomainName);
+        parameters.withType(type);
+        return service.checkDomainAvailability(this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckDomainAvailabilityResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckDomainAvailabilityResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckDomainAvailabilityResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckDomainAvailabilityResultInner> checkDomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<CheckDomainAvailabilityResultInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<CheckDomainAvailabilityResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
 }
