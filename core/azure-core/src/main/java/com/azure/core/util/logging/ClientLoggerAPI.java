@@ -59,6 +59,6 @@ public interface ClientLoggerAPI {
     /**
      * Logger that doesn't perform any logging.
      */
-    class NoopServiceLogger implements ClientLoggerAPI {
+    class NoopClientLogger implements ClientLoggerAPI {
     }
 }

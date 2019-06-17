@@ -33,7 +33,7 @@ import java.util.Arrays;
  * @see Configuration
  */
 public class ClientLogger implements ClientLoggerAPI {
-    private static final NoopServiceLogger NOOP_LOGGER = new NoopServiceLogger();
+    private static final NoopClientLogger NOOP_LOGGER = new NoopClientLogger();
 
     private final Logger logger;
 
