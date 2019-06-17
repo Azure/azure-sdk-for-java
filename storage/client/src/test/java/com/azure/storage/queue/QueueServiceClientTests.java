@@ -6,6 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
@@ -27,27 +28,30 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class QueueServiceClientTests extends QueueServiceClientTestsBase {
+    private final ServiceLogger logger = new ServiceLogger(QueueServiceClientTests.class);
+
     private QueueServiceClient serviceClient;
 
     @Override
     protected void beforeTest() {
         queueName = getQueueName();
+        helper = new TestHelpers();
 
         if (interceptorManager.isPlaybackMode()) {
-            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceClient.builder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> QueueServiceClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+                .build(), true, logger);
         } else {
-            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceClient.builder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> QueueServiceClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .build());
+                .build(), false, logger);
         }
     }
 
@@ -71,7 +75,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.getQueueClient(queueName).enqueueMessage("Expecting an exception");
             fail("getQueueClient doesn't create a queue in Azure Storage.");
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 404);
+            helper.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -79,7 +83,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
     public void createQueue() {
         QueueClient client = serviceClient.createQueue(queueName).value();
         Response<EnqueuedMessage> response = client.enqueueMessage("Testing service client creating a queue");
-        TestHelpers.assertResponseStatusCode(response, 201);
+        helper.assertResponseStatusCode(response, 201);
     }
 
     @Override
@@ -90,7 +94,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         QueueClient client = serviceClient.createQueue(queueName, metadata).value();
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
-        TestHelpers.assertResponseStatusCode(propertiesResponse, 200);
+        helper.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(metadata, propertiesResponse.value().metadata());
     }
 
@@ -119,7 +123,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queueName, metadata);
             fail("Creating a queue twice with different metadata should throw an exception.");
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 409);
+            helper.assertExceptionStatusCode(exception, 409);
         }
     }
 
@@ -132,7 +136,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             client.enqueueMessage("Expecting an exception");
             fail("Attempting to enqueue a message on a client that has been delete should throw an exception.");
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 404);
+            helper.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -142,7 +146,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             serviceClient.deleteQueue(queueName);
             fail("Attempting to delete a queue that doesn't exist should throw an exception.");
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 404);
+            helper.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -156,7 +160,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions())) {
-            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
+            helper.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -178,7 +182,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true))) {
-            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
+            helper.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -198,7 +202,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix"))) {
-            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
+            helper.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -212,7 +216,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         }
 
         for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().maxResults(2))) {
-            TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue);
+            helper.assertQueuesAreEqual(testQueues.pop(), queue);
         }
     }
 
@@ -239,15 +243,15 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             .cors(new ArrayList<>());
 
         VoidResponse setResponse = serviceClient.setProperties(updatedProperties);
-        TestHelpers.assertResponseStatusCode(setResponse, 202);
+        helper.assertResponseStatusCode(setResponse, 202);
 
         Response<StorageServiceProperties> getResponse = serviceClient.getProperties();
-        TestHelpers.assertQueueServicePropertiesAreEqual(updatedProperties, getResponse.value());
+        helper.assertQueueServicePropertiesAreEqual(updatedProperties, getResponse.value());
 
         setResponse = serviceClient.setProperties(originalProperties);
-        TestHelpers.assertResponseStatusCode(setResponse, 202);
+        helper.assertResponseStatusCode(setResponse, 202);
 
         getResponse = serviceClient.getProperties();
-        TestHelpers.assertQueueServicePropertiesAreEqual(originalProperties, getResponse.value());
+        helper.assertQueueServicePropertiesAreEqual(originalProperties, getResponse.value());
     }
 }

@@ -2,24 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.implementation.logging.ServiceLogger;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import java.util.function.BiFunction;
-
-import static org.junit.Assert.fail;
-
 public abstract class QueueClientTestsBase extends TestBase {
-    private final ServiceLogger logger = new ServiceLogger(QueueClientTestsBase.class);
-    private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
-    private final String azureStorageQueueEndpoint = "AZURE_STORAGE_QUEUE_ENDPOINT";
-
     String queueName;
+    TestHelpers helper;
 
     @Rule
     public TestName testName = new TestName();
@@ -27,24 +17,6 @@ public abstract class QueueClientTestsBase extends TestBase {
     @Override
     public String testName() {
         return testName.getMethodName();
-    }
-
-    <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
-        String queueEndpoint = "https://teststorage.queue.core.windows.net/";
-
-        if (!interceptorManager.isPlaybackMode()) {
-            connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
-            queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
-        }
-
-        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
-            logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageQueueEndpoint);
-            fail();
-            return null;
-        }
-
-        return clientBuilder.apply(connectionString, queueEndpoint);
     }
 
     String getQueueName() {

@@ -4,6 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
 import com.azure.storage.queue.models.QueueItem;
@@ -21,27 +22,30 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
+    private final ServiceLogger logger = new ServiceLogger(QueueServiceAsyncClientTests.class);
+
     private QueueServiceAsyncClient serviceClient;
 
     @Override
     protected void beforeTest() {
         queueName = getQueueName();
+        helper = new TestHelpers();
 
         if (interceptorManager.isPlaybackMode()) {
-            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+                .build(), true, logger);
         } else {
-            serviceClient = setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .build());
+                .build(), false, logger);
         }
     }
 
@@ -62,14 +66,12 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void getQueueDoesNotCreateAQueue() {
-        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"));
     }
 
     @Override
     public void createQueue() {
         StepVerifier.create(serviceClient.createQueue(queueName).block().value().enqueueMessage("Testing service client creating a queue"))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
@@ -82,7 +84,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
                 assertEquals(metadata, response.value().metadata());
             })
             .verifyComplete();
@@ -96,7 +97,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().peekMessages())
@@ -114,7 +114,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
             serviceClient.createQueue(queueName);
             serviceClient.createQueue(queueName, metadata);
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 409);
         }
     }
 
@@ -123,8 +122,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         QueueAsyncClient client = serviceClient.createQueue(queueName).block().value();
         serviceClient.deleteQueue(queueName).block();
 
-        StepVerifier.create(client.enqueueMessage("Expecting an exception"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+        StepVerifier.create(client.enqueueMessage("Expecting an exception"));
     }
 
     @Override
@@ -132,7 +130,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         try {
             serviceClient.deleteQueue(queueName);
         } catch (Exception exception) {
-            TestHelpers.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -146,9 +143,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions()))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -170,9 +164,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true)))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -192,8 +183,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix")))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -207,8 +196,6 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().maxResults(2)))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
-            .assertNext(queue -> TestHelpers.assertQueuesAreEqual(testQueues.pop(), queue))
             .verifyComplete();
     }
 
@@ -235,19 +222,15 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
             .cors(new ArrayList<>());
 
         StepVerifier.create(serviceClient.setProperties(updatedProperties))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(response -> TestHelpers.assertQueueServicePropertiesAreEqual(updatedProperties, response.value()))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.setProperties(originalProperties))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(response -> TestHelpers.assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
             .verifyComplete();
     }
 }

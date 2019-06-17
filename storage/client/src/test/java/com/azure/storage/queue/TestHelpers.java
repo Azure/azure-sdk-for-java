@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.Logging;
@@ -15,16 +17,39 @@ import com.azure.storage.queue.models.StorageServiceProperties;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Contains helper methods for unit tests.
  */
 class TestHelpers {
-    static void assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
+    private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
+    private final String azureStorageQueueEndpoint = "AZURE_STORAGE_QUEUE_ENDPOINT";
+
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlaybackMode, ServiceLogger logger) {
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String queueEndpoint = "https://teststorage.queue.core.windows.net/";
+
+        if (!isPlaybackMode) {
+            connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+            queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
+        }
+
+        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
+            logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageQueueEndpoint);
+            fail();
+            return null;
+        }
+
+        return clientBuilder.apply(connectionString, queueEndpoint);
+    }
+
+    void assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -36,7 +61,7 @@ class TestHelpers {
         }
     }
 
-    static void assertQueueServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
+    void assertQueueServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -47,7 +72,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    void assertMetricsAreEqual(Metrics expected, Metrics actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -58,7 +83,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertLoggingAreEqual(Logging expected, Logging actual) {
+    void assertLoggingAreEqual(Logging expected, Logging actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -70,7 +95,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -79,7 +104,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
         if (expected == null) {
             assertTrue(ImplUtils.isNullOrEmpty(actual));
         } else {
@@ -90,7 +115,7 @@ class TestHelpers {
         }
     }
 
-    private static void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -102,24 +127,24 @@ class TestHelpers {
         }
     }
 
-    static void assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
+    void assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.accessPolicy().permission(), actual.accessPolicy().permission());
         assertEquals(expected.accessPolicy().start(), actual.accessPolicy().start());
         assertEquals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry());
     }
 
-    static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
+    void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.statusCode());
     }
 
-    static void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
+    void assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         assertTrue(throwable instanceof StorageErrorException);
         StorageErrorException storageErrorException = (StorageErrorException) throwable;
         assertEquals(expectedStatusCode, storageErrorException.response().statusCode());
     }
 
-    static void sleep(Duration duration) {
+    void sleep(Duration duration) {
         try {
             Thread.sleep(duration.toMillis());
         } catch (InterruptedException ex) {

@@ -4,6 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.SignedIdentifier;
@@ -24,29 +25,32 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class QueueAsyncClientTests extends QueueClientTestsBase {
+    private final ServiceLogger logger = new ServiceLogger(QueueAsyncClientTests.class);
+
     private QueueAsyncClient client;
 
     @Override
     protected void beforeTest() {
         queueName = getQueueName();
+        helper = new TestHelpers();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = setupClient((connectionString, endpoint) -> QueueAsyncClient.builder()
+            client = helper.setupClient((connectionString, endpoint) -> QueueAsyncClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+                .build(), true, logger);
         } else {
-            client = setupClient((connectionString, endpoint) -> QueueAsyncClient.builder()
+            client = helper.setupClient((connectionString, endpoint) -> QueueAsyncClient.builder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .build());
+                .build(), false, logger);
         }
     }
 
@@ -77,12 +81,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
                 assertEquals(metadata, response.value().metadata());
             })
@@ -96,11 +100,11 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.create(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
     }
 
@@ -111,37 +115,37 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.create(metadata))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 409));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 409));
     }
 
     @Override
     public void deleteExisting() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.enqueueMessage("This queue will be deleted"))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.delete())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
-        TestHelpers.sleep(Duration.ofSeconds(30));
+        helper.sleep(Duration.ofSeconds(30));
 
         StepVerifier.create(client.enqueueMessage("This should fail"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void deleteNonExistent() {
         StepVerifier.create(client.delete())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
@@ -151,12 +155,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
                 assertEquals(metadata, response.value().metadata());
             })
@@ -166,7 +170,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void getPropertiesQueueDoesNotExist() {
         StepVerifier.create(client.getProperties())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
@@ -176,16 +180,16 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.setMetadata(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
                 assertEquals(metadata, response.value().metadata());
             })
@@ -199,7 +203,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.setMetadata(metadata))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
@@ -207,11 +211,11 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         Map<String, String> badMetadata = Collections.singletonMap("", "bad metadata");
 
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.setMetadata(badMetadata))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
@@ -221,24 +225,24 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(client.create(metadata))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
                 assertEquals(metadata, response.value().metadata());
             })
             .verifyComplete();
 
         StepVerifier.create(client.setMetadata(null))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(Collections.EMPTY_MAP, response.value().metadata());
             })
             .verifyComplete();
@@ -247,7 +251,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void getAccessPolicy() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.getAccessPolicy())
@@ -258,13 +262,13 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void getAccessPolicyQueueDoesNotExist() {
         StepVerifier.create(client.getAccessPolicy())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void setAccessPolicy() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         AccessPolicy accessPolicy = new AccessPolicy()
@@ -277,11 +281,11 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .accessPolicy(accessPolicy);
 
         StepVerifier.create(client.setAccessPolicy(Collections.singletonList(permission)))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.getAccessPolicy())
-            .assertNext(response -> TestHelpers.assertPermissionsAreEqual(permission, response))
+            .assertNext(response -> helper.assertPermissionsAreEqual(permission, response))
             .verifyComplete();
     }
 
@@ -297,7 +301,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .accessPolicy(accessPolicy);
 
         StepVerifier.create(client.setAccessPolicy(Collections.singletonList(permission)))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
@@ -312,11 +316,11 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .accessPolicy(accessPolicy);
 
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.setAccessPolicy(Collections.singletonList(permission)))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
@@ -334,22 +338,22 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         }
 
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.setAccessPolicy(permissions))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void enqueueMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages())
@@ -360,12 +364,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void enqueueEmptyMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages())
@@ -376,12 +380,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void enqueueShortTimeToLiveMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText, Duration.ofSeconds(0), Duration.ofSeconds(2)))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages().delaySubscription(Duration.ofSeconds(5)))
@@ -392,18 +396,18 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void enqueueQueueDoesNotExist() {
         StepVerifier.create(client.enqueueMessage("this should fail"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void dequeueMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.dequeueMessages())
@@ -414,17 +418,17 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void dequeueMultipleMessages() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         String messageText2 = "test message 2";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.enqueueMessage(messageText2))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.dequeueMessages(2))
@@ -436,28 +440,28 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void dequeueTooManyMessages() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.dequeueMessages(64))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void dequeueQueueDoesNotExist() {
         StepVerifier.create(client.dequeueMessages())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void peekMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages())
@@ -468,17 +472,17 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void peekMultipleMessages() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         String messageText2 = "test message 2";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.enqueueMessage(messageText2))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages(2))
@@ -490,49 +494,49 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void peekTooManyMessages() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages(64))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void peekQueueDoesNotExist() {
         StepVerifier.create(client.peekMessages())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void clearMessages() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.enqueueMessage("test message"))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(client.enqueueMessage("test message"))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(client.enqueueMessage("test message"))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(3, response.value().approximateMessagesCount());
             })
             .verifyComplete();
 
         StepVerifier.create(client.clearMessages())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
             })
             .verifyComplete();
@@ -541,29 +545,29 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void clearMessagesQueueDoesNotExist() {
         StepVerifier.create(client.clearMessages())
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void deleteMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = client.dequeueMessages().blockFirst();
         assertEquals(messageText, dequeuedMessage.messageText());
         StepVerifier.create(client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                TestHelpers.assertResponseStatusCode(response, 200);
+                helper.assertResponseStatusCode(response, 200);
                 assertEquals(0, response.value().approximateMessagesCount());
             })
             .verifyComplete();
@@ -572,12 +576,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void deleteMessageInvalidMessageId() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = new DequeuedMessage();
@@ -589,18 +593,18 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .verifyComplete();
 
         StepVerifier.create(client.deleteMessage(dequeuedMessage.messageId() + "random", dequeuedMessage.popReceipt()))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void deleteMessageInvalidPopReceipt() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = new DequeuedMessage();
@@ -612,24 +616,24 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .verifyComplete();
 
         StepVerifier.create(client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt() + "random"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void deleteMessageQueueDoesNotExist() {
         StepVerifier.create(client.deleteMessage("invalid", "call"))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void updateMessage() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = client.dequeueMessages().blockFirst();
@@ -637,7 +641,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
         String updatedMessageText = "updated test message";
         StepVerifier.create(client.updateMessage(updatedMessageText, dequeuedMessage.messageId(), dequeuedMessage.popReceipt(), Duration.ofSeconds(1)))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 204))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
         StepVerifier.create(client.peekMessages().delaySubscription(Duration.ofSeconds(2)))
@@ -648,12 +652,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
     @Override
     public void updateMessageInvalidMessageId() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = client.dequeueMessages().blockFirst();
@@ -661,18 +665,18 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
         String updatedMessageText = "updated test message";
         StepVerifier.create(client.updateMessage(updatedMessageText, dequeuedMessage.messageId() + "random", dequeuedMessage.popReceipt(), Duration.ofSeconds(1)))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 404));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
     public void updateMessageInvalidPopReceipt() {
         StepVerifier.create(client.create())
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         String messageText = "test message";
         StepVerifier.create(client.enqueueMessage(messageText))
-            .assertNext(response -> TestHelpers.assertResponseStatusCode(response, 201))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         DequeuedMessage dequeuedMessage = client.dequeueMessages().blockFirst();
@@ -680,12 +684,12 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
 
         String updatedMessageText = "updated test message";
         StepVerifier.create(client.updateMessage(updatedMessageText, dequeuedMessage.messageId(), dequeuedMessage.popReceipt() + "random", Duration.ofSeconds(1)))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void updateMessageQueueDoesNotExist() {
         StepVerifier.create(client.updateMessage("queue", "doesn't", "exist", Duration.ofSeconds(5)))
-            .verifyErrorSatisfies(throwable -> TestHelpers.assertExceptionStatusCode(throwable, 400));
+            .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 400));
     }
 }
