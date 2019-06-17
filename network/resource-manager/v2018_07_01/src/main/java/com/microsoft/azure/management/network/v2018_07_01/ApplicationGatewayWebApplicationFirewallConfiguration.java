@@ -54,7 +54,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     private Boolean requestBodyCheck;
 
     /**
-     * Maxium request body size for WAF.
+     * Maximum request body size for WAF.
      */
     @JsonProperty(value = "maxRequestBodySize")
     private Integer maxRequestBodySize;
@@ -180,7 +180,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get maxium request body size for WAF.
+     * Get maximum request body size for WAF.
      *
      * @return the maxRequestBodySize value
      */
@@ -189,7 +189,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set maxium request body size for WAF.
+     * Set maximum request body size for WAF.
      *
      * @param maxRequestBodySize the maxRequestBodySize value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
