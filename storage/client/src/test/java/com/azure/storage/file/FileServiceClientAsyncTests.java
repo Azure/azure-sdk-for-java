@@ -41,7 +41,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildAsync(), logger);
+                .buildAsync(), true, logger);
         } else {
             serviceClient = helper.setupClient((connectionString, endpoint) -> FileServiceAsyncClient.builder()
                 .connectionString(connectionString)
@@ -49,7 +49,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildAsync(), logger);
+                .buildAsync(), false, logger);
         }
     }
 

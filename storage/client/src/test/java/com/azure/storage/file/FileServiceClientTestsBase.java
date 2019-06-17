@@ -15,6 +15,7 @@ public abstract class FileServiceClientTestsBase extends TestBase {
 
     String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
+
     @Rule
     public TestName testName = new TestName();
 
@@ -23,12 +24,12 @@ public abstract class FileServiceClientTestsBase extends TestBase {
         return testName.getMethodName();
     }
 
-    ListSharesOptions defaultOptions() {
-        return new ListSharesOptions().prefix(shareName);
-    }
-
     String getShareName() {
         return testResourceNamer.randomName("share", 16).toLowerCase();
+    }
+
+    ListSharesOptions defaultOptions() {
+        return new ListSharesOptions().prefix(shareName);
     }
 
     @Test

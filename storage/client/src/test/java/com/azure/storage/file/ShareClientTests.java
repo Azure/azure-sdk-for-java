@@ -24,7 +24,7 @@ public class ShareClientTests extends ShareClientTestsBase {
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildSync(), logger);
+                .buildSync(), true, logger);
         } else {
             client = helper.setupClient((connectionString, endpoint) -> ShareClient.builder()
                 .connectionString(connectionString)
@@ -32,7 +32,7 @@ public class ShareClientTests extends ShareClientTestsBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildSync(), logger);
+                .buildSync(), false, logger);
         }
     }
 

@@ -15,6 +15,8 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 public class ShareAsyncClientTests extends ShareClientTestsBase {
     private final ServiceLogger logger = new ServiceLogger(ShareAsyncClientTests.class);
 
@@ -31,7 +33,7 @@ public class ShareAsyncClientTests extends ShareClientTestsBase {
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildAsync(), logger);
+                .buildAsync(), true, logger);
         } else {
             client = helper.setupClient((connectionString, endpoint) -> ShareAsyncClient.builder()
                 .connectionString(connectionString)
@@ -39,7 +41,7 @@ public class ShareAsyncClientTests extends ShareClientTestsBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildAsync(), logger);
+                .buildAsync(), false, logger);
         }
     }
 
@@ -196,12 +198,48 @@ public class ShareAsyncClientTests extends ShareClientTestsBase {
 
     @Override
     public void snapshotShareSameMetadata() {
+        Map<String, String> metadata = Collections.singletonMap("test", "metadata");
 
+        StepVerifier.create(client.create(metadata, 2))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+
+        Response<ShareSnapshotInfo> snapshotInfoResponse = client.createSnapshot(metadata).block();
+        helper.assertResponseStatusCode(snapshotInfoResponse, 201);
+
+        StepVerifier.create(client.getProperties(snapshotInfoResponse.value().snapshot()))
+            .assertNext(response -> {
+                helper.assertResponseStatusCode(response, 200);
+                assertEquals(metadata, response.value().metadata());
+            })
+            .verifyComplete();
     }
 
     @Override
     public void snapshotShareDifferentMetadata() {
+        Map<String, String> createMetadata = Collections.singletonMap("create", "metadata");
 
+        StepVerifier.create(client.create(createMetadata, 2))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+
+        Map<String, String> updateMetadata = Collections.singletonMap("update", "metadata");
+        Response<ShareSnapshotInfo> snapshotInfoResponse = client.createSnapshot(updateMetadata).block();
+        helper.assertResponseStatusCode(snapshotInfoResponse, 201);
+
+        StepVerifier.create(client.getProperties())
+            .assertNext(response -> {
+                helper.assertResponseStatusCode(response, 200);
+                assertEquals(createMetadata, response.value().metadata());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getProperties(snapshotInfoResponse.value().snapshot()))
+            .assertNext(response -> {
+                helper.assertResponseStatusCode(response, 200);
+                assertEquals(updateMetadata, response.value().metadata());
+            })
+            .verifyComplete();
     }
 
     @Override

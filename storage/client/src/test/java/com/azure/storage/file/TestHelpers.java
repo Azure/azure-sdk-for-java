@@ -27,9 +27,14 @@ class TestHelpers {
     final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
     final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
 
-    <T> T setupClient(BiFunction<String, String, T> clientBuilder, ServiceLogger logger) {
-        String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
-        String endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlayback, ServiceLogger logger) {
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String endpoint = "https://teststorage.file.core.windows.net/";
+
+        if (!isPlayback) {
+            connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+            endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
+        }
 
         if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(endpoint)) {
             logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageFileEndpoint);
