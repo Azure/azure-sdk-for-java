@@ -91,6 +91,13 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
             Field[] fields = c.getDeclaredFields();
             for (Field field : fields) {
+                // JaCoCo adds synthetic fields for instrumentation.
+                // It's recommended to skip fields that are marked synthetic.
+                // https://www.eclemma.org/jacoco/trunk/doc/faq.html
+                // https://github.com/jacoco/jacoco/issues/168
+                if (field.isSynthetic()) {
+                    continue;
+                }
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
                 String key = property.value().split("((?<!\\\\))\\.")[0];
                 if (!key.isEmpty()) {
