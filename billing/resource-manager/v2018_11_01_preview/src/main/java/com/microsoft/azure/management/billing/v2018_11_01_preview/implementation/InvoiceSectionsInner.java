@@ -11,7 +11,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionProperties;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionCreationRequest;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsCreateHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsUpdateHeaders;
 import com.microsoft.rest.ServiceCallback;
@@ -65,11 +65,11 @@ public class InvoiceSectionsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections create" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections")
-        Observable<Response<ResponseBody>> create(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body InvoiceSectionProperties parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body InvoiceSectionCreationRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections beginCreate" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections")
-        Observable<Response<ResponseBody>> beginCreate(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body InvoiceSectionProperties parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreate(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body InvoiceSectionCreationRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections listByBillingProfileName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections")
@@ -257,7 +257,7 @@ public class InvoiceSectionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceSectionInner object if successful.
      */
-    public InvoiceSectionInner create(String billingAccountName, InvoiceSectionProperties parameters) {
+    public InvoiceSectionInner create(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         return createWithServiceResponseAsync(billingAccountName, parameters).toBlocking().last().body();
     }
 
@@ -270,7 +270,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionProperties parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
+    public ServiceFuture<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
     }
 
@@ -282,7 +282,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionProperties parameters) {
+    public Observable<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         return createWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>, InvoiceSectionInner>() {
             @Override
             public InvoiceSectionInner call(ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> response) {
@@ -299,7 +299,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> createWithServiceResponseAsync(String billingAccountName, InvoiceSectionProperties parameters) {
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> createWithServiceResponseAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -324,7 +324,7 @@ public class InvoiceSectionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceSectionInner object if successful.
      */
-    public InvoiceSectionInner beginCreate(String billingAccountName, InvoiceSectionProperties parameters) {
+    public InvoiceSectionInner beginCreate(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         return beginCreateWithServiceResponseAsync(billingAccountName, parameters).toBlocking().single().body();
     }
 
@@ -337,7 +337,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionProperties parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
+    public ServiceFuture<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionCreationRequest parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
     }
 
@@ -349,7 +349,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
      */
-    public Observable<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionProperties parameters) {
+    public Observable<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         return beginCreateWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>, InvoiceSectionInner>() {
             @Override
             public InvoiceSectionInner call(ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> response) {
@@ -366,7 +366,7 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> beginCreateWithServiceResponseAsync(String billingAccountName, InvoiceSectionProperties parameters) {
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> beginCreateWithServiceResponseAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }

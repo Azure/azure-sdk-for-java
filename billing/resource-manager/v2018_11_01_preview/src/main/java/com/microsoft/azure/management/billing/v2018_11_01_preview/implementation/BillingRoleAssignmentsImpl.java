@@ -15,6 +15,7 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignment;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignmentListResult;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignmentPayload;
 
 class BillingRoleAssignmentsImpl extends WrapperImpl<BillingRoleAssignmentsInner> implements BillingRoleAssignments {
     private final BillingManager manager;
@@ -137,9 +138,9 @@ class BillingRoleAssignmentsImpl extends WrapperImpl<BillingRoleAssignmentsInner
     }
 
     @Override
-    public Observable<BillingRoleAssignmentListResult> addByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<BillingRoleAssignmentListResult> addByBillingAccountNameAsync(String billingAccountName, BillingRoleAssignmentPayload parameters) {
         BillingRoleAssignmentsInner client = this.inner();
-        return client.addByBillingAccountNameAsync(billingAccountName)
+        return client.addByBillingAccountNameAsync(billingAccountName, parameters)
         .map(new Func1<BillingRoleAssignmentListResultInner, BillingRoleAssignmentListResult>() {
             @Override
             public BillingRoleAssignmentListResult call(BillingRoleAssignmentListResultInner inner) {
@@ -149,9 +150,9 @@ class BillingRoleAssignmentsImpl extends WrapperImpl<BillingRoleAssignmentsInner
     }
 
     @Override
-    public Observable<BillingRoleAssignmentListResult> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
+    public Observable<BillingRoleAssignmentListResult> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters) {
         BillingRoleAssignmentsInner client = this.inner();
-        return client.addByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)
+        return client.addByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName, parameters)
         .map(new Func1<BillingRoleAssignmentListResultInner, BillingRoleAssignmentListResult>() {
             @Override
             public BillingRoleAssignmentListResult call(BillingRoleAssignmentListResultInner inner) {
@@ -161,9 +162,9 @@ class BillingRoleAssignmentsImpl extends WrapperImpl<BillingRoleAssignmentsInner
     }
 
     @Override
-    public Observable<BillingRoleAssignmentListResult> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+    public Observable<BillingRoleAssignmentListResult> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters) {
         BillingRoleAssignmentsInner client = this.inner();
-        return client.addByBillingProfileNameAsync(billingAccountName, billingProfileName)
+        return client.addByBillingProfileNameAsync(billingAccountName, billingProfileName, parameters)
         .map(new Func1<BillingRoleAssignmentListResultInner, BillingRoleAssignmentListResult>() {
             @Override
             public BillingRoleAssignmentListResult call(BillingRoleAssignmentListResultInner inner) {

@@ -15,6 +15,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseE
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -85,7 +86,7 @@ public class BillingRoleAssignmentsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments addByBillingAccountName" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Billing/createBillingRoleAssignment")
-        Observable<Response<ResponseBody>> addByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BillingRoleAssignmentPayload parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body BillingRoleAssignmentPayload parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments listByInvoiceSectionName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Billing/billingRoleAssignments")
@@ -93,7 +94,7 @@ public class BillingRoleAssignmentsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments addByInvoiceSectionName" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Billing/createBillingRoleAssignment")
-        Observable<Response<ResponseBody>> addByInvoiceSectionName(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BillingRoleAssignmentPayload parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addByInvoiceSectionName(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Body BillingRoleAssignmentPayload parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments listByBillingProfileName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Billing/billingRoleAssignments")
@@ -101,7 +102,7 @@ public class BillingRoleAssignmentsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments addByBillingProfileName" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Billing/createBillingRoleAssignment")
-        Observable<Response<ResponseBody>> addByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BillingRoleAssignmentPayload parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Body BillingRoleAssignmentPayload parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -711,36 +712,39 @@ public class BillingRoleAssignmentsInner {
      * The operation to add a role assignment to a billing account.
      *
      * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingRoleAssignmentListResultInner object if successful.
      */
-    public BillingRoleAssignmentListResultInner addByBillingAccountName(String billingAccountName) {
-        return addByBillingAccountNameWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
+    public BillingRoleAssignmentListResultInner addByBillingAccountName(String billingAccountName, BillingRoleAssignmentPayload parameters) {
+        return addByBillingAccountNameWithServiceResponseAsync(billingAccountName, parameters).toBlocking().single().body();
     }
 
     /**
      * The operation to add a role assignment to a billing account.
      *
      * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingRoleAssignmentListResultInner> addByBillingAccountNameAsync(String billingAccountName, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(addByBillingAccountNameWithServiceResponseAsync(billingAccountName), serviceCallback);
+    public ServiceFuture<BillingRoleAssignmentListResultInner> addByBillingAccountNameAsync(String billingAccountName, BillingRoleAssignmentPayload parameters, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addByBillingAccountNameWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
     }
 
     /**
      * The operation to add a role assignment to a billing account.
      *
      * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<BillingRoleAssignmentListResultInner> addByBillingAccountNameAsync(String billingAccountName) {
-        return addByBillingAccountNameWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
+    public Observable<BillingRoleAssignmentListResultInner> addByBillingAccountNameAsync(String billingAccountName, BillingRoleAssignmentPayload parameters) {
+        return addByBillingAccountNameWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
             @Override
             public BillingRoleAssignmentListResultInner call(ServiceResponse<BillingRoleAssignmentListResultInner> response) {
                 return response.body();
@@ -752,17 +756,22 @@ public class BillingRoleAssignmentsInner {
      * The operation to add a role assignment to a billing account.
      *
      * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByBillingAccountNameWithServiceResponseAsync(String billingAccountName) {
+    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByBillingAccountNameWithServiceResponseAsync(String billingAccountName, BillingRoleAssignmentPayload parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.addByBillingAccountName(billingAccountName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.addByBillingAccountName(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingRoleAssignmentListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> call(Response<ResponseBody> response) {
@@ -871,13 +880,14 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingRoleAssignmentListResultInner object if successful.
      */
-    public BillingRoleAssignmentListResultInner addByInvoiceSectionName(String billingAccountName, String invoiceSectionName) {
-        return addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
+    public BillingRoleAssignmentListResultInner addByInvoiceSectionName(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters) {
+        return addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -885,12 +895,13 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingRoleAssignmentListResultInner> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
+    public ServiceFuture<BillingRoleAssignmentListResultInner> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, parameters), serviceCallback);
     }
 
     /**
@@ -898,11 +909,12 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<BillingRoleAssignmentListResultInner> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
-        return addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
+    public Observable<BillingRoleAssignmentListResultInner> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters) {
+        return addByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, parameters).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
             @Override
             public BillingRoleAssignmentListResultInner call(ServiceResponse<BillingRoleAssignmentListResultInner> response) {
                 return response.body();
@@ -915,10 +927,11 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
+    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -928,7 +941,11 @@ public class BillingRoleAssignmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.addByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.addByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingRoleAssignmentListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> call(Response<ResponseBody> response) {
@@ -1037,13 +1054,14 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingRoleAssignmentListResultInner object if successful.
      */
-    public BillingRoleAssignmentListResultInner addByBillingProfileName(String billingAccountName, String billingProfileName) {
-        return addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).toBlocking().single().body();
+    public BillingRoleAssignmentListResultInner addByBillingProfileName(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters) {
+        return addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1051,12 +1069,13 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingRoleAssignmentListResultInner> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName), serviceCallback);
+    public ServiceFuture<BillingRoleAssignmentListResultInner> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters, final ServiceCallback<BillingRoleAssignmentListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, parameters), serviceCallback);
     }
 
     /**
@@ -1064,11 +1083,12 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<BillingRoleAssignmentListResultInner> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
-        return addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
+    public Observable<BillingRoleAssignmentListResultInner> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters) {
+        return addByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, parameters).map(new Func1<ServiceResponse<BillingRoleAssignmentListResultInner>, BillingRoleAssignmentListResultInner>() {
             @Override
             public BillingRoleAssignmentListResultInner call(ServiceResponse<BillingRoleAssignmentListResultInner> response) {
                 return response.body();
@@ -1081,10 +1101,11 @@ public class BillingRoleAssignmentsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
-    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName) {
+    public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> addByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -1094,7 +1115,11 @@ public class BillingRoleAssignmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.addByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.addByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingRoleAssignmentListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingRoleAssignmentListResultInner>> call(Response<ResponseBody> response) {

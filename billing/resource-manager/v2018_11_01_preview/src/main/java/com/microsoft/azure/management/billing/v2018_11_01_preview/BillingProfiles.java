@@ -35,4 +35,14 @@ public interface BillingProfiles extends HasInner<BillingProfilesInner> {
      */
     Observable<BillingProfile> getAsync(String billingAccountName, String billingProfileName);
 
+    /**
+     * The operation to create a BillingProfile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the Create BillingProfile operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingProfile> createAsync(String billingAccountName, BillingProfileCreationParameters parameters);
+
 }

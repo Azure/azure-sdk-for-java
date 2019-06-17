@@ -17,14 +17,14 @@ public class BillingRoleAssignmentPayload {
     /**
      * The user's principal id that the role gets assigned to.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "principalId")
     private String principalId;
 
     /**
      * The role definition id.
      */
-    @JsonProperty(value = "billingRoleDefinitionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingRoleDefinitionName;
+    @JsonProperty(value = "billingRoleDefinitionId")
+    private String billingRoleDefinitionId;
 
     /**
      * Get the user's principal id that the role gets assigned to.
@@ -36,12 +36,34 @@ public class BillingRoleAssignmentPayload {
     }
 
     /**
+     * Set the user's principal id that the role gets assigned to.
+     *
+     * @param principalId the principalId value to set
+     * @return the BillingRoleAssignmentPayload object itself.
+     */
+    public BillingRoleAssignmentPayload withPrincipalId(String principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
      * Get the role definition id.
      *
-     * @return the billingRoleDefinitionName value
+     * @return the billingRoleDefinitionId value
      */
-    public String billingRoleDefinitionName() {
-        return this.billingRoleDefinitionName;
+    public String billingRoleDefinitionId() {
+        return this.billingRoleDefinitionId;
+    }
+
+    /**
+     * Set the role definition id.
+     *
+     * @param billingRoleDefinitionId the billingRoleDefinitionId value to set
+     * @return the BillingRoleAssignmentPayload object itself.
+     */
+    public BillingRoleAssignmentPayload withBillingRoleDefinitionId(String billingRoleDefinitionId) {
+        this.billingRoleDefinitionId = billingRoleDefinitionId;
+        return this;
     }
 
 }

@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingManager;
 import java.util.List;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.AddressInner;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSectionInner;
 
 /**
@@ -26,7 +27,7 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
     /**
      * @return the address value.
      */
-    Address address();
+    AddressInner address();
 
     /**
      * @return the currency value.
@@ -102,7 +103,7 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
              * @param address Billing address
              * @return the next update stage
              */
-            Update withAddress(Address address);
+            Update withAddress(AddressInner address);
         }
 
         /**

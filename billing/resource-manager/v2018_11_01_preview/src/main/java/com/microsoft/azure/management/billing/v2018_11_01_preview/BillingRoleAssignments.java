@@ -112,29 +112,32 @@ public interface BillingRoleAssignments {
      * The operation to add a role assignment to a billing account.
      *
      * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingRoleAssignmentListResult> addByBillingAccountNameAsync(String billingAccountName);
+    Observable<BillingRoleAssignmentListResult> addByBillingAccountNameAsync(String billingAccountName, BillingRoleAssignmentPayload parameters);
 
     /**
      * The operation to add a role assignment to a invoice Section.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingRoleAssignmentListResult> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName);
+    Observable<BillingRoleAssignmentListResult> addByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, BillingRoleAssignmentPayload parameters);
 
     /**
      * The operation to add a role assignment to a billing profile.
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
+     * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingRoleAssignmentListResult> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName);
+    Observable<BillingRoleAssignmentListResult> addByBillingProfileNameAsync(String billingAccountName, String billingProfileName, BillingRoleAssignmentPayload parameters);
 
 }

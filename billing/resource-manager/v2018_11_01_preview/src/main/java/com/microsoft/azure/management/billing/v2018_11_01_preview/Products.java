@@ -43,10 +43,23 @@ public interface Products extends HasInner<ProductsInner> {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoice Id.
+     * @param parameters Parameters supplied to the Transfer Product operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName);
+    Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName, TransferProductRequestProperties parameters);
+
+    /**
+     * Validates the transfer of products across invoice sections.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param productName Invoice Id.
+     * @param parameters Parameters supplied to the Transfer Products operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ValidateProductTransferEligibilityResult> validateTransferAsync(String billingAccountName, String invoiceSectionName, String productName, TransferProductRequestProperties parameters);
 
     /**
      * Cancel auto renew for product by product id and billing account name.

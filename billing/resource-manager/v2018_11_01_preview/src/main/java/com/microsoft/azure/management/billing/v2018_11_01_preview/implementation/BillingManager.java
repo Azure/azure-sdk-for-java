@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Addresses;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
@@ -37,6 +38,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermiss
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleDefinitions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Agreements;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.LineOfCredits;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -46,6 +48,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private BillingAccounts billingAccounts;
     private PaymentMethods paymentMethods;
+    private Addresses addresses;
     private AvailableBalances availableBalances;
     private BillingProfiles billingProfiles;
     private InvoiceSections invoiceSections;
@@ -65,6 +68,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private BillingRoleDefinitions billingRoleDefinitions;
     private BillingRoleAssignments billingRoleAssignments;
     private Agreements agreements;
+    private LineOfCredits lineOfCredits;
     /**
     * Get a Configurable instance that can be used to create BillingManager with optional configuration.
     *
@@ -130,6 +134,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.paymentMethods = new PaymentMethodsImpl(this);
         }
         return this.paymentMethods;
+    }
+
+    /**
+     * @return Entry point to manage Addresses.
+     */
+    public Addresses addresses() {
+        if (this.addresses == null) {
+            this.addresses = new AddressesImpl(this);
+        }
+        return this.addresses;
     }
 
     /**
@@ -320,6 +334,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.agreements = new AgreementsImpl(this);
         }
         return this.agreements;
+    }
+
+    /**
+     * @return Entry point to manage LineOfCredits.
+     */
+    public LineOfCredits lineOfCredits() {
+        if (this.lineOfCredits == null) {
+            this.lineOfCredits = new LineOfCreditsImpl(this);
+        }
+        return this.lineOfCredits;
     }
 
     /**
