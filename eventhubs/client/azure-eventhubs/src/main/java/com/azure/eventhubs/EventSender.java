@@ -42,12 +42,13 @@ public class EventSender implements Closeable {
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
-    private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
+    private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventSenderOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
+    private final boolean isPartitionSender;
 
     /**
      * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
@@ -58,6 +59,41 @@ public class EventSender implements Closeable {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
+        this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
+    }
+
+    /**
+     * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
+     * allowed, an exception will be triggered and the send will fail.
+     *
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     *
+     * @param event Event to send to the service.
+     * @return A {@link Mono} that completes when the event is pushed to the service.
+     */
+    public Mono<Void> send(EventData event) {
+        Objects.requireNonNull(event);
+
+        return send(Flux.just(event));
+    }
+
+    /**
+     * Sends a single event to the associated Event Hub with the send options. If the size of the single event exceeds
+     * the maximum size allowed, an exception will be triggered and the send will fail.
+     *
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     *
+     * @param event Event to send to the service.
+     * @param options The set of options to consider when sending this event.
+     * @return A {@link Mono} that completes when the event is pushed to the service.
+     */
+    public Mono<Void> send(EventData event, SendOptions options) {
+        Objects.requireNonNull(event);
+        Objects.requireNonNull(options);
+
+        return send(Flux.just(event), options);
     }
 
     /**
@@ -83,7 +119,7 @@ public class EventSender implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events, EventBatchingOptions options) {
+    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
 
         return send(Flux.fromIterable(events), options);
@@ -100,7 +136,7 @@ public class EventSender implements Closeable {
     public Mono<Void> send(Publisher<EventData> events) {
         Objects.requireNonNull(events);
 
-        return sendInternal(Flux.from(events), DEFAULT_BATCHING_OPTIONS);
+        return sendInternal(Flux.from(events), DEFAULT_SEND_OPTIONS);
     }
 
     /**
@@ -112,18 +148,26 @@ public class EventSender implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events, EventBatchingOptions options) {
+    public Mono<Void> send(Publisher<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
         Objects.requireNonNull(options);
 
         return sendInternal(Flux.from(events), options);
     }
 
-    private Mono<Void> sendInternal(Flux<EventData> events, EventBatchingOptions options) {
+    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.partitionKey();
-        if (!ImplUtils.isNullOrEmpty(partitionKey) && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            throw new IllegalArgumentException(
-                String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", MAX_PARTITION_KEY_LENGTH));
+
+        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
+            if (isPartitionSender) {
+                throw new IllegalArgumentException(String.format(Locale.US,
+                    "SendOptions.partitionKey() cannot be set when an EventSender is "
+                        + "created with EventSenderOptions.partitionId() set. This EventSender can only send events to partition '%s'.",
+                    senderOptions.partitionId()));
+            } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+                throw new IllegalArgumentException(String.format(Locale.US,
+                    "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
+            }
         }
 
         //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
@@ -152,7 +196,7 @@ public class EventSender implements Closeable {
 
         return sendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))
-            : link.sendBatch(messages));
+            : link.send(messages));
     }
 
     /**
@@ -181,7 +225,7 @@ public class EventSender implements Closeable {
         private final Integer maxNumberOfBatches;
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
+        EventDataCollector(SendOptions options, Integer maxNumberOfBatches) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
             this.partitionKey = options.partitionKey();
