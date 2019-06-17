@@ -72,6 +72,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
     @Override
     public void createQueue() {
         StepVerifier.create(serviceClient.createQueue(queueName).block().value().enqueueMessage("Testing service client creating a queue"))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
@@ -97,6 +98,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata2", "value2");
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().enqueueMessage(messageText))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().peekMessages())
@@ -143,6 +145,9 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions()))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
             .verifyComplete();
     }
 
@@ -164,6 +169,9 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true)))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
             .verifyComplete();
     }
 
@@ -183,6 +191,8 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
         }
 
         StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix")))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
             .verifyComplete();
     }
 
@@ -222,15 +232,19 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
             .cors(new ArrayList<>());
 
         StepVerifier.create(serviceClient.setProperties(updatedProperties))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
+            .assertNext(response -> helper.assertQueueServicePropertiesAreEqual(updatedProperties, response.value()))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.setProperties(originalProperties))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         StepVerifier.create(serviceClient.getProperties())
+            .assertNext(response -> helper.assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
             .verifyComplete();
     }
 }

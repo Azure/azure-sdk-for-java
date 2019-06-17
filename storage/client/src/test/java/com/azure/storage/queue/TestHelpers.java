@@ -72,7 +72,7 @@ class TestHelpers {
         }
     }
 
-    void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    private void assertMetricsAreEqual(Metrics expected, Metrics actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -83,7 +83,7 @@ class TestHelpers {
         }
     }
 
-    void assertLoggingAreEqual(Logging expected, Logging actual) {
+    private void assertLoggingAreEqual(Logging expected, Logging actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -95,7 +95,7 @@ class TestHelpers {
         }
     }
 
-    void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    private void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -104,7 +104,7 @@ class TestHelpers {
         }
     }
 
-    void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    private void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
         if (expected == null) {
             assertTrue(ImplUtils.isNullOrEmpty(actual));
         } else {
@@ -115,7 +115,7 @@ class TestHelpers {
         }
     }
 
-    void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    private void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
