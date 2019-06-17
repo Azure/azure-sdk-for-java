@@ -199,7 +199,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
