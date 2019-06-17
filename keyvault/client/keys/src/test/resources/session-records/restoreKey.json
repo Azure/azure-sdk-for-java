@@ -1,0 +1,325 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/create?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:49 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "684",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "37f53a98-0eb0-442d-85f1-8cc67bd1fb56",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/5bd8004e719745619e2c87385e445049\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"pMjnwYXw7Fzm440YsgHvp-Ag1FOoNJ7ybAiv6DjmnjGk8QbnipnomVHrnUjE28of7z9wXs3UijxH8OxEbRvKjfHCgbdyblJO18ESztu0Q-7RNIAp6LSyoAlbWsrG_5AqflmieNW4s4hvhGdPY4Tktnfy9pibVL_4vKBkyDI38dqdDR_Bj32Z4Gsr9I6v1T6-bASBCYuYO1TVdqFONi9jae_acv2qBGD4C0lfO4anmf14qR1YNymDgp_feBoJHdbsdDgVoacfpLrafl0zk3ZTXEGuhJj71ERs-ku7yy8UqMQqHSytG-IViONdDEqpX1OmkZehuMvQTxaMTodjTV3PxQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560706670,\"updated\":1560706670,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/backup?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:49 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "13935",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d056b04d-edee-4d1d-a60e-8cc2e1220c39",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"value\":\"JkF6dXJlS2V5VmF1bHRLZXlCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUkwTXpnMVlqQTNZaTFrTlRRM0xUUXlaVFV0WVdVNVpTMDJNVEJrWXpNNVpHWmhaamdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQ0lzSW1WdVl5STZJa0V4TWpoRFFrTXRTRk15TlRZaWZRLkI0UUx1VWxuR3FtV1hGb0hXclJmSDZKVFlCZzhzZy14WGZWdG9Cd3hWbUR6ZC1vdWZfeVBKQWxyeWlESGxjNWJOd3B6YnRtdVhEYkVnWUFmUkVaRW5hcE11R2tPcWFlV2JZcU9YNEZwM2FaNEtvcXN5dVlKbGtKY05JQ1FlYm01X2F6OU96bnFDOVQ4dUY1aUZ4MVR4M2NXbWN1eUx3OGVQYkFrbVpPLUtnTXJTWWpOUkJGTzJqWjZURHQwRHo3ZDVYNzRidGNaNDU3RXpGektOVGRJTl9SeUd3YlFKV2pNNndLbEZjZjJzOGQyZnZaT3BYMU5tSHdQTml3eWwyTmFka0t3eHY5LTR0WER2NGhzSHFidlNscExIRG5uNTFrUzlULVc5T1BhTnFJU2dYODhqVHlyVlN2RDdibzBFMk5pVm1BVS1mMjJBN2JHby03M051YjhSUS50dktsb19QVXRfSlAtNTNhWnF1VmR3Lm1wR2VvMkRWQS04cUE3eFptMm44R1hnYWdZMkg2OV9rck5CX25OLUhYaktFQUxqMDB6dVpJUU8yaEoxTUJUZmxNN011TUkxODlGaG0tdWpaQy1UbjFqNVpMdWdkVUlYanBtdFBmRUJlQm44andDMnZTb21kUWZ1VUZrTmlkckhlVm1EUTFWTzJwNjFleG95VEphNG42NlpUZ1dOMFdTQ1hRR3NHY0RhQ1RUelU2UkNuRnBjNlhiUmQxSDhyOTl1Y0tkTXRUWnFlS2lWb0I0Z2Q5MmFXck1jam1NNVVfZmJCTmNONUFaNGl0WUpKMXBOcTBwQlhEZjNLVllBLUNqczBiZVNqaHlnRjgwY0NjckpwQ3B1NEpMU1B6dFc4VUlTQmN4MzBHQ0V0SndvWXM3T296M29DcVY4NWU1Y09BNDBKY3RydlNtZlVkdDVOa2tnZXYtT1ZrRmEwNUFzTEZNOEtuZU8xbU9DYXpiZDl5MlJ0N3hkaUFBbGtwT3UzaUhGUnUzcFUxTlNDR21LSk1qOS1vSFFmV044UWN6d2VRMVNQczBmSVVibVNfTVhxZXlVNVJidWV0SFFRdkZKZ2RJM3BicEJEWFhxNC1qNzF5aHk2cDRDQ3NlWkM5amFZaXBnOXV5aTZlOGhkNUZ5alBXbzZlQUREN0hSQ1NzWUYteDNDSUVKTGQ1ZE1paXhxd2Y5UGFqX1lhNFJKYmlUcDIweC1nUmkzWFNDUGxKdTdPbkFCR0RFQVRtWWQzN0ExZEE3dTJPM2VYQTRLNmtNU1dydU5jNHBpQVRZUkMtZHhUOHA1b1R4UWlzOEVGcGlWMzB3Sks4TlhXYTJEOE1JdHJfYTFHTnNuWkRNU1ppTUNjbWZZSGUzdGMzYVBrYWRMVWhyelJNeTV0a1gwNEtXdy1TY2dqbF9WM2JNcXduM3RSUmhVc2liVURNSmprTVAwT1E2cDRBdUdreVNHdFZwNVdWSjU1LW9zTm9yTTVjcmJzMzJuV0Z4Wk1GaWJmY2ZvaWdhZ2dLam9nV2VBek44SXNMcGdoUDBicjltMk94QldkZ01HMzk4RHQ4N2NoaDRKNnFzRWl1cGd5RVI4b0NrdGNIZEZya1MtN3JiaTJCNVc1b0VEbHJkeXh1YlZ0R1poZFFReWJZMy1Qem1mX3dLMVByS0hnNWJKbm1SUS02WFFLQk1VeU5KcS1uV0pHUU5WNlgySF9lU1gxREdoUWxQb3psOXViUjJ2TjJ5TGo3SG42b2JnU29qUmFmemxFXzNEZG4yd0tMOXhvZkxFTTBlYmlwa0NuRFdLTkJZLXMwTlFKelB5VjdtVHJIMERKODFDX2NmUDhsdVVBSVk3dmFUanlOcHZlTVZ1LXZnaUF0OVBPVms2VkFaTE9iS0V1eTh2N0hDN3FjeTZUdHh4YkdwbTF0dnVxWGVDY0JMR081blhhZUhpVDNWaDNQb0lFdXBSWVFRS2VlaDN3SkVNMlFLdTFteVE3SEtSaHpvalFmV3JnY0x6Nl9YUWtMM2tzUU8wZXFmUHJEU3JZd2NoX3NyUC1wY21aNjlJN2hOZzRMUHNoRGFZV2d6cmtkVGk0QWhWUEVfMm5FOTVJUm1fNjc4eFlYUkV1Ty1NQjlkYnNnQlZqUmlxMTB5eWVTNy0tTEhxdmgwN2FwaTVXMG54VGpvZWZuYXpYUUVSXzZWZElvbUZraDhIclFzZzUyS0ZjR0FxaXg1Q3lYMGV6ZHpLWXlGbFhGeDY4Tm54eTI2dndJWEMzY053ZEU1RU8tMWhSU1NLSERCVGF4MjRaN1Nrc0lFenpEUXlaWTFDZm12cDdwcV9qZ21FSU9Wd08wY0NFaXlpUXlxWjVRWFdCSUpFY3BjdExaVEM3T1J0clNJQWJHT3haQm4zVFFQVlRleFllVy1vWkZqam9Dbi1pdnpycWxsZGVpWXFrSXVXbm1PSkZxdnZxbW5uS3NPdnFTRnhTemFnM2pDOXZhWkVGTms3akw5VjFlRUZRWm1Kd1pRZjBqVURmYnZmbUNQRVZScnJJZ251M0M1Uzh0QXM3NEZSZDVEaHpqT3pSa2lzVVlHajM1VTRwbURpT1dsdGVoY3ZZWGVZZm9KVlN2Y09zNjRqMGJQOG1Tc0gwaW55UmJIRWNSRFVHZEg4NDVYbmJhaW5SbkNmbjZWREFEendaTktzQnNEeGFHT2Z3SzlVX05rU2lVSm1HTE41UklmdUl1V1oySXNBbFk1WDE3c29Tb3pQTUVPc3oxWFBrQjB0N0pWYm85MVBuYU9ocE1PUVZmN2k4V3dPaDdhdjZmZmZsVEpiR2FLeTFaV2NmM0JnMVJoV1dlMTVGUzBlS0x5LTluamlMRHRCLWIzTklDUk5YckhQV1h3Y055ZmZhMDZfb0JqUlY5RXFsd2hhSmRfSkVCeXpjWWx5TE03ZGFMQ0FRN19HSlJwZTZOQUlBSWtmSDNiaUVwUW55djVMRVdsLUowaVBLMjc5UFIxbzBKVzh0Q2JMZXA5Rm1KZnlzNHI5QmtQMTNtcTV2RVc0UXM4c2NUNGx3X0VwN3dtM29zRXhPanBLM2lLcG15b3d6WmtuT2JvbWQ2cTVBTzJfRjhBUjlLcjlOTmh3TVhfNXNiUFp0UG9HalBuVEtyaVFqbFppNlo4X21mVXYxbUFQZncwQXVHam5UMk1YVW9SZnlMaFNtTExYdDlMc21ZbFB1UHV6amlLbXBRaVZMdXJGbDNIcXk5RE0xWFB1TG9YOXNVQTk3aURXWWRmd0tXWkdYX3BMTFIzNHBiR0FkdnYzaGVHbGxxMXEyWDhIVGg0dE1FNWsydFBFbTFkOEZRTUI3SVFlRjJWcDA2THgxR3FSc1YxMHRrRWFqNkR0Zmk5QzFMZ3ZXb2tYeUNiS2lkd0dwNGgzZ0ZRbU5Jc1dqem84N203bmJOUmpqUUlKN19zYUU4M3cwTzRsbFVWMU5UWlpSamNsZzNadjV2SlNzbG4zam9MeWFyYjhndEZRbjVMYklMZU9QOWV5aHh3eFdSZ1VnMnVyZm0wXzJFd21Za0o2OWpOeDhmVmZZZXlLdTNlSHRTVUk0aERXN3JJNDNkRVdPTnZQZjNqbURhOTlBdHNoSmVRMGNCQmJjWDJ2c2dySkozcU9BRlYxNTJyM3pka2tFRUpxZ3V0XzYxRmJmTjRFWF9tbG04QXhRYVdSMkdyLWxFVjFlcllHWmUzWEE0Rm0xSXJoU0NzZjJlbUtCZVhYUEQ3cmViMUc2ZkloTzVlOHk3RFdUWkpxbW92S1pObzRIUE9HdWxSaWpaM3h4QnpWSzhQN0dFVGNSS182OGdLVzNJTDdQbHI5TXF4M0FOcXA3Tzg0dlpNU1Q2ckNMel84VmJseFlNbUh0X2Z3dzhHTklDRnBvSEljbmlMWU5DdThyUEkyR2lkMEtIU3dxNHhuZTZvNTlINHdxb0Y3VXhoWlVqUm50X1hpVkIzOV9FbDJvQ1JnYUhFNmt4Z3VzUG90OHlNQUtGNGo0bGxraXRQSUxaMklOMW4xemQ3LUlYekhsUWNWMTJXYmFXX09zTTNRdVZycngyNi1Ob1FsSlNOX0pqN2xKY0Y3eDRaZFZ6QXpjNklneTY1ZE5ZWU52d2VxZ3dsT2NPVFhZT00tbDRjUGJEYUQxWDNod2F3MlRheVdEME1XOHdLb1V6eF9xTWJlXzY1Z1YyUUVidElfN2d2ZmV0bndKYWRJc1dubFl0TlEwWjMzWlZXZUFlcW5JLTZ4b0dmLVg4bmx5YWRSWFlGbUFfWjE4bkNKVmljUjRWN2p0eHZRYW9Yd21wMkgtclJETll0TTgxODFXNWRFcUdqUmhIRjY5WFYxeGFVbDg0ZHZrNW8zMjN6cW1mM1QxODZ2M2hLMy1OQmJBbk5UR043S0pSRE1GTjRHQmwyQUNSWWl4c215cTJNS3VVcnlEUWZSM1V5a2hneDVhcUczenM3Qi02UWZRaVQ0X0hzUmFjSGYzLWpsVVpnMlVudGZlVW0zTlhxZG1rYTBTSXMzRnV0bUFCc2lBd0RsNkFzS2plQXFXZkJwMDhwQUdBTGZtcnRYZlF3UExWWmI5SV91MlhFamdfSDJ0VC14OHVzU21KLXMyM2xNX0p1SXVqbmp0LV96YnAybGFuYzh1WXFWX0N0YmhzdmxRaHNCa1ZTNVpZXy0xaDJFXzFZUVFwMEVWamZ1Mlk2eTg5TzBSZ3VHNGY5a3UwNlFfWmhGakFXZUxrZGRhZ2FMMElFNjUwMjg0N3dpVGV1Y3hZYnk1RE9hOU1aZElxMzZMNWk3c1V5eW51ZDBhQl9jZ1NUc3ZhWW45RkNtdEsyTllGQXNGd2dPUjcwRWpVVkI5dVFiczlLUi02RVpjQ0drRkdhZTVlODl3WkY5RjBsd2FoLWR4SHFaY1EyZnQxQVRNVXgtOS1nMmNXWXRwLXRMQU12MG5Sa3RzOU9QbkY3Z1JSMTBKY2UteUk4ZVFDNUEyYndtVnViZEJ5M1pELTNKQUQ4X25Gclo4YVRJX2loUHRSV0Z0ZDhzWDRybDRCYUt0b3c1cGJWcm9kUFpTbExUTENOcDlGYmtFazdNaXhES3h0cTVWb2Y3cFpvcUNVX0I0cWQ0Unpta1pYWHVxNEdxaERJNzE0SFRKTzhHbkppbFBvcklRVG00WUdwZ2Q3MjlmekhBTjQtMVRZUi1Mc2kxaG9KNmVYRWZDQVlkRWgtYktfdWRtaUJXZk5DQ1Jsc0ROSlhtNy1fclQ3VVZQS1JUOHVkSk1wTXo5RTZ3OGZFVFRfaG5VUlphTFZfT2dWV2MwNVFPQU91cFZrQkRyMDdQX2g1cnU2NGpkRGNweTVybXRJaEFLRzE5TlZFcC1TeGlsTEJvUDZRRW5DN20wNG1LWVJxSldaSHhyUkxvNkJZb2F6SXBQcTN0eWdJUFFHZkdxazlhb1ZjOXdLMWt2RXBTZXpNS0NoVmJFdk9YbURZUGFqa3FJZGJhSF9UUmdQdWdhQVB2eDdHaHdIOThKcXZqMTFNSGd0VGp2WGpwdndyN0tZMlluTVFXMTcyY3JtRnZRRHBqaHBBRF9KUkJkWU9jQUtaUm1GcDJiT3k2VUxaaXlQRFprWE5SeHNrOVRKM05yd2JTNDBsZVZONF9VQzZjbTcwcUJPZm1CU1NYX3dCdjczYWJFejhFMkhiWEJBTzEtWWVDNDFyZXhYLTg2TmhsczgyQU9vLWppcm9Hc1pjOENURi1HRjF0aUVDTXhIUlVQaGswN1N0TDZRM0djNFdJMHZSd0N6Z0pKSXkxd1FuMERtWDV2a0hLV2pMTnRUTFRaZ1Vrc3NrUjV3U1hQSGUwVVpaaVlRb0FlNGlPWUJoZUQ1eGg1VHRzcHkzNm1hUGZST2xBZjhkUEk2NTh4WjhhdllkTlluWnpHcC1yY3JvWFhnc0xQU29SYlVYcGJ3TjBzZE82NF9BVUUxU2dMU0JIdkxzOUlNZUF4WS1nWWhzZGJpeUdDdjEybWtIT2ptN2V0bHFIamJybW9SV202bG8yNkNoeklEc09DLW5DelJMd2RzVjBTZ0hIRG8xVWNCMUx6YTJVZ3NWaTBiamwyZjRDVWZCYXdNNlNtLVA1cG1LMWxuVEFTaXBGbjhsR1kxU3BCNVplb3NtMHlzSV9mcGNMQXRrN1RWdmc4VVpwN1hNR0JWUXVKU3pSUlpzUmtEUUdWNWdNbnpQZ0RlZFBmX0VjVTJZR3V1bExtdEc5Q3FwZUtNaHhwZFZ4aXZCbElLN3FpV1dpclRxVDFiNTVLVEFkYVVhWjBmTlZWVnJxYlJPSDFCcU92b0c0QlJYbFJqZmo3eHhMNm1XVHExMVZQdWpteE5uaFROQ042YmlQNWp5QjVzQUlNY2dmZndraHk1WlRYMjhBa3BDbzl5Tko3QTlMeHRxcnNwbjRTa3NkdHNKeE1MSHpoTktyUUlyQVdYYkxHbFVPWmZudzY1TTk1N0Y2NlEzQnI0N0N0MS0tOVE3UWpMRDV2UWZ6aGdlTTRlWjlIWW5FbTdZVHAwNFJ0UUxOeEJaQkhxT0lyS002Q3VLZ1I5T2tpVHdBY2xWVzY1SnpETE50N3dJc1hZYkZ0b3hpQUlzSktxQ3FPVjhaT19XanVrbUlZaFZaWmZSazhEalQ1YzBjcUxfNkdtT3JiVmNETzBoQjFWS0dVaWN1SWpSa2RwQVRwSndjRU9pWU53Z3VJaXJEeEpFNE1FUjFhVE1xYmgyNXNjRGlxeTE2RG1yZVQ2X0N3aEl6WVlWSkdoQ0Z0TEFSWDJHNHdPNTMwb0RGWDdybmpfUHhULTUzSUEwZGJ0WHgtTkRjNzBsejE2eXZUaG9Fb3IzWnoybzgzMzVYWThvUXZLdU1UXy1Ba2VkaFJyYTFKdGkxMXlzQkt5UFFiUE1rSFhWZGl6YzA2UVd0aFl1M2t5N1lCNlhRbmRNZUVxMkx4TXUxUjAtdnZRQTlZdkN1aWlhSTlfMXZWTGhycTcycHFlY1N3aFBsV00yQ0lJaC1QTl9lNVVoMlg0d2hXekhCRFlpaGhlUnMtZEZnTWIzNGR6VExBekVieDRMdlZ1UjJHNE9ZdFRfcGlzU3ZWZDREcXY4Mnc5b0dNd2tKbDVqS2xiQ0Y2Wm9vVVNkWFZsWWY1NGUzUGVfWDA1TnlsUU1SVENyY29jcXVLZFBQVlVtWTQ3MFVCWm4xVUtlTVh2UEhIVWZuZ2tFVWtaQWlza3E3ei15Z3FWR0Z2NjFYeU5mOTVXQXB5RGJvbDRlUnNidXJ0UUpONWVKSE1Ed2FWd1lQemlIYlVEaVF3R1diWHZnVlItZV9ockNOSG1ueUk1Wk5rUkUwODZTaXdMVTlidlpvWjExQk5SRkwybF9Zc3EwM0RzZURYWU9Mc1prcl9LMnY2SjNyRDNyOTVBSXJaWEQ1WGhYUWRKMUJhM2tQMDYwQk5qdENtVGVJYXhzWXBDZGYxNVAxSFhSTzdhRGhrMTdQVmFYd09qc3A5cTlNc3Y3WEdicE1HMFREYVV4VFNGTkFhR2w3OGNkWmQxM1diRG5CRXZTOXNXRUoya3FoaFpLOTQtTTJtT3pJVUdIdF83NWY3ZW12UHBTY1hHbm1fbTJxV0pVTGdFdjJQa19oV0xDRHJUSUhJbHBWbGpKMjZENTZiLUhqcDlrV2JkdTF6T0FIZGJjektPdm1KTGNrVWYzd0NSOS1wNjF3cmp5SHVxU0lZOGM0RnQtMC1fVGMxRDVJTjVMYmVhcnlBTlZKa0xfMG5NV2k1NnpPdEY5UmpsMkpDam1YLVJhYXVuRUFrdUd0bnJfTEN6aXlHRTV4S29HR0ZRMExLeTRQb3hKZnNJTEw5TkE1M1Z4SEwtQXlkT25sVXdoMFN1QWVpb3l4RGhiQ2EwNEFTejUteDR5YjlZWTFJOHAtdlZZY2VjRUNOcEkyMnFub0RneHlTTndQQ2hON2NWY2dWbE11MjA5WjRBOV9PcnFiSWtYVDhIbmNYQnVhRGp3dmJIeG1vZXJleWZLaW1zVC1uaDB0VVptQnJibTl0UnVvRERhbXZGNE5HRWdjS1lTZXU2TS1mcS1WYXRfMFZjSEhvTFdEUUlRZzZlN1phUVdvVEIyeUkyUWpmLVM5OEEtQ3k2VDBTZTdLLXRUQlkwR1VTOG5uRE5sVzhLQjAyNHBRUWVYeTk3Z0ZHd1RZSm9vV2RHNkp5N2F3YWVYSGprVXM4N0t1QjdwdkVENTQ1d1JNV21sUTM4U3dHcVVpMk1zRE4yVXRSVnhzQUZmRFBLNThubHpsSjhFZHVGbkVrN0U4OXlVUDhDYktONVZ3cTFsa0F4UGVtOV9Gc0U3MHZmYUh3WVUxUEM4WDhCYkQ2bTk4TE11X0F2dGs0NDdMUXVZakZqSnMtRkgzWEhzR1NXLW5IdHByUVdsZlJKR0tuaWdDcnJESkFsM2JEU3lVUWNkY1JMclAyWkZZRGRyZUhTZ0Fwck02bmhUU3BOc1JuWXFmZ043QnY3RTRIRTA0dVVjRDR1Q0YyQng2d3Fsa3NZeWtPRlRnTmNPU1U2WEMwSmhqcGJFVUpSbldUSHY4cE8wdjBtSUZ2WWV1emRVQ3R3b2FSeHZqYWRtNEk5WkRxcUJVdFNLSmxab3BrT1NtZVJYWHJyRUtwdk5XTjBkTXRWVVJrcUlqLXYxcUIwNEJqVTV0VmJ1Xzh4YWx5VFpZclN3bHpUNGtQVFVpZHZLS2hDYTFLam8tSWFWdS0weFNoTk9xRDBFQl8zYkxTMnZ3VGZ1Nk5oZ2ZXYk9LdzFOOEZPTWlYbHVqX0Q3YUxVM29WcWpuWG8takJFam1ZdFpaQ3N2WUhMZDlkSzEybXpHMzNKd0xaUUdvaWNkT3J6Q2dBZWU1WWhzdmxySk04aHFSYzhEUkJDMmNHbXFLcEpGUTRadXZzdzNsN2hxd0NKNVBtYzM3OGd3VzNwajBfUlc4ZGRkNUJldk9qMS1qOGlFTHV5a1ZKMzVURmU5MVBidDFnTllva19PTENHX2FuOC1IalBYeDFXZDVIazBMSThxVF9BWGVRal8zREc1VUt1MmFSR0ppN0tEME12X1l4dnV0OWdmekduZFk1SVpwYU1ULXo0MTNWeC01dFZoV215ZDg0NUlNOVlndTJKdWxqWlFUOGVucWM2LS1rRVpjaUczSEkxRld1eVNWbzdDNEVVd2YxbXRSQVlWVWxxUW02am1XN2I0YXczTnZlQllNOW5nZWtmRks5c213R19IVDl0VUxnOTg0akhZRDBrQ1Vkc1FpTlJZbms4SFBpRW5LemhmSHNXYXVGRHpRUzlGXzhnWVlDcl9SNHhfaXNORmNrTUtheDZGNV9fWEkyWjZTT2ZnU2lUZV9KblpCclh4czRUWFlONEJRa3JnWkhtX1R1ZTEzamFQTmZGVFhYNnhPTC1IWWZFU0NRdFV1a2t5MXk0ZXBxdzU1aVlLNGN4Q0hOR0p5V0tPbUdWeDBvSjZJRE14TGRrTDgtS3BoTjJkLUZXa2dYVDZnQXhEWTFGWUswNVJhWXUzLTRicjI5eHhTbnJmc0FybUlwby03OGpDSWNjak96NEd2bnBGRXEwTGtqdnBzYTBhQWRBMVphcU9KcWFrMHhFZ0JOa3ItQlFsWHJnLXBpeEtOS0RILW1ScnpyMFhMNTZYTXhDWVJvNXFoNlltNGhpNzZCN3hYX3E5WENZZWNZSTFTVnpGcC1hUWN1NnFzTHJZbVJIT281QXRXaXdkS1BxSzFQcFFlZ25oZWllWUVTVGwzU1FkNUFIWlFtSnN6RkZLTHl1cnFBS1dyQktQSHdUNWN5T0gzRW5EanJsOVNaUUJfNkdqQlNWemVnVVN0YmRIQUJFbFM0VWpPM3lBdnBFYnlGQUh5LWNiY3JrenpvZ3N0NUI3R3VJelNSODliTzM1Rms3dHdMcUNWcDlxUnpONlZJLUtBN2dzTU1rU0hOTlhpMDJ3dWpmR1FXc1J0aTZXbFA3SmcyXzBFd3R0SjBXSDR0MjhnRlVsWUpJTXJqdE5zYjZXRTNESzhIdXF0cVZiZGxaZVBwWTNuaEZnVGxyQ21ObTJ0SXJZcmdZamV1amxNeklMUW9aTkRwMXdtTzJwMkozclI2VWxPNXo1a2dGclNGT3RHM1lwNUpVUU9mNWswVHFxVkdTdXhJTU1CLUhkMmphdWRnc295QklkYjZOa1RZM01iSE1rOEUwX1hOdWVkeXZCV3I1VkpScnFBVWF3UGd4T0J3eTM3SnZwSmdVVFRkNzlzOS1jekFRYUh4UHdLMW9SWXVwRVlsbk5OeUNBX0RBeVF6OVBZZXkwbW82RURYV0VPVVNWU3RuQmc3VThWRTNqQ0JFYWo1Z3E4Mnl4RVJXbUdJSnVmWEk0cFBTbm4tc09BTDF0ZV8tS2RaZW9jb2xUTXBNeFl1ZW9kSkpTWDZCdG5EeXJmNG96OExYRkg1OXZYbEdBVXNydWVpc0RuaXpTOEFLRnY4cUpzRW53MkRhSlpRQzRkNE41TGM1QTRRd0FkWW81RXlIS0pMVXBaaFIwa3hidnlJajN2TEdLUVJuSHBrOFhZMFprZ05zTDdWaE5ZTkNKcU1OYWUtbnowRE1vMDBrV0Y2a1o1Y3RycEVGb3p4M3VQTDJWSWhZVVNWdnFwZDE3aE5TVkN4Q2FZc21MSjl3OVdtd1hnb2FmYl85M2dzdkthaGRuN2U4d2tHaGdYenVkSWVrSWp6Sm9zaHV6Wk1RX09GeGFGQURhRmVNcWU0NVdoRTFvajVoX1VEemcyeUVTMXYxVWpyUk9nY2NWRzFtZW5BNmlhY0JFbC1uQXhwQTVKY0c2S2NralJiSmtCaXh5bWhtVTktQzNFeG5Dckl0WEJ5eGhLTi1hWGNLeFVhcS10TVMxZVh0cXhUQ3c5SkQ4R282M0FQT1FrRHJmYjcwTlBIMFBfRnktMDNnd1VBaXdwdjF3ZVRRVlJPV2o3OWlEamhNNU5jdDJYaGIxWkh4Q2FYNEN0T2VoMGxfQUZuelFfd1A0OUFSbHlMb2RKdERGdFRkY0IzUGppT1hldFVfdnFtM3QtNGkweXBNWFBIekdVTE5uZ2VaTDQyMEZXel8zSVoyN2NLWnI2S19LMzFoRENFWWtnSVp0VEl0OGk1N3B6bWVaZUN4dHVPSUlUWG1zNGtxZ01VOXM1dEpTcDFzVGJXQVBYcG5HUVh2ZTNrOXc4WWFZUjJjakFqbUV1Z0h2YnhXeERoQjNzaEJwYzFSYUpoSE0ycmo5SWsxT2Y2VzFabHFqNjVlTjRuS3Y0RXFNWU14Q0xvNDh4NEdndHM2SnQ1VXVDemJ6dnFaZ19qZHRVb3hpanRyWWFHT3pBaV9RMW5XM1pKM0dZRWZUeDJ1MDdzOXlGRExkQnpacG1MRmQwa041VHVWbnRzeUJzSXlhU2lkRFJrVVBMazBlcU5oX2tvRXk3dDN0eFRVTUs1MFV6OTNJU1d5eEx4X1V2d2IydVZOM3g2MVNuVnlqa0loWWstdjE0OWtCVDRYZzk5WmV0ZWxjREg3elhSaGc5bHpieUlLZ1NLRldPNW5mTjBldUNuM1d1VUw5YTZ3b2trVnlLM3pWTTNvNzdSQW4tWGw2MDhoUG1YSW1MNVlqc0JCNWxELW9GNVdVdXE0SzJXSEl3cGFVY0tHQnE3Z3NJNGZreV9UOGxBc2kxT3Z5N05GU2FCLTVsdE5OUUx6SjhvZGpkSHVmOU5JbkxsQThIaTdmNU9JS29rdFV1M1hyakQybGJCVWtyanRQNmRBQkx1Z2RtZXFkbjI0ODJQeE1DcGJoQkZUTHJoeXVYb3R5cUxKakZRMkM4ZTg0QXJzU295c1M0V3FlbjVOTS1GcnA1RkxtYktEdnR1Vm9zeXItd3hQc3JnSzlWZ1FHclcwMEM4NVdLQVoycFBES1BMeGU3WFMtMWxqUmR3akVNcE5jTGxZXzJwRUgwTjBxWXNBVVhOSm9tUTRzUUpWOFhTY3pXNHJfTFlkUVl1djhTVHhrUXg3cGFDSHV4cHVwVFVsMGZKcUN0Yk9MQmIxQldMWGxtVlF2aHlMWWp0akdQSjhULUJNaUFoTXRpOGJKNkRqUmlhMnplQ3FLdmdvSUQ0OVROWm03ejBWanI3cHhudlRUUWY2ZmhuN1hIb3ZndTBwYUZTc0JneVRLLTVrWFJTRmJ3bWpmM25nTXBXWHNHSi16a014TWdBOTFmdFUtam9CQW8wUmYwZUkzQUh0ZkJjUUdCX0liY1NZVGo4MjhJRF91RlJraU02cGFTQVkwSE5HcnZSUzNfTnNvcHlLaHpOTEF5eGRHUUcxaEVoSnZTN2dmTWJHeXJCTDkxUGd6WHpORDBKcXpDbzVrV0o0Nko5UVR2Z2NvYnk3WGF0QWFHajkxNU81OVBFT2J1YS1EcFVNcnRXRzNYSWVqVGtJWmtOQ2toZzdDeEpIbC1JOEpMdWg2VWZrYXNPZ0h1UHJJejI4U3RQWE1OVThyYmR4eUc2ZWE1QWM5bFJOV1B3U1ZLcUxDTFIycjZiSGZVTkE5bk5CS29tNFBYcXNlcTVxM3FMamVwS0hXMkgzYUI2OGkzdmQ5N2NGQmxJd0tnT2FEOWpwT09nU29EbEJYOTk4VkVhVWJSM1JyNmNrX1ZvcHRzel9VRnJFamk4N2Z1Z0JxNTY0dUxfdEZyTkRaMWFVc2hMUXR5NG9sMWxHa0ZnaVpEUzJLSGoxd29wejRXY05HNnNiTEZWRjhFZ3dfQ2NJUEFRTWw1QnlhVFI0Z3dHXzF6UExuQnpXTmdWbHd5dzhIekRxdVZoQ0Z2WGluZW1scVV5WVp6SW9tNW1ySldranFSbEJDZGZVR01jcG9pSDZUTVN1aEE4TXFzT09Obl9jVXRObFctYTBHMXFfRnBLY0Q2UDFfRnd5RWI0YmVlNlRjYkJSLW8tS0ZVb2xEZU0xQ09Na2pxd2FrbmVLOHZyVzNmQS1NbTEwdktIYXdfZUxIaE5lRjEtUkQ3UUowOUZfTUdoVGM4VDhueHN2X0pTc3k2QXJOWjRzLWtvQmUxX3E1dV9oaW02WDV5YTg5UnpTcUZEQ2drNWY2VmJUbXRkUERzWnhGYTAweXBCR2pkYWItekVvR21iZGN2Y1VmbUNxNXYyMmF3MUl5MlF6N0FiaDJJdmRBZ05TaE9fM1V3OGx3NDR4djZqNDZjYUVxblBWaTc4bTBsOV94MURKbXRPUm5xZlpRd1lrdmMxd2hsQ09aN0R6bkFTdFRUS3VMN2lzQkFDME5xVGt6Y2Nvekh3ZXIxa0VHRUYyM2xIczRnVlNkU3VvcGlUXzhENEkzTDZsMTRFSklxWGFFbmYtTk5panJhUTdjWHVsZ0ZDRVJvSkh0UURtNW51QVBmd3Y0M2psSkhpN1lpdTYzWVp2dVpFMkw3Rl9paWdLYndCeDQ4bjM1VmM2SFowcGM3dGg3NWNaTzdzVDliY2NnOERzRXRVbVh6OXFvUHprdmdvaXItRENjM1BDVjJUMFZOcVhIRk9SWDFpTGNPQmstQmVoZjlKbldSaU1CVXNQZ3JhNEh0RmVVa24wSDQzTXdtYzJpTkx5VkQzRUFaLVd1ZXpKYXg3aEpLLW5YeDJMRGdmbHFHaGxqZXBPZU43bWp0c19XbjZMdVg2S1FMRG5SQVhLUWtKNDliNllxdG9IX3RzejdPalRFLlI5bjVKTUMyS19CTGE1dFJLUFNMclE\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:50 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "826",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c2823ce3-ce93-4bf9-a37d-ac694d2a0493",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"recoveryId\":\"https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9\",\"deletedDate\":1560706670,\"scheduledPurgeDate\":1568482670,\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/5bd8004e719745619e2c87385e445049\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"pMjnwYXw7Fzm440YsgHvp-Ag1FOoNJ7ybAiv6DjmnjGk8QbnipnomVHrnUjE28of7z9wXs3UijxH8OxEbRvKjfHCgbdyblJO18ESztu0Q-7RNIAp6LSyoAlbWsrG_5AqflmieNW4s4hvhGdPY4Tktnfy9pibVL_4vKBkyDI38dqdDR_Bj32Z4Gsr9I6v1T6-bASBCYuYO1TVdqFONi9jae_acv2qBGD4C0lfO4anmf14qR1YNymDgp_feBoJHdbsdDgVoacfpLrafl0zk3ZTXEGuhJj71ERs-ku7yy8UqMQqHSytG-IViONdDEqpX1OmkZehuMvQTxaMTodjTV3PxQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560706670,\"updated\":1560706670,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:50 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "47c1ea6e-156b-4e04-9971-64c1344a1091",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:53 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1bb904ed-c0ed-4e47-8860-747f060d4934",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:56 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f2248d17-dd4b-4761-8464-f1f152f8b9a8",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:37:58 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "570541ae-254c-497b-bb1d-a0c428e8a91f",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:38:00 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "baf8f863-b2ff-4afc-a12f-5ce0c49904d1",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:38:03 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "826",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eed8b8b5-16ea-4133-a631-3d406452b2ac",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"recoveryId\":\"https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9\",\"deletedDate\":1560706670,\"scheduledPurgeDate\":1568482670,\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/5bd8004e719745619e2c87385e445049\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"pMjnwYXw7Fzm440YsgHvp-Ag1FOoNJ7ybAiv6DjmnjGk8QbnipnomVHrnUjE28of7z9wXs3UijxH8OxEbRvKjfHCgbdyblJO18ESztu0Q-7RNIAp6LSyoAlbWsrG_5AqflmieNW4s4hvhGdPY4Tktnfy9pibVL_4vKBkyDI38dqdDR_Bj32Z4Gsr9I6v1T6-bASBCYuYO1TVdqFONi9jae_acv2qBGD4C0lfO4anmf14qR1YNymDgp_feBoJHdbsdDgVoacfpLrafl0zk3ZTXEGuhJj71ERs-ku7yy8UqMQqHSytG-IViONdDEqpX1OmkZehuMvQTxaMTodjTV3PxQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560706670,\"updated\":1560706670,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:38:03 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2040133b-7d27-4572-9a97-93c17ff52a2e",
+      "x-ms-keyvault-service-version" : "1.1.0.866"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:38:04 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f916de5b-d191-4703-a620-c50d90975b63",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey9\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/restore?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:39:05 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "684",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6885a678-3e76-4c85-8624-df787cbe6759",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey9/5bd8004e719745619e2c87385e445049\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"pMjnwYXw7Fzm440YsgHvp-Ag1FOoNJ7ybAiv6DjmnjGk8QbnipnomVHrnUjE28of7z9wXs3UijxH8OxEbRvKjfHCgbdyblJO18ESztu0Q-7RNIAp6LSyoAlbWsrG_5AqflmieNW4s4hvhGdPY4Tktnfy9pibVL_4vKBkyDI38dqdDR_Bj32Z4Gsr9I6v1T6-bASBCYuYO1TVdqFONi9jae_acv2qBGD4C0lfO4anmf14qR1YNymDgp_feBoJHdbsdDgVoacfpLrafl0zk3ZTXEGuhJj71ERs-ku7yy8UqMQqHSytG-IViONdDEqpX1OmkZehuMvQTxaMTodjTV3PxQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560706670,\"updated\":1560706670,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+    }
+  } ],
+  "variables" : [ ]
+}
