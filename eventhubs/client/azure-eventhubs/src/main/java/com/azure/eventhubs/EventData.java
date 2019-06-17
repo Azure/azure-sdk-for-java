@@ -4,13 +4,8 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
-import com.azure.eventhubs.implementation.AmqpConstants;
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
@@ -53,7 +48,7 @@ public class EventData implements Comparable<EventData> {
     /*
      * These are properties owned by the service and set when a message is received.
      */
-    static final Set<String> RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(new HashSet<String>() {{
+    public static final Set<String> RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(new HashSet<String>() {{
             add(OFFSET_ANNOTATION_NAME.getValue());
             add(PARTITION_KEY_ANNOTATION_NAME.getValue());
             add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
@@ -216,121 +211,6 @@ public class EventData implements Comparable<EventData> {
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
-    }
-
-    /**
-     * Creates the AMQP message represented by this EventData.
-     *
-     * @return A new AMQP message for this EventData.
-     */
-    Message createAmqpMessage(String partitionKey) {
-        final Message message = Proton.message();
-
-        setApplicationProperties(message);
-        setSystemProperties(message);
-        setPartitionKey(message, partitionKey);
-
-        if (body() != null) {
-            message.setBody(new Data(Binary.create(body())));
-        }
-
-        return message;
-    }
-
-    /*
-     * Sets partition key on AMQP message.
-     */
-    private void setPartitionKey(Message message, String partitionKey) {
-        if (partitionKey == null) {
-            return;
-        }
-
-        final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-            ? new MessageAnnotations(new HashMap<>())
-            : message.getMessageAnnotations();
-        messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-        message.setMessageAnnotations(messageAnnotations);
-    }
-
-    /*
-     * Sets application properties on the AMQP message.
-     */
-    private void setApplicationProperties(Message message) {
-        if (properties() == null || properties().isEmpty()) {
-            return;
-        }
-
-        final ApplicationProperties applicationProperties = new ApplicationProperties(properties());
-        message.setApplicationProperties(applicationProperties);
-    }
-
-    /*
-     * Sets AMQP protocol header values on the AMQP message.
-     */
-    private void setSystemProperties(Message message) {
-        if (systemProperties() == null || systemProperties().isEmpty()) {
-            return;
-        }
-
-        systemProperties().forEach((key, value) -> {
-            if (RESERVED_SYSTEM_PROPERTIES.contains(key)) {
-                return;
-            }
-
-            final MessageConstant constant = MessageConstant.fromString(key);
-
-            if (constant != null) {
-                switch (constant) {
-                    case MESSAGE_ID:
-                        message.setMessageId(value);
-                        break;
-                    case USER_ID:
-                        message.setUserId((byte[]) value);
-                        break;
-                    case TO:
-                        message.setAddress((String) value);
-                        break;
-                    case SUBJECT:
-                        message.setSubject((String) value);
-                        break;
-                    case REPLY_TO:
-                        message.setReplyTo((String) value);
-                        break;
-                    case CORRELATION_ID:
-                        message.setCorrelationId(value);
-                        break;
-                    case CONTENT_TYPE:
-                        message.setContentType((String) value);
-                        break;
-                    case CONTENT_ENCODING:
-                        message.setContentEncoding((String) value);
-                        break;
-                    case ABSOLUTE_EXPRITY_TIME:
-                        message.setExpiryTime((long) value);
-                        break;
-                    case CREATION_TIME:
-                        message.setCreationTime((long) value);
-                        break;
-                    case GROUP_ID:
-                        message.setGroupId((String) value);
-                        break;
-                    case GROUP_SEQUENCE:
-                        message.setGroupSequence((long) value);
-                        break;
-                    case REPLY_TO_GROUP_ID:
-                        message.setReplyToGroupId((String) value);
-                        break;
-                    default:
-                        throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
-                }
-            } else {
-                final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                message.setMessageAnnotations(messageAnnotations);
-            }
-        });
     }
 
     private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {

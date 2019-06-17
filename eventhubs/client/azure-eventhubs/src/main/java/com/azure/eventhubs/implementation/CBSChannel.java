@@ -5,6 +5,7 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.logging.ServiceLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -12,9 +13,9 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,23 +27,31 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     private static final String PUT_TOKEN_TYPE = "type";
-    private static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
+    private static final String PUT_TOKEN_TYPE_VALUE_FORMAT = "servicebus.windows.net:%s";
     private static final String PUT_TOKEN_AUDIENCE = "name";
 
     private final AmqpConnection connection;
-    private final TokenProvider tokenProvider;
+    private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final ReactorProvider provider;
+    private final Duration operationTimeout;
+    private final CBSAuthorizationType authorizationType;
 
-    CBSChannel(AmqpConnection connection, TokenProvider tokenProvider, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+    CBSChannel(AmqpConnection connection, TokenCredential tokenCredential, CBSAuthorizationType authorizationType,
+               ReactorProvider provider, ReactorHandlerProvider handlerProvider, Duration operationTimeout) {
         super(new ServiceLogger(CBSChannel.class));
 
         Objects.requireNonNull(connection);
-        Objects.requireNonNull(tokenProvider);
+        Objects.requireNonNull(tokenCredential);
+        Objects.requireNonNull(authorizationType);
         Objects.requireNonNull(provider);
+        Objects.requireNonNull(operationTimeout);
+        Objects.requireNonNull(handlerProvider);
 
+        this.authorizationType = authorizationType;
+        this.operationTimeout = operationTimeout;
         this.connection = connection;
-        this.tokenProvider = tokenProvider;
+        this.credential = tokenCredential;
         this.provider = provider;
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
@@ -51,30 +60,25 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     }
 
     @Override
-    public Mono<Void> authorize(final String tokenAudience, final Duration duration) {
+    public Mono<Void> authorize(final String tokenAudience) {
         final Message request = Proton.message();
         final Map<String, Object> properties = new HashMap<>();
         properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-        properties.put(PUT_TOKEN_TYPE, SAS_TOKEN_TYPE);
+        properties.put(PUT_TOKEN_TYPE, String.format(Locale.ROOT, PUT_TOKEN_TYPE_VALUE_FORMAT, authorizationType.getTokenType()));
         properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        final String token;
-        try {
-            token = tokenProvider.getToken(tokenAudience, duration);
-        } catch (UnsupportedEncodingException ex) {
-            return Mono.error(ex);
-        }
+        return credential.getTokenAsync(tokenAudience).flatMap(token -> {
+            request.setBody(new AmqpValue(token));
 
-        request.setBody(new AmqpValue(token));
-
-        return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
+            return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
+        });
     }
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(Duration.ofSeconds(60));
+        final RequestResponseChannel channel = cbsChannelMono.block(operationTimeout);
         if (channel != null) {
             channel.close();
         }

@@ -5,12 +5,15 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
 
+import java.time.Duration;
+
 /**
  * The set of options that can be specified when creating an {@link EventSender} to configure its behavior.
  */
-public class EventSenderOptions {
+public class EventSenderOptions implements Cloneable {
     private String partitionId;
     private Retry retry;
+    private Duration timeout;
 
     /**
      * Sets The identifier of the Event Hub partition that the {@link EventSender} will be bound to, limiting it to
@@ -32,6 +35,18 @@ public class EventSenderOptions {
      */
     public EventSenderOptions retry(Retry retry) {
         this.retry = retry;
+        return this;
+    }
+
+    /**
+     * Sets the default timeout to apply when sending events. If the timeout is reached, before the Event Hub
+     * acknowledges receipt of the event data being sent, the attempt will be considered failed and will be retried.
+     *
+     * @param timeout The timeout to apply when sending events.
+     * @return The updated EventSenderOptions object.
+     */
+    public EventSenderOptions timeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 
@@ -58,4 +73,36 @@ public class EventSenderOptions {
         return partitionId;
     }
 
+    /**
+     * Gets the default timeout when sending events.
+     *
+     * @return The default timeout when sending events.
+     */
+    public Duration timeout() {
+        return timeout;
+    }
+
+    /**
+     * Creates a shallow clone of this instance.
+     *
+     * The object is cloned, but the objects {@link #retry()}, {@link #timeout()} and {@link #partitionId()} are not
+     * cloned. {@link Duration} and {@link String} are immutable objects and are not an issue. However, the
+     * implementation of {@link Retry} could be mutable.
+     *
+     * @return A shallow clone of this object.
+     */
+    public EventSenderOptions clone() {
+        EventSenderOptions clone;
+        try {
+            clone = (EventSenderOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new EventSenderOptions();
+        }
+
+        clone.partitionId(this.partitionId);
+        clone.retry(this.retry);
+        clone.timeout(this.timeout);
+
+        return clone;
+    }
 }

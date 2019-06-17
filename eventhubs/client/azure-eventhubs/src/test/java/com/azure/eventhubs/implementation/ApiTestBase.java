@@ -5,10 +5,11 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.eventhubs.CredentialInfo;
+import com.azure.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.eventhubs.EventData;
 import com.azure.eventhubs.EventHubClient;
 import com.azure.eventhubs.EventHubClientBuilder;
@@ -21,6 +22,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -41,33 +43,34 @@ import static org.mockito.Mockito.when;
 public abstract class ApiTestBase extends TestBase {
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;";
+    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=myaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=eventhub1;";
 
-    private static CredentialInfo credentialInfo;
+    private ConnectionStringProperties properties;
     private Reactor reactor = mock(Reactor.class);
-    private TokenProvider tokenProvider = mock(TokenProvider.class);
+    private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
-    private ConnectionParameters connectionParameters;
+    private ConnectionOptions connectionOptions;
 
+    // These are overridden because we don't use the Interceptor Manager.
     @Override
     @Before
     public void setupTest() {
-        final String connectionString;
+        final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
+        final String connectionString = getTestMode() == TestMode.RECORD
+            ? CONNECTION_STRING
+            : TEST_CONNECTION_STRING;
 
-        if (getTestMode() == TestMode.RECORD) {
-            connectionString = CONNECTION_STRING;
-            credentialInfo = CredentialInfo.from(connectionString);
-            reactorProvider = new ReactorProvider();
+        properties = new ConnectionStringProperties(connectionString);
+        reactorProvider = new ReactorProvider();
 
-            try {
-                tokenProvider = new SharedAccessSignatureTokenProvider(credentialInfo.sharedAccessKeyName(), credentialInfo.sharedAccessKey());
-            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                Assert.fail("Could not create tokenProvider :" + e.toString());
-            }
-        } else {
-            connectionString = TEST_CONNECTION_STRING;
-            credentialInfo = CredentialInfo.from(connectionString);
+        try {
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
+                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            Assert.fail("Could not create tokenProvider :" + e.toString());
+        }
 
+        if (getTestMode() != TestMode.RECORD) {
             when(reactor.selectable()).thenReturn(mock(Selectable.class));
             ReactorDispatcher reactorDispatcher = null;
             try {
@@ -78,20 +81,22 @@ public abstract class ApiTestBase extends TestBase {
             reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
-        Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
+        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
+            tokenCredential, getAuthorizationType(), Duration.ofSeconds(45), TransportType.AMQP,
+            Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
-        connectionParameters = new ConnectionParameters(credentialInfo, Duration.ofSeconds(45), tokenProvider,
-            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
-
-        // These are overridden because we don't use the Interceptor Manager.
         beforeTest();
     }
 
+    // These are overridden because we don't use the Interceptor Manager.
     @Override
     @After
     public void teardownTest() {
-        // These are overridden because we don't use the Interceptor Manager.
         afterTest();
+
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -115,16 +120,16 @@ public abstract class ApiTestBase extends TestBase {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 
-    protected ConnectionParameters getConnectionParameters() {
-        return connectionParameters;
+    protected ConnectionOptions getConnectionOptions() {
+        return connectionOptions;
     }
 
-    protected static CredentialInfo getCredentialInfo() {
-        return credentialInfo;
+    protected ConnectionStringProperties getConnectionStringProperties() {
+        return properties;
     }
 
-    protected TokenProvider getTokenProvider() {
-        return tokenProvider;
+    protected TokenCredential getTokenCredential() {
+        return tokenCredential;
     }
 
     protected Reactor getReactor() {
@@ -133,6 +138,10 @@ public abstract class ApiTestBase extends TestBase {
 
     protected ReactorProvider getReactorProvider() {
         return reactorProvider;
+    }
+
+    protected CBSAuthorizationType getAuthorizationType() {
+        return CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
     }
 
 

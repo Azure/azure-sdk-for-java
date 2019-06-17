@@ -5,10 +5,14 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.eventhubs.implementation.AmqpResponseMapper;
-import com.azure.eventhubs.implementation.ConnectionParameters;
+import com.azure.eventhubs.implementation.AmqpSendLink;
+import com.azure.eventhubs.implementation.ConnectionOptions;
 import com.azure.eventhubs.implementation.EventHubConnection;
 import com.azure.eventhubs.implementation.EventHubManagementNode;
+import com.azure.eventhubs.implementation.EventHubSession;
 import com.azure.eventhubs.implementation.ManagementChannel;
 import com.azure.eventhubs.implementation.ReactorConnection;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
@@ -18,8 +22,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,22 +34,38 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Event Hub.
  */
 public class EventHubClient implements Closeable {
+    private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
+    private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
+
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-    private final ConnectionParameters connectionParameters;
+    private final ConnectionOptions connectionOptions;
+    private final String eventHubPath;
+    private final String host;
+    private final EventSenderOptions defaultSenderOptions;
+    private final EventReceiverOptions defaultReceiverOptions;
 
-    EventHubClient(ConnectionParameters connectionParameters, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionParameters);
+    EventHubClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+        Objects.requireNonNull(connectionOptions);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
 
-        this.connectionParameters = connectionParameters;
+        this.connectionOptions = connectionOptions;
+        this.eventHubPath = connectionOptions.eventHubPath();
+        this.host = connectionOptions.host();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionParameters, provider, handlerProvider, new ResponseMapper());
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, new ResponseMapper());
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
+
+        this.defaultSenderOptions = new EventSenderOptions()
+            .retry(connectionOptions.retryPolicy())
+            .timeout(connectionOptions.timeout());
+        this.defaultReceiverOptions = new EventReceiverOptions()
+            .retry(connectionOptions.retryPolicy())
+            .scheduler(connectionOptions.scheduler());
     }
 
     /**
@@ -96,7 +116,7 @@ public class EventHubClient implements Closeable {
      * @return A new {@link EventSender}.
      */
     public EventSender createSender() {
-        return new EventSender();
+        return createSender(defaultSenderOptions);
     }
 
     /**
@@ -106,9 +126,36 @@ public class EventHubClient implements Closeable {
      *
      * @param options The set of options to apply when creating the sender.
      * @return A new {@link EventSender}.
+     * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventSender createSender(EventSenderOptions options) {
-        return new EventSender(options);
+        Objects.requireNonNull(options);
+
+        final EventSenderOptions clonedOptions = options.clone();
+        if (clonedOptions.timeout() == null) {
+            clonedOptions.timeout(connectionOptions.timeout());
+        }
+        if (clonedOptions.retry() == null) {
+            clonedOptions.retry(connectionOptions.retryPolicy());
+        }
+
+        final String entityPath;
+        final String linkName;
+
+        if (ImplUtils.isNullOrEmpty(options.partitionId())) {
+            entityPath = eventHubPath;
+            linkName = StringUtil.getRandomString("EC");
+        } else {
+            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubPath, options.partitionId());
+            linkName = StringUtil.getRandomString("PS");
+        }
+
+        final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
+            .flatMap(session -> session.createSender(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
+                .cast(AmqpSendLink.class)))
+            .publish(x -> x);
+
+        return new EventSender(amqpLinkMono, clonedOptions);
     }
 
     /**
@@ -119,7 +166,7 @@ public class EventHubClient implements Closeable {
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
     public EventReceiver createReceiver(String partitionId) {
-        return new EventReceiver();
+        return createReceiver(partitionId, defaultReceiverOptions);
     }
 
     /**
@@ -128,10 +175,37 @@ public class EventHubClient implements Closeable {
      *
      * @param partitionId The identifier of the Event Hub partition.
      * @param options Additional options for the receiver.
-     * @return An new {@link EventReceiver} that receives events from the partition at the given position.
+     * @return An new {@link EventReceiver} that receives events from the partition with all configured {@link EventReceiverOptions}.
+     * @throws NullPointerException if {@code partitionId} or {@code options} is {@code null}.
      */
     public EventReceiver createReceiver(String partitionId, EventReceiverOptions options) {
-        return new EventReceiver();
+        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(options);
+
+        final EventReceiverOptions clonedOptions = options.clone();
+        if (clonedOptions.scheduler() == null) {
+            clonedOptions.scheduler(connectionOptions.scheduler());
+        }
+        if (clonedOptions.retry() == null) {
+            clonedOptions.retry(connectionOptions.retryPolicy());
+        }
+
+        final String linkName = StringUtil.getRandomString("PR");
+        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, options.consumerGroup(), partitionId);
+
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
+            .cast(EventHubSession.class)
+            .flatMap(session -> {
+                final Long priority = options.exclusiveReceiverPriority().isPresent()
+                    ? options.exclusiveReceiverPriority().get()
+                    : null;
+
+                return session.createReceiver(linkName, entityPath, connectionOptions.timeout(),
+                    clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
+            })
+            .cast(AmqpReceiveLink.class);
+
+        return new EventReceiver(receiveLinkMono, clonedOptions, connectionOptions.timeout());
     }
 
     /**
@@ -142,7 +216,7 @@ public class EventHubClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(connectionParameters.timeout());
+                final AmqpConnection connection = connectionMono.block(connectionOptions.timeout());
                 if (connection != null) {
                     connection.close();
                 }
@@ -170,8 +244,7 @@ public class EventHubClient implements Closeable {
                 (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
                 (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
                 ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY),
-                Instant.now());
+                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
         }
     }
 }

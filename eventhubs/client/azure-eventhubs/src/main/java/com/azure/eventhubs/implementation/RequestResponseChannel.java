@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.eventhubs.implementation.ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class RequestResponseChannel implements Closeable {
@@ -108,6 +109,7 @@ class RequestResponseChannel implements Closeable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
+        //TODO (conniey): timeout here if we can't get the link handlers to pass an "Active" state.
         return Mono.when(
             sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
@@ -137,7 +139,7 @@ class RequestResponseChannel implements Closeable {
     private void send(final Message message) {
         sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
-        final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
+        final int payloadSize = EventDataUtil.getDataSerializedSize(message) + MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
         final byte[] bytes = new byte[payloadSize];
         final int encodedSize = message.encode(bytes, 0, payloadSize);
 

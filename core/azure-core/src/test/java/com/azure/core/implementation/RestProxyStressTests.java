@@ -27,15 +27,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.ContentType;
-import com.azure.core.implementation.util.FlowableUtils;
 import com.azure.core.implementation.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ResourceLeakDetector;
-import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
-import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -71,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -224,10 +218,11 @@ public class RestProxyStressTests {
     }
 
     private static void create100MFiles(boolean recreate) throws IOException {
-        final Flowable<java.nio.ByteBuffer> contentGenerator = Flowable.generate(Random::new, (random, emitter) -> {
-            java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(CHUNK_SIZE);
-            random.nextBytes(buf.array());
-            emitter.onNext(buf);
+        final Flux<ByteBuf> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
+            byte[] ba = new byte[CHUNK_SIZE];
+            random.nextBytes(ba);
+            emitter.next(Unpooled.wrappedBuffer(ba));
+            return random;
         });
 
         if (recreate) {
@@ -239,9 +234,8 @@ public class RestProxyStressTests {
         } else {
             LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + tempFolderPath.toAbsolutePath());
             Files.createDirectory(tempFolderPath);
-            Flowable.range(0, NUM_FILES).flatMapCompletable(new Function<Integer, Completable>() {
-                @Override
-                public Completable apply(Integer integer) throws Exception {
+            Flux.range(0, NUM_FILES).flatMap(integer -> {
+                try {
                     final int i = integer;
                     final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
 
@@ -250,21 +244,23 @@ public class RestProxyStressTests {
                     final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
                     final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
-                    Flowable<java.nio.ByteBuffer> fileContent = contentGenerator
-                            .take(CHUNKS_PER_FILE)
-                            .doOnNext(buf -> messageDigest.update(buf.array()));
+                    Flux<ByteBuf> fileContent = contentGenerator
+                        .take(CHUNKS_PER_FILE)
+                        .doOnNext(buf -> messageDigest.update(buf.array()));
 
-                    return FlowableUtils.writeFile(fileContent, file).andThen(Completable.defer(new Callable<CompletableSource>() {
-                        @Override
-                        public CompletableSource call() throws Exception {
+                    return FluxUtil.bytebufStreamToFile(fileContent, file).then(Mono.fromRunnable(() -> {
+                        try {
                             file.close();
                             Files.write(tempFolderPath.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
-                            LoggerFactory.getLogger(getClass()).info("Finished writing file " + i);
-                            return Completable.complete();
+                            LoggerFactory.getLogger(RestProxyStressTests.class).info("Finished writing file " + i);
+                        } catch (Exception e) {
+                            throw Exceptions.propagate(e);
                         }
                     }));
+                } catch (Exception e) {
+                    return Flux.error(e);
                 }
-            }).blockingAwait();
+            }).blockLast();
         }
     }
 

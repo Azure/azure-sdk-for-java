@@ -8,6 +8,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
+import java.util.function.Supplier;
 
 /**
  * A unidirectional link from the client to the message broker that listens for messages.
@@ -33,4 +34,20 @@ public interface AmqpReceiveLink extends AmqpLink {
      * @param credits Number of credits to add to the receive link.
      */
     void addCredits(int credits);
+
+    /**
+     * Gets the current number of credits this link has.
+     *
+     * @return The number of credits (deliveries) this link has.
+     */
+    int getCredits();
+
+    /**
+     * Sets an event listener that is invoked when there are no credits on the link left. If the supplier returns an
+     * integer that is {@code null} or less than 1, then no credits are added to the link and no more messages are
+     * received on the link.
+     *
+     * @param creditSupplier Supplier that returns the number of credits to add to the link.
+     */
+    void setEmptyCreditListener(Supplier<Integer> creditSupplier);
 }
