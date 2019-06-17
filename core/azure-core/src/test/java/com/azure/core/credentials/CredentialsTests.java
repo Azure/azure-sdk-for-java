@@ -3,8 +3,6 @@
 
 package com.azure.core.credentials;
 
-import com.azure.core.credentials.BasicAuthenticationCredential;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -34,7 +32,7 @@ public class CredentialsTests {
             .httpClient(new MockHttpClient())
             .policies((context, next) -> credentials.getToken("scope./default")
                 .flatMap(token -> {
-                    context.httpRequest().headers().put("Authorization", "Basic " + token);
+                    context.httpRequest().headers().put("Authorization", "Basic " + token.token());
                     return next.process();
                 }), auditorPolicy)
             .build();

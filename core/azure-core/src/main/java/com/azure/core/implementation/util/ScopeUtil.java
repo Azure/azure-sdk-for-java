@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public final class ScopeUtil {
 
-    private static final String DEFAULT_SUFFIX = "/.defualt";
+    private static final String DEFAULT_SUFFIX = "/.default";
 
     /**
      * Convert a list of scopes to a resource for Azure Active Directory.
@@ -38,7 +38,7 @@ public final class ScopeUtil {
      */
     public static String[] resourceToScopes(String resource) {
         Objects.requireNonNull(resource);
-        return new String[] { resource + "/.default" };
+        return new String[] { resource + DEFAULT_SUFFIX };
     }
 
     private ScopeUtil() {

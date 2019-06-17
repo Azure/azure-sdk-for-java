@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <T> a subtype of this class
  */
-public abstract class AadCredential<T extends AadCredential<T>> implements TokenCredential {
+abstract class AadCredential<T extends AadCredential<T>> implements TokenCredential {
 
     private String clientId;
 
@@ -22,7 +22,7 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
     /**
      * Creates an AadCredential.
      */
-    protected AadCredential() {
+    AadCredential() {
     }
 
     /**

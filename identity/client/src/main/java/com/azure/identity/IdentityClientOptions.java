@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
-    private static final int MAX_RETRY_DEFAULT_LIMIT = 20;
+    private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
 
     private String authorityHost;
     private int maxRetry;
