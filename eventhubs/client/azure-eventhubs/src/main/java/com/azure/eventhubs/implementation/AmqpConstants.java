@@ -15,7 +15,7 @@ public final class AmqpConstants {
 
     static final String VENDOR = "com.microsoft";
 
-    static final String STRING_FILTER = APACHE + ":selector-filter:string";
+    static final Symbol STRING_FILTER = Symbol.getSymbol(APACHE + ":selector-filter:string");
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 

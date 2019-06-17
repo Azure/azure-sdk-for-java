@@ -20,7 +20,6 @@ public class EventReceiverOptionsTest {
         // Assert
         Assert.assertEquals(EventReceiverOptions.DEFAULT_CONSUMER_GROUP_NAME, options.consumerGroup());
         Assert.assertEquals(EventReceiverOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
-        Assert.assertEquals(EventPosition.firstAvailableEvent(), options.beginReceivingAt());
         Assert.assertFalse(options.keepPartitionInformationUpdated());
     }
 
