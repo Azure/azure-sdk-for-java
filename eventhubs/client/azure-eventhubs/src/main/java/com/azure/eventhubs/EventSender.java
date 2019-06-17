@@ -42,7 +42,7 @@ public class EventSender implements Closeable {
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
-    private static final SendOptions DEFAULT_BATCHING_OPTIONS = new SendOptions();
+    private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -136,7 +136,7 @@ public class EventSender implements Closeable {
     public Mono<Void> send(Publisher<EventData> events) {
         Objects.requireNonNull(events);
 
-        return sendInternal(Flux.from(events), DEFAULT_BATCHING_OPTIONS);
+        return sendInternal(Flux.from(events), DEFAULT_SEND_OPTIONS);
     }
 
     /**
