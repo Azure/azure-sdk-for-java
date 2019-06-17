@@ -54,7 +54,7 @@ known_content_issues:
   - ['README.md', '#3113']
   - ['applicationinsights/data-plane/README.md', '#3113']
   - ['authorization/msi-auth-token-provider-jar/readme.md', '#3113']
-  - ['sdk/batch/azure-batch/README.md', '#3113']
+  - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['eventgrid/data-plane/README.md', '#3113']
   - ['eventhubs/data-plane/readme.md', '#3113']
   - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
