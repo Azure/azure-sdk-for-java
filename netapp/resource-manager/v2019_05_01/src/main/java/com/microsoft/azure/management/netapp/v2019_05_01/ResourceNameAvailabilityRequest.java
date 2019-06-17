@@ -22,10 +22,10 @@ public class ResourceNameAvailabilityRequest {
 
     /**
      * Resource type used for verification. Possible values include:
-     * 'Microsoft.NetApp/netAppAccount',
-     * 'Microsoft.NetApp/netAppAccount/capacityPools',
-     * 'Microsoft.NetApp/netAppAccount/capacityPools/volumes',
-     * 'Microsoft.NetApp/netAppAccount/capacityPools/volumes/snapshots'.
+     * 'Microsoft.NetApp/netAppAccounts',
+     * 'Microsoft.NetApp/netAppAccounts/capacityPools',
+     * 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes',
+     * 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'.
      */
     @JsonProperty(value = "type", required = true)
     private CheckNameResourceTypes type;
@@ -57,7 +57,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Get resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccount', 'Microsoft.NetApp/netAppAccount/capacityPools', 'Microsoft.NetApp/netAppAccount/capacityPools/volumes', 'Microsoft.NetApp/netAppAccount/capacityPools/volumes/snapshots'.
+     * Get resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'.
      *
      * @return the type value
      */
@@ -66,7 +66,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Set resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccount', 'Microsoft.NetApp/netAppAccount/capacityPools', 'Microsoft.NetApp/netAppAccount/capacityPools/volumes', 'Microsoft.NetApp/netAppAccount/capacityPools/volumes/snapshots'.
+     * Set resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'.
      *
      * @param type the type value to set
      * @return the ResourceNameAvailabilityRequest object itself.
