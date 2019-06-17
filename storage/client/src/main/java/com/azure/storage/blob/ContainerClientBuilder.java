@@ -85,7 +85,7 @@ public final class ContainerClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION));
+        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
         policies.add(credentials); // This needs to be a different credential type.
