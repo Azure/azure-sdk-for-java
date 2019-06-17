@@ -27,7 +27,7 @@ public interface AmqpSendLink extends AmqpLink {
      * Batches the messages given into a single proton-j message that is sent down the wire.
      *
      * @param messageBatch The batch of messages to send to the service.
-     * @return A Mono that completes when all the batched message is successfully transmitted to Event Hub.
+     * @return A Mono that completes when all the batched messages are successfully transmitted to Event Hub.
      * @throws AmqpException if the serialized contents of {@code messageBatch} exceed the link's capacity for a single
      * message.
      */
