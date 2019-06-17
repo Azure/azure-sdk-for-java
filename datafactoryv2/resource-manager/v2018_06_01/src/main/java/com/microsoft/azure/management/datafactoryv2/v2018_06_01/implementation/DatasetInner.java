@@ -62,14 +62,17 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "HttpFile", value = HttpDataset.class),
     @JsonSubTypes.Type(name = "AzureSearchIndex", value = AzureSearchIndexDataset.class),
     @JsonSubTypes.Type(name = "WebTable", value = WebTableDataset.class),
+    @JsonSubTypes.Type(name = "SapTableResource", value = SapTableResourceDataset.class),
     @JsonSubTypes.Type(name = "RestResource", value = RestResourceDataset.class),
     @JsonSubTypes.Type(name = "SqlServerTable", value = SqlServerTableDataset.class),
     @JsonSubTypes.Type(name = "SapOpenHubTable", value = SapOpenHubTableDataset.class),
+    @JsonSubTypes.Type(name = "SapHanaTable", value = SapHanaTableDataset.class),
     @JsonSubTypes.Type(name = "SapEccResource", value = SapEccResourceDataset.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerResource", value = SapCloudForCustomerResourceDataset.class),
     @JsonSubTypes.Type(name = "SalesforceObject", value = SalesforceObjectDataset.class),
     @JsonSubTypes.Type(name = "RelationalTable", value = RelationalTableDataset.class),
     @JsonSubTypes.Type(name = "AzureMySqlTable", value = AzureMySqlTableDataset.class),
+    @JsonSubTypes.Type(name = "TeradataTable", value = TeradataTableDataset.class),
     @JsonSubTypes.Type(name = "OracleTable", value = OracleTableDataset.class),
     @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
@@ -87,6 +90,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzureSqlTable", value = AzureSqlTableDataset.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataset.class),
     @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDataset.class),
+    @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
+    @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class)
 })
 public class DatasetInner {

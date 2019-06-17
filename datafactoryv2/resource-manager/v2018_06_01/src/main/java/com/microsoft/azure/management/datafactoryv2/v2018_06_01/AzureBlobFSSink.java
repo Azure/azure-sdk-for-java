@@ -19,28 +19,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBlobFSSink")
 public class AzureBlobFSSink extends CopySink {
     /**
-     * The type of copy behavior for copy sink. Possible values include:
-     * 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * The type of copy behavior for copy sink.
      */
     @JsonProperty(value = "copyBehavior")
-    private CopyBehaviorType copyBehavior;
+    private Object copyBehavior;
 
     /**
-     * Get the type of copy behavior for copy sink. Possible values include: 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * Get the type of copy behavior for copy sink.
      *
      * @return the copyBehavior value
      */
-    public CopyBehaviorType copyBehavior() {
+    public Object copyBehavior() {
         return this.copyBehavior;
     }
 
     /**
-     * Set the type of copy behavior for copy sink. Possible values include: 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * Set the type of copy behavior for copy sink.
      *
      * @param copyBehavior the copyBehavior value to set
      * @return the AzureBlobFSSink object itself.
      */
-    public AzureBlobFSSink withCopyBehavior(CopyBehaviorType copyBehavior) {
+    public AzureBlobFSSink withCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
         return this;
     }

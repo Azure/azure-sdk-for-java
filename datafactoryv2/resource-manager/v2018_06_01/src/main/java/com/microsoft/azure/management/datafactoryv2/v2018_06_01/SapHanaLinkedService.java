@@ -22,6 +22,13 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.L
 @JsonFlatten
 public class SapHanaLinkedService extends LinkedServiceInner {
     /**
+     * SAP HANA ODBC connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.connectionString")
+    private Object connectionString;
+
+    /**
      * Host name of the SAP HANA server. Type: string (or Expression with
      * resultType string).
      */
@@ -55,6 +62,26 @@ public class SapHanaLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get sAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value
+     */
+    public Object connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Set sAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set
+     * @return the SapHanaLinkedService object itself.
+     */
+    public SapHanaLinkedService withConnectionString(Object connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
 
     /**
      * Get host name of the SAP HANA server. Type: string (or Expression with resultType string).

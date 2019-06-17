@@ -32,12 +32,10 @@ public class CassandraSource extends CopySource {
      * Cassandra checks the specified number of Cassandra servers for data to
      * satisfy the read request. Must be one of
      * cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is
-     * case-insensitive. Possible values include: 'ALL', 'EACH_QUORUM',
-     * 'QUORUM', 'LOCAL_QUORUM', 'ONE', 'TWO', 'THREE', 'LOCAL_ONE', 'SERIAL',
-     * 'LOCAL_SERIAL'.
+     * case-insensitive.
      */
     @JsonProperty(value = "consistencyLevel")
-    private CassandraSourceReadConsistencyLevels consistencyLevel;
+    private Object consistencyLevel;
 
     /**
      * Get database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL) command. Type: string (or Expression with resultType string).
@@ -60,21 +58,21 @@ public class CassandraSource extends CopySource {
     }
 
     /**
-     * Get the consistency level specifies how many Cassandra servers must respond to a read request before returning data to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive. Possible values include: 'ALL', 'EACH_QUORUM', 'QUORUM', 'LOCAL_QUORUM', 'ONE', 'TWO', 'THREE', 'LOCAL_ONE', 'SERIAL', 'LOCAL_SERIAL'.
+     * Get the consistency level specifies how many Cassandra servers must respond to a read request before returning data to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
      *
      * @return the consistencyLevel value
      */
-    public CassandraSourceReadConsistencyLevels consistencyLevel() {
+    public Object consistencyLevel() {
         return this.consistencyLevel;
     }
 
     /**
-     * Set the consistency level specifies how many Cassandra servers must respond to a read request before returning data to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive. Possible values include: 'ALL', 'EACH_QUORUM', 'QUORUM', 'LOCAL_QUORUM', 'ONE', 'TWO', 'THREE', 'LOCAL_ONE', 'SERIAL', 'LOCAL_SERIAL'.
+     * Set the consistency level specifies how many Cassandra servers must respond to a read request before returning data to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
      *
      * @param consistencyLevel the consistencyLevel value to set
      * @return the CassandraSource object itself.
      */
-    public CassandraSource withConsistencyLevel(CassandraSourceReadConsistencyLevels consistencyLevel) {
+    public CassandraSource withConsistencyLevel(Object consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }

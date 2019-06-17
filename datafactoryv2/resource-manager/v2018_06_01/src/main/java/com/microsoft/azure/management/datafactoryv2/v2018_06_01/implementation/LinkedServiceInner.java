@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
+    @JsonSubTypes.Type(name = "SapTable", value = SapTableLinkedService.class),
     @JsonSubTypes.Type(name = "GoogleAdWords", value = GoogleAdWordsLinkedService.class),
     @JsonSubTypes.Type(name = "OracleServiceCloud", value = OracleServiceCloudLinkedService.class),
     @JsonSubTypes.Type(name = "DynamicsAX", value = DynamicsAXLinkedService.class),

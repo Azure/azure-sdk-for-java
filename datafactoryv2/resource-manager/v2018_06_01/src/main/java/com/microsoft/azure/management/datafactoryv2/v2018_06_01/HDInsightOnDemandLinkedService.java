@@ -239,6 +239,21 @@ public class HDInsightOnDemandLinkedService extends LinkedServiceInner {
     private List<ScriptAction> scriptActions;
 
     /**
+     * The ARM resource ID for the vNet to which the cluster should be joined
+     * after creation. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.virtualNetworkId")
+    private Object virtualNetworkId;
+
+    /**
+     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was
+     * specified, then this property is required. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.subnetName")
+    private Object subnetName;
+
+    /**
      * Get number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType string).
      *
      * @return the clusterSize value
@@ -855,6 +870,46 @@ public class HDInsightOnDemandLinkedService extends LinkedServiceInner {
      */
     public HDInsightOnDemandLinkedService withScriptActions(List<ScriptAction> scriptActions) {
         this.scriptActions = scriptActions;
+        return this;
+    }
+
+    /**
+     * Get the ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or Expression with resultType string).
+     *
+     * @return the virtualNetworkId value
+     */
+    public Object virtualNetworkId() {
+        return this.virtualNetworkId;
+    }
+
+    /**
+     * Set the ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or Expression with resultType string).
+     *
+     * @param virtualNetworkId the virtualNetworkId value to set
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService withVirtualNetworkId(Object virtualNetworkId) {
+        this.virtualNetworkId = virtualNetworkId;
+        return this;
+    }
+
+    /**
+     * Get the ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is required. Type: string (or Expression with resultType string).
+     *
+     * @return the subnetName value
+     */
+    public Object subnetName() {
+        return this.subnetName;
+    }
+
+    /**
+     * Set the ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is required. Type: string (or Expression with resultType string).
+     *
+     * @param subnetName the subnetName value to set
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService withSubnetName(Object subnetName) {
+        this.subnetName = subnetName;
         return this;
     }
 

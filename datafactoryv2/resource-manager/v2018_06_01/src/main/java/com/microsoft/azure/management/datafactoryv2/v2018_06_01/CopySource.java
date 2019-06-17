@@ -63,15 +63,20 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "CassandraSource", value = CassandraSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
+    @JsonSubTypes.Type(name = "TeradataSource", value = TeradataSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
     @JsonSubTypes.Type(name = "AzureMySqlSource", value = AzureMySqlSource.class),
     @JsonSubTypes.Type(name = "HdfsSource", value = HdfsSource.class),
     @JsonSubTypes.Type(name = "FileSystemSource", value = FileSystemSource.class),
     @JsonSubTypes.Type(name = "SqlDWSource", value = SqlDWSource.class),
+    @JsonSubTypes.Type(name = "AzureSqlSource", value = AzureSqlSource.class),
+    @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
     @JsonSubTypes.Type(name = "RestSource", value = RestSource.class),
+    @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
     @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
+    @JsonSubTypes.Type(name = "SapHanaSource", value = SapHanaSource.class),
     @JsonSubTypes.Type(name = "SapEccSource", value = SapEccSource.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSource", value = SapCloudForCustomerSource.class),
     @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
@@ -79,7 +84,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "DynamicsSource", value = DynamicsSource.class),
     @JsonSubTypes.Type(name = "DocumentDbCollectionSource", value = DocumentDbCollectionSource.class),
     @JsonSubTypes.Type(name = "BlobSource", value = BlobSource.class),
-    @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class)
+    @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
+    @JsonSubTypes.Type(name = "DelimitedTextSource", value = DelimitedTextSource.class),
+    @JsonSubTypes.Type(name = "ParquetSource", value = ParquetSource.class)
 })
 public class CopySource {
     /**
