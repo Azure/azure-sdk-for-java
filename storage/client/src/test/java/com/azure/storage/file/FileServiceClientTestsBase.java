@@ -15,7 +15,6 @@ public abstract class FileServiceClientTestsBase extends TestBase {
 
     String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
 
-
     @Rule
     public TestName testName = new TestName();
 
@@ -84,7 +83,7 @@ public abstract class FileServiceClientTestsBase extends TestBase {
     public abstract void listSharesIncludeMetadataAndSnapshots();
 
     @Test
-    public abstract void setProperties();
+    public abstract void setFileServiceProperties();
 
     @Test
     public abstract void setPropertiesTooManyRules();

@@ -63,10 +63,12 @@ public class ShareAsyncClient {
         return client.url();
     }
 
+    // TODO (alzimmer): When Sima's and my development are merged into the feature branch implement this.
     public DirectoryAsyncClient getRootDirectoryClient() {
         throw new UnsupportedOperationException();
     }
 
+    // TODO (alzimmer): When Sima's and my development are merged into the feature branch implement this.
     public DirectoryAsyncClient getDirectoryClient(String directoryName) {
         throw new UnsupportedOperationException();
     }
@@ -117,8 +119,8 @@ public class ShareAsyncClient {
             .map(this::mapSetMetadataResponse);
     }
 
-    public Flux<SignedIdentifier> listAccessPolicy() {
-        return client.shares().getAccessPolicyWithRestResponseAsync(null, Context.NONE)
+    public Flux<SignedIdentifier> getAccessPolicy() {
+        return client.shares().getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
             .flatMapMany(response -> Flux.fromIterable(response.value()));
     }
 
@@ -137,6 +139,7 @@ public class ShareAsyncClient {
         throw new UnsupportedOperationException();
     }
 
+    // TODO (alzimmer): When Sima's and my development are merged into the feature branch implement this.
     public Mono<VoidResponse> deleteDirectory(String directoryName) {
         throw new UnsupportedOperationException();
     }

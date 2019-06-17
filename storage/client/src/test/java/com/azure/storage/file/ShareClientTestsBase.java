@@ -40,125 +40,119 @@ public abstract class ShareClientTestsBase extends TestBase {
     public abstract void createDirectoryInvalidName();
 
     @Test
-    public abstract void createShare();
+    public abstract void createDirectoryAlreadyExists();
 
     @Test
-    public abstract void createShareTwiceSameMetadata();
+    public abstract void deleteDirectory();
 
     @Test
-    public abstract void createShareTwiceDifferentMetadata();
+    public abstract void deleteDirectoryDoesNotExist();
 
     @Test
-    public abstract void createShareInvalidQuota();
+    public abstract void create();
 
     @Test
-    public abstract void deleteShare();
+    public abstract void createTwiceSameMetadata();
 
     @Test
-    public abstract void deleteShareDoesNotExist();
+    public abstract void createTwiceDifferentMetadata();
 
     @Test
-    public abstract void deleteThenCreateShare();
+    public abstract void createInvalidQuota();
+
+    @Test
+    public abstract void delete();
+
+    @Test
+    public abstract void deleteDoesNotExist();
+
+    @Test
+    public abstract void deleteThenCreate();
 
     /**
      * Cannot re-create a share within 30 seconds of it being deleted.
      */
     @Test
-    public abstract void deleteThenCreateShareTooSoon();
+    public abstract void deleteThenCreateTooSoon();
 
     @Test
-    public abstract void snapshotShare();
+    public abstract void snapshot();
 
     @Test
-    public abstract void deleteShareSnapshot();
+    public abstract void deleteSnapshot();
 
     @Test
-    public abstract void snapshotShareSameMetadata();
+    public abstract void snapshotSameMetadata();
 
     @Test
-    public abstract void snapshotShareDifferentMetadata();
+    public abstract void snapshotDifferentMetadata();
 
     @Test
-    public abstract void snapshotShareDoesNotExist();
+    public abstract void snapshotDoesNotExist();
 
     @Test
-    public abstract void getShareProperties();
+    public abstract void getProperties();
 
     @Test
-    public abstract void getSnapshotShareProperties();
+    public abstract void getSnapshotProperties();
 
     @Test
-    public abstract void getSharePropertiesDoesNotExist();
+    public abstract void getPropertiesDoesNotExist();
 
     @Test
-    public abstract void getSnapshotSharePropertiesDoesNotExist();
+    public abstract void getSnapshotPropertiesDoesNotExist();
 
     @Test
-    public abstract void setShareProperties();
+    public abstract void setProperties();
 
     @Test
-    public abstract void setSnapshotSharePropertiesIsNotAllowed();
+    public abstract void setPropertiesInvalidQuota();
 
     @Test
-    public abstract void setSharePropertiesInvalidQuota();
+    public abstract void setPropertiesDoesNotExist();
 
     @Test
-    public abstract void setSharePropertiesDoesNotExist();
+    public abstract void getMetadata();
 
     @Test
-    public abstract void getShareMetadata();
+    public abstract void getSnapshotMetadata();
 
     @Test
-    public abstract void getSnapshotShareMetadata();
+    public abstract void getMetadataDoesNotExist();
 
     @Test
-    public abstract void getShareMetadataDoesNotExist();
+    public abstract void getSnapshotMetadataDoesNotExist();
 
     @Test
-    public abstract void getSnapshotShareMetadataDoesNotExist();
+    public abstract void setMetadata();
 
     @Test
-    public abstract void setShareMetadata();
+    public abstract void setMetadataInvalidMetadata();
 
     @Test
-    public abstract void setSnapshotShareMetadataIsNotAllowed();
+    public abstract void setMetadataDoesNotExist();
 
     @Test
-    public abstract void setShareMetadataInvalidMetadata();
+    public abstract void getPolicies();
 
     @Test
-    public abstract void setShareMetadataDoesNotExist();
+    public abstract void getPoliciesDoesNotExist();
 
     @Test
-    public abstract void getSharePolicies();
+    public abstract void setPolicies();
 
     @Test
-    public abstract void getSnapshotSharePoliciesIsNotAllowed();
+    public abstract void setPoliciesInvalidPermission();
 
     @Test
-    public abstract void getSharePoliciesDoesNotExist();
+    public abstract void setPoliciesTooManyPermissions();
 
     @Test
-    public abstract void setSharePolicies();
+    public abstract void setPoliciesDoesNotExist();
 
     @Test
-    public abstract void setSnapshotSharePoliciesIsNotAllowed();
+    public abstract void getStats();
 
     @Test
-    public abstract void setSharePoliciesInvalidPermission();
-
-    @Test
-    public abstract void setSharePoliciesTooManyPermissions();
-
-    @Test
-    public abstract void setSharePoliciesDoesNotExist();
-
-    @Test
-    public abstract void getShareStats();
-
-    @Test
-    public abstract void getSnapshotShareStatsIsNotAllowed();
-
-    @Test
-    public abstract void getShareStatsDoesNotExist();
+    public abstract void getStatsDoesNotExist();
 }

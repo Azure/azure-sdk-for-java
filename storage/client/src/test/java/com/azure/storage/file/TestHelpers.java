@@ -12,6 +12,7 @@ import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.Metrics;
 import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
+import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
 
 import java.time.Duration;
@@ -24,8 +25,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 class TestHelpers {
-    final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
-    final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
+    private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
+    private final String azureStorageFileEndpoint = "AZURE_STORAGE_FILE_ENDPOINT";
 
     <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlayback, ServiceLogger logger) {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
@@ -53,6 +54,17 @@ class TestHelpers {
         assertTrue(throwable instanceof StorageErrorException);
         StorageErrorException exception = (StorageErrorException) throwable;
         assertEquals(expectedStatusCode, exception.response().statusCode());
+    }
+
+    void assertExceptionStatusCode(Runnable thrower, int expectedStatusCode) {
+        try {
+            thrower.run();
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof StorageErrorException);
+            StorageErrorException exception = (StorageErrorException) ex;
+            assertEquals(expectedStatusCode, exception.response().statusCode());
+        }
     }
 
     void sleep(Duration duration) {
@@ -90,7 +102,7 @@ class TestHelpers {
         }
     }
 
-    void assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    private void assertMetricsAreEqual(Metrics expected, Metrics actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -101,7 +113,7 @@ class TestHelpers {
         }
     }
 
-    void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    private void assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -110,7 +122,7 @@ class TestHelpers {
         }
     }
 
-    void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    private void assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
         if (expected == null) {
             assertTrue(ImplUtils.isNullOrEmpty(actual));
         } else {
@@ -121,7 +133,7 @@ class TestHelpers {
         }
     }
 
-    void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    private void assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -131,5 +143,12 @@ class TestHelpers {
             assertEquals(expected.exposedHeaders(), actual.exposedHeaders());
             assertEquals(expected.maxAgeInSeconds(), actual.maxAgeInSeconds());
         }
+    }
+
+    void assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
+        assertEquals(expected.id(), actual.id());
+        assertEquals(expected.accessPolicy().permission(), actual.accessPolicy().permission());
+        assertEquals(expected.accessPolicy().start(), actual.accessPolicy().start());
+        assertEquals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry());
     }
 }

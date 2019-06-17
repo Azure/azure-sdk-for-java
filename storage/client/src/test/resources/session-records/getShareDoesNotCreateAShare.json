@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.file.core.windows.net/share5539422c?restype=share&comp=stats",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net/share80619b54?restype=share&comp=stats",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 18:16:47 GMT",
+      "date" : "Mon, 17 Jun 2019 22:14:03 GMT",
       "content-length" : "217",
       "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-11-09",
@@ -15,27 +15,27 @@
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "91408d13-c01a-0011-25dd-22f830000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:91408d13-c01a-0011-25dd-22f830000000\nTime:2019-06-14T18:16:47.6966610Z</Message></Error>"
+      "x-ms-request-id" : "b1b384ed-601a-0035-7c59-25617e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:b1b384ed-601a-0035-7c59-25617e000000\nTime:2019-06-17T22:14:03.6506092Z</Message></Error>"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share5539422c&include=&comp=list",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share80619b54&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 18:16:47 GMT",
+      "date" : "Mon, 17 Jun 2019 22:14:03 GMT",
       "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-ms-version" : "2018-11-09",
       "content-type" : "application/xml",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "91408d15-c01a-0011-26dd-22f830000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.file.core.windows.net/\"><Prefix>share5539422c</Prefix><Shares /><NextMarker /></EnumerationResults>"
+      "x-ms-request-id" : "b1b384ef-601a-0035-7d59-25617e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.file.core.windows.net/\"><Prefix>share80619b54</Prefix><Shares /><NextMarker /></EnumerationResults>"
     }
   } ],
-  "variables" : [ "share5539422c" ]
+  "variables" : [ "share80619b54" ]
 }

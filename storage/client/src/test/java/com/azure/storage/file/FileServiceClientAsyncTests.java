@@ -344,7 +344,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestsBase {
     }
 
     @Override
-    public void setProperties() {
+    public void setFileServiceProperties() {
         FileServiceProperties originalProperties = serviceClient.getProperties().block().value();
 
         RetentionPolicy retentionPolicy = new RetentionPolicy().enabled(true)

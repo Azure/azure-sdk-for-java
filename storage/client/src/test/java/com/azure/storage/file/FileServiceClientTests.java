@@ -335,7 +335,7 @@ public class FileServiceClientTests extends FileServiceClientTestsBase {
     }
 
     @Override
-    public void setProperties() {
+    public void setFileServiceProperties() {
         FileServiceProperties originalProperties = serviceClient.getProperties().value();
 
         RetentionPolicy retentionPolicy = new RetentionPolicy().enabled(true)

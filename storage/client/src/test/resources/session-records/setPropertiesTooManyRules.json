@@ -8,7 +8,7 @@
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 18:16:00 GMT",
+      "date" : "Mon, 17 Jun 2019 22:13:16 GMT",
       "content-length" : "294",
       "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-11-09",
@@ -16,27 +16,27 @@
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "91408c4a-c01a-0011-2edd-22f830000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:91408c4a-c01a-0011-2edd-22f830000000\nTime:2019-06-14T18:16:00.7396728Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
+      "x-ms-request-id" : "b1b38461-601a-0035-2859-25617e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:b1b38461-601a-0035-2859-25617e000000\nTime:2019-06-17T22:13:17.1349259Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share134292a2&include=&comp=list",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net?prefix=share081213bd&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Fri, 14 Jun 2019 18:16:00 GMT",
+      "date" : "Mon, 17 Jun 2019 22:13:16 GMT",
       "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-ms-version" : "2018-11-09",
       "content-type" : "application/xml",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "91408c4b-c01a-0011-2fdd-22f830000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.file.core.windows.net/\"><Prefix>share134292a2</Prefix><Shares /><NextMarker /></EnumerationResults>"
+      "x-ms-request-id" : "b1b38462-601a-0035-2959-25617e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://alzimmerstorage.file.core.windows.net/\"><Prefix>share081213bd</Prefix><Shares /><NextMarker /></EnumerationResults>"
     }
   } ],
-  "variables" : [ "share134292a2" ]
+  "variables" : [ "share081213bd" ]
 }

@@ -74,8 +74,8 @@ public class ShareClient {
         return client.setMetadata(metadata).block();
     }
 
-    public Iterable<SignedIdentifier> listAccessPolicy() {
-        return client.listAccessPolicy().toIterable();
+    public Iterable<SignedIdentifier> getAccessPolicy() {
+        return client.getAccessPolicy().toIterable();
     }
 
     public Response<ShareInfo> setAccessPolicy(List<SignedIdentifier> permissions) {
