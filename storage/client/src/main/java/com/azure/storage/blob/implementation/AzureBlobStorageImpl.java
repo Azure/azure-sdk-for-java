@@ -32,7 +32,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
      * @param url the url value.
      * @return the service client itself.
      */
-    public AzureBlobStorageImpl withUrl(String url) {
+    AzureBlobStorageImpl url(String url) {
         this.url = url;
         return this;
     }
@@ -57,7 +57,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
      * @param version the version value.
      * @return the service client itself.
      */
-    public AzureBlobStorageImpl withVersion(String version) {
+    AzureBlobStorageImpl version(String version) {
         this.version = version;
         return this;
     }
@@ -160,7 +160,6 @@ public final class AzureBlobStorageImpl extends ServiceClient {
      */
     public AzureBlobStorageImpl(HttpPipeline httpPipeline) {
         super(httpPipeline);
-        this.version = "2018-11-09";
         this.services = new ServicesImpl(this);
         this.containers = new ContainersImpl(this);
         this.blobs = new BlobsImpl(this);
