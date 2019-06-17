@@ -176,10 +176,11 @@ public class EventHubClient implements Closeable {
      * @param eventPosition The position within the partition where the receiver should begin reading events.
      * @param options Additional options for the receiver.
      * @return An new {@link EventReceiver} that receives events from the partition with all configured {@link EventReceiverOptions}.
-     * @throws NullPointerException if {@code partitionId} or {@code options} is {@code null}.
+     * @throws NullPointerException if {@code partitionId}, {@code eventPosition}, or {@code options} is {@code null}.
      */
     public EventReceiver createReceiver(String partitionId, EventPosition eventPosition, EventReceiverOptions options) {
         Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);
 
         final EventReceiverOptions clonedOptions = options.clone();
