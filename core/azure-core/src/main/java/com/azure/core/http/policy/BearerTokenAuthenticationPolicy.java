@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.SimpleTokenCache;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
