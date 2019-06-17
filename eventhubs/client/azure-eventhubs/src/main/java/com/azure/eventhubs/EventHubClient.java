@@ -42,7 +42,6 @@ public class EventHubClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubPath;
-    private final String host;
     private final EventSenderOptions defaultSenderOptions;
     private final EventReceiverOptions defaultReceiverOptions;
 
@@ -53,7 +52,6 @@ public class EventHubClient implements Closeable {
 
         this.connectionOptions = connectionOptions;
         this.eventHubPath = connectionOptions.eventHubPath();
-        this.host = connectionOptions.host();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, new ResponseMapper());
