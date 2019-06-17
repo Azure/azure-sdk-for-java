@@ -38,7 +38,7 @@ public class EventHubClientBuilderTest {
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        final EventHubClient client = builder.credentials(CORRECT_CONNECTION_STRING).build();
+        final EventHubClient client = builder.credential(CORRECT_CONNECTION_STRING).build();
 
         Assert.assertNotNull(client);
     }
@@ -48,7 +48,7 @@ public class EventHubClientBuilderTest {
         final EventHubClientBuilder builder = EventHubClient.builder();
         final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
 
-        builder.credentials(CORRECT_CONNECTION_STRING)
+        builder.credential(CORRECT_CONNECTION_STRING)
             .proxyConfiguration(proxyConfig)
             .build();
     }

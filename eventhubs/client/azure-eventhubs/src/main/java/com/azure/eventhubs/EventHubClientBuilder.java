@@ -63,7 +63,7 @@ public class EventHubClientBuilder {
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      *         string.
      */
-    public EventHubClientBuilder credentials(String connectionString) {
+    public EventHubClientBuilder credential(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
@@ -73,7 +73,7 @@ public class EventHubClientBuilder {
             throw new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e);
         }
 
-        return credentials(properties.endpoint().getHost(), properties.eventHubPath(), tokenCredential);
+        return credential(properties.endpoint().getHost(), properties.eventHubPath(), tokenCredential);
     }
 
     /**
@@ -89,7 +89,7 @@ public class EventHubClientBuilder {
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      *         string.
      */
-    public EventHubClientBuilder credentials(String connectionString, String eventHubPath) {
+    public EventHubClientBuilder credential(String connectionString, String eventHubPath) {
         if (ImplUtils.isNullOrEmpty(eventHubPath)) {
             throw new IllegalArgumentException("'eventHubPath' cannot be null or empty");
         }
@@ -110,7 +110,7 @@ public class EventHubClientBuilder {
                     + " 'EntityPath' in it.", properties.eventHubPath()));
         }
 
-        return credentials(properties.endpoint().getHost(), eventHubPath, tokenCredential);
+        return credential(properties.endpoint().getHost(), eventHubPath, tokenCredential);
     }
 
     /**
@@ -119,13 +119,13 @@ public class EventHubClientBuilder {
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
      *         {@literal {your-namespace}.servicebus.windows.net}.
      * @param eventHubPath The path of the specific Event Hub to connect the client to.
-     * @param credentials The token credential to use for authorization. Access controls may be specified by the Event
+     * @param credential The token credential to use for authorization. Access controls may be specified by the Event
      *         Hubs namespace or the requested Event Hub, depending on Azure configuration.
      * @return The updated EventHubClientBuilder object.
      * @throws IllegalArgumentException if {@code host} or {@code eventHubPath} is null or empty.
      * @throws NullPointerException if {@code credentials} is null.
      */
-    public EventHubClientBuilder credentials(String host, String eventHubPath, TokenCredential credentials) {
+    public EventHubClientBuilder credential(String host, String eventHubPath, TokenCredential credential) {
         if (ImplUtils.isNullOrEmpty(host)) {
             throw new IllegalArgumentException("'host' cannot be null or empty");
         }
@@ -133,10 +133,10 @@ public class EventHubClientBuilder {
             throw new IllegalArgumentException("'eventHubPath' cannot be null or empty.");
         }
 
-        Objects.requireNonNull(credentials);
+        Objects.requireNonNull(credential);
 
         this.host = host;
-        this.credentials = credentials;
+        this.credentials = credential;
         this.eventHubPath = eventHubPath;
         return this;
     }
@@ -217,8 +217,8 @@ public class EventHubClientBuilder {
      * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link #credentials(String)}
-     *         or {@link #credentials(String, String, TokenCredential)}.
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link #credential(String)}
+     *         or {@link #credential(String, String, TokenCredential)}.
      */
     public EventHubClient build() {
         configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
@@ -232,7 +232,7 @@ public class EventHubClientBuilder {
                     + "not set in the '" + AZURE_EVENT_HUBS_CONNECTION_STRING + "' environment variable.");
             }
 
-            credentials(connectionString);
+            credential(connectionString);
         }
 
         if (timeout == null) {
