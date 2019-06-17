@@ -74,7 +74,7 @@ public class EventSenderTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
-        final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
@@ -104,7 +104,7 @@ public class EventSenderTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
-        final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
@@ -132,7 +132,7 @@ public class EventSenderTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final EventBatchingOptions options = new EventBatchingOptions().partitionKey("Some partition key");
+        final SendOptions options = new SendOptions().partitionKey("Some partition key");
         final EventSenderOptions senderOptions = new EventSenderOptions()
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30))
@@ -163,7 +163,7 @@ public class EventSenderTest {
 
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final int maxMessageSize = 16 * 1024;
-        final EventBatchingOptions options = new EventBatchingOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 

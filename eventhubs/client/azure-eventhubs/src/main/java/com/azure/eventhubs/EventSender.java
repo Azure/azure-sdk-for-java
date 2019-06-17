@@ -42,7 +42,7 @@ public class EventSender implements Closeable {
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
-    private static final EventBatchingOptions DEFAULT_BATCHING_OPTIONS = new EventBatchingOptions();
+    private static final SendOptions DEFAULT_BATCHING_OPTIONS = new SendOptions();
 
     private final ServiceLogger logger = new ServiceLogger(EventSender.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -89,7 +89,7 @@ public class EventSender implements Closeable {
      * @param options The set of options to consider when sending this event.
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
-    public Mono<Void> send(EventData event, EventBatchingOptions options) {
+    public Mono<Void> send(EventData event, SendOptions options) {
         Objects.requireNonNull(event);
         Objects.requireNonNull(options);
 
@@ -119,7 +119,7 @@ public class EventSender implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events, EventBatchingOptions options) {
+    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
 
         return send(Flux.fromIterable(events), options);
@@ -148,14 +148,14 @@ public class EventSender implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Publisher<EventData> events, EventBatchingOptions options) {
+    public Mono<Void> send(Publisher<EventData> events, SendOptions options) {
         Objects.requireNonNull(events);
         Objects.requireNonNull(options);
 
         return sendInternal(Flux.from(events), options);
     }
 
-    private Mono<Void> sendInternal(Flux<EventData> events, EventBatchingOptions options) {
+    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.partitionKey();
 
         if (!ImplUtils.isNullOrEmpty(partitionKey)) {
@@ -225,7 +225,7 @@ public class EventSender implements Closeable {
         private final Integer maxNumberOfBatches;
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(EventBatchingOptions options, Integer maxNumberOfBatches) {
+        EventDataCollector(SendOptions options, Integer maxNumberOfBatches) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
             this.partitionKey = options.partitionKey();
