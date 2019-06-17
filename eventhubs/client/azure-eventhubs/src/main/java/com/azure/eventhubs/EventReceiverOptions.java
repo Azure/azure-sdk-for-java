@@ -20,12 +20,14 @@ public class EventReceiverOptions implements Cloneable {
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
+    //Default number of events to fetch when creating the receiver.
+    static final int DEFAULT_PREFETCH_COUNT = 500;
+
     // The maximum length, in characters, for the identifier assigned to a receiver.
-    private static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
+    static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     // The minimum value allowed for the prefetch count of the receiver.
-    private static final int MINIMUM_PREFETCH_COUNT = 1;
-    private static final int DEFAULT_PREFETCH_COUNT = 500;
-    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    static final int MINIMUM_PREFETCH_COUNT = 1;
+    static final int MAXIMUM_PREFETCH_COUNT = 8000;
 
     private String identifier;
     private String consumerGroup;
@@ -33,7 +35,6 @@ public class EventReceiverOptions implements Cloneable {
     private Retry retryPolicy;
     private boolean keepUpdated;
     private Scheduler scheduler;
-    private EventPosition beginReceivingAt;
     private int prefetchCount;
 
     /**
@@ -43,7 +44,6 @@ public class EventReceiverOptions implements Cloneable {
     public EventReceiverOptions() {
         this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;
-        this.beginReceivingAt = EventPosition.firstAvailableEvent();
     }
 
     /**
@@ -55,22 +55,6 @@ public class EventReceiverOptions implements Cloneable {
     public EventReceiverOptions identifier(String identifier) {
         validateIdentifier(identifier);
         this.identifier = identifier;
-        return this;
-    }
-
-    /**
-     * The position within the partition where the receiver should begin reading events.
-     *
-     * <p>
-     * If not specified, the receiver will begin receiving all events that are contained in the partition, starting with
-     * the first event that was enqueued and will continue receiving until there are no more events observed.
-     * </p>
-     *
-     * @param position Position within the partition where the receiver should begin reading events.
-     * @return The updated ReceiverOptions object.
-     */
-    public EventReceiverOptions beginReceivingAt(EventPosition position) {
-        this.beginReceivingAt = position;
         return this;
     }
 
@@ -190,15 +174,6 @@ public class EventReceiverOptions implements Cloneable {
     }
 
     /**
-     * Gets the position within the partition where the receiver should begin reading events.
-     *
-     * @return The position within the partition where the receiver should begin reading events.
-     */
-    public EventPosition beginReceivingAt() {
-        return this.beginReceivingAt;
-    }
-
-    /**
      * Gets the name of the consumer group.
      *
      * @return The name of the consumer group.
@@ -284,7 +259,6 @@ public class EventReceiverOptions implements Cloneable {
             clone = new EventReceiverOptions();
         }
 
-        clone.beginReceivingAt(this.beginReceivingAt());
         clone.scheduler(this.scheduler());
         clone.consumerGroup(this.consumerGroup());
         clone.identifier(this.identifier());

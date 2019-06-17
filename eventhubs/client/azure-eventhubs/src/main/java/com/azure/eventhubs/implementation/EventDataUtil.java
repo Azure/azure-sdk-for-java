@@ -53,8 +53,8 @@ public class EventDataUtil {
         if (messageAnnotations != null) {
             final Map<Symbol, Object> map = messageAnnotations.getValue();
 
-            for (Symbol key : map.keySet()) {
-                final int size = sizeof(key) + sizeof(map.get(key));
+            for (Map.Entry<Symbol, Object> entry : map.entrySet()) {
+                final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
                 annotationsSize += size;
             }
         }
@@ -62,8 +62,8 @@ public class EventDataUtil {
         if (applicationProperties != null) {
             final Map<String, Object> map = applicationProperties.getValue();
 
-            for (String key : map.keySet()) {
-                final int size = sizeof(key) + sizeof(map.get(key));
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
                 applicationPropertiesSize += size;
             }
         }

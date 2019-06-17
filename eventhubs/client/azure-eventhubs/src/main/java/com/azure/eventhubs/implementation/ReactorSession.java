@@ -14,6 +14,7 @@ import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -158,12 +159,14 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     @Override
     public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry) {
-        return createReceiver(linkName, entityPath, timeout, retry, null, false, null);
+        return createReceiver(linkName, entityPath, "", timeout, retry,
+            null, false, null);
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry,
-                                         Long receiverPriority, boolean keepPartitionInformationUpdated, String receiverIdentifier) {
+    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, String eventPositionExpression,
+                                         Duration timeout, Retry retry, Long receiverPriority,
+                                         boolean keepPartitionInformationUpdated, String receiverIdentifier) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
@@ -180,7 +183,14 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 final Source source = new Source();
                 source.setAddress(entityPath);
 
-                //TODO (conniey): support this.
+                if (!ImplUtils.isNullOrEmpty(eventPositionExpression)) {
+                    final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
+                    filter.put(AmqpConstants.STRING_FILTER,  new UnknownDescribedType(AmqpConstants.STRING_FILTER, eventPositionExpression));
+                    source.setFilter(filter);
+                }
+
+                //TODO (conniey): support creating a filter when we've already received some events. I believe this in
+                // the cause of recreating a failing link.
                 // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
                 // if (filterMap != null) {
                 //    source.setFilter(filterMap);

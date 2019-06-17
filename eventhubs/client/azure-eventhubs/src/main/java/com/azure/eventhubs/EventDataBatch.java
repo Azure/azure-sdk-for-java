@@ -22,7 +22,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 /*
- * A helper class for aggregating EventData into a single AMPQ message, taking into account the max size limit.
+ * A class for aggregating EventData into a single, size-limited, batch that will be treated as a single message when
+ * sent to the Azure Event Hubs service.
  */
 final class EventDataBatch {
     private final int maxMessageSize;

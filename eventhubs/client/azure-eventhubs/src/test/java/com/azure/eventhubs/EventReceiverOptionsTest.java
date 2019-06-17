@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
 
+import java.util.Optional;
+
 public class EventReceiverOptionsTest extends ApiTestBase {
+
     private static final String PARTITION_ID = "0";
     private static final int DEFAULT_PREFETCH_COUNT = 500; // will delete it if EventReceiver make it public
 
@@ -23,6 +26,7 @@ public class EventReceiverOptionsTest extends ApiTestBase {
 
     private static EventHubClient ehClient;
     private static EventReceiver receiver;
+
 
     @Rule
     public TestName testName = new TestName();
@@ -44,12 +48,108 @@ public class EventReceiverOptionsTest extends ApiTestBase {
         }
     }
 
+    /**
+     * Verifies we set the correct defaults.
+     */
+    @Test
+    public void defaults() {
+        // Act
+        final EventReceiverOptions options = new EventReceiverOptions();
+
+        // Assert
+        Assert.assertEquals(EventReceiverOptions.DEFAULT_CONSUMER_GROUP_NAME, options.consumerGroup());
+        Assert.assertEquals(EventReceiverOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
+        Assert.assertFalse(options.keepPartitionInformationUpdated());
+    }
+
+    @Test
+    public void invalidIdentifier() {
+        // Arrange
+        final int length = EventReceiverOptions.MAXIMUM_IDENTIFIER_LENGTH + 1;
+        final String longIdentifier = new String(new char[length]).replace("\0", "f");
+        final String identifier = "An Identifier";
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .identifier(identifier);
+
+        // Act
+        try {
+            options.identifier(longIdentifier);
+            Assert.fail("Setting this should have failed.");
+        } catch (IllegalArgumentException e) {
+            // This is what we expect.
+        }
+
+        // Assert
+        Assert.assertEquals(identifier, options.identifier());
+    }
+
+    @Test
+    public void invalidPrefetchMinimum() {
+        // Arrange
+        final int prefetch = 235;
+        final int invalid = EventReceiverOptions.MINIMUM_PREFETCH_COUNT - 1;
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .prefetchCount(prefetch);
+
+        // Act
+        try {
+            options.prefetchCount(invalid);
+            Assert.fail("Setting this should have failed.");
+        } catch (IllegalArgumentException e) {
+            // This is what we expect.
+        }
+
+        // Assert
+        Assert.assertEquals(prefetch, options.prefetchCount());
+    }
+
+    @Test
+    public void invalidPrefetchMaximum() {
+        // Arrange
+        final int prefetch = 235;
+        final int invalid = EventReceiverOptions.MAXIMUM_PREFETCH_COUNT + 1;
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .prefetchCount(prefetch);
+
+        // Act
+        try {
+            options.prefetchCount(invalid);
+            Assert.fail("Setting this should have failed.");
+        } catch (IllegalArgumentException e) {
+            // This is what we expect.
+        }
+
+        // Assert
+        Assert.assertEquals(prefetch, options.prefetchCount());
+    }
+
+    @Test
+    public void invalidReceiverPriority() {
+        // Arrange
+        final long priority = 14;
+        final long invalidPriority = -1;
+        final EventReceiverOptions options = new EventReceiverOptions()
+            .exclusiveReceiverPriority(priority);
+
+        // Act
+        try {
+            options.exclusiveReceiverPriority(invalidPriority);
+            Assert.fail("Setting this should have failed.");
+        } catch (IllegalArgumentException e) {
+            // This is what we expect.
+        }
+
+        // Assert
+        final Optional<Long> setPriority = options.exclusiveReceiverPriority();
+        Assert.assertTrue(setPriority.isPresent());
+        Assert.assertEquals(Long.valueOf(priority), setPriority.get());
+    }
+
     @Test
     public void setLargePrefetchCount() {
-        receiver = ehClient.createReceiver(PARTITION_ID,
+        receiver = ehClient.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions()
                 .consumerGroup(ApiTestBase.getConsumerGroupName())
-                .beginReceivingAt(EventPosition.newEventsOnly())
                 .prefetchCount(2000));
         // TODO: receive time out missing?
 
@@ -69,10 +169,9 @@ public class EventReceiverOptionsTest extends ApiTestBase {
 
     @Test
     public void setSmallFrefetchCount() {
-        receiver = ehClient.createReceiver(PARTITION_ID,
+        receiver = ehClient.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions()
                 .consumerGroup(ApiTestBase.getConsumerGroupName())
-                .beginReceivingAt(EventPosition.newEventsOnly())
                 .prefetchCount(11));
         // TODO: receive time out missing?
 

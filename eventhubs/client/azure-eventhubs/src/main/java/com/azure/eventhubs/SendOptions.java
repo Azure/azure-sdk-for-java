@@ -7,14 +7,14 @@ package com.azure.eventhubs;
  * The set of options that can be specified when sending a set of events to configure how the event data is packaged
  * into batches.
  */
-public class EventBatchingOptions {
+public class SendOptions {
     private int maximumSizeInBytes;
     private String partitionKey;
 
     /**
      * Creates an instance with the maximum message size set to the maximum amount allowed by the protocol.
      */
-    public EventBatchingOptions() {
+    public SendOptions() {
         this.maximumSizeInBytes = EventSender.MAX_MESSAGE_LENGTH_BYTES;
     }
 
@@ -25,7 +25,7 @@ public class EventBatchingOptions {
      * @param maximumSizeInBytes The maximum size to allow for a single batch of events.
      * @return The updated EventBatchingOptions object.
      */
-    EventBatchingOptions maximumSizeInBytes(int maximumSizeInBytes) {
+    SendOptions maximumSizeInBytes(int maximumSizeInBytes) {
         this.maximumSizeInBytes = maximumSizeInBytes;
         return this;
     }
@@ -47,7 +47,7 @@ public class EventBatchingOptions {
      * @param partitionKey The label of an event batch.
      * @return The updated EventBatchingOptions object.
      */
-    public EventBatchingOptions partitionKey(String partitionKey) {
+    public SendOptions partitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
