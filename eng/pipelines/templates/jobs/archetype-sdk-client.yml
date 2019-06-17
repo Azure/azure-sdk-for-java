@@ -1,15 +1,8 @@
-# External variables Settable at queue time:
-# "pomFile" : "pom.client.xml".   This is the project object model file for Maven.
-
-trigger:
-  - master
-
-variables:
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-
 jobs:
   - job: 'Build'
+
+    variables:
+      - template: ../variables/globals.yml
 
     pool:
       vmImage: 'ubuntu-16.04'
@@ -29,7 +22,7 @@ jobs:
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
-          mavenPomFile: $(pomFile)
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           goals: 'package'
           options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
@@ -38,13 +31,15 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: PublishPipelineArtifact@0
-        displayName: 'Publish $(ArtifactName) artifact'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifacts $(ArtifactName)'
         inputs:
           artifactName: '$(ArtifactName)'
-          targetPath: $(Build.ArtifactStagingDirectory)
 
   - job: 'Analyze'
+
+    variables:
+      - template: ../variables/globals.yml
 
     pool:
       vmImage: 'ubuntu-16.04'
@@ -129,14 +124,16 @@ jobs:
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         displayName: 'Copy reports to artifact staging'
 
-      - task: PublishPipelineArtifact@0
+      - task: PublishBuildArtifacts@1
         condition: succeededOrFailed()
-        displayName: 'Publish reports artifact'
+        displayName: 'Publish Report Artifacts'
         inputs:
           artifactName: reports
-          targetPath: $(Build.ArtifactStagingDirectory)
 
   - job: 'Test'
+
+    variables:
+      - template: ../variables/globals.yml
 
     strategy:
       matrix:
@@ -202,8 +199,8 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          mavenPomFile: $(pomFile)
-          options: '$(DefaultOptions) $(ProfileFlag) -Dinclude-non-shipping-modules'
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag)'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -216,20 +213,3 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'
-
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS
-      - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-          reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
-          failIfCoverageEmpty: true
-
-      # Publish code coverage to an artifact so it can be uploaded to the Maven site
-      - task: PublishPipelineArtifact@0
-        displayName: 'Publish coverage artifact'
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
-        inputs:
-          artifactName: coverage
-          targetPath: eng/jacoco-test-coverage/target/site/
