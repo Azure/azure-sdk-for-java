@@ -99,7 +99,7 @@ final class Util {
 
     static AccessToken parseAdal4jAuthenticationResult(AuthenticationResult result) {
         String token = result.getAccessToken();
-        OffsetDateTime expiresOn = OffsetDateTime.from(result.getExpiresOnDate().toInstant());
+        OffsetDateTime expiresOn = OffsetDateTime.ofInstant(result.getExpiresOnDate().toInstant(), ZoneOffset.UTC);
         return new AccessToken(token, expiresOn);
     }
 

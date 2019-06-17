@@ -24,9 +24,9 @@ public class UserTokenCredentialsTests {
     @Test
     public void testAcquireToken() throws Exception {
         credentials.acquireAccessToken();
-        Assert.assertEquals("token1", credentials.getToken((String) null).block());
+        Assert.assertEquals("token1", credentials.getToken((String) null).block().token());
         Thread.sleep(1500);
-        Assert.assertEquals("token2", credentials.getToken((String) null).block());
+        Assert.assertEquals("token2", credentials.getToken((String) null).block().token());
     }
 
     public static class MockUserTokenCredentials extends UserTokenCredentials {
