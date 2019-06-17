@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
-import com.azure.eventhubs.CredentialInfo;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.eventhubs.ProxyConfiguration;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
@@ -48,7 +48,7 @@ public class ReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String SESSION_NAME = "test-session-name";
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
-    private static final CredentialInfo CREDENTIAL_INFO = CredentialInfo.from("Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
+    private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
     private static final String HOSTNAME = CREDENTIAL_INFO.endpoint().getHost();
     private static final Scheduler SCHEDULER = Schedulers.elastic();
 
@@ -60,7 +60,7 @@ public class ReactorConnectionTest {
     @Mock
     private Selectable selectable;
     @Mock
-    private TokenProvider tokenProvider;
+    private TokenCredential tokenProvider;
     @Mock
     private AmqpResponseMapper responseMapper;
     @Mock
@@ -82,13 +82,15 @@ public class ReactorConnectionTest {
 
         connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
 
-        ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        ConnectionParameters connectionParameters = new ConnectionParameters(CREDENTIAL_INFO, TEST_DURATION, tokenProvider, TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
-        connection = new ReactorConnection(CONNECTION_ID, connectionParameters, reactorProvider, reactorHandlerProvider, responseMapper);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
+            CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TEST_DURATION,
+            TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider, responseMapper);
     }
 
     @After
@@ -280,7 +282,8 @@ public class ReactorConnectionTest {
     public void createCBSNodeTimeoutException() {
         // Arrange
         Duration timeout = Duration.ofSeconds(5);
-        ConnectionParameters parameters = new ConnectionParameters(CREDENTIAL_INFO, timeout, tokenProvider,
+        ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
+            CREDENTIAL_INFO.eventHubPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, timeout,
             TransportType.AMQP, Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
 
         // Act and Assert

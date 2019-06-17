@@ -30,7 +30,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -49,13 +48,15 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     private final SessionHandler sessionHandler;
     private final String sessionName;
     private final ReactorProvider provider;
+    private final TokenResourceProvider audienceProvider;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<CBSNode> cbsNodeSupplier;
 
     ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
-                   ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier, Duration openTimeout) {
+                   ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
+                   TokenResourceProvider audienceProvider, Duration openTimeout) {
         super(new ServiceLogger(ReactorSession.class));
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -63,6 +64,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
         this.sessionName = sessionName;
         this.provider = provider;
         this.cbsNodeSupplier = cbsNodeSupplier;
+        this.audienceProvider = audienceProvider;
         this.openTimeout = openTimeout;
 
         this.subscriptions = Disposables.composite(
@@ -235,8 +237,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     private ActiveClientTokenManager createTokenManager(String entityPath) {
-        final String tokenAudience = String.format(Locale.US, ClientConstants.TOKEN_AUDIENCE_FORMAT, sessionHandler.getHostname(), entityPath);
-        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_VALIDITY, ClientConstants.TOKEN_REFRESH_INTERVAL);
+        final String tokenAudience = audienceProvider.getResourceString(entityPath);
+        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL);
     }
-
 }

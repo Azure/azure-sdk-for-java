@@ -4,6 +4,7 @@
 package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.EventHubProperties;
 import com.azure.eventhubs.PartitionProperties;
@@ -13,16 +14,11 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.eventhubs.implementation.ClientConstants.TOKEN_AUDIENCE_FORMAT;
-import static com.azure.eventhubs.implementation.ClientConstants.TOKEN_REFRESH_INTERVAL;
 
 /**
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
@@ -55,11 +51,12 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
     private final AmqpConnection connection;
-    private final TokenProvider tokenProvider;
+    private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final ReactorProvider provider;
     private final String eventHubPath;
     private final AmqpResponseMapper mapper;
+    private final TokenResourceProvider audienceProvider;
 
     /**
      * Creates an instance that is connected to the {@code eventHubPath}'s management node.
@@ -68,14 +65,20 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * @param tokenProvider A provider that generates authorization tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenProvider tokenProvider,
-                      ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+    ManagementChannel(AmqpConnection connection, String eventHubPath, TokenCredential tokenProvider,
+                      TokenResourceProvider audienceProvider, ReactorProvider provider,
+                      ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ServiceLogger(ManagementChannel.class));
 
         Objects.requireNonNull(connection);
+        Objects.requireNonNull(eventHubPath);
         Objects.requireNonNull(tokenProvider);
+        Objects.requireNonNull(audienceProvider);
         Objects.requireNonNull(provider);
+        Objects.requireNonNull(handlerProvider);
+        Objects.requireNonNull(mapper);
 
+        this.audienceProvider = audienceProvider;
         this.connection = connection;
         this.tokenProvider = tokenProvider;
         this.provider = provider;
@@ -116,33 +119,29 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
-        final String token;
-        try {
-            final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, connection.getHost(), eventHubPath);
-            token = tokenProvider.getToken(tokenAudience, TOKEN_REFRESH_INTERVAL);
-        } catch (UnsupportedEncodingException e) {
-            return Mono.error(e);
-        }
+        final String tokenAudience = audienceProvider.getResourceString(eventHubPath);
 
-        properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, token);
+        return tokenProvider.getTokenAsync(tokenAudience).flatMap(token -> {
+            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, token);
 
-        final Message request = Proton.message();
-        final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
-        request.setApplicationProperties(applicationProperties);
+            final Message request = Proton.message();
+            final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
+            request.setApplicationProperties(applicationProperties);
 
-        return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
-            if (!(message.getBody() instanceof AmqpValue)) {
-                throw new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody());
-            }
+            return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
+                if (!(message.getBody() instanceof AmqpValue)) {
+                    throw new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody());
+                }
 
-            AmqpValue body = (AmqpValue) message.getBody();
-            if (!(body.getValue() instanceof Map)) {
-                throw new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map");
-            }
+                AmqpValue body = (AmqpValue) message.getBody();
+                if (!(body.getValue() instanceof Map)) {
+                    throw new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map");
+                }
 
-            Map<?, ?> map = (Map<?, ?>) body.getValue();
+                Map<?, ?> map = (Map<?, ?>) body.getValue();
 
-            return mapper.apply(map);
+                return mapper.apply(map);
+            });
         });
     }
 
