@@ -34,8 +34,8 @@ public abstract class QueueClientTestsBase extends TestBase {
         String queueEndpoint = "https://teststorage.queue.core.windows.net/";
 
         if (!interceptorManager.isPlaybackMode()) {
-            ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
-            ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
+            connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+            queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
         }
 
         if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
