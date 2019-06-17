@@ -7,43 +7,69 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.eventhubs.implementation.AmqpSendLink;
-import com.azure.eventhubs.implementation.ApiTestBase;
-import org.junit.Rule;
+import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.message.Message;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.TestName;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class EventSenderTest extends ApiTestBase {
+public class EventSenderTest {
 
-    @Rule
-    public TestName testName = new TestName();
+    @Mock
+    private AmqpSendLink sendLink;
 
-    @Override
-    protected String testName() {
-        return testName.getMethodName();
+    @Captor
+    ArgumentCaptor<Message> singleMessageCaptor;
+
+    @Captor
+    ArgumentCaptor<List<Message>> messagesCaptor;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @After
+    public void teardown() {
+        Mockito.framework().clearInlineMocks();
+        sendLink = null;
+        singleMessageCaptor = null;
+        messagesCaptor = null;
     }
 
     /**
-     * Verifies that sending multiple events will result in calling sender.sendBatch(List<Message>).
+     * Verifies that sending multiple events will result in calling sender.send(List<Message>).
      */
     @Test
-    public void sendBatch() {
+    public void sendMultipleMessages() {
         // Arrange
-        final Flux<EventData> testData = Flux.range(0, 4).flatMap(number -> {
-            final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
+        final int count = 4;
+        final byte[] contents = CONTENTS.getBytes(UTF_8);
+        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+            final EventData data = new EventData(contents);
             return Flux.just(data);
         });
 
-        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         when(sendLink.sendBatch(any())).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
@@ -51,9 +77,19 @@ public class EventSenderTest extends ApiTestBase {
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
-        // Act & Assert
+        // Act
         StepVerifier.create(sender.send(testData, options))
             .verifyComplete();
+
+        // Assert
+        verify(sendLink).sendBatch(messagesCaptor.capture());
+
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assert.assertEquals(count, messagesSent.size());
+
+        messagesSent.forEach(message -> {
+            Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
+        });
     }
 
     /**
@@ -62,9 +98,8 @@ public class EventSenderTest extends ApiTestBase {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
-        final Flux<EventData> testData = Flux.just(data);
-        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final EventData testData = new EventData(CONTENTS.getBytes(UTF_8));
+
         when(sendLink.send(any())).thenReturn(Mono.empty());
 
         final int maxMessageSize = 16 * 1024;
@@ -72,13 +107,50 @@ public class EventSenderTest extends ApiTestBase {
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
-        // Act & Assert
+        // Act
         StepVerifier.create(sender.send(testData, options))
             .verifyComplete();
+
+        // Assert
+        verify(sendLink, times(1)).send(any());
+        verify(sendLink).send(singleMessageCaptor.capture());
+
+        final Message message = singleMessageCaptor.getValue();
+        Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
 
+    /**
+     * Verifies that a partitioned sender cannot also send events with a partition key.
+     */
     @Test
-    public void sendBatchTooManyEvents() {
+    public void partitionSenderCannotSendWithPartitionKey() {
+        // Arrange
+        final Flux<EventData> testData = Flux.just(
+            new EventData(CONTENTS.getBytes(UTF_8)),
+            new EventData(CONTENTS.getBytes(UTF_8)));
+
+        when(sendLink.sendBatch(any())).thenReturn(Mono.empty());
+
+        final EventBatchingOptions options = new EventBatchingOptions().partitionKey("Some partition key");
+        final EventSenderOptions senderOptions = new EventSenderOptions()
+            .retry(Retry.getNoRetry())
+            .timeout(Duration.ofSeconds(30))
+            .partitionId("my-partition-id");
+
+        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+
+        // Act & Assert
+        StepVerifier.create(sender.send(testData, options))
+            .verifyError(IllegalArgumentException.class);
+
+        verifyZeroInteractions(sendLink);
+    }
+
+    /**
+     * Verifies that it fails if we try to send multiple messages that cannot fit in a single message batch.
+     */
+    @Test
+    public void sendTooManyMessages() {
         final Flux<EventData> testData = Flux.range(0, 20).flatMap(number -> {
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
             return Flux.just(data);
@@ -91,9 +163,10 @@ public class EventSenderTest extends ApiTestBase {
         final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
 
         StepVerifier.create(sender.send(testData, options))
-            .verifyErrorMatches(error -> {
-                return error instanceof AmqpException && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED;
-            });
+            .verifyErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+
+        verifyZeroInteractions(sendLink);
     }
 
     private static final String CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
