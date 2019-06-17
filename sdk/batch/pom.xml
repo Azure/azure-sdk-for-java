@@ -25,6 +25,6 @@
   </scm>
 
   <modules>
-    <module>azure-batch</module>
+    <module>microsoft-azure-batch</module>
   </modules>
 </project>
