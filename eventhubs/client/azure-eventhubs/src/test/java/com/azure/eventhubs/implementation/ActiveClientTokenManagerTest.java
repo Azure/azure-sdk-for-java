@@ -24,8 +24,8 @@ import static org.mockito.Mockito.when;
 
 public class ActiveClientTokenManagerTest {
     private static final String AUDIENCE = "an-audience-test";
-    private static Duration REFRESH_INTERVAL = Duration.ofSeconds(2);
-    private static Duration TIMEOUT = Duration.ofSeconds(4);
+    private static final Duration REFRESH_INTERVAL = Duration.ofSeconds(2);
+    private static final Duration TIMEOUT = Duration.ofSeconds(4);
 
     @Mock
     private CBSNode cbsNode;
