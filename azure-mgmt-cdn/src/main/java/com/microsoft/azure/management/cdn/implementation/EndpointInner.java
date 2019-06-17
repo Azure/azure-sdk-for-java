@@ -13,6 +13,7 @@ import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.cdn.OptimizationType;
 import com.microsoft.azure.management.cdn.GeoFilter;
 import com.microsoft.azure.management.cdn.EndpointPropertiesUpdateParametersDeliveryPolicy;
+import com.microsoft.azure.management.cdn.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink;
 import com.microsoft.azure.management.cdn.DeepCreatedOrigin;
 import com.microsoft.azure.management.cdn.EndpointResourceState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -115,6 +116,13 @@ public class EndpointInner extends Resource {
      */
     @JsonProperty(value = "properties.deliveryPolicy")
     private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
+
+    /**
+     * Defines the Web Application Firewall policy for the endpoint (if
+     * applicable).
+     */
+    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
+    private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
     /**
      * The host name of the endpoint structured as {endpointName}.{DNSZone},
@@ -359,6 +367,26 @@ public class EndpointInner extends Resource {
      */
     public EndpointInner withDeliveryPolicy(EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy) {
         this.deliveryPolicy = deliveryPolicy;
+        return this;
+    }
+
+    /**
+     * Get defines the Web Application Firewall policy for the endpoint (if applicable).
+     *
+     * @return the webApplicationFirewallPolicyLink value
+     */
+    public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.webApplicationFirewallPolicyLink;
+    }
+
+    /**
+     * Set defines the Web Application Firewall policy for the endpoint (if applicable).
+     *
+     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withWebApplicationFirewallPolicyLink(EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
         return this;
     }
 

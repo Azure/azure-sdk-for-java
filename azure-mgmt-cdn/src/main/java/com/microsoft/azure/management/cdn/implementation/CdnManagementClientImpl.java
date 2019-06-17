@@ -83,6 +83,52 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
+    /** Azure Subscription ID. */
+    private String subscriptionId1;
+
+    /**
+     * Gets Azure Subscription ID.
+     *
+     * @return the subscriptionId1 value.
+     */
+    public String subscriptionId1() {
+        return this.subscriptionId1;
+    }
+
+    /**
+     * Sets Azure Subscription ID.
+     *
+     * @param subscriptionId1 the subscriptionId1 value.
+     * @return the service client itself
+     */
+    public CdnManagementClientImpl withSubscriptionId1(String subscriptionId1) {
+        this.subscriptionId1 = subscriptionId1;
+        return this;
+    }
+
+    /** Version of the API to be used with the client request. Current version is 2017-04-02. */
+    private String apiVersion1;
+
+    /**
+     * Gets Version of the API to be used with the client request. Current version is 2017-04-02.
+     *
+     * @return the apiVersion1 value.
+     */
+    public String apiVersion1() {
+        return this.apiVersion1;
+    }
+
+    /**
+     * Sets Version of the API to be used with the client request. Current version is 2017-04-02.
+     *
+     * @param apiVersion1 the apiVersion1 value.
+     * @return the service client itself
+     */
+    public CdnManagementClientImpl withApiVersion1(String apiVersion1) {
+        this.apiVersion1 = apiVersion1;
+        return this;
+    }
+
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
@@ -244,6 +290,32 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PoliciesInner object to access its operations.
+     */
+    private PoliciesInner policies;
+
+    /**
+     * Gets the PoliciesInner object to access its operations.
+     * @return the PoliciesInner object.
+     */
+    public PoliciesInner policies() {
+        return this.policies;
+    }
+
+    /**
+     * The ManagedRuleSetsInner object to access its operations.
+     */
+    private ManagedRuleSetsInner managedRuleSets;
+
+    /**
+     * Gets the ManagedRuleSetsInner object to access its operations.
+     * @return the ManagedRuleSetsInner object.
+     */
+    public ManagedRuleSetsInner managedRuleSets() {
+        return this.managedRuleSets;
+    }
+
+    /**
      * Initializes an instance of CdnManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -274,7 +346,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2019-04-15";
+        this.apiVersion = "2019-06-15-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -285,6 +357,8 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         this.resourceUsages = new ResourceUsagesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.edgeNodes = new EdgeNodesInner(restClient().retrofit(), this);
+        this.policies = new PoliciesInner(restClient().retrofit(), this);
+        this.managedRuleSets = new ManagedRuleSetsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -296,7 +370,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "2019-04-15");
+        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "2019-06-15-preview");
     }
 
     private void initializeService() {

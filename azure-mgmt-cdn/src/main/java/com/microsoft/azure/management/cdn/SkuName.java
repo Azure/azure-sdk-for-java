@@ -34,9 +34,6 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Standard_Microsoft for SkuName. */
     public static final SkuName STANDARD_MICROSOFT = fromString("Standard_Microsoft");
 
-    /** Static value Premium_ChinaCdn for SkuName. */
-    public static final SkuName PREMIUM_CHINA_CDN = fromString("Premium_ChinaCdn");
-
     /**
      * Creates or finds a SkuName from its string representation.
      * @param name a name to look for
