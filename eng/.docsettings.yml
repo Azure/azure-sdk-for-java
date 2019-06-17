@@ -60,7 +60,7 @@ known_content_issues:
   - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
   - ['keyvault/data-plane/README.md', '#3113']
   - ['loganalytics/data-plane/README.md', '#3113']
-  - ['servicebus/data-plane/README.md', '#3113']
+  - ['sdk/servicebus/README.md', '#3113']
   - ['storage/data-plane/README.md', '#3113']
   - ['storage/data-plane/swagger/README.md', '#3113']
   - ['core/README.md', '#3113']
