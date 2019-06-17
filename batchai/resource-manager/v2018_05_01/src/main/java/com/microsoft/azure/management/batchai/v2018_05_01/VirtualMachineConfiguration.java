@@ -11,17 +11,18 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Settings for OS image.
+ * VM configuration.
  */
 public class VirtualMachineConfiguration {
     /**
-     * Reference to OS image.
+     * Image reference.
+     * OS image reference for cluster nodes.
      */
     @JsonProperty(value = "imageReference")
     private ImageReference imageReference;
 
     /**
-     * Get the imageReference value.
+     * Get oS image reference for cluster nodes.
      *
      * @return the imageReference value
      */
@@ -30,7 +31,7 @@ public class VirtualMachineConfiguration {
     }
 
     /**
-     * Set the imageReference value.
+     * Set oS image reference for cluster nodes.
      *
      * @param imageReference the imageReference value to set
      * @return the VirtualMachineConfiguration object itself.
