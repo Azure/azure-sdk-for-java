@@ -11,9 +11,9 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.Address;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnabledAzureSKUs;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.;
 import java.util.ArrayList;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection;
 
@@ -72,7 +72,7 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
 
 
     @Override
-    public Address address() {
+    public AddressInner address() {
         return this.inner().address();
     }
 
@@ -138,7 +138,7 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
     }
 
     @Override
-    public BillingProfileImpl withAddress(Address address) {
+    public BillingProfileImpl withAddress(AddressInner address) {
         this.inner().withAddress(address);
         return this;
     }

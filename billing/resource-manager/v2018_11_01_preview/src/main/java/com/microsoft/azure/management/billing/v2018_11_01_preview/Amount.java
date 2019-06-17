@@ -23,7 +23,7 @@ public class Amount {
     /**
      * Amount value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private Double value;
 
     /**
@@ -42,6 +42,17 @@ public class Amount {
      */
     public Double value() {
         return this.value;
+    }
+
+    /**
+     * Set amount value.
+     *
+     * @param value the value value to set
+     * @return the Amount object itself.
+     */
+    public Amount withValue(Double value) {
+        this.value = value;
+        return this;
     }
 
 }

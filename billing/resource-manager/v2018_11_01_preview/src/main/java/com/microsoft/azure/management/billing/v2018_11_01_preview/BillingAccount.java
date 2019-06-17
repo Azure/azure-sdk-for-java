@@ -9,19 +9,24 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingAccountInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingManager;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingAccountInner;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingProfileInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.AddressInner;
 import java.util.List;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSectionInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingProfileInner;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.DepartmentInner;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.EnrollmentAccountInner;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSectionInner;
 
 /**
  * Type representing BillingAccount.
  */
-public interface BillingAccount extends HasInner<BillingAccountInner>, HasManager<BillingManager> {
+public interface BillingAccount extends HasInner<BillingAccountInner>, Indexable, Updatable<BillingAccount.Update>, Refreshable<BillingAccount>, HasManager<BillingManager> {
     /**
      * @return the accountType value.
      */
@@ -30,12 +35,12 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     /**
      * @return the address value.
      */
-    Address address();
+    AddressInner address();
 
     /**
      * @return the billingProfiles value.
      */
-    List<BillingProfileInner> billingProfiles();
+    List<BillingProfile> billingProfiles();
 
     /**
      * @return the company value.
@@ -50,7 +55,7 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     /**
      * @return the departments value.
      */
-    List<DepartmentInner> departments();
+    List<Department> departments();
 
     /**
      * @return the displayName value.
@@ -60,7 +65,7 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     /**
      * @return the enrollmentAccounts value.
      */
-    List<EnrollmentAccountInner> enrollmentAccounts();
+    List<EnrollmentAccount> enrollmentAccounts();
 
     /**
      * @return the enrollmentDetails value.
@@ -80,7 +85,7 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     /**
      * @return the invoiceSections value.
      */
-    List<InvoiceSectionInner> invoiceSections();
+    List<InvoiceSection> invoiceSections();
 
     /**
      * @return the name value.
@@ -92,4 +97,75 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
      */
     String type();
 
+    /**
+     * The template for a BillingAccount update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<BillingAccount>, UpdateStages.WithAddress, UpdateStages.WithBillingProfiles, UpdateStages.WithDepartments, UpdateStages.WithEnrollmentAccounts, UpdateStages.WithInvoiceSections {
+    }
+
+    /**
+     * Grouping of BillingAccount update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the billingaccount update allowing to specify Address.
+         */
+        interface WithAddress {
+            /**
+             * Specifies address.
+             * @param address The address associated with billing account
+             * @return the next update stage
+             */
+            Update withAddress(AddressInner address);
+        }
+
+        /**
+         * The stage of the billingaccount update allowing to specify BillingProfiles.
+         */
+        interface WithBillingProfiles {
+            /**
+             * Specifies billingProfiles.
+             * @param billingProfiles The billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand
+             * @return the next update stage
+             */
+            Update withBillingProfiles(List<BillingProfileInner> billingProfiles);
+        }
+
+        /**
+         * The stage of the billingaccount update allowing to specify Departments.
+         */
+        interface WithDepartments {
+            /**
+             * Specifies departments.
+             * @param departments The departments associated to the enrollment
+             * @return the next update stage
+             */
+            Update withDepartments(List<DepartmentInner> departments);
+        }
+
+        /**
+         * The stage of the billingaccount update allowing to specify EnrollmentAccounts.
+         */
+        interface WithEnrollmentAccounts {
+            /**
+             * Specifies enrollmentAccounts.
+             * @param enrollmentAccounts The accounts associated to the enrollment
+             * @return the next update stage
+             */
+            Update withEnrollmentAccounts(List<EnrollmentAccountInner> enrollmentAccounts);
+        }
+
+        /**
+         * The stage of the billingaccount update allowing to specify InvoiceSections.
+         */
+        interface WithInvoiceSections {
+            /**
+             * Specifies invoiceSections.
+             * @param invoiceSections The invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand
+             * @return the next update stage
+             */
+            Update withInvoiceSections(List<InvoiceSectionInner> invoiceSections);
+        }
+
+    }
 }

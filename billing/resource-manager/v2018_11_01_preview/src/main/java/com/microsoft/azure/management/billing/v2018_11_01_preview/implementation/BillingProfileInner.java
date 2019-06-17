@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
-import com.microsoft.azure.management.billing.v2018_11_01_preview.Address;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnabledAzureSKUs;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,7 +35,7 @@ public class BillingProfileInner extends ProxyResource {
      * Billing address.
      */
     @JsonProperty(value = "properties.address")
-    private Address address;
+    private AddressInner address;
 
     /**
      * If the billing profile is opted in to receive invoices via email.
@@ -119,7 +118,7 @@ public class BillingProfileInner extends ProxyResource {
      *
      * @return the address value
      */
-    public Address address() {
+    public AddressInner address() {
         return this.address;
     }
 
@@ -129,7 +128,7 @@ public class BillingProfileInner extends ProxyResource {
      * @param address the address value to set
      * @return the BillingProfileInner object itself.
      */
-    public BillingProfileInner withAddress(Address address) {
+    public BillingProfileInner withAddress(AddressInner address) {
         this.address = address;
         return this;
     }

@@ -10,15 +10,19 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountUpdateProperties;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -58,6 +62,14 @@ public class BillingAccountsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts update" })
+        @PATCH("providers/Microsoft.Billing/billingAccounts/{billingAccountName}")
+        Observable<Response<ResponseBody>> update(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body BillingAccountUpdateProperties parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts beginUpdate" })
+        @PATCH("providers/Microsoft.Billing/billingAccounts/{billingAccountName}")
+        Observable<Response<ResponseBody>> beginUpdate(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body BillingAccountUpdateProperties parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -343,6 +355,158 @@ public class BillingAccountsInner {
     private ServiceResponse<BillingAccountInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<BillingAccountInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BillingAccountInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingAccountInner object if successful.
+     */
+    public BillingAccountInner update(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        return updateWithServiceResponseAsync(billingAccountName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingAccountInner> updateAsync(String billingAccountName, BillingAccountUpdateProperties parameters, final ServiceCallback<BillingAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<BillingAccountInner> updateAsync(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        return updateWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
+            @Override
+            public BillingAccountInner call(ServiceResponse<BillingAccountInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<BillingAccountInner>> updateWithServiceResponseAsync(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.update(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<BillingAccountInner>() { }.getType());
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingAccountInner object if successful.
+     */
+    public BillingAccountInner beginUpdate(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        return beginUpdateWithServiceResponseAsync(billingAccountName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingAccountInner> beginUpdateAsync(String billingAccountName, BillingAccountUpdateProperties parameters, final ServiceCallback<BillingAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingAccountInner object
+     */
+    public Observable<BillingAccountInner> beginUpdateAsync(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        return beginUpdateWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
+            @Override
+            public BillingAccountInner call(ServiceResponse<BillingAccountInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to update a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param parameters Parameters supplied to the update billing account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingAccountInner object
+     */
+    public Observable<ServiceResponse<BillingAccountInner>> beginUpdateWithServiceResponseAsync(String billingAccountName, BillingAccountUpdateProperties parameters) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginUpdate(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingAccountInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingAccountInner> clientResponse = beginUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingAccountInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingAccountInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingAccountInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

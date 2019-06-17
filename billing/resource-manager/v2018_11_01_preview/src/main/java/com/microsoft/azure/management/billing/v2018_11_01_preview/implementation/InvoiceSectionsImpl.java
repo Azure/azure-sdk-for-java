@@ -16,7 +16,7 @@ import rx.functions.Func1;
 import rx.Completable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionProperties;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionCreationRequest;
 
 class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements InvoiceSections {
     private final BillingManager manager;
@@ -77,7 +77,7 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
-    public Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionProperties parameters) {
+    public Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         InvoiceSectionsInner client = this.inner();
         return client.createAsync(billingAccountName, parameters)
         .map(new Func1<InvoiceSectionInner, InvoiceSection>() {

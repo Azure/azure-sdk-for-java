@@ -17,7 +17,7 @@ public class EnabledAzureSKUs {
     /**
      * The sku id.
      */
-    @JsonProperty(value = "skuId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "skuId")
     private String skuId;
 
     /**
@@ -33,6 +33,17 @@ public class EnabledAzureSKUs {
      */
     public String skuId() {
         return this.skuId;
+    }
+
+    /**
+     * Set the sku id.
+     *
+     * @param skuId the skuId value to set
+     * @return the EnabledAzureSKUs object itself.
+     */
+    public EnabledAzureSKUs withSkuId(String skuId) {
+        this.skuId = skuId;
+        return this;
     }
 
     /**

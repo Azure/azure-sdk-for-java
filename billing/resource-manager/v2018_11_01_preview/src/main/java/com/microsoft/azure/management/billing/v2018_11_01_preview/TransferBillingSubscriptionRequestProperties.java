@@ -21,6 +21,12 @@ public class TransferBillingSubscriptionRequestProperties {
     private String destinationInvoiceSectionId;
 
     /**
+     * The destination billing profile id.
+     */
+    @JsonProperty(value = "destinationBillingProfileId")
+    private String destinationBillingProfileId;
+
+    /**
      * Get the destination invoice section id.
      *
      * @return the destinationInvoiceSectionId value
@@ -37,6 +43,26 @@ public class TransferBillingSubscriptionRequestProperties {
      */
     public TransferBillingSubscriptionRequestProperties withDestinationInvoiceSectionId(String destinationInvoiceSectionId) {
         this.destinationInvoiceSectionId = destinationInvoiceSectionId;
+        return this;
+    }
+
+    /**
+     * Get the destination billing profile id.
+     *
+     * @return the destinationBillingProfileId value
+     */
+    public String destinationBillingProfileId() {
+        return this.destinationBillingProfileId;
+    }
+
+    /**
+     * Set the destination billing profile id.
+     *
+     * @param destinationBillingProfileId the destinationBillingProfileId value to set
+     * @return the TransferBillingSubscriptionRequestProperties object itself.
+     */
+    public TransferBillingSubscriptionRequestProperties withDestinationBillingProfileId(String destinationBillingProfileId) {
+        this.destinationBillingProfileId = destinationBillingProfileId;
         return this;
     }
 
