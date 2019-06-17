@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * The base class for credentials that acquires a token from AAD.
+ *
+ * @param <T> a subtype of this class
  */
 public abstract class AadCredential<T extends AadCredential<T>> implements TokenCredential {
 
@@ -33,7 +35,7 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
     /**
      * Sets the client ID for authentication to AAD.
      * @param clientId the client ID for authentication
-     * @return the {@link T} credential
+     * @return the credential itself
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
@@ -51,7 +53,7 @@ public abstract class AadCredential<T extends AadCredential<T>> implements Token
     /**
      * Sets the tenant ID for authenticating to AAD.
      * @param tenantId the tenant for authenticating to AAD
-     * @return the {@link T} credential
+     * @return the credential itself
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {

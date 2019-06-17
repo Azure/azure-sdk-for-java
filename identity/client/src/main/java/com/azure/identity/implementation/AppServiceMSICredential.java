@@ -6,7 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
-import com.azure.identity.AccessToken;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import reactor.core.publisher.Mono;
 

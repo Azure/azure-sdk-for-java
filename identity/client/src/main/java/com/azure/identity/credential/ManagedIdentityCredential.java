@@ -7,7 +7,7 @@ import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.identity.AccessToken;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
 import com.azure.identity.implementation.AppServiceMSICredential;
@@ -142,10 +142,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<String> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(String... scopes) {
         return (appServiceMSICredential != null
             ? appServiceMSICredential.authenticate(scopes)
-            : virtualMachineMSICredential.authenticate(scopes))
-            .map(AccessToken::token);
+            : virtualMachineMSICredential.authenticate(scopes));
     }
 }

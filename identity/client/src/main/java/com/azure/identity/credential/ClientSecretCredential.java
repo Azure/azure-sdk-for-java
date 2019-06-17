@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.identity.AccessToken;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
 import reactor.core.publisher.Mono;
@@ -43,11 +43,11 @@ public class ClientSecretCredential extends AadCredential<ClientSecretCredential
     }
 
     @Override
-    public Mono<String> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(String... scopes) {
         validate();
         if (clientSecret == null) {
             return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientSecret property in ClientSecretCredential"));
         }
-        return identityClient.authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes).map(AccessToken::token);
+        return identityClient.authenticateWithClientSecret(tenantId(), clientId(), clientSecret, scopes);
     }
 }

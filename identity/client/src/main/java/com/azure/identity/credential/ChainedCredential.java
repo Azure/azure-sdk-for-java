@@ -3,6 +3,7 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import reactor.core.publisher.Flux;
@@ -46,7 +47,7 @@ public class ChainedCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<String> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(String... scopes) {
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(scopes))
             .onErrorResume(t -> Mono.empty())

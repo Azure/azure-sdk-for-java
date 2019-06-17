@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.identity.AccessToken;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
 import reactor.core.publisher.Mono;
@@ -54,15 +54,15 @@ public class ClientCertificateCredential extends AadCredential<ClientCertificate
     }
 
     @Override
-    public Mono<String> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(String... scopes) {
         validate();
         if (clientCertificate == null) {
             return Mono.error(new IllegalArgumentException("Non-null value must be provided for clientCertificate property in ClientCertificateCredential"));
         }
         if (clientCertificatePassword != null) {
-            return identityClient.authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes).map(AccessToken::token);
+            return identityClient.authenticateWithPfxCertificate(tenantId(), clientId(), clientCertificate, clientCertificatePassword, scopes);
         } else {
-            return identityClient.authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes).map(AccessToken::token);
+            return identityClient.authenticateWithPemCertificate(tenantId(), clientId(), clientCertificate, scopes);
         }
     }
 }

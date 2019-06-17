@@ -3,15 +3,15 @@
 
 package com.azure.identity;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.identity.implementation.MSIToken;
-import com.azure.identity.implementation.RefreshableTokenCache;
-import com.azure.identity.implementation.util.Adal4jUtil;
 import com.azure.core.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.MSIToken;
+import com.azure.identity.implementation.util.Adal4jUtil;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -70,18 +70,16 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
-        return new RefreshableTokenCache(res -> {
-            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-            return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-                context.acquireToken(
-                    res,
-                    new ClientCredential(clientId, clientSecret),
-                    Adal4jUtil.authenticationDelegate(callback));
-            }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                .doFinally(s -> executor.shutdown());
-        }).getToken(resource);
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+            context.acquireToken(
+                resource,
+                new ClientCredential(clientId, clientSecret),
+                Adal4jUtil.authenticationDelegate(callback));
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+            .doFinally(s -> executor.shutdown());
     }
 
     /**
@@ -95,22 +93,20 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
-        return new RefreshableTokenCache(res -> {
-            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-            return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-                try {
-                    context.acquireToken(
-                        res,
-                        Adal4jUtil.createAsymmetricKeyCredential(clientId, Files.readAllBytes(Paths.get(pfxCertificatePath)), pfxCertificatePassword),
-                        Adal4jUtil.authenticationDelegate(callback));
-                } catch (IOException e) {
-                    callback.error(e);
-                }
-            }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                .doFinally(s -> executor.shutdown());
-        }).getToken(resource);
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+            try {
+                context.acquireToken(
+                    resource,
+                    Adal4jUtil.createAsymmetricKeyCredential(clientId, Files.readAllBytes(Paths.get(pfxCertificatePath)), pfxCertificatePassword),
+                    Adal4jUtil.authenticationDelegate(callback));
+            } catch (IOException e) {
+                callback.error(e);
+            }
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+            .doFinally(s -> executor.shutdown());
     }
 
     /**
@@ -123,22 +119,20 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
-        return new RefreshableTokenCache(res -> {
-            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-            return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-                try {
-                    context.acquireToken(
-                        res,
-                        AsymmetricKeyCredential.create(clientId, Adal4jUtil.privateKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath))), Adal4jUtil.publicKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath)))),
-                        Adal4jUtil.authenticationDelegate(callback));
-                } catch (IOException e) {
-                    callback.error(e);
-                }
-            }).map(ar -> new AccessToken().token(ar.getAccessToken()).expiresOn(OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
-                .doFinally(s -> executor.shutdown());
-        }).getToken(resource);
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
+        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
+            try {
+                context.acquireToken(
+                    resource,
+                    AsymmetricKeyCredential.create(clientId, Adal4jUtil.privateKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath))), Adal4jUtil.publicKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath)))),
+                    Adal4jUtil.authenticationDelegate(callback));
+            } catch (IOException e) {
+                callback.error(e);
+            }
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+            .doFinally(s -> executor.shutdown());
     }
 
     private static AuthenticationContext createAuthenticationContext(ExecutorService executor, String authorityUrl, ProxyOptions proxyOptions) {
@@ -163,29 +157,29 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
-        return new RefreshableTokenCache(res -> Mono.fromCallable(() -> {
-            HttpURLConnection connection = null;
-            try {
-                String urlString = String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, res);
-                URL url = new URL(urlString);
-                connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = null;
+        try {
+            String urlString = String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, resource);
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
 
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Secret", msiSecret);
-                connection.setRequestProperty("Metadata", "true");
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Secret", msiSecret);
+            connection.setRequestProperty("Metadata", "true");
 
-                connection.connect();
+            connection.connect();
 
-                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
+            Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
+            String result = s.hasNext() ? s.next() : "";
 
-                return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+            return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            return Mono.error(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
             }
-        })).getToken(resource);
+        }
     }
 
     /**
@@ -198,90 +192,84 @@ public final class IdentityClient {
      */
     public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String objectId, String identityId, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
-        return new RefreshableTokenCache(tokenAudience -> Mono.defer(() -> {
-            StringBuilder payload = new StringBuilder();
-            final int imdsUpgradeTimeInMs = 70 * 1000;
+        StringBuilder payload = new StringBuilder();
+        final int imdsUpgradeTimeInMs = 70 * 1000;
 
-            try {
-                payload.append("api-version");
-                payload.append("=");
-                payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
+        try {
+            payload.append("api-version");
+            payload.append("=");
+            payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
+            payload.append("&");
+            payload.append("resource");
+            payload.append("=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            if (objectId != null) {
                 payload.append("&");
-                payload.append("resource");
+                payload.append("object_id");
                 payload.append("=");
-                payload.append(URLEncoder.encode(tokenAudience, "UTF-8"));
-                if (objectId != null) {
-                    payload.append("&");
-                    payload.append("object_id");
-                    payload.append("=");
-                    payload.append(URLEncoder.encode(objectId, "UTF-8"));
-                } else if (clientId != null) {
-                    payload.append("&");
-                    payload.append("client_id");
-                    payload.append("=");
-                    payload.append(URLEncoder.encode(clientId, "UTF-8"));
-                } else if (identityId != null) {
-                    payload.append("&");
-                    payload.append("msi_res_id");
-                    payload.append("=");
-                    payload.append(URLEncoder.encode(identityId, "UTF-8"));
-                }
+                payload.append(URLEncoder.encode(objectId, "UTF-8"));
+            } else if (clientId != null) {
+                payload.append("&");
+                payload.append("client_id");
+                payload.append("=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            } else if (identityId != null) {
+                payload.append("&");
+                payload.append("msi_res_id");
+                payload.append("=");
+                payload.append(URLEncoder.encode(identityId, "UTF-8"));
+            }
+        } catch (IOException exception) {
+            return Mono.error(exception);
+        }
+
+        int retry = 1;
+        while (retry <= options.maxRetry()) {
+            URL url = null;
+            HttpURLConnection connection = null;
+            try {
+                url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s", payload.toString()));
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+
+                return Mono.just(adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
             } catch (IOException exception) {
-                return Mono.error(exception);
-            }
-
-            int retry = 1;
-            while (retry <= options.maxRetry()) {
-                URL url = null;
-                HttpURLConnection connection = null;
+                if (connection == null) {
+                    return Mono.error(new RuntimeException(String.format("Could not connect to the url: %s.", url), exception));
+                }
+                int responseCode = 0;
                 try {
-                    url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s", payload.toString()));
-
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Metadata", "true");
-                    connection.connect();
-
-                    Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-                    String result = s.hasNext() ? s.next() : "";
-
-                    return Mono.just(adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
-                } catch (IOException exception) {
-                    if (connection == null) {
-                        return Mono.error(new RuntimeException(String.format("Could not connect to the url: %s.", url), exception));
-                    }
-                    int responseCode = 0;
-                    try {
-                        responseCode = connection.getResponseCode();
-                    } catch (IOException e) {
-                        return Mono.error(e);
-                    }
-                    if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {
-                        int retryTimeoutInMs = options.retryTimeout().apply(RANDOM.nextInt(retry));
-                        // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
-                        //
-                        retryTimeoutInMs = (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs : retryTimeoutInMs;
-                        retry++;
-                        if (retry > options.maxRetry()) {
-                            break;
-                        } else {
-                            sleep(retryTimeoutInMs);
-                        }
+                    responseCode = connection.getResponseCode();
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+                if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {
+                    int retryTimeoutInMs = options.retryTimeout().apply(RANDOM.nextInt(retry));
+                    // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
+                    //
+                    retryTimeoutInMs = (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs : retryTimeoutInMs;
+                    retry++;
+                    if (retry > options.maxRetry()) {
+                        break;
                     } else {
-                        return Mono.error(new RuntimeException("Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId", exception));
+                        sleep(retryTimeoutInMs);
                     }
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
+                } else {
+                    return Mono.error(new RuntimeException("Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId", exception));
+                }
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
                 }
             }
-            //
-            if (retry > options.maxRetry()) {
-                return Mono.error(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times", options.maxRetry())));
-            }
-            return null;
-        })).getToken(resource);
+        }
+        return Mono.error(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times", options.maxRetry())));
     }
 
     private static void sleep(int millis) {

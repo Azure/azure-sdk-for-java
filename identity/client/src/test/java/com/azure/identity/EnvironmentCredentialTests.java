@@ -6,10 +6,13 @@ package com.azure.identity;
 import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.credential.EnvironmentCredential;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 import static org.junit.Assert.fail;
 
@@ -24,13 +27,13 @@ public class EnvironmentCredentialTests {
         EnvironmentCredential credential = new EnvironmentCredential();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        String token = credential.getToken("qux/.default")
+        AccessToken token = credential.getToken("qux/.default")
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
                 String message = t.getMessage();
                 Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
-                return Mono.just("token");
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
             }).block();
-        Assert.assertEquals("token", token);
+        Assert.assertEquals("token", token.token());
     }
 }

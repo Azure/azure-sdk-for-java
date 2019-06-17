@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity;
+package com.azure.core.credentials;
 
-import com.azure.identity.implementation.RefreshableTokenCache;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -17,22 +16,22 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class RefreshableTokenCacheTests {
+public class TokenCacheTests {
     private static final Random RANDOM = new Random();
 
     @Test
     public void testOnlyOneThreadRefreshesToken() throws Exception {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
-        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> incrementalRemoteGetTokenAsync(new AtomicInteger(1)));
+        SimpleTokenCache cache = new SimpleTokenCache(() -> incrementalRemoteGetTokenAsync(new AtomicInteger(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
         Flux.range(1, 10)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getToken() on 10 different threads
+                // Runs cache.getToken() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getToken("resource")
+                .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
                         if (millis > maxMillis.get()) {
@@ -54,7 +53,7 @@ public class RefreshableTokenCacheTests {
         AtomicLong refreshes = new AtomicLong(0);
 
         // token expires on creation. Run this 100 times to simulate running the application a long time
-        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> {
+        SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
         });
@@ -64,9 +63,9 @@ public class RefreshableTokenCacheTests {
         Flux.interval(Duration.ofMillis(100))
             .take(100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getToken() on 10 different threads
+                // Runs cache.getToken() on 10 different threads
                 .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getToken("resource")
+                .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
 //                        System.out.format("Thread: %s\tDuration: %smillis%n",
@@ -78,72 +77,6 @@ public class RefreshableTokenCacheTests {
         latch.await();
         // At most 10 requests should do actual token acquisition, use 11 for safe
         Assert.assertTrue(refreshes.get() <= 11);
-    }
-
-    @Test
-    public void testOverflowBuffer() throws Exception {
-        // Run 100 resources to make sure the buffer can handle it
-        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenAsync(1000));
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicLong minMillis = new AtomicLong(5000);
-        AtomicInteger counter = new AtomicInteger(0);
-
-        // Default buffer size for token cache is 16
-        Mono.just(OffsetDateTime.now())
-                .repeat(100)
-                // Runs refresher.getToken() on 100 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> refresher.getToken("resource" + counter.getAndIncrement())
-                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
-                    .doOnNext(millis -> {
-                        if (millis < minMillis.get()) {
-                            minMillis.set(millis);
-                        }
-//                        System.out.format("Resource: %s\tDuration: %smillis%n",
-//                            "resource" + i, millis);
-                    }))
-            .doOnComplete(latch::countDown)
-            .subscribe();
-
-        latch.await();
-        Assert.assertTrue(minMillis.get() > 1000); // each request did a token refresh
-    }
-
-    @Test
-    public void testRefreshIsCalledBeforeNew() throws Exception {
-        // Token expires on acquisition so every one has to get new token. But refresh is faster
-        RefreshableTokenCache refresher = new RefreshableTokenCache(res -> remoteGetTokenThatExpiresSoonAsync(2000, 0)) {
-            @Override
-            protected Mono<AccessToken> refresh(AccessToken expiredResult, String resource) {
-                return remoteGetTokenThatExpiresSoonAsync(100, 0);
-            }
-        };
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicLong maxMillis = new AtomicLong(0);
-
-        Flux<Long> flux1 = Flux.just(-1L);
-        Flux<Long> flux2 = Mono.delay(Duration.ofMillis(2500)).flatMapMany(i -> Flux.interval(Duration.ofMillis(200)));
-        Flux.concat(flux1, flux2)
-            .take(5)
-            .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs refresher.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(start -> refresher.getToken("resource")
-                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
-                    .doOnNext(millis -> {
-                        if (i >= 0 && millis > maxMillis.get()) {
-                            maxMillis.set(millis);
-                        }
-//                        System.out.format("Thread: %s\tDuration: %smillis%n",
-//                            Thread.currentThread().getName(), Duration.between(start, OffsetDateTime.now()).toMillis());
-                    })))
-            .doOnComplete(latch::countDown)
-            .subscribe();
-
-        latch.await();
-        Assert.assertTrue(maxMillis.get() < 1000); // no new is called
     }
 
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
@@ -176,6 +109,7 @@ public class RefreshableTokenCacheTests {
         }
 
         Token(String token, long validityInMillis) {
+            super(token, OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis)));
             this.token = token;
             this.expiry = OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis));
         }

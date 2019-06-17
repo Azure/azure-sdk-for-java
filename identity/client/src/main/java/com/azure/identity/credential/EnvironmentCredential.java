@@ -6,6 +6,7 @@ package com.azure.identity.credential;
 import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.IdentityClientOptions;
@@ -36,7 +37,7 @@ public class EnvironmentCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<String> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(String... scopes) {
         return Mono.fromSupplier(() -> {
             if (configuration.contains(BaseConfigurations.AZURE_CLIENT_ID)
                 && configuration.contains(BaseConfigurations.AZURE_CLIENT_SECRET)

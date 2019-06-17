@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.identity.AccessToken;
+import com.azure.core.credentials.AccessToken;
 import com.azure.identity.IdentityClient;
 import reactor.core.publisher.Mono;
 

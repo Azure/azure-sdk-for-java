@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.credentials;
 
 import com.azure.core.credentials.BasicAuthenticationCredential;
 import com.azure.core.credentials.TokenCredential;
@@ -16,6 +16,7 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 
 public class CredentialsTests {
 
@@ -46,8 +47,8 @@ public class CredentialsTests {
     public void tokenCredentialTest() throws Exception {
         TokenCredential credentials = new TokenCredential() {
             @Override
-            public Mono<String> getToken(String... scopes) {
-                return Mono.just("this_is_a_token");
+            public Mono<AccessToken> getToken(String... scopes) {
+                return Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
             }
         };
 

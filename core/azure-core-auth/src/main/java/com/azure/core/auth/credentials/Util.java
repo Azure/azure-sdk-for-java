@@ -3,6 +3,7 @@
 
 package com.azure.core.auth.credentials;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.util.Base64Util;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationCallback;
@@ -25,6 +26,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,6 +95,20 @@ final class Util {
         } catch (CertificateException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static AccessToken parseAdal4jAuthenticationResult(AuthenticationResult result) {
+        String token = result.getAccessToken();
+        OffsetDateTime expiresOn = OffsetDateTime.from(result.getExpiresOnDate().toInstant());
+        return new AccessToken(token, expiresOn);
+    }
+
+    static AccessToken parseMSIToken(MSIToken result) {
+        return new AccessToken(result.accessToken(), result.expiresOn());
+    }
+
+    static AccessToken parseAzureCliToken(AzureCliToken result) {
+        return new AccessToken(result.accessToken(), result.expiresOn().atOffset(ZoneOffset.UTC));
     }
 
     private Util() { }

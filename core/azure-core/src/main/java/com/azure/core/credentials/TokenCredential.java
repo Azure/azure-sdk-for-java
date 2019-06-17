@@ -13,7 +13,7 @@ public interface TokenCredential {
     /**
      * Asynchronously get a token for a given resource/audience.
      * @param scopes the scopes the token will be used for
-     * @return a Publisher that emits a single token
+     * @return a Publisher that emits a single access token
      */
-    Mono<String> getToken(String... scopes);
+    Mono<AccessToken> getToken(String... scopes);
 }
