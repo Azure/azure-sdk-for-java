@@ -32,8 +32,13 @@ public abstract class FileServiceClientTestsBase extends TestBase {
     }
 
     <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
-        String connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
-        String endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String endpoint = "https://teststorage.file.core.windows.net/";
+
+        if (!interceptorManager.isPlaybackMode()) {
+            connectionString = ConfigurationManager.getConfiguration().get(azureStorageConnectionString);
+            endpoint = ConfigurationManager.getConfiguration().get(azureStorageFileEndpoint);
+        }
 
         if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(endpoint)) {
             logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageFileEndpoint);
