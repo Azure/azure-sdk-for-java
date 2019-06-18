@@ -46,7 +46,7 @@ public class MountVolumes {
     private List<UnmanagedFileSystemReference> unmanagedFileSystems;
 
     /**
-     * Get the azureFileShares value.
+     * Get references to Azure File Shares that are to be mounted to the cluster nodes.
      *
      * @return the azureFileShares value
      */
@@ -55,7 +55,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the azureFileShares value.
+     * Set references to Azure File Shares that are to be mounted to the cluster nodes.
      *
      * @param azureFileShares the azureFileShares value to set
      * @return the MountVolumes object itself.
@@ -66,7 +66,7 @@ public class MountVolumes {
     }
 
     /**
-     * Get the azureBlobFileSystems value.
+     * Get references to Azure Blob FUSE that are to be mounted to the cluster nodes.
      *
      * @return the azureBlobFileSystems value
      */
@@ -75,7 +75,7 @@ public class MountVolumes {
     }
 
     /**
-     * Set the azureBlobFileSystems value.
+     * Set references to Azure Blob FUSE that are to be mounted to the cluster nodes.
      *
      * @param azureBlobFileSystems the azureBlobFileSystems value to set
      * @return the MountVolumes object itself.

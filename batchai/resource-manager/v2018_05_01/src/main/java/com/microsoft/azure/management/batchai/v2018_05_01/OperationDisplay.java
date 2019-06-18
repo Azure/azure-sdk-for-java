@@ -49,7 +49,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get for example: read, write, delete, or listKeys/action.
      *
      * @return the operation value
      */

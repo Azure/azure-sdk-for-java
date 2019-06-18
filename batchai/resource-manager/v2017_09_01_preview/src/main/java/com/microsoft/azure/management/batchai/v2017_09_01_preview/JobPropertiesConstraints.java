@@ -23,7 +23,7 @@ public class JobPropertiesConstraints {
     private Period maxWallClockTime;
 
     /**
-     * Get the maxWallClockTime value.
+     * Get default Value = 1 week.
      *
      * @return the maxWallClockTime value
      */
@@ -32,7 +32,7 @@ public class JobPropertiesConstraints {
     }
 
     /**
-     * Set the maxWallClockTime value.
+     * Set default Value = 1 week.
      *
      * @param maxWallClockTime the maxWallClockTime value to set
      * @return the JobPropertiesConstraints object itself.
