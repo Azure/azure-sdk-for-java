@@ -188,7 +188,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.get(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WebhookInner>>>() {
                 @Override
@@ -287,7 +287,7 @@ public class WebhooksInner {
             throw new IllegalArgumentException("Parameter webhookCreateParameters is required and cannot be null.");
         }
         Validator.validate(webhookCreateParameters);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, webhookCreateParameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WebhookInner>() { }.getType());
     }
@@ -369,7 +369,7 @@ public class WebhooksInner {
             throw new IllegalArgumentException("Parameter webhookCreateParameters is required and cannot be null.");
         }
         Validator.validate(webhookCreateParameters);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.beginCreate(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, webhookCreateParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WebhookInner>>>() {
                 @Override
@@ -460,7 +460,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -533,7 +533,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.beginDelete(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -634,7 +634,7 @@ public class WebhooksInner {
             throw new IllegalArgumentException("Parameter webhookUpdateParameters is required and cannot be null.");
         }
         Validator.validate(webhookUpdateParameters);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, webhookUpdateParameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WebhookInner>() { }.getType());
     }
@@ -716,7 +716,7 @@ public class WebhooksInner {
             throw new IllegalArgumentException("Parameter webhookUpdateParameters is required and cannot be null.");
         }
         Validator.validate(webhookUpdateParameters);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, webhookUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WebhookInner>>>() {
                 @Override
@@ -838,7 +838,7 @@ public class WebhooksInner {
         if (registryName == null) {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WebhookInner>>>>() {
                 @Override
@@ -929,7 +929,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.ping(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EventInfoInner>>>() {
                 @Override
@@ -1020,7 +1020,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.getCallbackConfig(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CallbackConfigInner>>>() {
                 @Override
@@ -1149,7 +1149,7 @@ public class WebhooksInner {
         if (webhookName == null) {
             throw new IllegalArgumentException("Parameter webhookName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.listEvents(this.client.subscriptionId(), resourceGroupName, registryName, webhookName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EventInner>>>>() {
                 @Override

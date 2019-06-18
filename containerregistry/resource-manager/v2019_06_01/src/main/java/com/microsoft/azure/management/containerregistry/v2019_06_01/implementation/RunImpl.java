@@ -21,6 +21,7 @@ import com.microsoft.azure.management.containerregistry.v2019_06_01.Provisioning
 import com.microsoft.azure.management.containerregistry.v2019_06_01.RunType;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.SourceTriggerDescriptor;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.RunStatus;
+import com.microsoft.azure.management.containerregistry.v2019_06_01.TimerTriggerDescriptor;
 
 class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements Run, Run.Update {
     private final ContainerRegistryManager manager;
@@ -180,8 +181,18 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public TimerTriggerDescriptor timerTrigger() {
+        return this.inner().timerTrigger();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public String updateTriggerToken() {
+        return this.inner().updateTriggerToken();
     }
 
     @Override

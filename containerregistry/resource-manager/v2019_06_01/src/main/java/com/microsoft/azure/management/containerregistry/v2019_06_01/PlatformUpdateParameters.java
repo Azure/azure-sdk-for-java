@@ -22,8 +22,8 @@ public class PlatformUpdateParameters {
     private OS os;
 
     /**
-     * The OS architecture. Possible values include: 'amd64', 'x86', 'arm',
-     * 'arm64'.
+     * The OS architecture. Possible values include: 'amd64', 'x86', '386',
+     * 'arm', 'arm64'.
      */
     @JsonProperty(value = "architecture")
     private Architecture architecture;
@@ -55,7 +55,7 @@ public class PlatformUpdateParameters {
     }
 
     /**
-     * Get the OS architecture. Possible values include: 'amd64', 'x86', 'arm', 'arm64'.
+     * Get the OS architecture. Possible values include: 'amd64', 'x86', '386', 'arm', 'arm64'.
      *
      * @return the architecture value
      */
@@ -64,7 +64,7 @@ public class PlatformUpdateParameters {
     }
 
     /**
-     * Set the OS architecture. Possible values include: 'amd64', 'x86', 'arm', 'arm64'.
+     * Set the OS architecture. Possible values include: 'amd64', 'x86', '386', 'arm', 'arm64'.
      *
      * @param architecture the architecture value to set
      * @return the PlatformUpdateParameters object itself.

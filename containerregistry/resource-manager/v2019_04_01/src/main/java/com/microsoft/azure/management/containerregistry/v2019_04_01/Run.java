@@ -124,6 +124,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     String task();
 
     /**
+     * @return the timerTrigger value.
+     */
+    TimerTriggerDescriptor timerTrigger();
+
+    /**
      * @return the type value.
      */
     String type();

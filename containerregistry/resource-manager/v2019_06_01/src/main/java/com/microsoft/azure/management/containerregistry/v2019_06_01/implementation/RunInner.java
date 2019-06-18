@@ -15,6 +15,7 @@ import java.util.List;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.ImageDescriptor;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.ImageUpdateTrigger;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.SourceTriggerDescriptor;
+import com.microsoft.azure.management.containerregistry.v2019_06_01.TimerTriggerDescriptor;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.PlatformProperties;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.AgentProperties;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.ProvisioningState;
@@ -99,6 +100,12 @@ public class RunInner extends ProxyResource {
     private SourceTriggerDescriptor sourceTrigger;
 
     /**
+     * The timer trigger that caused the run.
+     */
+    @JsonProperty(value = "properties.timerTrigger")
+    private TimerTriggerDescriptor timerTrigger;
+
+    /**
      * The platform properties against which the run will happen.
      */
     @JsonProperty(value = "properties.platform")
@@ -129,6 +136,12 @@ public class RunInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.runErrorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String runErrorMessage;
+
+    /**
+     * The update trigger token passed for the Run.
+     */
+    @JsonProperty(value = "properties.updateTriggerToken")
+    private String updateTriggerToken;
 
     /**
      * The provisioning state of a run. Possible values include: 'Creating',
@@ -364,6 +377,26 @@ public class RunInner extends ProxyResource {
     }
 
     /**
+     * Get the timer trigger that caused the run.
+     *
+     * @return the timerTrigger value
+     */
+    public TimerTriggerDescriptor timerTrigger() {
+        return this.timerTrigger;
+    }
+
+    /**
+     * Set the timer trigger that caused the run.
+     *
+     * @param timerTrigger the timerTrigger value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withTimerTrigger(TimerTriggerDescriptor timerTrigger) {
+        this.timerTrigger = timerTrigger;
+        return this;
+    }
+
+    /**
      * Get the platform properties against which the run will happen.
      *
      * @return the platform value
@@ -450,6 +483,26 @@ public class RunInner extends ProxyResource {
      */
     public String runErrorMessage() {
         return this.runErrorMessage;
+    }
+
+    /**
+     * Get the update trigger token passed for the Run.
+     *
+     * @return the updateTriggerToken value
+     */
+    public String updateTriggerToken() {
+        return this.updateTriggerToken;
+    }
+
+    /**
+     * Set the update trigger token passed for the Run.
+     *
+     * @param updateTriggerToken the updateTriggerToken value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withUpdateTriggerToken(String updateTriggerToken) {
+        this.updateTriggerToken = updateTriggerToken;
+        return this;
     }
 
     /**

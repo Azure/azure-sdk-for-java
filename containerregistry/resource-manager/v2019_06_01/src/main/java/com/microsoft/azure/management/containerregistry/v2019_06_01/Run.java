@@ -124,9 +124,19 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     String task();
 
     /**
+     * @return the timerTrigger value.
+     */
+    TimerTriggerDescriptor timerTrigger();
+
+    /**
      * @return the type value.
      */
     String type();
+
+    /**
+     * @return the updateTriggerToken value.
+     */
+    String updateTriggerToken();
 
     /**
      * The template for a Run update operation, containing all the settings that can be modified.

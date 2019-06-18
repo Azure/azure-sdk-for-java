@@ -18,6 +18,7 @@ import com.microsoft.azure.management.containerregistry.v2019_06_01.Provisioning
 import com.microsoft.azure.management.containerregistry.v2019_06_01.Status;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.StorageAccountProperties;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.NetworkRuleSet;
+import com.microsoft.azure.management.containerregistry.v2019_06_01.Policies;
 import rx.functions.Func1;
 
 class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager> implements Registry, Registry.Definition, Registry.Update {
@@ -91,6 +92,11 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
     }
 
     @Override
+    public Policies policies() {
+        return this.inner().policies();
+    }
+
+    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -108,6 +114,12 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
     @Override
     public StorageAccountProperties storageAccount() {
         return this.inner().storageAccount();
+    }
+
+    @Override
+    public RegistryImpl withStorageAccount(StorageAccountProperties storageAccount) {
+        this.inner().withStorageAccount(storageAccount);
+        return this;
     }
 
     @Override
@@ -141,11 +153,11 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
     }
 
     @Override
-    public RegistryImpl withStorageAccount(StorageAccountProperties storageAccount) {
+    public RegistryImpl withPolicies(Policies policies) {
         if (isInCreateMode()) {
-            this.inner().withStorageAccount(storageAccount);
+            this.inner().withPolicies(policies);
         } else {
-            this.updateParameter.withStorageAccount(storageAccount);
+            this.updateParameter.withPolicies(policies);
         }
         return this;
     }

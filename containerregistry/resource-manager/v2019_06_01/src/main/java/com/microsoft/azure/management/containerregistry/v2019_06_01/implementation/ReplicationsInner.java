@@ -171,7 +171,7 @@ public class ReplicationsInner {
         if (replicationName == null) {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.get(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ReplicationInner>>>() {
                 @Override
@@ -270,7 +270,7 @@ public class ReplicationsInner {
             throw new IllegalArgumentException("Parameter replication is required and cannot be null.");
         }
         Validator.validate(replication);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, replication, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ReplicationInner>() { }.getType());
     }
@@ -352,7 +352,7 @@ public class ReplicationsInner {
             throw new IllegalArgumentException("Parameter replication is required and cannot be null.");
         }
         Validator.validate(replication);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.beginCreate(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, replication, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ReplicationInner>>>() {
                 @Override
@@ -443,7 +443,7 @@ public class ReplicationsInner {
         if (replicationName == null) {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -516,7 +516,7 @@ public class ReplicationsInner {
         if (replicationName == null) {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.beginDelete(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -609,7 +609,7 @@ public class ReplicationsInner {
         if (replicationName == null) {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         final Map<String, String> tags = null;
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(null);
@@ -690,7 +690,7 @@ public class ReplicationsInner {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
         Validator.validate(tags);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(tags);
         Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, this.client.acceptLanguage(), replicationUpdateParameters, this.client.userAgent());
@@ -766,7 +766,7 @@ public class ReplicationsInner {
         if (replicationName == null) {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         final Map<String, String> tags = null;
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(null);
@@ -858,7 +858,7 @@ public class ReplicationsInner {
             throw new IllegalArgumentException("Parameter replicationName is required and cannot be null.");
         }
         Validator.validate(tags);
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(tags);
         return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, replicationName, apiVersion, this.client.acceptLanguage(), replicationUpdateParameters, this.client.userAgent())
@@ -982,7 +982,7 @@ public class ReplicationsInner {
         if (registryName == null) {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ReplicationInner>>>>() {
                 @Override

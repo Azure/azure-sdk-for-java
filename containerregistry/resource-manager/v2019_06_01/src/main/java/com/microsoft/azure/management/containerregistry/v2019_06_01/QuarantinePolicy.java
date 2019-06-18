@@ -11,7 +11,7 @@ package com.microsoft.azure.management.containerregistry.v2019_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An object that represents quarantine policy for a container registry.
+ * The quarantine policy for a container registry.
  */
 public class QuarantinePolicy {
     /**

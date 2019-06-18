@@ -36,18 +36,16 @@ public class RegistryUpdateParameters {
     private Boolean adminUserEnabled;
 
     /**
-     * The parameters of a storage account for the container registry. Only
-     * applicable to Classic SKU. If specified, the storage account must be in
-     * the same physical location as the container registry.
-     */
-    @JsonProperty(value = "properties.storageAccount")
-    private StorageAccountProperties storageAccount;
-
-    /**
      * The network rule set for a container registry.
      */
     @JsonProperty(value = "properties.networkRuleSet")
     private NetworkRuleSet networkRuleSet;
+
+    /**
+     * The policies for a container registry.
+     */
+    @JsonProperty(value = "properties.policies")
+    private Policies policies;
 
     /**
      * Get the tags for the container registry.
@@ -110,26 +108,6 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry.
-     *
-     * @return the storageAccount value
-     */
-    public StorageAccountProperties storageAccount() {
-        return this.storageAccount;
-    }
-
-    /**
-     * Set the parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry.
-     *
-     * @param storageAccount the storageAccount value to set
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withStorageAccount(StorageAccountProperties storageAccount) {
-        this.storageAccount = storageAccount;
-        return this;
-    }
-
-    /**
      * Get the network rule set for a container registry.
      *
      * @return the networkRuleSet value
@@ -146,6 +124,26 @@ public class RegistryUpdateParameters {
      */
     public RegistryUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
+        return this;
+    }
+
+    /**
+     * Get the policies for a container registry.
+     *
+     * @return the policies value
+     */
+    public Policies policies() {
+        return this.policies;
+    }
+
+    /**
+     * Set the policies for a container registry.
+     *
+     * @param policies the policies value to set
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withPolicies(Policies policies) {
+        this.policies = policies;
         return this;
     }
 

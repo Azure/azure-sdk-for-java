@@ -46,6 +46,11 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
     NetworkRuleSet networkRuleSet();
 
     /**
+     * @return the policies value.
+     */
+    Policies policies();
+
+    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -124,6 +129,18 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         }
 
         /**
+         * The stage of the registry definition allowing to specify Policies.
+         */
+        interface WithPolicies {
+            /**
+             * Specifies policies.
+             * @param policies The policies for a container registry
+             * @return the next definition stage
+             */
+            WithCreate withPolicies(Policies policies);
+        }
+
+        /**
          * The stage of the registry definition allowing to specify StorageAccount.
          */
         interface WithStorageAccount {
@@ -140,13 +157,13 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithNetworkRuleSet, DefinitionStages.WithStorageAccount {
+        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithNetworkRuleSet, DefinitionStages.WithPolicies, DefinitionStages.WithStorageAccount {
         }
     }
     /**
      * The template for a Registry update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku, UpdateStages.WithStorageAccount {
+    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithNetworkRuleSet, UpdateStages.WithPolicies, UpdateStages.WithSku {
     }
 
     /**
@@ -178,6 +195,18 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         }
 
         /**
+         * The stage of the registry update allowing to specify Policies.
+         */
+        interface WithPolicies {
+            /**
+             * Specifies policies.
+             * @param policies The policies for a container registry
+             * @return the next update stage
+             */
+            Update withPolicies(Policies policies);
+        }
+
+        /**
          * The stage of the registry update allowing to specify Sku.
          */
         interface WithSku {
@@ -187,18 +216,6 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
              * @return the next update stage
              */
             Update withSku(Sku sku);
-        }
-
-        /**
-         * The stage of the registry update allowing to specify StorageAccount.
-         */
-        interface WithStorageAccount {
-            /**
-             * Specifies storageAccount.
-             * @param storageAccount The parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry
-             * @return the next update stage
-             */
-            Update withStorageAccount(StorageAccountProperties storageAccount);
         }
 
     }

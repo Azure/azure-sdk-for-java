@@ -14,6 +14,7 @@ import com.microsoft.azure.management.containerregistry.v2019_06_01.Provisioning
 import com.microsoft.azure.management.containerregistry.v2019_06_01.Status;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.StorageAccountProperties;
 import com.microsoft.azure.management.containerregistry.v2019_06_01.NetworkRuleSet;
+import com.microsoft.azure.management.containerregistry.v2019_06_01.Policies;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -74,6 +75,12 @@ public class RegistryInner extends Resource {
      */
     @JsonProperty(value = "properties.networkRuleSet")
     private NetworkRuleSet networkRuleSet;
+
+    /**
+     * The policies for a container registry.
+     */
+    @JsonProperty(value = "properties.policies")
+    private Policies policies;
 
     /**
      * Get the SKU of the container registry.
@@ -188,6 +195,26 @@ public class RegistryInner extends Resource {
      */
     public RegistryInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
+        return this;
+    }
+
+    /**
+     * Get the policies for a container registry.
+     *
+     * @return the policies value
+     */
+    public Policies policies() {
+        return this.policies;
+    }
+
+    /**
+     * Set the policies for a container registry.
+     *
+     * @param policies the policies value to set
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withPolicies(Policies policies) {
+        this.policies = policies;
         return this;
     }
 

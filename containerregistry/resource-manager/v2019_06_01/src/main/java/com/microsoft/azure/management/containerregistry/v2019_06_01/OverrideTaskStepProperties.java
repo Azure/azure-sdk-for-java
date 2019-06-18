@@ -48,6 +48,13 @@ public class OverrideTaskStepProperties {
     private List<SetValue> values;
 
     /**
+     * Base64 encoded update trigger token that will be attached with the base
+     * image trigger webhook.
+     */
+    @JsonProperty(value = "updateTriggerToken")
+    private String updateTriggerToken;
+
+    /**
      * Get the source context against which run has to be queued.
      *
      * @return the contextPath value
@@ -146,6 +153,26 @@ public class OverrideTaskStepProperties {
      */
     public OverrideTaskStepProperties withValues(List<SetValue> values) {
         this.values = values;
+        return this;
+    }
+
+    /**
+     * Get base64 encoded update trigger token that will be attached with the base image trigger webhook.
+     *
+     * @return the updateTriggerToken value
+     */
+    public String updateTriggerToken() {
+        return this.updateTriggerToken;
+    }
+
+    /**
+     * Set base64 encoded update trigger token that will be attached with the base image trigger webhook.
+     *
+     * @param updateTriggerToken the updateTriggerToken value to set
+     * @return the OverrideTaskStepProperties object itself.
+     */
+    public OverrideTaskStepProperties withUpdateTriggerToken(String updateTriggerToken) {
+        this.updateTriggerToken = updateTriggerToken;
         return this;
     }
 

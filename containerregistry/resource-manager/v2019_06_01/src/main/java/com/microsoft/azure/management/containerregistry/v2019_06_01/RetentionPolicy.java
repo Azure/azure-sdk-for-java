@@ -8,17 +8,24 @@
 
 package com.microsoft.azure.management.containerregistry.v2019_06_01;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The content trust policy for a container registry.
+ * The retention policy for a container registry.
  */
-public class TrustPolicy {
+public class RetentionPolicy {
     /**
-     * The type of trust policy. Possible values include: 'Notary'.
+     * The number of days to retain manifest before it expires.
      */
-    @JsonProperty(value = "type")
-    private TrustPolicyType type;
+    @JsonProperty(value = "days")
+    private Integer days;
+
+    /**
+     * The timestamp when the policy was last updated.
+     */
+    @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastUpdatedTime;
 
     /**
      * The value that indicates whether the policy is enabled or not. Possible
@@ -28,23 +35,32 @@ public class TrustPolicy {
     private PolicyStatus status;
 
     /**
-     * Get the type of trust policy. Possible values include: 'Notary'.
+     * Get the number of days to retain manifest before it expires.
      *
-     * @return the type value
+     * @return the days value
      */
-    public TrustPolicyType type() {
-        return this.type;
+    public Integer days() {
+        return this.days;
     }
 
     /**
-     * Set the type of trust policy. Possible values include: 'Notary'.
+     * Set the number of days to retain manifest before it expires.
      *
-     * @param type the type value to set
-     * @return the TrustPolicy object itself.
+     * @param days the days value to set
+     * @return the RetentionPolicy object itself.
      */
-    public TrustPolicy withType(TrustPolicyType type) {
-        this.type = type;
+    public RetentionPolicy withDays(Integer days) {
+        this.days = days;
         return this;
+    }
+
+    /**
+     * Get the timestamp when the policy was last updated.
+     *
+     * @return the lastUpdatedTime value
+     */
+    public DateTime lastUpdatedTime() {
+        return this.lastUpdatedTime;
     }
 
     /**
@@ -60,9 +76,9 @@ public class TrustPolicy {
      * Set the value that indicates whether the policy is enabled or not. Possible values include: 'enabled', 'disabled'.
      *
      * @param status the status value to set
-     * @return the TrustPolicy object itself.
+     * @return the RetentionPolicy object itself.
      */
-    public TrustPolicy withStatus(PolicyStatus status) {
+    public RetentionPolicy withStatus(PolicyStatus status) {
         this.status = status;
         return this;
     }

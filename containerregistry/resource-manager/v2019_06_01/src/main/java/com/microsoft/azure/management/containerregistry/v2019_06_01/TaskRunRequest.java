@@ -31,13 +31,6 @@ public class TaskRunRequest extends RunRequest {
     private OverrideTaskStepProperties overrideTaskStepProperties;
 
     /**
-     * Base64 encoded continuation token that will be attached with the base
-     * image trigger webhook.
-     */
-    @JsonProperty(value = "continuationToken")
-    private String continuationToken;
-
-    /**
      * Get the resource ID of task against which run has to be queued.
      *
      * @return the taskId value
@@ -74,26 +67,6 @@ public class TaskRunRequest extends RunRequest {
      */
     public TaskRunRequest withOverrideTaskStepProperties(OverrideTaskStepProperties overrideTaskStepProperties) {
         this.overrideTaskStepProperties = overrideTaskStepProperties;
-        return this;
-    }
-
-    /**
-     * Get base64 encoded continuation token that will be attached with the base image trigger webhook.
-     *
-     * @return the continuationToken value
-     */
-    public String continuationToken() {
-        return this.continuationToken;
-    }
-
-    /**
-     * Set base64 encoded continuation token that will be attached with the base image trigger webhook.
-     *
-     * @param continuationToken the continuationToken value to set
-     * @return the TaskRunRequest object itself.
-     */
-    public TaskRunRequest withContinuationToken(String continuationToken) {
-        this.continuationToken = continuationToken;
         return this;
     }
 

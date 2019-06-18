@@ -205,7 +205,7 @@ public class TasksInner {
         if (registryName == null) {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TaskInner>>>>() {
                 @Override
@@ -296,7 +296,7 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.get(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TaskInner>>>() {
                 @Override
@@ -395,7 +395,7 @@ public class TasksInner {
             throw new IllegalArgumentException("Parameter taskCreateParameters is required and cannot be null.");
         }
         Validator.validate(taskCreateParameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, taskCreateParameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<TaskInner>() { }.getType());
     }
@@ -477,7 +477,7 @@ public class TasksInner {
             throw new IllegalArgumentException("Parameter taskCreateParameters is required and cannot be null.");
         }
         Validator.validate(taskCreateParameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.beginCreate(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, taskCreateParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TaskInner>>>() {
                 @Override
@@ -568,7 +568,7 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -641,7 +641,7 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.beginDelete(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -742,7 +742,7 @@ public class TasksInner {
             throw new IllegalArgumentException("Parameter taskUpdateParameters is required and cannot be null.");
         }
         Validator.validate(taskUpdateParameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, taskUpdateParameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<TaskInner>() { }.getType());
     }
@@ -824,7 +824,7 @@ public class TasksInner {
             throw new IllegalArgumentException("Parameter taskUpdateParameters is required and cannot be null.");
         }
         Validator.validate(taskUpdateParameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, taskUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TaskInner>>>() {
                 @Override
@@ -916,7 +916,7 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-06-01-preview";
         return service.getDetails(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TaskInner>>>() {
                 @Override

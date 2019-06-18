@@ -28,6 +28,13 @@ public class BaseImageTriggerUpdateParameters {
     private String updateTriggerEndpoint;
 
     /**
+     * Type of Payload body for Base image update triggers. Possible values
+     * include: 'Default', 'Token'.
+     */
+    @JsonProperty(value = "updateTriggerPayloadType")
+    private UpdateTriggerPayloadType updateTriggerPayloadType;
+
+    /**
      * The current status of trigger. Possible values include: 'Disabled',
      * 'Enabled'.
      */
@@ -77,6 +84,26 @@ public class BaseImageTriggerUpdateParameters {
      */
     public BaseImageTriggerUpdateParameters withUpdateTriggerEndpoint(String updateTriggerEndpoint) {
         this.updateTriggerEndpoint = updateTriggerEndpoint;
+        return this;
+    }
+
+    /**
+     * Get type of Payload body for Base image update triggers. Possible values include: 'Default', 'Token'.
+     *
+     * @return the updateTriggerPayloadType value
+     */
+    public UpdateTriggerPayloadType updateTriggerPayloadType() {
+        return this.updateTriggerPayloadType;
+    }
+
+    /**
+     * Set type of Payload body for Base image update triggers. Possible values include: 'Default', 'Token'.
+     *
+     * @param updateTriggerPayloadType the updateTriggerPayloadType value to set
+     * @return the BaseImageTriggerUpdateParameters object itself.
+     */
+    public BaseImageTriggerUpdateParameters withUpdateTriggerPayloadType(UpdateTriggerPayloadType updateTriggerPayloadType) {
+        this.updateTriggerPayloadType = updateTriggerPayloadType;
         return this;
     }
 
