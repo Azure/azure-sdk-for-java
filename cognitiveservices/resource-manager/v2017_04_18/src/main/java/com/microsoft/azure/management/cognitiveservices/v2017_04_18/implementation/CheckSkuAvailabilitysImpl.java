@@ -15,8 +15,6 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckSkuAvailabilityResultList;
 import java.util.List;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.SkuName;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Kind;
 
 class CheckSkuAvailabilitysImpl extends WrapperImpl<CheckSkuAvailabilitysInner> implements CheckSkuAvailabilitys {
     private final CognitiveServicesManager manager;
@@ -31,7 +29,7 @@ class CheckSkuAvailabilitysImpl extends WrapperImpl<CheckSkuAvailabilitysInner> 
     }
 
     @Override
-    public Observable<CheckSkuAvailabilityResultList> listAsync(String location, List<SkuName> skus, Kind kind, String type) {
+    public Observable<CheckSkuAvailabilityResultList> listAsync(String location, List<String> skus, String kind, String type) {
         CheckSkuAvailabilitysInner client = this.inner();
         return client.listAsync(location, skus, kind, type)
         .map(new Func1<CheckSkuAvailabilityResultListInner, CheckSkuAvailabilityResultList>() {

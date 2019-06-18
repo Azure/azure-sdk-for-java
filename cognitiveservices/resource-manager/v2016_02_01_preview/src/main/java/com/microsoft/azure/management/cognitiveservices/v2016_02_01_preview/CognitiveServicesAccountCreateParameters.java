@@ -79,7 +79,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the kind value.
+     * Get required. Indicates the type of cognitive service account. Possible values include: 'Academic', 'Bing.Autosuggest', 'Bing.Search', 'Bing.Speech', 'Bing.SpellCheck', 'ComputerVision', 'ContentModerator', 'Emotion', 'Face', 'LUIS', 'Recommendations', 'SpeakerRecognition', 'Speech', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @return the kind value
      */
@@ -88,7 +88,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the kind value.
+     * Set required. Indicates the type of cognitive service account. Possible values include: 'Academic', 'Bing.Autosuggest', 'Bing.Search', 'Bing.Speech', 'Bing.SpellCheck', 'ComputerVision', 'ContentModerator', 'Emotion', 'Face', 'LUIS', 'Recommendations', 'SpeakerRecognition', 'Speech', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -99,7 +99,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the location value.
+     * Get required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
      *
      * @return the location value
      */
@@ -108,7 +108,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
      *
      * @param location the location value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -119,7 +119,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @return the tags value
      */
@@ -128,7 +128,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @param tags the tags value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -139,7 +139,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the properties value.
+     * Get must exist in the request. Must not be null.
      *
      * @return the properties value
      */
@@ -148,7 +148,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the properties value.
+     * Set must exist in the request. Must not be null.
      *
      * @param properties the properties value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.

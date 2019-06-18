@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.NetworkRuleSet;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -53,13 +54,26 @@ public class CognitiveServicesAccountInner extends Resource {
     private String internalId;
 
     /**
+     * Optional subdomain name used for token-based authentication.
+     */
+    @JsonProperty(value = "properties.customSubDomainName")
+    private String customSubDomainName;
+
+    /**
+     * A collection of rules governing the accessibility from specific network
+     * locations.
+     */
+    @JsonProperty(value = "properties.networkAcls")
+    private NetworkRuleSet networkAcls;
+
+    /**
      * The SKU of Cognitive Services account.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /**
-     * Get the etag value.
+     * Get entity Tag.
      *
      * @return the etag value
      */
@@ -68,7 +82,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set entity Tag.
      *
      * @param etag the etag value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -79,7 +93,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get type of cognitive service account.
      *
      * @return the kind value
      */
@@ -88,7 +102,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set type of cognitive service account.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -99,7 +113,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Moving', 'Deleting', 'Succeeded', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -108,7 +122,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the endpoint value.
+     * Get endpoint of the created account.
      *
      * @return the endpoint value
      */
@@ -117,7 +131,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the endpoint value.
+     * Set endpoint of the created account.
      *
      * @param endpoint the endpoint value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -128,7 +142,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the internalId value.
+     * Get the internal identifier.
      *
      * @return the internalId value
      */
@@ -137,7 +151,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the internalId value.
+     * Set the internal identifier.
      *
      * @param internalId the internalId value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -148,7 +162,47 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get optional subdomain name used for token-based authentication.
+     *
+     * @return the customSubDomainName value
+     */
+    public String customSubDomainName() {
+        return this.customSubDomainName;
+    }
+
+    /**
+     * Set optional subdomain name used for token-based authentication.
+     *
+     * @param customSubDomainName the customSubDomainName value to set
+     * @return the CognitiveServicesAccountInner object itself.
+     */
+    public CognitiveServicesAccountInner withCustomSubDomainName(String customSubDomainName) {
+        this.customSubDomainName = customSubDomainName;
+        return this;
+    }
+
+    /**
+     * Get a collection of rules governing the accessibility from specific network locations.
+     *
+     * @return the networkAcls value
+     */
+    public NetworkRuleSet networkAcls() {
+        return this.networkAcls;
+    }
+
+    /**
+     * Set a collection of rules governing the accessibility from specific network locations.
+     *
+     * @param networkAcls the networkAcls value to set
+     * @return the CognitiveServicesAccountInner object itself.
+     */
+    public CognitiveServicesAccountInner withNetworkAcls(NetworkRuleSet networkAcls) {
+        this.networkAcls = networkAcls;
+        return this;
+    }
+
+    /**
+     * Get the SKU of Cognitive Services account.
      *
      * @return the sku value
      */
@@ -157,7 +211,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of Cognitive Services account.
      *
      * @param sku the sku value to set
      * @return the CognitiveServicesAccountInner object itself.

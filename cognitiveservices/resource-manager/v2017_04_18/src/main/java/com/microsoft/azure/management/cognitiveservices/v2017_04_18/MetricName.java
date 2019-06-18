@@ -27,7 +27,7 @@ public class MetricName {
     private String localizedValue;
 
     /**
-     * Get the value value.
+     * Get the name of the metric.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class MetricName {
     }
 
     /**
-     * Get the localizedValue value.
+     * Get the friendly name of the metric.
      *
      * @return the localizedValue value
      */

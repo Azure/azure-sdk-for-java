@@ -22,11 +22,11 @@ public interface CheckSkuAvailabilitys extends HasInner<CheckSkuAvailabilitysInn
      *
      * @param location Resource location.
      * @param skus The SKU of the resource.
-     * @param kind The Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
+     * @param kind The Kind of the resource.
      * @param type The Type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<CheckSkuAvailabilityResultList> listAsync(String location, List<SkuName> skus, Kind kind, String type);
+    Observable<CheckSkuAvailabilityResultList> listAsync(String location, List<String> skus, String kind, String type);
 
 }

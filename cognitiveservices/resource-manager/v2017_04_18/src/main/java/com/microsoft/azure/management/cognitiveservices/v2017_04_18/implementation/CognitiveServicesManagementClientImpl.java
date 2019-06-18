@@ -8,15 +8,33 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckDomainAvailabilityParameter;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the CognitiveServicesManagementClientImpl class.
  */
 public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private CognitiveServicesManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -63,11 +81,11 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -76,7 +94,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -86,11 +104,11 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -99,7 +117,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -109,11 +127,11 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -122,7 +140,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -224,6 +242,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.checkSkuAvailabilitys = new CheckSkuAvailabilitysInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -233,6 +252,108 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "CognitiveServicesManagementClient", "2017-04-18");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "CognitiveServicesManagementClient", "2017-04-18");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(CognitiveServicesManagementClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for CognitiveServicesManagementClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface CognitiveServicesManagementClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesManagementClient checkDomainAvailability" })
+        @POST("providers/Microsoft.CognitiveServices/checkDomainAvailability")
+        Observable<Response<ResponseBody>> checkDomainAvailability(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckDomainAvailabilityParameter parameters, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckDomainAvailabilityResultInner object if successful.
+     */
+    public CheckDomainAvailabilityResultInner checkDomainAvailability(String subdomainName, String type) {
+        return checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type).toBlocking().single().body();
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckDomainAvailabilityResultInner> checkDomainAvailabilityAsync(String subdomainName, String type, final ServiceCallback<CheckDomainAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type), serviceCallback);
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckDomainAvailabilityResultInner object
+     */
+    public Observable<CheckDomainAvailabilityResultInner> checkDomainAvailabilityAsync(String subdomainName, String type) {
+        return checkDomainAvailabilityWithServiceResponseAsync(subdomainName, type).map(new Func1<ServiceResponse<CheckDomainAvailabilityResultInner>, CheckDomainAvailabilityResultInner>() {
+            @Override
+            public CheckDomainAvailabilityResultInner call(ServiceResponse<CheckDomainAvailabilityResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param subdomainName The subdomain name to use.
+     * @param type The Type of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckDomainAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<CheckDomainAvailabilityResultInner>> checkDomainAvailabilityWithServiceResponseAsync(String subdomainName, String type) {
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        if (subdomainName == null) {
+            throw new IllegalArgumentException("Parameter subdomainName is required and cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Parameter type is required and cannot be null.");
+        }
+        CheckDomainAvailabilityParameter parameters = new CheckDomainAvailabilityParameter();
+        parameters.withSubdomainName(subdomainName);
+        parameters.withType(type);
+        return service.checkDomainAvailability(this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckDomainAvailabilityResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckDomainAvailabilityResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckDomainAvailabilityResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckDomainAvailabilityResultInner> checkDomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<CheckDomainAvailabilityResultInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<CheckDomainAvailabilityResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
 }

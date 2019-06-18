@@ -11,16 +11,21 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementat
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccount;
 import rx.Observable;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Kind;
+import java.util.Map;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.NetworkRuleSet;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
 import rx.functions.Func1;
 
 class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountInner, CognitiveServicesAccountImpl, CognitiveServicesManager> implements CognitiveServicesAccount, CognitiveServicesAccount.Definition, CognitiveServicesAccount.Update {
+    private Sku usku;
+    private Map<String, String> utags;
+    private Object uproperties;
     private CognitiveServicesAccountCreateParameters createParameter;
     CognitiveServicesAccountImpl(String name, CognitiveServicesAccountInner inner, CognitiveServicesManager manager) {
         super(name, inner, manager);
+        this.usku = new Sku();
         this.createParameter = new CognitiveServicesAccountCreateParameters();
     }
 
@@ -43,7 +48,7 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     @Override
     public Observable<CognitiveServicesAccount> updateResourceAsync() {
         AccountsInner client = this.manager().inner().accounts();
-        return client.updateAsync(this.resourceGroupName(), this.name())
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.usku, this.utags, this.uproperties)
             .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccountInner>() {
                @Override
                public CognitiveServicesAccountInner call(CognitiveServicesAccountInner resource) {
@@ -66,7 +71,13 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     private void resetCreateUpdateParameters() {
+        this.usku = new Sku();
         this.createParameter = new CognitiveServicesAccountCreateParameters();
+    }
+
+    @Override
+    public String customSubDomainName() {
+        return this.inner().customSubDomainName();
     }
 
     @Override
@@ -90,6 +101,11 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
+    public NetworkRuleSet networkAcls() {
+        return this.inner().networkAcls();
+    }
+
+    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -100,20 +116,34 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
-    public CognitiveServicesAccountImpl withKind(Kind kind) {
+    public CognitiveServicesAccountImpl withKind(String kind) {
         this.createParameter.withKind(kind);
         return this;
     }
 
     @Override
+    public CognitiveServicesAccountImpl withTags(Map<String, String> tags) {
+        this.utags = tags;
+        return this;
+    }
+
+    @Override
     public CognitiveServicesAccountImpl withProperties(Object properties) {
-        this.createParameter.withProperties(properties);
+        if (isInCreateMode()) {
+            this.createParameter.withProperties(properties);
+        } else {
+            this.uproperties = properties;
+        }
         return this;
     }
 
     @Override
     public CognitiveServicesAccountImpl withSku(Sku sku) {
-        this.createParameter.withSku(sku);
+        if (isInCreateMode()) {
+            this.createParameter.withSku(sku);
+        } else {
+            this.usku = sku;
+        }
         return this;
     }
 

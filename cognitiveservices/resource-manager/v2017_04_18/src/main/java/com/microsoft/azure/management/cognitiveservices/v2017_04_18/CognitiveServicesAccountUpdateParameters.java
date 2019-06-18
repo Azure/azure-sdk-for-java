@@ -32,7 +32,13 @@ public class CognitiveServicesAccountUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the sku value.
+     * Additional properties for Account. Only provided fields will be updated.
+     */
+    @JsonProperty(value = "properties")
+    private Object properties;
+
+    /**
+     * Get gets or sets the SKU of the resource.
      *
      * @return the sku value
      */
@@ -41,7 +47,7 @@ public class CognitiveServicesAccountUpdateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set gets or sets the SKU of the resource.
      *
      * @param sku the sku value to set
      * @return the CognitiveServicesAccountUpdateParameters object itself.
@@ -52,7 +58,7 @@ public class CognitiveServicesAccountUpdateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @return the tags value
      */
@@ -61,13 +67,33 @@ public class CognitiveServicesAccountUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @param tags the tags value to set
      * @return the CognitiveServicesAccountUpdateParameters object itself.
      */
     public CognitiveServicesAccountUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get additional properties for Account. Only provided fields will be updated.
+     *
+     * @return the properties value
+     */
+    public Object properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set additional properties for Account. Only provided fields will be updated.
+     *
+     * @param properties the properties value to set
+     * @return the CognitiveServicesAccountUpdateParameters object itself.
+     */
+    public CognitiveServicesAccountUpdateParameters withProperties(Object properties) {
+        this.properties = properties;
         return this;
     }
 

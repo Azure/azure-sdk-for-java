@@ -10,20 +10,26 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.CognitiveServicesManager;
+import java.util.Map;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.CognitiveServicesAccountInner;
 
 /**
  * Type representing CognitiveServicesAccount.
  */
 public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAccountInner>, Resource, GroupableResourceCore<CognitiveServicesManager, CognitiveServicesAccountInner>, HasResourceGroup, Refreshable<CognitiveServicesAccount>, Updatable<CognitiveServicesAccount.Update>, HasManager<CognitiveServicesManager> {
+    /**
+     * @return the customSubDomainName value.
+     */
+    String customSubDomainName();
+
     /**
      * @return the endpoint value.
      */
@@ -43,6 +49,11 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
      * @return the kind value.
      */
     String kind();
+
+    /**
+     * @return the networkAcls value.
+     */
+    NetworkRuleSet networkAcls();
 
     /**
      * @return the provisioningState value.
@@ -82,8 +93,10 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         interface WithKind {
            /**
             * Specifies kind.
-            */
-            WithProperties withKind(Kind kind);
+            * @param kind Required. Gets or sets the Kind of the resource
+            * @return the next definition stage
+*/
+            WithProperties withKind(String kind);
         }
 
         /**
@@ -92,7 +105,9 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         interface WithProperties {
            /**
             * Specifies properties.
-            */
+            * @param properties Must exist in the request. Must be an empty object. Must not be null
+            * @return the next definition stage
+*/
             WithSku withProperties(Object properties);
         }
 
@@ -102,7 +117,9 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku Required. Gets or sets the SKU of the resource
+            * @return the next definition stage
+*/
             WithCreate withSku(Sku sku);
         }
 
@@ -117,12 +134,48 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     /**
      * The template for a CognitiveServicesAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku, UpdateStages.WithTags, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of CognitiveServicesAccount update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku Gets or sets the SKU of the resource
+             * @return the next update stage
+             */
+            Update withSku(Sku sku);
+        }
+
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters
+             * @return the next update stage
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties Additional properties for Account. Only provided fields will be updated
+             * @return the next update stage
+             */
+            Update withProperties(Object properties);
+        }
+
     }
 }

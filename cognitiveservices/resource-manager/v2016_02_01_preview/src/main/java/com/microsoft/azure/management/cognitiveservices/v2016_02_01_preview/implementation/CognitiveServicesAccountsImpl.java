@@ -40,7 +40,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         return new CognitiveServicesAccountImpl(name, new CognitiveServicesAccountInner(), this.manager());
     }
 
-    private CognitiveServicesAccountImpl wrapModel(CognitiveServicesAccountInner inner) {
+    private CognitiveServicesAccountImpl wrapCognitiveServicesAccountModel(CognitiveServicesAccountInner inner) {
         return  new CognitiveServicesAccountImpl(inner.name(), inner, manager());
     }
 
@@ -54,7 +54,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         return this.getCognitiveServicesAccountInnerUsingCognitiveServicesAccountsInnerAsync(resourceGroupName, name).map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount> () {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+                return wrapCognitiveServicesAccountModel(inner);
             }
         });
     }
@@ -72,7 +72,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+                return wrapCognitiveServicesAccountModel(inner);
             }
         });
     }
@@ -90,7 +90,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+                return wrapCognitiveServicesAccountModel(inner);
             }
         });
     }

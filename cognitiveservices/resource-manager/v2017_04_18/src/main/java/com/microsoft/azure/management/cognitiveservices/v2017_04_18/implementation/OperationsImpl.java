@@ -28,41 +28,22 @@ class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations 
         return this.manager;
     }
 
-    private Observable<Page<OperationEntityInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        OperationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<OperationEntityInner>, Observable<Page<OperationEntityInner>>>() {
-            @Override
-            public Observable<Page<OperationEntityInner>> call(Page<OperationEntityInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<OperationEntity> listAsync() {
         OperationsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<OperationEntityInner>, Observable<Page<OperationEntityInner>>>() {
-            @Override
-            public Observable<Page<OperationEntityInner>> call(Page<OperationEntityInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<OperationEntityInner>, Iterable<OperationEntityInner>>() {
             @Override
             public Iterable<OperationEntityInner> call(Page<OperationEntityInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<OperationEntityInner, OperationEntity>() {
             @Override
             public OperationEntity call(OperationEntityInner inner) {
                 return new OperationEntityImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

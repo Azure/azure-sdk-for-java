@@ -40,7 +40,7 @@ public class OperationEntityInner {
     private Object properties;
 
     /**
-     * Get the name value.
+     * Get operation name: {provider}/{resource}/{operation}.
      *
      * @return the name value
      */
@@ -49,7 +49,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Set the name value.
+     * Set operation name: {provider}/{resource}/{operation}.
      *
      * @param name the name value to set
      * @return the OperationEntityInner object itself.
@@ -60,7 +60,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Get the display value.
+     * Get the operation supported by Cognitive Services.
      *
      * @return the display value
      */
@@ -69,7 +69,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Set the display value.
+     * Set the operation supported by Cognitive Services.
      *
      * @param display the display value to set
      * @return the OperationEntityInner object itself.
@@ -80,7 +80,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Get the origin value.
+     * Get the origin of the operation.
      *
      * @return the origin value
      */
@@ -89,7 +89,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Set the origin value.
+     * Set the origin of the operation.
      *
      * @param origin the origin value to set
      * @return the OperationEntityInner object itself.
@@ -100,7 +100,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Get the properties value.
+     * Get additional properties.
      *
      * @return the properties value
      */
@@ -109,7 +109,7 @@ public class OperationEntityInner {
     }
 
     /**
-     * Set the properties value.
+     * Set additional properties.
      *
      * @param properties the properties value to set
      * @return the OperationEntityInner object itself.
