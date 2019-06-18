@@ -236,7 +236,7 @@ public class ClientLogger {
     }
 
     /**
-     * Logger that doesn't perform any logging.
+     * ClientLogger that doesn't perform any logging.
      */
     static class NoopClientLogger  extends ClientLogger {
         private NoopClientLogger(){
