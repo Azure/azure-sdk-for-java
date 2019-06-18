@@ -20,27 +20,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class AzureSearchIndexSink extends CopySink {
     /**
      * Specify the write behavior when upserting documents into Azure Search
-     * Index. Possible values include: 'Merge', 'Upload'.
+     * Index.
      */
     @JsonProperty(value = "writeBehavior")
-    private AzureSearchIndexWriteBehaviorType writeBehavior;
+    private Object writeBehavior;
 
     /**
-     * Get specify the write behavior when upserting documents into Azure Search Index. Possible values include: 'Merge', 'Upload'.
+     * Get specify the write behavior when upserting documents into Azure Search Index.
      *
      * @return the writeBehavior value
      */
-    public AzureSearchIndexWriteBehaviorType writeBehavior() {
+    public Object writeBehavior() {
         return this.writeBehavior;
     }
 
     /**
-     * Set specify the write behavior when upserting documents into Azure Search Index. Possible values include: 'Merge', 'Upload'.
+     * Set specify the write behavior when upserting documents into Azure Search Index.
      *
      * @param writeBehavior the writeBehavior value to set
      * @return the AzureSearchIndexSink object itself.
      */
-    public AzureSearchIndexSink withWriteBehavior(AzureSearchIndexWriteBehaviorType writeBehavior) {
+    public AzureSearchIndexSink withWriteBehavior(Object writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
     }

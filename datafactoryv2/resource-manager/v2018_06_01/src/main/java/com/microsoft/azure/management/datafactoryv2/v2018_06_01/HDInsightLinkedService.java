@@ -70,6 +70,13 @@ public class HDInsightLinkedService extends LinkedServiceInner {
     private Object isEspEnabled;
 
     /**
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS
+     * Gen2. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.fileSystem")
+    private Object fileSystem;
+
+    /**
      * Get hDInsight cluster URI. Type: string (or Expression with resultType string).
      *
      * @return the clusterUri value
@@ -206,6 +213,26 @@ public class HDInsightLinkedService extends LinkedServiceInner {
      */
     public HDInsightLinkedService withIsEspEnabled(Object isEspEnabled) {
         this.isEspEnabled = isEspEnabled;
+        return this;
+    }
+
+    /**
+     * Get specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with resultType string).
+     *
+     * @return the fileSystem value
+     */
+    public Object fileSystem() {
+        return this.fileSystem;
+    }
+
+    /**
+     * Set specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with resultType string).
+     *
+     * @param fileSystem the fileSystem value to set
+     * @return the HDInsightLinkedService object itself.
+     */
+    public HDInsightLinkedService withFileSystem(Object fileSystem) {
+        this.fileSystem = fileSystem;
         return this;
     }
 

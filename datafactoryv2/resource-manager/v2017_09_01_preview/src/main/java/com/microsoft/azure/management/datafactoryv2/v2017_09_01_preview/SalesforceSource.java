@@ -25,11 +25,10 @@ public class SalesforceSource extends CopySource {
     private Object query;
 
     /**
-     * The read behavior for the operation. Default is Query. Possible values
-     * include: 'Query', 'QueryAll'.
+     * The read behavior for the operation. Default is Query.
      */
     @JsonProperty(value = "readBehavior")
-    private SalesforceSourceReadBehavior readBehavior;
+    private Object readBehavior;
 
     /**
      * Get database query. Type: string (or Expression with resultType string).
@@ -52,21 +51,21 @@ public class SalesforceSource extends CopySource {
     }
 
     /**
-     * Get the read behavior for the operation. Default is Query. Possible values include: 'Query', 'QueryAll'.
+     * Get the read behavior for the operation. Default is Query.
      *
      * @return the readBehavior value
      */
-    public SalesforceSourceReadBehavior readBehavior() {
+    public Object readBehavior() {
         return this.readBehavior;
     }
 
     /**
-     * Set the read behavior for the operation. Default is Query. Possible values include: 'Query', 'QueryAll'.
+     * Set the read behavior for the operation. Default is Query.
      *
      * @param readBehavior the readBehavior value to set
      * @return the SalesforceSource object itself.
      */
-    public SalesforceSource withReadBehavior(SalesforceSourceReadBehavior readBehavior) {
+    public SalesforceSource withReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
         return this;
     }

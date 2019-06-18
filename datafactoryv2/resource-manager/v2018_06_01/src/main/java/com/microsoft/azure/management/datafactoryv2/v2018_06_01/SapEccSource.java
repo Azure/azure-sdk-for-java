@@ -23,14 +23,14 @@ public class SapEccSource extends CopySource {
      * with resultType string).
      */
     @JsonProperty(value = "query")
-    private String query;
+    private Object query;
 
     /**
      * Get sAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType string).
      *
      * @return the query value
      */
-    public String query() {
+    public Object query() {
         return this.query;
     }
 
@@ -40,7 +40,7 @@ public class SapEccSource extends CopySource {
      * @param query the query value to set
      * @return the SapEccSource object itself.
      */
-    public SapEccSource withQuery(String query) {
+    public SapEccSource withQuery(Object query) {
         this.query = query;
         return this;
     }

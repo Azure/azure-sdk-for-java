@@ -19,28 +19,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GZip")
 public class DatasetGZipCompression extends DatasetCompression {
     /**
-     * The GZip compression level. Possible values include: 'Optimal',
-     * 'Fastest'.
+     * The GZip compression level.
      */
     @JsonProperty(value = "level")
-    private DatasetCompressionLevel level;
+    private Object level;
 
     /**
-     * Get the GZip compression level. Possible values include: 'Optimal', 'Fastest'.
+     * Get the GZip compression level.
      *
      * @return the level value
      */
-    public DatasetCompressionLevel level() {
+    public Object level() {
         return this.level;
     }
 
     /**
-     * Set the GZip compression level. Possible values include: 'Optimal', 'Fastest'.
+     * Set the GZip compression level.
      *
      * @param level the level value to set
      * @return the DatasetGZipCompression object itself.
      */
-    public DatasetGZipCompression withLevel(DatasetCompressionLevel level) {
+    public DatasetGZipCompression withLevel(Object level) {
         this.level = level;
         return this;
     }

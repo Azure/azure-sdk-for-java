@@ -21,11 +21,10 @@ public class JsonFormat extends DatasetStorageFormat {
     /**
      * File pattern of JSON. To be more specific, the way of separating a
      * collection of JSON objects. The default value is 'setOfObjects'. It is
-     * case-sensitive. Possible values include: 'setOfObjects',
-     * 'arrayOfObjects'.
+     * case-sensitive.
      */
     @JsonProperty(value = "filePattern")
-    private JsonFormatFilePattern filePattern;
+    private Object filePattern;
 
     /**
      * The character used to separate nesting levels. Default value is '.'
@@ -64,21 +63,21 @@ public class JsonFormat extends DatasetStorageFormat {
     private Object jsonPathDefinition;
 
     /**
-     * Get file pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'. It is case-sensitive. Possible values include: 'setOfObjects', 'arrayOfObjects'.
+     * Get file pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'. It is case-sensitive.
      *
      * @return the filePattern value
      */
-    public JsonFormatFilePattern filePattern() {
+    public Object filePattern() {
         return this.filePattern;
     }
 
     /**
-     * Set file pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'. It is case-sensitive. Possible values include: 'setOfObjects', 'arrayOfObjects'.
+     * Set file pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'. It is case-sensitive.
      *
      * @param filePattern the filePattern value to set
      * @return the JsonFormat object itself.
      */
-    public JsonFormat withFilePattern(JsonFormatFilePattern filePattern) {
+    public JsonFormat withFilePattern(Object filePattern) {
         this.filePattern = filePattern;
         return this;
     }

@@ -19,11 +19,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SalesforceSink")
 public class SalesforceSink extends CopySink {
     /**
-     * The write behavior for the operation. Default is Insert. Possible values
-     * include: 'Insert', 'Upsert'.
+     * The write behavior for the operation. Default is Insert.
      */
     @JsonProperty(value = "writeBehavior")
-    private SalesforceSinkWriteBehavior writeBehavior;
+    private Object writeBehavior;
 
     /**
      * The name of the external ID field for upsert operation. Default value is
@@ -46,21 +45,21 @@ public class SalesforceSink extends CopySink {
     private Object ignoreNullValues;
 
     /**
-     * Get the write behavior for the operation. Default is Insert. Possible values include: 'Insert', 'Upsert'.
+     * Get the write behavior for the operation. Default is Insert.
      *
      * @return the writeBehavior value
      */
-    public SalesforceSinkWriteBehavior writeBehavior() {
+    public Object writeBehavior() {
         return this.writeBehavior;
     }
 
     /**
-     * Set the write behavior for the operation. Default is Insert. Possible values include: 'Insert', 'Upsert'.
+     * Set the write behavior for the operation. Default is Insert.
      *
      * @param writeBehavior the writeBehavior value to set
      * @return the SalesforceSink object itself.
      */
-    public SalesforceSink withWriteBehavior(SalesforceSinkWriteBehavior writeBehavior) {
+    public SalesforceSink withWriteBehavior(Object writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
     }

@@ -42,6 +42,12 @@ public class IntegrationRuntimeSsisProperties {
     private IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties;
 
     /**
+     * Data proxy properties for a managed dedicated integration runtime.
+     */
+    @JsonProperty(value = "dataProxyProperties")
+    private IntegrationRuntimeDataProxyProperties dataProxyProperties;
+
+    /**
      * The edition for the SSIS Integration Runtime. Possible values include:
      * 'Standard', 'Enterprise'.
      */
@@ -125,6 +131,26 @@ public class IntegrationRuntimeSsisProperties {
      */
     public IntegrationRuntimeSsisProperties withCustomSetupScriptProperties(IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties) {
         this.customSetupScriptProperties = customSetupScriptProperties;
+        return this;
+    }
+
+    /**
+     * Get data proxy properties for a managed dedicated integration runtime.
+     *
+     * @return the dataProxyProperties value
+     */
+    public IntegrationRuntimeDataProxyProperties dataProxyProperties() {
+        return this.dataProxyProperties;
+    }
+
+    /**
+     * Set data proxy properties for a managed dedicated integration runtime.
+     *
+     * @param dataProxyProperties the dataProxyProperties value to set
+     * @return the IntegrationRuntimeSsisProperties object itself.
+     */
+    public IntegrationRuntimeSsisProperties withDataProxyProperties(IntegrationRuntimeDataProxyProperties dataProxyProperties) {
+        this.dataProxyProperties = dataProxyProperties;
         return this;
     }
 

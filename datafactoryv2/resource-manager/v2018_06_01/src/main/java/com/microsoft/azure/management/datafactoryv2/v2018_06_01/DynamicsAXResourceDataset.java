@@ -26,14 +26,14 @@ public class DynamicsAXResourceDataset extends DatasetInner {
      * with resultType string).
      */
     @JsonProperty(value = "typeProperties.path", required = true)
-    private String path;
+    private Object path;
 
     /**
      * Get the path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
      *
      * @return the path value
      */
-    public String path() {
+    public Object path() {
         return this.path;
     }
 
@@ -43,7 +43,7 @@ public class DynamicsAXResourceDataset extends DatasetInner {
      * @param path the path value to set
      * @return the DynamicsAXResourceDataset object itself.
      */
-    public DynamicsAXResourceDataset withPath(String path) {
+    public DynamicsAXResourceDataset withPath(Object path) {
         this.path = path;
         return this;
     }

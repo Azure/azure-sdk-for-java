@@ -47,6 +47,13 @@ public class SqlSink extends CopySink {
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /**
+     * The stored procedure parameter name of the table type. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "storedProcedureTableTypeParameterName")
+    private Object storedProcedureTableTypeParameterName;
+
+    /**
      * Get sQL writer stored procedure name. Type: string (or Expression with resultType string).
      *
      * @return the sqlWriterStoredProcedureName value
@@ -123,6 +130,26 @@ public class SqlSink extends CopySink {
      */
     public SqlSink withStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /**
+     * Get the stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
+     *
+     * @return the storedProcedureTableTypeParameterName value
+     */
+    public Object storedProcedureTableTypeParameterName() {
+        return this.storedProcedureTableTypeParameterName;
+    }
+
+    /**
+     * Set the stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
+     *
+     * @param storedProcedureTableTypeParameterName the storedProcedureTableTypeParameterName value to set
+     * @return the SqlSink object itself.
+     */
+    public SqlSink withStoredProcedureTableTypeParameterName(Object storedProcedureTableTypeParameterName) {
+        this.storedProcedureTableTypeParameterName = storedProcedureTableTypeParameterName;
         return this;
     }
 

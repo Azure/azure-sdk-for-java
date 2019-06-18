@@ -26,14 +26,14 @@ public class SapEccResourceDataset extends DatasetInner {
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.path", required = true)
-    private String path;
+    private Object path;
 
     /**
      * Get the path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      *
      * @return the path value
      */
-    public String path() {
+    public Object path() {
         return this.path;
     }
 
@@ -43,7 +43,7 @@ public class SapEccResourceDataset extends DatasetInner {
      * @param path the path value to set
      * @return the SapEccResourceDataset object itself.
      */
-    public SapEccResourceDataset withPath(String path) {
+    public SapEccResourceDataset withPath(Object path) {
         this.path = path;
         return this;
     }

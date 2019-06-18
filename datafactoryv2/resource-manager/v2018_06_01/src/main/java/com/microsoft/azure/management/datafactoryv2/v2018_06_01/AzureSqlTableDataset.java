@@ -25,7 +25,7 @@ public class AzureSqlTableDataset extends DatasetInner {
      * The table name of the Azure SQL database. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tableName", required = true)
+    @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
