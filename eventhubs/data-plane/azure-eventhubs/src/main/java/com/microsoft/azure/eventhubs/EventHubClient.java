@@ -84,31 +84,6 @@ public interface EventHubClient {
         return EventHubClientImpl.create(connectionString, retryPolicy, executor);
     }
 
-
-
-    /**
-     * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
-     * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
-     *
-     * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param eventHubName  EventHub name
-     * @param authCallback  A callback which returns a JSON Web Token obtained from AAD.
-     * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
-     * @throws EventHubException If the EventHubs service encountered problems during connection creation.
-     * @throws IOException If the underlying Proton-J layer encounter network errors.
-     */
-    public static CompletableFuture<EventHubClient> createWithAzureActiveDirectory(
-            final URI endpointAddress,
-            final String eventHubName,
-            final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback,
-            final ScheduledExecutorService executor,
-            final EventHubClientOptions options) throws EventHubException, IOException {
-    	return createWithAzureActiveDirectory(endpointAddress, eventHubName, authCallback, AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY, executor, options);
-    }
-    
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied namespace endpoint address, eventhub name and authentication mechanism.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.

@@ -11,8 +11,6 @@ import java.util.concurrent.CompletionException;
 import com.microsoft.azure.eventhubs.impl.ClientConstants;
 
 public final class AzureActiveDirectoryTokenProvider implements ITokenProvider {
-	public final static String COMMON_AUTHORITY = "https://login.microsoftonline.com/common";
-
     private final AuthenticationCallback authCallback;
     private final String authority;
     private final Object authCallbackState;

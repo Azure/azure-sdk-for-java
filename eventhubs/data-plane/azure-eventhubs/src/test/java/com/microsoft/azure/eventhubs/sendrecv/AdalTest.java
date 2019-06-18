@@ -28,15 +28,6 @@ public class AdalTest extends AadBase {
 	public void runSendReceiveWithAuthCallbackTest() throws Exception {
 		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
 		final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
-				callback, this.executorService, null).get();
-
-		innerTest(ehc);
-	}
-	
-	//@Test
-	public void runSendReceiveWithAuthCallbackWithAuthorityTest() throws Exception {
-		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
-		final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
 				callback, this.authority, this.executorService, null).get();
 
 		innerTest(ehc);
