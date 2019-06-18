@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs;
 
-import com.azure.eventhubs.implementation.AmqpConstants;
+import com.azure.core.amqp.MessageConstant;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
@@ -13,28 +13,25 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 public class EventDataTest {
 
     @Test(expected = NullPointerException.class)
     public void eventDataByteArrayNotNull() {
-        byte[] byteArray = null;
-        new EventData(byteArray);
+        new EventData((byte[]) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void eventDataByteArrayNotNullBuffer() {
-        final ByteBuffer buffer = null;
-        new EventData(buffer);
+        new EventData((ByteBuffer) null);
     }
 
-    // TODO: re investigate this test, it contains SystemProperties inner class
     @Test
-    public void sendingEventsSysPropsShouldNotBeNull() {
+    public void sendingEventsPropsShouldNotBeNull() {
         EventData eventData = new EventData("Test".getBytes());
-        Map sys = eventData.systemProperties();
         Assert.assertTrue(eventData.systemProperties() != null);
+        Assert.assertTrue(eventData.body() != null);
+        Assert.assertTrue(eventData.properties() != null);
     }
 
     @Test
@@ -61,12 +58,10 @@ public class EventDataTest {
 
     private EventData constructMessage(long seqNumber) {
         HashMap<Symbol, Object> properties = new HashMap<>();
-        properties.put(AmqpConstants.SEQUENCE_NUMBER, seqNumber);
+        properties.put(Symbol.getSymbol(MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), seqNumber);
 
         Message message = Message.Factory.create();
-
         message.setMessageAnnotations(new MessageAnnotations(properties));
-
         return new EventData(message);
     }
 }
