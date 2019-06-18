@@ -34,8 +34,8 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     /** Static value horovod for ToolType. */
     public static final ToolType HOROVOD = fromString("horovod");
 
-    /** Static value mpi for ToolType. */
-    public static final ToolType MPI = fromString("mpi");
+    /** Static value custommpi for ToolType. */
+    public static final ToolType CUSTOMMPI = fromString("custommpi");
 
     /** Static value custom for ToolType. */
     public static final ToolType CUSTOM = fromString("custom");

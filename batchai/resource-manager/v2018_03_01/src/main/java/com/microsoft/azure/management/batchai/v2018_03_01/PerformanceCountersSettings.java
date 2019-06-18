@@ -24,7 +24,7 @@ public class PerformanceCountersSettings {
     private AppInsightsReference appInsightsReference;
 
     /**
-     * Get the appInsightsReference value.
+     * Get if provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
      *
      * @return the appInsightsReference value
      */
@@ -33,7 +33,7 @@ public class PerformanceCountersSettings {
     }
 
     /**
-     * Set the appInsightsReference value.
+     * Set if provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
      *
      * @param appInsightsReference the appInsightsReference value to set
      * @return the PerformanceCountersSettings object itself.
