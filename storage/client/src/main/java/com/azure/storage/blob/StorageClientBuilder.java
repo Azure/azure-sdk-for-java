@@ -60,35 +60,15 @@ public final class StorageClientBuilder {
         policies = new ArrayList<>();
     }
 
-    private StorageClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
-        HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
-        this.policies = policies;
-        this.endpoint = endpoint;
-        this.credentials = credentials;
-        this.httpClient = httpClient;
-        this.logLevel = logLevel;
-        this.retryPolicy = retryPolicy;
-        this.configuration = configuration;
-    }
-
-    StorageClientBuilder copyBuilder() {
-        return new StorageClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
-    }
-
-    ContainerClientBuilder copyAsContainerBuilder() {
-        return new ContainerClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
-    }
-
-    /**
-     * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
-     */
-    AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        if (configuration == null) {
+            configuration = Configuration.NONE;
+        }
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -106,22 +86,21 @@ public final class StorageClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link StorageClient} created from the configurations in this builder.
      */
     public StorageClient buildClient() {
-        return new StorageClient(this);
+        return new StorageClient(buildAsyncClient());
     }
 
     /**
      * @return a {@link StorageAsyncClient} created from the configurations in this builder.
      */
     public StorageAsyncClient buildAsyncClient() {
-        return new StorageAsyncClient(this);
+        return new StorageAsyncClient(buildImpl());
     }
 
     /**

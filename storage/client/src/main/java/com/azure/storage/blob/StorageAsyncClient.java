@@ -5,7 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
@@ -17,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 
 /**
@@ -41,16 +44,15 @@ import java.time.OffsetDateTime;
  * object through {@link Mono#toFuture()}.
  */
 public final class StorageAsyncClient {
-
+    AzureBlobStorageBuilder azureBlobStorageBuilder;
     StorageAsyncRawClient storageAsyncRawClient;
-    private StorageClientBuilder builder;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    StorageAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.storageAsyncRawClient = new StorageAsyncRawClient(azureBlobStorage);
+    StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.storageAsyncRawClient = new StorageAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
@@ -64,15 +66,6 @@ public final class StorageAsyncClient {
     }
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the storage account client builder
-     */
-    StorageAsyncClient(StorageClientBuilder builder) {
-        this.builder = builder;
-        this.storageAsyncRawClient = new StorageAsyncRawClient(builder.buildImpl());
-    }
-
-    /**
      * Initializes a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
@@ -82,10 +75,20 @@ public final class StorageAsyncClient {
      *     A {@link ContainerAsyncClient} object pointing to the specified container
      */
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
+        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getUrl(), containerName).toString())
+            .pipeline(storageAsyncRawClient.azureBlobStorage.httpPipeline()));
+    }
+
+    /**
+     * Gets the URL of the storage account represented by this client.
+     * @return the URL.
+     */
+    public URL getUrl() {
         try {
-            return new ContainerAsyncClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
+            return new URL(storageAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), storageAsyncRawClient.azureBlobStorage.url()), e);
         }
     }
 

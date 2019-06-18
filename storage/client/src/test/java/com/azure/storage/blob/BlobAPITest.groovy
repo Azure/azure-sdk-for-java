@@ -226,7 +226,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties default"() {
         when:
-        BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
+        BlobProperties headers = bu.getProperties(null, null)
 
         then:
         validateBasicHeaders(headers)
@@ -332,7 +332,7 @@ class BlobAPITest extends APISpec {
 
     /*def "Get properties context"() {
         setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobGetPropertiesHeaders)))
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobProperties)))
 
         bu = bu.withPipeline(pipeline)
 
@@ -372,7 +372,7 @@ class BlobAPITest extends APISpec {
             .blobContentType(contentType)
         bu.setHTTPHeaders(putHeaders, null, null)
 
-        BlobGetPropertiesHeaders receivedHeaders = bu.getProperties(null, null)
+        BlobProperties receivedHeaders = bu.getProperties(null, null)
 
         expect:
         validateBlobHeaders(receivedHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -593,7 +593,7 @@ class BlobAPITest extends APISpec {
         /*BlobAcquireLeaseHeaders*/ String leaseId = bu.acquireLease(proposedID, leaseTime, null, null)
 
         when:
-        BlobGetPropertiesHeaders properties = bu.getProperties(null, null)
+        BlobProperties properties = bu.getProperties(null, null)
 
         then:
         properties.leaseState() == leaseState
@@ -1183,7 +1183,7 @@ class BlobAPITest extends APISpec {
         while (bu2.getProperties(null, null).blockingGet().headers().copyStatus() == CopyStatusType.PENDING) {
             sleep(1000)
         }
-        BlobGetPropertiesHeaders headers2 = bu2.getProperties(null, null).blockingGet().headers()
+        BlobProperties headers2 = bu2.getProperties(null, null).blockingGet().headers()
 
         then:
         headers2.copyStatus() == CopyStatusType.SUCCESS
@@ -1845,7 +1845,7 @@ class BlobAPITest extends APISpec {
 
         bu.setTier(AccessTier.HOT, null, null)
 
-        BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
+        BlobProperties headers = bu.getProperties(null, null)
         Boolean inferred2 = headers.accessTierInferred()
         Boolean inferredList2 = cu.listBlobsFlat(null).iterator().next().properties().accessTierInferred()
 

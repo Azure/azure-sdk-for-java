@@ -329,8 +329,7 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         when:
-        BlockBlobCommitBlockListHeaders headers =
-            bu.commitBlockList(ids)
+        BlockBlobCommitBlockListHeaders headers = bu.commitBlockList(ids)
 
         then:
 //        response.statusCode() == 201

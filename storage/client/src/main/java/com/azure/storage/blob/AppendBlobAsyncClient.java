@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.models.AppendBlobAppendBlockHeaders;
@@ -56,11 +57,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link AppendBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorage);
+    AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
+        appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**

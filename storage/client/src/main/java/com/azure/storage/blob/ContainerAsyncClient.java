@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
@@ -43,7 +44,7 @@ import java.util.List;
 public final class ContainerAsyncClient {
 
     ContainerAsyncRawClient containerAsyncRawClient;
-    private ContainerClientBuilder builder;
+    private AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -53,11 +54,11 @@ public final class ContainerAsyncClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param builder the container client builder
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    ContainerAsyncClient(ContainerClientBuilder builder) {
-        this.builder = builder;
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(builder.buildImpl());
+    ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
@@ -80,11 +81,9 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
-        try {
-            return new BlockBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -100,11 +99,9 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
-        try {
-            return new PageBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -120,11 +117,9 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
-        try {
-            return new AppendBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -140,10 +135,32 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+    }
+
+    /**
+     * Initializes a {@link StorageAsyncClient} object pointing to the storage account this container is in.
+     *
+     * @return
+     *     A {@link StorageAsyncClient} object pointing to the specified storage account
+     */
+    public StorageAsyncClient getStorageAsyncClient() {
+        return new StorageAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.stripLastPathSegment(getUrl()).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+    }
+
+    /**
+     * Gets the URL of the container represented by this client.
+     * @return the URL.
+     */
+    public URL getUrl() {
         try {
-            return new BlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+            return new URL(containerAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), containerAsyncRawClient.azureBlobStorage.url()), e);
         }
     }
 

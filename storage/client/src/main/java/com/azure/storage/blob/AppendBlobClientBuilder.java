@@ -60,11 +60,7 @@ public final class AppendBlobClientBuilder {
         policies = new ArrayList<>();
     }
 
-    /**
-     * Constructs an instance of AppendBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
-     */
-    private AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -87,15 +83,14 @@ public final class AppendBlobClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      */
     public AppendBlobClient buildClient() {
-        return new AppendBlobClient(buildImpl());
+        return new AppendBlobClient(buildAsyncClient());
     }
 
     /**

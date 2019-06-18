@@ -35,7 +35,6 @@ import java.util.List;
 public final class ContainerClient {
 
     private ContainerAsyncClient containerAsyncClient;
-    private ContainerClientBuilder builder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -45,11 +44,10 @@ public final class ContainerClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param builder the container client builder
+     * @param containerAsyncClient the async container client
      */
-    ContainerClient(ContainerClientBuilder builder) {
-        this.builder = builder;
-        this.containerAsyncClient  = new ContainerAsyncClient(builder);
+    ContainerClient(ContainerAsyncClient containerAsyncClient) {
+        this.containerAsyncClient  = containerAsyncClient;
     }
 
     /**
@@ -72,11 +70,7 @@ public final class ContainerClient {
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobClient getBlockBlobClient(String blobName) {
-        try {
-            return new BlockBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName));
     }
 
     /**
@@ -92,11 +86,7 @@ public final class ContainerClient {
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
      */
     public PageBlobClient getPageBlobClient(String blobName) {
-        try {
-            return new PageBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName));
     }
 
     /**
@@ -112,11 +102,7 @@ public final class ContainerClient {
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobClient getAppendBlobClient(String blobName) {
-        try {
-            return new AppendBlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName));
     }
 
     /**
@@ -132,11 +118,25 @@ public final class ContainerClient {
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName) {
-        try {
-            return new BlobClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new BlobClient(containerAsyncClient.getBlobAsyncClient(blobName));
+    }
+
+    /**
+     * Initializes a {@link StorageClient} object pointing to the storage account this container is in.
+     *
+     * @return
+     *     A {@link StorageClient} object pointing to the specified storage account
+     */
+    public StorageClient getStorageClient() {
+        return new StorageClient(containerAsyncClient.getStorageAsyncClient());
+    }
+
+    /**
+     * Gets the URL of the container represented by this client.
+     * @return the URL.
+     */
+    public URL getUrl() {
+        return containerAsyncClient.getUrl();
     }
 
     /**

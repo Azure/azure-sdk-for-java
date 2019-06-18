@@ -15,7 +15,7 @@ class NoopConfiguration extends Configuration {
 
     @Override
     public <T> T get(String name, T defaultValue) {
-        return null;
+        return defaultValue;
     }
 
     @Override

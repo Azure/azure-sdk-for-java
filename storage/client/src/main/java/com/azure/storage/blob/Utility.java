@@ -320,17 +320,35 @@ final class Utility {
      *
      * @return A url with the name appended.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      *         Appending the specified name produced an invalid URL.
      */
-    static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
-        UrlBuilder url = UrlBuilder.parse(baseURL.toString());
+    static URL appendToURLPath(URL baseURL, String name) {
+        UrlBuilder url = UrlBuilder.parse(baseURL);
         if (url.path() == null) {
             url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
         } else if (url.path().charAt(url.path().length() - 1) != '/') {
             url.withPath(url.path() + '/');
         }
         url.withPath(url.path() + name);
-        return new URL(url.toString());
+        try {
+            return url.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static URL stripLastPathSegment(URL baseURL) {
+        UrlBuilder url = UrlBuilder.parse(baseURL);
+        if (url.path() != null || !url.path().contains("/")) {
+            throw new IllegalArgumentException(String.format("URL %s does not contain path segments", baseURL));
+        }
+        String newPath = url.path().substring(0, url.path().lastIndexOf('/'));
+        url.withPath(newPath);
+        try {
+            return url.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

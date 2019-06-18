@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -45,10 +46,10 @@ public class BlobClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param blobAsyncClient the async blob client
      */
-    BlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.blobAsyncClient = new BlobAsyncClient(azureBlobStorage);
+    BlobClient(BlobAsyncClient blobAsyncClient) {
+        this.blobAsyncClient = blobAsyncClient;
     }
 
     /**
@@ -69,7 +70,7 @@ public class BlobClient {
      *      A {@link BlockBlobClient} to this resource.
      */
     public BlockBlobClient asBlockBlobClient() {
-        return new BlockBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+        return new BlockBlobClient(blobAsyncClient.asBlockBlobAsyncClient());
     }
 
     /**
@@ -80,7 +81,7 @@ public class BlobClient {
      *      A {@link AppendBlobClient} to this resource.
      */
     public AppendBlobClient asAppendBlobClient() {
-        return new AppendBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+        return new AppendBlobClient(blobAsyncClient.asAppendBlobAsyncClient());
     }
 
     /**
@@ -91,7 +92,27 @@ public class BlobClient {
      *      A {@link PageBlobClient} to this resource.
      */
     public PageBlobClient asPageBlobClient() {
-        return new PageBlobClient(this.blobAsyncClient.blobAsyncRawClient.azureBlobStorage);
+        return new PageBlobClient(blobAsyncClient.asPageBlobAsyncClient());
+    }
+
+    /**
+     * Initializes a {@link ContainerClient} object pointing to the containing this blob is in. This method does
+     * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
+     * containers.
+     *
+     * @return
+     *     A {@link ContainerClient} object pointing to the specified container
+     */
+    public ContainerClient getContainerClient() {
+        return new ContainerClient(blobAsyncClient.getContainerAsyncClient());
+    }
+
+    /**
+     * Gets the URL of the blob represented by this client.
+     * @return the URL.
+     */
+    public URL getUrl() {
+        return blobAsyncClient.getUrl();
     }
 
     /**

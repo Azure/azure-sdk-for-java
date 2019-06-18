@@ -64,7 +64,7 @@ public final class BlockBlobClientBuilder {
      * Constructs an instance of BlockBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    private AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -87,15 +87,14 @@ public final class BlockBlobClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      */
     public BlockBlobClient buildClient() {
-        return new BlockBlobClient(buildImpl());
+        return new BlockBlobClient(buildAsyncClient());
     }
 
     /**

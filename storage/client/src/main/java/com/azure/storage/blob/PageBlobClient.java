@@ -56,11 +56,11 @@ public final class PageBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param pageBlobAsyncClient the async page blob client
      */
-    PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.pageBlobAsyncClient = new PageBlobAsyncClient(azureBlobStorage);
+    PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient) {
+        super(pageBlobAsyncClient);
+        this.pageBlobAsyncClient = pageBlobAsyncClient;
     }
 
     /**

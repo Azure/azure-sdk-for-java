@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -64,11 +65,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorage);
+    PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        super(azureBlobStorageBuilder);
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**

@@ -60,11 +60,7 @@ public final class PageBlobClientBuilder {
         policies = new ArrayList<>();
     }
 
-    /**
-     * Constructs an instance of PageBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
-     */
-    private AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -87,15 +83,14 @@ public final class PageBlobClientBuilder {
 
         return new AzureBlobStorageBuilder()
             .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link PageBlobClient} created from the configurations in this builder.
      */
     public PageBlobClient buildClient() {
-        return new PageBlobClient(buildImpl());
+        return new PageBlobClient(buildAsyncClient());
     }
 
     /**

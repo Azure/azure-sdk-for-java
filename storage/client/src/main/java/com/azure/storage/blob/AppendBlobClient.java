@@ -49,11 +49,11 @@ public final class AppendBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link AppendBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param appendBlobAsyncClient the async append blob client
      */
-    AppendBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.appendBlobAsyncClient = new AppendBlobAsyncClient(azureBlobStorage);
+    AppendBlobClient(AppendBlobAsyncClient appendBlobAsyncClient) {
+        super(appendBlobAsyncClient);
+        this.appendBlobAsyncClient = appendBlobAsyncClient;
     }
 
     /**

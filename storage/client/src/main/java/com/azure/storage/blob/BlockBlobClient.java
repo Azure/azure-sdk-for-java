@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
@@ -57,11 +56,11 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link BlockBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param blockBlobAsyncClient the async block blob client
      */
-    BlockBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.blockBlobAsyncClient = new BlockBlobAsyncClient(azureBlobStorage);
+    BlockBlobClient(BlockBlobAsyncClient blockBlobAsyncClient) {
+        super(blockBlobAsyncClient);
+        this.blockBlobAsyncClient = blockBlobAsyncClient;
     }
 
     /**

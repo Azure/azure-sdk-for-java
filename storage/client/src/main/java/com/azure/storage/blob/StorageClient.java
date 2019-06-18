@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.StorageServiceProperties;
@@ -35,14 +36,13 @@ import java.time.OffsetDateTime;
 public final class StorageClient {
 
     private StorageAsyncClient storageAsyncClient;
-    private StorageClientBuilder builder;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param storageAsyncClient the async storage account client
      */
-    StorageClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.storageAsyncClient = new StorageAsyncClient(azureBlobStorage);
+    StorageClient(StorageAsyncClient storageAsyncClient) {
+        this.storageAsyncClient = storageAsyncClient;
     }
 
     /**
@@ -56,15 +56,6 @@ public final class StorageClient {
     }
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the storage account client builder
-     */
-    StorageClient(StorageClientBuilder builder) {
-        this.builder = builder;
-        this.storageAsyncClient = new StorageAsyncClient(builder);
-    }
-
-    /**
      * Initializes a {@link ContainerClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
@@ -74,11 +65,15 @@ public final class StorageClient {
      *     A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient getContainerClient(String containerName) {
-        try {
-            return new ContainerClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new ContainerClient(storageAsyncClient.getContainerAsyncClient(containerName));
+    }
+
+    /**
+     * Gets the URL of the storage account represented by this client.
+     * @return the URL.
+     */
+    public URL getUrl() {
+        return storageAsyncClient.getUrl();
     }
 
     /**
