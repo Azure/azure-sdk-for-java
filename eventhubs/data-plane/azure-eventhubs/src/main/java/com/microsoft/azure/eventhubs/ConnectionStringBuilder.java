@@ -62,10 +62,12 @@ public final class ConnectionStringBuilder {
     static final String SHARED_ACCESS_SIGNATURE_CONFIG_NAME = "SharedAccessSignature";
     static final String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
     static final String AUTHENTICATION_CONFIG_NAME = "Authentication";
+    
+    static public final String MANAGED_IDENTITY_AUTHENTICATION = "Managed Identity";
 
     private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOST_NAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NANE_CONFIG_NAME
             + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + SHARED_ACCESS_SIGNATURE_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
-            + "|" + TRANSPORT_TYPE_CONFIG_NAME + ")";
+            + "|" + TRANSPORT_TYPE_CONFIG_NAME + "|" + AUTHENTICATION_CONFIG_NAME + ")";
 
     private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX
             + KEY_VALUE_SEPARATOR;

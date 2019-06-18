@@ -130,7 +130,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSharedAccessSignature());
 		} else if (!StringUtil.isNullOrWhiteSpace(csb.getSasKey())) {
 			tokenProvider = new SharedAccessSignatureTokenProvider(csb.getSasKeyName(), csb.getSasKey());
-		} else if ((csb.getAuthentication() != null) && csb.getAuthentication().equalsIgnoreCase("Managed Identity")) {
+		} else if ((csb.getAuthentication() != null) && csb.getAuthentication().equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
 			tokenProvider = new ManagedIdentityTokenProvider();
 		} else {
 			throw new IllegalArgumentException("Connection string must specify a Shared Access Signature, Shared Access Key, or Managed Identity");
