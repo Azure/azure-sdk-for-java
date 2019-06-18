@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.applicationmodel.configuration.ConfigurationAsyncClient;
-import com.azure.applicationmodel.configuration.credentials.ConfigurationClientCredentials;
-import com.azure.applicationmodel.configuration.models.ConfigurationSetting;
-import com.azure.applicationmodel.configuration.models.SettingSelector;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.models.ComplexConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

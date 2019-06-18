@@ -12,7 +12,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-application-model</artifactId>
+  <artifactId>azure-data-appconfiguration</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <name>Microsoft Azure client library for Application Configuration</name>
