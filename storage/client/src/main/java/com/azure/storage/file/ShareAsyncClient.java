@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.ShareCreateHeaders;
 import com.azure.storage.file.models.ShareCreateSnapshotHeaders;
@@ -46,16 +47,20 @@ public class ShareAsyncClient {
     ShareAsyncClient(AzureFileStorageImpl client, String shareName) {
         this.shareName = shareName;
         this.shareSnapshot = null;
-        this.client = new AzureFileStorageImpl(client.httpPipeline())
-            .withUrl(client.url())
-            .withVersion(client.version());
+
+        this.client = new AzureFileStorageBuilder().pipeline(client.httpPipeline())
+            .url(client.url())
+            .version(client.version())
+            .build();
     }
 
     ShareAsyncClient(URL endpoint, HttpPipeline pipeline, String shareName, String shareSnapshot) {
         this.shareName = shareName;
         this.shareSnapshot = shareSnapshot;
-        this.client = new AzureFileStorageImpl(pipeline)
-            .withUrl(endpoint.toString());
+
+        this.client = new AzureFileStorageBuilder().pipeline(pipeline)
+            .url(endpoint.toString())
+            .build();
     }
 
     /**

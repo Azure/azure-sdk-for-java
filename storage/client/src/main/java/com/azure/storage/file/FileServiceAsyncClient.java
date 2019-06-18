@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
@@ -30,8 +31,9 @@ public final class FileServiceAsyncClient {
     private final AzureFileStorageImpl client;
 
     FileServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.client = new AzureFileStorageImpl(httpPipeline)
-            .withUrl(endpoint.toString());
+        this.client = new AzureFileStorageBuilder().pipeline(httpPipeline)
+            .url(endpoint.toString())
+            .build();
     }
 
     /**
