@@ -8,20 +8,15 @@
 
 package com.microsoft.azure.management.sql.v2018_06_01_preview;
 
+import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Observable;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.DatabaseSecurityAlertPolicy;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.implementation.DatabaseSecurityAlertPoliciesInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing DatabaseSecurityAlertPolicies.
  */
-public interface DatabaseSecurityAlertPolicies {
-    /**
-     * Begins definition for a new SecurityAlertPolicy resource.
-     * @param name resource name.
-     * @return the first stage of the new SecurityAlertPolicy definition.
-     */
-    DatabaseSecurityAlertPolicy.DefinitionStages.Blank defineSecurityAlertPolicy(String name);
-
+public interface DatabaseSecurityAlertPolicies extends SupportsCreating<DatabaseSecurityAlertPolicy.DefinitionStages.Blank>, HasInner<DatabaseSecurityAlertPoliciesInner> {
     /**
      * Gets a  database's security alert policy.
      *

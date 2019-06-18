@@ -211,6 +211,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DatabasesInner object to access its operations.
+     */
+    private DatabasesInner databases;
+
+    /**
+     * Gets the DatabasesInner object to access its operations.
+     * @return the DatabasesInner object.
+     */
+    public DatabasesInner databases() {
+        return this.databases;
+    }
+
+    /**
+     * The ElasticPoolsInner object to access its operations.
+     */
+    private ElasticPoolsInner elasticPools;
+
+    /**
+     * Gets the ElasticPoolsInner object to access its operations.
+     * @return the ElasticPoolsInner object.
+     */
+    public ElasticPoolsInner elasticPools() {
+        return this.elasticPools;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -251,6 +277,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsInner(restClient().retrofit(), this);
         this.instancePools = new InstancePoolsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.databases = new DatabasesInner(restClient().retrofit(), this);
+        this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
