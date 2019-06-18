@@ -20,6 +20,7 @@ import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
 import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.JsonSecurityToken;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
@@ -30,6 +31,18 @@ import com.microsoft.azure.eventhubs.impl.EventPositionImpl;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 
+/**
+ * Because of the way JUnit is structured, the individual test classes for AAD libraries have to implement
+ * the actual @Test methods. Each test method tests a different way of creating an EventHubClient, then calls
+ * innerTest() to perform a common set of data-plane operations which the token is expected to allow. 
+ * 
+ * Each test class implements tokenGet() to do the actual token-getting via that library's APIs. All the layers
+ * above that (callback, ITokenProvider, etc.) are just different plumbing to get the same token to where it
+ * needs to go, so those parts are implemented here in the common base class.
+ * 
+ * decodeToken() provides a convenient way to get the token contents as a printable string, allowing the tester
+ * to verify token contents if things are not working as expected. 
+ */
 public abstract class AadBase extends ApiTestBase {
 	protected static URI endpoint;
 	protected static String eventHubName;
@@ -43,13 +56,20 @@ public abstract class AadBase extends ApiTestBase {
         AadBase.eventHubName = csb.getEventHubName();
     }
 
-	protected void innerTest(final EventHubClient ehc) throws EventHubException {
+	protected void innerTest(final EventHubClient ehc) throws EventHubException, InterruptedException, ExecutionException {
+		// Try some runtime operations. We don't care about the result, just that it doesn't throw.
+		EventHubRuntimeInformation ehri = ehc.getRuntimeInformation().get();
+		ehc.getPartitionRuntimeInformation(ehri.getPartitionIds()[ehri.getPartitionCount() - 1]).get();
+		
+		// Open a receiver
         final PartitionReceiver pReceiver = ehc.createReceiverSync("$Default", "0", EventPositionImpl.fromEndOfStream());
 
+        // Open a sender and do a send.
         final PartitionSender pSender = ehc.createPartitionSenderSync("0");
         final String testMessage = "somedata test";
         pSender.send(EventData.create(testMessage.getBytes()));
 
+        // Do some receives.
         int scanned = 0;
         boolean found = false;
         while ((scanned < 10000) && !found) {
@@ -64,6 +84,7 @@ public abstract class AadBase extends ApiTestBase {
 	        }
         }
 
+        // Close everything.
         pSender.closeSync();
         pReceiver.closeSync();;
         ehc.closeSync();
@@ -85,6 +106,7 @@ public abstract class AadBase extends ApiTestBase {
 		
 		@Override
 		public CompletableFuture<String> acquireToken(String audience, String authority, Object state) {
+			//(new Throwable()).printStackTrace();
 			return CompletableFuture.supplyAsync(new TestTokenSupplier(authority, this.clientId, this.clientSecret, audience));
 		}
 	}
@@ -135,7 +157,6 @@ public abstract class AadBase extends ApiTestBase {
 			return retval;
 		}
 	}
-	
 	
 	protected String decodeToken(final String rawToken) {
 		String parts[] = rawToken.split("\\.");

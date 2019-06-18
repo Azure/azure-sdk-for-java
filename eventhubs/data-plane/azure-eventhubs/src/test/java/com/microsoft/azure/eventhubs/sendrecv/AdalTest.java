@@ -11,13 +11,20 @@ import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
 import com.microsoft.azure.eventhubs.EventHubClient;
 
+/**
+ * These JUnit test cases are all commented out by default because they can only be run with special setup. 
+ * They extract the namespace (endpoint) and event hub name from the connection string in the environment variable
+ * which all test cases use, but they assume that the namespace (or event hub) has been set up with special permissions.
+ * Within the AAD directory indicated by "authority", there is a registered application with id "clientId" and a secret
+ * "clientSecret". This application has been granted the "Azure Event Hubs Data Owner" role on the namespace or
+ * event hub.
+ */
 public class AdalTest extends AadBase {
-	final private String authority = "https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47";
-	//final private String authority = AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY;
-	final private String clientId = "51ce7943-a1aa-4bb1-b708-8f66656a9242";
-	final private String clientSecret = "sMm5YoVVcmb4fUtm=dQa*nY-P-YEkx35";
+	final private String authority = "https://login.windows.net/replaceWithTenantIdGuid";
+	final private String clientId = "replaceWithClientIdGuid";
+	final private String clientSecret = "replaceWithClientSecret";
 	
-	@Test
+	//@Test
 	public void runSendReceiveWithAuthCallbackTest() throws Exception {
 		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
 		final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
@@ -26,7 +33,7 @@ public class AdalTest extends AadBase {
 		innerTest(ehc);
 	}
 	
-	@Test
+	//@Test
 	public void runSendReceiveWithAuthCallbackWithAuthorityTest() throws Exception {
 		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
 		final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
@@ -35,7 +42,7 @@ public class AdalTest extends AadBase {
 		innerTest(ehc);
 	}
 	
-	@Test
+	//@Test
 	public void runSendReceiveWithAADTokenProvider() throws Exception {
 		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
 		final AzureActiveDirectoryTokenProvider aadTokenProvider =
@@ -46,7 +53,7 @@ public class AdalTest extends AadBase {
 		innerTest(ehc);
 	}
 	
-	@Test
+	//@Test
 	public void runSendReceiveWithCustomTokenProvider() throws Exception {
 		final CustomTokenProvider tokenProvider = new CustomTokenProvider(this.authority, this.clientId, this.clientSecret);
 		final EventHubClient ehc = EventHubClient.createWithTokenProvider(MsalTest.endpoint, MsalTest.eventHubName, tokenProvider,
@@ -61,7 +68,6 @@ public class AdalTest extends AadBase {
 		AuthenticationContext context = new AuthenticationContext(authority, true, this.executorService);
 		ClientCredential creds = new ClientCredential(clientId, clientSecret);
 		AuthenticationResult result = context.acquireToken(audience, creds, null).get();
-		System.out.println(decodeToken(result.getAccessToken()));
 		return result.getAccessToken();
 	}
 }
