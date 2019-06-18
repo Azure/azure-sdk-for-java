@@ -211,7 +211,6 @@ public class ClientLogger {
     private boolean canLogAtLevel(int level) {
         // Check the configuration level every time the logger is called in case it has changed.
         configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
-        configurationLevel = WARNING_LEVEL;
         if (level < configurationLevel) {
         	 return false;
         }
@@ -246,5 +245,18 @@ public class ClientLogger {
         }
 
         return args;
+    }
+    public static void main(String[] arg){
+        ClientLogger logger = new ClientLogger(ClientLogger.class);
+
+        System.out.println("main .. ");
+        //logger = logger.asVerbose();
+        //logger = logger.asWarning();
+        logger.asInfo().log("A  info message");
+        logger.asVerbose().log("A  verbose message");
+        logger.asWarning().log("W Failed to upload {}", "file1", new Exception("IO Error ... "));
+
+        logger.asError().log("E verbose exception  ",new Exception(" Exception string" ));
+
     }
 }
