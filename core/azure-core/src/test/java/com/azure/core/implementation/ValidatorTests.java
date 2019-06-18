@@ -270,7 +270,7 @@ public class ValidatorTests {
         }
     }
 
-    private class Parent {
+    public class Parent {
         private StringWrapper name;
         public StringWrapper name() {
             return name;
@@ -282,7 +282,7 @@ public class ValidatorTests {
     }
 
     @SkipParentValidation
-    private class Child extends Parent {
+    public class Child extends Parent {
         private int count;
 
         public int count() {

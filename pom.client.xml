@@ -299,6 +299,8 @@
             </configuration>
           </execution>
           <execution>
+            <!-- This generates the unit test reports for individual modules.
+              jacoco-test-coverage generates aggregate reports for all modules -->
             <id>post-unit-test</id>
             <phase>test</phase>
             <goals>
