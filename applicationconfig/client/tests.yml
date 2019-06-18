@@ -1,8 +1,0 @@
-trigger: none
-
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      PomFilePath: './applicationconfig/client/pom.xml'
-      EnvVars:
-        AZCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)

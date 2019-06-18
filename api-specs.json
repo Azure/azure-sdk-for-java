@@ -30,6 +30,10 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "azurestack/resource-manager": {
+    "source": "specification/azurestack/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"

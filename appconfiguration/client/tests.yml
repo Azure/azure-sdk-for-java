@@ -1,0 +1,10 @@
+trigger: none
+
+jobs:
+    # When migrating change path to ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
+    parameters:
+      # When migrating use ServiceDirectory
+      PomFilePath: './applicationconfig/client/pom.xml'
+      EnvVars:
+        AZCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)

@@ -78,7 +78,7 @@ public class HanaInstanceInner extends Resource {
      * ARM ID of another HanaInstance that will share a network with this
      * HanaInstance.
      */
-    @JsonProperty(value = "properties.partnerNodeId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.partnerNodeId")
     private String partnerNodeId;
 
     /**
@@ -212,6 +212,17 @@ public class HanaInstanceInner extends Resource {
      */
     public String partnerNodeId() {
         return this.partnerNodeId;
+    }
+
+    /**
+     * Set aRM ID of another HanaInstance that will share a network with this HanaInstance.
+     *
+     * @param partnerNodeId the partnerNodeId value to set
+     * @return the HanaInstanceInner object itself.
+     */
+    public HanaInstanceInner withPartnerNodeId(String partnerNodeId) {
+        this.partnerNodeId = partnerNodeId;
+        return this;
     }
 
     /**
