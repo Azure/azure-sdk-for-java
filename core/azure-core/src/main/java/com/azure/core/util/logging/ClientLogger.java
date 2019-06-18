@@ -38,32 +38,32 @@ public class ClientLogger {
     private final Logger logger;
 
     /**
-     * Indicate trace level.
+     * Indicate that log level is at trace level.
      */
     public static final int TRACE_LEVEL = 0;
 
     /**
-     * Indicate verbose log level.
+     * Indicate that log level is at verbose level.
      */
     public static final int VERBOSE_LEVEL = 1;
 
     /**
-     * Indicate information log level.
+     * Indicate that log level is at information level.
      */
     public static final int INFORMATIONAL_LEVEL = 2;
 
     /**
-     * Indicate warning log level.
+     * Indicate that log level is at warning level.
      */
     public static final int WARNING_LEVEL = 3;
 
     /**
-     * Indicate error log level.
+     * Indicate that log level is at error level.
      */
     public static final int ERROR_LEVEL = 4;
 
     /**
-     * Indicate logging is disabled.
+     * Indicate that logging is disabled.
      */
     public static final int DISABLED_LEVEL = 5;
 
@@ -160,9 +160,6 @@ public class ClientLogger {
         if (canLogAtLevel(level)) {
             performLogging(format, args);
         }
-
-        // Reset the logging level to the default for the next logging request.
-        level = DEFAULT_LOG_LEVEL;
     }
 
     /*
