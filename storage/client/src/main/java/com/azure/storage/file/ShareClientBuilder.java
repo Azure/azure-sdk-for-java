@@ -26,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ShareClientBuilder {
+/**
+ * Fluent builder for ShareClients and ShareAsyncClients.
+ */
+class ShareClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -62,7 +65,7 @@ public class ShareClientBuilder {
         return build();
     }
 
-    /**
+    /*
      * @return a new instance of ShareAsyncClient constructed with options stored in the builder
      * @throws IllegalArgumentException If the builder doesn't have credentials
      */
@@ -148,11 +151,22 @@ public class ShareClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the share that the constructed clients will interact with
+     * @param shareName Name of the share
+     * @return the updated ShareClientBuilder object
+     */
     public ShareClientBuilder shareName(String shareName) {
         this.shareName = shareName;
         return this;
     }
 
+    /**
+     * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
+     * that has been specified in the builder/
+     * @param shareSnapshot Identifier of the snapshot
+     * @return the updated ShareClientBuilder object
+     */
     public ShareClientBuilder shareSnapshot(String shareSnapshot) {
         this.shareSnapshot = shareSnapshot;
         return this;

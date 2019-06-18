@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Fluent builder class for FileServiceClients and FileServiceAsyncClients.
+ */
 final class FileServiceClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
@@ -60,8 +63,8 @@ final class FileServiceClientBuilder {
         return build();
     }
 
-    /**
-     * @return a new instance of QueueServiceAsyncClient constructed with options stored in the builder
+    /*
+     * @return a new instance of FileServiceAsyncClient constructed with options stored in the builder
      * @throws IllegalArgumentException If the builder doesn't have credentials
      */
     private FileServiceAsyncClient build() {
