@@ -50,6 +50,13 @@ public class Location {
     private Integer failoverPriority;
 
     /**
+     * Flag to indicate whether or not this region is an AvailabilityZone
+     * region.
+     */
+    @JsonProperty(value = "isZoneRedundant")
+    private Boolean isZoneRedundant;
+
+    /**
      * Get the unique identifier of the region within the database account. Example: &amp;lt;accountName&amp;gt;-&amp;lt;locationName&amp;gt;.
      *
      * @return the id value
@@ -124,6 +131,26 @@ public class Location {
      */
     public Location withFailoverPriority(Integer failoverPriority) {
         this.failoverPriority = failoverPriority;
+        return this;
+    }
+
+    /**
+     * Get flag to indicate whether or not this region is an AvailabilityZone region.
+     *
+     * @return the isZoneRedundant value
+     */
+    public Boolean isZoneRedundant() {
+        return this.isZoneRedundant;
+    }
+
+    /**
+     * Set flag to indicate whether or not this region is an AvailabilityZone region.
+     *
+     * @param isZoneRedundant the isZoneRedundant value to set
+     * @return the Location object itself.
+     */
+    public Location withIsZoneRedundant(Boolean isZoneRedundant) {
+        this.isZoneRedundant = isZoneRedundant;
         return this;
     }
 
