@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;

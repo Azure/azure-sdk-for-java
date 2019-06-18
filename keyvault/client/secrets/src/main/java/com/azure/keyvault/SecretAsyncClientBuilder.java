@@ -3,7 +3,7 @@
 
 package com.azure.keyvault;
 
-import com.azure.core.configuration.Configuration;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
