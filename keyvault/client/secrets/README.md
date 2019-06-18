@@ -1,19 +1,11 @@
 # Azure Key Vault Secret client library for Java
-Cloud applications and services use cryptographic keys and secrets to help keep information secure. Azure Key Vault safeguards these keys and secrets.
-The Secret client library allows you to securely store and tightly control access to tokens, passwords, API keys, and other secrets. The library offers operations to create, retrieve, update, delete, purge, backup, restore and and list the secrets.
+Azure Key Vault is a cloud service that provides a secure storage of secrets, such as passwords and database connection strings. Secret client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
 
 Use the secret client library to create and manage secrets.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
-
-### Prerequisites
-
-- [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- An existing [Azure Key Vault][azure_keyvault] - if you need to create a key vault then you can find instructions here on how to [Create an Azure Key Vault](#create-an-azure-key-vault)
-
 ### Adding the package to your project
 
 Maven dependency for Azure Secret Client library.
@@ -34,49 +26,59 @@ Maven dependency for Azure Identity library. Required for authenticating with Ke
 </dependency>
 ```
 
-### Create an Azure Key Vault.
+### Prerequisites
 
-To create an Azure Key Vault you can use the Azure Portal or [Azure Keyvault CLI][azure_keyvault_cli].
+- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Azure Subscription][azure_subscription]
+- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
-Create the Azure Key Vault:
-```Powershell
-az keyvault create --name <keyvault-name> --resource-group <resource-group-name> --location eastus
-```
+    ```Bash
+    az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+    ```
 
 ### Authenticate the client
+In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](TODO-rst-docs) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity).
 
-Applications that use a key vault must authenticate by using a token from Azure Active Directory. The owner of the application must register it in Azure Active Directory first. At the end of registration, the application owner gets the following values:
+ #### Create/Get credentials
+To create create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
-* An Application ID (also known as the AAD Client ID or appID)
-* An authentication key (also known as the shared secret).
+Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to 
 
-The application must present both these values to Azure Active Directory, to get a token. 
+ * Create a service principal and configure its access to Azure resources:
+    ```Bash
+    az ad sp create-for-rbac -n <your-application-name> --skip-assignment
+    ```
+    Output:
+    ```json
+    {
+        "appId": "generated-app-ID",
+        "displayName": "dummy-app-name",
+        "name": "http://dummy-app-name",
+        "password": "random-password",
+        "tenant": "tenant-ID"
+    }
+    ```
+* Use the above returned credentials information to set **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) environment variables. The following example shows a way to do this in Bash:
+  ```Bash
+    export AZURE_CLIENT_ID="generated-app-ID"
+    export AZURE_CLIENT_SECRET="random-password"
+    export AZURE_TENANT_ID="tenant-ID"
+  ```
 
-#### Create/Get Credentials
+* Grant the above mentioned application authorization to perform secret operations on the keyvault:
+    ```Bash
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list set
+    ```
+    > --secret-permissions:
+    > Accepted values: backup, delete, get, list, purge, recover, restore, set
 
-To create an application/service-principal you can use the [Azure Portal][azure_create_application_in_portal] or [Azure CLI][azure_keyvault_cli_full].
+* Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
+    ```Bash
+    az keyvault show --name <your-key-vault-name> 
+    ```
 
-Create an application/service-principal in the Azure Active Directory.
-```Powershell
-az ad sp create-for-rbac -n <application-name> --password <application-password> --skip-assignment
-# If you don't specify a password, one will be created for you.
-```
-
-To authorize the same application to perform secret operations in your vault, type the following command:
-```Powershell
-az keyvault set-policy --name <keyvault-name> --spn <your-service-principal-name/id> --secret-permissions <secret-permissions>
-# [--secret-permissions {backup, delete, get, list, purge, recover, restore, set}]
-```
-
-#### Create Client
-
-In order to interact with the Azure Key Vault Secrets service you'll need to create an instance of the Secret Client class. To do this you'll need the application id and application key of an application in Azure Active Directory authorized with access to key vault. Also ensure that Azure Identity library is added to the project.
-
-Once you have the values of the application id, application key and tenant id you can create the secret client.
-The following environment varaibles need to be configured to authorize with your key vault via default credentials.
-1. AZURE_CLIENT_ID - The application id.
-2. AZURE_CLIENT_KEY - The application key.
-3. AZURE_TENANT_ID - The id of the Azure Active Directory under which your application is registered.
+#### Create Secret client
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the [SecretClient](TODO-rst-docs):
 
 ```Java
 SecretClient client = SecretClient.builder()
@@ -84,29 +86,20 @@ SecretClient client = SecretClient.builder()
         .credentials(AzureCredential.DEFAULT)
         .build();
 ```
+> NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
 
-or
-
-```Java
-SecretAsyncClient client = SecretAsyncClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
-        .credentials(AzureCredential.DEFAULT)
-        .build();
-```
 
 ## Key concepts
-
 ### Secret
+  A secret is the fundamental resource within Azure KeyVault. From a developer's perspective, Key Vault APIs accept and return secret values as strings. In addition to the secret data, the following attributes may be specified:
+* expires: Identifies the expiration time on or after which the secret data should not be retrieved.
+* not_before: Identifies the time after which the secret will be active.
+* enabled: Specifies whether the secret data can be retrieved.
+* created: Indicates when this version of the secret was created.
+* updated: Indicates when this version of the secret was updated.
 
-A secret is the fundamental resource within an Azure Key Vault. In its simplest form it is a name and a value. However, there are additional properties such as:
-   1. content type : Type of the secret value such as a password.
-   2. tags : Application specific metadata in the form of key-value pairs.
-   3. expires : Specifies a UTC time at which secret will no loger be active.
-   4. notBefore : Specifies a UTC time after which secret will be active.
-
-### Secret Client
-
-The client performs the interactions with the Azure Key Vault service, getting, setting, updating, deleting, and listing secrets. An asynchronous, `SecretAsyncClient`, and synchronous, `SecretClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
+### Secret Client:
+The Secret client performs the interactions with the Azure Key Vault service for getting, setting, updating,deleting, and listing secrets and its versions. An asynchronous and synchronous, SecretClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a SecretClient, you can interact with the primary resource types in Key Vault.
 
 ## Examples
 ### Sync API
@@ -250,39 +243,29 @@ When you interact with Azure Key Vault Secrets service using this Java client li
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
 ### Hello World Samples
-* [HelloWorld.java](TODO) - Contains sync api scenarios found in this article.
-* [HelloWorldAsync.java](TODO) - Contains async api scenarios found in this article.
+* [HelloWorld.java](TODO) - and [HelloWorldAsync.java](TODO) - Contains api scenarios found in this article.
 
 ### List Operations Samples
-* [ListOperations.java](TODO) 
-* [ListOperationsAsync.java](TODO)
-
-Contains samples for following scenarios:
-* Creating Secrets
-* Listing Secrets
-* Create new version of existing secret.
-* List secret versions
+* [ListOperations.java](TODO) and [ListOperationsAsync.java] - Contains samples for following scenarios:
+    * Creating Secrets
+    * Listing Secrets
+    * Create new version of existing secret.
+    * List secret versions
 
 ### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java](TODO)
-* [BackupAndRestoreOperationsAsync.java](TODO)
-
-Contains samples for following scenarios:
-* Create a Secret
-* Backup a Secret -- Write it to a file.
-* Delete a secret
-* Restore a secret
+* [BackupAndRestoreOperations.java](TODO) and [BackupAndRestoreOperationsAsync.java](TODO) - Contains samples for following scenarios:
+    * Create a Secret
+    * Backup a Secret -- Write it to a file.
+    * Delete a secret
+    * Restore a secret
 
 ### Managing Deleted Secrets Samples:
-* [ManagingDeletedSecrets.java](TODO)
-* [ManagingDeletedSecretsAsync.java](TODO) 
-
-Contains samples for following scenarios:
-* Create a Secret
-* Delete a secret
-* List deleted secrets
-* Recover a deleted secret
-* Purge Deleted secret
+* [ManagingDeletedSecrets.java](TODO) and [ManagingDeletedSecretsAsync.java](TODO) - Contains samples for following scenarios:
+    * Create a Secret
+    * Delete a secret
+    * List deleted secrets
+    * Recover a deleted secret
+    * Purge Deleted secret
     
 
 ## Contributing
@@ -290,7 +273,7 @@ This project welcomes contributions and suggestions. Most contributions require 
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src
@@ -307,3 +290,4 @@ This project has adopted the Microsoft Open Source Code of Conduct. For more inf
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
+[secrets_samples]:[Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples)
