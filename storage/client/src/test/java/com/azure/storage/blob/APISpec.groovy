@@ -418,7 +418,7 @@ class APISpec extends Specification {
             headers.value("content-disposition") == contentDisposition &&
             headers.value("content-encoding") == contentEncoding &&
             headers.value("content-language") == contentLangauge &&
-            headers.value("content-md5") == contentMD5 == null ? null : new String((byte[]) contentMD5) &&
+            headers.value("content-md5") == (contentMD5 == null ? null : new String((byte[]) contentMD5)) &&
             headers.value("content-type") == contentType
 
     }

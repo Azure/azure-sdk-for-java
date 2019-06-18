@@ -4,7 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
@@ -139,6 +141,39 @@ public final class ContainerClient {
      */
     public URL getUrl() {
         return containerAsyncClient.getUrl();
+    }
+
+    /**
+     * Gets if the container this client represents exists in the cloud.
+     *
+     * @return true if the container exists, false if it doesn't
+     */
+    public Response<Boolean> exists() {
+        return this.exists(null, null);
+    }
+
+    /**
+     * Gets if the container this client represents exists in the cloud.
+     *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     * @return
+     *         true if the container exists, false if it doesn't
+     */
+    public Response<Boolean> exists(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = containerAsyncClient.exists(context);
+
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -137,6 +138,37 @@ public class BlobAsyncClient {
         } catch (MalformedURLException e) {
             throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), blobAsyncRawClient.azureBlobStorage.url()), e);
         }
+    }
+
+    /**
+     * Gets if the blob this client represents exists in the cloud.
+     *
+     * @return
+     *         true if the blob exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> exists() {
+        return this.exists(null);
+    }
+
+    /**
+     * Gets if the blob this client represents exists in the cloud.
+     *
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     * @return
+     *         true if the blob exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> exists(Context context) {
+        return this.getProperties(null, context)
+            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
+                HttpResponse response = ((StorageException) t).response();
+                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
+            });
     }
 
     /**

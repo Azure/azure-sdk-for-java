@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
@@ -113,6 +114,33 @@ public class BlobClient {
      */
     public URL getUrl() {
         return blobAsyncClient.getUrl();
+    }
+
+    /**
+     * Gets if the container this client represents exists in the cloud.
+     *
+     * @return true if the container exists, false if it doesn't
+     */
+    public Response<Boolean> exists() {
+        return this.exists(null);
+    }
+
+    /**
+     * Gets if the container this client represents exists in the cloud.
+     *
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return
+     *         true if the container exists, false if it doesn't
+     */
+    public Response<Boolean> exists(Duration timeout) {
+        Mono<Response<Boolean>> response = blobAsyncClient.exists(null);
+
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
     }
 
     /**
