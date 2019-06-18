@@ -165,7 +165,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
             throw new IllegalArgumentException("Parameter actionGroup is required and cannot be null.");
         }
         Validator.validate(actionGroup);
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.createOrUpdate(resourceGroupName, actionGroupName, this.client.subscriptionId(), actionGroup, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ActionGroupResourceInner>>>() {
                 @Override
@@ -250,7 +250,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.getByResourceGroup(resourceGroupName, actionGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ActionGroupResourceInner>>>() {
                 @Override
@@ -333,7 +333,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.delete(resourceGroupName, actionGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -426,7 +426,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
             throw new IllegalArgumentException("Parameter actionGroupPatch is required and cannot be null.");
         }
         Validator.validate(actionGroupPatch);
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.update(this.client.subscriptionId(), resourceGroupName, actionGroupName, apiVersion, actionGroupPatch, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ActionGroupResourceInner>>>() {
                 @Override
@@ -500,7 +500,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ActionGroupResourceInner>>>>() {
                 @Override
@@ -586,7 +586,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ActionGroupResourceInner>>>>() {
                 @Override
@@ -681,7 +681,7 @@ public class ActionGroupsInner implements InnerSupportsGet<ActionGroupResourceIn
         if (receiverName == null) {
             throw new IllegalArgumentException("Parameter receiverName is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-06-01";
         EnableRequest enableRequest = new EnableRequest();
         enableRequest.withReceiverName(receiverName);
         return service.enableReceiver(resourceGroupName, actionGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), enableRequest, this.client.userAgent())
