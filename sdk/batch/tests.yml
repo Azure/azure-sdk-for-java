@@ -1,11 +1,9 @@
 trigger: none
 
 jobs:
-    # When migrating change path to ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      # When migrating use ServiceDirectory
-      PomFilePath: './batch/data-plane/pom.xml'
+      ServiceDirectory: batch
       EnvVars:
         AZURE_TEST_MODE: RECORD # RECORD mode hits live services
         AZURE_BATCH_ACCOUNT: $(java-batch-test-account-name)
