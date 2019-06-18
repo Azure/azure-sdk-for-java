@@ -20,7 +20,7 @@ public interface Transfers extends HasInner<TransfersInner> {
     /**
      * Gets the transfer details for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -31,7 +31,7 @@ public interface Transfers extends HasInner<TransfersInner> {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -41,7 +41,7 @@ public interface Transfers extends HasInner<TransfersInner> {
     /**
      * Cancels the transfer for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -52,7 +52,7 @@ public interface Transfers extends HasInner<TransfersInner> {
     /**
      * Initiates the request to transfer the legacy subscriptions or RIs.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param body Initiate transfer parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation

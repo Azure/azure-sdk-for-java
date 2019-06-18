@@ -21,6 +21,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Addresses;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Customers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts;
@@ -51,6 +52,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private Addresses addresses;
     private AvailableBalances availableBalances;
     private BillingProfiles billingProfiles;
+    private Customers customers;
     private InvoiceSections invoiceSections;
     private Departments departments;
     private EnrollmentAccounts enrollmentAccounts;
@@ -164,6 +166,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingProfiles = new BillingProfilesImpl(this);
         }
         return this.billingProfiles;
+    }
+
+    /**
+     * @return Entry point to manage Customers.
+     */
+    public Customers customers() {
+        if (this.customers == null) {
+            this.customers = new CustomersImpl(this);
+        }
+        return this.customers;
     }
 
     /**

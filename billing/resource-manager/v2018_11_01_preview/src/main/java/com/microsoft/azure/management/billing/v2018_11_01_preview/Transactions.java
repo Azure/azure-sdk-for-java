@@ -19,7 +19,7 @@ public interface Transactions extends HasInner<TransactionsInner> {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -31,7 +31,19 @@ public interface Transactions extends HasInner<TransactionsInner> {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<TransactionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate);
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -43,7 +55,7 @@ public interface Transactions extends HasInner<TransactionsInner> {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation

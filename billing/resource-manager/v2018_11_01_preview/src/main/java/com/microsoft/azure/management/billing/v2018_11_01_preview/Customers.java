@@ -9,30 +9,30 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.PaymentMethodsInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.CustomersInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing PaymentMethods.
+ * Type representing Customers.
  */
-public interface PaymentMethods extends HasInner<PaymentMethodsInner> {
+public interface Customers extends HasInner<CustomersInner> {
     /**
-     * Lists the Payment Methods by billing profile Id.
+     * Lists all customers which the current user can work with on-behalf of a partner.
      *
      * @param billingAccountName Billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PaymentMethod> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName);
+    Observable<CustomerListResult> listByBillingAccountNameAsync(String billingAccountName);
 
     /**
-     * Lists the Payment Methods by billing account Id.
+     * Get the customer by id.
      *
      * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PaymentMethod> listByBillingAccountNameAsync(final String billingAccountName);
+    Observable<Customer> getAsync(String billingAccountName, String customerName);
 
 }

@@ -80,7 +80,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -94,7 +94,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleDefinitionName role definition id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -107,7 +107,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionInner object
@@ -124,7 +124,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionInner object
@@ -163,7 +163,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -178,7 +178,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleDefinitionName role definition id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -192,7 +192,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -210,7 +210,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -253,7 +253,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -268,7 +268,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleDefinitionName role definition id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -282,7 +282,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -300,7 +300,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -343,7 +343,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -356,7 +356,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -368,7 +368,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object
      */
@@ -384,7 +384,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object
      */
@@ -419,7 +419,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for an invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -433,7 +433,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for an invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -446,7 +446,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for an invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object
@@ -463,7 +463,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for an invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object
@@ -502,7 +502,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -516,7 +516,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -529,7 +529,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object
@@ -546,7 +546,7 @@ public class BillingRoleDefinitionsInner {
     /**
      * Lists the role definition for a Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleDefinitionListResultInner object

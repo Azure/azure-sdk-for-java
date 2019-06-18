@@ -20,7 +20,7 @@ public interface Policies extends HasInner<PoliciesInner> {
     /**
      * The policy for a given billing account name and billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -30,7 +30,7 @@ public interface Policies extends HasInner<PoliciesInner> {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

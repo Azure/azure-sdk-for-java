@@ -49,6 +49,30 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
+    public Observable<BillingSubscriptionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName) {
+        BillingSubscriptionsInner client = this.inner();
+        return client.listByCustomerNameAsync(billingAccountName, customerName)
+        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+            @Override
+            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
+                return new BillingSubscriptionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<BillingSubscriptionSummary> getByCustomerNameAsync(String billingAccountName, String customerName, String billingSubscriptionName) {
+        BillingSubscriptionsInner client = this.inner();
+        return client.getByCustomerNameAsync(billingAccountName, customerName, billingSubscriptionName)
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+                return new BillingSubscriptionSummaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<BillingSubscriptionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
         BillingSubscriptionsInner client = this.inner();
         return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)

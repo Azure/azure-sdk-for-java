@@ -60,7 +60,7 @@ public class AvailableBalancesInner {
     /**
      * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -74,7 +74,7 @@ public class AvailableBalancesInner {
     /**
      * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -87,7 +87,7 @@ public class AvailableBalancesInner {
     /**
      * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AvailableBalanceInner object
@@ -104,7 +104,7 @@ public class AvailableBalancesInner {
     /**
      * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AvailableBalanceInner object

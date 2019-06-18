@@ -62,9 +62,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -75,9 +75,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -87,9 +87,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentListResultInner object
      */
@@ -103,9 +103,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentListResultInner object
      */
@@ -133,9 +133,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -148,9 +148,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -162,9 +162,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -180,9 +180,9 @@ public class DepartmentsInner {
     }
 
     /**
-     * Lists all departments for a user which he has access to.
+     * Lists all departments for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -219,7 +219,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -233,7 +233,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -246,7 +246,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
@@ -263,7 +263,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
@@ -297,7 +297,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -313,7 +313,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -328,7 +328,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -347,7 +347,7 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).

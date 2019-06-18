@@ -19,7 +19,7 @@ public interface AvailableBalances extends HasInner<AvailableBalancesInner> {
     /**
      * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

@@ -77,7 +77,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing account Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -96,7 +96,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing account Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -116,7 +116,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing account Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
      */
@@ -133,7 +133,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing account Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
      */
@@ -154,7 +154,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing account Id.
      *
-    ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingAccountName billing Account Id.
+    ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PaymentMethodInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -189,7 +189,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -209,7 +209,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -230,7 +230,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
@@ -248,7 +248,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PaymentMethodInner&gt; object
@@ -270,7 +270,7 @@ public class PaymentMethodsInner {
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-    ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingAccountName billing Account Id.
+    ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingAccountName Billing Account Id.
     ServiceResponse<PageImpl<PaymentMethodInner>> * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PaymentMethodInner&gt; object wrapped in {@link ServiceResponse} if successful.

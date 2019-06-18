@@ -65,6 +65,10 @@ public class TransactionsInner {
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions")
         Observable<Response<ResponseBody>> listByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByCustomerName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/transactions")
+        Observable<Response<ResponseBody>> listByCustomerName(@Path("billingAccountName") String billingAccountName, @Path("customerName") String customerName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByInvoiceSectionName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/transactions")
         Observable<Response<ResponseBody>> listByInvoiceSectionName(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -78,7 +82,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -99,7 +103,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -121,7 +125,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -140,7 +144,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -163,7 +167,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -200,7 +204,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -222,7 +226,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -245,7 +249,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -265,7 +269,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -289,7 +293,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing account name for given start and end date.
      *
-    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName billing Account Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName Billing Account Id.
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param startDate Start date
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param endDate End date
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -333,7 +337,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -349,7 +353,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -364,7 +368,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -383,7 +387,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -424,7 +428,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -441,7 +445,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -457,7 +461,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -477,7 +481,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by billing profile name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
@@ -525,7 +529,199 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TransactionsListResultInner object if successful.
+     */
+    public TransactionsListResultInner listByCustomerName(String billingAccountName, String customerName, String startDate, String endDate) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate), serviceCallback);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TransactionsListResultInner object
+     */
+    public Observable<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
+            @Override
+            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TransactionsListResultInner object
+     */
+    public Observable<ServiceResponse<TransactionsListResultInner>> listByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName, String startDate, String endDate) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (customerName == null) {
+            throw new IllegalArgumentException("Parameter customerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (startDate == null) {
+            throw new IllegalArgumentException("Parameter startDate is required and cannot be null.");
+        }
+        if (endDate == null) {
+            throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
+        }
+        final String filter = null;
+        return service.listByCustomerName(billingAccountName, customerName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TransactionsListResultInner> clientResponse = listByCustomerNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TransactionsListResultInner object if successful.
+     */
+    public TransactionsListResultInner listByCustomerName(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter), serviceCallback);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TransactionsListResultInner object
+     */
+    public Observable<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
+            @Override
+            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TransactionsListResultInner object
+     */
+    public Observable<ServiceResponse<TransactionsListResultInner>> listByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (customerName == null) {
+            throw new IllegalArgumentException("Parameter customerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (startDate == null) {
+            throw new IllegalArgumentException("Parameter startDate is required and cannot be null.");
+        }
+        if (endDate == null) {
+            throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
+        }
+        return service.listByCustomerName(billingAccountName, customerName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TransactionsListResultInner> clientResponse = listByCustomerNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TransactionsListResultInner> listByCustomerNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TransactionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TransactionsListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -541,7 +737,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -556,7 +752,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -575,7 +771,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -616,7 +812,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -633,7 +829,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -649,7 +845,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date
@@ -669,7 +865,7 @@ public class TransactionsInner {
     /**
      * Lists the transactions by invoice section name for given start date and end date.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param startDate Start date
      * @param endDate End date

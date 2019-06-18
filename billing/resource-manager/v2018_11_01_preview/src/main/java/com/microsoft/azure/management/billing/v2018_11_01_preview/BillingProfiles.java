@@ -19,7 +19,7 @@ public interface BillingProfiles extends HasInner<BillingProfilesInner> {
     /**
      * Lists all billing profiles for a user which that user has access to.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -28,7 +28,7 @@ public interface BillingProfiles extends HasInner<BillingProfilesInner> {
     /**
      * Get the billing profile by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -38,7 +38,7 @@ public interface BillingProfiles extends HasInner<BillingProfilesInner> {
     /**
      * The operation to create a BillingProfile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create BillingProfile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

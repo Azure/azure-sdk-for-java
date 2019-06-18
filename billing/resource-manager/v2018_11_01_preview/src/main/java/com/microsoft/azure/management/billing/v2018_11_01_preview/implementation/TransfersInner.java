@@ -86,7 +86,7 @@ public class TransfersInner {
     /**
      * Initiates the request to transfer the legacy subscriptions or RIs.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param body Initiate transfer parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -101,7 +101,7 @@ public class TransfersInner {
     /**
      * Initiates the request to transfer the legacy subscriptions or RIs.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param body Initiate transfer parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -115,7 +115,7 @@ public class TransfersInner {
     /**
      * Initiates the request to transfer the legacy subscriptions or RIs.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param body Initiate transfer parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -133,7 +133,7 @@ public class TransfersInner {
     /**
      * Initiates the request to transfer the legacy subscriptions or RIs.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param body Initiate transfer parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -174,7 +174,7 @@ public class TransfersInner {
     /**
      * Gets the transfer details for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -189,7 +189,7 @@ public class TransfersInner {
     /**
      * Gets the transfer details for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -203,7 +203,7 @@ public class TransfersInner {
     /**
      * Gets the transfer details for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -221,7 +221,7 @@ public class TransfersInner {
     /**
      * Gets the transfer details for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -261,7 +261,7 @@ public class TransfersInner {
     /**
      * Cancels the transfer for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -276,7 +276,7 @@ public class TransfersInner {
     /**
      * Cancels the transfer for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -290,7 +290,7 @@ public class TransfersInner {
     /**
      * Cancels the transfer for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -308,7 +308,7 @@ public class TransfersInner {
     /**
      * Cancels the transfer for given transfer Id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param transferName Transfer Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -348,7 +348,7 @@ public class TransfersInner {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -368,7 +368,7 @@ public class TransfersInner {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -389,7 +389,7 @@ public class TransfersInner {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransferDetailsInner&gt; object
@@ -407,7 +407,7 @@ public class TransfersInner {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransferDetailsInner&gt; object
@@ -429,7 +429,7 @@ public class TransfersInner {
     /**
      * Lists all transfer's details initiated from given invoice section.
      *
-    ServiceResponse<PageImpl<TransferDetailsInner>> * @param billingAccountName billing Account Id.
+    ServiceResponse<PageImpl<TransferDetailsInner>> * @param billingAccountName Billing Account Id.
     ServiceResponse<PageImpl<TransferDetailsInner>> * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TransferDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.

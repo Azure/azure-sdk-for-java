@@ -40,6 +40,18 @@ class BillingPermissionsImpl extends WrapperImpl<BillingPermissionsInner> implem
     }
 
     @Override
+    public Observable<BillingPermissionsListResult> listByCustomersAsync(String billingAccountName, String customerName) {
+        BillingPermissionsInner client = this.inner();
+        return client.listByCustomersAsync(billingAccountName, customerName)
+        .map(new Func1<BillingPermissionsListResultInner, BillingPermissionsListResult>() {
+            @Override
+            public BillingPermissionsListResult call(BillingPermissionsListResultInner inner) {
+                return new BillingPermissionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<BillingPermissionsListResult> listByInvoiceSectionsAsync(String billingAccountName, String invoiceSectionName) {
         BillingPermissionsInner client = this.inner();
         return client.listByInvoiceSectionsAsync(billingAccountName, invoiceSectionName)

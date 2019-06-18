@@ -19,16 +19,26 @@ public interface BillingPermissions extends HasInner<BillingPermissionsInner> {
     /**
      * Lists all billing permissions for the caller under a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     Observable<BillingPermissionsListResult> listByBillingAccountAsync(String billingAccountName);
 
     /**
+     * Lists all billing permissions for the caller under customer.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingPermissionsListResult> listByCustomersAsync(String billingAccountName, String customerName);
+
+    /**
      * Lists all billing permissions for the caller under invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -38,7 +48,7 @@ public interface BillingPermissions extends HasInner<BillingPermissionsInner> {
     /**
      * Lists all billingPermissions for the caller has for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

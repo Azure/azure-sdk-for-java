@@ -67,7 +67,7 @@ public class PoliciesInner {
     /**
      * The policy for a given billing account name and billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -81,7 +81,7 @@ public class PoliciesInner {
     /**
      * The policy for a given billing account name and billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -94,7 +94,7 @@ public class PoliciesInner {
     /**
      * The policy for a given billing account name and billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
@@ -111,7 +111,7 @@ public class PoliciesInner {
     /**
      * The policy for a given billing account name and billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
@@ -150,7 +150,7 @@ public class PoliciesInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -165,7 +165,7 @@ public class PoliciesInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -179,7 +179,7 @@ public class PoliciesInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -197,7 +197,7 @@ public class PoliciesInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

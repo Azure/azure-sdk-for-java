@@ -19,14 +19,14 @@ public interface BillingAccounts extends HasInner<BillingAccountsInner> {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     Observable<BillingAccount> getAsync(String billingAccountName);
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

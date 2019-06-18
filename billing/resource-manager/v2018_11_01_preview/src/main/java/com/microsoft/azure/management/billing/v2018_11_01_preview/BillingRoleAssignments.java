@@ -18,7 +18,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignment for the caller.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -28,7 +28,7 @@ public interface BillingRoleAssignments {
     /**
      * Delete the role assignment on this billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -38,7 +38,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignment for the caller on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -49,7 +49,7 @@ public interface BillingRoleAssignments {
     /**
      * Delete the role assignment on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -60,7 +60,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignment for the caller on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -71,7 +71,7 @@ public interface BillingRoleAssignments {
     /**
      * Delete the role assignment on this Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -82,7 +82,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignments on the Billing Account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -91,7 +91,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignments on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -101,7 +101,7 @@ public interface BillingRoleAssignments {
     /**
      * Get the role assignments on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -111,7 +111,7 @@ public interface BillingRoleAssignments {
     /**
      * The operation to add a role assignment to a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -121,7 +121,7 @@ public interface BillingRoleAssignments {
     /**
      * The operation to add a role assignment to a invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -132,7 +132,7 @@ public interface BillingRoleAssignments {
     /**
      * The operation to add a role assignment to a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation

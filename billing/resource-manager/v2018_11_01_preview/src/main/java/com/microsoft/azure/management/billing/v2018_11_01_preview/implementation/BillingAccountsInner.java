@@ -74,7 +74,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -86,7 +86,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -97,7 +97,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
@@ -112,7 +112,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
@@ -137,7 +137,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -150,7 +150,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -162,7 +162,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -178,7 +178,7 @@ public class BillingAccountsInner {
     }
 
     /**
-     * Lists all billing accounts for a user which he has access to.
+     * Lists all billing accounts for which a user has access.
      *
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -212,7 +212,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -225,7 +225,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -237,7 +237,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
@@ -253,7 +253,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
@@ -282,7 +282,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -296,7 +296,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -309,7 +309,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
@@ -326,7 +326,7 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
@@ -362,7 +362,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -376,7 +376,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -389,7 +389,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -406,7 +406,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -429,7 +429,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -443,7 +443,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -456,7 +456,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
@@ -473,7 +473,7 @@ public class BillingAccountsInner {
     /**
      * The operation to update a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the update billing account operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object

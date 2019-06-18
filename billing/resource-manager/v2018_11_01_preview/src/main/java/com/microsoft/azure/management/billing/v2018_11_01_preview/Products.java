@@ -19,7 +19,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Lists products by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -29,7 +29,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Get a single product by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -40,7 +40,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * The operation to transfer a Product to another invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoice Id.
      * @param parameters Parameters supplied to the Transfer Product operation.
@@ -52,7 +52,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Validates the transfer of products across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoice Id.
      * @param parameters Parameters supplied to the Transfer Products operation.
@@ -64,7 +64,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Cancel auto renew for product by product id and billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -74,7 +74,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Cancel auto renew for product by product id and invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -85,7 +85,7 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * Lists products by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

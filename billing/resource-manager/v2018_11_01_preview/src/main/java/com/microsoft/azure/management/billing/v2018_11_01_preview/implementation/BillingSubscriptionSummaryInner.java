@@ -64,6 +64,18 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     private String billingProfileName;
 
     /**
+     * Customer id to which this product belongs.
+     */
+    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
+    private String customerId;
+
+    /**
+     * Display name of customer to which this product belongs.
+     */
+    @JsonProperty(value = "properties.customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String customerDisplayName;
+
+    /**
      * Invoice section id to which this product belongs.
      */
     @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
@@ -86,6 +98,18 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
+
+    /**
+     * The service provider id.
+     */
+    @JsonProperty(value = "properties.serviceProviderId")
+    private String serviceProviderId;
+
+    /**
+     * The service provider description.
+     */
+    @JsonProperty(value = "properties.serviceProviderDescription", access = JsonProperty.Access.WRITE_ONLY)
+    private String serviceProviderDescription;
 
     /**
      * Get display name.
@@ -162,6 +186,24 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     }
 
     /**
+     * Get customer id to which this product belongs.
+     *
+     * @return the customerId value
+     */
+    public String customerId() {
+        return this.customerId;
+    }
+
+    /**
+     * Get display name of customer to which this product belongs.
+     *
+     * @return the customerDisplayName value
+     */
+    public String customerDisplayName() {
+        return this.customerDisplayName;
+    }
+
+    /**
      * Get invoice section id to which this product belongs.
      *
      * @return the invoiceSectionId value
@@ -206,6 +248,35 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
      */
     public String skuDescription() {
         return this.skuDescription;
+    }
+
+    /**
+     * Get the service provider id.
+     *
+     * @return the serviceProviderId value
+     */
+    public String serviceProviderId() {
+        return this.serviceProviderId;
+    }
+
+    /**
+     * Set the service provider id.
+     *
+     * @param serviceProviderId the serviceProviderId value to set
+     * @return the BillingSubscriptionSummaryInner object itself.
+     */
+    public BillingSubscriptionSummaryInner withServiceProviderId(String serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
+        return this;
+    }
+
+    /**
+     * Get the service provider description.
+     *
+     * @return the serviceProviderDescription value
+     */
+    public String serviceProviderDescription() {
+        return this.serviceProviderDescription;
     }
 
 }

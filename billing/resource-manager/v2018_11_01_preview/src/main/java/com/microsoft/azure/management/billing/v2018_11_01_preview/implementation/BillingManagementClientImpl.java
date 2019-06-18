@@ -40,11 +40,11 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Azure Subscription ID. */
+    /** Azure Subscription Id. */
     private String subscriptionId;
 
     /**
-     * Gets Azure Subscription ID.
+     * Gets Azure Subscription Id.
      *
      * @return the subscriptionId value.
      */
@@ -53,7 +53,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Azure Subscription ID.
+     * Sets Azure Subscription Id.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -195,6 +195,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     public BillingProfilesInner billingProfiles() {
         return this.billingProfiles;
+    }
+
+    /**
+     * The CustomersInner object to access its operations.
+     */
+    private CustomersInner customers;
+
+    /**
+     * Gets the CustomersInner object to access its operations.
+     * @return the CustomersInner object.
+     */
+    public CustomersInner customers() {
+        return this.customers;
     }
 
     /**
@@ -471,6 +484,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.addresses = new AddressesInner(restClient().retrofit(), this);
         this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
+        this.customers = new CustomersInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);
         this.enrollmentAccounts = new EnrollmentAccountsInner(restClient().retrofit(), this);

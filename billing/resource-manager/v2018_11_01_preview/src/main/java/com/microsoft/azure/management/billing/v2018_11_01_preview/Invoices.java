@@ -19,7 +19,7 @@ public interface Invoices extends HasInner<InvoicesInner> {
     /**
      * List of invoices for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -30,7 +30,7 @@ public interface Invoices extends HasInner<InvoicesInner> {
     /**
      * List of invoices for a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
@@ -42,7 +42,7 @@ public interface Invoices extends HasInner<InvoicesInner> {
     /**
      * Get the invoice by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation

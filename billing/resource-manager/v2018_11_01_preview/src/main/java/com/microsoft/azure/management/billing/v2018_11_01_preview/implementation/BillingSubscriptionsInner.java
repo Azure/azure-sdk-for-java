@@ -71,6 +71,14 @@ public class BillingSubscriptionsInner {
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingSubscriptions")
         Observable<Response<ResponseBody>> listByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByCustomerName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> listByCustomerName(@Path("billingAccountName") String billingAccountName, @Path("customerName") String customerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions getByCustomerName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingSubscriptions/{billingSubscriptionName}")
+        Observable<Response<ResponseBody>> getByCustomerName(@Path("billingAccountName") String billingAccountName, @Path("customerName") String customerName, @Path("billingSubscriptionName") String billingSubscriptionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByInvoiceSectionName" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions")
         Observable<Response<ResponseBody>> listByInvoiceSectionName(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -100,7 +108,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -119,7 +127,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -139,7 +147,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
      */
@@ -156,7 +164,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
      */
@@ -177,7 +185,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing account name.
      *
-    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param billingAccountName billing Account Id.
+    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -212,7 +220,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -226,7 +234,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -239,7 +247,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
@@ -256,7 +264,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscriptions by billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
@@ -293,9 +301,182 @@ public class BillingSubscriptionsInner {
     }
 
     /**
+     * Lists billing subscription by customer name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingSubscriptionsListResultInner object if successful.
+     */
+    public BillingSubscriptionsListResultInner listByCustomerName(String billingAccountName, String customerName) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists billing subscription by customer name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingSubscriptionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, final ServiceCallback<BillingSubscriptionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName), serviceCallback);
+    }
+
+    /**
+     * Lists billing subscription by customer name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<BillingSubscriptionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName).map(new Func1<ServiceResponse<BillingSubscriptionsListResultInner>, BillingSubscriptionsListResultInner>() {
+            @Override
+            public BillingSubscriptionsListResultInner call(ServiceResponse<BillingSubscriptionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists billing subscription by customer name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> listByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (customerName == null) {
+            throw new IllegalArgumentException("Parameter customerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByCustomerName(billingAccountName, customerName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingSubscriptionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingSubscriptionsListResultInner> clientResponse = listByCustomerNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingSubscriptionsListResultInner> listByCustomerNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingSubscriptionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingSubscriptionsListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a single billing subscription by name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingSubscriptionSummaryInner object if successful.
+     */
+    public BillingSubscriptionSummaryInner getByCustomerName(String billingAccountName, String customerName, String billingSubscriptionName) {
+        return getByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, billingSubscriptionName).toBlocking().single().body();
+    }
+
+    /**
+     * Get a single billing subscription by name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingSubscriptionSummaryInner> getByCustomerNameAsync(String billingAccountName, String customerName, String billingSubscriptionName, final ServiceCallback<BillingSubscriptionSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, billingSubscriptionName), serviceCallback);
+    }
+
+    /**
+     * Get a single billing subscription by name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionSummaryInner object
+     */
+    public Observable<BillingSubscriptionSummaryInner> getByCustomerNameAsync(String billingAccountName, String customerName, String billingSubscriptionName) {
+        return getByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, billingSubscriptionName).map(new Func1<ServiceResponse<BillingSubscriptionSummaryInner>, BillingSubscriptionSummaryInner>() {
+            @Override
+            public BillingSubscriptionSummaryInner call(ServiceResponse<BillingSubscriptionSummaryInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a single billing subscription by name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionSummaryInner object
+     */
+    public Observable<ServiceResponse<BillingSubscriptionSummaryInner>> getByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName, String billingSubscriptionName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (customerName == null) {
+            throw new IllegalArgumentException("Parameter customerName is required and cannot be null.");
+        }
+        if (billingSubscriptionName == null) {
+            throw new IllegalArgumentException("Parameter billingSubscriptionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getByCustomerName(billingAccountName, customerName, billingSubscriptionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingSubscriptionSummaryInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingSubscriptionSummaryInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingSubscriptionSummaryInner> clientResponse = getByCustomerNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingSubscriptionSummaryInner> getByCustomerNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingSubscriptionSummaryInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingSubscriptionSummaryInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Lists billing subscription by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -309,7 +490,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscription by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -322,7 +503,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscription by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
@@ -339,7 +520,7 @@ public class BillingSubscriptionsInner {
     /**
      * Lists billing subscription by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
@@ -378,7 +559,7 @@ public class BillingSubscriptionsInner {
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -393,7 +574,7 @@ public class BillingSubscriptionsInner {
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -407,7 +588,7 @@ public class BillingSubscriptionsInner {
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -425,7 +606,7 @@ public class BillingSubscriptionsInner {
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -468,7 +649,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -484,7 +665,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -499,7 +680,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -518,7 +699,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -546,7 +727,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -562,7 +743,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -577,7 +758,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -596,7 +777,7 @@ public class BillingSubscriptionsInner {
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -642,7 +823,7 @@ public class BillingSubscriptionsInner {
     /**
      * Validates the transfer of billing subscriptions across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -658,7 +839,7 @@ public class BillingSubscriptionsInner {
     /**
      * Validates the transfer of billing subscriptions across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -673,7 +854,7 @@ public class BillingSubscriptionsInner {
     /**
      * Validates the transfer of billing subscriptions across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -692,7 +873,7 @@ public class BillingSubscriptionsInner {
     /**
      * Validates the transfer of billing subscriptions across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.

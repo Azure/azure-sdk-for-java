@@ -55,6 +55,10 @@ public class BillingPermissionsInner {
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Billing/billingPermissions")
         Observable<Response<ResponseBody>> listByBillingAccount(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissions listByCustomers" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/providers/Microsoft.Billing/billingPermissions")
+        Observable<Response<ResponseBody>> listByCustomers(@Path("billingAccountName") String billingAccountName, @Path("customerName") String customerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissions listByInvoiceSections" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Billing/billingPermissions")
         Observable<Response<ResponseBody>> listByInvoiceSections(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -68,7 +72,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -81,7 +85,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -93,7 +97,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object
      */
@@ -109,7 +113,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object
      */
@@ -142,9 +146,92 @@ public class BillingPermissionsInner {
     }
 
     /**
+     * Lists all billing permissions for the caller under customer.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingPermissionsListResultInner object if successful.
+     */
+    public BillingPermissionsListResultInner listByCustomers(String billingAccountName, String customerName) {
+        return listByCustomersWithServiceResponseAsync(billingAccountName, customerName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all billing permissions for the caller under customer.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingPermissionsListResultInner> listByCustomersAsync(String billingAccountName, String customerName, final ServiceCallback<BillingPermissionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByCustomersWithServiceResponseAsync(billingAccountName, customerName), serviceCallback);
+    }
+
+    /**
+     * Lists all billing permissions for the caller under customer.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingPermissionsListResultInner object
+     */
+    public Observable<BillingPermissionsListResultInner> listByCustomersAsync(String billingAccountName, String customerName) {
+        return listByCustomersWithServiceResponseAsync(billingAccountName, customerName).map(new Func1<ServiceResponse<BillingPermissionsListResultInner>, BillingPermissionsListResultInner>() {
+            @Override
+            public BillingPermissionsListResultInner call(ServiceResponse<BillingPermissionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all billing permissions for the caller under customer.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingPermissionsListResultInner object
+     */
+    public Observable<ServiceResponse<BillingPermissionsListResultInner>> listByCustomersWithServiceResponseAsync(String billingAccountName, String customerName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (customerName == null) {
+            throw new IllegalArgumentException("Parameter customerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByCustomers(billingAccountName, customerName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingPermissionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingPermissionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingPermissionsListResultInner> clientResponse = listByCustomersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingPermissionsListResultInner> listByCustomersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingPermissionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingPermissionsListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Lists all billing permissions for the caller under invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -158,7 +245,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -171,7 +258,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object
@@ -188,7 +275,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billing permissions for the caller under invoice section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object
@@ -227,7 +314,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billingPermissions for the caller has for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -241,7 +328,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billingPermissions for the caller has for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -254,7 +341,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billingPermissions for the caller has for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object
@@ -271,7 +358,7 @@ public class BillingPermissionsInner {
     /**
      * Lists all billingPermissions for the caller has for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingPermissionsListResultInner object

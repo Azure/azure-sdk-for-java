@@ -29,6 +29,16 @@ public interface TransactionsSummary extends HasInner<TransactionsSummaryInner>,
     String billingProfileName();
 
     /**
+     * @return the customerDisplayName value.
+     */
+    String customerDisplayName();
+
+    /**
+     * @return the customerId value.
+     */
+    String customerId();
+
+    /**
      * @return the dateProperty value.
      */
     DateTime dateProperty();

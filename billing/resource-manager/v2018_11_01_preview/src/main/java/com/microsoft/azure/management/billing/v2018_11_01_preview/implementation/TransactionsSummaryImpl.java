@@ -42,6 +42,16 @@ class TransactionsSummaryImpl extends WrapperImpl<TransactionsSummaryInner> impl
     }
 
     @Override
+    public String customerDisplayName() {
+        return this.inner().customerDisplayName();
+    }
+
+    @Override
+    public String customerId() {
+        return this.inner().customerId();
+    }
+
+    @Override
     public DateTime dateProperty() {
         return this.inner().dateProperty();
     }

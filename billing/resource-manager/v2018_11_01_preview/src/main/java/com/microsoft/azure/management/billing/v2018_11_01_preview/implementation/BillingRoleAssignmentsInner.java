@@ -109,7 +109,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -123,7 +123,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -136,7 +136,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentInner object
@@ -153,7 +153,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentInner object
@@ -192,7 +192,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -206,7 +206,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -219,7 +219,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentInner object
@@ -236,7 +236,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentInner object
@@ -275,7 +275,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -290,7 +290,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -304,7 +304,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -322,7 +322,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -365,7 +365,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -380,7 +380,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -394,7 +394,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -412,7 +412,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -455,7 +455,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -470,7 +470,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -484,7 +484,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -502,7 +502,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignment for the caller on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -545,7 +545,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -560,7 +560,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -574,7 +574,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -592,7 +592,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Delete the role assignment on this Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleAssignmentName role assignment id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -635,7 +635,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -648,7 +648,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -660,7 +660,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
@@ -676,7 +676,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
      */
@@ -711,7 +711,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -725,7 +725,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -738,7 +738,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -755,7 +755,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -795,7 +795,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -809,7 +809,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -822,7 +822,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -839,7 +839,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -878,7 +878,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -893,7 +893,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -907,7 +907,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -925,7 +925,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -969,7 +969,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -983,7 +983,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -996,7 +996,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -1013,7 +1013,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * Get the role assignments on the Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingRoleAssignmentListResultInner object
@@ -1052,7 +1052,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1067,7 +1067,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1081,7 +1081,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1099,7 +1099,7 @@ public class BillingRoleAssignmentsInner {
     /**
      * The operation to add a role assignment to a billing profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to add a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation

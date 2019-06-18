@@ -19,7 +19,7 @@ public interface Agreements extends HasInner<AgreementsInner> {
     /**
      * Lists all agreements for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -28,7 +28,7 @@ public interface Agreements extends HasInner<AgreementsInner> {
     /**
      * Get the agreement by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param agreementName Agreement Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

@@ -19,7 +19,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -29,7 +29,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -40,7 +40,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Gets the role definition for a role.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param billingRoleDefinitionName role definition id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -51,7 +51,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Lists the role definition for a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -60,7 +60,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Lists the role definition for an invoice Section.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -70,7 +70,7 @@ public interface BillingRoleDefinitions extends HasInner<BillingRoleDefinitionsI
     /**
      * Lists the role definition for a Billing Profile.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

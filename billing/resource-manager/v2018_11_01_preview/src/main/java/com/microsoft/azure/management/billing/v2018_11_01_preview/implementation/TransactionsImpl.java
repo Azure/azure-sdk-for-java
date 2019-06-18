@@ -46,6 +46,18 @@ class TransactionsImpl extends WrapperImpl<TransactionsInner> implements Transac
     }
 
     @Override
+    public Observable<TransactionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate) {
+        TransactionsInner client = this.inner();
+        return client.listByCustomerNameAsync(billingAccountName, customerName, startDate, endDate)
+        .map(new Func1<TransactionsListResultInner, TransactionsListResult>() {
+            @Override
+            public TransactionsListResult call(TransactionsListResultInner inner) {
+                return new TransactionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<TransactionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate) {
         TransactionsInner client = this.inner();
         return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName, startDate, endDate)

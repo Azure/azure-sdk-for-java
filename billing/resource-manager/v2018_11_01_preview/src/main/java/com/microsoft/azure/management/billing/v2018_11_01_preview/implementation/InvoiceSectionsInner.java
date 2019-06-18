@@ -98,9 +98,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -111,9 +111,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -123,9 +123,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
@@ -139,9 +139,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
@@ -168,9 +168,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -182,9 +182,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -195,9 +195,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -212,9 +212,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections for a user which he has access to.
+     * Lists all invoice sections for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -250,7 +250,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -264,7 +264,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -277,7 +277,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -294,7 +294,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -317,7 +317,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -331,7 +331,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -344,7 +344,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
@@ -361,7 +361,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
@@ -400,9 +400,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections under a billing profile for a user which he has access to.
+     * Lists all invoice sections under a billing profile for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -414,9 +414,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections under a billing profile for a user which he has access to.
+     * Lists all invoice sections under a billing profile for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -427,9 +427,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections under a billing profile for a user which he has access to.
+     * Lists all invoice sections under a billing profile for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -444,9 +444,9 @@ public class InvoiceSectionsInner {
     }
 
     /**
-     * Lists all invoice sections under a billing profile for a user which he has access to.
+     * Lists all invoice sections under a billing profile for which a user has access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -485,7 +485,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -498,7 +498,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -510,7 +510,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
@@ -526,7 +526,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
@@ -555,7 +555,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -569,7 +569,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -582,7 +582,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -599,7 +599,7 @@ public class InvoiceSectionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
@@ -635,7 +635,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -649,7 +649,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -662,7 +662,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
@@ -679,7 +679,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionInner object
@@ -712,7 +712,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -727,7 +727,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param expand May be used to expand the billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -741,7 +741,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -759,7 +759,7 @@ public class InvoiceSectionsInner {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -799,7 +799,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -814,7 +814,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -828,7 +828,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -846,7 +846,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -873,7 +873,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -888,7 +888,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -902,7 +902,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -920,7 +920,7 @@ public class InvoiceSectionsInner {
     /**
      * The operation to update a InvoiceSection.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -965,7 +965,7 @@ public class InvoiceSectionsInner {
     /**
      * Elevates the caller's access to match their billing profile access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -978,7 +978,7 @@ public class InvoiceSectionsInner {
     /**
      * Elevates the caller's access to match their billing profile access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -991,7 +991,7 @@ public class InvoiceSectionsInner {
     /**
      * Elevates the caller's access to match their billing profile access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -1008,7 +1008,7 @@ public class InvoiceSectionsInner {
     /**
      * Elevates the caller's access to match their billing profile access.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.

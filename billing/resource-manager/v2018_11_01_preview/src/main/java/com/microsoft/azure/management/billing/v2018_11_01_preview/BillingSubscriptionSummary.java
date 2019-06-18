@@ -29,6 +29,16 @@ public interface BillingSubscriptionSummary extends HasInner<BillingSubscription
     String billingProfileName();
 
     /**
+     * @return the customerDisplayName value.
+     */
+    String customerDisplayName();
+
+    /**
+     * @return the customerId value.
+     */
+    String customerId();
+
+    /**
      * @return the displayName value.
      */
     String displayName();
@@ -62,6 +72,16 @@ public interface BillingSubscriptionSummary extends HasInner<BillingSubscription
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the serviceProviderDescription value.
+     */
+    String serviceProviderDescription();
+
+    /**
+     * @return the serviceProviderId value.
+     */
+    String serviceProviderId();
 
     /**
      * @return the skuDescription value.

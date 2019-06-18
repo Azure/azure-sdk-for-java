@@ -19,7 +19,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Lists billing subscriptions by billing profile name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -27,9 +27,30 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     Observable<BillingSubscriptionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName);
 
     /**
+     * Lists billing subscription by customer name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingSubscriptionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName);
+
+    /**
+     * Get a single billing subscription by name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingSubscriptionSummary> getByCustomerNameAsync(String billingAccountName, String customerName, String billingSubscriptionName);
+
+    /**
      * Lists billing subscription by invoice section name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -39,7 +60,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -50,7 +71,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Transfers the subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -62,7 +83,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Validates the transfer of billing subscriptions across invoice sections.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
      * @param parameters Parameters supplied to the Transfer Billing Subscription operation.
@@ -74,7 +95,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Lists billing subscriptions by billing account name.
      *
-     * @param billingAccountName billing Account Id.
+     * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

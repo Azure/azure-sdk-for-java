@@ -95,6 +95,18 @@ public class TransactionsSummaryInner extends ProxyResource {
     private Integer quantity;
 
     /**
+     * Customer id to which this product belongs.
+     */
+    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
+    private String customerId;
+
+    /**
+     * Display name of customer to which this product belongs.
+     */
+    @JsonProperty(value = "properties.customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String customerDisplayName;
+
+    /**
      * Invoice section id to which this product belongs.
      */
     @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
@@ -258,6 +270,24 @@ public class TransactionsSummaryInner extends ProxyResource {
      */
     public Integer quantity() {
         return this.quantity;
+    }
+
+    /**
+     * Get customer id to which this product belongs.
+     *
+     * @return the customerId value
+     */
+    public String customerId() {
+        return this.customerId;
+    }
+
+    /**
+     * Get display name of customer to which this product belongs.
+     *
+     * @return the customerDisplayName value
+     */
+    public String customerDisplayName() {
+        return this.customerDisplayName;
     }
 
     /**
