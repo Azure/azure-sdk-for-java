@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.configuration;
+package com.azure.core.util.configuration;
 
 /**
  * Manages the global configuration store.
