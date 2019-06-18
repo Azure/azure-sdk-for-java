@@ -100,7 +100,7 @@ public class ClientLogger {
     /**
      * Sets the logger to the info logging level.
      *
-     * @return Updated ClientLogger if info is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if info is enabled.
      */
     public ClientLogger asInfo() {
         return asLevel(INFORMATIONAL_LEVEL);
@@ -109,7 +109,7 @@ public class ClientLogger {
     /**
      * Sets the logger to the warning logging level.
      *
-     * @return Updated ClientLogger if warn is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if warn is enabled.
      */
     public ClientLogger asWarning() {
         return asLevel(WARNING_LEVEL);
@@ -118,7 +118,7 @@ public class ClientLogger {
     /**
      * Sets the logger to the error logging level.
      *
-     * @return Updated ClientLogger if error is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if error is enabled..
      */
     public ClientLogger asError() {
         return asLevel(ERROR_LEVEL);
@@ -193,7 +193,7 @@ public class ClientLogger {
     /*
      * Helper method to set the logging level.
      * @param level Logging level
-     * @return Updated ClientLogger if the level is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if the level is enabled.
      */
     private ClientLogger asLevel(int level) {
         if (canLogAtLevel(level)) {
@@ -212,7 +212,7 @@ public class ClientLogger {
         // Check the configuration level every time the logger is called in case it has changed.
         configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
         if (level < configurationLevel) {
-        	 return false;
+            return false;
         }
 
         switch (level) {
@@ -245,18 +245,5 @@ public class ClientLogger {
         }
 
         return args;
-    }
-    public static void main(String[] arg){
-        ClientLogger logger = new ClientLogger(ClientLogger.class);
-
-        System.out.println("main .. ");
-        //logger = logger.asVerbose();
-        //logger = logger.asWarning();
-        logger.asInfo().log("A  info message");
-        logger.asVerbose().log("A  verbose message");
-        logger.asWarning().log("W Failed to upload {}", "file1", new Exception("IO Error ... "));
-
-        logger.asError().log("E verbose exception  ",new Exception(" Exception string" ));
-
     }
 }
