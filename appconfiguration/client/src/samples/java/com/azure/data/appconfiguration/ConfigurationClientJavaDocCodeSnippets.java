@@ -22,8 +22,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.applicationconfig.configurationclient.instantiation
             ConfigurationClient configurationClient = ConfigurationClient.builder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
-                .build();
+                .credential(new ConfigurationClientCredentials(connectionString))
+                .buildSync();
             // END: com.azure.applicationconfig.configurationclient.instantiation
             return configurationClient;
         } catch (GeneralSecurityException ex) {

@@ -35,13 +35,13 @@ import java.util.Objects;
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
+ *     .credential(new ConfigurationClientCredentials(connectionString))
+ *     .buildAsync();
  * </pre>
  *
- * <p>View {@link ConfigurationAsyncClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see ConfigurationAsyncClientBuilder
+ * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
@@ -72,10 +72,10 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     /**
      * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
      *
-     * @return A new {@link ConfigurationAsyncClientBuilder} to create a ConfigurationAsyncClient from.
+     * @return A new {@link ConfigurationClientBuilder} to create a ConfigurationAsyncClient from.
      */
-    public static ConfigurationAsyncClientBuilder builder() {
-        return new ConfigurationAsyncClientBuilder();
+    public static ConfigurationClientBuilder builder() {
+        return new ConfigurationClientBuilder();
     }
 
     /**
