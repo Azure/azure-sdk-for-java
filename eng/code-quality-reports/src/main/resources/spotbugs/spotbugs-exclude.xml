@@ -424,7 +424,7 @@
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Class name="com.azure.core.configuration.Configuration"/>
+    <Class name="com.azure.core.util.configuration.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 

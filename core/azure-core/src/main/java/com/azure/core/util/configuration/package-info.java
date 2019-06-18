@@ -4,4 +4,4 @@
 /**
  * Package containing centralized configuration APIs for client libraries.
  */
-package com.azure.core.configuration;
+package com.azure.core.util.configuration;
