@@ -8,8 +8,9 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.configuration.ConfigurationManager;
+
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;

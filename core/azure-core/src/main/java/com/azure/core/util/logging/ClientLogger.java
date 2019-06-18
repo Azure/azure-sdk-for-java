@@ -3,11 +3,11 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -24,10 +24,10 @@ import java.util.Arrays;
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- *     <li>{@link ClientLogger#asError() Error}</li>
- *     <li>{@link ClientLogger#asWarning() Warning}</li>
- *     <li>{@link ClientLogger#asInfo() Info}</li>
- *     <li>{@link ClientLogger#asVerbose() Verbose}</li>
+ * <li>{@link ClientLogger#asError() Error}</li>
+ * <li>{@link ClientLogger#asWarning() Warning}</li>
+ * <li>{@link ClientLogger#asInfo() Info}</li>
+ * <li>{@link ClientLogger#asVerbose() Verbose}</li>
  * </ol>
  *
  * @see Configuration
@@ -37,22 +37,34 @@ public class ClientLogger {
 
     private final Logger logger;
 
-    /** Indicate trace level.*/
+    /**
+     * Indicate trace level.
+     */
     public static final int TRACE_LEVEL = 0;
 
-    /** Indicate verbose log level.*/
+    /**
+     * Indicate verbose log level.
+     */
     public static final int VERBOSE_LEVEL = 1;
 
-    /** Indicate information log level.*/
+    /**
+     * Indicate information log level.
+     */
     public static final int INFORMATIONAL_LEVEL = 2;
 
-    /** Indicate warning log level.*/
+    /**
+     * Indicate warning log level.
+     */
     public static final int WARNING_LEVEL = 3;
 
-    /** Indicate error log level.*/
+    /**
+     * Indicate error log level.
+     */
     public static final int ERROR_LEVEL = 4;
 
-    /** Indicate logging is disabled.*/
+    /**
+     * Indicate logging is disabled.
+     */
     public static final int DISABLED_LEVEL = 5;
 
     private final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
@@ -62,6 +74,7 @@ public class ClientLogger {
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
+     *
      * @param clazz Class creating the logger.
      */
     public ClientLogger(Class clazz) {
@@ -70,6 +83,7 @@ public class ClientLogger {
 
     /**
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
+     *
      * @param className Class name creating the logger.
      */
     public ClientLogger(String className) {
@@ -78,6 +92,7 @@ public class ClientLogger {
 
     /**
      * Sets the logger to the verbose logging level.
+     *
      * @return Updated ClientLogger if debug is enabled, otherwise a no-op logger.
      */
     public ClientLogger asVerbose() {
@@ -86,6 +101,7 @@ public class ClientLogger {
 
     /**
      * Sets the logger to the info logging level.
+     *
      * @return Updated ClientLogger if info is enabled, otherwise a no-op logger.
      */
     public ClientLogger asInfo() {
@@ -94,6 +110,7 @@ public class ClientLogger {
 
     /**
      * Sets the logger to the warning logging level.
+     *
      * @return Updated ClientLogger if warn is enabled, otherwise a no-op logger.
      */
     public ClientLogger asWarning() {
@@ -102,6 +119,7 @@ public class ClientLogger {
 
     /**
      * Sets the logger to the error logging level.
+     *
      * @return Updated ClientLogger if error is enabled, otherwise a no-op logger.
      */
     public ClientLogger asError() {
@@ -112,19 +130,19 @@ public class ClientLogger {
      * Logs a format-able message that uses {@code {}} as the placeholder.
      *
      * <p><strong>Code Samples</strong></p>
-     *
+     * <p>
      * Logging a message with the default log level
      * <pre>
      * ClientLogger logger = new ClientLogger(Example.class);
      * logger.log("A message");
      * </pre>
-     *
+     * <p>
      * Logging a format-able warning
      * <pre>
      * ClientLogger logger = new ClientLogger(Example.class);
      * logger.asWarning().log("A format-able message. Hello, {}", name);
      * </pre>
-     *
+     * <p>
      * Logging an error with stack trace
      * <pre>
      * ClientLogger logger = new ClientLogger(Example.class);
@@ -136,7 +154,7 @@ public class ClientLogger {
      * </pre>
      *
      * @param format Format-able message.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args   Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     public void log(String format, Object... args) {
         if (canLogAtLevel(level)) {
@@ -239,12 +257,13 @@ public class ClientLogger {
     /**
      * ClientLogger that doesn't perform any logging.
      */
-    static class NoopClientLogger  extends ClientLogger {
-        private NoopClientLogger(){
+    final static class NoopClientLogger extends ClientLogger {
+        private NoopClientLogger() {
             super(NoopClientLogger.class);
         }
+
         @Override
-        public void log(String format, Object... args){
+        public void log(String format, Object... args) {
             //DO Nothing
         }
     }

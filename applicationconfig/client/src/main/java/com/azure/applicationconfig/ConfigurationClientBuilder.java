@@ -5,7 +5,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.core.configuration.Configuration;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
