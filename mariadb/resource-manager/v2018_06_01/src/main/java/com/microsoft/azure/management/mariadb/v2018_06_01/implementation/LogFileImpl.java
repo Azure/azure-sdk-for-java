@@ -14,15 +14,15 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    LogFileImpl(LogFileInner inner,  DBforMariaDBManager manager) {
+    LogFileImpl(LogFileInner inner,  MariaDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

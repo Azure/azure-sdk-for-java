@@ -14,11 +14,11 @@
         <version>0.0.2-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-dbformariadb</artifactId>
+    <artifactId>azure-mgmt-mariadb</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for DBforMariaDB Management</name>
-    <description>This package contains Microsoft DBforMariaDB Management SDK.</description>
+    <name>Microsoft Azure SDK for MariaDB Management</name>
+    <description>This package contains Microsoft MariaDB Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
     <licenses>
         <license>

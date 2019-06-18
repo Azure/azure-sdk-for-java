@@ -15,11 +15,11 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.ServerSecurityAlertPol
 import java.util.List;
 
 class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
     private String resourceGroupName;
     private String serverName;
 
-    ServerSecurityAlertPolicyImpl(String name, DBforMariaDBManager manager) {
+    ServerSecurityAlertPolicyImpl(String name, MariaDBManager manager) {
         super(name, new ServerSecurityAlertPolicyInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
         //
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, DBforMariaDBManager manager) {
+    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, MariaDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

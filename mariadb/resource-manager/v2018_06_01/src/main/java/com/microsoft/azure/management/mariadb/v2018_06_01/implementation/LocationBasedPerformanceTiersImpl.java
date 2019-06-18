@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.PerformanceTierProperties;
 
 class LocationBasedPerformanceTiersImpl extends WrapperImpl<LocationBasedPerformanceTiersInner> implements LocationBasedPerformanceTiers {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    LocationBasedPerformanceTiersImpl(DBforMariaDBManager manager) {
+    LocationBasedPerformanceTiersImpl(MariaDBManager manager) {
         super(manager.inner().locationBasedPerformanceTiers());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

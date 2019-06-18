@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.Configuration;
 
 class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Configurations {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    ConfigurationsImpl(DBforMariaDBManager manager) {
+    ConfigurationsImpl(MariaDBManager manager) {
         super(manager.inner().configurations());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

@@ -10,13 +10,13 @@ package com.microsoft.azure.management.mariadb.v2018_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.NameAvailabilityInner;
 
 /**
  * Type representing NameAvailability.
  */
-public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<DBforMariaDBManager> {
+public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<MariaDBManager> {
     /**
      * @return the message value.
      */

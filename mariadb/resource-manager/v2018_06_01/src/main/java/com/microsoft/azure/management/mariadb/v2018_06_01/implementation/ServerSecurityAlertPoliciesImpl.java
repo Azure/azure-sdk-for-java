@@ -16,14 +16,14 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerSecurityAlertPolicy;
 
 class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPoliciesInner> implements ServerSecurityAlertPolicies {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    ServerSecurityAlertPoliciesImpl(DBforMariaDBManager manager) {
+    ServerSecurityAlertPoliciesImpl(MariaDBManager manager) {
         super(manager.inner().serverSecurityAlertPolicies());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

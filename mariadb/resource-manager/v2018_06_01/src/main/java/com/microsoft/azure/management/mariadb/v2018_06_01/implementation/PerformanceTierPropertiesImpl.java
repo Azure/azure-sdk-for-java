@@ -15,15 +15,15 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.PerformanceTierServiceLevelObjectives;
 
 class PerformanceTierPropertiesImpl extends WrapperImpl<PerformanceTierPropertiesInner> implements PerformanceTierProperties {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  DBforMariaDBManager manager) {
+    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  MariaDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, DatabaseImpl> implements Database, Database.Definition, Database.Update {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
     private String resourceGroupName;
     private String serverName;
     private String databaseName;
 
-    DatabaseImpl(String name, DBforMariaDBManager manager) {
+    DatabaseImpl(String name, MariaDBManager manager) {
         super(name, new DatabaseInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
         //
     }
 
-    DatabaseImpl(DatabaseInner inner, DBforMariaDBManager manager) {
+    DatabaseImpl(DatabaseInner inner, MariaDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

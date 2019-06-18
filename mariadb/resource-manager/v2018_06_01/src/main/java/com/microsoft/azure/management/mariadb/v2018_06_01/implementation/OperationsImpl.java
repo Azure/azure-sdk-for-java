@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.mariadb.v2018_06_01.OperationListResult;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    OperationsImpl(DBforMariaDBManager manager) {
+    OperationsImpl(MariaDBManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

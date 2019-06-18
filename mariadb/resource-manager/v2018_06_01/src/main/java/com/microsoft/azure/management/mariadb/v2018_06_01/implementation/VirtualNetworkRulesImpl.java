@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRule;
 
 class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> implements VirtualNetworkRules {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    VirtualNetworkRulesImpl(DBforMariaDBManager manager) {
+    VirtualNetworkRulesImpl(MariaDBManager manager) {
         super(manager.inner().virtualNetworkRules());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

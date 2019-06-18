@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.FirewallRule;
 
 class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements FirewallRules {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    FirewallRulesImpl(DBforMariaDBManager manager) {
+    FirewallRulesImpl(MariaDBManager manager) {
         super(manager.inner().firewallRules());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

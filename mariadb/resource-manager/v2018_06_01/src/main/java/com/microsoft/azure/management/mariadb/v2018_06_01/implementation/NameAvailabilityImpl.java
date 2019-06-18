@@ -12,14 +12,14 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.NameAvailability;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class NameAvailabilityImpl extends WrapperImpl<NameAvailabilityInner> implements NameAvailability {
-    private final DBforMariaDBManager manager;
-    NameAvailabilityImpl(NameAvailabilityInner inner, DBforMariaDBManager manager) {
+    private final MariaDBManager manager;
+    NameAvailabilityImpl(NameAvailabilityInner inner, MariaDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.Database;
 
 class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    DatabasesImpl(DBforMariaDBManager manager) {
+    DatabasesImpl(MariaDBManager manager) {
         super(manager.inner().databases());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

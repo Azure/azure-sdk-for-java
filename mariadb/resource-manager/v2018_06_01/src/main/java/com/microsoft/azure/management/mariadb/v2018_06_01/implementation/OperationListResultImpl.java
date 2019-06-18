@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class OperationListResultImpl extends WrapperImpl<OperationListResultInner> implements OperationListResult {
-    private final DBforMariaDBManager manager;
-    OperationListResultImpl(OperationListResultInner inner, DBforMariaDBManager manager) {
+    private final MariaDBManager manager;
+    OperationListResultImpl(OperationListResultInner inner, MariaDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 
