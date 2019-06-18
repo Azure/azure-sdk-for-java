@@ -33,39 +33,37 @@ import java.util.Arrays;
  * @see Configuration
  */
 public class ClientLogger {
-    private static final NoopClientLogger NOOP_LOGGER = new NoopClientLogger();
-
     private final Logger logger;
 
-    /**
+    /*
      * Indicate that log level is at trace level.
      */
-    public static final int TRACE_LEVEL = 0;
+    private static final int TRACE_LEVEL = 0;
 
-    /**
+    /*
      * Indicate that log level is at verbose level.
      */
-    public static final int VERBOSE_LEVEL = 1;
+    private static final int VERBOSE_LEVEL = 1;
 
-    /**
+    /*
      * Indicate that log level is at information level.
      */
-    public static final int INFORMATIONAL_LEVEL = 2;
+    private static final int INFORMATIONAL_LEVEL = 2;
 
-    /**
+    /*
      * Indicate that log level is at warning level.
      */
-    public static final int WARNING_LEVEL = 3;
+    private static final int WARNING_LEVEL = 3;
 
-    /**
+    /*
      * Indicate that log level is at error level.
      */
-    public static final int ERROR_LEVEL = 4;
+    private static final int ERROR_LEVEL = 4;
 
-    /**
+    /*
      * Indicate that logging is disabled.
      */
-    public static final int DISABLED_LEVEL = 5;
+    private static final int DISABLED_LEVEL = 5;
 
     private static final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
     private int level = DEFAULT_LOG_LEVEL;
@@ -93,7 +91,7 @@ public class ClientLogger {
     /**
      * Sets the logger to the verbose logging level.
      *
-     * @return Updated ClientLogger if debug is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if debug is enabled
      */
     public ClientLogger asVerbose() {
         return asLevel(VERBOSE_LEVEL);
@@ -165,7 +163,6 @@ public class ClientLogger {
     /*
      * Performs the logging.
      * @param format Format-able message.
-     * asVerbosee message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(String format, Object... args) {
@@ -201,10 +198,9 @@ public class ClientLogger {
     private ClientLogger asLevel(int level) {
         if (canLogAtLevel(level)) {
             this.level = level;
-            return this;
         }
 
-        return NOOP_LOGGER;
+        return this;
     }
 
     /*
@@ -215,8 +211,9 @@ public class ClientLogger {
     private boolean canLogAtLevel(int level) {
         // Check the configuration level every time the logger is called in case it has changed.
         configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        configurationLevel = WARNING_LEVEL;
         if (level < configurationLevel) {
-            return false;
+        	 return false;
         }
 
         switch (level) {
@@ -249,19 +246,5 @@ public class ClientLogger {
         }
 
         return args;
-    }
-
-    /**
-     * ClientLogger that doesn't perform any logging.
-     */
-    static final class NoopClientLogger extends ClientLogger {
-        private NoopClientLogger() {
-            super(NoopClientLogger.class);
-        }
-
-        @Override
-        public void log(String format, Object... args) {
-            //DO Nothing
-        }
     }
 }
