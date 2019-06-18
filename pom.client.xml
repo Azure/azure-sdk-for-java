@@ -342,7 +342,7 @@
               </group>
               <group>
                 <title>Azure App Configuration</title>
-                <packages>com.azure.applicationconfig*</packages>
+                <packages>com.azure.data.appconfiguration*</packages>
               </group>
               <group>
                 <title>Azure Key Vault</title>
@@ -667,7 +667,7 @@
   </profiles>
 
   <modules>
-    <module>./applicationconfig/client</module>
+    <module>./appconfiguration/client</module>
     <module>./core</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
