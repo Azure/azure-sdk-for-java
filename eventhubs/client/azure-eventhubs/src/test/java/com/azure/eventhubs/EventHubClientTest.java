@@ -201,7 +201,6 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
             "invalid-event-hub", getTokenCredential(), getAuthorizationType(), Duration.ofSeconds(45),
@@ -238,8 +237,7 @@ public class EventHubClientTest extends ApiTestBase {
         // Act & Assert
         try (EventSender sender = client.createSender(senderOptions)) {
             StepVerifier.create(sender.send(events))
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         }
     }
 
@@ -260,8 +258,7 @@ public class EventHubClientTest extends ApiTestBase {
         // Act & Assert
         try (EventSender sender = client.createSender()) {
             StepVerifier.create(sender.send(events))
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         }
     }
 
@@ -278,8 +275,7 @@ public class EventHubClientTest extends ApiTestBase {
         // Act & Assert
         StepVerifier.create(receiver.receive().take(numberOfEvents))
             .expectNextCount(numberOfEvents)
-            .expectComplete()
-            .verify();
+            .verifyComplete();
     }
 
     @Override
@@ -339,6 +335,9 @@ public class EventHubClientTest extends ApiTestBase {
         }
     }
 
+    /**
+     * Test for multiple EventHub receivers
+     */
     @Ignore
     @Test
     public void parallelEventHubClients() {
@@ -348,21 +347,20 @@ public class EventHubClientTest extends ApiTestBase {
 
         EventHubClient[] ehClients = new EventHubClient[noOfClients];
         for (int i = 0; i < noOfClients; i++) {
-            ehClients[i] = getEventHubClientBuilder().build();
+            ehClients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        EventReceiverOptions receiverOptions = new EventReceiverOptions()
-            .consumerGroup(consumerGroupName)
-            .beginReceivingAt(EventPosition.newEventsOnly());
-
-        EventHubClient senderClient = getEventHubClientBuilder().build();
+        EventHubClient senderClient = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
 
         for (EventHubClient ehClient : ehClients) {
-            EventReceiver receiver = ehClient.createReceiver(partitionId, receiverOptions);
-            Flux<EventData> eventReceived = receiver.receive();
 
-            StepVerifier.create(eventReceived)
-                .then(() -> ApiTestBase.pushEventsToPartition(senderClient, partitionId, 10))
+            EventReceiver receiver = ehClient.createReceiver(partitionId, EventPosition.latest(),
+                new EventReceiverOptions().consumerGroup(consumerGroupName));
+
+            Flux<EventData> receivedData = receiver.receive();
+            ApiTestBase.pushEventsToPartition(senderClient, new EventSenderOptions().partitionId(PARTITION_ID), 10);
+
+            StepVerifier.create(receivedData.take(10))
                 .expectNextCount(10)
                 .verifyComplete();
         }
