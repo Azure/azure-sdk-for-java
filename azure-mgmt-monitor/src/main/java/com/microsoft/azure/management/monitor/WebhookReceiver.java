@@ -34,6 +34,30 @@ public class WebhookReceiver {
     private boolean useCommonAlertSchema;
 
     /**
+     * Indicates whether or not use AAD authentication.
+     */
+    @JsonProperty(value = "useAadAuth")
+    private Boolean useAadAuth;
+
+    /**
+     * Indicates the webhook app object Id for aad auth.
+     */
+    @JsonProperty(value = "objectId")
+    private String objectId;
+
+    /**
+     * Indicates the identifier uri for aad auth.
+     */
+    @JsonProperty(value = "identifierUri")
+    private String identifierUri;
+
+    /**
+     * Indicates the tenant id for aad auth.
+     */
+    @JsonProperty(value = "tenantId")
+    private String tenantId;
+
+    /**
      * Get the name of the webhook receiver. Names must be unique across all receivers within an action group.
      *
      * @return the name value
@@ -90,6 +114,86 @@ public class WebhookReceiver {
      */
     public WebhookReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
+        return this;
+    }
+
+    /**
+     * Get indicates whether or not use AAD authentication.
+     *
+     * @return the useAadAuth value
+     */
+    public Boolean useAadAuth() {
+        return this.useAadAuth;
+    }
+
+    /**
+     * Set indicates whether or not use AAD authentication.
+     *
+     * @param useAadAuth the useAadAuth value to set
+     * @return the WebhookReceiver object itself.
+     */
+    public WebhookReceiver withUseAadAuth(Boolean useAadAuth) {
+        this.useAadAuth = useAadAuth;
+        return this;
+    }
+
+    /**
+     * Get indicates the webhook app object Id for aad auth.
+     *
+     * @return the objectId value
+     */
+    public String objectId() {
+        return this.objectId;
+    }
+
+    /**
+     * Set indicates the webhook app object Id for aad auth.
+     *
+     * @param objectId the objectId value to set
+     * @return the WebhookReceiver object itself.
+     */
+    public WebhookReceiver withObjectId(String objectId) {
+        this.objectId = objectId;
+        return this;
+    }
+
+    /**
+     * Get indicates the identifier uri for aad auth.
+     *
+     * @return the identifierUri value
+     */
+    public String identifierUri() {
+        return this.identifierUri;
+    }
+
+    /**
+     * Set indicates the identifier uri for aad auth.
+     *
+     * @param identifierUri the identifierUri value to set
+     * @return the WebhookReceiver object itself.
+     */
+    public WebhookReceiver withIdentifierUri(String identifierUri) {
+        this.identifierUri = identifierUri;
+        return this;
+    }
+
+    /**
+     * Get indicates the tenant id for aad auth.
+     *
+     * @return the tenantId value
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set indicates the tenant id for aad auth.
+     *
+     * @param tenantId the tenantId value to set
+     * @return the WebhookReceiver object itself.
+     */
+    public WebhookReceiver withTenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 
