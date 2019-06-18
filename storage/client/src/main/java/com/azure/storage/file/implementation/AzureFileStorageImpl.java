@@ -32,7 +32,7 @@ public final class AzureFileStorageImpl extends ServiceClient {
      * @param version the version value.
      * @return the service client itself.
      */
-    public AzureFileStorageImpl withVersion(String version) {
+    AzureFileStorageImpl version(String version) {
         this.version = version;
         return this;
     }
@@ -57,7 +57,7 @@ public final class AzureFileStorageImpl extends ServiceClient {
      * @param url the url value.
      * @return the service client itself.
      */
-    public AzureFileStorageImpl withUrl(String url) {
+    AzureFileStorageImpl url(String url) {
         this.url = url;
         return this;
     }
@@ -132,7 +132,6 @@ public final class AzureFileStorageImpl extends ServiceClient {
      */
     public AzureFileStorageImpl(HttpPipeline httpPipeline) {
         super(httpPipeline);
-        this.version = "2018-11-09";
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
         this.directorys = new DirectorysImpl(this);
