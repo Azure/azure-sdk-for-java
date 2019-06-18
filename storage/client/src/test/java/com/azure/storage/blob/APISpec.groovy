@@ -19,6 +19,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
@@ -324,8 +325,8 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
-            return headers.eTag()
+            BlobProperties properties = bu.getProperties(null, null).value()
+            return properties.eTag()
         } else {
             return match
         }
@@ -348,7 +349,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null)
+            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -401,24 +402,24 @@ class APISpec extends Specification {
      * @return
      * Whether or not the header values are appropriate.
      */
-    def validateBasicHeaders(Object headers) {
-        return headers.class.getMethod("eTag").invoke(headers) != null &&
+    def validateBasicHeaders(HttpHeaders headers) {
+        return headers.value("etag") != null &&
             // Quotes should be scrubbed from etag header values
-//            !((String)(headers.class.getMethod("eTag").invoke(headers))).contains("\"") &&
-            headers.class.getMethod("lastModified").invoke(headers) != null &&
-            headers.class.getMethod("requestId").invoke(headers) != null &&
-            headers.class.getMethod("version").invoke(headers) != null &&
-            headers.class.getMethod("dateProperty").invoke(headers) != null
+            !headers.value("etag").contains("\"") &&
+            headers.value("last-modified") != null &&
+            headers.value("x-ms-request-id") != null &&
+            headers.value("x-ms-version") != null &&
+            headers.value("date") != null
     }
 
-    def validateBlobHeaders(Object headers, String cacheControl, String contentDisposition, String contentEncoding,
+    def validateBlobHeaders(HttpHeaders headers, String cacheControl, String contentDisposition, String contentEncoding,
                             String contentLangauge, byte[] contentMD5, String contentType) {
-        return headers.class.getMethod("cacheControl").invoke(headers) == cacheControl &&
-            headers.class.getMethod("contentDisposition").invoke(headers) == contentDisposition &&
-            headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
-            headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
-            headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
-            headers.class.getMethod("contentType").invoke(headers) == contentType
+        return headers.value("cache-control") == cacheControl &&
+            headers.value("content-disposition") == contentDisposition &&
+            headers.value("content-encoding") == contentEncoding &&
+            headers.value("content-language") == contentLangauge &&
+            headers.value("content-md5") == contentMD5 == null ? null : new String((byte[]) contentMD5) &&
+            headers.value("content-type") == contentType
 
     }
 
@@ -454,121 +455,90 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-//    def getStubResponse(int code, Class responseHeadersType) {
-//        return new HttpResponse() {
-//
-//            @Override
-//            int statusCode() {
-//                return code
-//            }
-//
-//            @Override
-//            String headerValue(String s) {
-//                return null
-//            }
-//
-//            @Override
-//            HttpHeaders headers() {
-//                return new HttpHeaders()
-//            }
-//
-//            @Override
-//            Flux<ByteBuffer> body() {
-//                return Flowable.empty()
-//            }
-//
-//            @Override
-//            Mono<byte[]> bodyAsByteArray() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString(Charset charset) {
-//                return null
-//            }
-//
-//            @Override
-//            Object deserializedHeaders() {
-//                def headers = responseHeadersType.getConstructor().newInstance()
-//
-//                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
-//                try {
-//                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
-//                }
-//                catch (NoSuchMethodException e) {
-//                    // No op
-//                }
-//                return headers
-//            }
-//
-//            @Override
-//            boolean isDecoded() {
-//                return true
-//            }
-//        }
-//    }
+    def getStubResponse(int code, Class responseHeadersType) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> body() {
+                return Flowable.empty()
+            }
+
+            @Override
+            Mono<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString(Charset charset) {
+                return null
+            }
+        }
+    }
 
     /*
     This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-//    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
-//        return new HttpResponse() {
-//
-//            @Override
-//            int statusCode() {
-//                return code
-//            }
-//
-//            @Override
-//            String headerValue(String s) {
-//                return null
-//            }
-//
-//            @Override
-//            HttpHeaders headers() {
-//                return new HttpHeaders()
-//            }
-//
-//            @Override
-//            Flux<ByteBuffer> body() {
-//                return body
-//            }
-//
-//            @Override
-//            Mono<byte[]> bodyAsByteArray() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString(Charset charset) {
-//                return null
-//            }
-//
-//            @Override
-//            Object deserializedHeaders() {
-//                def headers = new BlobDownloadHeaders()
-//                headers.withETag(etag)
-//                return headers
-//            }
-//
-//            @Override
-//            boolean isDecoded() {
-//                return true
-//            }
-//        }
-//    }
+    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> body() {
+                return body
+            }
+
+            @Override
+            Mono<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString(Charset charset) {
+                return null
+            }
+        }
+    }
 
     def getContextStubPolicy(int successCode, Class responseHeadersType) {
         return Mock(HttpPipelinePolicy) {

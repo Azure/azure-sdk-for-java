@@ -3,11 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.models.AppendBlobCreateHeaders;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
@@ -72,7 +74,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the created appended blob.
      */
-    public AppendBlobCreateHeaders create() {
+    public Response<AppendBlobItem> create() {
         return this.create(null, null, null, null, null);
     }
 
@@ -97,9 +99,9 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the created appended blob.
      */
-    public AppendBlobCreateHeaders create(BlobHTTPHeaders headers, Metadata metadata,
+    public Response<AppendBlobItem> create(BlobHTTPHeaders headers, Metadata metadata,
                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobCreateHeaders> response = appendBlobAsyncClient.create(headers, metadata, accessConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.create(headers, metadata, accessConditions, context);
         return timeout == null
             ? response.block()
             : response.block(timeout);
@@ -121,7 +123,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public AppendBlobAppendBlockHeaders appendBlock(Flux<ByteBuf> data, long length) {
+    public Response<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length) {
         return this.appendBlock(data, length, null, null, null);
     }
 
@@ -151,9 +153,9 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public AppendBlobAppendBlockHeaders appendBlock(Flux<ByteBuf> data, long length,
+    public Response<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobAppendBlockHeaders> response = appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions, context);
         return timeout == null
             ? response.block()
             : response.block(timeout);
@@ -173,7 +175,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public AppendBlobAppendBlockFromUrlHeaders appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+    public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
                  null, null, null);
     }
@@ -207,10 +209,10 @@ public final class AppendBlobClient extends BlobClient {
      * @return
      *      The information of the append blob operation.
      */
-    public AppendBlobAppendBlockFromUrlHeaders appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobAppendBlockFromUrlHeaders> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return timeout == null
             ? response.block()
             : response.block(timeout);

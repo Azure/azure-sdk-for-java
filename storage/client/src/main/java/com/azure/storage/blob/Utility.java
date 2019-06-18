@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -256,7 +258,10 @@ final class Utility {
     private static <T> Mono<T> addErrorWrappingToSingle(Mono<T> s) {
         return s.onErrorResume(
             StorageErrorException.class,
-            e -> e.response().bodyAsString().flatMap(body -> Mono.error(new StorageException(e, body))));
+            e -> e.response()
+                .bodyAsString()
+                .switchIfEmpty(Mono.just(""))
+                .flatMap(body -> Mono.error(new StorageException(e, body))));
     }
 
     /*
@@ -267,7 +272,7 @@ final class Utility {
     private static <T> Mono<T> scrubEtagHeaderInResponse(Mono<T> s) {
         return s.map(response -> {
             try {
-                Object headers = response.getClass().getMethod("headers").invoke(response);
+                Object headers = response.getClass().getMethod("deserializedHeaders").invoke(response);
                 Method etagGetterMethod = headers.getClass().getMethod("eTag");
                 String etag = (String) etagGetterMethod.invoke(headers);
                 // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
@@ -275,7 +280,10 @@ final class Utility {
                     return response;
                 }
                 etag = etag.replace("\"", ""); // Etag headers without the quotes will be unaffected.
-                headers.getClass().getMethod("withETag", String.class).invoke(headers, etag);
+                headers.getClass().getMethod("eTag", String.class).invoke(headers, etag);
+
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
+                rawHeaders.put("ETag", etag);
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
             } catch (IllegalAccessException | InvocationTargetException e) {

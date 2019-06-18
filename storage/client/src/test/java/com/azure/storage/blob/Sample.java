@@ -1,6 +1,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import org.junit.Test;
@@ -130,6 +131,7 @@ public class Sample {
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
                     .download()
+                    .flatMapMany(Response::value)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup

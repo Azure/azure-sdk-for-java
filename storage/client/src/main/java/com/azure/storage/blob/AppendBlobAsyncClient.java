@@ -12,6 +12,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.models.AppendBlobCreateHeaders;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
@@ -82,7 +83,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<Response<AppendBlobCreateHeaders>> create() {
+    public Mono<Response<AppendBlobItem>> create() {
         return this.create(null, null, null, null);
     }
 
@@ -105,11 +106,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<Response<AppendBlobCreateHeaders>> create(BlobHTTPHeaders headers, Metadata metadata,
-                                                          BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata,
+                                                 BlobAccessConditions accessConditions, Context context) {
             return appendBlobAsyncRawClient
                 .create(headers, metadata, accessConditions, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
+                .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -128,7 +129,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobAppendBlockHeaders>> appendBlock(Flux<ByteBuf> data, long length) {
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
         return this.appendBlock(data, length, null, null);
     }
 
@@ -156,11 +157,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobAppendBlockHeaders>> appendBlock(Flux<ByteBuf> data, long length,
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         return appendBlobAsyncRawClient
             .appendBlock(data, length, appendBlobAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -177,7 +178,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobAppendBlockFromUrlHeaders>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+    public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
                  null, null);
     }
@@ -209,11 +210,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobAppendBlockFromUrlHeaders>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         return appendBlobAsyncRawClient
             .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 }

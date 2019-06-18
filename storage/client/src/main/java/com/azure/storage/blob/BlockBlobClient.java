@@ -3,9 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -91,8 +93,8 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded block blob.
      */
-    public void upload(InputStream data, long length) throws IOException {
-        this.upload(data, length, null, null, null, null, null);
+    public Response<BlockBlobItem> upload(InputStream data, long length) throws IOException {
+        return this.upload(data, length, null, null, null, null, null);
     }
 
     /**
@@ -126,14 +128,14 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded block blob.
      */
-    public VoidResponse upload(InputStream data, long length, BlobHTTPHeaders headers,
-                               Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
+    public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
+                                Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
 
         // buffer strategy for UX study only
         byte[] bufferedData = new byte[(int)length];
         data.read(bufferedData);
 
-        Mono<VoidResponse> upload = blockBlobAsyncClient
+        Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
             .upload(Flux.just(ByteBuffer.wrap(bufferedData)), length, headers, metadata, accessConditions, context);
 
         try {
@@ -148,13 +150,13 @@ public final class BlockBlobClient extends BlobClient {
         }
     }
 
-    public VoidResponse uploadFromFile(String filePath) throws IOException {
+    public Response<BlockBlobItem> uploadFromFile(String filePath) throws IOException {
         return this.uploadFromFile(filePath, null, null, null, null);
     }
 
-    public VoidResponse uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public Response<BlockBlobItem> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<VoidResponse> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
+        Mono<Response<BlockBlobItem>> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
 
         try {
             if (timeout == null) {
@@ -182,7 +184,7 @@ public final class BlockBlobClient extends BlobClient {
      *         The exact length of the data. It is important that this value match precisely the length of the data
      *         provided in the {@link InputStream}.
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
+    public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
         return this.stageBlock(base64BlockID, data, length, null, null, null);
     }
 
@@ -211,14 +213,14 @@ public final class BlockBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
+    public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length,
             LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) throws IOException {
 
         // buffer strategy for UX study only
         byte[] bufferedData = new byte[(int)length];
         data.read(bufferedData);
 
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlock(base64BlockID,
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
             Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions, context);
         if (timeout == null) {
             return response.block();
@@ -242,7 +244,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param sourceRange
      *         {@link BlobRange}
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null, null);
@@ -279,10 +281,10 @@ public final class BlockBlobClient extends BlobClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         if (timeout == null) {
             return response.block();
         } else {
@@ -352,7 +354,7 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the block blob.
      */
-    public VoidResponse commitBlockList(List<String> base64BlockIDs) {
+    public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
         return this.commitBlockList(base64BlockIDs, null, null, null, null, null);
     }
 
@@ -385,9 +387,9 @@ public final class BlockBlobClient extends BlobClient {
      * @return
      *      The information of the block blob.
      */
-    public VoidResponse commitBlockList(List<String> base64BlockIDs,
+    public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
 
         if (timeout == null) {
             return response.block();

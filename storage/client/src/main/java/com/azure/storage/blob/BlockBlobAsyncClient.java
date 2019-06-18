@@ -5,11 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -109,7 +111,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<VoidResponse> upload(Flux<ByteBuffer> data, long length) {
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
     }
 
@@ -147,23 +149,23 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<VoidResponse> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
-            .map(VoidResponse::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
-    public Mono<VoidResponse> uploadFromFile(String filePath) {
+    public Mono<Response<BlockBlobItem>> uploadFromFile(String filePath) {
         return this.uploadFromFile(filePath, null, null, null, null);
     }
 
-    public Mono<VoidResponse> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<Response<BlockBlobItem>> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Context context) {
         //TODO make this method smart
         return this.blockBlobAsyncRawClient
             .upload(ByteBufFlux.fromPath(Paths.get(filePath)), new File(filePath).length())
-            .map(VoidResponse::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -187,7 +189,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
         return this.stageBlock(base64BlockID, data, length, null, null);
     }
@@ -222,11 +224,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
         return blockBlobAsyncRawClient
             .stageBlock(base64BlockID, data, length, leaseAccessConditions, context)
-            .map(VoidResponse::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -247,7 +249,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null);
@@ -285,12 +287,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         return blockBlobAsyncRawClient
             .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context)
-            .map(VoidResponse::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
     /**
@@ -358,7 +360,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<VoidResponse> commitBlockList(List<String> base64BlockIDs) {
+    public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs) {
         return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
@@ -389,10 +391,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<VoidResponse> commitBlockList(List<String> base64BlockIDs,
+    public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs,
                                               BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context)
-            .map(VoidResponse::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 }
