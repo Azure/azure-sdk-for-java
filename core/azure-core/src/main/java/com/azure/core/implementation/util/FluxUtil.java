@@ -13,6 +13,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 
 import java.io.IOException;
@@ -148,6 +149,93 @@ public final class FluxUtil {
     }
 
     private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
+
+    /**
+     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel.
+     *
+     * @param content the Flux content
+     * @param outFile the file channel
+     * @return a Completable which performs the write operation when subscribed
+     */
+    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile) {
+        return bytebufStreamToFile(content, outFile, 0);
+    }
+
+    /**
+     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel
+     * starting at the given position in the file.
+     *
+     * @param content the Flux content
+     * @param outFile the file channel
+     * @param position the position in the file to begin writing
+     * @return a Mono&lt;Void&gt; which performs the write operation when subscribed
+     */
+    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile, long position) {
+        return Mono.create(emitter -> content.subscribe(new ByteBufToFileSubscriber(outFile, position, emitter)));
+    }
+
+    private static class ByteBufToFileSubscriber implements Subscriber<ByteBuf> {
+        private ByteBufToFileSubscriber(AsynchronousFileChannel outFile, long position, MonoSink<Void> emitter) {
+            this.outFile = outFile;
+            this.pos = position;
+            this.emitter = emitter;
+        }
+
+        // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
+        // An I/O pool thread will write to isWriting and read isCompleted,
+        // while another thread may read isWriting and write to isCompleted.
+        volatile boolean isWriting = false;
+        volatile boolean isCompleted = false;
+        volatile Subscription subscription;
+        volatile long pos;
+        AsynchronousFileChannel outFile;
+        MonoSink<Void> emitter;
+
+        @Override
+        public void onSubscribe(Subscription s) {
+            subscription = s;
+            s.request(1);
+        }
+
+        @Override
+        public void onNext(ByteBuf bytes) {
+            isWriting = true;
+            outFile.write(bytes.nioBuffer(), pos, null, onWriteCompleted);
+        }
+
+        CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
+            @Override
+            public void completed(Integer bytesWritten, Object attachment) {
+                isWriting = false;
+                if (isCompleted) {
+                    emitter.success();
+                }
+                //noinspection NonAtomicOperationOnVolatileField
+                pos += bytesWritten;
+                subscription.request(1);
+            }
+
+            @Override
+            public void failed(Throwable exc, Object attachment) {
+                subscription.cancel();
+                emitter.error(exc);
+            }
+        };
+
+        @Override
+        public void onError(Throwable throwable) {
+            subscription.cancel();
+            emitter.error(throwable);
+        }
+
+        @Override
+        public void onComplete() {
+            isCompleted = true;
+            if (!isWriting) {
+                emitter.success();
+            }
+        }
+    }
 
     //region Utility methods to create Flux<ByteBuf> that read and emits chunks from AsynchronousFileChannel.
 

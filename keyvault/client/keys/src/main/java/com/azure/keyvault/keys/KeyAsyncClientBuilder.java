@@ -10,10 +10,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-
+import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -121,7 +120,7 @@ public final class KeyAsyncClientBuilder {
      *
      * @param endPoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated Builder object.
-     * @throws IllegalStateException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public KeyAsyncClientBuilder endpoint(String endPoint) {
         try {

@@ -163,10 +163,7 @@ public final class SecretClient extends ServiceClient {
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
-     * <pre>
-     * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse ->
-     *   System.out.printf("Secret is returned with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secretclient.getSecret#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
