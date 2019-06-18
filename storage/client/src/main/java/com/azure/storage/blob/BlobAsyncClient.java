@@ -3,7 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -25,6 +29,8 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Paths;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -143,7 +149,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL) {
+    public Mono<Response<String>> startCopyFromURL(URL sourceURL) {
         return this.startCopyFromURL(sourceURL, null, null, null, null);
     }
 
@@ -172,12 +178,12 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL, Metadata metadata,
+    public Mono<Response<String>> startCopyFromURL(URL sourceURL, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Context context) {
         return blobAsyncRawClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context)
-            .map(response -> response.deserializedHeaders().copyId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
 
     /**
@@ -190,7 +196,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
+    public Mono<VoidResponse> abortCopyFromURL(String copyId) {
         return this.abortCopyFromURL(copyId, null, null);
     }
 
@@ -213,10 +219,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<VoidResponse> abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Context context) {
         return blobAsyncRawClient
             .abortCopyFromURL(copyId, leaseAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -228,7 +234,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(URL copySource) {
+    public Mono<Response<String>> copyFromURL(URL copySource) {
         return this.copyFromURL(copySource, null, null, null, null);
     }
 
@@ -256,12 +262,12 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(URL copySource, Metadata metadata,
+    public Mono<Response<String>> copyFromURL(URL copySource, Metadata metadata,
                                     ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                                     Context context) {
         return blobAsyncRawClient
             .syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context)
-            .map(response -> response.deserializedHeaders().copyId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
 
     /**
@@ -270,7 +276,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob data.
      */
-    public Flux<ByteBuffer> download() {
+    public Mono<Response<Flux<ByteBuffer>>> download() {
         return this.download(null, null, false, null, null);
     }
 
@@ -293,11 +299,11 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob data.
      */
-    public Flux<ByteBuffer> download(BlobRange range, BlobAccessConditions accessConditions,
+    public Mono<Response<Flux<ByteBuffer>>> download(BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
         return blobAsyncRawClient
             .download(range, accessConditions, rangeGetContentMD5, context)
-            .flatMapMany(response -> ByteBufFlux.fromInbound(response.body(options)).asByteBuffer());
+            .map(response -> new SimpleResponse<>(response.rawResponse(), ByteBufFlux.fromInbound(response.body(options)).asByteBuffer()));
     }
 
     /**
@@ -307,7 +313,7 @@ public class BlobAsyncClient {
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
-    public Mono<Void> downloadToFile(String filePath) {
+    public Mono<VoidResponse> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, null, false, null, null);
     }
 
@@ -330,23 +336,18 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      */
-    public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
+    public Mono<VoidResponse> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
         //todo make this method smart
         return Mono.using(
-            () -> new FileOutputStream(new File(filePath)),
-            fstream -> this.download(range, accessConditions, rangeGetContentMD5, options, context)
-                .doOnNext(byteBuffer -> {
-                    try {
-                        fstream.write(byteBuffer.array());
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                })
-                .then(),
-            fstream -> {
+            () -> AsynchronousFileChannel.open(Paths.get(filePath)),
+            fileChannel -> blobAsyncRawClient
+                .download(range, accessConditions, rangeGetContentMD5, context)
+                .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), fileChannel)
+                    .then(Mono.just(new VoidResponse(dar.rawResponse())))),
+            fileChannel -> {
                 try {
-                    fstream.close();
+                    fileChannel.close();
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -360,7 +361,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete() {
+    public Mono<VoidResponse> delete() {
         return this.delete(null, null, null);
     }
 
@@ -383,11 +384,11 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Mono<VoidResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
             BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .delete(deleteBlobSnapshotOptions, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -396,7 +397,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob properties and metadata.
      */
-    public Mono<BlobProperties> getProperties() {
+    public Mono<Response<BlobProperties>> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -415,11 +416,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the blob properties and metadata.
      */
-    public Mono<BlobProperties> getProperties(BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<BlobProperties>> getProperties(BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .getProperties(accessConditions, context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(BlobProperties::new);
+            .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.deserializedHeaders())));
     }
 
     /**
@@ -434,7 +434,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
+    public Mono<VoidResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
         return this.setHTTPHeaders(headers, null, null);
     }
 
@@ -458,10 +458,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .setHTTPHeaders(headers, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -475,7 +475,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
+    public Mono<VoidResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
     }
 
@@ -498,10 +498,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .setMetadata(metadata, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -510,7 +510,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the ID of the new snapshot.
      */
-    public Mono<String> createSnapshot() {
+    public Mono<Response<String>> createSnapshot() {
         return this.createSnapshot(null, null, null);
     }
 
@@ -531,10 +531,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the ID of the new snapshot.
      */
-    public Mono<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<String>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blobAsyncRawClient
             .createSnapshot(metadata, accessConditions, context)
-            .map(response -> response.deserializedHeaders().snapshot());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().snapshot()));
     }
 
     /**
@@ -548,7 +548,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setTier(AccessTier tier) {
+    public Mono<VoidResponse> setTier(AccessTier tier) {
         return this.setTier(tier, null, null);
     }
 
@@ -572,10 +572,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<VoidResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Context context) {
         return blobAsyncRawClient
             .setTier(tier, leaseAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -584,7 +584,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> undelete() {
+    public Mono<VoidResponse> undelete() {
         return this.undelete(null);
     }
 
@@ -601,10 +601,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> undelete(Context context) {
+    public Mono<VoidResponse> undelete(Context context) {
         return blobAsyncRawClient
             .undelete(context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -620,7 +620,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedId, int duration) {
+    public Mono<Response<String>> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
     }
 
@@ -647,11 +647,11 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
         return blobAsyncRawClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -663,7 +663,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID) {
+    public Mono<Response<String>> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
     }
 
@@ -686,10 +686,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return blobAsyncRawClient
             .renewLease(leaseID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -701,7 +701,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID) {
+    public Mono<VoidResponse> releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null, null);
     }
 
@@ -724,10 +724,10 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return blobAsyncRawClient
             .releaseLease(leaseID, modifiedAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -737,7 +737,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the remaining time in the broken lease in seconds.
      */
-    public Mono<Integer> breakLease() {
+    public Mono<Response<Integer>> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -765,11 +765,11 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the remaining time in the broken lease in seconds.
      */
-    public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<Integer>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
         return blobAsyncRawClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseTime());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseTime()));
     }
 
     /**
@@ -783,7 +783,7 @@ public class BlobAsyncClient {
      * @return
      *      A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID) {
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
@@ -807,11 +807,11 @@ public class BlobAsyncClient {
      *
      * @return A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
         return blobAsyncRawClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -819,7 +819,7 @@ public class BlobAsyncClient {
      *
      * @return a reactor response containing the sku name and account kind.
      */
-    public Mono<StorageAccountInfo> getAccountInfo() {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -836,10 +836,9 @@ public class BlobAsyncClient {
      * @return a reactor response containing the sku name and account kind.
      */
     // TODO determine this return type
-    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo(Context context) {
         return blobAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(StorageAccountInfo::new);
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

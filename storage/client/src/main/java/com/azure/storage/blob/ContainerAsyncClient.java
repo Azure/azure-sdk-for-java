@@ -3,7 +3,10 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobItem;
@@ -172,7 +175,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> create() {
+    public Mono<VoidResponse> create() {
         return this.create(null, null, null);
     }
 
@@ -196,10 +199,10 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
+    public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
         return containerAsyncRawClient
             .create(metadata, accessType, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -210,7 +213,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete() {
+    public Mono<VoidResponse> delete() {
         return this.delete(null, null);
     }
 
@@ -231,10 +234,10 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> delete(ContainerAccessConditions accessConditions, Context context) {
         return containerAsyncRawClient
             .delete(accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -244,7 +247,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerProperties> getProperties() {
+    public Mono<Response<ContainerProperties>> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -265,12 +268,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
+    public Mono<Response<ContainerProperties>> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
         return containerAsyncRawClient
             .getProperties(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(ContainerProperties::new);
+            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.deserializedHeaders())));
     }
 
     /**
@@ -283,7 +285,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
+    public Mono<VoidResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
     }
 
@@ -305,11 +307,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata,
+    public Mono<VoidResponse> setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Context context) {
         return containerAsyncRawClient
             .setMetadata(metadata, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -320,7 +322,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<PublicAccessType> getAccessPolicy() {
+    public Mono<Response<PublicAccessType>> getAccessPolicy() {
         return this.getAccessPolicy(null, null);
     }
 
@@ -342,12 +344,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+    public Mono<Response<PublicAccessType>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
         return containerAsyncRawClient
             .getAccessPolicy(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(ContainerGetAccessPolicyHeaders::blobPublicAccess);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().blobPublicAccess()));
     }
 
     /**
@@ -367,7 +368,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
+    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
         return this.setAccessPolicy(accessType, identifiers, null, null);
     }
@@ -397,11 +398,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
+    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
         return containerAsyncRawClient
             .setAccessPolicy(accessType, identifiers, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     // TODO: figure out if this is meant to stay private or change to public
@@ -548,7 +549,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedId, int duration) {
+    public Mono<Response<String>> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
     }
 
@@ -575,11 +576,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         return containerAsyncRawClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -591,7 +592,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID) {
+    public Mono<Response<String>> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
     }
 
@@ -614,10 +615,10 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return containerAsyncRawClient
             .renewLease(leaseID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -629,7 +630,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID) {
+    public Mono<VoidResponse> releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null, null);
     }
 
@@ -652,10 +653,10 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return containerAsyncRawClient
             .releaseLease(leaseID, modifiedAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -665,7 +666,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the remaining time in the broken lease in seconds.
      */
-    public Mono<Integer> breakLease() {
+    public Mono<Response<Integer>> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -693,11 +694,11 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the remaining time in the broken lease in seconds.
      */
-    public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<Integer>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         return containerAsyncRawClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseTime());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseTime()));
     }
 
     /**
@@ -711,7 +712,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID) {
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
@@ -735,11 +736,11 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         return containerAsyncRawClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -749,7 +750,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the account info.
      */
-    public Mono<StorageAccountInfo> getAccountInfo() {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -767,10 +768,9 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the account info.
      */
-    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo(Context context) {
         return containerAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(StorageAccountInfo::new);
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

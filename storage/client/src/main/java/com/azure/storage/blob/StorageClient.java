@@ -4,9 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -116,7 +115,7 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public StorageServiceProperties getProperties() {
+    public Response<StorageServiceProperties> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -136,9 +135,9 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public StorageServiceProperties getProperties(Duration timeout, Context context) {
+    public Response<StorageServiceProperties> getProperties(Duration timeout, Context context) {
 
-        Mono<StorageServiceProperties> response = storageAsyncClient.getProperties(context);
+        Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties(context);
 
         return timeout == null ?
             response.block():
@@ -157,8 +156,8 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public void setProperties(StorageServiceProperties properties) {
-        this.setProperties(properties, null, null);
+    public VoidResponse setProperties(StorageServiceProperties properties) {
+        return this.setProperties(properties, null, null);
     }
 
     /**
@@ -181,13 +180,13 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public void setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<Void> response = storageAsyncClient.setProperties(properties, context);
+    public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
+        Mono<VoidResponse> response = storageAsyncClient.setProperties(properties, context);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -203,7 +202,7 @@ public final class StorageClient {
      * @return
      *      The user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+    public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null, null);
     }
 
@@ -227,9 +226,9 @@ public final class StorageClient {
      * @return
      *      The user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+    public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Duration timeout, Context context) {
-        Mono<UserDelegationKey> response = storageAsyncClient.getUserDelegationKey(start, expiry, context);
+        Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry, context);
 
         return timeout == null ?
             response.block():
@@ -245,7 +244,7 @@ public final class StorageClient {
      * @return
      *      The storage account statistics.
      */
-    public StorageServiceStats getStatistics() {
+    public Response<StorageServiceStats> getStatistics() {
         return this.getStatistics(null, null);
     }
 
@@ -267,8 +266,8 @@ public final class StorageClient {
      * @return
      *      The storage account statistics.
      */
-    public StorageServiceStats getStatistics(Duration timeout, Context context) {
-        Mono<StorageServiceStats> response = storageAsyncClient.getStatistics(context);
+    public Response<StorageServiceStats> getStatistics(Duration timeout, Context context) {
+        Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics(context);
 
         return timeout == null ?
             response.block():
@@ -282,7 +281,7 @@ public final class StorageClient {
      * @return
      *      The storage account info.
      */
-    public StorageAccountInfo getAccountInfo() {
+    public Response<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null, null);
     }
 
@@ -302,8 +301,8 @@ public final class StorageClient {
      * @return
      *      The storage account info.
      */
-    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
-        Mono<StorageAccountInfo> response = storageAsyncClient.getAccountInfo(context);
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
+        Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo(context);
 
         return timeout == null ?
             response.block():

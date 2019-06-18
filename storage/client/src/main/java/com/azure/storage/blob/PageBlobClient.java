@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -100,7 +101,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the created page blob.
      */
-    public PageBlobCreateHeaders create(long size) {
+    public Response<PageBlobCreateHeaders> create(long size) {
         return this.create(size, null, null, null, null, null, null);
     }
 
@@ -133,9 +134,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the created page blob.
      */
-    public PageBlobCreateHeaders create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    public Response<PageBlobCreateHeaders> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobCreateHeaders> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
+        Mono<Response<PageBlobCreateHeaders>> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
         return timeout == null?
             response.block():
             response.block(timeout);
@@ -160,7 +161,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Response<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return this.uploadPages(pageRange, body, null, null, null);
     }
 
@@ -193,9 +194,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+    public Response<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobUploadPagesHeaders> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
+        Mono<Response<PageBlobUploadPagesHeaders>> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
         return timeout == null?
             response.block():
             response.block(timeout);
@@ -223,7 +224,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+    public Response<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
                 null, null, null);
     }
@@ -265,11 +266,11 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<PageBlobUploadPagesFromURLHeaders> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        Mono<Response<PageBlobUploadPagesFromURLHeaders>> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return timeout == null ?
             response.block():
             response.block(timeout);
@@ -288,7 +289,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public PageBlobClearPagesHeaders clearPages(PageRange pageRange) {
+    public Response<PageBlobClearPagesHeaders> clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null, null);
     }
 
@@ -315,9 +316,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public PageBlobClearPagesHeaders clearPages(PageRange pageRange,
+    public Response<PageBlobClearPagesHeaders> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobClearPagesHeaders> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
+        Mono<Response<PageBlobClearPagesHeaders>> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
 
         return timeout == null ?
             response.block():
@@ -427,7 +428,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The resized page blob.
      */
-    public PageBlobResizeHeaders resize(long size) {
+    public Response<PageBlobResizeHeaders> resize(long size) {
         return this.resize(size, null, null, null);
     }
 
@@ -452,8 +453,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The resized page blob.
      */
-    public PageBlobResizeHeaders resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobResizeHeaders> response = pageBlobAsyncClient.resize(size, accessConditions, context);
+    public Response<PageBlobResizeHeaders> resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PageBlobResizeHeaders>> response = pageBlobAsyncClient.resize(size, accessConditions, context);
         return timeout == null?
             response.block():
             response.block(timeout);
@@ -472,7 +473,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The updated page blob.
      */
-    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
+    public Response<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
         return this.updateSequenceNumber(action, sequenceNumber, null, null,null);
     }
@@ -500,9 +501,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The updated page blob.
      */
-    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
+    public Response<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobUpdateSequenceNumberHeaders> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
+        Mono<Response<PageBlobUpdateSequenceNumberHeaders>> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
         return timeout == null?
             response.block():
             response.block(timeout);
@@ -524,7 +525,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The copy status.
      */
-    public CopyStatusType copyIncremental(URL source, String snapshot) {
+    public Response<CopyStatusType> copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null, null);
     }
 
@@ -556,9 +557,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The copy status.
      */
-    public CopyStatusType copyIncremental(URL source, String snapshot,
+    public Response<CopyStatusType> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<CopyStatusType> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
+        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
         return timeout == null?
             response.block():
             response.block(timeout);

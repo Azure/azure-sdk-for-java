@@ -4,7 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -146,7 +149,7 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account properties.
      */
-    public Mono<StorageServiceProperties> getProperties() {
+    public Mono<Response<StorageServiceProperties>> getProperties() {
         return this.getProperties(null);
     }
 
@@ -164,10 +167,10 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account properties.
      */
-    public Mono<StorageServiceProperties> getProperties(Context context) {
+    public Mono<Response<StorageServiceProperties>> getProperties(Context context) {
         return storageAsyncRawClient
             .getProperties(context)
-            .map(ResponseBase::value);
+            .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
     /**
@@ -182,7 +185,7 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account properties.
      */
-    public Mono<Void> setProperties(StorageServiceProperties properties) {
+    public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
     }
 
@@ -204,10 +207,10 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account properties.
      */
-    public Mono<Void> setProperties(StorageServiceProperties properties, Context context) {
+    public Mono<VoidResponse> setProperties(StorageServiceProperties properties, Context context) {
         return storageAsyncRawClient
             .setProperties(properties, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -222,7 +225,7 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the user delegation key.
      */
-    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+    public Mono<Response<UserDelegationKey>> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return this.getUserDelegationKey(start, expiry, null);
     }
 
@@ -244,11 +247,11 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the user delegation key.
      */
-    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+    public Mono<Response<UserDelegationKey>> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Context context) {
         return storageAsyncRawClient
             .getUserDelegationKey(start, expiry, context)
-            .map(ResponseBase::value);
+            .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
     /**
@@ -260,7 +263,7 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account statistics.
      */
-    public Mono<StorageServiceStats> getStatistics() {
+    public Mono<Response<StorageServiceStats>> getStatistics() {
         return this.getStatistics(null);
     }
 
@@ -280,10 +283,10 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account statistics.
      */
-    public Mono<StorageServiceStats> getStatistics(Context context) {
+    public Mono<Response<StorageServiceStats>> getStatistics(Context context) {
         return storageAsyncRawClient
             .getStatistics(context)
-            .map(ResponseBase::value);
+            .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
     /**
@@ -293,7 +296,7 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account info.
      */
-    public Mono<StorageAccountInfo> getAccountInfo() {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -311,10 +314,9 @@ public final class StorageAsyncClient {
      * @return
      *      A reactive response containing the storage account info.
      */
-    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo(Context context) {
         return storageAsyncRawClient
             .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(StorageAccountInfo::new);
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

@@ -4,7 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -92,7 +94,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created page blob.
      */
-    public Mono<PageBlobCreateHeaders> create(long size) {
+    public Mono<Response<PageBlobCreateHeaders>> create(long size) {
         return this.create(size, null, null, null, null, null);
     }
 
@@ -123,11 +125,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created page blob.
      */
-    public Mono<PageBlobCreateHeaders> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    public Mono<Response<PageBlobCreateHeaders>> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return pageBlobAsyncRawClient
             .create(size, sequenceNumber, headers, metadata, accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -149,7 +151,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Mono<Response<PageBlobUploadPagesHeaders>> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return this.uploadPages(pageRange, body, null, null);
     }
 
@@ -180,11 +182,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobUploadPagesHeaders> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+    public Mono<Response<PageBlobUploadPagesHeaders>> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         return pageBlobAsyncRawClient
             .uploadPages(pageRange, body, pageBlobAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -209,7 +211,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+    public Mono<Response<PageBlobUploadPagesFromURLHeaders>> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
                 null, null);
     }
@@ -249,13 +251,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobUploadPagesFromURLHeaders> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public Mono<Response<PageBlobUploadPagesFromURLHeaders>> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
         return pageBlobAsyncRawClient
             .uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -271,7 +273,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the cleared pages.
      */
-    public Mono<PageBlobClearPagesHeaders> clearPages(PageRange pageRange) {
+    public Mono<Response<PageBlobClearPagesHeaders>> clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null);
     }
 
@@ -296,11 +298,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the cleared pages.
      */
-    public Mono<PageBlobClearPagesHeaders> clearPages(PageRange pageRange,
+    public Mono<Response<PageBlobClearPagesHeaders>> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         return pageBlobAsyncRawClient
             .clearPages(pageRange, pageBlobAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -400,7 +402,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the resized page blob.
      */
-    public Mono<PageBlobResizeHeaders> resize(long size) {
+    public Mono<Response<PageBlobResizeHeaders>> resize(long size) {
         return this.resize(size, null, null);
     }
 
@@ -423,10 +425,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the resized page blob.
      */
-    public Mono<PageBlobResizeHeaders> resize(long size, BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<PageBlobResizeHeaders>> resize(long size, BlobAccessConditions accessConditions, Context context) {
         return pageBlobAsyncRawClient
             .resize(size, accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -442,7 +444,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the updated page blob.
      */
-    public Mono<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
+    public Mono<Response<PageBlobUpdateSequenceNumberHeaders>> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
         return this.updateSequenceNumber(action, sequenceNumber, null, null);
     }
@@ -468,11 +470,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the updated page blob.
      */
-    public Mono<PageBlobUpdateSequenceNumberHeaders> updateSequenceNumber(SequenceNumberActionType action,
+    public Mono<Response<PageBlobUpdateSequenceNumberHeaders>> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
         return pageBlobAsyncRawClient
             .updateSequenceNumber(action, sequenceNumber, accessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -491,7 +493,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the copy status.
      */
-    public Mono<CopyStatusType> copyIncremental(URL source, String snapshot) {
+    public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot) {
         return this.copyIncremental(source, snapshot, null, null);
     }
 
@@ -521,10 +523,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting the copy status.
      */
-    public Mono<CopyStatusType> copyIncremental(URL source, String snapshot,
+    public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return pageBlobAsyncRawClient
             .copyIncremental(source, snapshot, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().copyStatus());
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyStatus()));
     }
 }

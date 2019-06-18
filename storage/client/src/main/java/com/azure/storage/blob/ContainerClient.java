@@ -4,6 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -144,8 +146,8 @@ public final class ContainerClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      */
-    public void create() {
-        this.create(null, null, null, null);
+    public VoidResponse create() {
+        return this.create(null, null, null, null);
     }
 
     /**
@@ -167,13 +169,13 @@ public final class ContainerClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      */
-    public void create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
-        Mono<Void> response = containerAsyncClient.create(metadata, accessType, context);
+    public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType, context);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -182,8 +184,8 @@ public final class ContainerClient {
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      */
-    public void delete() {
-        this.delete(null, null, null);
+    public VoidResponse delete() {
+        return this.delete(null, null, null);
     }
 
     /**
@@ -202,13 +204,13 @@ public final class ContainerClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      */
-    public void delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Void> response = containerAsyncClient.delete(accessConditions, context);
+    public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions, context);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -219,7 +221,7 @@ public final class ContainerClient {
      * @return
      *      The container properties.
      */
-    public ContainerProperties getProperties() {
+    public Response<ContainerProperties> getProperties() {
         return this.getProperties(null, null, null);
     }
 
@@ -242,9 +244,9 @@ public final class ContainerClient {
      * @return
      *      The container properties.
      */
-    public ContainerProperties getProperties(LeaseAccessConditions leaseAccessConditions,
+    public Response<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
-        Mono<ContainerProperties> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
+        Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
 
         return timeout == null
             ? response.block()
@@ -258,8 +260,8 @@ public final class ContainerClient {
      * @param metadata
      *         {@link Metadata}
      */
-    public void setMetadata(Metadata metadata) {
-        this.setMetadata(metadata, null, null, null);
+    public VoidResponse setMetadata(Metadata metadata) {
+        return this.setMetadata(metadata, null, null, null);
     }
 
     /**
@@ -279,14 +281,14 @@ public final class ContainerClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      */
-    public void setMetadata(Metadata metadata,
+    public VoidResponse setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Void> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
+        Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -298,7 +300,7 @@ public final class ContainerClient {
      * @return
      *      The container access policy.
      */
-    public PublicAccessType getAccessPolicy() {
+    public Response<PublicAccessType> getAccessPolicy() {
         return this.getAccessPolicy(null, null, null);
     }
 
@@ -322,9 +324,9 @@ public final class ContainerClient {
      * @return
      *      The container access policy.
      */
-    public PublicAccessType getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+    public Response<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Duration timeout, Context context) {
-        Mono<PublicAccessType> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
+        Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
 
         return timeout == null
             ? response.block()
@@ -345,9 +347,9 @@ public final class ContainerClient {
      *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *         for more information. Passing null will clear all access policies.
      */
-    public void setAccessPolicy(PublicAccessType accessType,
+    public VoidResponse setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        this.setAccessPolicy(accessType, identifiers, null, null,null);
+        return this.setAccessPolicy(accessType, identifiers, null, null,null);
     }
 
     /**
@@ -374,15 +376,15 @@ public final class ContainerClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *         parent, forming a linked list.
      */
-    public void setAccessPolicy(PublicAccessType accessType,
+    public VoidResponse setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
                                 Duration timeout, Context context) {
-        Mono<Void> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -522,7 +524,7 @@ public final class ContainerClient {
      * @return
      *      The lease ID.
      */
-    public String acquireLease(String proposedId, int duration) {
+    public Response<String> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
     }
 
@@ -545,9 +547,9 @@ public final class ContainerClient {
      * @return
      *      The lease ID.
      */
-    public String acquireLease(String proposedID, int duration,
+    public Response<String> acquireLease(String proposedID, int duration,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<String> response = containerAsyncClient
+        Mono<Response<String>> response = containerAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -564,7 +566,7 @@ public final class ContainerClient {
      * @return
      *      The renewed lease ID.
      */
-    public String renewLease(String leaseID) {
+    public Response<String> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
     }
 
@@ -583,9 +585,9 @@ public final class ContainerClient {
      * @return
      *      The renewed lease ID.
      */
-    public String renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
+    public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
         Duration timeout) {
-        Mono<String> response = containerAsyncClient
+        Mono<Response<String>> response = containerAsyncClient
             .renewLease(leaseID, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -599,8 +601,8 @@ public final class ContainerClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      */
-    public void releaseLease(String leaseID) {
-        this.releaseLease(leaseID, null, null);
+    public VoidResponse releaseLease(String leaseID) {
+        return this.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -615,15 +617,15 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void releaseLease(String leaseID,
+    public VoidResponse releaseLease(String leaseID,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Void> response = containerAsyncClient
+        Mono<VoidResponse> response = containerAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -634,7 +636,7 @@ public final class ContainerClient {
      * @return
      *      The remaining time in the broken lease in seconds.
      */
-    public int breakLease() {
+    public Response<Integer> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -658,9 +660,9 @@ public final class ContainerClient {
      * @return
      *      The remaining time in the broken lease in seconds.
      */
-    public int breakLease(Integer breakPeriodInSeconds,
+    public Response<Integer> breakLease(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Integer> response = containerAsyncClient
+        Mono<Response<Integer>> response = containerAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -679,7 +681,7 @@ public final class ContainerClient {
      * @return
      *      The new lease ID.
      */
-    public String changeLease(String leaseId, String proposedID) {
+    public Response<String> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
@@ -699,9 +701,9 @@ public final class ContainerClient {
      *
      * @return The new lease ID.
      */
-    public String changeLease(String leaseId, String proposedID,
+    public Response<String> changeLease(String leaseId, String proposedID,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<String> response = containerAsyncClient
+        Mono<Response<String>> response = containerAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -716,7 +718,7 @@ public final class ContainerClient {
      * @return
      *      The account info.
      */
-    public StorageAccountInfo getAccountInfo() {
+    public Response<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null, null);
     }
 
@@ -736,8 +738,8 @@ public final class ContainerClient {
      * @return
      *      The account info.
      */
-    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
-        Mono<StorageAccountInfo> response = containerAsyncClient.getAccountInfo(context);
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
+        Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo(context);
 
         return timeout == null ?
             response.block():

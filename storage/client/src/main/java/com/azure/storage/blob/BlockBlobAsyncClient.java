@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -107,7 +109,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Void> upload(Flux<ByteBuffer> data, long length) {
+    public Mono<VoidResponse> upload(Flux<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
     }
 
@@ -145,23 +147,23 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Void> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+    public Mono<VoidResponse> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
-    public Mono<Void> uploadFromFile(String filePath) {
+    public Mono<VoidResponse> uploadFromFile(String filePath) {
         return this.uploadFromFile(filePath, null, null, null, null);
     }
 
-    public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<VoidResponse> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Context context) {
         //TODO make this method smart
         return this.blockBlobAsyncRawClient
             .upload(ByteBufFlux.fromPath(Paths.get(filePath)), new File(filePath).length())
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -185,7 +187,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
         return this.stageBlock(base64BlockID, data, length, null, null);
     }
@@ -220,11 +222,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
         return blockBlobAsyncRawClient
             .stageBlock(base64BlockID, data, length, leaseAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -245,7 +247,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null);
@@ -283,12 +285,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         return blockBlobAsyncRawClient
             .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 
     /**
@@ -356,7 +358,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<Void> commitBlockList(List<String> base64BlockIDs) {
+    public Mono<VoidResponse> commitBlockList(List<String> base64BlockIDs) {
         return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
@@ -387,10 +389,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the block blob.
      */
-    public Mono<Void> commitBlockList(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> commitBlockList(List<String> base64BlockIDs,
+                                              BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         return blockBlobAsyncRawClient
             .commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context)
-            .then();
+            .map(VoidResponse::new);
     }
 }

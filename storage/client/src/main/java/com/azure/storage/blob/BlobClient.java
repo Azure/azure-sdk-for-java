@@ -3,7 +3,8 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
@@ -16,7 +17,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -125,7 +125,7 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String startCopyFromURL(URL sourceURL) {
+    public Response<String> startCopyFromURL(URL sourceURL) {
         return this.startCopyFromURL(sourceURL, null, null, null, null);
     }
 
@@ -150,10 +150,10 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String startCopyFromURL(URL sourceURL, Metadata metadata,
+    public Response<String> startCopyFromURL(URL sourceURL, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Duration timeout) {
-        Mono<String> response = blobAsyncClient
+        Mono<Response<String>> response = blobAsyncClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
 
         return timeout == null
@@ -168,8 +168,8 @@ public class BlobClient {
      *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      *         BlobStartCopyFromURLHeaders} object.
      */
-    public void abortCopyFromURL(String copyId) {
-        this.abortCopyFromURL(copyId, null, null);
+    public VoidResponse abortCopyFromURL(String copyId) {
+        return this.abortCopyFromURL(copyId, null, null);
     }
 
     /**
@@ -184,14 +184,14 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+    public VoidResponse abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+        Mono<VoidResponse> response = blobAsyncClient
             .abortCopyFromURL(copyId, leaseAccessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -204,7 +204,7 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String copyFromURL(URL copySource) {
+    public Response<String> copyFromURL(URL copySource) {
         return this.copyFromURL(copySource, null, null, null, null);
     }
 
@@ -228,10 +228,10 @@ public class BlobClient {
      * @return
      *      The copy ID for the long running operation.
      */
-    public String copyFromURL(URL copySource, Metadata metadata,
+    public Response<String> copyFromURL(URL copySource, Metadata metadata,
                               ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
                               Duration timeout) {
-        Mono<String> response = blobAsyncClient
+        Mono<Response<String>> response = blobAsyncClient
             .copyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
 
         return timeout == null
@@ -246,8 +246,8 @@ public class BlobClient {
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
-    public void download(OutputStream stream) throws IOException {
-        this.download(stream, null, null, null, false, null);
+    public VoidResponse download(OutputStream stream) throws IOException {
+        return this.download(stream, null, null, null, false, null);
     }
 
     /**
@@ -265,18 +265,25 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void download(OutputStream stream, ReliableDownloadOptions options, BlobRange range,
+    public VoidResponse download(OutputStream stream, ReliableDownloadOptions options, BlobRange range,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
-        Flux<ByteBuffer> data = blobAsyncClient
-            .download(range, accessConditions, rangeGetContentMD5, options, null /*context*/);
+        Mono<VoidResponse> download = blobAsyncClient
+            .download(range, accessConditions, rangeGetContentMD5, options, null)
+            .flatMapMany(res -> res.value()
+                .doOnNext(bf -> {
+                    try {
+                        stream.write(bf.array());
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }).map(bf -> res))
+            .last()
+            .map(VoidResponse::new);
 
-        data = timeout == null
-            ? data
-            : data.timeout(timeout); //TODO this isn't doing what we want
-
-        for (ByteBuffer buffer : data.toIterable()) {
-           stream.write(buffer.array());
-        }
+        download = timeout == null
+            ? download
+            : download.timeout(timeout); //TODO this isn't doing what we want
+        return download.block();
     }
 
     /**
@@ -286,8 +293,8 @@ public class BlobClient {
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
-    public void downloadToFile(String filePath) throws IOException {
-        this.downloadToFile(filePath, null, null, null, false, null);
+    public VoidResponse downloadToFile(String filePath) throws IOException {
+        return this.downloadToFile(filePath, null, null, null, false, null);
     }
 
     /**
@@ -305,15 +312,15 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
+    public VoidResponse downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
-        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);
+        Mono<VoidResponse> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);
 
         try {
             if (timeout == null) {
-                download.block();
+                return download.block();
             } else {
-                download.block(timeout); //TODO this isn't doing what we want
+                return download.block(timeout); //TODO this isn't doing what we want
             }
         } catch (UncheckedIOException e) {
             throw e.getCause();
@@ -323,8 +330,8 @@ public class BlobClient {
     /**
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
      */
-    public void delete() {
-        this.delete(null, null, null);
+    public VoidResponse delete() {
+        return this.delete(null, null, null);
     }
 
     /**
@@ -342,15 +349,15 @@ public class BlobClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public void delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public VoidResponse delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
             BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+        Mono<VoidResponse> response = blobAsyncClient
             .delete(deleteBlobSnapshotOptions, accessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -360,7 +367,7 @@ public class BlobClient {
      * @return
      *      The blob properties and metadata.
      */
-    public BlobProperties getProperties() {
+    public Response<BlobProperties> getProperties() {
         return this.getProperties(null, null);
     }
 
@@ -375,8 +382,8 @@ public class BlobClient {
      * @return
      *      The blob properties and metadata.
      */
-    public BlobProperties getProperties(BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<BlobProperties> response = blobAsyncClient
+    public Response<BlobProperties> getProperties(BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<BlobProperties>> response = blobAsyncClient
             .getProperties(accessConditions, null /*context*/);
 
         return timeout == null
@@ -393,8 +400,8 @@ public class BlobClient {
      * @param headers
      *         {@link BlobHTTPHeaders}
      */
-    public void setHTTPHeaders(BlobHTTPHeaders headers) {
-        this.setHTTPHeaders(headers, null, null);
+    public VoidResponse setHTTPHeaders(BlobHTTPHeaders headers) {
+        return this.setHTTPHeaders(headers, null, null);
     }
 
     /**
@@ -410,15 +417,15 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    public VoidResponse setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
             Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+        Mono<VoidResponse> response = blobAsyncClient
             .setHTTPHeaders(headers, accessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -430,8 +437,8 @@ public class BlobClient {
      * @param metadata
      *         {@link Metadata}
      */
-    public void setMetadata(Metadata metadata) {
-        this.setMetadata(metadata, null, null);
+    public VoidResponse setMetadata(Metadata metadata) {
+        return this.setMetadata(metadata, null, null);
     }
 
     /**
@@ -446,14 +453,14 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void setMetadata(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+    public VoidResponse setMetadata(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<VoidResponse> response = blobAsyncClient
             .setMetadata(metadata, accessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -463,7 +470,7 @@ public class BlobClient {
      * @return
      *      The ID of the new snapshot.
      */
-    public String createSnapshot() {
+    public Response<String> createSnapshot() {
         return this.createSnapshot(null, null, null);
     }
 
@@ -480,8 +487,8 @@ public class BlobClient {
      * @return
      *      The ID of the new snapshot.
      */
-    public String createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<String> response = blobAsyncClient
+    public Response<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<String>> response = blobAsyncClient
             .createSnapshot(metadata, accessConditions, null /*context*/);
 
         return timeout == null
@@ -497,8 +504,8 @@ public class BlobClient {
      * @param tier
      *         The new tier for the blob.
      */
-    public void setTier(AccessTier tier) {
-        this.setTier(tier, null, null);
+    public VoidResponse setTier(AccessTier tier) {
+        return this.setTier(tier, null, null);
     }
 
     /**
@@ -514,22 +521,22 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+    public VoidResponse setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+        Mono<VoidResponse> response = blobAsyncClient
             .setTier(tier, leaseAccessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
     /**
      * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
      */
-    public void undelete() {
-        this.undelete(null);
+    public VoidResponse undelete() {
+        return this.undelete(null);
     }
 
     /**
@@ -538,14 +545,14 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void undelete(Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+    public VoidResponse undelete(Duration timeout) {
+        Mono<VoidResponse> response = blobAsyncClient
             .undelete(null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -562,7 +569,7 @@ public class BlobClient {
      * @return
      *      The lease ID.
      */
-    public String acquireLease(String proposedId, int duration) {
+    public Response<String> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
     }
 
@@ -585,9 +592,9 @@ public class BlobClient {
      * @return
      *      The lease ID.
      */
-    public String acquireLease(String proposedID, int duration,
+    public Response<String> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<String> response = blobAsyncClient
+        Mono<Response<String>> response = blobAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -604,7 +611,7 @@ public class BlobClient {
      * @return
      *      The renewed lease ID.
      */
-    public String renewLease(String leaseID) {
+    public Response<String> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
     }
 
@@ -623,9 +630,9 @@ public class BlobClient {
      * @return
      *      The renewed lease ID.
      */
-    public String renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
+    public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
             Duration timeout) {
-        Mono<String> response = blobAsyncClient
+        Mono<Response<String>> response = blobAsyncClient
             .renewLease(leaseID, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -639,8 +646,8 @@ public class BlobClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      */
-    public void releaseLease(String leaseID) {
-        this.releaseLease(leaseID, null, null);
+    public VoidResponse releaseLease(String leaseID) {
+        return this.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -655,15 +662,15 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void releaseLease(String leaseID,
+    public VoidResponse releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Void> response = blobAsyncClient
+        Mono<VoidResponse> response = blobAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions, null /*context*/);
 
         if (timeout == null) {
-            response.block();
+            return response.block();
         } else {
-            response.block(timeout);
+            return response.block(timeout);
         }
     }
 
@@ -674,7 +681,7 @@ public class BlobClient {
      * @return
      *      The remaining time in the broken lease in seconds.
      */
-    public int breakLease() {
+    public Response<Integer> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -698,9 +705,9 @@ public class BlobClient {
      * @return
      *      The remaining time in the broken lease in seconds.
      */
-    public int breakLease(Integer breakPeriodInSeconds,
+    public Response<Integer> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Integer> response = blobAsyncClient
+        Mono<Response<Integer>> response = blobAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -719,7 +726,7 @@ public class BlobClient {
      * @return
      *      The new lease ID.
      */
-    public String changeLease(String leaseId, String proposedID) {
+    public Response<String> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
@@ -739,9 +746,9 @@ public class BlobClient {
      *
      * @return The new lease ID.
      */
-    public String changeLease(String leaseId, String proposedID,
+    public Response<String> changeLease(String leaseId, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<String> response = blobAsyncClient
+        Mono<Response<String>> response = blobAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, null /*context*/);
 
         return timeout == null
@@ -754,7 +761,7 @@ public class BlobClient {
      *
      * @return The sku name and account kind.
      */
-    public StorageAccountInfo getAccountInfo() {
+    public Response<StorageAccountInfo> getAccountInfo() {
         return this.getAccountInfo(null);
     }
 
@@ -766,8 +773,8 @@ public class BlobClient {
      *
      * @return The sku name and account kind.
      */
-    public StorageAccountInfo getAccountInfo(Duration timeout) {
-        Mono<StorageAccountInfo> response = blobAsyncClient
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
+        Mono<Response<StorageAccountInfo>> response = blobAsyncClient
             .getAccountInfo(null /*context*/);
 
         return timeout == null

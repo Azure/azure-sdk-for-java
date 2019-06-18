@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -80,7 +82,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<AppendBlobCreateHeaders> create() {
+    public Mono<Response<AppendBlobCreateHeaders>> create() {
         return this.create(null, null, null, null);
     }
 
@@ -103,11 +105,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<AppendBlobCreateHeaders> create(BlobHTTPHeaders headers, Metadata metadata,
-                BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<AppendBlobCreateHeaders>> create(BlobHTTPHeaders headers, Metadata metadata,
+                                                          BlobAccessConditions accessConditions, Context context) {
             return appendBlobAsyncRawClient
                 .create(headers, metadata, accessConditions, context)
-                .map(ResponseBase::deserializedHeaders);
+                .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -126,7 +128,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<AppendBlobAppendBlockHeaders> appendBlock(Flux<ByteBuf> data, long length) {
+    public Mono<Response<AppendBlobAppendBlockHeaders>> appendBlock(Flux<ByteBuf> data, long length) {
         return this.appendBlock(data, length, null, null);
     }
 
@@ -154,11 +156,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<AppendBlobAppendBlockHeaders> appendBlock(Flux<ByteBuf> data, long length,
+    public Mono<Response<AppendBlobAppendBlockHeaders>> appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         return appendBlobAsyncRawClient
             .appendBlock(data, length, appendBlobAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 
     /**
@@ -175,7 +177,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<AppendBlobAppendBlockFromUrlHeaders> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
+    public Mono<Response<AppendBlobAppendBlockFromUrlHeaders>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
                  null, null);
     }
@@ -207,11 +209,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<AppendBlobAppendBlockFromUrlHeaders> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
+    public Mono<Response<AppendBlobAppendBlockFromUrlHeaders>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         return appendBlobAsyncRawClient
             .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders);
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders()));
     }
 }
