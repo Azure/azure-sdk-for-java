@@ -6,13 +6,12 @@ package com.azure.core.util.logging;
 import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
 /**
- * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
+ * This is a fluent logger helper class that wraps a plug-able {@link org.slf4j.Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
  * argument of the format varargs and the logger is enabled for {@link ClientLogger#asVerbose() verbose} logging the
@@ -32,11 +31,30 @@ import java.util.Arrays;
  *
  * @see Configuration
  */
-public class ClientLogger implements ClientLoggerAPI {
+public class ClientLogger {
     private static final NoopClientLogger NOOP_LOGGER = new NoopClientLogger();
 
-    private final Logger logger;
+    private final org.slf4j.Logger logger;
 
+    /** Indicate trace level.*/
+    public static final int TRACE_LEVEL = 0;
+
+    /** Indicate verbose log level.*/
+    public static final int VERBOSE_LEVEL = 1;
+
+    /** Indicate information log level.*/
+    public static final int INFORMATIONAL_LEVEL = 2;
+
+    /** Indicate warning log level.*/
+    public static final int WARNING_LEVEL = 3;
+
+    /** Indicate error log level.*/
+    public static final int ERROR_LEVEL = 4;
+
+    /** Indicate logging is disabled.*/
+    public static final int DISABLED_LEVEL = 5;
+
+    private final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
     private int level = DEFAULT_LOG_LEVEL;
 
     private int configurationLevel;
@@ -61,8 +79,7 @@ public class ClientLogger implements ClientLoggerAPI {
      * Sets the logger to the verbose logging level.
      * @return Updated ClientLogger if debug is enabled, otherwise a no-op logger.
      */
-    @Override
-    public ClientLoggerAPI asVerbose() {
+    public ClientLogger asVerbose() {
         return asLevel(VERBOSE_LEVEL);
     }
 
@@ -70,8 +87,7 @@ public class ClientLogger implements ClientLoggerAPI {
      * Sets the logger to the info logging level.
      * @return Updated ClientLogger if info is enabled, otherwise a no-op logger.
      */
-    @Override
-    public ClientLoggerAPI asInfo() {
+    public ClientLogger asInfo() {
         return asLevel(INFORMATIONAL_LEVEL);
     }
 
@@ -79,8 +95,7 @@ public class ClientLogger implements ClientLoggerAPI {
      * Sets the logger to the warning logging level.
      * @return Updated ClientLogger if warn is enabled, otherwise a no-op logger.
      */
-    @Override
-    public ClientLoggerAPI asWarning() {
+    public ClientLogger asWarning() {
         return asLevel(WARNING_LEVEL);
     }
 
@@ -88,8 +103,7 @@ public class ClientLogger implements ClientLoggerAPI {
      * Sets the logger to the error logging level.
      * @return Updated ClientLogger if error is enabled, otherwise a no-op logger.
      */
-    @Override
-    public ClientLoggerAPI asError() {
+    public ClientLogger asError() {
         return asLevel(ERROR_LEVEL);
     }
 
@@ -123,7 +137,6 @@ public class ClientLogger implements ClientLoggerAPI {
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    @Override
     public void log(String format, Object... args) {
         if (canLogAtLevel(level)) {
             performLogging(format, args);
@@ -135,7 +148,7 @@ public class ClientLogger implements ClientLoggerAPI {
 
     /*
      * Performs the logging.
-     * @param format Format-ablgit status
+     * @param format Format-able message.
      * asVerbosee message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
@@ -169,7 +182,7 @@ public class ClientLogger implements ClientLoggerAPI {
      * @param level Logging level
      * @return Updated ClientLogger if the level is enabled, otherwise a no-op logger.
      */
-    private ClientLoggerAPI asLevel(int level) {
+    private ClientLogger asLevel(int level) {
         if (canLogAtLevel(level)) {
             this.level = level;
             return this;
@@ -220,5 +233,18 @@ public class ClientLogger implements ClientLoggerAPI {
         }
 
         return args;
+    }
+
+    /**
+     * Logger that doesn't perform any logging.
+     */
+    static class NoopClientLogger  extends ClientLogger {
+        private NoopClientLogger(){
+            super(NoopClientLogger.class);
+        }
+        @Override
+        public void log(String format, Object... args){
+            //DO Nothing
+        }
     }
 }

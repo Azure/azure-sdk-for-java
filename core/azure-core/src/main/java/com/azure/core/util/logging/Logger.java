@@ -6,7 +6,7 @@ package com.azure.core.util.logging;
 /**
  * Fluent logging API interface.
  */
-public interface ClientLoggerAPI {
+interface Logger {
     int DEFAULT_LOG_LEVEL = 2;
 
     int TRACE_LEVEL = 0;
@@ -20,7 +20,7 @@ public interface ClientLoggerAPI {
      * To work with verbose logger.
      * @return The verbose logger.
      */
-    default ClientLoggerAPI asVerbose() {
+    default Logger asVerbose() {
         return this;
     }
 
@@ -28,7 +28,7 @@ public interface ClientLoggerAPI {
      * To work with logger at info level.
      * @return The verbose logger.
      */
-    default ClientLoggerAPI asInfo() {
+    default Logger asInfo() {
         return this;
     }
 
@@ -36,7 +36,7 @@ public interface ClientLoggerAPI {
      * To work with logger at warning level.
      * @return The verbose logger.
      */
-    default ClientLoggerAPI asWarning() {
+    default Logger asWarning() {
         return this;
     }
 
@@ -44,7 +44,7 @@ public interface ClientLoggerAPI {
      * To work with logger at error level.
      * @return The verbose logger.
      */
-    default ClientLoggerAPI asError() {
+    default Logger asError() {
         return this;
     }
 
@@ -59,6 +59,6 @@ public interface ClientLoggerAPI {
     /**
      * Logger that doesn't perform any logging.
      */
-    class NoopClientLogger implements ClientLoggerAPI {
+    class NoopClientLogger implements Logger {
     }
 }
