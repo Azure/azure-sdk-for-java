@@ -22,11 +22,10 @@ public class StoredProcedureParameter {
     private Object value;
 
     /**
-     * Stored procedure parameter type. Possible values include: 'String',
-     * 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * Stored procedure parameter type.
      */
     @JsonProperty(value = "type")
-    private StoredProcedureParameterType type;
+    private Object type;
 
     /**
      * Get stored procedure parameter value. Type: string (or Expression with resultType string).
@@ -49,21 +48,21 @@ public class StoredProcedureParameter {
     }
 
     /**
-     * Get stored procedure parameter type. Possible values include: 'String', 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * Get stored procedure parameter type.
      *
      * @return the type value
      */
-    public StoredProcedureParameterType type() {
+    public Object type() {
         return this.type;
     }
 
     /**
-     * Set stored procedure parameter type. Possible values include: 'String', 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * Set stored procedure parameter type.
      *
      * @param type the type value to set
      * @return the StoredProcedureParameter object itself.
      */
-    public StoredProcedureParameter withType(StoredProcedureParameterType type) {
+    public StoredProcedureParameter withType(Object type) {
         this.type = type;
         return this;
     }

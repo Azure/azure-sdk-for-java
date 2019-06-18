@@ -22,10 +22,10 @@ public class PolybaseSettings {
     private Map<String, Object> additionalProperties;
 
     /**
-     * Reject type. Possible values include: 'value', 'percentage'.
+     * Reject type.
      */
     @JsonProperty(value = "rejectType")
-    private PolybaseSettingsRejectType rejectType;
+    private Object rejectType;
 
     /**
      * Specifies the value or the percentage of rows that can be rejected
@@ -72,21 +72,21 @@ public class PolybaseSettings {
     }
 
     /**
-     * Get reject type. Possible values include: 'value', 'percentage'.
+     * Get reject type.
      *
      * @return the rejectType value
      */
-    public PolybaseSettingsRejectType rejectType() {
+    public Object rejectType() {
         return this.rejectType;
     }
 
     /**
-     * Set reject type. Possible values include: 'value', 'percentage'.
+     * Set reject type.
      *
      * @param rejectType the rejectType value to set
      * @return the PolybaseSettings object itself.
      */
-    public PolybaseSettings withRejectType(PolybaseSettingsRejectType rejectType) {
+    public PolybaseSettings withRejectType(Object rejectType) {
         this.rejectType = rejectType;
         return this;
     }

@@ -22,6 +22,9 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
     /** Static value Int for StoredProcedureParameterType. */
     public static final StoredProcedureParameterType INT = fromString("Int");
 
+    /** Static value Int64 for StoredProcedureParameterType. */
+    public static final StoredProcedureParameterType INT64 = fromString("Int64");
+
     /** Static value Decimal for StoredProcedureParameterType. */
     public static final StoredProcedureParameterType DECIMAL = fromString("Decimal");
 

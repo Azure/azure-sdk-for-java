@@ -37,7 +37,7 @@ public class CopyActivity extends ExecutionActivity {
      * Copy activity translator. If not specified, tabular translator is used.
      */
     @JsonProperty(value = "typeProperties.translator")
-    private CopyTranslator translator;
+    private Object translator;
 
     /**
      * Specifies whether to copy data via an interim staging. Default value is
@@ -87,6 +87,12 @@ public class CopyActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.preserveRules")
     private List<Object> preserveRules;
+
+    /**
+     * Preserve rules.
+     */
+    @JsonProperty(value = "typeProperties.preserve")
+    private List<Object> preserve;
 
     /**
      * List of inputs for the activity.
@@ -145,7 +151,7 @@ public class CopyActivity extends ExecutionActivity {
      *
      * @return the translator value
      */
-    public CopyTranslator translator() {
+    public Object translator() {
         return this.translator;
     }
 
@@ -155,7 +161,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param translator the translator value to set
      * @return the CopyActivity object itself.
      */
-    public CopyActivity withTranslator(CopyTranslator translator) {
+    public CopyActivity withTranslator(Object translator) {
         this.translator = translator;
         return this;
     }
@@ -297,6 +303,26 @@ public class CopyActivity extends ExecutionActivity {
      */
     public CopyActivity withPreserveRules(List<Object> preserveRules) {
         this.preserveRules = preserveRules;
+        return this;
+    }
+
+    /**
+     * Get preserve rules.
+     *
+     * @return the preserve value
+     */
+    public List<Object> preserve() {
+        return this.preserve;
+    }
+
+    /**
+     * Set preserve rules.
+     *
+     * @param preserve the preserve value to set
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity withPreserve(List<Object> preserve) {
+        this.preserve = preserve;
         return this;
     }
 

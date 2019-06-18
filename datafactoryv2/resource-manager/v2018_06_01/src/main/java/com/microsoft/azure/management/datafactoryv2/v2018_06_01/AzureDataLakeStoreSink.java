@@ -19,29 +19,54 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDataLakeStoreSink")
 public class AzureDataLakeStoreSink extends CopySink {
     /**
-     * The type of copy behavior for copy sink. Possible values include:
-     * 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * The type of copy behavior for copy sink.
      */
     @JsonProperty(value = "copyBehavior")
-    private CopyBehaviorType copyBehavior;
+    private Object copyBehavior;
 
     /**
-     * Get the type of copy behavior for copy sink. Possible values include: 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * Single File Parallel.
+     */
+    @JsonProperty(value = "enableAdlsSingleFileParallel")
+    private Object enableAdlsSingleFileParallel;
+
+    /**
+     * Get the type of copy behavior for copy sink.
      *
      * @return the copyBehavior value
      */
-    public CopyBehaviorType copyBehavior() {
+    public Object copyBehavior() {
         return this.copyBehavior;
     }
 
     /**
-     * Set the type of copy behavior for copy sink. Possible values include: 'PreserveHierarchy', 'FlattenHierarchy', 'MergeFiles'.
+     * Set the type of copy behavior for copy sink.
      *
      * @param copyBehavior the copyBehavior value to set
      * @return the AzureDataLakeStoreSink object itself.
      */
-    public AzureDataLakeStoreSink withCopyBehavior(CopyBehaviorType copyBehavior) {
+    public AzureDataLakeStoreSink withCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
+        return this;
+    }
+
+    /**
+     * Get single File Parallel.
+     *
+     * @return the enableAdlsSingleFileParallel value
+     */
+    public Object enableAdlsSingleFileParallel() {
+        return this.enableAdlsSingleFileParallel;
+    }
+
+    /**
+     * Set single File Parallel.
+     *
+     * @param enableAdlsSingleFileParallel the enableAdlsSingleFileParallel value to set
+     * @return the AzureDataLakeStoreSink object itself.
+     */
+    public AzureDataLakeStoreSink withEnableAdlsSingleFileParallel(Object enableAdlsSingleFileParallel) {
+        this.enableAdlsSingleFileParallel = enableAdlsSingleFileParallel;
         return this;
     }
 

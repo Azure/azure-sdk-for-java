@@ -23,7 +23,7 @@ public class StoredProcedureParameter {
 
     /**
      * Stored procedure parameter type. Possible values include: 'String',
-     * 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * 'Int', 'Int64', 'Decimal', 'Guid', 'Boolean', 'Date'.
      */
     @JsonProperty(value = "type")
     private StoredProcedureParameterType type;
@@ -49,7 +49,7 @@ public class StoredProcedureParameter {
     }
 
     /**
-     * Get stored procedure parameter type. Possible values include: 'String', 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * Get stored procedure parameter type. Possible values include: 'String', 'Int', 'Int64', 'Decimal', 'Guid', 'Boolean', 'Date'.
      *
      * @return the type value
      */
@@ -58,7 +58,7 @@ public class StoredProcedureParameter {
     }
 
     /**
-     * Set stored procedure parameter type. Possible values include: 'String', 'Int', 'Decimal', 'Guid', 'Boolean', 'Date'.
+     * Set stored procedure parameter type. Possible values include: 'String', 'Int', 'Int64', 'Decimal', 'Guid', 'Boolean', 'Date'.
      *
      * @param type the type value to set
      * @return the StoredProcedureParameter object itself.

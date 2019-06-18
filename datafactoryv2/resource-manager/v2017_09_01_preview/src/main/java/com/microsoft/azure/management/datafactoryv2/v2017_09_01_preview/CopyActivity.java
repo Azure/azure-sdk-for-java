@@ -37,7 +37,7 @@ public class CopyActivity extends ExecutionActivity {
      * Copy activity translator. If not specified, tabular translator is used.
      */
     @JsonProperty(value = "typeProperties.translator")
-    private CopyTranslator translator;
+    private Object translator;
 
     /**
      * Specifies whether to copy data via an interim staging. Default value is
@@ -139,7 +139,7 @@ public class CopyActivity extends ExecutionActivity {
      *
      * @return the translator value
      */
-    public CopyTranslator translator() {
+    public Object translator() {
         return this.translator;
     }
 
@@ -149,7 +149,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param translator the translator value to set
      * @return the CopyActivity object itself.
      */
-    public CopyActivity withTranslator(CopyTranslator translator) {
+    public CopyActivity withTranslator(Object translator) {
         this.translator = translator;
         return this;
     }

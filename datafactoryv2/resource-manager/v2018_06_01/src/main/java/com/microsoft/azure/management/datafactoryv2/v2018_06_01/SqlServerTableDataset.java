@@ -25,7 +25,7 @@ public class SqlServerTableDataset extends DatasetInner {
      * The table name of the SQL Server dataset. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tableName", required = true)
+    @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
