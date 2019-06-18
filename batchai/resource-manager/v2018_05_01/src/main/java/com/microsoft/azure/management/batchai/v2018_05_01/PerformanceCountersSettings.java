@@ -15,16 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PerformanceCountersSettings {
     /**
-     * Specifies Azure Application Insights information for performance
-     * counters reporting.
-     * If provided, Batch AI will upload node performance counters to the
-     * corresponding Azure Application Insights account.
+     * Azure Application Insights reference.
+     * Azure Application Insights information for performance counters
+     * reporting. If provided, Batch AI will upload node performance counters
+     * to the corresponding Azure Application Insights account.
      */
     @JsonProperty(value = "appInsightsReference", required = true)
     private AppInsightsReference appInsightsReference;
 
     /**
-     * Get the appInsightsReference value.
+     * Get azure Application Insights information for performance counters reporting. If provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
      *
      * @return the appInsightsReference value
      */
@@ -33,7 +33,7 @@ public class PerformanceCountersSettings {
     }
 
     /**
-     * Set the appInsightsReference value.
+     * Set azure Application Insights information for performance counters reporting. If provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
      *
      * @param appInsightsReference the appInsightsReference value to set
      * @return the PerformanceCountersSettings object itself.
