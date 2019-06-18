@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.annotations.SkipParentValidation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.junit.Assert;
@@ -133,6 +134,15 @@ public class ValidatorTests {
         Validator.validate(textNode);
     }
 
+    @Test
+    public void validateSkipParentAnnotation() {
+        Child child = new Child();
+        child.name(new StringWrapper()); //parent field - StringWrapper's value is null but marked as required
+        child.count(5);
+        // Without SkipParentAnnotation, this would have failed
+        Validator.validate(child);
+    }
+
     public final class IntWrapper {
         @JsonProperty(required = true)
         private int value;
@@ -257,6 +267,30 @@ public class ValidatorTests {
 
         public void tag(String tag) {
             this.tag = tag;
+        }
+    }
+
+    private class Parent {
+        private StringWrapper name;
+        public StringWrapper name() {
+            return name;
+        }
+
+        public void name(StringWrapper name) {
+            this.name = name;
+        }
+    }
+
+    @SkipParentValidation
+    private class Child extends Parent {
+        private int count;
+
+        public int count() {
+            return this.count;
+        }
+
+        public void count(int count) {
+            this.count = count;
         }
     }
 }
