@@ -6,6 +6,7 @@ package com.azure.storage.common.credentials;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds a SAS token used for authenticating requests.
@@ -46,50 +47,44 @@ public final class SASTokenCredential {
      * @param query URL query used to build the SAS token
      * @return a SAS token credential if the query param contains all the necessary pieces
      */
-    public static SASTokenCredential fromQuery(String query) {
+    public static SASTokenCredential fromQuery(Map<String, String> query) {
         if (ImplUtils.isNullOrEmpty(query)) {
             return null;
         }
 
-        HashMap<String, String> queryParams = new HashMap<>();
-        for (String queryParam : query.split("&")) {
-            String key = queryParam.split("=", 2)[0];
-            queryParams.put(key, queryParam);
-        }
-
-        if (queryParams.size() < 6
-            || !queryParams.containsKey(SIGNED_VERSION)
-            || !queryParams.containsKey(SIGNED_SERVICES)
-            || !queryParams.containsKey(SIGNED_RESOURCE_TYPES)
-            || !queryParams.containsKey(SIGNED_PERMISSIONS)
-            || !queryParams.containsKey(SIGNED_EXPIRY)
-            || !queryParams.containsKey(SIGNATURE)) {
+        if (query.size() < 6
+            || !query.containsKey(SIGNED_VERSION)
+            || !query.containsKey(SIGNED_SERVICES)
+            || !query.containsKey(SIGNED_RESOURCE_TYPES)
+            || !query.containsKey(SIGNED_PERMISSIONS)
+            || !query.containsKey(SIGNED_EXPIRY)
+            || !query.containsKey(SIGNATURE)) {
             return null;
         }
 
-        StringBuilder sasTokenBuilder = new StringBuilder(queryParams.get(SIGNED_VERSION))
-            .append("&").append(queryParams.get(SIGNED_SERVICES))
-            .append("&").append(queryParams.get(SIGNED_RESOURCE_TYPES))
-            .append("&").append(queryParams.get(SIGNED_PERMISSIONS));
+        StringBuilder sasTokenBuilder = new StringBuilder(query.get(SIGNED_VERSION))
+            .append("&").append(query.get(SIGNED_SERVICES))
+            .append("&").append(query.get(SIGNED_RESOURCE_TYPES))
+            .append("&").append(query.get(SIGNED_PERMISSIONS));
 
         // SIGNED_START is optional
-        if (queryParams.containsKey(SIGNED_START)) {
-            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_START));
+        if (query.containsKey(SIGNED_START)) {
+            sasTokenBuilder.append("&").append(query.get(SIGNED_START));
         }
 
-        sasTokenBuilder.append("&").append(queryParams.get(SIGNED_EXPIRY));
+        sasTokenBuilder.append("&").append(query.get(SIGNED_EXPIRY));
 
         // SIGNED_IP is optional
-        if (queryParams.containsKey(SIGNED_IP)) {
-            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_IP));
+        if (query.containsKey(SIGNED_IP)) {
+            sasTokenBuilder.append("&").append(query.get(SIGNED_IP));
         }
 
         // SIGNED_PROTOCOL is optional
-        if (queryParams.containsKey(SIGNED_PROTOCOL)) {
-            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_PROTOCOL));
+        if (query.containsKey(SIGNED_PROTOCOL)) {
+            sasTokenBuilder.append("&").append(query.get(SIGNED_PROTOCOL));
         }
 
-        sasTokenBuilder.append("&").append(queryParams.get(SIGNATURE));
+        sasTokenBuilder.append("&").append(query.get(SIGNATURE));
 
         return new SASTokenCredential(sasTokenBuilder.toString());
     }

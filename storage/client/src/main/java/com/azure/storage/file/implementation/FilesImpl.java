@@ -13,6 +13,7 @@ import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.Service;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
@@ -75,61 +76,61 @@ public final class FilesImpl {
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesCreateResponse> create(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @GET("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDownloadResponse> download(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
+        Mono<FilesDownloadResponse> download(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
 
         @HEAD("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
-        Mono<FilesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesGetPropertiesResponse> getProperties(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
         @DELETE("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesDeleteResponse> delete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesDeleteResponse> delete(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesSetMetadataResponse> setMetadata(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesUploadRangeResponse> uploadRange(@HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuf> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesUploadRangeResponse> uploadRange(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @BodyParam("application/octet-stream") Flux<ByteBuf> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @GET("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(@HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
+        Mono<FilesGetRangeListResponse> getRangeList(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesStartCopyResponse> startCopy(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
+        Mono<FilesStartCopyResponse> startCopy(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesAbortCopyResponse> abortCopy(@HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesAbortCopyResponse> abortCopy(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @GET("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesListHandlesResponse> listHandles(@HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesListHandlesResponse> listHandles(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @PUT("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@HostParam("url") String url, @PathParam("shareName") String shareName, @PathParam("directory") String directoryPath, @PathParam("fileName") String fileName, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -140,7 +141,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(long fileContentLength, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, String fileName, long fileContentLength, Context context) {
         final Integer timeout = null;
         final String fileTypeConstant = "file";
         final Map<String, String> metadata = null;
@@ -150,7 +151,7 @@ public final class FilesImpl {
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.create(this.client.url(), timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -164,7 +165,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(long fileContentLength, Integer timeout, Map<String, String> metadata, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, String fileName, long fileContentLength, Integer timeout, Map<String, String> metadata, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -191,7 +192,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.create(this.client.url(), timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -201,11 +202,11 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(Context context) {
+    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final Integer timeout = null;
         final String range = null;
         final Boolean rangeGetContentMD5 = null;
-        return service.download(this.client.url(), timeout, this.client.version(), range, rangeGetContentMD5, context);
+        return service.download(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), range, rangeGetContentMD5, context);
     }
 
     /**
@@ -218,8 +219,8 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
-        return service.download(this.client.url(), timeout, this.client.version(), range, rangeGetContentMD5, context);
+    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(String shareName, String directoryPath, String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
+        return service.download(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), range, rangeGetContentMD5, context);
     }
 
     /**
@@ -229,10 +230,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
+    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
-        return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), context);
+        return service.getProperties(this.client.url(), shareName, directoryPath, fileName, sharesnapshot, timeout, this.client.version(), context);
     }
 
     /**
@@ -244,8 +245,8 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
-        return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), context);
+    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String directoryPath, String fileName, String sharesnapshot, Integer timeout, Context context) {
+        return service.getProperties(this.client.url(), shareName, directoryPath, fileName, sharesnapshot, timeout, this.client.version(), context);
     }
 
     /**
@@ -255,9 +256,9 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(Context context) {
+    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final Integer timeout = null;
-        return service.delete(this.client.url(), timeout, this.client.version(), context);
+        return service.delete(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), context);
     }
 
     /**
@@ -268,8 +269,8 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(Integer timeout, Context context) {
-        return service.delete(this.client.url(), timeout, this.client.version(), context);
+    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(String shareName, String directoryPath, String fileName, Integer timeout, Context context) {
+        return service.delete(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), context);
     }
 
     /**
@@ -279,7 +280,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final Integer timeout = null;
         final Long fileContentLength = null;
         final String comp = "properties";
@@ -289,7 +290,7 @@ public final class FilesImpl {
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.setHTTPHeaders(this.client.url(), timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -302,7 +303,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(Integer timeout, Long fileContentLength, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String directoryPath, String fileName, Integer timeout, Long fileContentLength, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -329,7 +330,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.setHTTPHeaders(this.client.url(), timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -339,11 +340,11 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
+    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String comp = "metadata";
-        return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), comp, context);
+        return service.setMetadata(this.client.url(), shareName, directoryPath, fileName, timeout, metadata, this.client.version(), comp, context);
     }
 
     /**
@@ -355,9 +356,9 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, String directoryPath, String fileName, Integer timeout, Map<String, String> metadata, Context context) {
         final String comp = "metadata";
-        return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), comp, context);
+        return service.setMetadata(this.client.url(), shareName, directoryPath, fileName, timeout, metadata, this.client.version(), comp, context);
     }
 
     /**
@@ -370,12 +371,12 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String directoryPath, String fileName, String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
         final Flux<ByteBuf> optionalbody = null;
         final Integer timeout = null;
         final String comp = "range";
         String contentMD5Converted = null;
-        return service.uploadRange(this.client.url(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
+        return service.uploadRange(this.client.url(), shareName, directoryPath, fileName, optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
     }
 
     /**
@@ -391,10 +392,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String directoryPath, String fileName, String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
         final String comp = "range";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
-        return service.uploadRange(this.client.url(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
+        return service.uploadRange(this.client.url(), shareName, directoryPath, fileName, optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
     }
 
     /**
@@ -404,12 +405,12 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String range = null;
         final String comp = "rangelist";
-        return service.getRangeList(this.client.url(), sharesnapshot, timeout, this.client.version(), range, comp, context);
+        return service.getRangeList(this.client.url(), shareName, directoryPath, fileName, sharesnapshot, timeout, this.client.version(), range, comp, context);
     }
 
     /**
@@ -422,9 +423,9 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String sharesnapshot, Integer timeout, String range, Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String directoryPath, String fileName, String sharesnapshot, Integer timeout, String range, Context context) {
         final String comp = "rangelist";
-        return service.getRangeList(this.client.url(), sharesnapshot, timeout, this.client.version(), range, comp, context);
+        return service.getRangeList(this.client.url(), shareName, directoryPath, fileName, sharesnapshot, timeout, this.client.version(), range, comp, context);
     }
 
     /**
@@ -435,10 +436,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String copySource, Context context) {
+    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String shareName, String directoryPath, String fileName, String copySource, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        return service.startCopy(this.client.url(), timeout, this.client.version(), metadata, copySource, context);
+        return service.startCopy(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), metadata, copySource, context);
     }
 
     /**
@@ -451,8 +452,8 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String copySource, Integer timeout, Map<String, String> metadata, Context context) {
-        return service.startCopy(this.client.url(), timeout, this.client.version(), metadata, copySource, context);
+    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String shareName, String directoryPath, String fileName, String copySource, Integer timeout, Map<String, String> metadata, Context context) {
+        return service.startCopy(this.client.url(), shareName, directoryPath, fileName, timeout, this.client.version(), metadata, copySource, context);
     }
 
     /**
@@ -463,11 +464,11 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String copyId, Context context) {
+    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String shareName, String directoryPath, String fileName, String copyId, Context context) {
         final Integer timeout = null;
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
-        return service.abortCopy(this.client.url(), copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
+        return service.abortCopy(this.client.url(), shareName, directoryPath, fileName, copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
     }
 
     /**
@@ -479,10 +480,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String copyId, Integer timeout, Context context) {
+    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String shareName, String directoryPath, String fileName, String copyId, Integer timeout, Context context) {
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
-        return service.abortCopy(this.client.url(), copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
+        return service.abortCopy(this.client.url(), shareName, directoryPath, fileName, copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
     }
 
     /**
@@ -492,13 +493,13 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(Context context) {
+    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(String shareName, String directoryPath, String fileName, Context context) {
         final String marker = null;
         final Integer maxresults = null;
         final Integer timeout = null;
         final String sharesnapshot = null;
         final String comp = "listhandles";
-        return service.listHandles(this.client.url(), marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
+        return service.listHandles(this.client.url(), shareName, directoryPath, fileName, marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
     }
 
     /**
@@ -512,9 +513,9 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
+    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(String shareName, String directoryPath, String fileName, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
         final String comp = "listhandles";
-        return service.listHandles(this.client.url(), marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
+        return service.listHandles(this.client.url(), shareName, directoryPath, fileName, marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
     }
 
     /**
@@ -525,12 +526,12 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Context context) {
+    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String shareName, String directoryPath, String fileName, String handleId, Context context) {
         final Integer timeout = null;
         final String marker = null;
         final String sharesnapshot = null;
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(this.client.url(), timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
+        return service.forceCloseHandles(this.client.url(), shareName, directoryPath, fileName, timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
     }
 
     /**
@@ -544,8 +545,8 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
+    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String shareName, String directoryPath, String fileName, String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(this.client.url(), timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
+        return service.forceCloseHandles(this.client.url(), shareName, directoryPath, fileName, timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
     }
 }

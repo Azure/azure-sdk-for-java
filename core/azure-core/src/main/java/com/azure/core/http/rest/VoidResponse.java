@@ -20,4 +20,8 @@ public final class VoidResponse extends SimpleResponse<Void> {
         super(request, statusCode, headers, null);
     }
 
+    public VoidResponse(Response response) {
+        super(response.request(), response.statusCode(), response.headers(), null);
+    }
+
 }

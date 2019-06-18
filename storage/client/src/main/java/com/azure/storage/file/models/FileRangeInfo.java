@@ -4,4 +4,29 @@
 package com.azure.storage.file.models;
 
 public final class FileRangeInfo {
+    private long start;
+    private long end;
+
+    public FileRangeInfo(final long start, final long end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public long start() {
+        return start;
+    }
+
+    public long start(final long start) {
+        this.start = start;
+        return this.start;
+    }
+
+    public long end() {
+        return end;
+    }
+
+    public long end(final long end) {
+        this.end = end;
+        return this.end;
+    }
 }
