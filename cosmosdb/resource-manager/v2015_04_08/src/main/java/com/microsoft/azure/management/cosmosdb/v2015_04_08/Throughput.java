@@ -9,37 +9,43 @@
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.UsageInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.CosmosDBManager;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.ThroughputInner;
+import java.util.Map;
 
 /**
- * Type representing DatabaseAccountUsage.
+ * Type representing Throughput.
  */
-public interface DatabaseAccountUsage extends HasInner<UsageInner>, HasManager<CosmosDBManager> {
+public interface Throughput extends HasInner<ThroughputInner>, HasManager<CosmosDBManager> {
     /**
-     * @return the currentValue value.
+     * @return the id value.
      */
-    Long currentValue();
+    String id();
 
     /**
-     * @return the limit value.
+     * @return the location value.
      */
-    Long limit();
+    String location();
 
     /**
      * @return the name value.
      */
-    MetricName name();
+    String name();
 
     /**
-     * @return the quotaPeriod value.
+     * @return the tags value.
      */
-    String quotaPeriod();
+    Map<String, String> tags();
 
     /**
-     * @return the unit value.
+     * @return the throughput value.
      */
-    UnitType unit();
+    int throughput();
+
+    /**
+     * @return the type value.
+     */
+    String type();
 
 }
