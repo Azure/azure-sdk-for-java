@@ -19,8 +19,7 @@ import java.util.Arrays;
  * stack trace for the throwable will be included in the log message.</p>
  *
  * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
- * environment configuration, by default logging is disabled. The default logging level for messages is
- * {@link ClientLogger#asInfo() info}.</p>
+ * environment configuration, by default logging is disabled.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
@@ -65,7 +64,7 @@ public class ClientLogger {
      */
     private static final int DISABLED_LEVEL = 5;
 
-    private static final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
+    private static final int DEFAULT_LOG_LEVEL = DISABLED_LEVEL;
     private int level = DEFAULT_LOG_LEVEL;
 
     private int configurationLevel;
@@ -91,7 +90,7 @@ public class ClientLogger {
     /**
      * Sets the logger to the verbose logging level.
      *
-     * @return Updated ClientLogger if debug is enabled
+     * @return Updated ClientLogger if verbose is enabled.
      */
     public ClientLogger asVerbose() {
         return asLevel(VERBOSE_LEVEL);
