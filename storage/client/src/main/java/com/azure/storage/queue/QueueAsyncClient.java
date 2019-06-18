@@ -333,7 +333,7 @@ public final class QueueAsyncClient {
      *     .subscribe(response -&gt; {
      *         EnqueuedMessage enqueuedMessage = response.value();
      *         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-     *     }
+     *     });
      * </pre>
      *
      * @param messageText Message text
