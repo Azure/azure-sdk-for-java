@@ -3,9 +3,9 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
