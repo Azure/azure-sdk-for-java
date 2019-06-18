@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBforMariaDBManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBforMariaDBManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<MariaDBManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<MariaDBManager> {
     /**
      * @return the administratorLogin value.
      */

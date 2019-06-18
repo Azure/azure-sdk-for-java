@@ -11,14 +11,14 @@ package com.microsoft.azure.management.mariadb.v2018_06_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.ServerInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing ServerServer.
  */
-public interface ServerServer extends HasInner<ServerInner>, HasManager<DBforMariaDBManager> {
+public interface ServerServer extends HasInner<ServerInner>, HasManager<MariaDBManager> {
     /**
      * @return the administratorLogin value.
      */

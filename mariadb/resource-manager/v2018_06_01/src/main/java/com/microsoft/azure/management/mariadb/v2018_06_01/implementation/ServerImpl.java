@@ -22,10 +22,10 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.ServerVersion;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
-class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, DBforMariaDBManager> implements Server, Server.Definition, Server.Update {
+class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, MariaDBManager> implements Server, Server.Definition, Server.Update {
     private ServerForCreate createParameter;
     private ServerUpdateParameters updateParameter;
-    ServerImpl(String name, ServerInner inner, DBforMariaDBManager manager) {
+    ServerImpl(String name, ServerInner inner, MariaDBManager manager) {
         super(name, inner, manager);
         this.createParameter = new ServerForCreate();
         this.updateParameter = new ServerUpdateParameters();

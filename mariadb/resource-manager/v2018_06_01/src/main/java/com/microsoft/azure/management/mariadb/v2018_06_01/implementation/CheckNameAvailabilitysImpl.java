@@ -17,14 +17,14 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.NameAvailability;
 import com.microsoft.azure.management.mariadb.v2018_06_01.NameAvailabilityRequest;
 
 class CheckNameAvailabilitysImpl extends WrapperImpl<CheckNameAvailabilitysInner> implements CheckNameAvailabilitys {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    CheckNameAvailabilitysImpl(DBforMariaDBManager manager) {
+    CheckNameAvailabilitysImpl(MariaDBManager manager) {
         super(manager.inner().checkNameAvailabilitys());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

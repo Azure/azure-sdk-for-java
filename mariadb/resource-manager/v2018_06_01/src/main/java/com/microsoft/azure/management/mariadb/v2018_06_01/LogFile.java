@@ -11,13 +11,13 @@ package com.microsoft.azure.management.mariadb.v2018_06_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.LogFileInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing LogFile.
  */
-public interface LogFile extends HasInner<LogFileInner>, HasManager<DBforMariaDBManager> {
+public interface LogFile extends HasInner<LogFileInner>, HasManager<MariaDBManager> {
     /**
      * @return the createdTime value.
      */

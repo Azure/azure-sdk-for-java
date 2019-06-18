@@ -14,12 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRuleState;
 
 class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, VirtualNetworkRuleInner, VirtualNetworkRuleImpl> implements VirtualNetworkRule, VirtualNetworkRule.Definition, VirtualNetworkRule.Update {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
     private String resourceGroupName;
     private String serverName;
     private String virtualNetworkRuleName;
 
-    VirtualNetworkRuleImpl(String name, DBforMariaDBManager manager) {
+    VirtualNetworkRuleImpl(String name, MariaDBManager manager) {
         super(name, new VirtualNetworkRuleInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
         //
     }
 
-    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, DBforMariaDBManager manager) {
+    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, MariaDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

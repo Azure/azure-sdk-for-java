@@ -11,13 +11,13 @@ package com.microsoft.azure.management.mariadb.v2018_06_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.PerformanceTierPropertiesInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import java.util.List;
 
 /**
  * Type representing PerformanceTierProperties.
  */
-public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<DBforMariaDBManager> {
+public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<MariaDBManager> {
     /**
      * @return the id value.
      */

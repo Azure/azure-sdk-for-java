@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.LogFile;
 
 class LogFilesImpl extends WrapperImpl<LogFilesInner> implements LogFiles {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    LogFilesImpl(DBforMariaDBManager manager) {
+    LogFilesImpl(MariaDBManager manager) {
         super(manager.inner().logFiles());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

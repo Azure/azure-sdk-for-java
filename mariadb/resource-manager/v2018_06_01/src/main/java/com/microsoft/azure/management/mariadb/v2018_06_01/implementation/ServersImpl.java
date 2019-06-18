@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, DBforMariaDBManager>  implements Servers {
-    protected ServersImpl(DBforMariaDBManager manager) {
+class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, MariaDBManager>  implements Servers {
+    protected ServersImpl(MariaDBManager manager) {
         super(manager.inner().servers(), manager);
     }
 

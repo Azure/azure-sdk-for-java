@@ -10,7 +10,7 @@ package com.microsoft.azure.management.mariadb.v2018_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.OperationListResultInner;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.OperationInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing OperationListResult.
  */
-public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<DBforMariaDBManager> {
+public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<MariaDBManager> {
     /**
      * @return the value value.
      */

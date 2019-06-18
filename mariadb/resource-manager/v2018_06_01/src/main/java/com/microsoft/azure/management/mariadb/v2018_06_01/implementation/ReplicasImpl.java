@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerServer;
 
 class ReplicasImpl extends WrapperImpl<ReplicasInner> implements Replicas {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    ReplicasImpl(DBforMariaDBManager manager) {
+    ReplicasImpl(MariaDBManager manager) {
         super(manager.inner().replicas());
         this.manager = manager;
     }
 
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

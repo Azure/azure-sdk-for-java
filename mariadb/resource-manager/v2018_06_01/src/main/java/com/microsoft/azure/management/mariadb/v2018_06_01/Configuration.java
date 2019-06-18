@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.DBforMariaDBManager;
+import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 
 /**
  * Type representing Configuration.
  */
-public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<DBforMariaDBManager> {
+public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<MariaDBManager> {
     /**
      * @return the allowedValues value.
      */

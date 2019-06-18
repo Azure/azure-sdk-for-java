@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRuleInner, FirewallRuleImpl> implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
     private String resourceGroupName;
     private String serverName;
     private String firewallRuleName;
 
-    FirewallRuleImpl(String name, DBforMariaDBManager manager) {
+    FirewallRuleImpl(String name, MariaDBManager manager) {
         super(name, new FirewallRuleInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
         //
     }
 
-    FirewallRuleImpl(FirewallRuleInner inner, DBforMariaDBManager manager) {
+    FirewallRuleImpl(FirewallRuleInner inner, MariaDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 

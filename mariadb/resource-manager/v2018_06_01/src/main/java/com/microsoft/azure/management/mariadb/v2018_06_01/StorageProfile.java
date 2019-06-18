@@ -34,6 +34,13 @@ public class StorageProfile {
     private Integer storageMB;
 
     /**
+     * Enable Storage Auto Grow. Possible values include: 'Enabled',
+     * 'Disabled'.
+     */
+    @JsonProperty(value = "storageAutogrow")
+    private StorageAutogrow storageAutogrow;
+
+    /**
      * Get backup retention days for the server.
      *
      * @return the backupRetentionDays value
@@ -90,6 +97,26 @@ public class StorageProfile {
      */
     public StorageProfile withStorageMB(Integer storageMB) {
         this.storageMB = storageMB;
+        return this;
+    }
+
+    /**
+     * Get enable Storage Auto Grow. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the storageAutogrow value
+     */
+    public StorageAutogrow storageAutogrow() {
+        return this.storageAutogrow;
+    }
+
+    /**
+     * Set enable Storage Auto Grow. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param storageAutogrow the storageAutogrow value to set
+     * @return the StorageProfile object itself.
+     */
+    public StorageProfile withStorageAutogrow(StorageAutogrow storageAutogrow) {
+        this.storageAutogrow = storageAutogrow;
         return this;
     }
 

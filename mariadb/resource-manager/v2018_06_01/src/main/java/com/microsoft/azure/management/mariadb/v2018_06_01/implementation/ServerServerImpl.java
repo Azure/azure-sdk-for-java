@@ -20,15 +20,15 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.ServerState;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final DBforMariaDBManager manager;
+    private final MariaDBManager manager;
 
-    ServerServerImpl(ServerInner inner,  DBforMariaDBManager manager) {
+    ServerServerImpl(ServerInner inner,  MariaDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DBforMariaDBManager manager() {
+    public MariaDBManager manager() {
         return this.manager;
     }
 
