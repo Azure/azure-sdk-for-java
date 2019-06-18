@@ -455,15 +455,6 @@ public final class EventProcessorHost {
     	static interface AADAuthStep {
     		/**
     		 * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
-    		 * The callback will be called with an AAD authority string which is appropriate for public Azure.
-    		 * 
-    		 * @param authCallback  the callback
-    		 * @return  interface for setting optional values
-    		 */
-    		OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback);
-    		
-    		/**
-    		 * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
     		 * 
     		 * @param authCallback  the callback
     		 * @param authority     AAD authority string which will be passed to the callback. Used for national cloud support.
@@ -586,11 +577,6 @@ public final class EventProcessorHost {
 				
 				this.operationTimeout = operationTimeout;
 				return this;
-			}
-
-			@Override
-			public OptionalStep useAuthenticationCallback(final AuthenticationCallback authCallback) {
-				return useAuthenticationCallback(authCallback, AzureActiveDirectoryTokenProvider.COMMON_AUTHORITY);
 			}
 
 			@Override
