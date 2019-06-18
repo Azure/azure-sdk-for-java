@@ -7,11 +7,12 @@ import com.azure.core.configuration.BaseConfigurations;
 import com.azure.core.configuration.Configuration;
 import com.azure.core.configuration.ConfigurationManager;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Arrays;
 
 /**
- * This is a fluent logger helper class that wraps a plug-able {@link org.slf4j.Logger}.
+ * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
  * argument of the format varargs and the logger is enabled for {@link ClientLogger#asVerbose() verbose} logging the
@@ -34,7 +35,7 @@ import java.util.Arrays;
 public class ClientLogger {
     private static final NoopClientLogger NOOP_LOGGER = new NoopClientLogger();
 
-    private final org.slf4j.Logger logger;
+    private final Logger logger;
 
     /** Indicate trace level.*/
     public static final int TRACE_LEVEL = 0;
