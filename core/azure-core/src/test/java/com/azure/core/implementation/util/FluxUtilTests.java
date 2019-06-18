@@ -251,7 +251,7 @@ public class FluxUtilTests {
     }
 
     @Test
-    public void testCollectBytBufStream() {
+    public void testCollectByteBufStream() {
         Flux<ByteBuf> byteBufFlux = Flux
             .just(Unpooled.copyInt(1), Unpooled.copyInt(255), Unpooled.copyInt(256));
         Mono<ByteBuf> result = FluxUtil.collectByteBufStream(byteBufFlux, false);

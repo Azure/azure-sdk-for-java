@@ -143,6 +143,18 @@ public class ValidatorTests {
         Validator.validate(child);
     }
 
+    @Test
+    public void validatePrimitives() {
+        Validator.validate(4);
+        Validator.validate(4L);
+        Validator.validate(4.0f);
+        Validator.validate(4.0);
+        Validator.validate('a');
+        Validator.validate(true);
+        Validator.validate((short)4);
+        Validator.validate((byte)4);
+    }
+
     public final class IntWrapper {
         @JsonProperty(required = true)
         private int value;
