@@ -67,7 +67,7 @@ public class ClientLogger {
      */
     public static final int DISABLED_LEVEL = 5;
 
-    private final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
+    private static final int DEFAULT_LOG_LEVEL = INFORMATIONAL_LEVEL;
     private int level = DEFAULT_LOG_LEVEL;
 
     private int configurationLevel;
@@ -257,7 +257,7 @@ public class ClientLogger {
     /**
      * ClientLogger that doesn't perform any logging.
      */
-    final static class NoopClientLogger extends ClientLogger {
+    static final class NoopClientLogger extends ClientLogger {
         private NoopClientLogger() {
             super(NoopClientLogger.class);
         }
