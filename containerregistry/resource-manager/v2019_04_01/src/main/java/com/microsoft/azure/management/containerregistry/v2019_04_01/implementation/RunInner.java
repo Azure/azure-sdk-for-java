@@ -18,6 +18,7 @@ import com.microsoft.azure.management.containerregistry.v2019_04_01.SourceTrigge
 import com.microsoft.azure.management.containerregistry.v2019_04_01.PlatformProperties;
 import com.microsoft.azure.management.containerregistry.v2019_04_01.AgentProperties;
 import com.microsoft.azure.management.containerregistry.v2019_04_01.ProvisioningState;
+import com.microsoft.azure.management.containerregistry.v2019_04_01.TimerTriggerDescriptor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -142,6 +143,12 @@ public class RunInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.isArchiveEnabled")
     private Boolean isArchiveEnabled;
+
+    /**
+     * The timer trigger that caused the run.
+     */
+    @JsonProperty(value = "properties.timerTrigger")
+    private TimerTriggerDescriptor timerTrigger;
 
     /**
      * Get the unique identifier for the run.
@@ -489,6 +496,26 @@ public class RunInner extends ProxyResource {
      */
     public RunInner withIsArchiveEnabled(Boolean isArchiveEnabled) {
         this.isArchiveEnabled = isArchiveEnabled;
+        return this;
+    }
+
+    /**
+     * Get the timer trigger that caused the run.
+     *
+     * @return the timerTrigger value
+     */
+    public TimerTriggerDescriptor timerTrigger() {
+        return this.timerTrigger;
+    }
+
+    /**
+     * Set the timer trigger that caused the run.
+     *
+     * @param timerTrigger the timerTrigger value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withTimerTrigger(TimerTriggerDescriptor timerTrigger) {
+        this.timerTrigger = timerTrigger;
         return this;
     }
 
