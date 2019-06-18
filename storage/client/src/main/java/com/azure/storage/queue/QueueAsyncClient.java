@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -41,9 +42,11 @@ public final class QueueAsyncClient {
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
         this.queueName = queueName;
-        this.client = new AzureQueueStorageImpl(client.httpPipeline())
-            .withUrl(client.url())
-            .withVersion(client.version());
+
+        this.client = new AzureQueueStorageBuilder().pipeline(client.httpPipeline())
+            .url(client.url())
+            .version(client.version())
+            .build();
     }
 
     /**
@@ -54,8 +57,10 @@ public final class QueueAsyncClient {
      */
     QueueAsyncClient(URL endpoint, HttpPipeline httpPipeline, String queueName) {
         this.queueName = queueName;
-        this.client = new AzureQueueStorageImpl(httpPipeline)
-            .withUrl(endpoint.toString());
+
+        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
+            .url(endpoint.toString())
+            .build();
     }
 
     /**

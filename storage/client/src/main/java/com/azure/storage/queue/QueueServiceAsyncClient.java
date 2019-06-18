@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.ListQueuesSegmentResponse;
@@ -37,7 +38,9 @@ public final class QueueServiceAsyncClient {
      * @param httpPipeline Http pipeline
      */
     QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.client = new AzureQueueStorageImpl(httpPipeline).withUrl(endpoint.toString());
+        this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
+            .url(endpoint.toString())
+            .build();
     }
 
     /**
