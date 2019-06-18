@@ -204,11 +204,31 @@ public final class ConfigurationClientBuilder {
      * {@link ConfigurationClientBuilder#endpoint(String) endpoint} for this ConfigurationClientBuilder.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return The updated ConfigurationlientBuilder object.
+     * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ConfigurationClientBuilder credential(ConfigurationClientCredentials credential) {
         Objects.requireNonNull(credential);
+        this.credential = credential;
+        this.endpoint = credential.baseUri();
+        return this;
+    }
+
+    /**
+     * Sets the credential to use when authenticating HTTP requests. Also, sets the
+     * {@link ConfigurationClientBuilder#endpoint(String) endpoint} for this ConfigurationClientBuilder.
+     *
+     * @param connectionString The connection string for the Azure App Configuration instance.
+     * @return the updated ConfigurationClientBuilder object.
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} doesn't have the required parts.
+     * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
+     */
+    public ConfigurationClientBuilder connectionString(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
+        Objects.requireNonNull(connectionString);
+
+        ConfigurationClientCredentials credential = new ConfigurationClientCredentials(connectionString);
         this.credential = credential;
         this.endpoint = credential.baseUri();
         return this;

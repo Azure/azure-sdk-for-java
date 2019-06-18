@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.credentials;
 
-import com.azure.data.appconfiguration.ConfigurationAsyncClientBuilder;
-import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * exists in the HTTP request so that a valid authorization value is generated.
  *
  * @see ConfigurationCredentialsPolicy
- * @see ConfigurationAsyncClientBuilder
+ * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
     private static final String HOST_HEADER = "Host";
