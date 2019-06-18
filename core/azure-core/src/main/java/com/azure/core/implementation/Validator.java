@@ -40,7 +40,6 @@ public final class Validator {
         }
 
         Class<?> type = parameter.getClass();
-
         if (type.isPrimitive()
                 || type.isEnum()
                 || type.isAssignableFrom(Class.class)

@@ -151,8 +151,8 @@ public class ValidatorTests {
         Validator.validate(4.0);
         Validator.validate('a');
         Validator.validate(true);
-        Validator.validate((short)4);
-        Validator.validate((byte)4);
+        Validator.validate((short) 4);
+        Validator.validate((byte) 4);
     }
 
     public final class IntWrapper {

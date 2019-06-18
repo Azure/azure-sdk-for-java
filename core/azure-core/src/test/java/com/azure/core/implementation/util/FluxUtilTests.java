@@ -259,7 +259,7 @@ public class FluxUtilTests {
         assertEquals(12, bytes.length);
         assertArrayEquals(new byte[]{
             0, 0, 0, 1,
-            0, 0, 0, (byte)255,
+            0, 0, 0, (byte) 255,
             0, 0, 1, 0}, bytes);
     }
 //
