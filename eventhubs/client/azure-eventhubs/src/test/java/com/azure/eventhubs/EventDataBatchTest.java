@@ -130,15 +130,7 @@ public class EventDataBatchTest extends ApiTestBase {
     @Ignore
     @Test
     public void sendBatchPartitionKeyValidate() {
-        // TODO: after understand EventReceiver functionality
-        skipIfNotRecordMode();
-
-    }
-
-    @Ignore
-    @Test
-    public void sendEventsFullBatchWithAppProps() {
-        // TODO: after understand EventReceiver functionality
+        // TODO: after understand EventHubClient Runtime info functionality
         skipIfNotRecordMode();
 
     }
@@ -149,11 +141,8 @@ public class EventDataBatchTest extends ApiTestBase {
 
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(10));
         sender = client.createSender(senderOptions);
+        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
 
-        final SendOptions sendOptions = new SendOptions();
-        final EventDataBatch batch = new EventDataBatch(1024, UUID.randomUUID().toString());
-
-        // Each Event Data has different size of properties, and random batch size for reach Test run
         int count = 0;
         while (true) {
             final EventData eventData = new EventData("a".getBytes());
@@ -169,7 +158,7 @@ public class EventDataBatchTest extends ApiTestBase {
         }
         Assert.assertEquals(count, batch.getSize());
 
-        StepVerifier.create(sender.send(batch.getEvents(), sendOptions))
+        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
 }
