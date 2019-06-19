@@ -18,7 +18,6 @@ public class EventHubConsumerOptionsTest {
         final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         // Assert
-        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_CONSUMER_GROUP_NAME, options.consumerGroup());
         Assert.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
     }
 

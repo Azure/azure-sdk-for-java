@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
  * value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
  * combination. This is the recommended approach to create a {@link EventHubConsumer}.</li>
- * <li>Multiple receivers per partitionId and consumer group combination can be created by not setting
+ * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
  * {@link EventHubConsumerOptions#ownerLevel()} when creating receivers.</li>
  * </ul>
  *

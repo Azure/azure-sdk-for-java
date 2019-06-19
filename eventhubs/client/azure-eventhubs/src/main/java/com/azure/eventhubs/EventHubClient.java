@@ -34,6 +34,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Event Hub.
  */
 public class EventHubClient implements Closeable {
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
@@ -159,19 +164,23 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition,
-     * as a member of the {@link EventHubConsumerOptions#DEFAULT_CONSUMER_GROUP_NAME default consumer group}, and begins
-     * reading events from the specified {@code eventPosition}.
+     * as a member of the specified consumer group, and begins reading events from the {@code eventPosition}.
      *
      * The consumer created is non-exclusive, allowing multiple consumers from the same consumer group to be actively
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
+     * @param consumerGroup The name of the consumer group. The name of the consumer group that is created by default is
+     *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return An new {@link EventHubConsumer} that receives events from the partition at the given position.
+     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     *         string.
      */
-    public EventHubConsumer createConsumer(String partitionId, EventPosition eventPosition) {
-        return createConsumer(partitionId, eventPosition, defaultConsumerOptions);
+    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+        return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
     }
 
     /**
@@ -192,17 +201,28 @@ public class EventHubClient implements Closeable {
      * created as non-exclusive.
      * </p>
      *
+     * @param consumerGroup The name of the consumer group. The name of the consumer group that is created by default is
+     *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumer} that receives events from the partition with all configured
      *         {@link EventHubConsumerOptions}.
-     * @throws NullPointerException if {@code partitionId}, {@code eventPosition}, or {@code options} is {@code null}.
+     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     *         string.
      */
-    public EventHubConsumer createConsumer(String partitionId, EventPosition eventPosition, EventHubConsumerOptions options) {
-        Objects.requireNonNull(partitionId);
+    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+                                           EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);
+
+        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
+            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+        }
+        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
+            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+        }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
         if (clonedOptions.scheduler() == null) {
@@ -213,7 +233,7 @@ public class EventHubClient implements Closeable {
         }
 
         final String linkName = StringUtil.getRandomString("PR");
-        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, options.consumerGroup(), partitionId);
+        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
             .cast(EventHubSession.class)

@@ -15,10 +15,7 @@ import java.util.Optional;
  * Options when receiving events from Event Hubs.
  */
 public class EventHubConsumerOptions implements Cloneable {
-    /**
-     * The name of the default consumer group in the Event Hubs service.
-     */
-    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -36,18 +33,15 @@ public class EventHubConsumerOptions implements Cloneable {
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
     private String identifier;
-    private String consumerGroup;
     private Long priority;
     private Retry retryPolicy;
     private Scheduler scheduler;
     private int prefetchCount;
 
     /**
-     * Creates a new instance with a position at the beginning of the partition stream, consumer group set to
-     * {@link #DEFAULT_CONSUMER_GROUP_NAME},and the default prefetch amount.
+     * Creates a new instance with a position at the beginning of the partition stream, and the default prefetch amount.
      */
     public EventHubConsumerOptions() {
-        this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;
     }
 
@@ -68,21 +62,6 @@ public class EventHubConsumerOptions implements Cloneable {
         return this;
     }
 
-    /**
-     * Sets the name of the consumer group.
-     *
-     * @param consumerGroup The name of the consumer group.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException If {@code consumerGroup} is {@code null} or an empty string.
-     */
-    public EventHubConsumerOptions consumerGroup(String consumerGroup) {
-        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
-        }
-
-        this.consumerGroup = consumerGroup;
-        return this;
-    }
 
     /**
      * Sets the {@code ownerLevel} value on this consumer. When populated, the priority indicates that a consumer
@@ -171,15 +150,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the name of the consumer group.
-     *
-     * @return The name of the consumer group.
-     */
-    public String consumerGroup() {
-        return consumerGroup;
-    }
-
-    /**
      * Gets the retry policy when receiving events. If not specified, the retry policy configured on the associated
      * {@link EventHubClient} is used.
      *
@@ -239,7 +209,6 @@ public class EventHubConsumerOptions implements Cloneable {
         }
 
         clone.scheduler(this.scheduler());
-        clone.consumerGroup(this.consumerGroup());
         clone.identifier(this.identifier());
         clone.prefetchCount(this.prefetchCount());
         clone.retry(this.retry());
