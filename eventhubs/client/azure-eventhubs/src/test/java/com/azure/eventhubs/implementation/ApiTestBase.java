@@ -144,21 +144,11 @@ public abstract class ApiTestBase extends TestBase {
         return CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
     }
 
-
-    public static EventHubClientBuilder getEventHubClientBuilder() {
-        return EventHubClient.builder().credentials(CredentialInfo.from(CONNECTION_STRING));
+    protected EventHubClientBuilder getEventHubClientBuilder() {
+        return EventHubClient.builder().credential(TEST_CONNECTION_STRING);
     }
 
-    protected static String getConsumerGroupName() {
+    protected String getConsumerGroupName() {
         return "$Default";
-    }
-
-    protected static Mono<Void> pushEventsToPartition(final EventHubClient client, final String partitionId, final int noOfEvents) {
-        EventSender sender = client.createSender(new EventSenderOptions().partitionId(partitionId));
-        final Flux<EventData> map = Flux.range(0, noOfEvents).map(number -> {
-            final EventData data = new EventData("testString".getBytes(UTF_8));
-            return data;
-        });
-        return sender.send(map);
     }
 }

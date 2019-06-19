@@ -48,6 +48,7 @@ public class EventHubClientTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
 
     private EventHubClient client;
+    private EventSender sender;
     private ExpectedData data;
     private ReactorHandlerProvider handlerProvider;
 
@@ -69,6 +70,14 @@ public class EventHubClientTest extends ApiTestBase {
 
         if (client != null) {
             client.close();
+        }
+
+        if (sender != null) {
+            try {
+                sender.close();
+            } catch (IOException e) {
+                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+            }
         }
     }
 
@@ -343,26 +352,34 @@ public class EventHubClientTest extends ApiTestBase {
     public void parallelEventHubClients() {
         final String partitionId = "0";
         final int noOfClients = 4;
-        final String consumerGroupName = ApiTestBase.getConsumerGroupName();
 
-        EventHubClient[] ehClients = new EventHubClient[noOfClients];
+        final EventHubClient[] ehClients = new EventHubClient[noOfClients];
         for (int i = 0; i < noOfClients; i++) {
             ehClients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
         EventHubClient senderClient = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
 
-        for (EventHubClient ehClient : ehClients) {
+        for (final EventHubClient ehClient : ehClients) {
 
-            EventReceiver receiver = ehClient.createReceiver(partitionId, EventPosition.latest(),
-                new EventReceiverOptions().consumerGroup(consumerGroupName));
+            final EventReceiver receiver = ehClient.createReceiver(partitionId, EventPosition.latest(),
+                new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
 
-            Flux<EventData> receivedData = receiver.receive();
-            ApiTestBase.pushEventsToPartition(senderClient, new EventSenderOptions().partitionId(PARTITION_ID), 10);
+            final Flux<EventData> receivedData = receiver.receive();
+            pushEventsToPartition(senderClient, new EventSenderOptions().partitionId(PARTITION_ID), 10);
 
             StepVerifier.create(receivedData.take(10))
                 .expectNextCount(10)
                 .verifyComplete();
         }
+    }
+
+    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventSenderOptions senderOptions, final int noOfEvents) {
+        final Flux<EventData> events = Flux.range(0, noOfEvents).map(number -> {
+            final EventData data = new EventData("testString".getBytes(UTF_8));
+            return data;
+        });
+        sender = client.createSender(senderOptions);
+        return sender.send(events);
     }
 }
