@@ -29,11 +29,11 @@ class ContainerAPITest extends APISpec {
     }
 
     def "delete"(){
+        setup:
         cu.delete(null, null, null)
-        when:
-        cu.getProperties()
-        then:
-        thrown(StorageException)
+
+        expect:
+        !cu.exists().value()
     }
 
     /////////////////////////////////////

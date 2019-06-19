@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -23,10 +24,18 @@ import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
@@ -52,6 +61,7 @@ import java.util.List;
  * object through {@link Mono#toFuture()}.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
+    private static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 
@@ -156,16 +166,51 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
-    public Mono<Response<BlockBlobItem>> uploadFromFile(String filePath) {
+    public Mono<Void> uploadFromFile(String filePath) {
         return this.uploadFromFile(filePath, null, null, null, null);
     }
 
-    public Mono<Response<BlockBlobItem>> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Context context) {
-        //TODO make this method smart
-        return this.blockBlobAsyncRawClient
-            .upload(ByteBufFlux.fromPath(Paths.get(filePath)), new File(filePath).length())
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+        return Flux.fromIterable(sliceFile(filePath))
+            .flatMap(chunk -> Flux.using(
+                () -> AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ),
+                channel -> {
+                    String blockId = getBlockID();
+                    return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context)
+                        .map(rb -> blockId);
+                },
+                channel -> {
+                    try {
+                        channel.close();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }))
+            .collectList()
+            .flatMap(blocks -> commitBlockList(blocks, headers, metadata, accessConditions, context))
+            .ignoreElement().then();
+//        return this.blockBlobAsyncRawClient
+//            .upload(ByteBufFlux.fromPath(Paths.get(filePath)), new File(filePath).length(), headers, metadata, accessConditions, context)
+//            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+    }
+
+    private String getBlockID() {
+        return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+    }
+
+    private List<BlobRange> sliceFile(String path) {
+        File file = new File(path);
+        assert file.exists();
+        List<BlobRange> ranges = new ArrayList<>();
+        for (long pos = 0; pos < file.length(); pos += BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) {
+            long count = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+            if (pos + count > file.length()) {
+                count = file.length() - pos;
+            }
+            ranges.add(new BlobRange(pos, count));
+        }
+        return ranges;
     }
 
     /**

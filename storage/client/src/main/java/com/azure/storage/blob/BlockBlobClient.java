@@ -150,19 +150,19 @@ public final class BlockBlobClient extends BlobClient {
         }
     }
 
-    public Response<BlockBlobItem> uploadFromFile(String filePath) throws IOException {
-        return this.uploadFromFile(filePath, null, null, null, null);
+    public void uploadFromFile(String filePath) throws IOException {
+        this.uploadFromFile(filePath, null, null, null, null);
     }
 
-    public Response<BlockBlobItem> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Response<BlockBlobItem>> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
 
         try {
             if (timeout == null) {
-                return upload.block();
+                upload.block();
             } else {
-                return upload.block(timeout);
+                upload.block(timeout);
             }
         }
         catch (UncheckedIOException e) {

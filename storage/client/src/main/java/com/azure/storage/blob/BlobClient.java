@@ -321,8 +321,8 @@ public class BlobClient {
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
-    public VoidResponse downloadToFile(String filePath) throws IOException {
-        return this.downloadToFile(filePath, null, null, null, false, null);
+    public void downloadToFile(String filePath) throws IOException {
+        this.downloadToFile(filePath, null, null, null, false, null);
     }
 
     /**
@@ -340,15 +340,15 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public VoidResponse downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
+    public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
-        Mono<VoidResponse> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);
+        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options, null);
 
         try {
             if (timeout == null) {
-                return download.block();
+                download.block();
             } else {
-                return download.block(timeout); //TODO this isn't doing what we want
+                download.block(timeout); //TODO this isn't doing what we want
             }
         } catch (UncheckedIOException e) {
             throw e.getCause();

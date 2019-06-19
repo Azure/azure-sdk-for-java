@@ -31,7 +31,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -60,6 +64,7 @@ import java.nio.file.Paths;
  * object through {@link Mono#toFuture()}.
  */
 public class BlobAsyncClient {
+    private static final long BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     BlobAsyncRawClient blobAsyncRawClient;
 
@@ -345,7 +350,7 @@ public class BlobAsyncClient {
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
-    public Mono<VoidResponse> downloadToFile(String filePath) {
+    public Mono<Void> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, null, false, null, null);
     }
 
@@ -368,23 +373,45 @@ public class BlobAsyncClient {
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.
      */
-    public Mono<VoidResponse> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
+    public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
-        //todo make this method smart
-        return Mono.using(
-            () -> AsynchronousFileChannel.open(Paths.get(filePath)),
-            fileChannel -> blobAsyncRawClient
-                .download(range, accessConditions, rangeGetContentMD5, context)
-                .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), fileChannel)
-                    .then(Mono.just(new VoidResponse(dar.rawResponse())))),
-            fileChannel -> {
-                try {
-                    fileChannel.close();
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
+        Path path = Paths.get(filePath);
+        return sliceBlobRange(range, accessConditions, context)
+            .flatMap(chunk -> Flux.using(
+                () -> AsynchronousFileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE),
+                channel -> blobAsyncRawClient
+                    .download(chunk, accessConditions, rangeGetContentMD5, context)
+                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))),
+                channel -> {
+                    try {
+                        channel.close();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                })).ignoreElements();
+    }
+
+    private Flux<BlobRange> sliceBlobRange(BlobRange blobRange, BlobAccessConditions accessConditions, Context context) {
+        long offset = blobRange == null ? 0L : blobRange.offset();
+        Mono<Long> length;
+        if (blobRange != null) {
+            length = Mono.just(blobRange.count());
+        } else {
+            length = getProperties(accessConditions, context).map(rb -> rb.value().blobSize());
+        }
+        return length
+            .map(l -> {
+                List<BlobRange> chunks = new ArrayList<>();
+                for (long pos = offset; pos < offset + l; pos += BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE) {
+                    long count = BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
+                    if (pos + count > offset + l) {
+                        count = offset + l - pos;
+                    }
+                    chunks.add(new BlobRange(pos, count));
                 }
-            }
-        );
+                return chunks;
+            })
+            .flatMapMany(Flux::fromIterable);
     }
 
     /**
