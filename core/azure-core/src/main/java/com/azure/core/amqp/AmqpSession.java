@@ -27,7 +27,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
     Duration getOpenTimeout();
 
     /**
-     * Creates a new AMQP link that produces events and pushes them to the message broker.
+     * Creates a new AMQP link that publishes events to the message broker.
      *
      * @param linkName Name of the link.
      * @param entityPath The entity path this link connects to when producing events.

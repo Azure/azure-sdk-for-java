@@ -64,9 +64,9 @@ public class EventHubConsumerOptions implements Cloneable {
 
 
     /**
-     * Sets the {@code ownerLevel} value on this consumer. When populated, the priority indicates that a consumer
-     * is intended to be the only reader of events for the requested partition and an associated consumer group. To do
-     * so, this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
+     * Sets the {@code ownerLevel} value on this consumer. When populated, the level indicates that a consumer is
+     * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
+     * this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
      * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger
      * {@link EventHubConsumerOptions#ownerLevel()} value will "win".
      *
@@ -160,11 +160,11 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the priority for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
+     * Gets the owner level for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
      * exclusive consumer. Otherwise, it is an exclusive consumer, and there can only be one active consumer for each
      * partition and consumer group combination.
      *
-     * @return An optional priority for this consumer.
+     * @return An optional owner level for this consumer.
      */
     public Optional<Long> ownerLevel() {
         return Optional.ofNullable(priority);
