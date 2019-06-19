@@ -121,8 +121,8 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
         final String tokenAudience = audienceProvider.getResourceString(eventHubPath);
 
-        return tokenProvider.getToken(tokenAudience).flatMap(token -> {
-            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, token);
+        return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
+            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.token());
 
             final Message request = Proton.message();
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
