@@ -42,8 +42,8 @@ public class EventHubClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubPath;
-    private final EventHubProducerOptions defaultSenderOptions;
-    private final EventHubConsumerOptions defaultReceiverOptions;
+    private final EventHubProducerOptions defaultProducerOptions;
+    private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionOptions);
@@ -58,10 +58,10 @@ public class EventHubClient implements Closeable {
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
-        this.defaultSenderOptions = new EventHubProducerOptions()
+        this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retryPolicy())
             .timeout(connectionOptions.timeout());
-        this.defaultReceiverOptions = new EventHubConsumerOptions()
+        this.defaultConsumerOptions = new EventHubConsumerOptions()
             .retry(connectionOptions.retryPolicy())
             .scheduler(connectionOptions.scheduler());
     }
@@ -114,7 +114,7 @@ public class EventHubClient implements Closeable {
      * @return A new {@link EventHubProducer}.
      */
     public EventHubProducer createProducer() {
-        return createProducer(defaultSenderOptions);
+        return createProducer(defaultProducerOptions);
     }
 
     /**
@@ -150,7 +150,7 @@ public class EventHubClient implements Closeable {
         }
 
         final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
-            .flatMap(session -> session.createSender(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
+            .flatMap(session -> session.createProducer(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
                 .cast(AmqpSendLink.class)))
             .publish(x -> x);
 
@@ -171,7 +171,7 @@ public class EventHubClient implements Closeable {
      * @return An new {@link EventHubConsumer} that receives events from the partition at the given position.
      */
     public EventHubConsumer createConsumer(String partitionId, EventPosition eventPosition) {
-        return createConsumer(partitionId, eventPosition, defaultReceiverOptions);
+        return createConsumer(partitionId, eventPosition, defaultConsumerOptions);
     }
 
     /**
@@ -223,7 +223,7 @@ public class EventHubClient implements Closeable {
                     : null;
 
                 return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
-                    clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
+                    clonedOptions.retry(), priority, options.identifier());
             })
             .cast(AmqpReceiveLink.class);
 

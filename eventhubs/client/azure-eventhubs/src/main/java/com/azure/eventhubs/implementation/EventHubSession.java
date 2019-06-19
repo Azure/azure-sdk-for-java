@@ -28,8 +28,6 @@ public interface EventHubSession extends AmqpSession {
      * @param eventPositionExpression The position within the partition where the consumer should begin reading events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @param retry The retry policy to use when receiving messages.
-     * @param keepPartitionInformationUpdated {@code true} to keep {@link EventHubConsumer#partitionInformation()}
-     *         updated as each event is received.
      * @param ownerLevel {@code null} if multiple {@link EventHubConsumer EventHubConsumers} can listen to the same
      *         partition and consumer group. Otherwise, the {@code receiverPriority} that is the highest will listen to
      *         that partition exclusively.
@@ -37,6 +35,5 @@ public interface EventHubSession extends AmqpSession {
      * @return A newly created AMQP link.
      */
     Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression, Duration timeout,
-                                  Retry retry, Long ownerLevel, boolean keepPartitionInformationUpdated,
-                                  String consumerIdentifier);
+                                  Retry retry, Long ownerLevel, String consumerIdentifier);
 }

@@ -19,15 +19,22 @@ public class EventHubConsumerOptions implements Cloneable {
      * The name of the default consumer group in the Event Hubs service.
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+    /**
+     * The maximum length, in characters, for the identifier assigned to a receiver.
+     */
+    public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
+    /**
+     * The minimum value allowed for the prefetch count of the consumer.
+     */
+    public static final int MINIMUM_PREFETCH_COUNT = 1;
+    /**
+     * The maximum value allowed for the prefetch count of the consumer.
+     */
+    public static final int MAXIMUM_PREFETCH_COUNT = 8000;
 
-    //Default number of events to fetch when creating the receiver.
+    // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
-    // The maximum length, in characters, for the identifier assigned to a receiver.
-    static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
-    // The minimum value allowed for the prefetch count of the receiver.
-    static final int MINIMUM_PREFETCH_COUNT = 1;
-    static final int MAXIMUM_PREFETCH_COUNT = 8000;
 
     private String identifier;
     private String consumerGroup;
@@ -50,10 +57,15 @@ public class EventHubConsumerOptions implements Cloneable {
      * Sets an optional text-based identifier label to assign to an event receiver.
      *
      * @param identifier The receiver name.
-     * @return The updated ReceiverOptions object.
+     * @return The updated {@link EventHubConsumerOptions} object.
+     * @throws IllegalArgumentException if {@code identifier} is greater than {@link #MAXIMUM_IDENTIFIER_LENGTH}.
      */
     public EventHubConsumerOptions identifier(String identifier) {
-        validateIdentifier(identifier);
+        if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
+        }
+
         this.identifier = identifier;
         return this;
     }
@@ -62,7 +74,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * Sets the name of the consumer group.
      *
      * @param consumerGroup The name of the consumer group.
-     * @return The updated ReceiverOptions object.
+     * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException If {@code consumerGroup} is {@code null} or an empty string.
      */
     public EventHubConsumerOptions consumerGroup(String consumerGroup) {
@@ -75,11 +87,11 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Sets the exclusiveReceiverPriority value on this receiver. When populated, the priority indicates that a receiver is intended to be
-     * the only reader of events for the requested partition and an associated consumer group.
-     * To do so, this receiver will attempt to assert ownership over the partition; in the case where more than one
-     * exclusive receiver attempts to assert ownership for the same partition/consumer group pair, the one having a
-     * larger {@link EventHubConsumerOptions#exclusiveReceiverPriority()} value will "win".
+     * Sets the exclusiveReceiverPriority value on this receiver. When populated, the priority indicates that a receiver
+     * is intended to be the only reader of events for the requested partition and an associated consumer group. To do
+     * so, this receiver will attempt to assert ownership over the partition; in the case where more than one exclusive
+     * receiver attempts to assert ownership for the same partition/consumer group pair, the one having a larger
+     * {@link EventHubConsumerOptions#exclusiveReceiverPriority()} value will "win".
      *
      * <p>
      * When an exclusive receiver is used, those receivers which are not exclusive or which have a lower priority will
@@ -88,8 +100,8 @@ public class EventHubConsumerOptions implements Cloneable {
      * </p>
      *
      * @param priority The priority associated with an exclusive receiver; for a non-exclusive receiver, this value
-     * should be {@code null}.
-     * @return The updated ReceiverOptions object.
+     *         should be {@code null}.
+     * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
     public EventHubConsumerOptions exclusiveReceiverPriority(Long priority) {
@@ -106,7 +118,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * configured on the associated {@link EventHubClient} is used.
      *
      * @param retry The retry policy to use when receiving events.
-     * @return The updated ReceiverOptions object.
+     * @return The updated {@link EventHubConsumerOptions} object.
      */
     public EventHubConsumerOptions retry(Retry retry) {
         this.retryPolicy = retry;
@@ -118,9 +130,9 @@ public class EventHubConsumerOptions implements Cloneable {
      * locally without regard to whether a receive operation is currently active.
      *
      * @param prefetchCount The amount of events to queue locally.
-     * @return The updated ReceiverOptions object.
+     * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
-     * greater than {@link #MAXIMUM_PREFETCH_COUNT}.
+     *         greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
     public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
@@ -134,19 +146,6 @@ public class EventHubConsumerOptions implements Cloneable {
         }
 
         this.prefetchCount = prefetchCount;
-        return this;
-    }
-
-    /**
-     * Sets whether or not the {@link EventHubConsumer#partitionInformation()} is updated when the receiver reads
-     * events.
-     *
-     * @param keepUpdated {@code true} if the partition information should be kept up-to-date as events are received;
-     * otherwise, false.
-     * @return The updated ReceiverOptions object.
-     */
-    public EventHubConsumerOptions keepPartitionInformationUpdated(boolean keepUpdated) {
-        this.keepUpdated = keepUpdated;
         return this;
     }
 
@@ -204,17 +203,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets whether or not the {@link EventHubConsumer#partitionInformation()} is updated when the receiver reads
-     * events.
-     *
-     * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,
-     * false.
-     */
-    public boolean keepPartitionInformationUpdated() {
-        return this.keepUpdated;
-    }
-
-    /**
      * Gets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
      * associated {@link EventHubClient} is used.
      *
@@ -229,17 +217,10 @@ public class EventHubConsumerOptions implements Cloneable {
      * locally without regard to whether a receive operation is currently active.
      *
      * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
-     * operation is active.
+     *         operation is active.
      */
     public int prefetchCount() {
         return prefetchCount;
-    }
-
-    private void validateIdentifier(String identifier) {
-        if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
-        }
     }
 
     /**
@@ -263,7 +244,6 @@ public class EventHubConsumerOptions implements Cloneable {
         clone.consumerGroup(this.consumerGroup());
         clone.identifier(this.identifier());
         clone.prefetchCount(this.prefetchCount());
-        clone.keepPartitionInformationUpdated(this.keepPartitionInformationUpdated());
         clone.retry(this.retry());
 
         Optional<Long> priority = this.exclusiveReceiverPriority();

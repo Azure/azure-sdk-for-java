@@ -119,7 +119,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     @Override
-    public Mono<AmqpLink> createSender(String linkName, String entityPath, Duration timeout, Retry retry) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, Retry retry) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
@@ -158,15 +158,13 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry) {
-        return createConsumer(linkName, entityPath, "", timeout, retry,
-            null, false, null);
+    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, Retry retry) {
+        return createConsumer(linkName, entityPath, "", timeout, retry, null, null);
     }
 
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
-                                         Duration timeout, Retry retry, Long ownerLevel,
-                                         boolean keepPartitionInformationUpdated, String consumerIdentifier) {
+                                         Duration timeout, Retry retry, Long ownerLevel, String consumerIdentifier) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
@@ -185,7 +183,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
                 if (!ImplUtils.isNullOrEmpty(eventPositionExpression)) {
                     final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
-                    filter.put(AmqpConstants.STRING_FILTER,  new UnknownDescribedType(AmqpConstants.STRING_FILTER, eventPositionExpression));
+                    filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER, eventPositionExpression));
                     source.setFilter(filter);
                 }
 
@@ -216,9 +214,11 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                     receiver.setProperties(properties);
                 }
 
-                if (keepPartitionInformationUpdated) {
-                    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
-                }
+                // TODO (conniey): After preview 1 feature to enable keeping partition information updated.
+                // static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+                // if (keepPartitionInformationUpdated) {
+                //    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
+                // }
 
                 final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
                 BaseHandler.setHandler(receiver, receiveLinkHandler);
