@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs.implementation.handler;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -20,7 +20,7 @@ public class ReactorHandler extends BaseHandler {
      */
     private static final int REACTOR_IO_POLL_TIMEOUT = 20;
 
-    private final ServiceLogger logger = new ServiceLogger(ReactorHandler.class);
+    private final ClientLogger logger = new ClientLogger(ReactorHandler.class);
     private final String name;
 
     public ReactorHandler(final String name) {

@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.After;
 import org.junit.Assert;
@@ -107,7 +107,7 @@ public class EndpointStateNotifierBaseTest {
 
     private static class TestEndpointStateNotifierBase extends EndpointStateNotifierBase {
         TestEndpointStateNotifierBase() {
-            super(new ServiceLogger(TestEndpointStateNotifierBase.class));
+            super(new ClientLogger(TestEndpointStateNotifierBase.class));
         }
     }
 }
