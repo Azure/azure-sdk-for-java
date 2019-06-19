@@ -102,9 +102,9 @@ public class FileClientBuilder {
             // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = urlBuilder.path().split("/");
             int length = pathSegments.length;
-            this.shareName = length >= 2 ? pathSegments[1] : null;
+            this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
             String[] filePathParams = length >= 3 ? Arrays.copyOfRange(pathSegments, 2, length) : null;
-            this.filePath = filePathParams != null ? String.join("/", filePathParams) : null;
+            this.filePath = filePathParams != null ? String.join("/", filePathParams) : this.filePath;
 
             // Attempt to get the SAS token from the URL passed
             SASTokenCredential credential = SASTokenCredential.fromQuery(urlBuilder.query());
