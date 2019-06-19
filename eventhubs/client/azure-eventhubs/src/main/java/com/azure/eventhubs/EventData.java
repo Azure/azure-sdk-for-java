@@ -48,17 +48,22 @@ public class EventData implements Comparable<EventData> {
     /*
      * These are properties owned by the service and set when a message is received.
      */
-    public static final Set<String> RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(new HashSet<String>() {{
-            add(OFFSET_ANNOTATION_NAME.getValue());
-            add(PARTITION_KEY_ANNOTATION_NAME.getValue());
-            add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            add(PUBLISHER_ANNOTATION_NAME.getValue());
-        }});
+    public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
+
+    static {
+        final Set<String> properties = new HashSet<>();
+        properties.add(OFFSET_ANNOTATION_NAME.getValue());
+        properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
+        properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+        properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
+
+        RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
+    }
 
     /**
      * Creates an event containing the {@code data}.
@@ -161,7 +166,7 @@ public class EventData implements Comparable<EventData> {
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     * the {@link EventData} is not received and is created by the public constructors.
+     *         the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> systemProperties() {
         return systemProperties;
@@ -210,7 +215,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return Sequence number for this event.
      * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
-     * event.
+     *         event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -304,7 +309,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return Sequence number for this event.
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         * event.
+         *         event.
          */
         private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());

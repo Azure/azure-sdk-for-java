@@ -14,6 +14,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,11 +54,14 @@ public class EventHubSharedAccessKeyCredentialTest {
         expected.put("skn", KEY_NAME);
 
         // Act & Assert
-        StepVerifier.create(credential.getTokenAsync(resource))
-            .assertNext(token -> {
-                Assert.assertNotNull(token);
+        StepVerifier.create(credential.getToken(resource))
+            .assertNext(accessToken -> {
+                Assert.assertNotNull(accessToken);
 
-                final String[] split = token.split(" ");
+                Assert.assertFalse(accessToken.isExpired());
+                Assert.assertTrue(accessToken.expiresOn().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+
+                final String[] split = accessToken.token().split(" ");
                 Assert.assertEquals(2, split.length);
                 Assert.assertEquals("SharedAccessSignature", split[0].trim());
 
