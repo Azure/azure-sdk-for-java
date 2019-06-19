@@ -8,7 +8,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -107,11 +109,11 @@ public class Poller<T> {
      *
      * @param pollInterval  Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     *                      which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.OperationStatus}.
-     *                      {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     *                      it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
-     *                      the {@link Poller} will disregard that and continue to poll.
-     * @throws NullPointerException     If {@code pollInterval} or {@code pollOperation} are {@code null}.
+     * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.OperationStatus}.
+     * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
+     * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
+     * the {@link Poller} will disregard that and continue to poll.
+     * @throws NullPointerException If {@code pollInterval} or {@code pollOperation} are {@code null}.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
@@ -143,10 +145,10 @@ public class Poller<T> {
      *
      * @param pollInterval    Not-null and greater than zero poll interval.
      * @param pollOperation   The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     *                        which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.OperationStatus}.
-     *                        {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     *                        it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
-     *                        the {@link Poller} will disregard that and continue to poll.
+     * which must never return {@code null}, and which must always have a non-null {@link com.azure.core.util.polling.OperationStatus}.
+     * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
+     * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
+     * the {@link Poller} will disregard that and continue to poll.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
      *                        that cancel operation is not supported by Azure service.
      * @throws NullPointerException     If {@code pollInterval} or {@code pollOperation} are {@code null}.

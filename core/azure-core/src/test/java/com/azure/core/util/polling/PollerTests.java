@@ -384,7 +384,7 @@ public class PollerTests {
 
         List<OperationStatus.State> observeOperationStates = new ArrayList<>();
         observeOperationStates.add(OperationStatus.State.SUCCESSFULLY_COMPLETED);
-        
+
         createCertPoller.getObserver(observeOperationStates, observeOtherStates).subscribe(pr -> {
             debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().getState().toString() + " " + pr.getStatus().getOtherStatus() + " " + pr.getValue().response);
         });
