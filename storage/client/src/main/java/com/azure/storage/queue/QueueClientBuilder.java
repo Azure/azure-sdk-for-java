@@ -29,13 +29,13 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link QueueClient QueueClients}
- * And {@link QueueAsyncClient QueueAsyncClients}, calling {@link QueueClientBuilder#buildSync() buildSync} constructs an
- * instances of QueueClient and calling {@link QueueClientBuilder#buildAsync() buildAsync} constructs an instance of
+ * and {@link QueueAsyncClient QueueAsyncClients}, calling {@link QueueClientBuilder#buildSync() buildSync} constructs an
+ * instance of QueueClient and calling {@link QueueClientBuilder#buildAsync() buildAsync} constructs an instance of
  * QueueAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage Queue service, name of the queue, and authorization credentials.
  * {@link QueueClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
- * {@link QueueClientBuilder#queueName(String) queueName} and a {@link SASTokenCredential} it requires to construct a client.</p>
+ * {@link QueueClientBuilder#queueName(String) queueName} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
  * <pre>
  * QueueClient client = QueueClient.builder()
@@ -56,7 +56,7 @@ import java.util.Objects;
  * QueueClient client = QueueClient.builder()
  *     .endpoint(endpointWithoutQueueNameOrSASTokenQueryParams)
  *     .queueName(queueName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams)
+ *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
  *     .buildSync();
  * </pre>
  *
@@ -64,7 +64,7 @@ import java.util.Objects;
  * QueueAsyncClient client = QueueAsyncClient.builder()
  *     .endpoint(endpointWithoutQueueNameOrSASTokenQueryParams)
  *     .queueName(queueName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams)
+ *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
  *     .buildAsync();
  * </pre>
  *
@@ -160,6 +160,10 @@ public final class QueueClientBuilder {
     private QueueAsyncClient build() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(queueName);
+
+        if (pipeline != null) {
+            return new QueueAsyncClient(endpoint, pipeline, queueName);
+        }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
             throw new IllegalArgumentException("Credentials are required for authorization");
