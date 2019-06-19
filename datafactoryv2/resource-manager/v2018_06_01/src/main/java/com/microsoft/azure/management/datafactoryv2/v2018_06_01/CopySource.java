@@ -116,6 +116,13 @@ public class CopySource {
     private Object maxConcurrentConnections;
 
     /**
+     * Specifies whether to disable collecting data source metrics. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableMetricsCollection")
+    private Object disableMetricsCollection;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -192,6 +199,26 @@ public class CopySource {
      */
     public CopySource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get specifies whether to disable collecting data source metrics. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the disableMetricsCollection value
+     */
+    public Object disableMetricsCollection() {
+        return this.disableMetricsCollection;
+    }
+
+    /**
+     * Set specifies whether to disable collecting data source metrics. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param disableMetricsCollection the disableMetricsCollection value to set
+     * @return the CopySource object itself.
+     */
+    public CopySource withDisableMetricsCollection(Object disableMetricsCollection) {
+        this.disableMetricsCollection = disableMetricsCollection;
         return this;
     }
 
