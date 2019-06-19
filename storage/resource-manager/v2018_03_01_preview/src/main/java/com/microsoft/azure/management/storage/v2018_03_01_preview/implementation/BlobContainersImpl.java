@@ -17,6 +17,7 @@ import rx.Observable;
 import com.microsoft.azure.management.storage.v2018_03_01_preview.ListContainerItems;
 import com.microsoft.azure.management.storage.v2018_03_01_preview.BlobContainer;
 import com.microsoft.azure.management.storage.v2018_03_01_preview.LegalHold;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.LeaseContainerResponse;
 import java.util.List;
 import com.microsoft.azure.management.storage.v2018_03_01_preview.ImmutabilityPolicy;
 
@@ -116,6 +117,18 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
             @Override
             public LegalHold call(LegalHoldInner inner) {
                 return new LegalHoldImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<LeaseContainerResponse> leaseAsync(String resourceGroupName, String accountName, String containerName) {
+        BlobContainersInner client = this.inner();
+        return client.leaseAsync(resourceGroupName, accountName, containerName)
+        .map(new Func1<LeaseContainerResponseInner, LeaseContainerResponse>() {
+            @Override
+            public LeaseContainerResponse call(LeaseContainerResponseInner inner) {
+                return new LeaseContainerResponseImpl(inner, manager());
             }
         });
     }

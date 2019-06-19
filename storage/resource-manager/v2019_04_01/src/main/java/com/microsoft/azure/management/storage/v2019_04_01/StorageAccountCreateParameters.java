@@ -89,13 +89,14 @@ public class StorageAccountCreateParameters {
     private AccessTier accessTier;
 
     /**
-     * Enables Azure Files AAD Integration for SMB if sets to true.
+     * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "properties.azureFilesAadIntegration")
-    private Boolean enableAzureFilesAadIntegration;
+    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
+    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /**
-     * Allows https traffic only to storage service if sets to true.
+     * Allows https traffic only to storage service if sets to true. The
+     * default value is true since API version 2019-04-01.
      */
     @JsonProperty(value = "properties.supportsHttpsTrafficOnly")
     private Boolean enableHttpsTrafficOnly;
@@ -287,27 +288,27 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get enables Azure Files AAD Integration for SMB if sets to true.
+     * Get provides the identity based authentication settings for Azure Files.
      *
-     * @return the enableAzureFilesAadIntegration value
+     * @return the azureFilesIdentityBasedAuthentication value
      */
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.enableAzureFilesAadIntegration;
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.azureFilesIdentityBasedAuthentication;
     }
 
     /**
-     * Set enables Azure Files AAD Integration for SMB if sets to true.
+     * Set provides the identity based authentication settings for Azure Files.
      *
-     * @param enableAzureFilesAadIntegration the enableAzureFilesAadIntegration value to set
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
-        this.enableAzureFilesAadIntegration = enableAzureFilesAadIntegration;
+    public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get allows https traffic only to storage service if sets to true.
+     * Get allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
      *
      * @return the enableHttpsTrafficOnly value
      */
@@ -316,7 +317,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set allows https traffic only to storage service if sets to true.
+     * Set allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
      *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set
      * @return the StorageAccountCreateParameters object itself.
