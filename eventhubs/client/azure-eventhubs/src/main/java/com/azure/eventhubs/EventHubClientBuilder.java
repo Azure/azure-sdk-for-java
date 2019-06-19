@@ -55,8 +55,20 @@ public class EventHubClientBuilder {
     /**
      * Sets the credential information given a connection string to the Event Hub instance.
      *
-     * @param connectionString The connection string to the Event Hub this client wishes to connect to. It is expected
-     *         that the Event Hub path and the shared key properties are contained in this connection string.
+     * <p>
+     * If the connection string is copied from the Event Hubs namespace, it will likely not contain the path to the
+     * desired Event Hub, which is needed. In this case, the path can be added manually by adding
+     * {@literal "EntityPath=[[ EVENT HUB NAME ]]"} to the end of the connection string. For example,
+     * ";EntityPath=telemetry-hub".
+     * </p>
+     *
+     * <p>
+     * If you have defined a shared access policy directly on the Event Hub itself, then copying the connection string
+     * from that Event Hub will result in a connection string that contains the path.
+     * </p>
+     *
+     * @param connectionString The connection string to use for connecting to the Event Hub instance. It is expected
+     *         that the Event Hub path and the shared access key properties are contained in this connection string.
      * @return The updated EventHubClientBuilder object.
      * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code connectionString}
      *         does not contain the "EntityPath" key, which is the name of the Event Hub instance.
@@ -81,7 +93,7 @@ public class EventHubClientBuilder {
      * Event Hub instance.
      *
      * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is expected
-     *         that the shared key properties are contained in this connection string, but not the Event Hub path.
+     *         that the shared access key properties are contained in this connection string, but not the Event Hub path.
      * @param eventHubPath The path of the specific Event Hub to connect the client to.
      * @return The updated EventHubClientBuilder object.
      * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubPath} is null or empty. Or, if the

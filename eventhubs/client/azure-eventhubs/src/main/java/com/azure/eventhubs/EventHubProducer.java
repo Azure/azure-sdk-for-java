@@ -51,7 +51,7 @@ import java.util.stream.Collector;
  * </ol>
  * </p>
  *
- * @see EventHubClient#createSender()
+ * @see EventHubClient#createProducer()
  */
 public class EventHubProducer implements Closeable {
     /**

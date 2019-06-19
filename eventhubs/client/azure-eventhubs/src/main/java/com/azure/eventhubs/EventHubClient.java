@@ -108,25 +108,26 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Creates a sender that transmits events to Event Hub. Event data is automatically routed to an available
-     * partition.
+     * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
+     * in batches. Event data is automatically routed to an available partition.
      *
      * @return A new {@link EventHubProducer}.
      */
-    public EventHubProducer createSender() {
-        return createSender(defaultSenderOptions);
+    public EventHubProducer createProducer() {
+        return createProducer(defaultSenderOptions);
     }
 
     /**
-     * Creates a sender that can push events to an Event Hub. If
-     * {@link EventHubProducerOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
-     * specific partition. Otherwise, events are automatically routed to an available partition.
+     * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
+     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@code null}, the
+     * events are routed to that specific partition. Otherwise, events are automatically routed to an available
+     * partition.
      *
-     * @param options The set of options to apply when creating the sender.
+     * @param options The set of options to apply when creating the producer.
      * @return A new {@link EventHubProducer}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public EventHubProducer createSender(EventHubProducerOptions options) {
+    public EventHubProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
         final EventHubProducerOptions clonedOptions = options.clone();
@@ -164,8 +165,8 @@ public class EventHubClient implements Closeable {
      * @param eventPosition The position within the partition where the receiver should begin reading events.
      * @return An new {@link EventReceiver} that receives events from the partition at the given position.
      */
-    public EventReceiver createReceiver(String partitionId, EventPosition eventPosition) {
-        return createReceiver(partitionId, eventPosition, defaultReceiverOptions);
+    public EventReceiver createConsumer(String partitionId, EventPosition eventPosition) {
+        return createConsumer(partitionId, eventPosition, defaultReceiverOptions);
     }
 
     /**
@@ -178,7 +179,7 @@ public class EventHubClient implements Closeable {
      * @return An new {@link EventReceiver} that receives events from the partition with all configured {@link EventReceiverOptions}.
      * @throws NullPointerException if {@code partitionId}, {@code eventPosition}, or {@code options} is {@code null}.
      */
-    public EventReceiver createReceiver(String partitionId, EventPosition eventPosition, EventReceiverOptions options) {
+    public EventReceiver createConsumer(String partitionId, EventPosition eventPosition, EventReceiverOptions options) {
         Objects.requireNonNull(partitionId);
         Objects.requireNonNull(eventPosition);
         Objects.requireNonNull(options);

@@ -31,8 +31,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * {@link EventReceiverOptions#exclusiveReceiverPriority()} when creating receivers.</li>
  * </ul>
  *
- * @see EventHubClient#createReceiver(String, EventPosition)
- * @see EventHubClient#createReceiver(String, EventPosition, EventReceiverOptions)
+ * @see EventHubClient#createConsumer(String, EventPosition)
+ * @see EventHubClient#createConsumer(String, EventPosition, EventReceiverOptions)
  */
 public class EventReceiver implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventReceiver, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
