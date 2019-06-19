@@ -166,19 +166,6 @@ public class EventHubClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * <p>
-     * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
-     * only one consumer from that group is reading the from the partition. These exclusive consumers are sometimes
-     * referred to as "Epoch Consumers."
-     *
-     * A consumer may also be non-exclusive, allowing multiple consumers from the same consumer group to be actively
-     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
-     * Consumers."
-     *
-     * Designating a consumer as exclusive may be specified in the {@code options}
-     * By default, consumers are created as non-exclusive.
-     * </p>
-     *
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return An new {@link EventHubConsumer} that receives events from the partition at the given position.
@@ -188,13 +175,28 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Creates a receiver that listens to the Event Hub {@code partitionId} at the given {@link EventPosition} with the
-     * provided options.
+     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition,
+     * as a member of the configured consumer group, and begins reading events from the specified {@code eventPosition}.
      *
-     * @param partitionId The identifier of the Event Hub partition.
-     * @param eventPosition The position within the partition where the receiver should begin reading events.
-     * @param options Additional options for the receiver.
-     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link EventHubConsumerOptions}.
+     * <p>
+     * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
+     * only one consumer from that group is reading the from the partition. These exclusive consumers are sometimes
+     * referred to as "Epoch Consumers."
+     *
+     * A consumer may also be non-exclusive, allowing multiple consumers from the same consumer group to be actively
+     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
+     * Consumers."
+     *
+     * Designating a consumer as exclusive may be specified in the {@code options}, by setting
+     * {@link EventHubConsumerOptions#exclusiveReceiverPriority(Long)} to a non-null value. By default, consumers are
+     * created as non-exclusive.
+     * </p>
+     *
+     * @param partitionId The identifier of the Event Hub partition from which events will be received.
+     * @param eventPosition The position within the partition where the consumer should begin reading events.
+     * @param options The set of options to apply when creating the consumer.
+     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured
+     *         {@link EventHubConsumerOptions}.
      * @throws NullPointerException if {@code partitionId}, {@code eventPosition}, or {@code options} is {@code null}.
      */
     public EventHubConsumer createConsumer(String partitionId, EventPosition eventPosition, EventHubConsumerOptions options) {
@@ -229,7 +231,7 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Closes and disposes of connection to service. Any {@link EventHubConsumer EventReceivers} and
+     * Closes and disposes of connection to service. Any {@link EventHubConsumer EventHubConsumers} and
      * {@link EventHubProducer EventHubProducers} created with this instance will have their connections closed.
      */
     @Override

@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.amqp.AmqpLink;
 import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import reactor.core.publisher.EmitterProcessor;
@@ -85,9 +84,9 @@ public class EventHubConsumer implements Closeable {
     }
 
     /**
-     * Disposes of the EventReceiver by closing the underlying connection to the service.
+     * Disposes of the consumer by closing the underlying connection to the service.
      *
-     * @throws IOException if the underlying {@link AmqpLink} and its resources could not be disposed.
+     * @throws IOException if the underlying transport and its resources could not be disposed.
      */
     @Override
     public void close() throws IOException {
