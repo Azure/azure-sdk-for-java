@@ -5,25 +5,34 @@ package com.azure.storage.file.models;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Contains information about a Share in the storage File service.
+ */
 public final class ShareInfo {
-    private String eTag;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
 
-    private OffsetDateTime lastModified;
-
-    public ShareInfo eTag(String eTag) {
+    /**
+     * Creates an instance of information about a specific Share.
+     *
+     * @param eTag Entity tag that corresponds to the share
+     * @param lastModified Last time the share was modified
+     */
+    public ShareInfo(String eTag, OffsetDateTime lastModified) {
         this.eTag = eTag;
-        return this;
+        this.lastModified = lastModified;
     }
 
+    /**
+     * @return the entity tag that corresponds to the share
+     */
     public String eTag() {
         return eTag;
     }
 
-    public ShareInfo lastModified(OffsetDateTime lastModified) {
-        this.lastModified = lastModified;
-        return this;
-    }
-
+    /**
+     * @return the last time the share was modified
+     */
     public OffsetDateTime lastModified() {
         return lastModified;
     }

@@ -438,7 +438,7 @@ public class ShareClientTests extends ShareClientTestsBase {
 
         Response<ShareStatistics> statisticsResponse = client.getStatistics();
         helper.assertResponseStatusCode(statisticsResponse, 200);
-        assertEquals(0, statisticsResponse.value().getGhareUsageInGB());
+        assertEquals(0, statisticsResponse.value().getShareUsageInGB());
     }
 
     @Override

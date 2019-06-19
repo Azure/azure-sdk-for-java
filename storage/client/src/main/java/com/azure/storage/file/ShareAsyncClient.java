@@ -248,25 +248,21 @@ public class ShareAsyncClient {
 
     private Response<ShareInfo> mapCreateResponse(SharesCreateResponse response) {
         ShareCreateHeaders headers = response.deserializedHeaders();
-        ShareInfo shareInfo = new ShareInfo().eTag(headers.eTag())
-            .lastModified(headers.lastModified());
+        ShareInfo shareInfo = new ShareInfo(headers.eTag(), headers.lastModified());
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareInfo);
     }
 
     private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
         ShareCreateSnapshotHeaders headers = response.deserializedHeaders();
-        ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo().eTag(headers.eTag())
-            .lastModified(headers.lastModified())
-            .snapshot(headers.snapshot());
+        ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo(headers.snapshot(), headers.eTag(), headers.lastModified());
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), snapshotInfo);
     }
 
     private Response<ShareInfo> mapSetQuotaResponse(SharesSetQuotaResponse response) {
         ShareSetQuotaHeaders headers = response.deserializedHeaders();
-        ShareInfo shareInfo = new ShareInfo().eTag(headers.eTag())
-            .lastModified(headers.lastModified());
+        ShareInfo shareInfo = new ShareInfo(headers.eTag(), headers.lastModified());
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareInfo);
     }
@@ -283,16 +279,14 @@ public class ShareAsyncClient {
 
     private Response<ShareInfo> mapSetMetadataResponse(SharesSetMetadataResponse response) {
         ShareSetMetadataHeaders headers = response.deserializedHeaders();
-        ShareInfo shareInfo = new ShareInfo().eTag(headers.eTag())
-            .lastModified(headers.lastModified());
+        ShareInfo shareInfo = new ShareInfo(headers.eTag(), headers.lastModified());
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareInfo);
     }
 
     private Response<ShareInfo> mapSetAccessPolicyResponse(SharesSetAccessPolicyResponse response) {
         ShareSetAccessPolicyHeaders headers = response.deserializedHeaders();
-        ShareInfo shareInfo = new ShareInfo().eTag(headers.eTag())
-            .lastModified(headers.lastModified());
+        ShareInfo shareInfo = new ShareInfo(headers.eTag(), headers.lastModified());
 
         return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareInfo);
     }

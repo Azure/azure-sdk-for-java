@@ -563,7 +563,7 @@ public class ShareAsyncClientTests extends ShareClientTestsBase {
         StepVerifier.create(client.getStatistics())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().getGhareUsageInGB());
+                assertEquals(0, response.value().getShareUsageInGB());
             })
             .verifyComplete();
     }
