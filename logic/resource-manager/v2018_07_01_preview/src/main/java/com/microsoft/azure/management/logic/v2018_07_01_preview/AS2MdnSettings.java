@@ -47,8 +47,8 @@ public class AS2MdnSettings {
     /**
      * The value indicating whether to sign the outbound MDN if optional.
      */
-    @JsonProperty(value = "signOutboundMDNIfOptional", required = true)
-    private boolean signOutboundMDNIfOptional;
+    @JsonProperty(value = "signOutboundMdnIfOptional", required = true)
+    private boolean signOutboundMdnIfOptional;
 
     /**
      * The MDN text.
@@ -59,8 +59,8 @@ public class AS2MdnSettings {
     /**
      * The value indicating whether to send inbound MDN to message box.
      */
-    @JsonProperty(value = "sendInboundMDNToMessageBox", required = true)
-    private boolean sendInboundMDNToMessageBox;
+    @JsonProperty(value = "sendInboundMdnToMessageBox", required = true)
+    private boolean sendInboundMdnToMessageBox;
 
     /**
      * The signing or hashing algorithm. Possible values include:
@@ -172,20 +172,20 @@ public class AS2MdnSettings {
     /**
      * Get the value indicating whether to sign the outbound MDN if optional.
      *
-     * @return the signOutboundMDNIfOptional value
+     * @return the signOutboundMdnIfOptional value
      */
-    public boolean signOutboundMDNIfOptional() {
-        return this.signOutboundMDNIfOptional;
+    public boolean signOutboundMdnIfOptional() {
+        return this.signOutboundMdnIfOptional;
     }
 
     /**
      * Set the value indicating whether to sign the outbound MDN if optional.
      *
-     * @param signOutboundMDNIfOptional the signOutboundMDNIfOptional value to set
+     * @param signOutboundMdnIfOptional the signOutboundMdnIfOptional value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSignOutboundMDNIfOptional(boolean signOutboundMDNIfOptional) {
-        this.signOutboundMDNIfOptional = signOutboundMDNIfOptional;
+    public AS2MdnSettings withSignOutboundMdnIfOptional(boolean signOutboundMdnIfOptional) {
+        this.signOutboundMdnIfOptional = signOutboundMdnIfOptional;
         return this;
     }
 
@@ -212,20 +212,20 @@ public class AS2MdnSettings {
     /**
      * Get the value indicating whether to send inbound MDN to message box.
      *
-     * @return the sendInboundMDNToMessageBox value
+     * @return the sendInboundMdnToMessageBox value
      */
-    public boolean sendInboundMDNToMessageBox() {
-        return this.sendInboundMDNToMessageBox;
+    public boolean sendInboundMdnToMessageBox() {
+        return this.sendInboundMdnToMessageBox;
     }
 
     /**
      * Set the value indicating whether to send inbound MDN to message box.
      *
-     * @param sendInboundMDNToMessageBox the sendInboundMDNToMessageBox value to set
+     * @param sendInboundMdnToMessageBox the sendInboundMdnToMessageBox value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSendInboundMDNToMessageBox(boolean sendInboundMDNToMessageBox) {
-        this.sendInboundMDNToMessageBox = sendInboundMDNToMessageBox;
+    public AS2MdnSettings withSendInboundMdnToMessageBox(boolean sendInboundMdnToMessageBox) {
+        this.sendInboundMdnToMessageBox = sendInboundMdnToMessageBox;
         return this;
     }
 
