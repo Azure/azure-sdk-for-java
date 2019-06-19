@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation.logging;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

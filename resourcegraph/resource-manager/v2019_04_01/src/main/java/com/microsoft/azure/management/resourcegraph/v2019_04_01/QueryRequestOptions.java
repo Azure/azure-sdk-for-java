@@ -36,6 +36,13 @@ public class QueryRequestOptions {
     private Integer skip;
 
     /**
+     * Defines in which format query result returned. Possible values include:
+     * 'table', 'objectArray'.
+     */
+    @JsonProperty(value = "resultFormat")
+    private ResultFormat resultFormat;
+
+    /**
      * Get continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
      *
      * @return the skipToken value
@@ -92,6 +99,26 @@ public class QueryRequestOptions {
      */
     public QueryRequestOptions withSkip(Integer skip) {
         this.skip = skip;
+        return this;
+    }
+
+    /**
+     * Get defines in which format query result returned. Possible values include: 'table', 'objectArray'.
+     *
+     * @return the resultFormat value
+     */
+    public ResultFormat resultFormat() {
+        return this.resultFormat;
+    }
+
+    /**
+     * Set defines in which format query result returned. Possible values include: 'table', 'objectArray'.
+     *
+     * @param resultFormat the resultFormat value to set
+     * @return the QueryRequestOptions object itself.
+     */
+    public QueryRequestOptions withResultFormat(ResultFormat resultFormat) {
+        this.resultFormat = resultFormat;
         return this;
     }
 

@@ -5,12 +5,12 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.eventhubs.implementation.ClientConstants;
 import com.azure.eventhubs.implementation.ConnectionOptions;

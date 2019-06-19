@@ -16,6 +16,7 @@ import com.azure.eventhubs.implementation.ConnectionOptions;
 import com.azure.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -141,6 +142,7 @@ public class EventHubClientTest extends ApiTestBase {
      * 1. Gets information about the Event Hub
      * 2. Queries for partition information about each partition.
      */
+    @Ignore
     @Test
     public void getPartitionPropertiesMultipleCalls() {
         skipIfNotRecordMode();

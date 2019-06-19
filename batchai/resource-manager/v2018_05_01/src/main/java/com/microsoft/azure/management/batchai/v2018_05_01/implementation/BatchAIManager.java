@@ -18,11 +18,11 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.batchai.v2018_05_01.Operations;
 import com.microsoft.azure.management.batchai.v2018_05_01.Usages;
-import com.microsoft.azure.management.batchai.v2018_05_01.Clusters;
-import com.microsoft.azure.management.batchai.v2018_05_01.FileServers;
 import com.microsoft.azure.management.batchai.v2018_05_01.Workspaces;
 import com.microsoft.azure.management.batchai.v2018_05_01.Experiments;
 import com.microsoft.azure.management.batchai.v2018_05_01.Jobs;
+import com.microsoft.azure.management.batchai.v2018_05_01.FileServers;
+import com.microsoft.azure.management.batchai.v2018_05_01.Clusters;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -32,11 +32,11 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIManagementClientImpl> {
     private Operations operations;
     private Usages usages;
-    private Clusters clusters;
-    private FileServers fileServers;
     private Workspaces workspaces;
     private Experiments experiments;
     private Jobs jobs;
+    private FileServers fileServers;
+    private Clusters clusters;
     /**
     * Get a Configurable instance that can be used to create BatchAIManager with optional configuration.
     *
@@ -105,26 +105,6 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
     }
 
     /**
-     * @return Entry point to manage Clusters.
-     */
-    public Clusters clusters() {
-        if (this.clusters == null) {
-            this.clusters = new ClustersImpl(this);
-        }
-        return this.clusters;
-    }
-
-    /**
-     * @return Entry point to manage FileServers.
-     */
-    public FileServers fileServers() {
-        if (this.fileServers == null) {
-            this.fileServers = new FileServersImpl(this);
-        }
-        return this.fileServers;
-    }
-
-    /**
      * @return Entry point to manage Workspaces.
      */
     public Workspaces workspaces() {
@@ -152,6 +132,26 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
             this.jobs = new JobsImpl(this);
         }
         return this.jobs;
+    }
+
+    /**
+     * @return Entry point to manage FileServers.
+     */
+    public FileServers fileServers() {
+        if (this.fileServers == null) {
+            this.fileServers = new FileServersImpl(this);
+        }
+        return this.fileServers;
+    }
+
+    /**
+     * @return Entry point to manage Clusters.
+     */
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(this);
+        }
+        return this.clusters;
     }
 
     /**
