@@ -45,21 +45,18 @@ import java.util.Map;
 public class FileAsyncClient {
     private final AzureFileStorageImpl client;
     private final String shareName;
-    private final String directoryPath;
-    private final String fileName;
+    private final String filePath;
     private final String shareSnapshot;
 
     /**
      * Constructor of FileAsyncClient
      * @param client
      * @param shareName
-     * @param directoryPath
-     * @param fileName
+     * @param filePath
      */
-    FileAsyncClient(AzureFileStorageImpl client, String shareName, String directoryPath, String fileName, String shareSnapshot) {
+    FileAsyncClient(AzureFileStorageImpl client, String shareName, String filePath, String shareSnapshot) {
         this.shareName = shareName;
-        this.directoryPath = directoryPath;
-        this.fileName = fileName;
+        this.filePath = filePath;
         this.shareSnapshot = shareSnapshot;
         this.client = new AzureFileStorageBuilder().pipeline(client.httpPipeline())
                             .url(client.url())
@@ -72,13 +69,11 @@ public class FileAsyncClient {
      * @param endpoint
      * @param httpPipeline
      * @param shareName
-     * @param directoryPath
-     * @param fileName
+     * @param filePath
      */
-    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryPath, String fileName, String shareSnapshot) {
+    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String shareSnapshot) {
         this.shareName = shareName;
-        this.directoryPath = directoryPath;
-        this.fileName = fileName;
+        this.filePath = filePath;
         this.shareSnapshot = shareSnapshot;
         this.client = new AzureFileStorageBuilder().pipeline(httpPipeline)
                           .url(endpoint.toString())
@@ -101,7 +96,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileInfo>> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return client.files().createWithRestResponseAsync(shareName, directoryPath, fileName, maxSize, null, metadata, httpHeaders, Context.NONE)
+        return client.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, Context.NONE)
             .map(this::createResponse);
     }
 
@@ -112,7 +107,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileCopyInfo>> startCopy(String sourceUrl, Map<String, String> metadata) {
-        return client.files().startCopyWithRestResponseAsync(shareName, directoryPath, fileName, sourceUrl, null, metadata, Context.NONE)
+        return client.files().startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, Context.NONE)
                     .map(this::startCopyResponse);
     }
 
@@ -122,7 +117,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<VoidResponse> abortCopy(String copyId) {
-        return client.files().abortCopyWithRestResponseAsync(shareName, directoryPath, fileName, copyId, Context.NONE)
+        return client.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, Context.NONE)
                     .map(VoidResponse::new);
     }
 
@@ -136,7 +131,7 @@ public class FileAsyncClient {
     public Mono<Response<FileDownloadInfo>> downloadWithProperties(long offset, long length, boolean rangeGetContentMD5) {
         //TODO: more functionality will provide for large files
         String range = String.format("%s-%s", offset, length);
-        return client.files().downloadWithRestResponseAsync(shareName, directoryPath, fileName,null, range, rangeGetContentMD5, Context.NONE)
+        return client.files().downloadWithRestResponseAsync(shareName, filePath, null, range, rangeGetContentMD5, Context.NONE)
                     .map(this::downloadWithPropertiesResponse);
     }
 
@@ -145,7 +140,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<VoidResponse> delete() {
-        return client.files().deleteWithRestResponseAsync(shareName, directoryPath, fileName, Context.NONE)
+        return client.files().deleteWithRestResponseAsync(shareName, filePath, Context.NONE)
                     .map(VoidResponse::new);
     }
 
@@ -154,7 +149,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileProperties>> getProperties() {
-        return client.files().getPropertiesWithRestResponseAsync(shareName, directoryPath, fileName, shareSnapshot, null, Context.NONE)
+        return client.files().getPropertiesWithRestResponseAsync(shareName, filePath, shareSnapshot, null, Context.NONE)
                     .map(this::getPropertiesResponse);
     }
 
@@ -165,7 +160,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileInfo>> setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders) {
-        return client.files().setHTTPHeadersWithRestResponseAsync(shareName, directoryPath, fileName, null, newFileSize, httpHeaders, Context.NONE)
+        return client.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, newFileSize, httpHeaders, Context.NONE)
                         .map(this::setHttpHeadersResponse);
     }
 
@@ -175,7 +170,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileMetadataInfo>> setMeatadata(Map<String, String> meatadata) {
-        return client.files().setMetadataWithRestResponseAsync(shareName, directoryPath, fileName, null, meatadata, Context.NONE)
+        return client.files().setMetadataWithRestResponseAsync(shareName,  filePath, null, meatadata, Context.NONE)
                     .map(this::setMeatadataResponse);
     }
 
@@ -190,7 +185,7 @@ public class FileAsyncClient {
     public Mono<Response<FileUploadInfo>> upload(FileRangeWriteType type, long offset, long length, Flux<ByteBuf> data) {
         //TODO: more functionality will provide for large files
         String range = String.format("%s-%s", offset, length);
-        return client.files().uploadRangeWithRestResponseAsync(shareName, directoryPath, fileName, range, null, length, Context.NONE)
+        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, range, null, length, Context.NONE)
             .map(this::uploadResponse);
     }
 
@@ -202,7 +197,7 @@ public class FileAsyncClient {
      */
     public Flux<FileRangeInfo> listRanges(long offset, long length) {
         String range = String.format("%s-%s", offset, length);
-        return client.files().getRangeListWithRestResponseAsync(shareName, directoryPath, fileName, shareSnapshot, null, range, Context.NONE)
+        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, range, Context.NONE)
                     .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
     }
 
@@ -212,7 +207,7 @@ public class FileAsyncClient {
      * @return
      */
     public Flux<HandleItem> listHandles(int maxResults) {
-        return client.files().listHandlesWithRestResponseAsync(shareName, directoryPath, fileName, null, maxResults, null, shareSnapshot, Context.NONE)
+        return client.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, shareSnapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForHandles(response, maxResults));
     }
 
@@ -222,7 +217,7 @@ public class FileAsyncClient {
      * @return
      */
     public Flux<Integer> forceCloseHandles(String handleId) {
-        return client.files().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, fileName, handleId, null, null, shareSnapshot, Context.NONE)
+        return client.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, shareSnapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
     }
 
@@ -232,7 +227,7 @@ public class FileAsyncClient {
         if (response.deserializedHeaders().marker() == null) {
             return Flux.fromIterable(handleCount);
         }
-        Mono<FilesForceCloseHandlesResponse> listResponse = client.files().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, fileName, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, Context.NONE);
+        Mono<FilesForceCloseHandlesResponse> listResponse = client.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, Context.NONE);
         Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId));
         return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
     }
@@ -244,7 +239,7 @@ public class FileAsyncClient {
             return Flux.fromIterable(handleItems);
         }
         final Integer results = maxResults - handleItems.size();
-        Mono<FilesListHandlesResponse> listResponse = client.files().listHandlesWithRestResponseAsync(shareName, directoryPath, fileName, response.value().nextMarker(), results, null, shareSnapshot,  Context.NONE);
+        Mono<FilesListHandlesResponse> listResponse = client.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), results, null, shareSnapshot,  Context.NONE);
         Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, results));
         return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
     }

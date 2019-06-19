@@ -35,8 +35,7 @@ public class FileClientBuilder {
     private Configuration configuration;
     private URL endpoint;
     private String shareName;
-    private String directoryName;
-    private String fileName;
+    private String filePath;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
@@ -87,7 +86,7 @@ public class FileClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new FileAsyncClient(endpoint, pipeline, shareName, directoryName, fileName, shareSnapshot);
+        return new FileAsyncClient(endpoint, pipeline, shareName, filePath, shareSnapshot);
     }
 
     public FileClient build() {
@@ -100,13 +99,12 @@ public class FileClientBuilder {
             UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
             this.endpoint = new UrlBuilder().withScheme(urlBuilder.scheme()).withHost(urlBuilder.host()).toURL();
 
-            // Attempt to get the queue name from the URL passed
+            // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = urlBuilder.path().split("/");
             int length = pathSegments.length;
             this.shareName = length >= 2 ? pathSegments[1] : null;
-            this.fileName = length >= 3 ? pathSegments[length - 1] : null;
-            String[] directoryPath = Arrays.copyOfRange(pathSegments, 2, length - 1);
-            this.directoryName = directoryPath.length > 0 ? String.join("/", directoryPath) : null;
+            String[] filePathParams = length >= 3 ? Arrays.copyOfRange(pathSegments, 2, length) : null;
+            this.filePath = filePathParams != null ? String.join("/", filePathParams) : null;
 
             // Attempt to get the SAS token from the URL passed
             SASTokenCredential credential = SASTokenCredential.fromQuery(urlBuilder.query());
@@ -146,13 +144,8 @@ public class FileClientBuilder {
         return this;
     }
 
-    public FileClientBuilder directoryName(String directoryName) {
-        this.directoryName = directoryName;
-        return this;
-    }
-
-    public FileClientBuilder fileName(String fileName) {
-        this.fileName = fileName;
+    public FileClientBuilder filePath(String filePath) {
+        this.filePath = filePath;
         return this;
     }
     /**
