@@ -42,7 +42,7 @@ public class EventHubConsumer implements Closeable {
     private final Duration operationTimeout;
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final ClientLogger logger = new ClientLogger(EventReceiver.class);
+    private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 

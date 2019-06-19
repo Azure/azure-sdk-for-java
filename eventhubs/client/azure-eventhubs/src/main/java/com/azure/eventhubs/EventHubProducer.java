@@ -62,7 +62,7 @@ public class EventHubProducer implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
-    private final ClientLogger logger = new ClientLogger(EventSender.class);
+    private final ClientLogger logger = new ClientLogger(EventHubProducer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
