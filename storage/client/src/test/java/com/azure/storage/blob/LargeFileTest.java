@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class LargeFileTest {
     private static final Random RANDOM = new Random();
-    private static final String filePath = "C:\\Users\\jianghlu\\Downloads\\jdk-8u191-windows-x64.exe";
+    private static final String filePath = "C:\\Users\\jianghlu\\test-downloaded.vhd";
     private static StorageClient storageClient;
     private static ContainerClient containerClient;
 

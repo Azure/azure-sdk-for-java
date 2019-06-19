@@ -375,20 +375,24 @@ public class BlobAsyncClient {
      */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
-        Path path = Paths.get(filePath);
+        AsynchronousFileChannel channel;
+        try {
+            channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
         return sliceBlobRange(range, accessConditions, context)
-            .flatMap(chunk -> Flux.using(
-                () -> AsynchronousFileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE),
-                channel -> blobAsyncRawClient
+            .flatMap(chunk -> blobAsyncRawClient
                     .download(chunk, accessConditions, rangeGetContentMD5, context)
-                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))),
-                channel -> {
-                    try {
-                        channel.close();
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                })).ignoreElements();
+                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
+            .ignoreElements()
+            .doOnTerminate(() -> {
+                try {
+                    channel.close();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
     }
 
     private Flux<BlobRange> sliceBlobRange(BlobRange blobRange, BlobAccessConditions accessConditions, Context context) {

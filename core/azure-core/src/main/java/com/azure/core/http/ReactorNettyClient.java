@@ -14,6 +14,7 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.resources.ConnectionProvider;
 
 import java.nio.charset.Charset;
 import java.util.Objects;
@@ -31,7 +32,7 @@ class ReactorNettyClient implements HttpClient {
      * Creates default ReactorNettyClient.
      */
     ReactorNettyClient() {
-        this(reactor.netty.http.client.HttpClient.create());
+        this(reactor.netty.http.client.HttpClient.create(ConnectionProvider.newConnection()));
     }
 
     /**
