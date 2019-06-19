@@ -18,16 +18,12 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Random;
-import java.util.UUID;
 
 public class EventDataBatchTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
 
-    private static final String PARTITION_ID = "0";
     private static final String PARTITION_KEY = "key1";
-    private static final String APPLICATION_PROPERTY = "firstProp";
-    private static final String MESSAGE_ANNOTATION = "message-annotation-1";
-    private static final String PAYLOAD = "testmsg";
+    private static final String PARTITION_ID = "0";
 
     private EventHubClient client;
     private static EventSender sender;
@@ -87,6 +83,9 @@ public class EventDataBatchTest extends ApiTestBase {
         Assert.assertTrue(batch.tryAdd(within));
     }
 
+    /**
+     * Test for sending full batch without partition key
+     */
     @Ignore
     @Test
     public void sendSmallEventsFullBatch() {
@@ -99,16 +98,19 @@ public class EventDataBatchTest extends ApiTestBase {
         }
 
         final EventSenderOptions senderOptions = new EventSenderOptions()
-            .partitionId(PARTITION_KEY)
+            .partitionId(PARTITION_ID)
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30));
         sender = client.createSender(senderOptions);
 
         // Action & Verify
-        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions().maximumSizeInBytes(EventSender.MAX_MESSAGE_LENGTH_BYTES)))
+        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
 
+    /**
+     * Test for sending full batch with partition key
+     */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         skipIfNotRecordMode();
@@ -120,7 +122,9 @@ public class EventDataBatchTest extends ApiTestBase {
             logger.asInfo().log(String.format("Batch size: %s", batch.getSize()));
         }
 
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(10));
+        final EventSenderOptions senderOptions = new EventSenderOptions()
+            .retry(Retry.getNoRetry())
+            .timeout(Duration.ofSeconds(10));
         sender  = client.createSender(senderOptions);
         // Action & Verify
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
@@ -135,6 +139,9 @@ public class EventDataBatchTest extends ApiTestBase {
 
     }
 
+    /**
+     * Test for sending a full batch with partition key
+     */
     @Test
     public void sendEventsFullBatchWithPartitionKey() {
         skipIfNotRecordMode();
@@ -158,6 +165,31 @@ public class EventDataBatchTest extends ApiTestBase {
         }
         Assert.assertEquals(count, batch.getSize());
 
+        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
+            .verifyComplete();
+    }
+
+    /**
+     * Test for sending full batch with both sender's partitionID and batch's partitionKey
+     */
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void sendBatchWithPartitionKeyOnPartitionSenderTest() {
+        skipIfNotRecordMode();
+
+        // Arrange
+        final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        while (batch.tryAdd(new EventData("a".getBytes()))) {
+            logger.asInfo().log(String.format("Batch size: %s", batch.getSize()));
+        }
+
+        final EventSenderOptions senderOptions = new EventSenderOptions()
+            .partitionId(PARTITION_ID)
+            .retry(Retry.getNoRetry())
+            .timeout(Duration.ofSeconds(30));
+        sender = client.createSender(senderOptions);
+
+        // Action & Verify
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }

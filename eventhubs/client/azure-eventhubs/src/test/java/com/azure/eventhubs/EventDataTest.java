@@ -28,7 +28,7 @@ public class EventDataTest {
 
     @Test
     public void sendingEventsPropsShouldNotBeNull() {
-        EventData eventData = new EventData("Test".getBytes());
+        final EventData eventData = new EventData("Test".getBytes());
         Assert.assertTrue(eventData.systemProperties() != null);
         Assert.assertTrue(eventData.body() != null);
         Assert.assertTrue(eventData.properties() != null);
@@ -36,12 +36,12 @@ public class EventDataTest {
 
     @Test
     public void eventDataEmptyByteArray() {
-        ArrayList<EventData> messages = new ArrayList<>();
+        final ArrayList<EventData> messages = new ArrayList<>();
 
-        EventData first = constructMessage(19);
-        EventData second = constructMessage(22);
-        EventData third = constructMessage(25);
-        EventData last = constructMessage(88);
+        final EventData first = constructMessage(19);
+        final EventData second = constructMessage(22);
+        final EventData third = constructMessage(25);
+        final EventData last = constructMessage(88);
 
         messages.add(second);
         messages.add(first);
@@ -57,10 +57,10 @@ public class EventDataTest {
     }
 
     private EventData constructMessage(long seqNumber) {
-        HashMap<Symbol, Object> properties = new HashMap<>();
+        final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(Symbol.getSymbol(MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), seqNumber);
 
-        Message message = Message.Factory.create();
+        final Message message = Message.Factory.create();
         message.setMessageAnnotations(new MessageAnnotations(properties));
         return new EventData(message);
     }

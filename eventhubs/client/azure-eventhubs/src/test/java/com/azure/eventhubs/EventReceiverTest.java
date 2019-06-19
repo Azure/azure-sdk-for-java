@@ -30,7 +30,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventReceiverTest extends ApiTestBase {
     private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
 
-    private final String CONSUMER_GROUP_NAME = getConsumerGroupName();
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "TestMessage1";
     private static final String PROPERTY1 = "property1";
@@ -98,7 +97,7 @@ public class EventReceiverTest extends ApiTestBase {
 
         // Arrange
         receiver = client.createReceiver(PARTITION_ID, EventPosition.earliest(),
-            new EventReceiverOptions().prefetchCount(2).consumerGroup(CONSUMER_GROUP_NAME));
+            new EventReceiverOptions().prefetchCount(2).consumerGroup(getConsumerGroupName()));
 
         // Act & Assert
         StepVerifier.create(receiver.receive())

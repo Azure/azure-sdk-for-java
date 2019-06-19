@@ -18,7 +18,6 @@ import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
@@ -352,6 +351,8 @@ public class EventHubClientTest extends ApiTestBase {
     @Ignore
     @Test
     public void parallelEventHubClients() {
+        skipIfNotRecordMode();
+
         final String partitionId = "0";
         final int noOfClients = 4;
 

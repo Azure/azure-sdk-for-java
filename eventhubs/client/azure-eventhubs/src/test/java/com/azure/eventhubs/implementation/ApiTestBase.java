@@ -10,11 +10,8 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.eventhubs.EventHubSharedAccessKeyCredential;
-import com.azure.eventhubs.EventData;
 import com.azure.eventhubs.EventHubClient;
 import com.azure.eventhubs.EventHubClientBuilder;
-import com.azure.eventhubs.EventSender;
-import com.azure.eventhubs.EventSenderOptions;
 import com.azure.eventhubs.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -23,8 +20,6 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -33,7 +28,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
