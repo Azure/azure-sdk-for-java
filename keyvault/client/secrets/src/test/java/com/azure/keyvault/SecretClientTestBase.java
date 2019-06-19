@@ -3,6 +3,7 @@
 
 package com.azure.keyvault;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
@@ -79,10 +80,10 @@ public abstract class SecretClientTestBase extends TestBase {
 
         TokenCredential credential = new TokenCredential() {
             @Override
-            public Mono<String> getTokenAsync(String resource) {
-                String token = "";
+            public Mono<AccessToken> getToken(String... resource) {
+                AccessToken token = null;
                 try {
-                    token =  getAccessToken(tenantId, clientId, clientKey);
+                    token = getAccessToken(tenantId, clientId, clientKey);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,7 +99,7 @@ public abstract class SecretClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    private String getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
+    private AccessToken getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
         String authority = "https://login.microsoftonline.com/{tenantId}";
         String auth = authority.replace("{tenantId}", tenantId);
 
@@ -110,8 +111,12 @@ public abstract class SecretClientTestBase extends TestBase {
                 new ClientCredential(clientId, clientKey),
                 null
         );
-        String token = result.get().getAccessToken();
-        return token;
+
+        final AuthenticationResult authenticationResult = result.get();
+        final String token = authenticationResult.getAccessToken();
+        final OffsetDateTime expiresOn = authenticationResult.getExpiresOnDate().toInstant().atOffset(ZoneOffset.UTC);
+
+        return new AccessToken(token, expiresOn);
     }
 
     @Test
