@@ -4,6 +4,7 @@
 package com.azure.core.auth.credentials;
 
 import com.azure.core.annotations.Beta;
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import reactor.core.publisher.Mono;
@@ -100,7 +101,7 @@ public final class MSICredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public Mono<String> getToken(String tokenAudience) {
+    public Mono<AccessToken> getToken(String tokenAudience) {
         switch (hostType) {
             case VIRTUAL_MACHINE:
                 if (this.configForVM.tokenSource() == MSIConfigurationForVirtualMachine.MSITokenSource.MSI_EXTENSION) {
@@ -115,7 +116,7 @@ public final class MSICredentials extends AzureTokenCredentials {
         }
     }
 
-    private String getTokenForAppService(String tokenAudience) throws IOException {
+    private AccessToken getTokenForAppService(String tokenAudience) throws IOException {
         String urlString = String.format("%s?resource=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(), tokenAudience == null ? this.configForAppService.resource() : tokenAudience);
         URL url = new URL(urlString);
         HttpURLConnection connection = null;
@@ -133,7 +134,7 @@ public final class MSICredentials extends AzureTokenCredentials {
             String result = s.hasNext() ? s.next() : "";
 
             MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-            return msiToken.accessToken();
+            return Util.parseMSIToken(msiToken);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -141,7 +142,7 @@ public final class MSICredentials extends AzureTokenCredentials {
         }
     }
 
-    private String getTokenForVirtualMachineFromMSIExtension(String tokenAudience) throws IOException {
+    private AccessToken getTokenForVirtualMachineFromMSIExtension(String tokenAudience) throws IOException {
         URL url = new URL(String.format("http://localhost:%d/oauth2/token", this.configForVM.msiPort()));
         String postData = String.format("resource=%s", tokenAudience);
         if (this.configForVM.objectId() != null) {
@@ -173,7 +174,7 @@ public final class MSICredentials extends AzureTokenCredentials {
             String result = s.hasNext() ? s.next() : "";
 
             MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-            return msiToken.accessToken();
+            return Util.parseMSIToken(msiToken);
         } finally {
             if (wr != null) {
                 wr.close();
@@ -184,16 +185,16 @@ public final class MSICredentials extends AzureTokenCredentials {
         }
     }
 
-    private String getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
+    private AccessToken getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
         MSIToken token = cache.get(tokenAudience);
         if (token != null && !token.isExpired()) {
-            return token.accessToken();
+            return Util.parseMSIToken(token);
         }
         lock.lock();
         try {
             token = cache.get(tokenAudience);
             if (token != null && !token.isExpired()) {
-                return token.accessToken();
+                return Util.parseMSIToken(token);
             }
             try {
                 token = retrieveTokenFromIDMSWithRetry(tokenAudience);
@@ -204,7 +205,7 @@ public final class MSICredentials extends AzureTokenCredentials {
                 throw new RuntimeException(exception);
             }
             if (token != null) {
-                return token.accessToken();
+                return Util.parseMSIToken(token);
             }
             return null;
         } finally {

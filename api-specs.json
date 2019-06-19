@@ -1,4 +1,8 @@
 {
+  "advisor/resource-manager": {
+    "source": "specification/advisor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "apimanagement/resource-manager": {
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -24,6 +28,10 @@
   },
   "authorization/resource-manager": {
     "source": "specification/authorization/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "azurestack/resource-manager": {
+    "source": "specification/azurestack/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "batchai/resource-manager": {

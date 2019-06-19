@@ -19,23 +19,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface FileServers extends SupportsCreating<FileServer.DefinitionStages.Blank>, HasInner<FileServersInner> {
     /**
-     * Gets a list of File Servers associated with the given subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FileServer> listAsync();
-
-    /**
-     * Gets a list of File Servers within the specified resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FileServer> listByResourceGroupAsync(final String resourceGroupName);
-
-    /**
      * Gets information about a File Server.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.

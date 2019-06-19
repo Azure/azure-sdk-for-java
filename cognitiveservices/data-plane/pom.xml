@@ -38,9 +38,9 @@
     <azure.annotations.version>1.4.0</azure.annotations.version>
     <commons.io.version>2.4</commons.io.version>
     <commons.codec.version>1.10</commons.codec.version>
+    <jackson.version>2.9.9</jackson.version>
     <jjwt.version>0.5.1</jjwt.version>
-    <jackson.version>2.7.2</jackson.version>
-    <guava.version>20.0</guava.version>
+    <guava.version>24.1.1-jre</guava.version>
     <rxjava.version>1.2.4</rxjava.version>
     <junit.version>4.12</junit.version>
   </properties>
@@ -217,7 +217,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>6.18</version>
+            <version>8.18</version>
           </dependency>
         </dependencies>
         <configuration>

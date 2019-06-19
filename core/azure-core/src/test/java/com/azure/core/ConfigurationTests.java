@@ -3,8 +3,8 @@
 
 package com.azure.core;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.ConfigurationManager;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

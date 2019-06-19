@@ -1,6 +1,6 @@
 parameters:
-  PomFilePath: ''
-  EnvVars: []
+  ServiceDirectory: ''
+  EnvVars: {}
 
 jobs:
   - job: 'LiveTest'
@@ -12,7 +12,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run Live tests'
         inputs:
-          mavenPomFile: ${{ parameters.PomFilePath }}
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
           mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
           javaHomeOption: 'JDKVersion'
@@ -25,4 +25,4 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.PomFilePath }}'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }}'

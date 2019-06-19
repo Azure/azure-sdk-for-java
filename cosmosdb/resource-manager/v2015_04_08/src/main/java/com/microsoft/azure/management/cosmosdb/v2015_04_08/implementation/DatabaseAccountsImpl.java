@@ -36,6 +36,8 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.Throughput;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputResource;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Table;
@@ -535,6 +537,222 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     public Completable deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
         DatabaseAccountsInner client = this.inner();
         return client.deleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseName).toCompletable();
+    }
+
+    @Override
+    public Observable<Throughput> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getTableThroughputAsync(String resourceGroupName, String accountName, String tableName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getTableThroughputAsync(resourceGroupName, accountName, tableName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateTableThroughputAsync(resourceGroupName, accountName, tableName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Throughput> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputResource resource) {
+        DatabaseAccountsInner client = this.inner();
+        return client.updateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName, resource)
+        .map(new Func1<ThroughputInner, Throughput>() {
+            @Override
+            public Throughput call(ThroughputInner inner) {
+                return new ThroughputImpl(inner, manager());
+            }
+        });
     }
 
     @Override
