@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Options when receiving events from Event Hubs.
  */
-public class EventReceiverOptions implements Cloneable {
+public class EventHubConsumerOptions implements Cloneable {
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -41,7 +41,7 @@ public class EventReceiverOptions implements Cloneable {
      * Creates a new instance with a position at the beginning of the partition stream, consumer group set to
      * {@link #DEFAULT_CONSUMER_GROUP_NAME},and the default prefetch amount.
      */
-    public EventReceiverOptions() {
+    public EventHubConsumerOptions() {
         this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME;
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;
     }
@@ -52,7 +52,7 @@ public class EventReceiverOptions implements Cloneable {
      * @param identifier The receiver name.
      * @return The updated ReceiverOptions object.
      */
-    public EventReceiverOptions identifier(String identifier) {
+    public EventHubConsumerOptions identifier(String identifier) {
         validateIdentifier(identifier);
         this.identifier = identifier;
         return this;
@@ -65,7 +65,7 @@ public class EventReceiverOptions implements Cloneable {
      * @return The updated ReceiverOptions object.
      * @throws IllegalArgumentException If {@code consumerGroup} is {@code null} or an empty string.
      */
-    public EventReceiverOptions consumerGroup(String consumerGroup) {
+    public EventHubConsumerOptions consumerGroup(String consumerGroup) {
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
             throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
         }
@@ -79,7 +79,7 @@ public class EventReceiverOptions implements Cloneable {
      * the only reader of events for the requested partition and an associated consumer group.
      * To do so, this receiver will attempt to assert ownership over the partition; in the case where more than one
      * exclusive receiver attempts to assert ownership for the same partition/consumer group pair, the one having a
-     * larger {@link EventReceiverOptions#exclusiveReceiverPriority()} value will "win".
+     * larger {@link EventHubConsumerOptions#exclusiveReceiverPriority()} value will "win".
      *
      * <p>
      * When an exclusive receiver is used, those receivers which are not exclusive or which have a lower priority will
@@ -92,7 +92,7 @@ public class EventReceiverOptions implements Cloneable {
      * @return The updated ReceiverOptions object.
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
-    public EventReceiverOptions exclusiveReceiverPriority(Long priority) {
+    public EventHubConsumerOptions exclusiveReceiverPriority(Long priority) {
         if (priority != null && priority < 0) {
             throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
         }
@@ -108,7 +108,7 @@ public class EventReceiverOptions implements Cloneable {
      * @param retry The retry policy to use when receiving events.
      * @return The updated ReceiverOptions object.
      */
-    public EventReceiverOptions retry(Retry retry) {
+    public EventHubConsumerOptions retry(Retry retry) {
         this.retryPolicy = retry;
         return this;
     }
@@ -122,7 +122,7 @@ public class EventReceiverOptions implements Cloneable {
      * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
      * greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
-    public EventReceiverOptions prefetchCount(int prefetchCount) {
+    public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT));
@@ -138,14 +138,14 @@ public class EventReceiverOptions implements Cloneable {
     }
 
     /**
-     * Sets whether or not the {@link EventReceiver#partitionInformation()} is updated when the receiver reads
+     * Sets whether or not the {@link EventHubConsumer#partitionInformation()} is updated when the receiver reads
      * events.
      *
      * @param keepUpdated {@code true} if the partition information should be kept up-to-date as events are received;
      * otherwise, false.
      * @return The updated ReceiverOptions object.
      */
-    public EventReceiverOptions keepPartitionInformationUpdated(boolean keepUpdated) {
+    public EventHubConsumerOptions keepPartitionInformationUpdated(boolean keepUpdated) {
         this.keepUpdated = keepUpdated;
         return this;
     }
@@ -157,7 +157,7 @@ public class EventReceiverOptions implements Cloneable {
      * @param scheduler The scheduler for receiving events.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventReceiverOptions scheduler(Scheduler scheduler) {
+    public EventHubConsumerOptions scheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
         return this;
     }
@@ -204,7 +204,7 @@ public class EventReceiverOptions implements Cloneable {
     }
 
     /**
-     * Gets whether or not the {@link EventReceiver#partitionInformation()} is updated when the receiver reads
+     * Gets whether or not the {@link EventHubConsumer#partitionInformation()} is updated when the receiver reads
      * events.
      *
      * @return {@code true} if the partition information should be kept up-to-date as events are received; otherwise,
@@ -251,12 +251,12 @@ public class EventReceiverOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    public EventReceiverOptions clone() {
-        EventReceiverOptions clone;
+    public EventHubConsumerOptions clone() {
+        EventHubConsumerOptions clone;
         try {
-            clone = (EventReceiverOptions) super.clone();
+            clone = (EventHubConsumerOptions) super.clone();
         } catch (CloneNotSupportedException e) {
-            clone = new EventReceiverOptions();
+            clone = new EventHubConsumerOptions();
         }
 
         clone.scheduler(this.scheduler());

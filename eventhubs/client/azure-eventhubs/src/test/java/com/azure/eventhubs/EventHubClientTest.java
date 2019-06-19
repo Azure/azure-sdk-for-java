@@ -272,9 +272,9 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Arrange
         final int numberOfEvents = 10;
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(2);
-        final EventReceiver receiver = client.createConsumer(PARTITION_ID, EventPosition.earliest(), options);
+        final EventHubConsumer receiver = client.createConsumer(PARTITION_ID, EventPosition.earliest(), options);
 
         // Act & Assert
         StepVerifier.create(receiver.receive().take(numberOfEvents))

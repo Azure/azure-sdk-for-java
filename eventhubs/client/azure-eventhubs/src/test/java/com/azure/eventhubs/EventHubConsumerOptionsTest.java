@@ -8,28 +8,28 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-public class EventReceiverOptionsTest {
+public class EventHubConsumerOptionsTest {
     /**
      * Verifies we set the correct defaults.
      */
     @Test
     public void defaults() {
         // Act
-        final EventReceiverOptions options = new EventReceiverOptions();
+        final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         // Assert
-        Assert.assertEquals(EventReceiverOptions.DEFAULT_CONSUMER_GROUP_NAME, options.consumerGroup());
-        Assert.assertEquals(EventReceiverOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
+        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_CONSUMER_GROUP_NAME, options.consumerGroup());
+        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
         Assert.assertFalse(options.keepPartitionInformationUpdated());
     }
 
     @Test
     public void invalidIdentifier() {
         // Arrange
-        final int length = EventReceiverOptions.MAXIMUM_IDENTIFIER_LENGTH + 1;
+        final int length = EventHubConsumerOptions.MAXIMUM_IDENTIFIER_LENGTH + 1;
         final String longIdentifier = new String(new char[length]).replace("\0", "f");
         final String identifier = "An Identifier";
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .identifier(identifier);
 
         // Act
@@ -48,8 +48,8 @@ public class EventReceiverOptionsTest {
     public void invalidPrefetchMinimum() {
         // Arrange
         final int prefetch = 235;
-        final int invalid = EventReceiverOptions.MINIMUM_PREFETCH_COUNT - 1;
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final int invalid = EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT - 1;
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(prefetch);
 
         // Act
@@ -68,8 +68,8 @@ public class EventReceiverOptionsTest {
     public void invalidPrefetchMaximum() {
         // Arrange
         final int prefetch = 235;
-        final int invalid = EventReceiverOptions.MAXIMUM_PREFETCH_COUNT + 1;
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final int invalid = EventHubConsumerOptions.MAXIMUM_PREFETCH_COUNT + 1;
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(prefetch);
 
         // Act
@@ -89,7 +89,7 @@ public class EventReceiverOptionsTest {
         // Arrange
         final long priority = 14;
         final long invalidPriority = -1;
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .exclusiveReceiverPriority(priority);
 
         // Act

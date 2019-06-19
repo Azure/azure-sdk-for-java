@@ -56,7 +56,7 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventReceiver} is created with this
+     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumer} is created with this
      * position.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.

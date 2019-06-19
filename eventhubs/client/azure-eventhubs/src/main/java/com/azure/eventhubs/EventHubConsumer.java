@@ -21,35 +21,35 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * This is a logical representation of receiving from an Event Hub partition.
  *
  * <p>
- * A {@link EventReceiver#receive()} is tied to a Event Hub partitionId + consumer group combination.
+ * A {@link EventHubConsumer#receive()} is tied to a Event Hub partitionId + consumer group combination.
  *
  * <ul>
- * <li>If {@link EventReceiver} is created where {@link EventReceiverOptions#exclusiveReceiverPriority()} has a
+ * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#exclusiveReceiverPriority()} has a
  * value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
- * combination. This is the recommended approach to create a {@link EventReceiver}.</li>
+ * combination. This is the recommended approach to create a {@link EventHubConsumer}.</li>
  * <li>Multiple receivers per partitionId and consumer group combination can be created by not setting
- * {@link EventReceiverOptions#exclusiveReceiverPriority()} when creating receivers.</li>
+ * {@link EventHubConsumerOptions#exclusiveReceiverPriority()} when creating receivers.</li>
  * </ul>
  *
  * @see EventHubClient#createConsumer(String, EventPosition)
- * @see EventHubClient#createConsumer(String, EventPosition, EventReceiverOptions)
+ * @see EventHubClient#createConsumer(String, EventPosition, EventHubConsumerOptions)
  */
-public class EventReceiver implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventReceiver, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(EventReceiver.class, AmqpReceiveLink.class, "receiveLink");
+public class EventHubConsumer implements Closeable {
+    private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     private final Mono<AmqpReceiveLink> receiveLinkMono;
     private final Duration operationTimeout;
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final ServiceLogger logger = new ServiceLogger(EventReceiver.class);
+    private final ServiceLogger logger = new ServiceLogger(EventHubConsumer.class);
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 
     private volatile PartitionProperties partitionInformation = null;
     private volatile AmqpReceiveLink receiveLink;
 
-    EventReceiver(Mono<AmqpReceiveLink> receiveLinkMono, EventReceiverOptions options, Duration operationTimeout) {
+    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
         this.receiveLinkMono = receiveLinkMono;
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
         this.operationTimeout = operationTimeout;
@@ -104,7 +104,7 @@ public class EventReceiver implements Closeable {
     /**
      * Gets the most recent information about a partition by the current receiver.
      *
-     * @return If {@link EventReceiverOptions}
+     * @return If {@link EventHubConsumerOptions}
      */
     public PartitionProperties partitionInformation() {
         return partitionInformation;
