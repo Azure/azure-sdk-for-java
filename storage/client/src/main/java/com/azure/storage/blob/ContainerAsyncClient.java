@@ -13,6 +13,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
+import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -448,10 +449,20 @@ public final class ContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     * The directories are flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return
+     * <p><ul>
+     *     <li>foo/foo1
+     *     <li>foo/foo2
+     *     <li>bar
+     * </ul>
      *
      * @return
      *      A reactive response emitting the flattened blobs.
@@ -462,10 +473,20 @@ public final class ContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     * The directories are flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return
+     * <p><ul>
+     *     <li>foo/foo1
+     *     <li>foo/foo2
+     *     <li>bar
+     * </ul>
      *
      * @param options
      *         {@link ListBlobsOptions}
@@ -482,19 +503,104 @@ public final class ContainerAsyncClient {
     public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options, Context context) {
         return containerAsyncRawClient
             .listBlobsFlatSegment(null, options, context)
-            .flatMapMany(response -> listBlobsFlatHelper(response.value().marker(), options, context, response));
+            .flatMapMany(response -> listBlobsFlatHelper(options, context, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatHelper(String marker, ListBlobsOptions options,
-                                                      Context context, ContainersListBlobFlatSegmentResponse response){
+    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options,
+                                               Context context, ContainersListBlobFlatSegmentResponse response){
         Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems());
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(marker, options,
-                context)
-                .flatMapMany((r) ->
-                    listBlobsFlatHelper(response.value().nextMarker(), options, context, r)));
+            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(response.value().nextMarker(), options, context)
+                .flatMapMany(r -> listBlobsFlatHelper(options, context, r)));
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
+     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     * Actual blobs are emitted first and blob prefixes are emitted at the end.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo1 (isPrefix = false)
+     *     <li>foo2 (isPrefix = false)
+     * </ul>
+     *
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
+     */
+    public Flux<BlobItem> listBlobsHierarchy(String prefix) {
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().withPrefix(prefix), null);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
+     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     * Actual blobs are emitted first and blob prefixes are emitted at the end.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo1 (isPrefix = false)
+     *     <li>foo2 (isPrefix = false)
+     * </ul>
+     *
+     * @param options
+     *         {@link ListBlobsOptions}
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *         parent, forming a linked list.
+     *
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
+     */
+    public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Context context) {
+        return containerAsyncRawClient.listBlobsHierarchySegment(null, delimiter, options, context)
+            .flatMapMany(response -> listBlobsHierarchyHelper(delimiter, options, context, response));
+    }
+
+    private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
+                                               Context context, ContainersListBlobHierarchySegmentResponse response){
+        Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems())
+            .concatWith(Flux.fromIterable(response.value().segment().blobPrefixes())
+                .map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
+
+        if (response.value().nextMarker() != null) {
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(containerAsyncRawClient.listBlobsHierarchySegment(response.value().nextMarker(), delimiter, options, context)
+                .flatMapMany(r -> listBlobsHierarchyHelper(delimiter, options, context, r)));
         }
 
         return result;
