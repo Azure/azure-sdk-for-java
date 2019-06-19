@@ -17,15 +17,6 @@ Maven dependency for Azure Secret Client library.
 </dependency>
 ```
 
-Maven dependency for Azure Identity library. Required for authenticating with Key Vault.
-```xml
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-identity</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-</dependency>
-```
-
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
@@ -37,10 +28,10 @@ Maven dependency for Azure Identity library. Required for authenticating with Ke
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](TODO-rst-docs) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity).
+In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](TODO-rst-docs) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](TODO).
 
  #### Create/Get credentials
-To create create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
+To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to 
 
@@ -264,10 +255,6 @@ secretAsyncClient.listSecrets()
 ```
 
 ## Troubleshooting
-### General
-
-When you interact with Azure Key Vault Secrets service using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azkeyvault_rest] requests. For example, if you try to retrieve a Secret that doesn't exist in your Key Vault, a `404` error is returned, indicating `Not Found`.
-
 ### General
 Key Vault clients raise exceptions defined in azure-core. For more detailed infromation about exceptions and how to deal with them, see [Azure Core exceptions][azure_core_exceptions].
 
