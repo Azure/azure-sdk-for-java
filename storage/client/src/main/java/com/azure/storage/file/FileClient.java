@@ -10,7 +10,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
-import com.azure.storage.file.models.FileRangeInfo;
+import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
@@ -35,6 +35,15 @@ public class FileClient {
      */
     public static FileClientBuilder builder() {
         return new FileClientBuilder();
+    }
+
+    /**
+     * Create a new file in storage.
+     * @param maxSize
+     * @return
+     */
+    public Response<FileInfo> create(long maxSize) {
+        return client.create(maxSize).block();
     }
 
     /**
@@ -69,13 +78,20 @@ public class FileClient {
 
     /**
      * Download with properties
-     * @param offset
-     * @param length
+     * @return
+     */
+    public Response<FileDownloadInfo> downloadWithProperties() {
+        return client.downloadWithProperties(null, null).block();
+    }
+
+    /**
+     * Download with properties
+     * @param range
      * @param rangeGetContentMD5
      * @return
      */
-    public Response<FileDownloadInfo> downloadWithProperties(long offset, long length, boolean rangeGetContentMD5) {
-        return client.downloadWithProperties(offset, length, rangeGetContentMD5).block();
+    public Response<FileDownloadInfo> downloadWithProperties(FileRange range, Boolean rangeGetContentMD5) {
+        return client.downloadWithProperties(range, rangeGetContentMD5).block();
     }
 
     /**
@@ -115,24 +131,40 @@ public class FileClient {
 
     /**
      * Upload file to storage.
-     * @param type
-     * @param offset
-     * @param length
      * @param data
+     * @param length
      * @return
      */
-    public Response<FileUploadInfo> upload(FileRangeWriteType type, long offset, long length, Flux<ByteBuf> data) {
-        return client.upload(type, offset, length, data).block();
+    public Response<FileUploadInfo> upload(Flux<ByteBuf> data, long length) {
+        return client.upload(data, length).block();
+    }
+
+    public Response<FileUploadInfo> upload(ByteBuf data, long length, FileRange range, FileRangeWriteType type) {
+        return client.upload(Flux.just(data), length, range, type).block();
     }
 
     /**
      * List ranges of a file.
-     * @param offset
-     * @param length
      * @return
      */
-    public Iterable<FileRangeInfo> listRanges(long offset, long length) {
-        return client.listRanges(offset, length).toIterable();
+    public Iterable<FileRange> listRanges() {
+        return client.listRanges(null).toIterable();
+    }
+
+    /**
+     * List ranges of a file.
+     * @return
+     */
+    public Iterable<FileRange> listRanges(FileRange range) {
+        return client.listRanges(range).toIterable();
+    }
+
+    /**
+     * List handles of a file.
+     * @return
+     */
+    public Iterable<HandleItem> listHandles() {
+        return listHandles(null);
     }
 
     /**
@@ -140,7 +172,7 @@ public class FileClient {
      * @param maxResults
      * @return
      */
-    public Iterable<HandleItem> listHandles(int maxResults) {
+    public Iterable<HandleItem> listHandles(Integer maxResults) {
         return client.listHandles(maxResults).toIterable();
     }
 

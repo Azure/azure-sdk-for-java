@@ -17,7 +17,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
-import com.azure.storage.file.models.FileRangeInfo;
+import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FilesCreateResponse;
@@ -91,6 +91,15 @@ public class FileAsyncClient {
     /**
      * Create a new file in storage.
      * @param maxSize
+     * @return
+     */
+    public Mono<Response<FileInfo>> create(long maxSize) {
+        return create(maxSize, null, null);
+    }
+
+    /**
+     * Create a new file in storage.
+     * @param maxSize
      * @param httpHeaders
      * @param metadata
      * @return
@@ -123,15 +132,11 @@ public class FileAsyncClient {
 
     /**
      * Download with properties
-     * @param offset
-     * @param length
      * @param rangeGetContentMD5
      * @return
      */
-    public Mono<Response<FileDownloadInfo>> downloadWithProperties(long offset, long length, boolean rangeGetContentMD5) {
-        //TODO: more functionality will provide for large files
-        String range = String.format("%s-%s", offset, length);
-        return client.files().downloadWithRestResponseAsync(shareName, filePath, null, range, rangeGetContentMD5, Context.NONE)
+    public Mono<Response<FileDownloadInfo>> downloadWithProperties(FileRange range, Boolean rangeGetContentMD5) {
+        return client.files().downloadWithRestResponseAsync(shareName, filePath, null, range.toString(), rangeGetContentMD5, Context.NONE)
                     .map(this::downloadWithPropertiesResponse);
     }
 
@@ -176,28 +181,42 @@ public class FileAsyncClient {
 
     /**
      * Upload file to storage.
-     * @param type
-     * @param offset
-     * @param length
      * @param data
+     * @param length
      * @return
      */
-    public Mono<Response<FileUploadInfo>> upload(FileRangeWriteType type, long offset, long length, Flux<ByteBuf> data) {
-        //TODO: more functionality will provide for large files
-        String range = String.format("%s-%s", offset, length);
-        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, range, null, length, Context.NONE)
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length) {
+        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, null, null, length, data, null, null, Context.NONE)
             .map(this::uploadResponse);
     }
 
     /**
-     * List ranges of a file.
-     * @param offset
+     * Upload file to storage.
+     * @param data
      * @param length
      * @return
      */
-    public Flux<FileRangeInfo> listRanges(long offset, long length) {
-        String range = String.format("%s-%s", offset, length);
-        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, range, Context.NONE)
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, FileRange range, FileRangeWriteType type) {
+        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
+                   .map(this::uploadResponse);
+    }
+
+    /**
+     * List ranges of a file.
+     * @return
+     */
+    public Flux<FileRange> listRanges() {
+        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, null, Context.NONE)
+                   .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+    }
+
+    /**
+     * List ranges of a file.
+     * @param range
+     * @return
+     */
+    public Flux<FileRange> listRanges(FileRange range) {
+        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, range.toString(), Context.NONE)
                     .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
     }
 
@@ -330,12 +349,12 @@ public class FileAsyncClient {
         return mapResponse(response, fileMetadataInfo);
     }
 
-    private Flux<FileRangeInfo> convertListRangesResponseToFileRangeInfo(FilesGetRangeListResponse response) {
-        List<FileRangeInfo> fileRanges = new ArrayList<>();
+    private Flux<FileRange> convertListRangesResponseToFileRangeInfo(FilesGetRangeListResponse response) {
+        List<FileRange> fileRanges = new ArrayList<>();
         response.value().forEach(range -> {
             long start = range.start();
             long end = range.end();
-            fileRanges.add(new FileRangeInfo(start, end));
+            fileRanges.add(new FileRange(start, end));
         });
         return Flux.fromIterable(fileRanges);
     }

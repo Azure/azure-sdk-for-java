@@ -3,11 +3,11 @@
 
 package com.azure.storage.file.models;
 
-public final class FileRangeInfo {
+public final class FileRange {
     private long start;
     private long end;
 
-    public FileRangeInfo(final long start, final long end) {
+    public FileRange(final long start, final long end) {
         this.start = start;
         this.end = end;
     }
@@ -28,5 +28,10 @@ public final class FileRangeInfo {
     public long end(final long end) {
         this.end = end;
         return this.end;
+    }
+
+    @Override
+    public String toString() {
+        return "bytes=" + start + "=" + end;
     }
 }
