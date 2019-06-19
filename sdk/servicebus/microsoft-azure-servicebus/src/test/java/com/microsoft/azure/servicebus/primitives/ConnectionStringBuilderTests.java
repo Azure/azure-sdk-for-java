@@ -40,6 +40,16 @@ public class ConnectionStringBuilderTests {
         ClientSettings settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
         assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
 
+        // Should accept "ManagedIdentity" without the space as well
+        connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=ManagedIdentity";
+        settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
+        
+        // Should be case insensitive
+        connecitionString = "Endpoint=sb://test.servicebus.windows.net/;AUTHENTICATION=managedidentity";
+        settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
+        assertTrue(settings.getTokenProvider() instanceof ManagedIdentityTokenProvider);
+        
         connecitionString = "Endpoint=sb://test.servicebus.windows.net/;SHAREDACCESSKEYNAME=keyname;SharedAccessKey=key";
         settings = Util.getClientSettingsFromConnectionStringBuilder(new ConnectionStringBuilder(connecitionString));
         assertTrue(settings.getTokenProvider() instanceof SharedAccessSignatureTokenProvider);
