@@ -170,7 +170,8 @@ public class EventHubClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * @param consumerGroup The name of the consumer group. The name of the consumer group that is created by default is
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     *         context of this group. The name of the consumer group that is created by default is
      *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
@@ -201,7 +202,8 @@ public class EventHubClient implements Closeable {
      * created as non-exclusive.
      * </p>
      *
-     * @param consumerGroup The name of the consumer group. The name of the consumer group that is created by default is
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     *         context of this group. The name of the consumer group that is created by default is
      *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.

@@ -30,8 +30,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * {@link EventHubConsumerOptions#ownerLevel()} when creating receivers.</li>
  * </ul>
  *
- * @see EventHubClient#createConsumer(String, EventPosition)
- * @see EventHubClient#createConsumer(String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubClient#createConsumer(String, String, EventPosition)
+ * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumer implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
