@@ -58,6 +58,8 @@ import java.util.Objects;
  * @see KeyAsyncClient
  */
 public final class KeyAsyncClientBuilder {
+    private static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -104,7 +106,7 @@ public final class KeyAsyncClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, new Configuration()));
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
