@@ -4,6 +4,7 @@
 package com.azure.core.auth.credentials;
 
 import com.azure.core.AzureEnvironment;
+import com.azure.core.credentials.AccessToken;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,9 +24,9 @@ public class UserTokenCredentialsTests {
     @Test
     public void testAcquireToken() throws Exception {
         credentials.acquireAccessToken();
-        Assert.assertEquals("token1", credentials.getToken(null).block());
+        Assert.assertEquals("token1", credentials.getToken((String) null).block().token());
         Thread.sleep(1500);
-        Assert.assertEquals("token2", credentials.getToken(null).block());
+        Assert.assertEquals("token2", credentials.getToken((String) null).block().token());
     }
 
     public static class MockUserTokenCredentials extends UserTokenCredentials {
@@ -36,14 +37,14 @@ public class UserTokenCredentialsTests {
         }
 
         @Override
-        public Mono<String> getToken(String resource) {
+        public Mono<AccessToken> getToken(String resource) {
             if (authenticationResult != null
                 && authenticationResult.getExpiresOnDate().before(new Date())) {
                 acquireAccessTokenFromRefreshToken();
             } else {
                 acquireAccessToken();
             }
-            return Mono.just(authenticationResult.getAccessToken());
+            return Mono.just(Util.parseAdal4jAuthenticationResult(authenticationResult));
         }
 
         private void acquireAccessToken() {

@@ -4,4 +4,4 @@
 /**
  * Package containing implementation-specific APIs that should not be used by end-users.
  */
-package com.azure.core.implementation.logging;
+package com.azure.core.util.logging;

@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.OperationDescription;
 import com.azure.core.implementation.RestProxy;
@@ -168,7 +168,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, TokenCredential credentials) {
-        return createDefaultPipeline(swaggerInterface, new TokenCredentialPolicy(credentials));
+        return createDefaultPipeline(swaggerInterface, new BearerTokenAuthenticationPolicy(credentials));
     }
 
     /**
