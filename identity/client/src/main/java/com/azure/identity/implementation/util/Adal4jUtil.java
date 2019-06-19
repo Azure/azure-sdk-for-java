@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.auth.credentials;
+package com.azure.identity.implementation.util;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.util.Base64Util;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationCallback;
@@ -26,13 +25,19 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class Util {
-    static AuthenticationCallback authenticationDelegate(final MonoSink<AuthenticationResult> callback) {
+/**
+ * Utility class for various operations for interacting with adal4j.
+ */
+public final class Adal4jUtil {
+    /**
+     * Routes a callback based call in adal4j to a Mono emitter.
+     * @param callback the Mono emitter
+     * @return the callback to pass into adal4j
+     */
+    public static AuthenticationCallback authenticationDelegate(final MonoSink<AuthenticationResult> callback) {
         return new AuthenticationCallback() {
             @Override
             public void onSuccess(Object o) {
@@ -46,7 +51,14 @@ final class Util {
         };
     }
 
-    static AsymmetricKeyCredential createAsymmetricKeyCredential(String clientId, byte[] clientCertificate, String clientCertificatePassword) {
+    /**
+     * Creates an AsymmetricKeyCredential from a PKCS12 certificate.
+     * @param clientId the client ID of the application.
+     * @param clientCertificate the PKCS12 certificate
+     * @param clientCertificatePassword the password protecting the PKCS12 certificate
+     * @return the AsymmetricKeyCredential
+     */
+    public static AsymmetricKeyCredential createAsymmetricKeyCredential(String clientId, byte[] clientCertificate, String clientCertificatePassword) {
         try {
             return AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword);
         } catch (KeyStoreException kse) {
@@ -64,11 +76,17 @@ final class Util {
         }
     }
 
-
-    static PrivateKey privateKeyFromPem(String pem) {
+    /**
+     * Extracts the PrivateKey from a PEM certificate.
+     * @param pem the contents of a PEM certificate.
+     * @return the PrivateKey
+     */
+    public static PrivateKey privateKeyFromPem(byte[] pem) {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
-        Matcher matcher = pattern.matcher(pem);
-        matcher.find();
+        Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("Certificate file provided is not a valid PEM file.");
+        }
         String base64 = matcher.group()
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -84,10 +102,17 @@ final class Util {
         }
     }
 
-    static X509Certificate publicKeyFromPem(String pem) {
+    /**
+     * Extracts the X509Certificate certificate from a PEM certificate.
+     * @param pem the contents of a PEM certificate.
+     * @return the X509Certificate certificate
+     */
+    public static X509Certificate publicKeyFromPem(byte[] pem) {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
-        Matcher matcher = pattern.matcher(pem);
-        matcher.find();
+        Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block");
+        }
         try {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
             InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
@@ -97,19 +122,5 @@ final class Util {
         }
     }
 
-    static AccessToken parseAdal4jAuthenticationResult(AuthenticationResult result) {
-        String token = result.getAccessToken();
-        OffsetDateTime expiresOn = OffsetDateTime.ofInstant(result.getExpiresOnDate().toInstant(), ZoneOffset.UTC);
-        return new AccessToken(token, expiresOn);
-    }
-
-    static AccessToken parseMSIToken(MSIToken result) {
-        return new AccessToken(result.accessToken(), result.expiresOn());
-    }
-
-    static AccessToken parseAzureCliToken(AzureCliToken result) {
-        return new AccessToken(result.accessToken(), result.expiresOn().atOffset(ZoneOffset.UTC));
-    }
-
-    private Util() { }
+    private Adal4jUtil() { }
 }

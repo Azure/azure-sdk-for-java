@@ -16,7 +16,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -607,7 +607,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     public static HttpPipeline createDefaultPipeline(TokenCredential credentials) {
-        return createDefaultPipeline(new TokenCredentialPolicy(credentials));
+        return createDefaultPipeline(new BearerTokenAuthenticationPolicy(credentials));
     }
 
     /**

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.auth.credentials;
+package com.azure.identity.implementation;
 
+import com.azure.core.credentials.AccessToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -11,7 +12,7 @@ import java.time.ZoneOffset;
 /**
  * Type representing response from the local MSI token provider.
  */
-class MSIToken {
+public final class MSIToken extends AccessToken {
 
     private static OffsetDateTime epoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
@@ -24,20 +25,30 @@ class MSIToken {
     @JsonProperty(value = "expires_on")
     private String expiresOn;
 
-    String accessToken() {
+    /**
+     * Creates an access token instance.
+     *
+     * @param token     the token string.
+     * @param expiresOn the expiration time.
+     */
+    public MSIToken(String token, OffsetDateTime expiresOn) {
+        super(token, expiresOn);
+    }
+
+    @Override
+    public String token() {
         return accessToken;
     }
 
-    String tokenType() {
-        return tokenType;
-    }
-
-    OffsetDateTime expiresOn() {
+    @Override
+    public OffsetDateTime expiresOn() {
         return epoch.plusSeconds(Integer.parseInt(this.expiresOn));
     }
 
-    boolean isExpired() {
+    @Override
+    public boolean isExpired() {
         OffsetDateTime now = OffsetDateTime.now();
-        return now.plusMinutes(5).isAfter(expiresOn());
+        OffsetDateTime expireOn = epoch.plusSeconds(Integer.parseInt(this.expiresOn));
+        return now.plusMinutes(5).isAfter(expireOn);
     }
 }
