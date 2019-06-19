@@ -33,7 +33,7 @@ class IntegrationAccountSessionImpl extends CreatableUpdatableImpl<IntegrationAc
         this.manager = manager;
         // Set resource name
         this.sessionName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.integrationAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "integrationAccounts");
         this.sessionName = IdParsingUtils.getValueFromIdByName(inner.id(), "sessions");

@@ -96,6 +96,9 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithCreate withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -106,6 +109,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithKey {
             /**
              * Specifies key.
+             * @param key The key details in the key vault
+             * @return the next definition stage
              */
             WithCreate withKey(KeyVaultKeyReference key);
         }
@@ -116,6 +121,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -126,6 +133,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -136,6 +145,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithPublicCertificate {
             /**
              * Specifies publicCertificate.
+             * @param publicCertificate The public certificate
+             * @return the next definition stage
              */
             WithCreate withPublicCertificate(String publicCertificate);
         }
@@ -146,6 +157,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -174,6 +187,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithKey {
             /**
              * Specifies key.
+             * @param key The key details in the key vault
+             * @return the next update stage
              */
             Update withKey(KeyVaultKeyReference key);
         }
@@ -184,6 +199,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -194,6 +211,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -204,6 +223,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithPublicCertificate {
             /**
              * Specifies publicCertificate.
+             * @param publicCertificate The public certificate
+             * @return the next update stage
              */
             Update withPublicCertificate(String publicCertificate);
         }
@@ -214,6 +235,8 @@ public interface IntegrationAccountCertificate extends HasInner<IntegrationAccou
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

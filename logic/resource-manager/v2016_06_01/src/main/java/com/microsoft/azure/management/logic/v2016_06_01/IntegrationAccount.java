@@ -57,21 +57,25 @@ public interface IntegrationAccount extends HasInner<IntegrationAccountInner>, R
         }
 
         /**
-         * The stage of the integrationaccount update allowing to specify Properties.
+         * The stage of the integrationaccount definition allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties The integration account properties
+             * @return the next definition stage
              */
             WithCreate withProperties(Object properties);
         }
 
         /**
-         * The stage of the integrationaccount update allowing to specify Sku.
+         * The stage of the integrationaccount definition allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The sku
+             * @return the next definition stage
              */
             WithCreate withSku(IntegrationAccountSku sku);
         }
@@ -95,21 +99,25 @@ public interface IntegrationAccount extends HasInner<IntegrationAccountInner>, R
      */
     interface UpdateStages {
         /**
-         * The stage of the integrationaccount {0} allowing to specify Properties.
+         * The stage of the integrationaccount update allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties The integration account properties
+             * @return the next update stage
              */
             Update withProperties(Object properties);
         }
 
         /**
-         * The stage of the integrationaccount {0} allowing to specify Sku.
+         * The stage of the integrationaccount update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The sku
+             * @return the next update stage
              */
             Update withSku(IntegrationAccountSku sku);
         }
