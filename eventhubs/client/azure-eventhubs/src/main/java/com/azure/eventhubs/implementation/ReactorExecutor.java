@@ -6,8 +6,8 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.scheduler.Scheduler;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 class ReactorExecutor implements Closeable {
     private static final String LOG_MESSAGE = "connectionId[{}], message[{}]";
 
-    private final ServiceLogger logger = new ServiceLogger(ReactorExecutor.class);
+    private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final Object lock = new Object();
     private final Reactor reactor;

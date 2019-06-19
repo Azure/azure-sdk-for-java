@@ -6,7 +6,7 @@ package com.azure.eventhubs.implementation.handler;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ReactorDispatcher;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -20,7 +20,7 @@ import java.util.Locale;
 import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class SessionHandler extends Handler {
-    private final ServiceLogger logger = new ServiceLogger(SessionHandler.class);
+    private final ClientLogger logger = new ClientLogger(SessionHandler.class);
 
     private final String entityName;
     private final Duration openTimeout;

@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.AmqpConstants;
 
 import java.time.Instant;
@@ -34,7 +34,7 @@ public final class EventPosition {
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
     private static final EventPosition LATEST = fromOffset(END_OF_STREAM, false);
 
-    private final ServiceLogger logger = new ServiceLogger(EventPosition.class);
+    private final ClientLogger logger = new ClientLogger(EventPosition.class);
     private final boolean isInclusive;
     private String offset;
     private Long sequenceNumber;

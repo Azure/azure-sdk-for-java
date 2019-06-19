@@ -5,7 +5,7 @@ package com.azure.eventhubs.implementation.handler;
 
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -16,9 +16,9 @@ import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
 
 class LinkHandler extends Handler {
 
-    ServiceLogger logger;
+    ClientLogger logger;
 
-    LinkHandler(final String connectionId, final String hostname, ServiceLogger logger) {
+    LinkHandler(final String connectionId, final String hostname, ClientLogger logger) {
         super(connectionId, hostname);
         this.logger = logger;
     }

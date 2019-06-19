@@ -6,7 +6,7 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ExceptionUtil;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -41,7 +41,7 @@ class RequestResponseChannel implements Closeable {
     private static final String STATUS_DESCRIPTION = "status-description";
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends = new ConcurrentSkipListMap<>();
-    private final ServiceLogger logger = new ServiceLogger(RequestResponseChannel.class);
+    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
 
     private final Sender sendLink;
     private final Receiver receiveLink;

@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -63,7 +63,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions,
                              ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
-        super(new ServiceLogger(ReactorConnection.class));
+        super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;

@@ -5,7 +5,7 @@ package com.azure.eventhubs.implementation.handler;
 
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ClientConstants;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -34,7 +34,7 @@ public class ConnectionHandler extends Handler {
     static final int AMQPS_PORT = 5671;
     static final int MAX_FRAME_SIZE = 65536;
 
-    private final ServiceLogger logger;
+    private final ClientLogger logger;
     private final Map<String, Object> connectionProperties;
 
     /**
@@ -45,7 +45,7 @@ public class ConnectionHandler extends Handler {
      * address.
      */
     public ConnectionHandler(final String connectionId, final String hostname) {
-        this(connectionId, hostname, new ServiceLogger(ConnectionHandler.class));
+        this(connectionId, hostname, new ClientLogger(ConnectionHandler.class));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ConnectionHandler extends Handler {
      * address.
      * @param logger The service logger to use.
      */
-    protected ConnectionHandler(final String connectionId, final String hostname, final ServiceLogger logger) {
+    protected ConnectionHandler(final String connectionId, final String hostname, final ClientLogger logger) {
         super(connectionId, hostname);
 
         add(new Handshaker());

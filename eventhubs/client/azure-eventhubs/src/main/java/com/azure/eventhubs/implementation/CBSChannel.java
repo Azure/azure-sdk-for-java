@@ -6,7 +6,7 @@ package com.azure.eventhubs.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -39,7 +39,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
 
     CBSChannel(AmqpConnection connection, TokenCredential tokenCredential, CBSAuthorizationType authorizationType,
                ReactorProvider provider, ReactorHandlerProvider handlerProvider, Duration operationTimeout) {
-        super(new ServiceLogger(CBSChannel.class));
+        super(new ClientLogger(CBSChannel.class));
 
         Objects.requireNonNull(connection);
         Objects.requireNonNull(tokenCredential);
@@ -69,8 +69,8 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return credential.getTokenAsync(tokenAudience).flatMap(token -> {
-            request.setBody(new AmqpValue(token));
+        return credential.getToken(tokenAudience).flatMap(accessToken -> {
+            request.setBody(new AmqpValue(accessToken.token()));
 
             return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
         });

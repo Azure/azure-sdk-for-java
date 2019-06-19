@@ -5,8 +5,8 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.AmqpSendLink;
 import com.azure.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.message.Message;
@@ -62,7 +62,7 @@ public class EventHubProducer implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
-    private final ServiceLogger logger = new ServiceLogger(EventHubProducer.class);
+    private final ClientLogger logger = new ClientLogger(EventSender.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;

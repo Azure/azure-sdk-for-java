@@ -7,7 +7,7 @@ import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Manages the re-authorization of the client to the token audience against the CBS node.
  */
 class ActiveClientTokenManager implements Closeable {
-    private final ServiceLogger logger = new ServiceLogger(ActiveClientTokenManager.class);
+    private final ClientLogger logger = new ClientLogger(ActiveClientTokenManager.class);
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<CBSNode> cbsNode;
