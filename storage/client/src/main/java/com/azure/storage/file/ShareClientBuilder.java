@@ -27,7 +27,71 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Fluent builder for ShareClients and ShareAsyncClients.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ShareClient ShareClients}
+ * and {@link ShareAsyncClient SahreAsyncClients}, calling {@link ShareClientBuilder#buildSync() buildSync}
+ * constructs an instance of ShareClient and calling {@link ShareClientBuilder#buildAsync() buildAsync}
+ * constructs an instance of SahreAsyncClient.
+ *
+ * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credentials.
+ * {@link ShareClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
+ * {@link ShareClientBuilder#shareName(String) shareName} and a {@link SASTokenCredential} that authorizes the client.</p>
+ *
+ * <pre>
+ * ShareClient client = ShareClient.builder()
+ *     .endpoint(endpointWithSASTokenQueryParams)
+ *     .buildSync();
+ * </pre>
+ *
+ * <pre>
+ * ShareAsyncClient client = ShareAsyncClient.builder()
+ *     .endpoint(endpointWithSASTokenQueryParams)
+ *     .buildAsync();
+ * </pre>
+ *
+ * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
+ * be set using {@link ShareClientBuilder#credential(SASTokenCredential) credential}.</p>
+ *
+ * <pre>
+ * ShareClient client = ShareClient.builder()
+ *     .endpoint(endpointWithoutSASTokenQueryParams)
+ *     .queueName(queueName)
+ *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
+ *     .buildSync();
+ * </pre>
+ *
+ * <pre>
+ * ShareAsyncClient client = ShareAsyncClient.builder()
+ *     .endpoint(endpointWithoutSASTokenQueryParams)
+ *     .queueName(queueName)
+ *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
+ *     .buildAsync();
+ * </pre>
+ *
+ * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
+ * a connection string from the Storage File service must be used. Set the SharedKeyCredential with
+ * {@link ShareClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
+ * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ *
+ * <pre>
+ * ShareClient client = ShareClient().builder()
+ *     .endpoint(endpoint)
+ *     .queueName(queueName)
+ *     .connectionString(connectionString)
+ *     .buildSync();
+ * </pre>
+ *
+ * <pre>
+ * ShareAsyncClient client = ShareAsyncClient().builder()
+ *     .endpoint(endpoint)
+ *     .queueName(queueName)
+ *     .connectionString(connectionString)
+ *     .buildAsync();
+ * </pre>
+ *
+ * @see ShareClient
+ * @see ShareAsyncClient
+ * @see SASTokenCredential
+ * @see SharedKeyCredential
  */
 class ShareClientBuilder {
     private final List<HttpPipelinePolicy> policies;
@@ -38,6 +102,7 @@ class ShareClientBuilder {
     private String shareName;
     private String shareSnapshot;
     private HttpClient httpClient;
+    private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
@@ -50,28 +115,53 @@ class ShareClientBuilder {
     }
 
     /**
-     * @return a new instance of ShareClient constructed with options stored in the builder
-     * @throws IllegalArgumentException If the builder doesn't have credentials
-     */
-    public ShareClient buildSync() {
-        return new ShareClient(build());
-    }
-
-    /**
-     * @return a new instance of ShareAsyncClient constructed with options stored in the builder
-     * @throws IllegalArgumentException If the builder doesn't have credentials
+     * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildAsync()} is
+     * called a new instance of {@link ShareAsyncClient} is created.
+     *
+     * <p>
+     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link ShareClientBuilder#endpoint(String) endpoint} are used to create the
+     * {@link ShareAsyncClient client}. All other builder settings are ignored.
+     * </p>
+     *
+     * @return A ShareAsyncClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public ShareAsyncClient buildAsync() {
         return build();
     }
 
+    /**
+     * Creates a {@link ShareClient} based on options set in the builder. Every time {@code buildSync()} is
+     * called a new instance of {@link ShareClient} is created.
+     *
+     * <p>
+     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link ShareClientBuilder#endpoint(String) endpoint} are used to create the
+     * {@link ShareClient client}. All other builder settings are ignored.
+     * </p>
+     *
+     * @return A ShareClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     */
+    public ShareClient buildSync() {
+        return new ShareClient(build());
+    }
+
     /*
      * @return a new instance of ShareAsyncClient constructed with options stored in the builder
+     * @throws NullPointerException If the endpoint or shareName is null
      * @throws IllegalArgumentException If the builder doesn't have credentials
      */
     private ShareAsyncClient build() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(shareName);
+
+        if (pipeline != null) {
+            return new ShareAsyncClient(endpoint, pipeline, shareName, shareSnapshot);
+        }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
             throw new IllegalArgumentException("Credentials are required for authorization");
@@ -107,10 +197,17 @@ class ShareClientBuilder {
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token)
-     * @param endpoint URL of the service
+     * Sets the endpoint for the Azure Storage File instance that the client will interact with.
+     *
+     * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the share
+     * that the client will interact with.</p>
+     *
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
+     * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
+     *
+     * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
      * @return the updated ShareClientBuilder object
-     * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
     public ShareClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -131,19 +228,24 @@ class ShareClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the Queue service.
+     *
+     * @param credential SAS token credential generated from the Storage account that authorizes requests
      * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public ShareClientBuilder credentials(SASTokenCredential credentials) {
-        this.sasTokenCredential = credentials;
+    public ShareClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = Objects.requireNonNull(credential);
         return this;
     }
 
     /**
-     * Sets the connection string for the service, parses it for authentication information (account name, account key)
-     * @param connectionString connection string from access keys section
+     * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
+     * File service.
+     *
+     * @param connectionString Connection string from the Access Keys section in the Storage account
      * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public ShareClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -153,49 +255,59 @@ class ShareClientBuilder {
 
     /**
      * Sets the share that the constructed clients will interact with
+     *
      * @param shareName Name of the share
      * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code shareName} is {@code null}.
      */
     public ShareClientBuilder shareName(String shareName) {
-        this.shareName = shareName;
+        this.shareName = Objects.requireNonNull(shareName);
         return this;
     }
 
     /**
      * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
-     * that has been specified in the builder/
+     * that has been specified in the builder.
+     *
      * @param shareSnapshot Identifier of the snapshot
      * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code shareSnapshot} is {@code null}.
      */
     public ShareClientBuilder shareSnapshot(String shareSnapshot) {
-        this.shareSnapshot = shareSnapshot;
+        this.shareSnapshot = Objects.requireNonNull(shareSnapshot);
         return this;
     }
 
     /**
-     * Sets the http client used to send service requests
-     * @param httpClient http client to send requests
-     * @return the updated ShareClientBuilder object
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     *
+     * @param httpClient The HTTP client to use for requests.
+     * @return The updated ShareClientBuilder object.
+     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public ShareClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = Objects.requireNonNull(httpClient);
         return this;
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent
-     * @param pipelinePolicy a pipeline policy
-     * @return the updated ShareClientBuilder object
+     * Adds a policy to the set of existing policies that are executed after the {@link RetryPolicy}.
+     *
+     * @param pipelinePolicy The retry policy for service requests.
+     * @return The updated ShareClientBuilder object.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ShareClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+        Objects.requireNonNull(pipelinePolicy);
         this.policies.add(pipelinePolicy);
         return this;
     }
 
     /**
-     * Sets the logging level for service requests
-     * @param logLevel logging level
-     * @return the updated ShareClientBuilder object
+     * Sets the logging level for HTTP requests and responses.
+     *
+     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+     * @return The updated ShareClientBuilder object.
      */
     public ShareClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
@@ -203,13 +315,33 @@ class ShareClientBuilder {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to build the client with
-     * when they are not set in the builder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated ShareClientBuilder object
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link ShareClientBuilder#endpoint(String) endpoint},
+     * {@link ShareClientBuilder#shareName(String) shareName}, and {@link ShareClientBuilder#shareSnapshot(String) snaphotShot}
+     * when building clients.</p>
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated ShareClientBuilder object.
+     * @throws NullPointerException If {@code pipeline} is {@code null}.
+     */
+    public ShareClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = Objects.requireNonNull(pipeline);
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated ShareClientBuilder object.
+     * @throws NullPointerException If {@code configuration} is {@code null}.
      */
     public ShareClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        this.configuration = Objects.requireNonNull(configuration);
         return this;
     }
 }
