@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.logging.ServiceLogger;
@@ -38,17 +37,17 @@ import java.util.stream.Collector;
  * <p>
  * Allowing automatic routing of partitions is recommended when:
  * <ul>
- *     <li>The sending of events needs to be highly available.</li>
- *     <li>The event data should be evenly distributed among all available partitions.</li>
+ * <li>The sending of events needs to be highly available.</li>
+ * <li>The event data should be evenly distributed among all available partitions.</li>
  * </ul>
  * </p>
  *
  * <p>
  * If no partition is specified, the following rules are used for automatically selecting one:
  * <ol>
- *     <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
- *     <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
- *     message to another available partition.</li>
+ * <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
+ * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
+ * message to another available partition.</li>
  * </ol>
  * </p>
  *
@@ -65,16 +64,15 @@ public class EventHubProducer implements Closeable {
 
     private final ServiceLogger logger = new ServiceLogger(EventHubProducer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final EventSenderOptions senderOptions;
+    private final EventHubProducerOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
 
     /**
-     * Creates a new instance of this EventSender with batches that are {@code maxMessageSize} and sends messages to {
-     *
-     * @code partitionId}.
+     * Creates a new instance of this {@link EventHubProducer} with batches that are {@code maxMessageSize} and sends
+     * messages to {@code partitionId}.
      */
-    EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
+    EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
@@ -219,9 +217,9 @@ public class EventHubProducer implements Closeable {
     }
 
     /**
-     * Disposes of the EventSender by closing the underlying connection to the service.
+     * Disposes of the {@link EventHubProducer} by closing the underlying connection to the service.
      *
-     * @throws IOException if the underlying {@link AmqpLink} and its resources could not be disposed.
+     * @throws IOException if the underlying transport could not be closed and its resources could not be disposed.
      */
     @Override
     public void close() throws IOException {
@@ -233,10 +231,11 @@ public class EventHubProducer implements Closeable {
         }
     }
 
-    /*
-     * Collects EventData into EventDataBatch to send to Event Hubs. If maxNumberOfBatches is null then it'll collect as
-     * many batches as possible. Otherwise, if there are more events than can fit into maxNumberOfBatches, then the
-     * collector throws a PayloadSizeExceededException.
+    /**
+     * Collects EventData into EventDataBatch to send to Event Hubs. If {@code maxNumberOfBatches} is {@code null} then
+     * it'll collect as many batches as possible. Otherwise, if there are more events than can fit into
+     * {@code maxNumberOfBatches}, then the collector throws a {@link AmqpException} with
+     * {@link ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
         private final String partitionKey;

@@ -75,7 +75,7 @@ public class EventHubProducerTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         // Act
@@ -105,7 +105,7 @@ public class EventHubProducerTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         // Act
@@ -133,7 +133,7 @@ public class EventHubProducerTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions().partitionKey("Some partition key");
-        final EventSenderOptions senderOptions = new EventSenderOptions()
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions()
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30))
             .partitionId("my-partition-id");
@@ -164,7 +164,7 @@ public class EventHubProducerTest {
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         StepVerifier.create(sender.send(testData, options))

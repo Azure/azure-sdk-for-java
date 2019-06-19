@@ -42,7 +42,7 @@ public class EventHubClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubPath;
-    private final EventSenderOptions defaultSenderOptions;
+    private final EventHubProducerOptions defaultSenderOptions;
     private final EventReceiverOptions defaultReceiverOptions;
 
     EventHubClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
@@ -58,7 +58,7 @@ public class EventHubClient implements Closeable {
         }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
-        this.defaultSenderOptions = new EventSenderOptions()
+        this.defaultSenderOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retryPolicy())
             .timeout(connectionOptions.timeout());
         this.defaultReceiverOptions = new EventReceiverOptions()
@@ -119,17 +119,17 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates a sender that can push events to an Event Hub. If
-     * {@link EventSenderOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
+     * {@link EventHubProducerOptions#partitionId() options.partitionId()} is specified, then the events are routed to that
      * specific partition. Otherwise, events are automatically routed to an available partition.
      *
      * @param options The set of options to apply when creating the sender.
      * @return A new {@link EventHubProducer}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public EventHubProducer createSender(EventSenderOptions options) {
+    public EventHubProducer createSender(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
-        final EventSenderOptions clonedOptions = options.clone();
+        final EventHubProducerOptions clonedOptions = options.clone();
         if (clonedOptions.timeout() == null) {
             clonedOptions.timeout(connectionOptions.timeout());
         }
@@ -211,7 +211,7 @@ public class EventHubClient implements Closeable {
 
     /**
      * Closes and disposes of connection to service. Any {@link EventReceiver EventReceivers} and
-     * {@link EventHubProducer EventSenders} created with this instance will have their connections closed.
+     * {@link EventHubProducer EventHubProducers} created with this instance will have their connections closed.
      */
     @Override
     public void close() {
