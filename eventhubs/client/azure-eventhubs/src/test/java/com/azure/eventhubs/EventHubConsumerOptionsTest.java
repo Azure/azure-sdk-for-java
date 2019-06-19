@@ -89,18 +89,18 @@ public class EventHubConsumerOptionsTest {
         final long priority = 14;
         final long invalidPriority = -1;
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .exclusiveReceiverPriority(priority);
+            .ownerLevel(priority);
 
         // Act
         try {
-            options.exclusiveReceiverPriority(invalidPriority);
+            options.ownerLevel(invalidPriority);
             Assert.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        final Optional<Long> setPriority = options.exclusiveReceiverPriority();
+        final Optional<Long> setPriority = options.ownerLevel();
         Assert.assertTrue(setPriority.isPresent());
         Assert.assertEquals(Long.valueOf(priority), setPriority.get());
     }

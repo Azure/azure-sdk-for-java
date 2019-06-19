@@ -20,7 +20,7 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
     /**
-     * The maximum length, in characters, for the identifier assigned to a receiver.
+     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
     public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**
@@ -35,12 +35,10 @@ public class EventHubConsumerOptions implements Cloneable {
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
-
     private String identifier;
     private String consumerGroup;
     private Long priority;
     private Retry retryPolicy;
-    private boolean keepUpdated;
     private Scheduler scheduler;
     private int prefetchCount;
 
@@ -54,7 +52,7 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Sets an optional text-based identifier label to assign to an event receiver.
+     * Sets an optional text-based identifier label to assign to an event consumer.
      *
      * @param identifier The receiver name.
      * @return The updated {@link EventHubConsumerOptions} object.
@@ -87,24 +85,24 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Sets the exclusiveReceiverPriority value on this receiver. When populated, the priority indicates that a receiver
+     * Sets the {@code ownerLevel} value on this consumer. When populated, the priority indicates that a consumer
      * is intended to be the only reader of events for the requested partition and an associated consumer group. To do
-     * so, this receiver will attempt to assert ownership over the partition; in the case where more than one exclusive
-     * receiver attempts to assert ownership for the same partition/consumer group pair, the one having a larger
-     * {@link EventHubConsumerOptions#exclusiveReceiverPriority()} value will "win".
+     * so, this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
+     * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger
+     * {@link EventHubConsumerOptions#ownerLevel()} value will "win".
      *
      * <p>
-     * When an exclusive receiver is used, those receivers which are not exclusive or which have a lower priority will
+     * When an exclusive consumer is used, those consumers which are not exclusive or which have a lower priority will
      * either not be allowed to be created, if they already exist, will encounter an exception during the next attempted
      * operation.
      * </p>
      *
-     * @param priority The priority associated with an exclusive receiver; for a non-exclusive receiver, this value
+     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this value
      *         should be {@code null}.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
-    public EventHubConsumerOptions exclusiveReceiverPriority(Long priority) {
+    public EventHubConsumerOptions ownerLevel(Long priority) {
         if (priority != null && priority < 0) {
             throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
         }
@@ -192,28 +190,28 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the priority for this receiver. If {@link Optional#isPresent()} is {@code false}, then this is not an
-     * exclusive receiver. Otherwise, it is and there can only be one receiver per (partition + consumer group)
-     * combination.
+     * Gets the priority for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
+     * exclusive consumer. Otherwise, it is an exclusive consumer, and there can only be one active consumer for each
+     * partition and consumer group combination.
      *
-     * @return An optional priority for this receiver.
+     * @return An optional priority for this consumer.
      */
-    public Optional<Long> exclusiveReceiverPriority() {
+    public Optional<Long> ownerLevel() {
         return Optional.ofNullable(priority);
     }
 
     /**
-     * Gets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
+     * Gets the scheduler for reading events from Event Hubs. If not specified, the scheduler configured with the
      * associated {@link EventHubClient} is used.
      *
-     * @return The scheduler for receiving events.
+     * @return The scheduler for reading events.
      */
     public Scheduler scheduler() {
         return scheduler;
     }
 
     /**
-     * Gets the count used by the receiver to control the number of events this receiver will actively receive and queue
+     * Gets the count used by the consumer to control the number of events this receiver will actively receive and queue
      * locally without regard to whether a receive operation is currently active.
      *
      * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
@@ -246,9 +244,9 @@ public class EventHubConsumerOptions implements Cloneable {
         clone.prefetchCount(this.prefetchCount());
         clone.retry(this.retry());
 
-        Optional<Long> priority = this.exclusiveReceiverPriority();
+        Optional<Long> priority = this.ownerLevel();
         if (priority.isPresent()) {
-            clone.exclusiveReceiverPriority(priority.get());
+            clone.ownerLevel(priority.get());
         }
 
         return clone;

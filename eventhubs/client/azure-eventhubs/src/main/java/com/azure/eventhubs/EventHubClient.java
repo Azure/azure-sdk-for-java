@@ -188,7 +188,7 @@ public class EventHubClient implements Closeable {
      * Consumers."
      *
      * Designating a consumer as exclusive may be specified in the {@code options}, by setting
-     * {@link EventHubConsumerOptions#exclusiveReceiverPriority(Long)} to a non-null value. By default, consumers are
+     * {@link EventHubConsumerOptions#ownerLevel(Long)} to a non-null value. By default, consumers are
      * created as non-exclusive.
      * </p>
      *
@@ -218,8 +218,8 @@ public class EventHubClient implements Closeable {
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
             .cast(EventHubSession.class)
             .flatMap(session -> {
-                final Long priority = options.exclusiveReceiverPriority().isPresent()
-                    ? options.exclusiveReceiverPriority().get()
+                final Long priority = options.ownerLevel().isPresent()
+                    ? options.ownerLevel().get()
                     : null;
 
                 return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
