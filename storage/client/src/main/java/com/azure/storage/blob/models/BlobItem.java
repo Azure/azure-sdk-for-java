@@ -48,6 +48,8 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private BlobMetadata metadata;
 
+    private boolean isPrefix = false;
+
     /**
      * Get the name property: The name property.
      *
@@ -165,6 +167,23 @@ public final class BlobItem {
      */
     public BlobItem metadata(BlobMetadata metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * @return if the blob item is a prefix instead of an actual blob.
+     */
+    public boolean isPrefix() {
+        return isPrefix;
+    }
+
+    /**
+     * Sets if the blob item is a prefix instead of an actual blob
+     * @param isPrefix if the item is a prefix
+     * @return the BlobItem object itself
+     */
+    public BlobItem isPrefix(boolean isPrefix) {
+        this.isPrefix = isPrefix;
         return this;
     }
 }
