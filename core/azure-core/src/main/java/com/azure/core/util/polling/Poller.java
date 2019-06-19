@@ -150,7 +150,7 @@ public class Poller<T> {
      * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
-     *                        that cancel operation is not supported by Azure service.
+     * that cancel operation is not supported by Azure service.
      * @throws NullPointerException     If {@code pollInterval} or {@code pollOperation} are {@code null}.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
      */
@@ -183,16 +183,18 @@ public class Poller<T> {
     }
 
     /**
-     * This method returns a {@link Flux} that can be subscribed to, enabling a subscriber to receive notification of
-     * every {@link PollResponse}, as it is received.
-     *
+     * This method returns a updated {@link Flux} that is observing specified {@link com.azure.core.util.polling.OperationStatus.State} and can be subscribed to, enabling a subscriber to receive notification of
+     * specified {@link PollResponse}, as it is received.
+     * @param observeState which user want to observe, must specify complete {@link com.azure.core.util.polling.OperationStatus.State} if interested.
+     * User not required to specify {@link com.azure.core.util.polling.OperationStatus.State#OTHER} here if interested in other state.
+     * @param observeOtherStates which user is interested to observe.
      * @return A {@link Flux} that can be subscribed to receive poll responses as the long-running operation executes.
      */
-    public Flux<PollResponse<T>> getObserver(List<OperationStatus.State> observeOperationStates, List<String> observeOtherStates) {
-        if (observeOperationStates == null && (observeOtherStates == null || observeOtherStates.size() == 0)) {
+    public Flux<PollResponse<T>> getObserver(List<OperationStatus.State> observeState, List<String> observeOtherStates) {
+        if (observeState == null && (observeOtherStates == null || observeOtherStates.size() == 0)) {
             throw new IllegalArgumentException("observeOperationStates and observeStates both can not be null or empty.");
         }
-        this.fluxHandle = this.fluxHandle.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
+        this.fluxHandle = this.fluxHandle.filterWhen(tPollResponse -> matchesState(tPollResponse, observeState, observeOtherStates));
         return this.fluxHandle;
     }
 
@@ -211,14 +213,14 @@ public class Poller<T> {
                 return Mono.just(true);
             }
         }
-        System.out.println("Poller.matchesState not Matched  with:" + currentPollResponse.getStatus().getState().toString() + "," + currentPollResponse.getStatus().getOtherStatus());
         return Mono.just(false);
     }
 
     /**
      * This method returns a {@link Flux} that can be subscribed to, enabling a subscriber to receive notification of
      * every {@link PollResponse}, as it is received.
-     *
+     * This will return updated {@link Flux} if user had made call to {@link Poller#getObserver(List, List)} earlier.
+     * 
      * @return A {@link Flux} that can be subscribed to receive poll responses as the long-running operation executes.
      */
     public Flux<PollResponse<T>> getObserver() {
