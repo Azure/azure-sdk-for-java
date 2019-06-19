@@ -75,6 +75,9 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithProperties withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -85,6 +88,8 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithProperties {
            /**
             * Specifies properties.
+            * @param properties The batch configuration properties
+            * @return the next definition stage
             */
             WithCreate withProperties(BatchConfigurationProperties properties);
         }
@@ -95,6 +100,8 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -105,6 +112,8 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -133,6 +142,8 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -143,6 +154,8 @@ public interface BatchConfiguration extends HasInner<BatchConfigurationInner>, I
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

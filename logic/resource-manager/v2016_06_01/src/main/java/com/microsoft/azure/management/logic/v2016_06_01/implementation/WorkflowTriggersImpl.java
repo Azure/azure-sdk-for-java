@@ -80,10 +80,10 @@ class WorkflowTriggersImpl extends WrapperImpl<WorkflowTriggersInner> implements
     }
 
     @Override
-    public Completable runAsync(String resourceGroupName, String workflowName, String triggerName) {
+    public Observable<Object> runAsync(String resourceGroupName, String workflowName, String triggerName) {
         WorkflowTriggersInner client = this.inner();
-        return client.runAsync(resourceGroupName, workflowName, triggerName).toCompletable();
-    }
+        return client.runAsync(resourceGroupName, workflowName, triggerName)
+    ;}
 
     @Override
     public Completable setStateAsync(String resourceGroupName, String workflowName, String triggerName, WorkflowTriggerInner source) {

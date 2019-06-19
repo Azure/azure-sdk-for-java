@@ -33,7 +33,7 @@ class BatchConfigurationImpl extends CreatableUpdatableImpl<BatchConfiguration, 
         this.manager = manager;
         // Set resource name
         this.batchConfigurationName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.integrationAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "integrationAccounts");
         this.batchConfigurationName = IdParsingUtils.getValueFromIdByName(inner.id(), "batchConfigurations");
