@@ -249,6 +249,7 @@ SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .credentials(AzureCredential.DEFAULT)
         .build();
        
+// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listSecrets()
   .flatMap(secretAsyncClient::getSecret).subscribe(secretResponse ->
     System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
