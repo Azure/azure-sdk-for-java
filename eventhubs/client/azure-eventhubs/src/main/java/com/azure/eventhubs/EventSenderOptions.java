@@ -8,7 +8,7 @@ import com.azure.core.amqp.Retry;
 import java.time.Duration;
 
 /**
- * The set of options that can be specified when creating an {@link EventSender} to configure its behavior.
+ * The set of options that can be specified when creating an {@link EventHubProducer} to configure its behavior.
  */
 public class EventSenderOptions implements Cloneable {
     private String partitionId;
@@ -16,10 +16,10 @@ public class EventSenderOptions implements Cloneable {
     private Duration timeout;
 
     /**
-     * Sets The identifier of the Event Hub partition that the {@link EventSender} will be bound to, limiting it to
+     * Sets The identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to, limiting it to
      * sending events to only that partition.
      *
-     * @param partitionId The identifier of the Event Hub partition that the {@link EventSender} will be bound to.
+     * @param partitionId The identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to.
      * @return The updated SenderOptions object.
      */
     public EventSenderOptions partitionId(String partitionId) {
@@ -61,13 +61,13 @@ public class EventSenderOptions implements Cloneable {
     }
 
     /**
-     * Gets the identifier of the Event Hub partition that the {@link EventSender} will be bound to, limiting it to
+     * Gets the identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to, limiting it to
      * sending events to only that partition.
      *
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that sent to an
      * available partition.
      *
-     * @return the identifier of the Event Hub partition that the {@link EventSender} will be bound to.
+     * @return the identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to.
      */
     public String partitionId() {
         return partitionId;

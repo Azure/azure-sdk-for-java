@@ -15,7 +15,7 @@ public class SendOptions {
      * Creates an instance with the maximum message size set to the maximum amount allowed by the protocol.
      */
     public SendOptions() {
-        this.maximumSizeInBytes = EventSender.MAX_MESSAGE_LENGTH_BYTES;
+        this.maximumSizeInBytes = EventHubProducer.MAX_MESSAGE_LENGTH_BYTES;
     }
 
     /**

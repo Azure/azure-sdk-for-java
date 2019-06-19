@@ -31,11 +31,30 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 /**
- * This sender class is a logical representation of sending events to Event Hubs.
+ * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
+ * Depending on the options specified at creation, the producer may be created to allow event data to be automatically
+ * routed to an available partition or specific to a partition.
+ *
+ * <p>
+ * Allowing automatic routing of partitions is recommended when:
+ * <ul>
+ *     <li>The sending of events needs to be highly available.</li>
+ *     <li>The event data should be evenly distributed among all available partitions.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * If no partition is specified, the following rules are used for automatically selecting one:
+ * <ol>
+ *     <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
+ *     <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
+ *     message to another available partition.</li>
+ * </ol>
+ * </p>
  *
  * @see EventHubClient#createSender()
  */
-public class EventSender implements Closeable {
+public class EventHubProducer implements Closeable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
@@ -44,7 +63,7 @@ public class EventSender implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
-    private final ServiceLogger logger = new ServiceLogger(EventSender.class);
+    private final ServiceLogger logger = new ServiceLogger(EventHubProducer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EventSenderOptions senderOptions;
     private final Mono<AmqpSendLink> sendLinkMono;
@@ -55,7 +74,7 @@ public class EventSender implements Closeable {
      *
      * @code partitionId}.
      */
-    EventSender(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
+    EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventSenderOptions options) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;

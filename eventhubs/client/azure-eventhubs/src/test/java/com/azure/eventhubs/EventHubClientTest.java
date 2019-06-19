@@ -237,7 +237,7 @@ public class EventHubClientTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventSender sender = client.createSender(senderOptions)) {
+        try (EventHubProducer sender = client.createSender(senderOptions)) {
             StepVerifier.create(sender.send(events))
                 .expectComplete()
                 .verify();
@@ -259,7 +259,7 @@ public class EventHubClientTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventSender sender = client.createSender()) {
+        try (EventHubProducer sender = client.createSender()) {
             StepVerifier.create(sender.send(events))
                 .expectComplete()
                 .verify();

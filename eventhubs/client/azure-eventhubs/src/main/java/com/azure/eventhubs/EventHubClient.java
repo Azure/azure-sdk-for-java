@@ -111,9 +111,9 @@ public class EventHubClient implements Closeable {
      * Creates a sender that transmits events to Event Hub. Event data is automatically routed to an available
      * partition.
      *
-     * @return A new {@link EventSender}.
+     * @return A new {@link EventHubProducer}.
      */
-    public EventSender createSender() {
+    public EventHubProducer createSender() {
         return createSender(defaultSenderOptions);
     }
 
@@ -123,10 +123,10 @@ public class EventHubClient implements Closeable {
      * specific partition. Otherwise, events are automatically routed to an available partition.
      *
      * @param options The set of options to apply when creating the sender.
-     * @return A new {@link EventSender}.
+     * @return A new {@link EventHubProducer}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public EventSender createSender(EventSenderOptions options) {
+    public EventHubProducer createSender(EventSenderOptions options) {
         Objects.requireNonNull(options);
 
         final EventSenderOptions clonedOptions = options.clone();
@@ -153,7 +153,7 @@ public class EventHubClient implements Closeable {
                 .cast(AmqpSendLink.class)))
             .publish(x -> x);
 
-        return new EventSender(amqpLinkMono, clonedOptions);
+        return new EventHubProducer(amqpLinkMono, clonedOptions);
     }
 
     /**
@@ -211,7 +211,7 @@ public class EventHubClient implements Closeable {
 
     /**
      * Closes and disposes of connection to service. Any {@link EventReceiver EventReceivers} and
-     * {@link EventSender EventSenders} created with this instance will have their connections closed.
+     * {@link EventHubProducer EventSenders} created with this instance will have their connections closed.
      */
     @Override
     public void close() {
