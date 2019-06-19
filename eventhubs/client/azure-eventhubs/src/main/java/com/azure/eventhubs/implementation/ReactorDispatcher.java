@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.handler.DispatchHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -36,7 +36,7 @@ import java.util.concurrent.RejectedExecutionException;
  * </p>
  */
 public final class ReactorDispatcher {
-    private final ServiceLogger serviceLogger = new ServiceLogger(ReactorDispatcher.class);
+    private final ClientLogger logger = new ClientLogger(ReactorDispatcher.class);
     private final CloseHandler onClose;
     private final Reactor reactor;
     private final Pipe ioSignal;
@@ -100,7 +100,7 @@ public final class ReactorDispatcher {
                 oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-            serviceLogger.asInfo().log("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+            logger.asInfo().log("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
         }
     }
 
@@ -115,9 +115,9 @@ public final class ReactorDispatcher {
                     oneKbByteBuffer = ByteBuffer.allocate(1024);
                 }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-                serviceLogger.asInfo().log("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+                logger.asInfo().log("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
             } catch (IOException ioException) {
-                serviceLogger.asError().log("WorkScheduler.run() failed with an error: %s", ioException);
+                logger.asError().log("WorkScheduler.run() failed with an error: %s", ioException);
                 throw new RuntimeException(ioException);
             }
 
@@ -142,7 +142,7 @@ public final class ReactorDispatcher {
                     ioSignal.sink().close();
                 }
             } catch (IOException ioException) {
-                serviceLogger.asError().log("CloseHandler.run() sink().close() failed with an error. %s", ioException);
+                logger.asError().log("CloseHandler.run() sink().close() failed with an error. %s", ioException);
             }
 
             workScheduler.run(null);
@@ -152,7 +152,7 @@ public final class ReactorDispatcher {
                     ioSignal.source().close();
                 }
             } catch (IOException ioException) {
-                serviceLogger.asError().log("CloseHandler.run() source().close() failed with an error %s", ioException);
+                logger.asError().log("CloseHandler.run() source().close() failed with an error %s", ioException);
             }
         }
     }

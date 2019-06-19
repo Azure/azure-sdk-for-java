@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.EndpointStateNotifier;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
@@ -23,10 +23,10 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private final Disposable subscription;
 
-    protected ServiceLogger logger;
+    protected ClientLogger logger;
     private volatile AmqpEndpointState state;
 
-    EndpointStateNotifierBase(ServiceLogger logger) {
+    EndpointStateNotifierBase(ClientLogger logger) {
         Objects.requireNonNull(logger);
 
         this.logger = logger;

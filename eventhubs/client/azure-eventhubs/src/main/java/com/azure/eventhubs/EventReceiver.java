@@ -4,7 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.AmqpLink;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -42,7 +42,7 @@ public class EventReceiver implements Closeable {
     private final Duration operationTimeout;
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final ServiceLogger logger = new ServiceLogger(EventReceiver.class);
+    private final ClientLogger logger = new ClientLogger(EventReceiver.class);
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 

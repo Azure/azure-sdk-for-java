@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "HEAD",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-c487176638db?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-ac0767123f8f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.14.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (ResourceManagementClient, 2017-05-10)",
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:30:36 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:19 GMT",
       "content-length" : "112",
       "expires" : "-1",
       "retry-after" : "0",
@@ -15,24 +15,24 @@
       "StatusCode" : "404",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "1c2905e7-330f-4b1a-8e8a-91042d354787",
+      "x-ms-correlation-request-id" : "5d192c40-f3cc-4de3-bac8-e4034b5eb589",
       "x-content-type-options" : "nosniff",
       "x-ms-failure-cause" : "gateway",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073036Z:1c2905e7-330f-4b1a-8e8a-91042d354787",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211620Z:5d192c40-f3cc-4de3-bac8-e4034b5eb589",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "1c2905e7-330f-4b1a-8e8a-91042d354787",
+      "x-ms-request-id" : "5d192c40-f3cc-4de3-bac8-e4034b5eb589",
       "Body" : ""
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-c487176638db?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-ac0767123f8f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.14.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (ResourceManagementClient, 2017-05-10)",
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:30:39 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:21 GMT",
       "content-length" : "194",
       "expires" : "-1",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
@@ -40,23 +40,23 @@
       "StatusCode" : "201",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "25f02eff-8e80-4549-a0da-8369985dce7a",
+      "x-ms-correlation-request-id" : "1cc10e00-f838-4aeb-bc2c-0d445d6be848",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073040Z:25f02eff-8e80-4549-a0da-8369985dce7a",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211622Z:1cc10e00-f838-4aeb-bc2c-0d445d6be848",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "25f02eff-8e80-4549-a0da-8369985dce7a",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db\",\"name\":\"hdijava-c487176638db\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+      "x-ms-request-id" : "1cc10e00-f838-4aeb-bc2c-0d445d6be848",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f\",\"name\":\"hdijava-ac0767123f8f\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.Storage/storageAccounts/hdijava4d886868c7be?api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.Storage/storageAccounts/hdijava2ea800222e84?api-version=2017-10-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (StorageManagementClient, 2017-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (StorageManagementClient, 2017-10-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:30:43 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:23 GMT",
       "content-length" : "0",
       "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
       "expires" : "-1",
@@ -65,23 +65,23 @@
       "StatusCode" : "202",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "aca8231f-3756-40e4-bea9-d2affd07a29e",
+      "x-ms-correlation-request-id" : "1b6078bb-ded8-4f8b-bd28-f1f9b9aa54d6",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073044Z:aca8231f-3756-40e4-bea9-d2affd07a29e",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211623Z:1b6078bb-ded8-4f8b-bd28-f1f9b9aa54d6",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/4bd1a99f-7913-4a6b-9494-4c4119a3b348?monitor=true&api-version=2017-10-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/781f8c22-08d1-47f2-b0b7-f0d9f7b8bd6f?monitor=true&api-version=2017-10-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4bd1a99f-7913-4a6b-9494-4c4119a3b348",
+      "x-ms-request-id" : "781f8c22-08d1-47f2-b0b7-f0d9f7b8bd6f",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/4bd1a99f-7913-4a6b-9494-4c4119a3b348?monitor=true&api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/781f8c22-08d1-47f2-b0b7-f0d9f7b8bd6f?monitor=true&api-version=2017-10-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (StorageManagementClient, 2017-10-01)"
+      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (StorageManagementClient, 2017-10-01)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:30:44 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:23 GMT",
       "content-length" : "0",
       "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
       "expires" : "-1",
@@ -90,136 +90,155 @@
       "StatusCode" : "202",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "15c75562-98fe-437e-acc2-984f0707ffb1",
+      "x-ms-correlation-request-id" : "164e2b83-23f9-411b-b8ba-5b8b2d7494c1",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073044Z:15c75562-98fe-437e-acc2-984f0707ffb1",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211624Z:164e2b83-23f9-411b-b8ba-5b8b2d7494c1",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/4bd1a99f-7913-4a6b-9494-4c4119a3b348?monitor=true&api-version=2017-10-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/781f8c22-08d1-47f2-b0b7-f0d9f7b8bd6f?monitor=true&api-version=2017-10-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b2d43075-488b-4763-b40c-369d4ab5a97e",
+      "x-ms-request-id" : "d6453fc9-177d-412e-846c-2de1620481fd",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/4bd1a99f-7913-4a6b-9494-4c4119a3b348?monitor=true&api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/781f8c22-08d1-47f2-b0b7-f0d9f7b8bd6f?monitor=true&api-version=2017-10-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (StorageManagementClient, 2017-10-01)"
+      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (StorageManagementClient, 2017-10-01)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:02 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:40 GMT",
       "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
       "content-length" : "1086",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11997",
       "StatusCode" : "200",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "3a445fdb-983a-4c9c-aee6-132ddcf51434",
+      "x-ms-correlation-request-id" : "4ada7119-fc09-4982-bf36-332b315d923c",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073102Z:3a445fdb-983a-4c9c-aee6-132ddcf51434",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211641Z:4ada7119-fc09-4982-bf36-332b315d923c",
       "content-type" : "application/json",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4ccc4950-6c10-4b17-849a-078d78a0e4c1",
-      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.Storage/storageAccounts/hdijava4d886868c7be\",\"name\":\"hdijava4d886868c7be\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2019-01-06T07:30:43.9223656Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2019-01-06T07:30:43.9223656Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2019-01-06T07:30:43.8129604Z\",\"primaryEndpoints\":{\"blob\":\"https://hdijava4d886868c7be.blob.core.windows.net/\",\"queue\":\"https://hdijava4d886868c7be.queue.core.windows.net/\",\"table\":\"https://hdijava4d886868c7be.table.core.windows.net/\",\"file\":\"https://hdijava4d886868c7be.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
+      "x-ms-request-id" : "8be025bd-28fc-44bf-80ff-0c58910a543e",
+      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.Storage/storageAccounts/hdijava2ea800222e84\",\"name\":\"hdijava2ea800222e84\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2019-06-18T21:16:23.3239963Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2019-06-18T21:16:23.3239963Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2019-06-18T21:16:23.0739947Z\",\"primaryEndpoints\":{\"blob\":\"https://hdijava2ea800222e84.blob.core.windows.net/\",\"queue\":\"https://hdijava2ea800222e84.queue.core.windows.net/\",\"table\":\"https://hdijava2ea800222e84.table.core.windows.net/\",\"file\":\"https://hdijava2ea800222e84.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.Storage/storageAccounts/hdijava4d886868c7be?api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.Storage/storageAccounts/hdijava2ea800222e84?api-version=2017-10-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (StorageManagementClient, 2017-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (StorageManagementClient, 2017-10-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:02 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:40 GMT",
       "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
       "content-length" : "1086",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11996",
       "StatusCode" : "200",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "ce9f2d50-1d73-49a5-ab34-4f785641a39e",
+      "x-ms-correlation-request-id" : "d39337e8-dce0-4dfb-9c1b-ca6d46873293",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073102Z:ce9f2d50-1d73-49a5-ab34-4f785641a39e",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211641Z:d39337e8-dce0-4dfb-9c1b-ca6d46873293",
       "content-type" : "application/json",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8cbe4410-f0e7-4155-8e31-be4652d7d88b",
-      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.Storage/storageAccounts/hdijava4d886868c7be\",\"name\":\"hdijava4d886868c7be\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2019-01-06T07:30:43.9223656Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2019-01-06T07:30:43.9223656Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2019-01-06T07:30:43.8129604Z\",\"primaryEndpoints\":{\"blob\":\"https://hdijava4d886868c7be.blob.core.windows.net/\",\"queue\":\"https://hdijava4d886868c7be.queue.core.windows.net/\",\"table\":\"https://hdijava4d886868c7be.table.core.windows.net/\",\"file\":\"https://hdijava4d886868c7be.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
+      "x-ms-request-id" : "1b5cc6eb-4dc2-4d10-91fc-df30b90a4de5",
+      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.Storage/storageAccounts/hdijava2ea800222e84\",\"name\":\"hdijava2ea800222e84\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2019-06-18T21:16:23.3239963Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2019-06-18T21:16:23.3239963Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2019-06-18T21:16:23.0739947Z\",\"primaryEndpoints\":{\"blob\":\"https://hdijava2ea800222e84.blob.core.windows.net/\",\"queue\":\"https://hdijava2ea800222e84.queue.core.windows.net/\",\"table\":\"https://hdijava2ea800222e84.table.core.windows.net/\",\"file\":\"https://hdijava2ea800222e84.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.Storage/storageAccounts/hdijava4d886868c7be/listKeys?api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.Storage/storageAccounts/hdijava2ea800222e84/listKeys?api-version=2017-10-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (StorageManagementClient, 2017-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/1.18.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (StorageManagementClient, 2017-10-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:02 GMT",
+      "date" : "Tue, 18 Jun 2019 21:16:41 GMT",
       "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
       "content-length" : "288",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "cc343661-976d-45ef-85a7-3be482a4c5d3",
+      "x-ms-correlation-request-id" : "32fe3a2f-6993-4b32-9405-115079f50e99",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073103Z:cc343661-976d-45ef-85a7-3be482a4c5d3",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211642Z:32fe3a2f-6993-4b32-9405-115079f50e99",
       "content-type" : "application/json",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3f66df2d-03b8-4537-9510-da2078678822",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"K/BSFgW6MOk/C4FZeFARxmrCMh2jtB6f6U4mjdVRKKx1ylBEFhG3mFqmeqkU/upladDEDnP2PE4uHJZ6uINEog==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"TcQ/cIKSxjKlbKodVXQDvI/4ZfaBtpaLlN7PRoZUQv2Nx9qkd3go3FVAKMTCKXHqt7sZg8koslovZfBhL1Y58g==\",\"permissions\":\"FULL\"}]}"
+      "x-ms-request-id" : "2b809329-c84f-41d1-920c-e2bc810dcdcb",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"36HUanpgNfazHluIs5IbgMQJ1sGZtqWygDo2oVPKNWxHGE8QycY1YP3pBaS8TclG2j9ngoSe394cS/iMpOVy/w==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"lZuMZqCTtfRHnmCCqAZq10rG3nFde88M/LbeRs1YG744g2ZQKl/1jJRVXp/pOYoWKN5WUkqWkCAB8pXJkqif8A==\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:24 GMT",
-      "content-length" : "1357",
+      "date" : "Tue, 18 Jun 2019 21:17:01 GMT",
+      "content-length" : "147",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "StatusCode" : "504",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1f39b5a6-2a20-4ac6-8d1b-3a9570f575fa",
+      "x-content-type-options" : "nosniff",
+      "x-ms-failure-cause" : "service",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211702Z:1f39b5a6-2a20-4ac6-8d1b-3a9570f575fa",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1f39b5a6-2a20-4ac6-8d1b-3a9570f575fa",
+      "Body" : "{\"error\":{\"code\":\"GatewayTimeout\",\"message\":\"The gateway did not receive a response from 'Microsoft.HDInsight' within the specified time period.\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96?api-version=2018-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 18 Jun 2019 21:17:03 GMT",
+      "content-length" : "1590",
+      "expires" : "-1",
       "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "7d63a453-9ce0-4f80-bea2-a2463be5f9c3",
+      "x-ms-correlation-request-id" : "dce984ea-9521-4d01-ab8d-b0bc83cdc74a",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073125Z:7d63a453-9ce0-4f80-bea2-a2463be5f9c3",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211703Z:dce984ea-9521-4d01-ab8d-b0bc83cdc74a",
       "content-type" : "application/json; charset=utf-8",
-      "etag" : "\"56572c08-9f21-454b-bd97-5925617cff39\"",
+      "etag" : "\"8e728e6c-435b-4450-9f14-d70e5841d7d5\"",
       "cache-control" : "no-cache",
-      "x-ms-hdi-clusteruri" : "https://management.azure.com/subscriptions/964c10bb-8a6c-43bc-83d3-6b318c6c7305/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba?api-version=2018-06-01-preview",
-      "x-ms-request-id" : "73b73bd0-000a-4eb2-ab25-a0cfdcb34ca3",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba\",\"name\":\"hdisdk-kafkafea353949f498ba\",\"type\":\"Microsoft.HDInsight/clusters\",\"location\":\"East US 2\",\"etag\":\"56572c08-9f21-454b-bd97-5925617cff39\",\"tags\":null,\"properties\":{\"clusterVersion\":\"3.6.1000.67\",\"clusterHdpVersion\":\"\",\"osType\":\"Linux\",\"clusterDefinition\":{\"blueprint\":\"https://blueprints.azurehdinsight.net/kafka-3.6.1000.67.1812120705.json\",\"kind\":\"Kafka\",\"componentVersion\":{\"Kafka\":\"1.1\"}},\"computeProfile\":{\"roles\":[{\"name\":\"headnode\",\"targetInstanceCount\":2,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false},{\"name\":\"workernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"dataDisksGroups\":[{\"disksPerNode\":8,\"storageAccountType\":\"Standard_LRS\",\"diskSizeGB\":1023}],\"encryptDataDisks\":false},{\"name\":\"zookeepernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Small\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false}]},\"provisioningState\":\"InProgress\",\"clusterState\":\"Accepted\",\"createdDate\":\"2019-01-06T07:31:24.107\",\"quotaInfo\":{\"coresUsed\":23},\"tier\":\"standard\"}}",
-      "azure-asyncoperation" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview"
+      "x-ms-hdi-clusteruri" : "https://management.azure.com/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96?api-version=2018-06-01-preview",
+      "x-ms-request-id" : "44585b8f-5c3c-4698-8a0b-a00a9467c778",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96\",\"name\":\"hdisdk-kafka50220982a7c4b96\",\"type\":\"Microsoft.HDInsight/clusters\",\"location\":\"East US 2\",\"etag\":\"8e728e6c-435b-4450-9f14-d70e5841d7d5\",\"tags\":null,\"properties\":{\"clusterVersion\":\"3.6.1000.67\",\"clusterHdpVersion\":\"\",\"osType\":\"Linux\",\"clusterDefinition\":{\"blueprint\":\"https://blueprints.azurehdinsight.net/kafka-3.6.1000.67.1905062133.json\",\"kind\":\"Kafka\",\"componentVersion\":{\"Kafka\":\"1.1\"}},\"computeProfile\":{\"roles\":[{\"name\":\"headnode\",\"targetInstanceCount\":2,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false},{\"name\":\"workernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"dataDisksGroups\":[{\"disksPerNode\":8,\"storageAccountType\":\"Standard_LRS\",\"diskSizeGB\":1023}],\"encryptDataDisks\":false},{\"name\":\"zookeepernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Small\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false}]},\"provisioningState\":\"InProgress\",\"clusterState\":\"Accepted\",\"createdDate\":\"2019-06-18T21:17:02.557\",\"quotaInfo\":{\"coresUsed\":23},\"tier\":\"standard\",\"storageProfile\":{\"storageaccounts\":[{\"name\":\"hdijava2ea800222e84.blob.core.windows.net\",\"resourceId\":null,\"msiResourceId\":null,\"key\":null,\"fileSystem\":null,\"container\":\"hdisdk-kafka50220982a7c4b96\",\"saskey\":null,\"isDefault\":true}]}}}",
+      "azure-asyncoperation" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:25 GMT",
+      "date" : "Tue, 18 Jun 2019 21:17:04 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11995",
@@ -227,25 +246,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "f27161f1-d6e4-40a6-937a-06347c40d6b2",
+      "x-ms-correlation-request-id" : "b88da36d-7488-4ebd-84a6-6072965d3a37",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073126Z:f27161f1-d6e4-40a6-937a-06347c40d6b2",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211704Z:b88da36d-7488-4ebd-84a6-6072965d3a37",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7697436a-c30c-4346-811c-df861f19e1ad",
+      "x-ms-request-id" : "005695e1-7266-430e-b3ba-06a1f31ecd31",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:31:58 GMT",
+      "date" : "Tue, 18 Jun 2019 21:17:35 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11994",
@@ -253,25 +271,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "5b25727f-79c8-4bf0-820a-a5f88508198c",
+      "x-ms-correlation-request-id" : "5cdf3b13-bb50-44e9-9ba3-a2d85e023f2f",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073158Z:5b25727f-79c8-4bf0-820a-a5f88508198c",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211735Z:5cdf3b13-bb50-44e9-9ba3-a2d85e023f2f",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3eca6b9e-2df8-4888-83f5-b95685e5b118",
+      "x-ms-request-id" : "ecaa765b-e723-4639-a49b-6a88bf86d12e",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:32:27 GMT",
+      "date" : "Tue, 18 Jun 2019 21:18:06 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11993",
@@ -279,25 +296,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "44a7ea05-1189-4b60-ae94-09c266d713b5",
+      "x-ms-correlation-request-id" : "91cc36ed-e2e2-4755-9da5-8f1bb8a7c744",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073228Z:44a7ea05-1189-4b60-ae94-09c266d713b5",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211806Z:91cc36ed-e2e2-4755-9da5-8f1bb8a7c744",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b58ef24e-7531-4161-a12d-56598c73ddf5",
+      "x-ms-request-id" : "ad1e9767-9334-4d3c-900f-c9426bc084f4",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:32:59 GMT",
+      "date" : "Tue, 18 Jun 2019 21:18:36 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11992",
@@ -305,25 +321,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "52e2b7ee-8a41-44e7-8919-514c5f3827c2",
+      "x-ms-correlation-request-id" : "1cc336d9-88dc-442d-9ad3-6226d7e6f40a",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073259Z:52e2b7ee-8a41-44e7-8919-514c5f3827c2",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211837Z:1cc336d9-88dc-442d-9ad3-6226d7e6f40a",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5429e895-8297-4024-a920-475ad4d422a4",
+      "x-ms-request-id" : "a9dc40e8-bbc3-4a16-aee0-97ba35bf8b97",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:33:31 GMT",
+      "date" : "Tue, 18 Jun 2019 21:19:07 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11991",
@@ -331,25 +346,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "84be6c9f-3ce2-4ca7-adf9-ae5d66b72566",
+      "x-ms-correlation-request-id" : "1752d264-d310-4de4-b677-d133eadef10a",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073331Z:84be6c9f-3ce2-4ca7-adf9-ae5d66b72566",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211908Z:1752d264-d310-4de4-b677-d133eadef10a",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "fca6db1b-6ebb-49bb-a1d0-1a8f65280edf",
+      "x-ms-request-id" : "c0839093-a79c-4857-903f-f1c1e6ba5a7c",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:34:01 GMT",
+      "date" : "Tue, 18 Jun 2019 21:19:39 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11990",
@@ -357,25 +371,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "75eb3188-c9ca-448b-8010-0310a37c0c4a",
+      "x-ms-correlation-request-id" : "7ad20404-50ae-48fb-a5cf-7a0e61f71a16",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073402Z:75eb3188-c9ca-448b-8010-0310a37c0c4a",
+      "x-ms-routing-request-id" : "WESTUS:20190618T211939Z:7ad20404-50ae-48fb-a5cf-7a0e61f71a16",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "e2510b6b-b2cb-47d9-ae72-5091e52d55c9",
+      "x-ms-request-id" : "399b0578-3a9a-42a9-86b2-594b5c2dde0c",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:34:32 GMT",
+      "date" : "Tue, 18 Jun 2019 21:20:09 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11989",
@@ -383,25 +396,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "9c6d88be-a276-43f8-a30f-836ed4d4bc60",
+      "x-ms-correlation-request-id" : "eb2886eb-85db-4b16-b950-e453d98ce086",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073432Z:9c6d88be-a276-43f8-a30f-836ed4d4bc60",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212010Z:eb2886eb-85db-4b16-b950-e453d98ce086",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "66fc11e2-45d8-4f62-8fe8-588cd50a3d00",
+      "x-ms-request-id" : "0f900736-63c3-467a-8e09-ff9173db7e06",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:35:04 GMT",
+      "date" : "Tue, 18 Jun 2019 21:20:40 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11988",
@@ -409,25 +421,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "1b109a7a-d650-4c53-a99c-ef4a61e31ca1",
+      "x-ms-correlation-request-id" : "1bea3a2f-1ca2-4baf-ab03-1da62e01ff47",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073504Z:1b109a7a-d650-4c53-a99c-ef4a61e31ca1",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212041Z:1bea3a2f-1ca2-4baf-ab03-1da62e01ff47",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "94b4eea1-0317-4a35-ab43-eaa20c963be7",
+      "x-ms-request-id" : "0dbdc504-1c0a-49f8-85ef-ad9ec8166162",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:35:34 GMT",
+      "date" : "Tue, 18 Jun 2019 21:21:12 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11987",
@@ -435,25 +446,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "edb9da16-2f62-42a2-8b77-7ea12350b6dc",
+      "x-ms-correlation-request-id" : "8e7b524d-4176-4c05-8f5c-24c235d08171",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073535Z:edb9da16-2f62-42a2-8b77-7ea12350b6dc",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212112Z:8e7b524d-4176-4c05-8f5c-24c235d08171",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5864170e-0ae7-4f34-917d-7b041919e377",
+      "x-ms-request-id" : "1b652a51-3eec-4b0a-ba22-5ab870859493",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:36:05 GMT",
+      "date" : "Tue, 18 Jun 2019 21:21:42 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11986",
@@ -461,25 +471,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "8ada27e3-58d2-4239-bd0f-30b87e397739",
+      "x-ms-correlation-request-id" : "4d57c3be-43fb-4ce1-b546-a12812b27db2",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073605Z:8ada27e3-58d2-4239-bd0f-30b87e397739",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212142Z:4d57c3be-43fb-4ce1-b546-a12812b27db2",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ba5cc23a-d4e7-429c-a359-34a057a88e8a",
+      "x-ms-request-id" : "d5cda212-1272-4077-a2f9-5118bfcaa41f",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:36:35 GMT",
+      "date" : "Tue, 18 Jun 2019 21:22:13 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11985",
@@ -487,25 +496,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "9406e7aa-c99c-4e6d-b142-b5cdb6d10a7f",
+      "x-ms-correlation-request-id" : "3f0ba7c0-f610-4bd6-9b0b-6948141a9d56",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073636Z:9406e7aa-c99c-4e6d-b142-b5cdb6d10a7f",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212213Z:3f0ba7c0-f610-4bd6-9b0b-6948141a9d56",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "707ddd19-889f-4022-85c2-5fd86ed45398",
+      "x-ms-request-id" : "d9968d27-0828-432a-9139-70f7ff50377a",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:37:06 GMT",
+      "date" : "Tue, 18 Jun 2019 21:22:43 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11984",
@@ -513,25 +521,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "785b15b6-c19d-4e49-ac2a-2c04b7dbdcb2",
+      "x-ms-correlation-request-id" : "3e12bf0b-b694-4251-8993-e88d3d43d04c",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073707Z:785b15b6-c19d-4e49-ac2a-2c04b7dbdcb2",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212244Z:3e12bf0b-b694-4251-8993-e88d3d43d04c",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3d86ac20-62ef-40e7-94b6-f84be33ab095",
+      "x-ms-request-id" : "4eaf758b-e14c-4b00-8a4a-f8c7568eb7a3",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:37:37 GMT",
+      "date" : "Tue, 18 Jun 2019 21:23:15 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11983",
@@ -539,25 +546,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "ce8db39a-41be-475c-b2d8-4ba6d58ae4b5",
+      "x-ms-correlation-request-id" : "0d1627f7-9f4c-4c9a-9f1c-7335a2c7b4f3",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073738Z:ce8db39a-41be-475c-b2d8-4ba6d58ae4b5",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212315Z:0d1627f7-9f4c-4c9a-9f1c-7335a2c7b4f3",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3d979611-8839-480f-9c15-289ae67502a9",
+      "x-ms-request-id" : "b09fc987-7fed-4de3-9851-3681922944ef",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:38:09 GMT",
+      "date" : "Tue, 18 Jun 2019 21:23:45 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11982",
@@ -565,25 +571,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "e47dfb41-b10c-4b2f-8401-bef7225d44b2",
+      "x-ms-correlation-request-id" : "c638777a-4d25-4a31-86bf-f5c895a8455b",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073810Z:e47dfb41-b10c-4b2f-8401-bef7225d44b2",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212346Z:c638777a-4d25-4a31-86bf-f5c895a8455b",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "e6a71fb4-28ca-4aec-859d-c9cf21f1e30d",
+      "x-ms-request-id" : "017d112c-8fd6-4b0d-8bf0-b72b653cf4bf",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:38:40 GMT",
+      "date" : "Tue, 18 Jun 2019 21:24:17 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11981",
@@ -591,25 +596,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "a9a4ecca-078b-4e25-aa52-7b4fffb05611",
+      "x-ms-correlation-request-id" : "946de39f-7eb2-4e58-892d-d30016c0bb3b",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073840Z:a9a4ecca-078b-4e25-aa52-7b4fffb05611",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212417Z:946de39f-7eb2-4e58-892d-d30016c0bb3b",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "22f34219-233b-4b6e-a77e-71a529d1bd1e",
+      "x-ms-request-id" : "ba8dab3a-122d-4752-92f5-d92ac65987e9",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:39:11 GMT",
+      "date" : "Tue, 18 Jun 2019 21:24:47 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11980",
@@ -617,25 +621,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "c8c91492-1241-4823-bc9c-53018a981bd5",
+      "x-ms-correlation-request-id" : "d8b810a2-f77b-44aa-9db5-f49aa59a6ce4",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073912Z:c8c91492-1241-4823-bc9c-53018a981bd5",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212448Z:d8b810a2-f77b-44aa-9db5-f49aa59a6ce4",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "47a0352e-7b1d-4741-bc19-543f02c8f03a",
+      "x-ms-request-id" : "6867f793-8374-47ef-b738-5503cdbe01c0",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:39:42 GMT",
+      "date" : "Tue, 18 Jun 2019 21:25:18 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11979",
@@ -643,25 +646,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "16e9c20a-fcab-4a67-a4c7-67a6f1f50b85",
+      "x-ms-correlation-request-id" : "d52feaff-7974-4037-a595-41375366e946",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T073943Z:16e9c20a-fcab-4a67-a4c7-67a6f1f50b85",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212519Z:d52feaff-7974-4037-a595-41375366e946",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "21b538a5-7e93-41fd-bd5d-fe7c8ff4518b",
+      "x-ms-request-id" : "270038e2-d570-4e19-be76-58dde6ac9a6a",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:40:13 GMT",
+      "date" : "Tue, 18 Jun 2019 21:25:49 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11978",
@@ -669,25 +671,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "773b2f97-df76-4aa2-8fef-54e30194223d",
+      "x-ms-correlation-request-id" : "7a11965e-2e8c-4d5c-abc4-af1c9713063e",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074013Z:773b2f97-df76-4aa2-8fef-54e30194223d",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212550Z:7a11965e-2e8c-4d5c-abc4-af1c9713063e",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ebe810f8-bddb-42cb-8cd0-53c0de2f615f",
+      "x-ms-request-id" : "e0db8dc8-6651-437c-82ac-7af5e9c57246",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:40:44 GMT",
+      "date" : "Tue, 18 Jun 2019 21:26:20 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11977",
@@ -695,25 +696,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "9200ee02-748c-4d6d-b4b2-c33e2a717059",
+      "x-ms-correlation-request-id" : "2db01a45-20d5-456d-8c1f-6e906da3781e",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074045Z:9200ee02-748c-4d6d-b4b2-c33e2a717059",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212620Z:2db01a45-20d5-456d-8c1f-6e906da3781e",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "2b05f5be-4e91-43b2-977b-9200d4940096",
+      "x-ms-request-id" : "4f585540-e8ca-43a1-8625-45ccb5420c84",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:41:15 GMT",
+      "date" : "Tue, 18 Jun 2019 21:26:51 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11976",
@@ -721,25 +721,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "3e835ab0-15fe-41f8-9384-9014537193a1",
+      "x-ms-correlation-request-id" : "761892fb-3db4-46bf-bdef-2949780743ec",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074116Z:3e835ab0-15fe-41f8-9384-9014537193a1",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212651Z:761892fb-3db4-46bf-bdef-2949780743ec",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c87da43c-4398-4cf7-8b5f-bf7825c5a8e1",
+      "x-ms-request-id" : "04743d9e-0863-434c-a681-57479557ee7b",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:41:46 GMT",
+      "date" : "Tue, 18 Jun 2019 21:27:21 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11975",
@@ -747,25 +746,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "da226bf3-0598-4a1c-937e-c4f658b64052",
+      "x-ms-correlation-request-id" : "13b3f25a-caa3-4254-b1e3-91cb1f53cacb",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074147Z:da226bf3-0598-4a1c-937e-c4f658b64052",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212722Z:13b3f25a-caa3-4254-b1e3-91cb1f53cacb",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c51a403f-0808-41e3-ad3d-62c973f7fa4e",
+      "x-ms-request-id" : "e6f26638-1c84-48ab-a65d-2e10df60a9a3",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:42:18 GMT",
+      "date" : "Tue, 18 Jun 2019 21:27:52 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11974",
@@ -773,25 +771,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "bce35892-534d-4e3d-a9bf-7dba6c9ee046",
+      "x-ms-correlation-request-id" : "0e4d76f7-0d80-4b9b-990c-ef8567de3a1e",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074218Z:bce35892-534d-4e3d-a9bf-7dba6c9ee046",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212753Z:0e4d76f7-0d80-4b9b-990c-ef8567de3a1e",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b9cfe1c7-6e2c-4efa-b0a1-a477738c5b74",
+      "x-ms-request-id" : "68c8af7e-3272-49c4-a21d-ae818b24b00e",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:42:49 GMT",
+      "date" : "Tue, 18 Jun 2019 21:28:24 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11973",
@@ -799,25 +796,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "ed541f6a-1524-4a6a-b2a8-75ac2474b019",
+      "x-ms-correlation-request-id" : "a5083f25-6047-4879-9dc2-ef0914f39934",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074249Z:ed541f6a-1524-4a6a-b2a8-75ac2474b019",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212824Z:a5083f25-6047-4879-9dc2-ef0914f39934",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "f0cf9fdb-3276-4d7e-beed-4b8bcdbb6589",
+      "x-ms-request-id" : "a77656de-6437-453a-af9c-e18f69966be9",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:43:20 GMT",
+      "date" : "Tue, 18 Jun 2019 21:28:54 GMT",
       "content-length" : "23",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11972",
@@ -825,25 +821,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "0fa031b4-a22c-4e33-a185-9011a510c6db",
+      "x-ms-correlation-request-id" : "82497502-d3e5-486d-b242-adac47fe788f",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074320Z:0fa031b4-a22c-4e33-a185-9011a510c6db",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212855Z:82497502-d3e5-486d-b242-adac47fe788f",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "82aadb7c-7f75-4ee3-810b-5570541275ba",
+      "x-ms-request-id" : "838c19da-6c7b-4f3f-ae9c-96a431f1ae40",
       "Body" : "{\"status\":\"InProgress\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96/azureasyncoperations/create?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:43:50 GMT",
-      "content-length" : "23",
+      "date" : "Tue, 18 Jun 2019 21:29:25 GMT",
+      "content-length" : "22",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11971",
@@ -851,25 +846,24 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "5a69336d-c8a5-4fb0-8085-302287ad8962",
+      "x-ms-correlation-request-id" : "7f05340d-d59d-4d3d-9589-05631df19916",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074350Z:5a69336d-c8a5-4fb0-8085-302287ad8962",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212925Z:7f05340d-d59d-4d3d-9589-05631df19916",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "a67b371a-b2ac-4b47-aa35-269167556a7d",
-      "Body" : "{\"status\":\"InProgress\"}"
+      "x-ms-request-id" : "1a8fb4ca-5e41-4250-82a6-8f02a28ba2f8",
+      "Body" : "{\"status\":\"Succeeded\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba/azureasyncoperations/create?api-version=2018-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96?api-version=2018-06-01-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:44:20 GMT",
-      "content-length" : "22",
+      "date" : "Tue, 18 Jun 2019 21:29:26 GMT",
+      "content-length" : "1838",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11970",
@@ -877,49 +871,23 @@
       "x-ms-hdi-served-by" : "global",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "38e359b2-1328-497b-813c-5c394f8ea306",
+      "x-ms-correlation-request-id" : "11c9192b-dbc8-4428-bd40-1497df4d9ebe",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074421Z:38e359b2-1328-497b-813c-5c394f8ea306",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212926Z:11c9192b-dbc8-4428-bd40-1497df4d9ebe",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5090c656-547a-437d-953b-1bb78c38ab50",
-      "Body" : "{\"status\":\"Succeeded\"}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba?api-version=2018-06-01-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (HDInsightManagementClient, 2018-06-01-preview, auto-generated)"
-    },
-    "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:44:21 GMT",
-      "content-length" : "1605",
-      "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11969",
-      "StatusCode" : "200",
-      "x-ms-hdi-served-by" : "global",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "08174413-5e73-457a-81ed-4e7fc8228f85",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074422Z:08174413-5e73-457a-81ed-4e7fc8228f85",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "6459c425-c45e-4f87-b274-a34ac6862205",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-c487176638db/providers/Microsoft.HDInsight/clusters/hdisdk-kafkafea353949f498ba\",\"name\":\"hdisdk-kafkafea353949f498ba\",\"type\":\"Microsoft.HDInsight/clusters\",\"location\":\"East US 2\",\"etag\":\"56572c08-9f21-454b-bd97-5925617cff39\",\"tags\":null,\"properties\":{\"clusterVersion\":\"3.6.1000.67\",\"clusterHdpVersion\":\"2.6.5.3005-27\",\"osType\":\"Linux\",\"clusterDefinition\":{\"blueprint\":\"https://blueprints.azurehdinsight.net/kafka-3.6.1000.67.1812120705.json\",\"kind\":\"Kafka\",\"componentVersion\":{\"Kafka\":\"1.1\"}},\"computeProfile\":{\"roles\":[{\"name\":\"headnode\",\"targetInstanceCount\":2,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false},{\"name\":\"workernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"dataDisksGroups\":[{\"disksPerNode\":8,\"storageAccountType\":\"Standard_LRS\",\"diskSizeGB\":1023}],\"encryptDataDisks\":false},{\"name\":\"zookeepernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Small\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false}]},\"provisioningState\":\"Succeeded\",\"clusterState\":\"Running\",\"createdDate\":\"2019-01-06T07:31:24.107\",\"quotaInfo\":{\"coresUsed\":23},\"connectivityEndpoints\":[{\"name\":\"SSH\",\"protocol\":\"TCP\",\"location\":\"hdisdk-kafkafea353949f498ba-ssh.azurehdinsight.net\",\"port\":22},{\"name\":\"HTTPS\",\"protocol\":\"TCP\",\"location\":\"hdisdk-kafkafea353949f498ba.azurehdinsight.net\",\"port\":443}],\"tier\":\"standard\"}}"
+      "x-ms-request-id" : "2dff32cb-de77-42a1-8b80-f0e04e8c80eb",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hdijava-ac0767123f8f/providers/Microsoft.HDInsight/clusters/hdisdk-kafka50220982a7c4b96\",\"name\":\"hdisdk-kafka50220982a7c4b96\",\"type\":\"Microsoft.HDInsight/clusters\",\"location\":\"East US 2\",\"etag\":\"8e728e6c-435b-4450-9f14-d70e5841d7d5\",\"tags\":null,\"properties\":{\"clusterVersion\":\"3.6.1000.67\",\"clusterHdpVersion\":\"2.6.5.3008-11\",\"osType\":\"Linux\",\"clusterDefinition\":{\"blueprint\":\"https://blueprints.azurehdinsight.net/kafka-3.6.1000.67.1905062133.json\",\"kind\":\"Kafka\",\"componentVersion\":{\"Kafka\":\"1.1\"}},\"computeProfile\":{\"roles\":[{\"name\":\"headnode\",\"targetInstanceCount\":2,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false},{\"name\":\"workernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Large\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"dataDisksGroups\":[{\"disksPerNode\":8,\"storageAccountType\":\"Standard_LRS\",\"diskSizeGB\":1023}],\"encryptDataDisks\":false},{\"name\":\"zookeepernode\",\"targetInstanceCount\":3,\"hardwareProfile\":{\"vmSize\":\"Small\"},\"osProfile\":{\"linuxOperatingSystemProfile\":{\"username\":\"sshuser\"}},\"encryptDataDisks\":false}]},\"provisioningState\":\"Succeeded\",\"clusterState\":\"Running\",\"createdDate\":\"2019-06-18T21:17:02.557\",\"quotaInfo\":{\"coresUsed\":23},\"connectivityEndpoints\":[{\"name\":\"SSH\",\"protocol\":\"TCP\",\"location\":\"hdisdk-kafka50220982a7c4b96-ssh.azurehdinsight.net\",\"port\":22},{\"name\":\"HTTPS\",\"protocol\":\"TCP\",\"location\":\"hdisdk-kafka50220982a7c4b96.azurehdinsight.net\",\"port\":443}],\"tier\":\"standard\",\"storageProfile\":{\"storageaccounts\":[{\"name\":\"hdijava2ea800222e84.blob.core.windows.net\",\"resourceId\":null,\"msiResourceId\":null,\"key\":null,\"fileSystem\":null,\"container\":\"hdisdk-kafka50220982a7c4b96\",\"saskey\":null,\"isDefault\":true}]}}}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-c487176638db?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/hdijava-ac0767123f8f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/1.14.0 OS:Mac OS X/10.12.6 MacAddressHash:29593b0c1d4672c1dbb771de4f0d2758543e1c542a646a24b6b2d4749073df5a Java:1.8.0_65 (ResourceManagementClient, 2017-05-10)",
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:ffbf486a22107d1f97bb85c96f5f1055aa63cbc50947322b765dbcaa8644bcd7 Java:11.0.3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sun, 06 Jan 2019 07:44:25 GMT",
+      "date" : "Tue, 18 Jun 2019 21:29:28 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
@@ -927,14 +895,14 @@
       "StatusCode" : "202",
       "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "43f58db8-fab6-472b-89b6-2dbc12c953cb",
+      "x-ms-correlation-request-id" : "ffc24905-95b0-4d24-87a1-e0d5e0f573cc",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20190106T074426Z:43f58db8-fab6-472b-89b6-2dbc12c953cb",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1IRElKQVZBOjJEQzQ4NzE3NjYzOERCLUVBU1RVUzIiLCJqb2JMb2NhdGlvbiI6ImVhc3R1czIifQ?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "WESTUS:20190618T212929Z:ffc24905-95b0-4d24-87a1-e0d5e0f573cc",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1IRElKQVZBOjJEQUMwNzY3MTIzRjhGLUVBU1RVUzIiLCJqb2JMb2NhdGlvbiI6ImVhc3R1czIifQ?api-version=2016-09-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "43f58db8-fab6-472b-89b6-2dbc12c953cb",
+      "x-ms-request-id" : "ffc24905-95b0-4d24-87a1-e0d5e0f573cc",
       "Body" : ""
     }
   } ],
-  "variables" : [ "hdijava-c487176638db", "hdijava4d886868c7be", "hdisdk-kafkafea353949f498ba" ]
+  "variables" : [ "hdijava-ac0767123f8f", "hdijava2ea800222e84", "hdisdk-kafka50220982a7c4b96" ]
 }

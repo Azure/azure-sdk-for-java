@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs.implementation;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.Delivery;
@@ -38,7 +38,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private volatile Supplier<Integer> creditSupplier;
 
     ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
-        super(new ServiceLogger(ReactorReceiver.class));
+        super(new ClientLogger(ReactorReceiver.class));
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;

@@ -3,7 +3,7 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * A configuration object for Proxy
  */
 public class ProxyConfiguration implements AutoCloseable {
-    private final ServiceLogger logger = new ServiceLogger(ProxyConfiguration.class);
+    private final ClientLogger logger = new ClientLogger(ProxyConfiguration.class);
 
     public static final String PROXY_USERNAME = "PROXY_USERNAME";
     public static final String PROXY_PASSWORD = "PROXY_PASSWORD";

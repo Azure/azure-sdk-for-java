@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.OperationCancelledException;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -83,7 +83,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
                   ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
-        super(new ServiceLogger(ReactorSender.class));
+        super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;

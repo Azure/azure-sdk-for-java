@@ -8,9 +8,9 @@ import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ConnectionOptions;
 import com.azure.eventhubs.implementation.ConnectionStringProperties;
@@ -45,7 +45,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubClientTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
-    private final ServiceLogger logger = new ServiceLogger(EventHubClientTest.class);
+    private final ClientLogger logger = new ClientLogger(EventHubClientTest.class);
 
     private EventHubClient client;
     private EventSender sender;

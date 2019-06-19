@@ -3,7 +3,7 @@
 
 package com.azure.core.util.configuration;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +22,7 @@ public class Configuration implements Cloneable {
     private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters with value {}.";
     private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables with value {}.";
 
-    private final ServiceLogger logger = new ServiceLogger(Configuration.class);
+    private final ClientLogger logger = new ClientLogger(Configuration.class);
 
     private ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
     private boolean loadedBaseConfigurations = false;

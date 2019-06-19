@@ -5,7 +5,7 @@ package com.azure.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.EventHubProperties;
 import com.azure.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
@@ -68,7 +68,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     ManagementChannel(AmqpConnection connection, String eventHubPath, TokenCredential tokenProvider,
                       TokenResourceProvider audienceProvider, ReactorProvider provider,
                       ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
-        super(new ServiceLogger(ManagementChannel.class));
+        super(new ClientLogger(ManagementChannel.class));
 
         Objects.requireNonNull(connection);
         Objects.requireNonNull(eventHubPath);
@@ -121,8 +121,8 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
         final String tokenAudience = audienceProvider.getResourceString(eventHubPath);
 
-        return tokenProvider.getTokenAsync(tokenAudience).flatMap(token -> {
-            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, token);
+        return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
+            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.token());
 
             final Message request = Proton.message();
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);

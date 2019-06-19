@@ -3,6 +3,7 @@
 
 package com.azure.eventhubs;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
@@ -14,7 +15,8 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Objects;
@@ -25,7 +27,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Authorizes with Azure Event Hubs service using a shared access key from either an Event Hubs namespace or a specific
  * Event Hub.
  */
-public class EventHubSharedAccessKeyCredential extends TokenCredential {
+public class EventHubSharedAccessKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
 
@@ -49,7 +51,6 @@ public class EventHubSharedAccessKeyCredential extends TokenCredential {
      */
     public EventHubSharedAccessKeyCredential(String keyName, String sharedAccessKey, Duration tokenValidity)
         throws NoSuchAlgorithmException, InvalidKeyException {
-        super("");
 
         if (ImplUtils.isNullOrEmpty(keyName)) {
             throw new IllegalArgumentException("keyName cannot be null or empty");
@@ -77,31 +78,39 @@ public class EventHubSharedAccessKeyCredential extends TokenCredential {
      * Retrieves the token, given the audience/resources requested, for use in authorization against an Event Hubs
      * namespace or a specific Event Hub instance.
      *
-     * @param resource The name of the resource or token audience to obtain a token for.
+     * @param scopes The name of the resource or token audience to obtain a token for.
      * @return A Mono that completes and returns the shared access signature.
+     * @throws IllegalArgumentException if {@code scopes} does not contain a single value, which is the token audience.
      */
     @Override
-    public Mono<String> getTokenAsync(String resource) {
-        return Mono.fromCallable(() -> generateSharedAccessSignature(resource));
+    public Mono<AccessToken> getToken(String... scopes) {
+        if (scopes.length != 1) {
+            throw new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name.");
+        }
+
+        return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
     }
 
-    private String generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
+    private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (ImplUtils.isNullOrEmpty(resource)) {
             throw new IllegalArgumentException("resource cannot be empty");
         }
 
         final String utf8Encoding = UTF_8.name();
-        final String expiresOn = Long.toString(Instant.now().getEpochSecond() + tokenValidity.getSeconds());
+        final OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(tokenValidity);
+        final String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
         final String audienceUri = URLEncoder.encode(resource, utf8Encoding);
-        final String secretToSign = audienceUri + "\n" + expiresOn;
+        final String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
 
         final byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
         final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-        return String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT,
+        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT,
             audienceUri,
             URLEncoder.encode(signature, utf8Encoding),
-            URLEncoder.encode(expiresOn, utf8Encoding),
+            URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
             URLEncoder.encode(keyName, utf8Encoding));
+
+        return new AccessToken(token, expiresOn);
     }
 }

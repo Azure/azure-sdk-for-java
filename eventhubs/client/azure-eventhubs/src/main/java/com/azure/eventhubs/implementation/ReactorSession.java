@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.Retry;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.EventSender;
 import com.azure.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.eventhubs.implementation.handler.SendLinkHandler;
@@ -58,7 +58,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
                    ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
                    TokenResourceProvider audienceProvider, Duration openTimeout) {
-        super(new ServiceLogger(ReactorSession.class));
+        super(new ClientLogger(ReactorSession.class));
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
