@@ -16,7 +16,6 @@ import com.azure.keyvault.keys.models.webkey.KeyType;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
-import com.nimbusds.oauth2.sdk.AuthorizationRequest;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -25,12 +24,11 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,9 +37,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
 
 public abstract class KeyClientTestBase extends TestBase {
 
