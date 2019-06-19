@@ -43,12 +43,13 @@ import java.util.Map;
  *     .connectionString(connectionString)
  *     .endpoint(endpoint)
  *     .queueName(queueName)
- *     .build();
+ *     .buildAsync();
  * </pre>
  *
- * <p>View {@link QueueAsyncClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link QueueClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see QueueAsyncClientBuilder
+ * @see QueueClientBuilder
+ * @see QueueClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
@@ -73,7 +74,7 @@ public final class QueueAsyncClient {
     }
 
     /**
-     * Creates a ConfigurationAsyncClient that sends requests to the storage queue service at {@code endpoint}.
+     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code endpoint}.
      * Each service call goes through the {@code httpPipeline}.
      *
      * @param endpoint URL for the Storage Queue service
@@ -91,10 +92,10 @@ public final class QueueAsyncClient {
     /**
      * Creates a builder that can configure options for the QueueAsyncClient before creating an instance of it.
      *
-     * @return A new {@link QueueAsyncClientBuilder} used create QueueAsyncClient instances.
+     * @return A new {@link QueueClientBuilder} used create QueueAsyncClient instances.
      */
-    public static QueueAsyncClientBuilder builder() {
-        return new QueueAsyncClientBuilder();
+    public static QueueClientBuilder builder() {
+        return new QueueClientBuilder();
     }
 
     /**

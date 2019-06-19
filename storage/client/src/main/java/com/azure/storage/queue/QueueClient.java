@@ -30,12 +30,13 @@ import java.util.Map;
  *     .connectionString(connectionString)
  *     .endpoint(endpoint)
  *     .queueName(queueName)
- *     .build();
+ *     .buildSync();
  * </pre>
  *
  * <p>View {@link QueueClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see QueueClientBuilder
+ * @see QueueAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */

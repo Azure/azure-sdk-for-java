@@ -3,36 +3,130 @@
 package com.azure.storage.queue;
 
 import com.azure.core.configuration.Configuration;
+import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SASTokenCredentialPolicy;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * Fluent builder for queue clients
+ * Fluent builder for queue async clients.
  */
 public final class QueueClientBuilder {
-    private final QueueAsyncClientBuilder builder;
+    private final List<HttpPipelinePolicy> policies;
+
+    private URL endpoint;
+    private String queueName;
+    private SASTokenCredential sasTokenCredential;
+    private SharedKeyCredential sharedKeyCredential;
+    private HttpClient httpClient;
+    private HttpLogDetailLevel logLevel;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     QueueClientBuilder() {
-        builder = new QueueAsyncClientBuilder();
+        retryPolicy = new RetryPolicy();
+        logLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
+
+        configuration = ConfigurationManager.getConfiguration();
+    }
+
+    public QueueAsyncClient buildAsync() {
+        return build();
+    }
+
+    public QueueClient buildSync() {
+        return new QueueClient(build());
     }
 
     /**
-     * Constructs an instance of QueueClient based on the configurations stored in the builder.
+     * Constructs an instance of QueueAsyncClient based on the configurations stored in the builder.
      * @return a new client instance
      */
-    public QueueClient build() {
-        return new QueueClient(builder.build());
+    private QueueAsyncClient build() {
+        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(queueName);
+
+        if (sasTokenCredential == null && sharedKeyCredential == null) {
+            throw new IllegalArgumentException("Credentials are required for authorization");
+        }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, configuration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        }
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        policies.add(retryPolicy);
+
+        policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(logLevel));
+
+        HttpPipeline pipeline = HttpPipeline.builder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        return new QueueAsyncClient(endpoint, pipeline, queueName);
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated QueueClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public QueueClientBuilder endpoint(String endpoint) {
-        builder.endpoint(endpoint);
+        Objects.requireNonNull(endpoint);
+        try {
+            UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
+            URL fullURL = new URL(endpoint);
+            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
+
+            // Attempt to get the queue name from the URL passed
+            String[] pathSegments = fullURL.getPath().split("/", 2);
+            if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                this.queueName = pathSegments[1];
+            }
+
+            // Attempt to get the SAS token from the URL passed
+            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            if (credential != null) {
+                this.sasTokenCredential = credential;
+            }
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+        }
+
         return this;
     }
 
@@ -42,7 +136,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder queueName(String queueName) {
-        builder.queueName(queueName);
+        this.queueName = Objects.requireNonNull(queueName);
         return this;
     }
 
@@ -52,7 +146,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder credentials(SASTokenCredential credentials) {
-        builder.credentials(credentials);
+        this.sasTokenCredential = credentials;
         return this;
     }
 
@@ -62,7 +156,8 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder connectionString(String connectionString) {
-        builder.connectionString(connectionString);
+        Objects.requireNonNull(connectionString);
+        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
         return this;
     }
 
@@ -72,7 +167,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder httpClient(HttpClient httpClient) {
-        builder.httpClient(httpClient);
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -82,7 +177,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        builder.addPolicy(pipelinePolicy);
+        this.policies.add(pipelinePolicy);
         return this;
     }
 
@@ -92,7 +187,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        builder.httpLogDetailLevel(logLevel);
+        this.logLevel = logLevel;
         return this;
     }
 
@@ -103,7 +198,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder configuration(Configuration configuration) {
-        builder.configuration(configuration);
+        this.configuration = configuration;
         return this;
     }
 }

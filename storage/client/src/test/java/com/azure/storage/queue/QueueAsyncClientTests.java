@@ -41,7 +41,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
                 .queueName(queueName)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build(), true, logger);
+                .buildAsync(), true, logger);
         } else {
             client = helper.setupClient((connectionString, endpoint) -> QueueAsyncClient.builder()
                 .connectionString(connectionString)
@@ -50,7 +50,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .build(), false, logger);
+                .buildAsync(), false, logger);
         }
     }
 

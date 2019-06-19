@@ -37,7 +37,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build(), true, logger);
+                .buildAsync(), true, logger);
         } else {
             serviceClient = helper.setupClient((connectionString, endpoint) -> QueueServiceAsyncClient.builder()
                 .connectionString(connectionString)
@@ -45,7 +45,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .build(), false, logger);
+                .buildAsync(), false, logger);
         }
     }
 
