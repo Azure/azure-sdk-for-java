@@ -66,7 +66,7 @@ public class EventReceiverOptionsTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
             }
         }
 
@@ -74,7 +74,7 @@ public class EventReceiverOptionsTest extends ApiTestBase {
             try {
                 receiver.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
             }
         }
     }
@@ -182,12 +182,14 @@ public class EventReceiverOptionsTest extends ApiTestBase {
     @Ignore
     @Test
     public void setLargePrefetchCount() {
+        // Arrange
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName())
                 .prefetchCount(2000));
 
         int eventReceived = 0;
         int retryCount = 0;
+        // Act
         while (eventReceived < EVENT_COUNT && retryCount < MAX_RETRY_TO_DECLARE_RECEIVE_STUCK) {
             final Flux<EventData> receivedData = receiver.receive();
             // com.azure.core.amqp.exception.AmqpException: The messaging entity 'sb://test-event-hub.servicebus.windows.net/eventhub1/ConsumerGroups/$Default/Partitions/0' could not be found.
@@ -198,6 +200,7 @@ public class EventReceiverOptionsTest extends ApiTestBase {
                 eventReceived += receivedData.count().block();
             }
         }
+        // Assert
         Assert.assertTrue(eventReceived >= EVENT_COUNT);
     }
 
@@ -207,12 +210,13 @@ public class EventReceiverOptionsTest extends ApiTestBase {
     @Ignore
     @Test
     public void setSmallPrefetchCount() {
+        // Arrange
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName())
                 .prefetchCount(11));
-
         int eventReceived = 0;
         int retryCount = 0;
+        // Act
         while (eventReceived < EVENT_COUNT && retryCount < MAX_RETRY_TO_DECLARE_RECEIVE_STUCK) {
             final Flux<EventData> receivedData = receiver.receive();
             pushEventsToPartition(client, senderOptions, EVENT_COUNT);
@@ -222,6 +226,7 @@ public class EventReceiverOptionsTest extends ApiTestBase {
                 eventReceived += receivedData.count().block();
             }
         }
+        // Assert
         Assert.assertTrue(eventReceived >= EVENT_COUNT);
     }
 

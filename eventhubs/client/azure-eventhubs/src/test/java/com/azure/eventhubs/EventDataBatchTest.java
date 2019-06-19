@@ -20,14 +20,13 @@ import java.time.Duration;
 import java.util.Random;
 
 public class EventDataBatchTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
-
     private static final String PARTITION_KEY = "key1";
     private static final String PARTITION_ID = "0";
 
-    private EventHubClient client;
-    private static EventSender sender;
+    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
 
+    private EventHubClient client;
+    private EventSender sender;
     private ReactorHandlerProvider handlerProvider;
 
     @Rule
@@ -58,7 +57,7 @@ public class EventDataBatchTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
             }
         }
     }
@@ -94,7 +93,7 @@ public class EventDataBatchTest extends ApiTestBase {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
-            logger.asInfo().log(String.format("Batch size: %s", batch.getSize()));
+            logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
 
         final EventSenderOptions senderOptions = new EventSenderOptions()
@@ -103,7 +102,7 @@ public class EventDataBatchTest extends ApiTestBase {
             .timeout(Duration.ofSeconds(30));
         sender = client.createSender(senderOptions);
 
-        // Action & Verify
+        // Act & Assert
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
@@ -119,14 +118,15 @@ public class EventDataBatchTest extends ApiTestBase {
         // Only Event Data batch has partition key information, none in SendOption and SenderOption
         final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
-            logger.asInfo().log(String.format("Batch size: %s", batch.getSize()));
+            logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
 
         final EventSenderOptions senderOptions = new EventSenderOptions()
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(10));
         sender  = client.createSender(senderOptions);
-        // Action & Verify
+
+        // Act & Assert
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
@@ -146,14 +146,17 @@ public class EventDataBatchTest extends ApiTestBase {
     public void sendEventsFullBatchWithPartitionKey() {
         skipIfNotRecordMode();
 
+        // Arrange
         final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(10));
         sender = client.createSender(senderOptions);
         final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
-
+        final Random random = new Random();
+        final SendOptions sendOptions = new SendOptions();
         int count = 0;
+
         while (true) {
             final EventData eventData = new EventData("a".getBytes());
-            for (int i = 0; i < new Random().nextInt(20); i++) {
+            for (int i = 0; i < random.nextInt(20); i++) {
                 eventData.properties().put("key" + i, "value");
             }
 
@@ -163,9 +166,10 @@ public class EventDataBatchTest extends ApiTestBase {
                 break;
             }
         }
-        Assert.assertEquals(count, batch.getSize());
 
-        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
+        // Act & Assert
+        Assert.assertEquals(count, batch.getSize());
+        StepVerifier.create(sender.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }
 
@@ -179,18 +183,19 @@ public class EventDataBatchTest extends ApiTestBase {
 
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
-        while (batch.tryAdd(new EventData("a".getBytes()))) {
-            logger.asInfo().log(String.format("Batch size: %s", batch.getSize()));
-        }
+        final SendOptions sendOptions = new SendOptions();
 
+        while (batch.tryAdd(new EventData("a".getBytes()))) {
+            logger.asVerbose().log("Batch size: {}", batch.getSize());
+        }
         final EventSenderOptions senderOptions = new EventSenderOptions()
             .partitionId(PARTITION_ID)
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30));
         sender = client.createSender(senderOptions);
 
-        // Action & Verify
-        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
+        // Act & Assert
+        StepVerifier.create(sender.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }
 }

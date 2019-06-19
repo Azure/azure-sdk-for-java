@@ -25,18 +25,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class BackCompatTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(BackCompatTest.class);
-
     private static final String PARTITION_ID = "0";
-    private static final Message ORIGINAL_MESSAGE = Proton.message();
     private static final String APPLICATION_PROPERTY = "firstProp";
     private static final String INT_APPLICATION_PROPERTY = "intProp";
     private static final String PAYLOAD = "testmsg";
+
+    private final ServiceLogger logger = new ServiceLogger(BackCompatTest.class);
 
     private EventHubClient client;
     private EventSender sender;
@@ -71,7 +69,7 @@ public class BackCompatTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
             }
         }
 
@@ -79,7 +77,7 @@ public class BackCompatTest extends ApiTestBase {
             try {
                 receiver.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly", testName.getMethodName());
+                logger.asError().log(String.format("[%s]: Receiver doesn't close properly.", testName.getMethodName()), e);
             }
         }
     }
@@ -90,6 +88,9 @@ public class BackCompatTest extends ApiTestBase {
     @Ignore
     @Test
     public void backCompatWithJavaSDKOlderThan0110() {
+        skipIfNotRecordMode();
+
+        final Message originalMessage = Proton.message();
         // Arrange
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
@@ -101,32 +102,32 @@ public class BackCompatTest extends ApiTestBase {
         // back compat end
         final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
 
-        ORIGINAL_MESSAGE.setApplicationProperties(applicationProperties);
-        ORIGINAL_MESSAGE.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
-        ORIGINAL_MESSAGE.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
-        final EventData msgEvent = new EventData(ORIGINAL_MESSAGE);
+        originalMessage.setApplicationProperties(applicationProperties);
+        originalMessage.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
+        originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+        final EventData msgEvent = new EventData(originalMessage);
 
 
-        // Action & Assert
+        // Act & Assert
         Flux<EventData> receivedEventData = receiver.receive();
         sender = client.createSender(new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
         sender.send(msgEvent);
         StepVerifier.create(receivedEventData)
             .expectNextMatches(event -> {
-                validateAmqpPropertiesInEventData.accept(event);
+                validateAmqpPropertiesInEventData(event, originalMessage);
                 return true;
             })
             .verifyComplete();
     }
 
-    private final Consumer<EventData> validateAmqpPropertiesInEventData = eData -> {
+    private void validateAmqpPropertiesInEventData(EventData eData, Message originalMessage) {
         Assert.assertTrue(eData.properties().containsKey(APPLICATION_PROPERTY));
-        Assert.assertEquals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(APPLICATION_PROPERTY), eData.properties().get(APPLICATION_PROPERTY));
+        Assert.assertEquals(originalMessage.getApplicationProperties().getValue().get(APPLICATION_PROPERTY), eData.properties().get(APPLICATION_PROPERTY));
 
         Assert.assertTrue(eData.properties().containsKey(INT_APPLICATION_PROPERTY));
-        Assert.assertEquals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(INT_APPLICATION_PROPERTY), eData.properties().get(INT_APPLICATION_PROPERTY));
+        Assert.assertEquals(originalMessage.getApplicationProperties().getValue().get(INT_APPLICATION_PROPERTY), eData.properties().get(INT_APPLICATION_PROPERTY));
 
-        Assert.assertTrue(eData.properties().size() == 2);
-        Assert.assertTrue(PAYLOAD.equals(UTF_8.decode(eData.body()).toString()));
-    };
+        Assert.assertEquals(2, eData.properties().size());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(eData.body()).toString());
+    }
 }

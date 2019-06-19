@@ -79,7 +79,7 @@ public class InteropEventBodyTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
             }
         }
 
@@ -87,7 +87,7 @@ public class InteropEventBodyTest extends ApiTestBase {
             try {
                 receiver.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
             }
         }
     }

@@ -76,7 +76,7 @@ public class EventHubClientTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
             }
         }
     }
@@ -354,14 +354,14 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         final String partitionId = "0";
-        final int noOfClients = 4;
+        final int numberOfClients = 4;
 
-        final EventHubClient[] ehClients = new EventHubClient[noOfClients];
-        for (int i = 0; i < noOfClients; i++) {
+        final EventHubClient[] ehClients = new EventHubClient[numberOfClients];
+        for (int i = 0; i < numberOfClients; i++) {
             ehClients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        EventHubClient senderClient = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
+        final EventHubClient senderClient = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
 
         for (final EventHubClient ehClient : ehClients) {
 
@@ -377,8 +377,8 @@ public class EventHubClientTest extends ApiTestBase {
         }
     }
 
-    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventSenderOptions senderOptions, final int noOfEvents) {
-        final Flux<EventData> events = Flux.range(0, noOfEvents).map(number -> {
+    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventSenderOptions senderOptions, final int numberOfClients) {
+        final Flux<EventData> events = Flux.range(0, numberOfClients).map(number -> {
             final EventData data = new EventData("testString".getBytes(UTF_8));
             return data;
         });

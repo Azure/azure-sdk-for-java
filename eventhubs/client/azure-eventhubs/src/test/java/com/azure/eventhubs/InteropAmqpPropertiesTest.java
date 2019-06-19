@@ -79,7 +79,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
             }
         }
 
@@ -87,7 +87,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
             try {
                 receiver.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
             }
         }
     }
@@ -105,7 +105,6 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         appProperties.put(APPLICATION_PROPERTY, "value1");
         final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
         ORIGINAL_MESSAGE.setApplicationProperties(applicationProperties);
-
         ORIGINAL_MESSAGE.setMessageId("id1");
         ORIGINAL_MESSAGE.setUserId("user1".getBytes());
         ORIGINAL_MESSAGE.setAddress("eventhub1");
@@ -119,16 +118,14 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         ORIGINAL_MESSAGE.setCreationTime(345L);
         ORIGINAL_MESSAGE.setGroupId("gid");
         ORIGINAL_MESSAGE.setReplyToGroupId("replyToGroupId");
-
         ORIGINAL_MESSAGE.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
         ORIGINAL_MESSAGE.getMessageAnnotations().getValue().put(Symbol.getSymbol(MESSAGE_ANNOTATION), "messageAnnotationValue");
-
         ORIGINAL_MESSAGE.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
         final EventData msgEvent = new EventData(ORIGINAL_MESSAGE);
 
-        // Action
+        // Act
         sender.send(msgEvent);
-        // Verify
+        // Assert
         StepVerifier.create(receiver.receive())
             .expectNextMatches(event -> {
                 validateAmqpPropertiesInEventData.accept(event);
@@ -137,9 +134,9 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
             })
             .verifyComplete();
 
-        // Action
+        // Act
         sender.send(resendEventData);
-        // Verify
+        // Assert
         StepVerifier.create(receiver.receive())
             .expectNextMatches(event -> {
                 validateAmqpPropertiesInEventData.accept(event);
@@ -191,7 +188,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         Assert.assertTrue(eData.properties().containsKey(APPLICATION_PROPERTY));
         Assert.assertEquals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(APPLICATION_PROPERTY), eData.properties().get(APPLICATION_PROPERTY));
 
-        Assert.assertTrue(eData.properties().size() == 1);
-        Assert.assertTrue(PAYLOAD.equals(UTF_8.decode(eData.body()).toString()));
+        Assert.assertEquals(1, eData.properties().size());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(eData.body()).toString());
     };
 }

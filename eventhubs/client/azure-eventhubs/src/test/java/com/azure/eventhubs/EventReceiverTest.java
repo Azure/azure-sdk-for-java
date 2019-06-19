@@ -28,15 +28,15 @@ import java.util.Objects;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class EventReceiverTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
-
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "TestMessage1";
     private static final String PROPERTY1 = "property1";
     private static final String PROPERTY_VALUE1 = "something1";
     private static final String PROPERTY2 = MessageConstant.MESSAGE_ID.getValue(); // TODO: need to verify it
     private static final String PROPERTY_VALUE2 = "something2";
-    private static final int NUM_OF_EVENTS = 10;
+    private static final int NUMBER_OF_EVENTS = 10;
+
+    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
 
     private EventData resendEventData;
     private EventHubClient client;
@@ -74,7 +74,7 @@ public class EventReceiverTest extends ApiTestBase {
             try {
                 sender.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
             }
         }
 
@@ -82,7 +82,7 @@ public class EventReceiverTest extends ApiTestBase {
             try {
                 receiver.close();
             } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly", testName.getMethodName());
+                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
             }
         }
     }
@@ -101,7 +101,7 @@ public class EventReceiverTest extends ApiTestBase {
 
         // Act & Assert
         StepVerifier.create(receiver.receive())
-            .expectNextCount(NUM_OF_EVENTS)
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }
 
@@ -118,8 +118,8 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> offsetReceivedData = receiver.receive();
         // Act & Assert
-        StepVerifier.create(offsetReceivedData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        StepVerifier.create(offsetReceivedData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
 
         // Arrange
@@ -127,8 +127,8 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> dateTimeReceivedData = receiver.receive();
         // Act & Assert
-        StepVerifier.create(dateTimeReceivedData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        StepVerifier.create(dateTimeReceivedData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
 
         Iterator<EventData> dateTimeDataIterator = dateTimeReceivedData.toIterable().iterator();
@@ -160,18 +160,17 @@ public class EventReceiverTest extends ApiTestBase {
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()).prefetchCount(2));
 
-        StepVerifier.create(receiver.receive().take(NUM_OF_EVENTS))
+        // Act & Assert
+        StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
             .expectNextCount(0)
             .verifyComplete();
 
-        // Action
-        final Mono<Void> sentData = pushEventsToPartition(client, senderOptions, NUM_OF_EVENTS);
+        final Mono<Void> sentData = pushEventsToPartition(client, senderOptions, NUMBER_OF_EVENTS);
         StepVerifier.create(sentData)
             .verifyComplete();
 
-        // Verification
-        StepVerifier.create(receiver.receive().take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }
 
@@ -187,9 +186,9 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> enqueuedTimeData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(enqueuedTimeData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
 
@@ -198,13 +197,12 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> offsetData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(offsetData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(offsetData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData offsetEvent = offsetData.toIterable().iterator().next();
 
-        // Assertion
         Assert.assertEquals(offsetEvent.offset(), enqueuedTimeEvent.offset());
         Assert.assertEquals(offsetEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
     }
@@ -216,14 +214,14 @@ public class EventReceiverTest extends ApiTestBase {
     @Test
     public void testReceiverOffsetNonInclusiveFilter() {
         skipIfNotRecordMode();
-
+        // Arrange
         receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> enqueuedTimeData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(enqueuedTimeData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData event = enqueuedTimeData.toIterable().iterator().next();
 
@@ -232,13 +230,11 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> offsetData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(offsetData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(offsetData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData offsetEvent = offsetData.toIterable().iterator().next();
-
-        // Assertion
         Assert.assertEquals(offsetEvent.sequenceNumber(), event.sequenceNumber() + 1);
     }
 
@@ -253,10 +249,9 @@ public class EventReceiverTest extends ApiTestBase {
         receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> enqueuedTimeData = receiver.receive();
-
-        // Verification
-        StepVerifier.create(enqueuedTimeData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
 
@@ -264,14 +259,12 @@ public class EventReceiverTest extends ApiTestBase {
         receiver = client.createReceiver(PARTITION_ID, EventPosition.fromSequenceNumber(enqueuedTimeEvent.sequenceNumber(), true),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> sequenceNumData = receiver.receive();
-
-        // Verification
-        StepVerifier.create(sequenceNumData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(sequenceNumData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData sequenceNumEvent = sequenceNumData.toIterable().iterator().next();
 
-        // Assertion
         Assert.assertEquals(sequenceNumEvent.offset(), enqueuedTimeEvent.offset());
         Assert.assertEquals(sequenceNumEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
     }
@@ -288,9 +281,9 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> enqueuedTimeData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(enqueuedTimeData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
 
@@ -299,13 +292,12 @@ public class EventReceiverTest extends ApiTestBase {
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
         final Flux<EventData> sequenceNumData = receiver.receive();
 
-        // Verification
-        StepVerifier.create(sequenceNumData.take(NUM_OF_EVENTS))
-            .expectNextCount(NUM_OF_EVENTS)
+        // Act & Assert
+        StepVerifier.create(sequenceNumData.take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
         final EventData sequenceNumEvent = sequenceNumData.toIterable().iterator().next();
 
-        // Assertion
         Assert.assertEquals(sequenceNumEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber() + 1);
     }
 
@@ -328,7 +320,7 @@ public class EventReceiverTest extends ApiTestBase {
         final EventSender sender = client.createSender(senderOptions);
         sender.send(event);
 
-        // Action and Verify
+        // Act & Assert
         StepVerifier.create(receiver.receive())
             .expectNextMatches(data -> {
                 validateReceivedEvent(data);
@@ -337,13 +329,10 @@ public class EventReceiverTest extends ApiTestBase {
             })
             .verifyComplete();
 
-        // Action and Verify
+        // Act & Assert
         sender.send(resendEventData);
         StepVerifier.create(receiver.receive())
-            .expectNextMatches(data -> {
-                validateReceivedEvent(data);
-                return true;
-            })
+            .assertNext(data -> validateReceivedEvent(data))
             .verifyComplete();
     }
 
@@ -352,8 +341,10 @@ public class EventReceiverTest extends ApiTestBase {
         Assert.assertEquals(PAYLOAD, new String(eventData.body().array()));
 
         final Map<String, Object> propertiesMap = eventData.properties();
-        Assert.assertTrue(propertiesMap.containsKey(PROPERTY1) && propertiesMap.get(PROPERTY1).equals(PROPERTY_VALUE1));
-        Assert.assertTrue(propertiesMap.containsKey(PROPERTY2) && propertiesMap.get(PROPERTY2).equals(PROPERTY_VALUE2));
+        Assert.assertTrue(propertiesMap.containsKey(PROPERTY1));
+        Assert.assertEquals(PROPERTY_VALUE1, propertiesMap.get(PROPERTY1));
+        Assert.assertTrue(propertiesMap.containsKey(PROPERTY2));
+        Assert.assertEquals(PROPERTY_VALUE2, propertiesMap.get(PROPERTY2));
 
         eventData.systemProperties();
         Assert.assertNotNull(eventData.offset());

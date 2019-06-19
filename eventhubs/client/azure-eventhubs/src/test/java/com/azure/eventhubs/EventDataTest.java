@@ -4,6 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
@@ -29,9 +30,9 @@ public class EventDataTest {
     @Test
     public void sendingEventsPropsShouldNotBeNull() {
         final EventData eventData = new EventData("Test".getBytes());
-        Assert.assertTrue(eventData.systemProperties() != null);
-        Assert.assertTrue(eventData.body() != null);
-        Assert.assertTrue(eventData.properties() != null);
+        Assert.assertNotNull(eventData.systemProperties());
+        Assert.assertNotNull(eventData.body());
+        Assert.assertNotNull(eventData.properties());
     }
 
     @Test
@@ -48,19 +49,19 @@ public class EventDataTest {
         messages.add(last);
         messages.add(third);
 
-        Collections.sort(messages);
+        Collections.sort(messages, (EventData o1, EventData o2) -> o1.sequenceNumber() - o2.sequenceNumber() > 0L ? 1 : -1);
 
-        Assert.assertEquals(messages.get(0), first);
-        Assert.assertEquals(messages.get(1), second);
-        Assert.assertEquals(messages.get(2), third);
-        Assert.assertEquals(messages.get(3), last);
+        Assert.assertTrue(messages.get(0) == first);
+        Assert.assertTrue(messages.get(1) == second);
+        Assert.assertTrue(messages.get(2) == third);
+        Assert.assertTrue(messages.get(3) == last);
     }
 
     private EventData constructMessage(long seqNumber) {
         final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(Symbol.getSymbol(MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), seqNumber);
 
-        final Message message = Message.Factory.create();
+        final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(properties));
         return new EventData(message);
     }
