@@ -159,14 +159,14 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     @Override
     public Mono<AmqpLink> createReceiver(String linkName, String entityPath, Duration timeout, Retry retry) {
-        return createReceiver(linkName, entityPath, "", timeout, retry,
+        return createConsumer(linkName, entityPath, "", timeout, retry,
             null, false, null);
     }
 
     @Override
-    public Mono<AmqpLink> createReceiver(String linkName, String entityPath, String eventPositionExpression,
-                                         Duration timeout, Retry retry, Long receiverPriority,
-                                         boolean keepPartitionInformationUpdated, String receiverIdentifier) {
+    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
+                                         Duration timeout, Retry retry, Long ownerLevel,
+                                         boolean keepPartitionInformationUpdated, String consumerIdentifier) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
@@ -206,11 +206,11 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
 
                 Map<Symbol, Object> properties = new HashMap<>();
-                if (receiverPriority != null) {
-                    properties.put(EPOCH, receiverPriority);
+                if (ownerLevel != null) {
+                    properties.put(EPOCH, ownerLevel);
                 }
-                if (!ImplUtils.isNullOrEmpty(receiverIdentifier)) {
-                    properties.put(RECEIVER_IDENTIFIER_NAME, receiverIdentifier);
+                if (!ImplUtils.isNullOrEmpty(consumerIdentifier)) {
+                    properties.put(RECEIVER_IDENTIFIER_NAME, consumerIdentifier);
                 }
                 if (!properties.isEmpty()) {
                     receiver.setProperties(properties);

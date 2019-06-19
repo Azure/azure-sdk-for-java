@@ -222,7 +222,7 @@ public class EventHubClient implements Closeable {
                     ? options.exclusiveReceiverPriority().get()
                     : null;
 
-                return session.createReceiver(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
+                return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
                     clonedOptions.retry(), priority, options.keepPartitionInformationUpdated(), options.identifier());
             })
             .cast(AmqpReceiveLink.class);
