@@ -8,7 +8,7 @@ Use the secret client library to create and manage secrets.
 ## Getting started
 ### Adding the package to your project
 
-Maven dependency for Azure Secret Client library.
+Maven dependency for Azure Secret Client library. Add it to your project's pom file.
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -28,7 +28,7 @@ Maven dependency for Azure Secret Client library.
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](TODO-rst-docs) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](TODO).
+In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](#create-secret-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](TODO).
 
  #### Create/Get credentials
 To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
@@ -69,12 +69,12 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     ```
 
 #### Create Secret client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the [SecretClient](TODO-rst-docs):
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the SecretClient:
 
 ```Java
 SecretClient client = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 ```
 > NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
@@ -90,7 +90,7 @@ SecretClient client = SecretClient.builder()
 * updated: Indicates when this version of the secret was updated.
 
 ### Secret Client:
-The Secret client performs the interactions with the Azure Key Vault service for getting, setting, updating,deleting, and listing secrets and its versions. An asynchronous and synchronous, SecretClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a SecretClient, you can interact with the primary resource types in Key Vault.
+The Secret client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing secrets and its versions. An asynchronous and synchronous, SecretClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a SecretClient, you can interact with the primary resource types in Key Vault.
 
 ## Examples
 ### Sync API
@@ -108,7 +108,7 @@ Create a Secret to be stored in the Azure Key Vault.
 ```Java
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
@@ -121,7 +121,7 @@ Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 Secret secret = secretClient.getSecret("secret_name").value();
@@ -134,7 +134,7 @@ Update an existing Secret by calling `updateSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 // Get the secret to update.
@@ -151,7 +151,7 @@ Delete an existing Secret by calling `deleteSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
@@ -164,7 +164,7 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
         
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
@@ -187,7 +187,7 @@ Create a Secret to be stored in the Azure Key Vault.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->
@@ -200,7 +200,7 @@ Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
         
 secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
@@ -214,7 +214,7 @@ Update an existing Secret by calling `updateSecret`.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
 
 secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
@@ -233,7 +233,7 @@ Delete an existing Secret by calling `deleteSecret`.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
         
 secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
@@ -246,7 +246,7 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credentials(AzureCredential.DEFAULT)
+        .credential(new AzureCredential())
         .build();
        
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
