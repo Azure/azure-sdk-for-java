@@ -312,7 +312,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src
-[package]:not-valid-link
+[package]:https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault
 [api_documentation]: not-valid-link
 [azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
 [jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
