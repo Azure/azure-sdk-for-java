@@ -82,7 +82,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 
 ```Java
 SecretClient client = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 ```
@@ -93,7 +93,7 @@ SecretClient client = SecretClient.builder()
 ### Secret
   A secret is the fundamental resource within Azure KeyVault. From a developer's perspective, Key Vault APIs accept and return secret values as strings. In addition to the secret data, the following attributes may be specified:
 * expires: Identifies the expiration time on or after which the secret data should not be retrieved.
-* not_before: Identifies the time after which the secret will be active.
+* notBefore: Identifies the time after which the secret will be active.
 * enabled: Specifies whether the secret data can be retrieved.
 * created: Indicates when this version of the secret was created.
 * updated: Indicates when this version of the secret was updated.
@@ -108,14 +108,15 @@ The following sections provide several code snippets covering some of the most c
 - [Retrieve a Secret](#retrieve-a-secret)
 - [Update an existing Secret](#update-an-existing-secret)
 - [Delete a Secret](#delete-a-secret)
+- [List Secrets](#list-secrets)
 
 ### Create a Secret
 
 Create a Secret to be stored in the Azure Key Vault.
-- setSecret creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
+- `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
 SecretClient secretClient = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
@@ -125,28 +126,29 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.name(
 
 ### Retrieve a Secret
 
-Retrieve a previously stored Secret by calling getSecret.
+Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
-secretClient.setSecret("secret_name", "secret_value");
 Secret secret = secretClient.getSecret("secret_name").value();
 System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
 ```
 
 ### Update an existing Secret
 
-Update an existing Secret by calling updateSecret.
+Update an existing Secret by calling `updateSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
-Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
+// Get the secret to update.
+Secret secret = secretClient.getSecret("secret_name", "secret_value").value();
+// Update the expiry time of the secret.
 secret.expires(OffsetDateTime.now().plusDays(30));
 SecretBase updatedSecret = secretClient.updateSecret(secret).value();
 System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString());
@@ -154,33 +156,46 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().
 
 ### Delete a Secret
 
-Delete an existing Secret by calling deleteSecret.
+Delete an existing Secret by calling `deleteSecret`.
 ```Java
 SecretClient secretClient = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
-Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
 DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
-System.out.printf("Deleted Secret's deletion time %s", deletedSecret.deletedDate().toString());
+System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate().toString());
+```
+
+### List Secrets
+
+List the secrets in the key vault by calling `listSecrets`.
+```Java
+SecretClient secretClient = SecretClient.builder()
+        .endpoint(<your-vault-url>)
+        .credentials(AzureCredential.DEFAULT)
+        .build();
+        
+// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
+secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -> 
+  System.out.printf("Received secret with name %s and value %s", secretResponse.value().name(), secretResponse.value().value()));
 ```
 
 ### Async API
-
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Secret Service tasks, including:
 - [Create a Secret Asynchronously](#create-a-secret-asynchronously)
 - [Retrieve a Secret Asynchronously](#retrieve-a-secret-asynchronously)
 - [Update an existing Secret Asynchronously](#update-an-existing-secret-asynchronously)
 - [Delete a Secret Asynchronously](#delete-a-secret-asynchronously)
+- [List Secrets Asynchronously](#list-secrets-asynchronously)
 
 ### Create a Secret Asynchronously
 
 Create a Secret to be stored in the Azure Key Vault.
-- setSecret creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
+- `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
@@ -190,10 +205,10 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretRespo
 
 ### Retrieve a Secret Asynchronously
 
-Retrieve a previously stored Secret by calling getSecret.
+Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-SecretClient secretAsyncClient = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
         
@@ -204,16 +219,17 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
 
 ### Update an existing Secret Asynchronously
 
-Update an existing Secret by calling updateSecret.
+Update an existing Secret by calling `updateSecret`.
 ```Java
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
 
 secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
+     // Get the Secret
      Secret secret = secretResponse.value();
-     //Update the expiry time of the secret.
+     // Update the expiry time of the secret.
      secret.expires(OffsetDateTime.now().plusDays(50));
      secretAsyncClient.updateSecret(secret).subscribe(secretResponse ->
          System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
@@ -222,10 +238,10 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
 
 ### Delete a Secret Asynchronously
 
-Delete an existing Secret by calling deleteSecret.
+Delete an existing Secret by calling `deleteSecret`.
 ```Java
-SecretClient client = SecretClient.builder()
-        .endpoint("https://myvault.vault.azure.net")
+SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+        .endpoint(<your-vault-url>)
         .credentials(AzureCredential.DEFAULT)
         .build();
         
@@ -233,34 +249,65 @@ secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
    System.out.printf("Deleted Secret's deletion time %s \n", deletedSecretResponse.value().deletedDate().toString()));
 ```
 
-## Troubleshooting
+### List Secrets Asynchronously
 
+List the secrets in the key vault by calling `listSecrets`.
+```Java
+SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+        .endpoint(<your-vault-url>)
+        .credentials(AzureCredential.DEFAULT)
+        .build();
+       
+secretAsyncClient.listSecrets()
+  .flatMap(secretAsyncClient::getSecret).subscribe(secretResponse ->
+    System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+```
+
+## Troubleshooting
 ### General
 
 When you interact with Azure Key Vault Secrets service using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azkeyvault_rest] requests. For example, if you try to retrieve a Secret that doesn't exist in your Key Vault, a `404` error is returned, indicating `Not Found`.
+
+### General
+Key Vault clients raise exceptions defined in azure-core. For more detailed infromation about exceptions and how to deal with them, see [Azure Core exceptions][azure_core_exceptions].
+
+For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+```java
+try {
+    SecretClient.getSecret("deletedSecret")
+} catch (ResourceNotFoundException e) {
+    System.out.println(e.getMessage());
+}
+```
+### Logging [TODO]
+This SDK uses SLF4J logging library. The logging is enabled by default, just ensure your application/project takes dependency on SLF4J logging library.
 
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
 ### Hello World Samples
-* [HelloWorld.java](TODO) - and [HelloWorldAsync.java](TODO) - Contains api scenarios found in this article.
+* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
+    * Create a Secret
+    * Retrieve a Secret
+    * Update a Secret
+    * Delete a Secret
 
 ### List Operations Samples
-* [ListOperations.java](TODO) and [ListOperationsAsync.java] - Contains samples for following scenarios:
-    * Creating Secrets
-    * Listing Secrets
+* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
+    * Create a Secret
+    * List Secrets
     * Create new version of existing secret.
-    * List secret versions
+    * List versions of an existing secret.
 
 ### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java](TODO) and [BackupAndRestoreOperationsAsync.java](TODO) - Contains samples for following scenarios:
+* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
     * Create a Secret
     * Backup a Secret -- Write it to a file.
     * Delete a secret
     * Restore a secret
 
 ### Managing Deleted Secrets Samples:
-* [ManagingDeletedSecrets.java](TODO) and [ManagingDeletedSecretsAsync.java](TODO) - Contains samples for following scenarios:
+* [ManagingDeletedSecrets.java][sample_ManageDeleted] and [ManagingDeletedSecretsAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
     * Create a Secret
     * Delete a secret
     * List deleted secrets
@@ -290,4 +337,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]:[Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples)
+[secrets_samples]:https://github.com/g2vinay/azure-sdk-for-java/tree/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java
+[sample_helloWorld]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/HelloWorld.java
+[sample_helloWorldAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/HelloWorldAsync.java
+[sample_list]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ListOperations.java
+[sample_listAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ListOperationsAsync.java
+[sample_BackupRestore]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ManagingDeletedSecretsAsync.java
+[azure_core_exceptions]:https://github.com/Azure/azure-sdk-for-java/tree/master/core/azure-core/src/main/java/com/azure/core/exception
