@@ -19,12 +19,13 @@ public final class ExceptionUtil {
      *
      * @param errorCondition The error condition string.
      * @param description The error message.
+     * @param errorContext The context that this error occurred in.
      * @return An exception that maps to the {@code errorCondition} provided.
      * @throws IllegalArgumentException when 'errorCondition' is {@code null} or empty, cannot be translated into an
-     * {@link ErrorCondition}, or cannot be determined whether the {@link ErrorCondition} is transient or not.
+     *         {@link ErrorCondition}, or cannot be determined whether the {@link ErrorCondition} is transient or not.
      * @see ErrorCondition
      */
-    public static Exception toException(String errorCondition, String description) {
+    public static Exception toException(String errorCondition, String description, ErrorContext errorContext) {
         if (errorCondition == null) {
             throw new IllegalArgumentException("'null' errorCondition cannot be translated to EventHubException");
         }
@@ -59,12 +60,12 @@ public final class ExceptionUtil {
             case NOT_ALLOWED:
                 return new UnsupportedOperationException(description);
             case NOT_FOUND:
-                return distinguishNotFound(description);
+                return distinguishNotFound(description, errorContext);
             default:
                 throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.", condition));
         }
 
-        return new AmqpException(isTransient, condition, description);
+        return new AmqpException(isTransient, condition, description, errorContext);
     }
 
     /**
@@ -72,36 +73,40 @@ public final class ExceptionUtil {
      *
      * @param statusCode AMQP response code.
      * @param statusDescription Message associated with response.
+     * @param errorContext The context that this error occurred in.
      * @return An exception that maps to that status code.
      */
-    public static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription) {
+    public static Exception amqpResponseCodeToException(int statusCode, String statusDescription,
+                                                        ErrorContext errorContext) {
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.fromValue(statusCode);
         final String message = String.format(AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription);
 
         if (amqpResponseCode == null) {
-            return new AmqpException(true, message);
+            return new AmqpException(true, message, errorContext);
         }
 
         switch (amqpResponseCode) {
             case BAD_REQUEST:
                 return new IllegalArgumentException(message);
             case NOT_FOUND:
-                return ExceptionUtil.distinguishNotFound(statusDescription);
+                return distinguishNotFound(statusDescription, errorContext);
             case FORBIDDEN:
-                return new AmqpException(false, ErrorCondition.RESOURCE_LIMIT_EXCEEDED, message);
+                return new AmqpException(false, ErrorCondition.RESOURCE_LIMIT_EXCEEDED, message, errorContext);
             case UNAUTHORIZED:
-                return new AmqpException(false, ErrorCondition.UNAUTHORIZED_ACCESS, message);
+                return new AmqpException(false, ErrorCondition.UNAUTHORIZED_ACCESS, message, errorContext);
             default:
-                return new AmqpException(true, message);
+                return new AmqpException(true, message, errorContext);
         }
     }
 
-    private static AmqpException distinguishNotFound(final String message) {
+    private static AmqpException distinguishNotFound(String message, ErrorContext errorContext) {
         final Matcher m = ENTITY_NOT_FOUND_PATTERN.matcher(message);
         if (m.find()) {
-            return new AmqpException(false, ErrorCondition.NOT_FOUND, message);
+            return new AmqpException(false, ErrorCondition.NOT_FOUND, message, errorContext);
         } else {
-            return new AmqpException(true, ErrorCondition.NOT_FOUND, String.format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
+            return new AmqpException(true, ErrorCondition.NOT_FOUND,
+                String.format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message),
+                errorContext);
         }
     }
 }
