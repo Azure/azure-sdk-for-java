@@ -14,8 +14,7 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
 
-import static com.azure.eventhubs.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
-import static com.azure.eventhubs.implementation.ClientConstants.NOT_APPLICABLE;
+import static com.azure.messaging.eventhubs.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 
 abstract class LinkHandler extends Handler {
 
