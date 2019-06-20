@@ -58,8 +58,8 @@ public class EventHubClientBuilder {
      * <p>
      * If the connection string is copied from the Event Hubs namespace, it will likely not contain the path to the
      * desired Event Hub, which is needed. In this case, the path can be added manually by adding
-     * {@literal "EntityPath=[[ EVENT HUB NAME ]]"} to the end of the connection string. For example,
-     * ";EntityPath=telemetry-hub".
+     * {@literal "EntityPath=EVENT_HUB_NAME"} to the end of the connection string. For example,
+     * "EntityPath=telemetry-hub".
      * </p>
      *
      * <p>
