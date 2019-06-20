@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@Ignore("Figure out why these tests are hanging.")
 public class KeyClientTest extends KeyClientTestBase {
 
     private KeyClient client;

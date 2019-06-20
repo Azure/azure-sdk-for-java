@@ -22,6 +22,7 @@ import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -65,11 +66,11 @@ public abstract class KeyClientTestBase extends TestBase {
                 : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
         final String tenantId = interceptorManager.isPlaybackMode()
-                ? ""
+                ? "some-tenant-id"
                 : System.getenv("MICROSOFT_AD_TENANT_ID");
 
         final String clientId = interceptorManager.isPlaybackMode()
-                ? ""
+                ? "some-client-id"
                 : System.getenv("ARM_CLIENT_ID");
 
         final String clientKey = interceptorManager.isPlaybackMode()
@@ -81,17 +82,15 @@ public abstract class KeyClientTestBase extends TestBase {
         Objects.requireNonNull(clientKey, "ARM_CLIENT_KEY expected to be set.");
         Objects.requireNonNull(tenantId, "MICROSOFT_AD_TENANT_ID expected to be set.");
 
+        TokenCredential credential = resource -> {
+            if (interceptorManager.isPlaybackMode()) {
+                return Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+            }
 
-        TokenCredential credential = new TokenCredential() {
-            @Override
-            public Mono<AccessToken> getToken(String... resource) {
-                AccessToken token = null;
-                try {
-                    token = getAccessToken(tenantId, clientId, clientKey);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return Mono.just(token);
+            try {
+                return Mono.just(getAccessToken(tenantId, clientId, clientKey));
+            } catch (Exception e) {
+                return Mono.error(e);
             }
         };
 
